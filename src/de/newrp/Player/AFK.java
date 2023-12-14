@@ -1,0 +1,185 @@
+package de.newrp.Player;
+
+import de.newrp.API.Log;
+import de.newrp.API.Messages;
+import de.newrp.API.Script;
+import de.newrp.main;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.player.*;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scoreboard.Team;
+
+import java.text.SimpleDateFormat;
+import java.util.*;
+
+public class AFK implements CommandExecutor, Listener {
+
+
+    public static final HashMap<String, String> afk = new HashMap<>();
+    static final HashMap<Player, Location> loc = new HashMap<>();
+    static final ArrayList<Player> counter = new ArrayList<>();
+
+    public static boolean isAFK(Player p) {
+        return afk.containsKey(p.getName());
+    }
+
+    public static String getAFKTime(Player p) {
+        return afk.get(p.getName());
+    }
+
+    public static final HashMap<String, Long> lastDmg = new HashMap<>();
+    public static final Set<String> lastActions = new HashSet<>();
+
+    private static Team team;
+
+    public static void setAFK(Player p, boolean b) {
+        if (b) {
+            afk.put(p.getName(), new SimpleDateFormat("HH:mm").format(Calendar.getInstance().getTime()));
+            Log.LOW.write(p, "hat den AFK-Modus betreten.");
+            p.setCollidable(false);
+            p.setCanPickupItems(false);
+            if (p.isFlying()) p.setFlying(false);
+            Bukkit.getScoreboardManager().getMainScoreboard().getTeam("nopush").addEntry(p.getName());
+        } else {
+            afk.remove(p.getName());
+            Log.LOW.write(p, "hat den AFK-Modus verlassen.");
+            p.setCollidable(true);
+            p.setCanPickupItems(true);
+            Bukkit.getScoreboardManager().getMainScoreboard().getTeam("nopush").removeEntry(p.getName());
+        }
+        p.getInventory().setItemInOffHand(new ItemStack(Material.AIR));
+    }
+
+    public static void updateAFK(Player p) {
+        if (!counter.contains(p)) {
+            lastActions.remove(p.getName());
+            loc.put(p, p.getLocation());
+            counter.add(p);
+            return;
+        }
+
+        if (!loc.containsKey(p)) {
+            loc.put(p, p.getLocation());
+            lastActions.remove(p.getName());
+            return;
+        }
+
+        if (!p.getLocation().equals(loc.get(p)) || lastActions.remove(p.getName())) {
+            counter.remove(p);
+            loc.remove(p);
+            return;
+        }
+        Bukkit.getScheduler().runTask(main.getInstance(), () -> AFK.setAFK(p, true));
+        Script.sendLocalMessage(5, p, "§a§o  " + Script.getName(p) + " ist nun abwesend.");
+        p.sendMessage("§6Du bist nun im AFK-Modus.");
+    }
+
+    @Override
+    public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
+        Player p = (Player) cs;
+        if (isAFK(p)) {
+            setAFK(p, false);
+            p.sendMessage("§6Du bist nun nicht mehr im AFK-Modus.");
+            if(Script.getLevel(p) <= 5) p.sendMessage(Messages.INFO + "Deine PayDay-Zeit läuft nun weiter.");
+            Script.sendLocalMessage(5, p, "§a§o  " + Script.getName(p) + " ist wieder anwesend.");
+        } else {
+            long time = System.currentTimeMillis();
+            Long lastUsage = lastDmg.get(p.getName());
+            if (p.hasPotionEffect(PotionEffectType.WITHER) || (lastUsage != null && lastUsage + 15 * 1000 > time)) {
+                p.sendMessage("§cDu kannst noch nicht in den AFK Modus wechseln.");
+                return true;
+            }
+            setAFK(p, true);
+            p.sendMessage("§6Du bist nun im AFK-Modus.");
+            Script.sendLocalMessage(5, p, "§a§o  " + Script.getName(p) + " ist nun abwesend.");
+        }
+        return true;
+    }
+
+    @EventHandler
+    public void onMove(PlayerMoveEvent e) {
+        Player p = e.getPlayer();
+        if (AFK.isAFK(p)) {
+            boolean x = e.getFrom().getBlockX() != e.getTo().getBlockX();
+            boolean y = Math.abs(e.getFrom().getY() - e.getTo().getY()) > 2;
+            boolean z = e.getFrom().getBlockZ() != e.getTo().getBlockZ();
+            if (y || x || z) {
+                AFK.setAFK(p, false);
+                p.sendMessage("§6Du bist nun nicht mehr im AFK-Modus.");
+                if(Script.getLevel(p) <= 5) p.sendMessage(Messages.INFO + "Deine PayDay-Zeit läuft nun weiter.");
+                Script.sendLocalMessage(5, p, "§a§o  " + Script.getName(p) + " ist wieder anwesend.");
+            }
+        }
+    }
+
+    @EventHandler
+    public void onDmg(EntityDamageByEntityEvent e) {
+        if (e.getEntity() instanceof Player) {
+            Player p = (Player) e.getEntity();
+            lastDmg.put(p.getName(), System.currentTimeMillis());
+            lastActions.add(p.getName());
+        }
+    }
+
+
+    @EventHandler
+    public void onChat(AsyncPlayerChatEvent e) {
+        Player p = e.getPlayer();
+        lastActions.add(p.getName());
+        if (AFK.isAFK(p)) {
+            AFK.setAFK(p, false);
+            p.sendMessage("§6Du bist nun nicht mehr im AFK-Modus.");
+            if(Script.getLevel(p) <= 5) p.sendMessage(Messages.INFO + "Deine PayDay-Zeit läuft nun weiter.");
+            Script.sendLocalMessage(5, p, "§a§o  " + Script.getName(p) + " ist wieder anwesend.");
+        }
+    }
+
+
+    @EventHandler
+    public void onCommand(PlayerCommandPreprocessEvent e) {
+        Player p = e.getPlayer();
+        lastActions.add(p.getName());
+
+        if (AFK.isAFK(p)) {
+            AFK.setAFK(p, false);
+            p.sendMessage("§6Du bist nun nicht mehr im AFK-Modus.");
+            if(Script.getLevel(p) <= 5) p.sendMessage(Messages.INFO + "Deine PayDay-Zeit läuft nun weiter.");
+            Script.sendLocalMessage(5, p, "§a§o  " + Script.getName(p) + " ist wieder anwesend.");
+        }
+    }
+
+    @EventHandler
+    public void onInteract(PlayerInteractEvent e) {
+        if (e.getAction() == Action.PHYSICAL) return;
+
+        Player p = e.getPlayer();
+        lastActions.add(p.getName());
+
+        if (AFK.isAFK(p)) {
+            AFK.setAFK(p, false);
+            p.sendMessage("§6Du bist nun nicht mehr im AFK-Modus.");
+            if(Script.getLevel(p) <= 5) p.sendMessage(Messages.INFO + "Deine PayDay-Zeit läuft nun weiter.");
+            Script.sendLocalMessage(5, p, "§a§o  " + Script.getName(p) + " ist wieder anwesend.");
+        }
+    }
+
+    @EventHandler
+    public void onQuit(PlayerQuitEvent e) {
+        Player p = e.getPlayer();
+        if (AFK.isAFK(p)) AFK.setAFK(p, false);
+        lastDmg.remove(p.getName());
+    }
+
+
+}

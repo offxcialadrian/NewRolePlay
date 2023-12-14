@@ -1,0 +1,185 @@
+name: NewRolePlay
+main: de.newrp.main
+version: 0.1
+description: NewRP Serversystem
+author: NewRP Entwicklungs-Team
+api-version: 1.16
+depend: [ ProtocolLib ]
+commands:
+  test:
+    description: Test command
+  sduty:
+    description: enter aduty
+    aliases: [ aduty ]
+  debug:
+    description: debug something
+  nrp:
+    description: write into the chat
+  tc:
+    description: teamchat
+    aliases: [ teamchat ]
+  heal:
+    description: heile einen spieler
+  blackjack:
+    description: spiele blackjack
+  buildmode:
+    description: geh in den buildmode
+    aliases: [ bm ]
+  goto:
+    description: teleports you to a point
+  weather:
+    description: change the weather
+    aliases: [ wc, weathercontrol ]
+  fly:
+    description: let somebody fly
+  checkinv:
+    description: check a players inv
+    aliases: [ getplayerinv, seeinv ]
+  tp:
+    description: teleport to a player
+    aliases: [ teleport, tpto ]
+  tphere:
+    description: teleport a player to you
+    aliases: [ gethere, tph, gth ]
+  afk:
+    description: set yourself afk
+    aliases: [ away ]
+  punish:
+    description: punish a player
+    aliases: [ ban, kick, warn, mute, tempban, tempmute ]
+  broadcast:
+    description: send a broadcast
+    aliases: [ bc ]
+  setsupporter:
+    description: set a player to supporter
+  sudo:
+    description: execute a command as another player
+  discord:
+    description: get the discord link
+    aliases: [ dc ]
+  forum:
+    description: get the forum link
+  schreien:
+    description: schreie
+    aliases: [ shout, s, scream ]
+  whisper:
+    description: flüstere
+    aliases: [ w, wisper ]
+  me:
+    description: mach etwas
+  removewarn:
+    description: unwarn a player
+    aliases: [ unwarn ]
+  unmute:
+    description: unmute a player
+  kick:
+    description: kick a player
+  unban:
+    description: unban a player
+  stats:
+    description: get your stats
+    aliases: [ statistiken, statistik ]
+  checkplayer:
+    description: check a player
+    aliases: [ check ]
+  setmoney:
+    description: set a players money
+  setlevel:
+    description: set a players level
+  pay:
+    description: pay a player
+  daytime:
+    description: set a players daytime
+    aliases: [ setdaytime ]
+  notifications:
+    description: set your notifications
+    aliases: [ notification ]
+  lotto:
+    description: play the lotto
+  removesupport:
+    description: remove a supporter
+  demotesupport:
+    description: demote a supporter
+  banken:
+    description: create a bank account
+    aliases: [ banks, createkonto, bankkonto ]
+  jointeam:
+    description: join a team
+  addteam:
+    description: add a member to your team
+  removeteam:
+    description: remove a member from your team
+  navistop:
+    description: stop the route
+  navi:
+    description: open the navi
+  ticket:
+    description: create a ticket
+  acceptticket:
+    description: accept a ticket
+    aliases: [ at ]
+  cancelticket:
+    description: cancel a ticket
+    aliases: [ ct, closeticket ]
+  tickets:
+    description: view the tickets
+  annehmen:
+    description: accept something
+    aliases: [ accept ]
+  setname:
+    description: set items name
+    aliases: [ setitemname ]
+  b:
+    description: send a message to the berufschat
+    aliases: [ berufschat ]
+  invite:
+    description: invite a player to your beruf
+  uninvite:
+    description: uninvite a player from your beruf
+  stadtkasse:
+    description: view the stadtkasse
+  steuern:
+    description: view the steuern
+    aliases: [ tax, sozialversicherung ]
+  joinberuf:
+    description: join a beruf
+  ablehnen:
+    description: decline something
+    aliases: [ decline, deny ]
+  arbeitslosengeld:
+    description: get your arbeitslosengeld
+    aliases: [ alg, arbeitsamt ]
+  id:
+    description: check a player
+  wahlen:
+    description: vote for somebody
+  regierung:
+    description: view the regierung
+  laufband:
+    description: train with laufband
+  passwort:
+    description: interact with your passwort
+    aliases: [password]
+  salary:
+    description: set the salary
+    aliases: [ gehalt]
+  abteilung:
+    description: set the abteilung
+    aliases: [abteilungen, department]
+  buy:
+    description: buy something
+  buyshop:
+    description: buy a shop
+  shop:
+    description: manage your shop
+  checkfinances:
+    description: check the finances
+    aliases: [ finances ]
+  checkshop:
+    description: check a shop
+  ooc:
+    description: send a message to the ooc chat
+    aliases: [ oocchat, oos, ooschat ]
+  bank:
+    description: interact with the atm
+    aliases: [ atm, geldautomat ]

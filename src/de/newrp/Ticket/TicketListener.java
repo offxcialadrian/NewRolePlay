@@ -1,0 +1,47 @@
+package de.newrp.Ticket;
+
+import de.newrp.API.Rank;
+import de.newrp.API.Script;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
+
+import java.util.ArrayList;
+
+public class TicketListener implements Listener {
+
+    @EventHandler
+    public void onQuit(PlayerQuitEvent e) {
+        Player p = e.getPlayer();
+        Ticket t = TicketCommand.getTicket(p);
+        if (t == null) return;
+        ArrayList<Player> conv = TicketCommand.getConversation(t);
+        if (conv.size() < 2) {
+            TicketCommand.close(t);
+            p.sendMessage(TicketCommand.PREFIX + "Der Spieler hat das Ticket verlassen (Quit).");
+        }
+    }
+
+    @EventHandler
+    public void onCommand(PlayerCommandPreprocessEvent e) {
+        Player p = e.getPlayer();
+        if (TicketCommand.getTicket(p) != null) {
+            Ticket t = TicketCommand.getTicket(p);
+            ArrayList<Player> conv = TicketCommand.getConversation(t);
+            if (conv.size() < 2 && !Script.isInTestMode()) {
+                TicketCommand.close(t);
+                p.sendMessage(TicketCommand.PREFIX + "Der Spieler hat das Ticket verlassen (Quit).");
+                return;
+            }
+
+            for (Player players : conv) {
+                if(Script.hasRank(players, Rank.SUPPORTER, false)) {
+                    players.sendMessage("§b§lTICKET §8× §b" + Script.getName(p) + " hat einen Befehl ausgeführt§8. §6" + e.getMessage());
+                }
+            }
+        }
+    }
+
+}
