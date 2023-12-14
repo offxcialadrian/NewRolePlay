@@ -108,6 +108,7 @@ public class SalaryCommand implements CommandExecutor {
         if(p!=tg) tg.sendMessage(PREFIX + "Dein Gehalt wurde von " + Script.getName(p) + " auf " + salary + "€ gesetzt.");
         Beruf.getBeruf(p).sendLeaderMessage("§8[§e" + Beruf.getBeruf(p).getName() + "§8] §e» " + "Das Gehalt von " + Script.getName(tg) + " wurde von " + Script.getName(p) + " auf " + salary + "€ gesetzt.");
         Script.sendTeamMessage(PREFIX + "Das Gehalt von " + Script.getName(tg) + " wurde von " + Script.getName(p) + " auf " + salary + "€ gesetzt. [" + Beruf.getBeruf(p).getName() + "]");
+        if(Beruf.getBeruf(p) == Beruf.Berufe.GOVERNMENT) Beruf.Berufe.NEWS.sendMessage(PREFIX + "Das Gehalt des Regierungsmitgliedes " + Script.getName(tg) + " wurde auf " + salary + "€ gesetzt.");
 
 
         return false;

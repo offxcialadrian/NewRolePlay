@@ -5,6 +5,7 @@ import de.newrp.API.Messages;
 import de.newrp.API.Rank;
 import de.newrp.API.Script;
 import de.newrp.Administrator.SDuty;
+import de.newrp.Berufe.Beruf;
 import de.newrp.main;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -77,6 +78,29 @@ public class Wahlen implements CommandExecutor, Listener {
                 Script.sendTeamMessage(PREFIX + "Der Spieler " + Script.getName(p) + " ist zurückgetreten.");
 
             } else if (args[0].equalsIgnoreCase("result")) {
+                if (!wahlenActive()) {
+                    p.sendMessage(PREFIX + "Es sind derzeit keine Wahlen aktiv.");
+                    return true;
+                }
+
+                if(Beruf.getBeruf(p) == Beruf.Berufe.NEWS) {
+                    p.sendMessage(PREFIX + "Aktuelle Hochrechnungen:");
+                    try (Statement stmt = main.getConnection().createStatement();
+                         ResultSet rs = stmt.executeQuery("SELECT * FROM wahlen WHERE quartal = '" + getCurrentQuartal() + "' AND year = '" + Calendar.getInstance().get(Calendar.YEAR) + "'")) {
+                        if (rs.next()) {
+                            do {
+                                p.sendMessage("§8» §6" + Script.getOfflinePlayer(rs.getInt("nrp_id")).getName() + " §8× §6" + Script.manipulateInt(rs.getInt("votings")) + " Stimmen");
+                            } while (rs.next());
+                        } else {
+                            p.sendMessage(PREFIX + "Es gibt derzeit keine Kandidaten.");
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    return true;
+                }
+
+
                 if (!Script.hasRank(p, Rank.ADMINISTRATOR, false)) {
                     p.sendMessage(Messages.NO_PERMISSION);
                     return true;
@@ -84,11 +108,6 @@ public class Wahlen implements CommandExecutor, Listener {
 
                 if(!SDuty.isSDuty(p)) {
                     p.sendMessage(Messages.NO_SDUTY);
-                    return true;
-                }
-
-                if (!wahlenActive()) {
-                    p.sendMessage(PREFIX + "Es sind derzeit keine Wahlen aktiv.");
                     return true;
                 }
 

@@ -2,13 +2,13 @@ package de.newrp.Administrator;
 
 import de.newrp.API.*;
 import de.newrp.Berufe.Beruf;
+import de.newrp.House.House;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.Date;
 import java.util.Map;
 
 public class CheckPlayerCommand implements CommandExecutor {
@@ -55,6 +55,12 @@ public class CheckPlayerCommand implements CommandExecutor {
             p.sendMessage("§7PlayTime §8× §e" + Script.getPlayTime(offtg, true) + ":§e" + String.format("%02d", Script.getPlayTime(offtg, false)) + " Stunden");
             p.sendMessage("§7Level §8× §e" + Script.getLevel(offtg));
             p.sendMessage("§7Beruf §8× §e" + (Beruf.hasBeruf(offtg) ? Beruf.getBeruf(offtg).getName() : "Kein Beruf"));
+            StringBuilder houses = new StringBuilder();
+            for(House house : House.getHouses(Script.getNRPID(offtg))) {
+                houses.append(house.getID()).append(house.getID() == House.getHouses(Script.getNRPID(offtg)).get(House.getHouses(Script.getNRPID(offtg)).size() - 1).getID() ? "" : ", ");
+            }
+            if(houses.toString().equalsIgnoreCase("")) houses = new StringBuilder("Keine Häuser");
+            p.sendMessage("§7Häuser §8× §e" + houses.toString());
             return true;
         }
 
@@ -78,6 +84,12 @@ public class CheckPlayerCommand implements CommandExecutor {
         p.sendMessage("§7Exp §8× §e" + Script.getExp(tg) + "/" + Script.getLevelCost(tg) + " Exp");
         p.sendMessage("§7Health §8× §e" + (tg.getHealth()/2) + "/" + (tg.getMaxHealth()/2) + " HP");
         p.sendMessage("§7Beruf §8× §e" + (Beruf.hasBeruf(tg) ? Beruf.getBeruf(tg).getName() : "Kein Beruf"));
+        StringBuilder houses = new StringBuilder();
+        for(House house : House.getHouses(Script.getNRPID(tg))) {
+            houses.append(house.getID()).append(house.getID() == House.getHouses(Script.getNRPID(tg)).get(House.getHouses(Script.getNRPID(tg)).size() - 1).getID() ? "" : ", ");
+        }
+        if(houses.toString().equalsIgnoreCase("")) houses = new StringBuilder("Keine Häuser");
+        p.sendMessage("§7Häuser §8× §e" + houses.toString());
 
 
         return false;

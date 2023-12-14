@@ -1,11 +1,9 @@
 package de.newrp.Player;
 
-import de.newrp.API.PayDay;
-import de.newrp.API.PaymentType;
-import de.newrp.API.Script;
-import de.newrp.API.Team;
+import de.newrp.API.*;
 import de.newrp.Administrator.Punish;
 import de.newrp.Berufe.Beruf;
+import de.newrp.House.House;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -36,6 +34,12 @@ public class StatsCommand implements CommandExecutor {
                 p.sendMessage("  §7» §e" + Script.dateFormat2.format(entry.getKey()) + " §8× §e" + entry.getValue());
             }
         }
+        StringBuilder houses = new StringBuilder();
+        for(House house : House.getHouses(Script.getNRPID(p))) {
+            houses.append(house.getID()).append(house.getID() == House.getHouses(Script.getNRPID(p)).get(House.getHouses(Script.getNRPID(p)).size() - 1).getID() ? "" : ", ");
+        }
+        if(houses.toString().equalsIgnoreCase("")) houses = new StringBuilder("Keine Häuser");
+        p.sendMessage("§7Häuser §8× §e" + houses.toString());
 
         return false;
     }

@@ -5,6 +5,7 @@ import com.google.common.base.Functions;
 import com.google.common.collect.ImmutableMap;
 import de.newrp.Administrator.BuildMode;
 import de.newrp.Administrator.SDuty;
+import de.newrp.Government.Wahlen;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -43,7 +44,7 @@ public class Utils implements Listener {
             "/changesetting", "/clear", "/clearspawnpoint", "/clone", "/connect", "/damage", "/data", "/datapack", "/daylock",
             "/dedicatedwsserver", "/defaultgamemode", "/deop", "/dialogue", "/difficulty", "/effect", "/enchant", "/event", "/execute",
             "/experience", "/fill", "/fillbiome", "/fog", "/forceload", "/function", "/gamemode", "/gamerule", "/gametest", "/give", "/help",
-            "/immutableworld", "/item", "/jfr", "/kill", "/list", "/locate", "/loot", "/me", "/mobevent", "/msg", "/music", "/op",
+            "/immutableworld", "/item", "/jfr", "/kill", "/list", "/locate", "/loot", "/mobevent", "/msg", "/music", "/op",
             "/ops", "/pardon", "/pardon-ip", "/particle", "/perf", "/permission", "/place", "/playanimation", "/playsound", "/publish",
             "/random", "/recipe", "/reload", "/replaceitem", "/return", "/ride", "/save", "/save-all", "/save-off", "/save-on",
             "/say", "/schedule", "/scoreboard", "/script", "/scriptevent", "/seed", "/setblock", "/setidletimeout", "/setmaxplayers",
@@ -57,7 +58,7 @@ public class Utils implements Listener {
     public static final HashMap<String, Long> cooldowns = new HashMap<>();
     public static final int WORLD_BORDER_MIN_X = 180;
     public static final int WORLD_BORDER_MAX_X = 1055;
-    public static final int WORLD_BORDER_MIN_Z = 585;
+    public static final int WORLD_BORDER_MIN_Z = 500;
     public static final int WORLD_BORDER_MAX_Z = 1300;
 
 
@@ -130,6 +131,7 @@ public class Utils implements Listener {
         Script.resetHealth(p);
         SDuty.updateScoreboard();
         p.setFlySpeed(0.1f);
+        if(Wahlen.wahlenActive()) p.sendMessage(Messages.INFO + "Die Wahlen sind aktiv! Du kannst mit §8/§6wahlen §rdeine Stimme abgeben.");
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)

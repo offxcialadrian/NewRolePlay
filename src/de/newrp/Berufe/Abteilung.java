@@ -30,7 +30,8 @@ public class Abteilung implements CommandExecutor, TabCompleter {
         INNENMINISTERIUM(3, GOVERNMENT, "Innenministerium"),
         AUSSENMINISTERIUM(4, GOVERNMENT, "Außenministerium"),
         BAUMINISTERIUM(5, GOVERNMENT, "Bauministerium"),
-        STAATSOBERHAUPT(6, GOVERNMENT, "Staatsoberhaupt");
+        STAATSOBERHAUPT(6, GOVERNMENT, "Staatsoberhaupt"),
+        NEWS_NONE(0, Beruf.Berufe.NEWS, "Keine_Abteilung");
 
         private final int id;
         private final Beruf.Berufe beruf;

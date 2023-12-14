@@ -41,6 +41,16 @@ public class Ablehnen implements CommandExecutor {
             Annehmen.offer.remove(p.getName() + ".shop.sell.seller");
             Annehmen.offer.remove(p.getName() + ".shop.sell.price");
             Annehmen.offer.remove(p.getName() + ".shop.sell.shop");
+
+        } else if(Annehmen.offer.containsKey(p.getName() + ".house.rent")) {
+            Player owner = Script.getPlayer(Annehmen.offer.get(p.getName() + ".house.rent.owner"));
+            if (owner != null) {
+                owner.sendMessage(DENIED + Script.getName(p) + " hat es abgelehnt dein Haus zu mieten.");
+            }
+            p.sendMessage(DENIED + "Du hast es Abgelehnt das Haus zu mieten.");
+            Annehmen.offer.remove(p.getName() + ".house.rent");
+            Annehmen.offer.remove(p.getName() + ".house.rent.owner");
+            Annehmen.offer.remove(p.getName() + ".house.rent.price");
         } else {
             p.sendMessage(Messages.ERROR + "Du hast keine Anfrage.");
         }

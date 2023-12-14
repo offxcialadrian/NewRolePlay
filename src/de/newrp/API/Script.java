@@ -263,7 +263,7 @@ public class Script {
         if (skipPlayer) {
             for (Player all : Bukkit.getOnlinePlayers()) {
                 if (isNRPTeam(all)) {
-                    if (all != p || isInTestMode())
+                    if (all != p)
                         all.sendMessage(PREFIX + cc + getRank(p).getName(p) + " " + getName(p) + " " + msg);
                 }
             }
@@ -289,7 +289,7 @@ public class Script {
             for (Player all : Bukkit.getOnlinePlayers()) {
                 if (isNRPTeam(all)) {
                     if (getRank(p).getWeight() >= rank.getWeight()) {
-                        if (all != p || isInTestMode())
+                        if (all != p)
                             all.sendMessage(PREFIX + cc + getRank(p).getName(p) + " " + getName(p) + " " + msg);
                     }
                 }
@@ -547,6 +547,10 @@ public class Script {
     }
 
     public static void setInt(Player p, String dbName, String s, int value) {
+        executeAsyncUpdate("UPDATE " + dbName + " SET " + s + "=" + value + " WHERE nrp_id=" + getNRPID(p));
+    }
+
+    public static void setInt(OfflinePlayer p, String dbName, String s, int value) {
         executeAsyncUpdate("UPDATE " + dbName + " SET " + s + "=" + value + " WHERE nrp_id=" + getNRPID(p));
     }
 
@@ -865,6 +869,44 @@ public class Script {
         if (loc1 == null || loc2 == null) return false;
         maxDistance = maxDistance * maxDistance;
         return loc1.distanceSquared(loc2) <= maxDistance;
+    }
+
+    public static boolean isInRegion(Player p, Location loc1, Location loc2) {
+        return isInRegion(p.getLocation(), loc1, loc2);
+    }
+
+    public static boolean isInRegion(Location loc, Location loc1, Location loc2) {
+        if (loc1 == null || loc2 == null) {
+            return false;
+        }
+        int x1 = Math.min(loc1.getBlockX(), loc2.getBlockX());
+        int y1 = Math.min(loc1.getBlockY(), loc2.getBlockY());
+        int z1 = Math.min(loc1.getBlockZ(), loc2.getBlockZ());
+        int x2 = Math.max(loc1.getBlockX(), loc2.getBlockX());
+        int y2 = Math.max(loc1.getBlockY(), loc2.getBlockY());
+        int z2 = Math.max(loc1.getBlockZ(), loc2.getBlockZ());
+        int px = loc.getBlockX();
+        int py = loc.getBlockY();
+        int pz = loc.getBlockZ();
+        if (loc1.getWorld() == loc.getWorld()) {
+            if ((px >= x1) && (px <= x2)) {
+                if ((py >= y1) && (py <= y2)) {
+                    return (pz >= z1) && (pz <= z2);
+                }
+            }
+        }
+        return false;
+    }
+
+    public static int manipulateInt(int i) {
+        if(i == 0) return 0;
+        int climbingorfalling = Script.getRandom(1, 100);
+        if (climbingorfalling <= 50) {
+            i += (int) Script.getPercent(Script.getRandom(1, 20), i);
+        } else {
+            i -= (int) Script.getPercent(Script.getRandom(1, 20), i);
+        }
+        return i;
     }
 
     public static boolean isInRange(Location loc1, Location loc2, double maxDistance) {

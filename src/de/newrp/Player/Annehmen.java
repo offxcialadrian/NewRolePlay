@@ -4,6 +4,7 @@ import de.newrp.API.*;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Government.Stadtkasse;
 import de.newrp.Government.Steuern;
+import de.newrp.House.House;
 import de.newrp.Shop.Shops;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -113,6 +114,57 @@ public class Annehmen implements CommandExecutor {
             offer.remove(p.getName() + ".shop.sell.seller");
             offer.remove(p.getName() + ".shop.sell.price");
             offer.remove(p.getName() + ".shop.sell.shop");
+
+        } else if(offer.containsKey(p.getName() + ".house.rent")) {
+            Player owner = Script.getPlayer(offer.get(p.getName() + ".house.rent.owner"));
+            int price = Integer.parseInt(offer.get(p.getName() + ".house.rent.price"));
+            int houseID = Integer.parseInt(offer.get(p.getName() + ".house.rent"));
+
+            House house = House.getHouseByID(houseID);
+
+            if(owner == null) {
+                p.sendMessage(Messages.ERROR + "Der Besitzer ist nicht mehr online.");
+                return true;
+            }
+
+            if(Script.getMoney(p, PaymentType.BANK) < price) {
+                p.sendMessage(Messages.ERROR + "Du hast nicht genug Geld auf deinem Bankkonto.");
+                return true;
+            }
+
+            if(house == null) {
+                p.sendMessage(Messages.ERROR + "Das Haus existiert nicht mehr.");
+                return true;
+            }
+
+            if(house.getOwner() != Script.getNRPID(owner)) {
+                p.sendMessage(Messages.ERROR + "Der Besitzer ist nicht mehr der Besitzer des Hauses.");
+                return true;
+            }
+
+            if(house.getOwner() == Script.getNRPID(p)) {
+                p.sendMessage(Messages.ERROR + "Du bist bereits der Besitzer des Hauses.");
+                return true;
+            }
+
+            if(house.livesInHouse(p)) {
+                p.sendMessage(Messages.ERROR + "Du wohnst bereits in diesem Haus.");
+                return true;
+            }
+
+            if(house.getFreeSlots() == 0) {
+                p.sendMessage(Messages.ERROR + "Das Haus ist voll.");
+                return true;
+            }
+
+            house.addMieter(new House.Mieter(p.getName(), Script.getNRPID(p), price, 0), false);
+            p.sendMessage(ACCEPTED + "Du hast das Haus erfolgreich gemietet.");
+            owner.sendMessage(PREFIX + Script.getName(p) + " hat dein Haus " + house.getID() + " gemietet.");
+            Log.HIGH.write(p.getName() + " hat das Haus " + house.getID() + " gemietet.");
+
+            offer.remove(p.getName() + ".house.rent");
+            offer.remove(p.getName() + ".house.rent.owner");
+            offer.remove(p.getName() + ".house.rent.price");
         } else {
             p.sendMessage(Messages.ERROR + "Dir wird nichts angeboten.");
         }

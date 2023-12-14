@@ -1,9 +1,7 @@
 package de.newrp.Player;
 
-import de.newrp.API.Messages;
-import de.newrp.API.Navi;
-import de.newrp.API.Route;
-import de.newrp.API.Script;
+import de.newrp.API.*;
+import de.newrp.House.House;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -42,14 +40,42 @@ public class NaviCommand implements CommandExecutor, TabCompleter {
         }
 
         String arguments = String.join(" ", args);
-        if (arguments.toLowerCase().contains("/")) {
+        if (arguments.toLowerCase().contains("haus:") || arguments.toLowerCase().contains("house:") || arguments.toLowerCase().contains("wohnung:")) {
+            if (arguments.split(":").length >= 2) {
+                String s = arguments.split(":")[1];
+                if (!Script.isInt(s)) {
+                    p.sendMessage(Messages.ERROR + "Hausnummer wurde nicht gefunden.");
+                    return true;
+                }
+
+                int index = Integer.parseInt(s);
+                House haus = House.getHouseByID(index);
+
+                if (haus == null) {
+                    p.sendMessage(Messages.ERROR + "Hausnummer wurde nicht gefunden.");
+                    return true;
+                }
+
+                Location sign = haus.getSignLocation();
+
+                if (sign == null) {
+                    p.sendMessage(Messages.ERROR + "Hausnummer wurde nicht gefunden.");
+                    return true;
+                }
+
+                new Route(p.getName(), Script.getNRPID(p), p.getLocation(), sign).start();
+                p.sendMessage(Navi.PREFIX + "Dir wird nun die Route zum Haus §6§l" + index + "§r§6 angezeigt.");
+            } else {
+                p.sendMessage(Messages.ERROR + "Hausnummer wurde nicht gefunden.");
+            }
+        } else if (arguments.toLowerCase().contains("/")) {
             String[] input = arguments.split("/");
             if (input.length == 3) {
                 if (Script.isInt(input[0]) && Script.isInt(input[1]) && Script.isInt(input[2])) {
                     int x = Integer.parseInt(input[0]);
                     int y = Integer.parseInt(input[1]);
                     int z = Integer.parseInt(input[2]);
-
+                    p.sendMessage(Navi.PREFIX + "Dir wird nun die Route zu den Koordinaten §6§l" + x + "/" + y + "/" + z + "§r§6 angezeigt.");
                     new Route(p.getName(), Script.getNRPID(p), p.getLocation(), new Location(p.getWorld(), x, y, z)).start();
                 } else {
                     p.sendMessage(Messages.ERROR + "Ungültige Koordinate.");

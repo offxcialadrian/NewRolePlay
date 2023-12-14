@@ -13,7 +13,8 @@ public class AsyncHour extends BukkitRunnable {
     public void run() {
         Weather.updateWeather();
         for(Shops shop : Shops.values()) {
-            if(shop.getKasse() >= shop.getRunningCost() && shop.getOwner() > 0 && shop.getKasse() >= shop.getRent()) {
+            int totalcost = shop.getRunningCost() + shop.getRent();
+            if(shop.getKasse() >= totalcost) {
                 shop.removeKasse(shop.getRunningCost());
                 shop.removeKasse(shop.getRent());
                 Stadtkasse.addStadtkasse(shop.getRent());

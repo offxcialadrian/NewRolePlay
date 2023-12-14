@@ -153,6 +153,7 @@ commands:
     description: check a player
   wahlen:
     description: vote for somebody
+    aliases: [ wahl]
   regierung:
     description: view the regierung
   laufband:
@@ -183,3 +184,16 @@ commands:
   bank:
     description: interact with the atm
     aliases: [ atm, geldautomat ]
+  registerhouse:
+    description: register a house
+  rent:
+    description: vermiete ein haus
+    aliases: [ vermieten ]
+  berufskasse:
+    description: view the berufskasse
+    aliases: [ berufskassen, berufkasse ]
+  member:
+    description: view the members of your beruf
+    aliases: [ members, memberinfo ]
+  addberufsdoor:
+    description: add a door to a beruf

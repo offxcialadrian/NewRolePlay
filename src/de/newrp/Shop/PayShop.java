@@ -36,7 +36,6 @@ public class PayShop implements Listener {
             return;
         }
 
-
         p.getInventory().addItem(i);
 
         if(type == PaymentType.BANK) {
@@ -51,7 +50,8 @@ public class PayShop implements Listener {
         int add = price - (int) Script.getPercent(mwst, price);
         s.addKasse(add);
         s.removeKasse(si.getBuyPrice());
-        BuyClick.reopen(p);
+        if(si == ShopItem.LOTTOSCHEIN) BuyClick.sendMessage(p, "Die Lottoziehung ist jeden Mittwoch und Sonntag um 18 Uhr!");
+        if(si.isReopen()) BuyClick.reopen(p);
     }
 
     @EventHandler

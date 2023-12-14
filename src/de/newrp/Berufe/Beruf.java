@@ -5,10 +5,12 @@ import de.newrp.API.Script;
 import de.newrp.Government.Arbeitslosengeld;
 import de.newrp.main;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,16 +19,19 @@ import java.util.UUID;
 public class Beruf {
 
     public enum Berufe {
-        GOVERNMENT(1, "Regierung", 4);
+        GOVERNMENT(1, "Regierung", false),
+        NEWS(2, "News", true),
+        POLICE(3, "Polizei", false),
+        RETTUNGSDIENST(4, "Rettungsdienst", false);
 
         int id;
         private final String name;
-        int slots;
+        boolean kasse;
 
-        Berufe(int id, String name, int slots) {
+        Berufe(int id, String name, boolean kasse) {
             this.id = id;
             this.name = name;
-            this.slots = slots;
+            this.kasse = kasse;
         }
 
         public int getID() {
@@ -55,9 +60,52 @@ public class Beruf {
             return null;
         }
 
-        public int getSlots() {
-            return slots;
+        public boolean hasKasse() {
+            return kasse;
         }
+
+        public ArrayList<Location> getDoors() {
+            ArrayList<Location> locs = new ArrayList<>();
+            try (Statement stmt = main.getConnection().createStatement();
+                 ResultSet rs = stmt.executeQuery("SELECT berufID, x, y, z FROM berufsdoor WHERE berufID=" + this.id)) {
+                while (rs.next()) {
+                    int x = rs.getInt("x");
+                    int y = rs.getInt("y");
+                    int z = rs.getInt("z");
+                    Location loc = new Location(Script.WORLD, x, y, z);
+                    if (!locs.contains(loc)) locs.add(loc);
+                }
+                return locs;
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return locs;
+        }
+
+        public int getKasse() {
+            try (Statement stmt = main.getConnection().createStatement();
+                 ResultSet rs = stmt.executeQuery("SELECT * FROM berufe_kasse WHERE berufID='" + this.id + "'")) {
+                if (rs.next()) {
+                    return rs.getInt("kasse");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return 0;
+        }
+
+        public void setKasse(int amount) {
+            Script.executeUpdate("UPDATE berufe_kasse SET kasse='" + amount + "' WHERE berufID='" + this.id + "'");
+        }
+
+        public void addKasse(int amount) {
+            Script.executeUpdate("UPDATE berufe_kasse SET kasse='" + (getKasse() + amount) + "' WHERE berufID='" + this.id + "'");
+        }
+
+        public void removeKasse(int amount) {
+            Script.executeUpdate("UPDATE berufe_kasse SET kasse='" + (getKasse() - amount) + "' WHERE berufID='" + this.id + "'");
+        }
+
 
         public boolean isLeader(Player p) {
             return Script.getInt(p, "berufe", "leader") == 1;

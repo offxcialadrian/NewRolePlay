@@ -5,10 +5,12 @@ import de.newrp.Berufe.Beruf;
 import de.newrp.Government.Arbeitslosengeld;
 import de.newrp.Government.Stadtkasse;
 import de.newrp.Government.Steuern;
+import de.newrp.House.House;
 import de.newrp.Player.AFK;
 import de.newrp.Player.Banken;
 import de.newrp.Shop.Shops;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -59,7 +61,21 @@ public class PayDay extends BukkitRunnable {
                 int salary = Beruf.getSalary(p);
                 p.sendMessage("§8" + Messages.ARROW + " §7Lohn/Gehalt: §a+" + salary + "€");
                 payday += salary;
-                if (Beruf.getBeruf(p) == Beruf.Berufe.GOVERNMENT) Stadtkasse.removeStadtkasse(salary);
+                if (!Beruf.getBeruf(p).hasKasse()) Stadtkasse.removeStadtkasse(salary);
+                if(Beruf.getBeruf(p).hasKasse()) {
+                    if(Beruf.getBeruf(p).getKasse() >= salary) {
+                        Beruf.getBeruf(p).removeKasse(salary);
+                    }else {
+                        Beruf.getBeruf(p).sendMessage("§8[§eBerufskasse§8] §eDie " + Beruf.getBeruf(p).getName() + " ist Insolvent. Alle Gehälter werden auf 0€ gesetzt");
+                        Beruf.Berufe.GOVERNMENT.sendMessage("§8[§eBerufskasse§8] §eDie " + Beruf.getBeruf(p).getName() + " ist Insolvent. Alle Gehälter werden auf 0€ gesetzt");
+                        for(OfflinePlayer members : Beruf.getBeruf(p).getAllMembers()) {
+                            Script.setInt(members, "berufe", "salary", 0);
+                            if(!members.isOnline()) {
+                                Script.addOfflineMessage(members, "§8[§eBerufskasse§8] §eDie " + Beruf.getBeruf(p).getName() + " ist Insolvent. Alle Gehälter wurden auf 0€ gesetzt");
+                            }
+                        }
+                    }
+                }
 
                 p.sendMessage("§8" + Messages.ARROW + " §7Lohnsteuer (" + lohnsteuer + "%): §c-" + (int) Script.getPercent(lohnsteuer, salary) + "€");
                 Stadtkasse.addStadtkasse((int) Script.getPercent(lohnsteuer, salary));
@@ -69,6 +85,7 @@ public class PayDay extends BukkitRunnable {
                 p.sendMessage("§8" + Messages.ARROW + " §7Arbeitslosenversicherung (" + arbeitslosenversicherung + "%): §c-" + (int) Script.getPercent(arbeitslosenversicherung, salary) + "€");
                 Stadtkasse.addStadtkasse((int) Script.getPercent(arbeitslosenversicherung, salary));
                 payday -= (int) Script.getPercent(arbeitslosenversicherung, salary);
+
 
             } else if (Arbeitslosengeld.hasArbeitslosengeld(p)) {
                 p.sendMessage("§8" + Messages.ARROW + " §7Arbeitslosengeld: §a+" + Stadtkasse.getArbeitslosengeld() + "€");
@@ -90,6 +107,21 @@ public class PayDay extends BukkitRunnable {
                 payday -= tax;
             }
 
+            for(House house : House.getHouses(Script.getNRPID(p))) {
+                if(house.getOwner() == Script.getNRPID(p)) continue;
+                p.sendMessage("§8" + Messages.ARROW + " §7Miete für Haus " + house.getID() + ": §c-" + house.getMiete(Script.getNRPID(p)) + "€");
+                payday -= house.getMiete(Script.getNRPID(p));
+                house.addKasse(house.getMiete(Script.getNRPID(p)));
+            }
+
+            for(House house : House.getHouses(Script.getNRPID(p))) {
+                if(house.getOwner() != Script.getNRPID(p)) continue;
+                int grundsteuer = (int) Steuern.Steuer.GRUNDSTEUER.getPercentage();
+                p.sendMessage("§8" + Messages.ARROW + " §7Grundsteuer für Haus " + house.getID() + ": §c-" + grundsteuer + "€");
+                payday -= grundsteuer;
+                Stadtkasse.addStadtkasse(grundsteuer);
+            }
+
             if (payday > 0) {
                 p.sendMessage("§8" + Messages.ARROW + " §7Einkommenssteuer (" + einkommenssteuer + "%): §c-" + (int) Script.getPercent(einkommenssteuer, payday) + "€");
                 Stadtkasse.addStadtkasse((int) Script.getPercent(einkommenssteuer, payday));
@@ -100,6 +132,7 @@ public class PayDay extends BukkitRunnable {
             p.sendMessage("§8" + Messages.ARROW + " §7Bilanz: " + (payday >= 0 ? "§a+" : "§c") + payday + "€");
             p.sendMessage("§8" + Messages.ARROW + " §7Neuer Kontostand: " + (Script.getMoney(p, PaymentType.BANK) + payday >= 0 ? "§a" : "§c") + (Script.getMoney(p, PaymentType.BANK) + payday) + "€");
             p.sendMessage("§9================");
+            Script.addEXP(p, Script.getRandom(1, 50));
             if (payday >= 0) Script.addMoney(p, PaymentType.BANK, payday);
             else Script.removeMoney(p, PaymentType.BANK, payday);
             setPayDayTime(p, 0);

@@ -64,7 +64,8 @@ public class Lotto implements CommandExecutor {
 
     public static void start() {
         int i = Script.getRandom(1, 999);
-        Bukkit.broadcastMessage(NEWS + "Guten Abend! Herzlich Willkommen zur Lottoziehung.");
+        String day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY ? "Sonntagabend" : "Mittwochabend";
+        Bukkit.broadcastMessage(NEWS + "Guten Abend! Herzlich Willkommen zur Lottoziehung am "+ day + "!");
         Bukkit.getServer().getScheduler().runTaskLater(main.getInstance(), () -> Bukkit.broadcastMessage(NEWS + "Der aktuelle Jackpot beträgt §e§l" + getJackpot() + "§r§6€..."), 20 * 20L);
         Bukkit.getServer().getScheduler().runTaskLater(main.getInstance(), () -> Bukkit.broadcastMessage(NEWS + "Es wird nun eine Nummer gezogen..."), 33 * 20L);
         Bukkit.getServer().getScheduler().runTaskLater(main.getInstance(), () -> Bukkit.broadcastMessage(NEWS + "Und es ist die Zahl Nummer... §e§l" + i + "§r§6!"), 40 * 20L);
