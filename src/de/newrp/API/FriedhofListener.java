@@ -1,5 +1,6 @@
 package de.newrp.API;
 
+import de.newrp.Administrator.Notications;
 import de.newrp.main;
 import org.bukkit.*;
 import org.bukkit.entity.EntityType;
@@ -66,6 +67,7 @@ public class FriedhofListener implements Listener {
         if (p.getItemOnCursor() != null) p.getItemOnCursor().setType(Material.AIR);
 
         Player killer = p.getKiller();
+        Notications.sendMessage(Notications.NotificationType.DEAD, Script.getName(p) + " ist gestorben. " + (killer!=null ? Messages.ARROW + " " + Script.getName(killer):""));
         Friedhof friedhof = new Friedhof(Script.getNRPID(p), p.getName(), deathLocation, System.currentTimeMillis(), deathtime, item, cash, inventoryContent);
         Friedhof.setDead(p, friedhof);
     }

@@ -160,6 +160,7 @@ public class main extends JavaPlugin {
         getCommand("installaddon").setExecutor(new InstallAddon());
         getCommand("revive").setExecutor(new ReviveCommand());
         getCommand("friedhof").setExecutor(new FriedhofInfo());
+        getCommand("debugstick").setExecutor(new GetDebugStick());
 
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new SDuty(), this);
@@ -205,8 +206,8 @@ public class main extends JavaPlugin {
         ATM.restore();
         House.loadHouses();
 
-        Bukkit.getConsoleSender().sendMessage("§cNRP §8× §cloading complete..");
-        Bukkit.getConsoleSender().sendMessage("§cNRP §8× §cstarting complete..");
+        Bukkit.getConsoleSender().sendMessage("§cNRP §8× §aloading complete..");
+        Bukkit.getConsoleSender().sendMessage("§cNRP §8× §astarting complete..");
         Bukkit.getConsoleSender().sendMessage("§cNRP §8× §aViel Erfolg heute..");
     }
 

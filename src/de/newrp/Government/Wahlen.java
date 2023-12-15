@@ -21,6 +21,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -177,21 +178,34 @@ public class Wahlen implements CommandExecutor, Listener {
 
     public static void getWahlResult() {
         if (getWinner() == -1 && !alreadyExtended) {
-            Bukkit.broadcastMessage(PREFIX + "Es gibt keinen Gewinner Die Wahlen werden bis 20 Uhr verlängert.");
+            Beruf.Berufe.NEWS.sendMessage(PREFIX + "Es gibt keinen Gewinner. Die Wahlen werden bis 20 Uhr verlängert.");
             return;
         }
 
         if (getWinner() == -1 && alreadyExtended) {
-            Bukkit.broadcastMessage(PREFIX + "Es konnte immer noch kein Gewinner ermittelt werden. Die Legislaturperiode der aktuellen Regierung wird um 1 Quartal verlängert.");
+            Beruf.Berufe.NEWS.sendMessage(PREFIX + "Es konnte immer noch kein Gewinner ermittelt werden. Die Legislaturperiode der aktuellen Regierung wird um 1 Quartal verlängert.");
             return;
         }
 
         if(getWinner() == -1 && getWahlApplications()==0) {
-            Bukkit.broadcastMessage(PREFIX + "Es gibt keine Kandidaten. Die Legislaturperiode der aktuellen Regierung wird um 1 Quartal verlängert.");
+            Beruf.Berufe.NEWS.sendMessage(PREFIX + "Es gibt keine Kandidaten. Die Legislaturperiode der aktuellen Regierung wird um 1 Quartal verlängert.");
         }
 
-        Debug.debug("§6Wahlen: " + Script.getPlayer(getWinner()).getName() + " hat die Wahlen gewonnen.");
-        Debug.debug("§6Die nächsten Wahlen finden am " + getNextElection() + " statt.");
+        Beruf.Berufe.NEWS.sendMessage("§6Wahlen: " + Script.getPlayer(getWinner()).getName() + " hat die Wahlen gewonnen.");
+        Beruf.Berufe.NEWS.sendMessage("§6Die nächsten Wahlen finden am " + getNextElection() + " statt.");
+        new BukkitRunnable() {
+
+            @Override
+            public void run() {
+                OfflinePlayer winner = Script.getOfflinePlayer(getWinner());
+                if(Beruf.getBeruf(winner) != Beruf.Berufe.GOVERNMENT) Beruf.Berufe.GOVERNMENT.addMember(winner);
+                Beruf.setLeader(winner);
+                if(Script.getPlayer(winner.getName()) != null)
+                    Script.getPlayer(winner.getName()).sendMessage(Messages.INFO + "Herzlichen Glückwunsch! Du hast die Wahlen gewonnen! Du hast hiermit deine Rechte erhalten. Solltest du Hilfe benötigen, steht das Server-Team dir jederzeite zur Verfügung.");
+
+
+            }
+        }.runTaskLater(main.getInstance(), 20L*60*10);
     }
 
     public static String getNextElection() {

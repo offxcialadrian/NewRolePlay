@@ -163,6 +163,10 @@ public class Arbeitslosengeld implements CommandExecutor {
         return Script.getLong(p, "arbeitslosengeld", "until") > System.currentTimeMillis();
     }
 
+    public static boolean hasArbeitslosengeld(OfflinePlayer p) {
+        return Script.getLong(p, "arbeitslosengeld", "until") > System.currentTimeMillis();
+    }
+
     public static boolean hasApplied(Player p) {
         return Script.getLong(p, "arbeitslosengeld", "date") > 0;
     }
@@ -253,8 +257,17 @@ public class Arbeitslosengeld implements CommandExecutor {
     }
 
     public static void deleteArbeitslosengeld(Player p) {
-        Script.executeAsyncUpdate("DELETE FROM arbeitslosengeld WHERE nrp_id='" + Script.getNRPID(p) + "'");
-        Beruf.Berufe.GOVERNMENT.sendMessage(PREFIX + Script.getName(p) + "s Arbeitslosengeld wurde gekündigt.");
+        if(hasArbeitslosengeld(p)) {
+            Script.executeAsyncUpdate("DELETE FROM arbeitslosengeld WHERE nrp_id='" + Script.getNRPID(p) + "'");
+            Beruf.Berufe.GOVERNMENT.sendMessage(PREFIX + Script.getName(p) + "s Arbeitslosengeld wurde gekündigt.");
+        }
+    }
+
+    public static void deleteArbeitslosengeld(OfflinePlayer p) {
+        if (hasArbeitslosengeld(p)) {
+            Script.executeAsyncUpdate("DELETE FROM arbeitslosengeld WHERE nrp_id='" + Script.getNRPID(p) + "'");
+            Beruf.Berufe.GOVERNMENT.sendMessage(PREFIX + p.getName() + "s Arbeitslosengeld wurde gekündigt.");
+        }
     }
 
 

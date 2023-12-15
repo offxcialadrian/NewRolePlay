@@ -28,15 +28,15 @@ public class BuildMode implements CommandExecutor, Listener {
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
         Player p = (Player) cs;
 
-        /*if (!Script.hasRank(p, Rank.ADMINISTRATOR, true)) {
+        if (!Script.hasRank(p, Rank.ADMINISTRATOR, true) && (Team.getTeam(p) != Team.Teams.BAU && Team.isTeamLeader(p))) {
             p.sendMessage(Messages.NO_PERMISSION);
             return true;
-        }*/
+        }
 
-        /*if (!SDuty.isSDuty(p)) {
+        if (!SDuty.isSDuty(p) && Team.getTeam(p) != Team.Teams.BAU) {
             p.sendMessage(Messages.NO_SDUTY);
             return true;
-        }*/
+        }
 
         if (args.length > 1) {
             p.sendMessage(Messages.ERROR + "/buildmode {Name}");

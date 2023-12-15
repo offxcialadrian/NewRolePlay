@@ -1,6 +1,7 @@
 package de.newrp.Shop;
 
 import de.newrp.API.*;
+import de.newrp.Administrator.SDuty;
 import de.newrp.Government.Stadtkasse;
 import de.newrp.Government.Steuern;
 import de.newrp.House.House;
@@ -65,6 +66,7 @@ public class PayShop implements Listener {
         }
 
         if(si.isReopen()) BuyClick.reopen(p);
+        SDuty.updateScoreboard();
     }
 
     @EventHandler

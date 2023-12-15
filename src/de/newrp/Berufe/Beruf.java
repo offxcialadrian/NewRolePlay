@@ -170,6 +170,15 @@ public class Beruf {
             Arbeitslosengeld.deleteArbeitslosengeld(p);
         }
 
+        public void addMember(OfflinePlayer p) {
+            Script.executeUpdate("INSERT INTO berufe (nrp_id, berufID, salary, abteilung, leader) VALUES ('" + Script.getNRPID(p) + "', '" + getID() + "', '0', '0', '0')");
+            for (Player members : getPlayersFromBeruf(this)) {
+                members.sendMessage("§8[§e" + getName() + "§8] §e" + p.getName() + " §eist dem Beruf beigetreten.");
+            }
+            sendLeaderMessage("§8[§e" + getName() + "§8] §e" + p.getName() + " ist nun Teil des Berufs.");
+            Arbeitslosengeld.deleteArbeitslosengeld(p);
+        }
+
         public void removeMember(Player p, Player leader) {
             Script.executeUpdate("DELETE FROM berufe WHERE nrp_id = '" + Script.getNRPID(p) + "'");
             for (Player members : getPlayersFromBeruf(this)) {
@@ -218,6 +227,10 @@ public class Beruf {
 
     public static int getSalary(Player p) {
         return Script.getInt(p, "berufe", "salary");
+    }
+
+    public static void setLeader(OfflinePlayer p) {
+        Script.setInt(p, "berufe", "leader", 1);
     }
 
     public static Abteilung.Abteilungen getAbteilung(Player p) {

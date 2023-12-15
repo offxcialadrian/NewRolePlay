@@ -525,6 +525,18 @@ public class Script {
         return 0;
     }
 
+    public static long getLong(OfflinePlayer p, String dbName, String s) {
+        try (Statement stmt = main.getConnection().createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT * FROM " + dbName + " WHERE nrp_id='" + getNRPID(p) + "'")) {
+            if (rs.next()) {
+                return rs.getLong(s);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
     public static int getInt(Player p, String dbName, int s) {
         try (Statement stmt = main.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM " + dbName + " WHERE nrp_id='" + getNRPID(p) + "'")) {

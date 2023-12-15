@@ -205,3 +205,6 @@ commands:
     aliases: [ rev ]
   friedhof:
     description: view the friedhof
+  debugstick:
+    description: get a debug stick
+    aliases: [ getdebugstick ]

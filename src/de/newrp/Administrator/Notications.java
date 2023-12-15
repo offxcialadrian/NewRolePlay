@@ -29,7 +29,8 @@ public class Notications implements CommandExecutor, Listener {
         LEAVE(2, "leave", "Leave-Notification"),
         PAYMENT(3, "payment", "Payment-Notification"),
         COMMAND(4, "command", "Command-Spy"),
-        CHAT(5, "chat", "Chat-Spy");
+        CHAT(5, "chat", "Chat-Spy"),
+        DEAD(6, "dead", "Todes-Notification");
 
         private final int id;
         private final String dbname;
