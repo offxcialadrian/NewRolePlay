@@ -14,7 +14,8 @@ import java.util.Map;
 public enum Shops {
 
     SH_CAFE(0, "Cafe", "Café Stadthalle", 25000, new Location(Script.WORLD, 626, 68, 1030), 200, 600, true, ShopType.CAFE),
-    TEST(1, "Café am X3", "Café am X3", 50000, new Location(Script.WORLD, 754, 72, 924), 200, 600, true, ShopType.CAFE);
+    TEST(1, "Café am X3", "Café am X3", 50000, new Location(Script.WORLD, 754, 72, 924), 200, 600, true, ShopType.CAFE),
+    IKEA(2, "AEKI", "AEKI", 50000, new Location(Script.WORLD, 673, 68, 898), 200, 600, true, ShopType.HAUSADDON);
 
     private final int id;
     private final String name;
@@ -93,7 +94,6 @@ public enum Shops {
 
     public void addKasse(int i) {
         int k = (getKasse() + i);
-        if (k > 25000) k = 25000;
         Script.executeUpdate("UPDATE shops SET kasse=" + k + " WHERE shopID=" + this.id);
     }
 

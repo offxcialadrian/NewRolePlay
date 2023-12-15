@@ -239,9 +239,7 @@ public class Shop implements CommandExecutor, Listener {
             Inventory inv = Bukkit.createInventory(null, 9*3, "§7Sortiment " + shop.getPublicName());
             for(ShopItem si : ShopItem.values()) {
                 ItemStack is = si.getItemStack();
-                for(ShopType type : si.getShopTypes()) {
-                    if(type != shop.getType()) continue;
-                }
+                if(!containsType(si, shop)) continue;
                 if(shop.getItems().get(si.getID()) == null) {
                     is = Script.setNameAndLore(is, si.getName(), "§8» §6Lizensierungsgebühr: §6" + si.getLicensePrice() + "€", "§8» §6Einkaufspreis: §6" + si.getBuyPrice() + "€");
                 } else {
@@ -253,7 +251,7 @@ public class Shop implements CommandExecutor, Listener {
             return true;
         }
 
-        p.sendMessage(Messages.ERROR + "Verwendung: /shop [kasse|sell|info|setprice|upgradelager|sortiment]");
+        p.sendMessage(Messages.ERROR + "Verwendung: /shop [kasse/sell/info/setprice/upgradelager/sortiment]");
 
         return false;
     }
@@ -353,6 +351,14 @@ public class Shop implements CommandExecutor, Listener {
             p.closeInventory();
             return;
         }
+    }
+
+    private static boolean containsType(ShopItem si, Shops shop) {
+        for(ShopType type : si.getShopTypes()) {
+            if(type != shop.getType()) continue;
+            return true;
+        }
+        return false;
     }
 
 

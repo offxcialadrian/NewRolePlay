@@ -28,15 +28,15 @@ public class BuildMode implements CommandExecutor, Listener {
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
         Player p = (Player) cs;
 
-        if (Team.getTeam(p) == Team.Teams.BAU && Team.isTeamLeader(p) || !Script.hasRank(p, Rank.ADMINISTRATOR, true)) {
+        /*if (!Script.hasRank(p, Rank.ADMINISTRATOR, true)) {
             p.sendMessage(Messages.NO_PERMISSION);
             return true;
-        }
+        }*/
 
-        if (!SDuty.isSDuty(p)) {
+        /*if (!SDuty.isSDuty(p)) {
             p.sendMessage(Messages.NO_SDUTY);
             return true;
-        }
+        }*/
 
         if (args.length > 1) {
             p.sendMessage(Messages.ERROR + "/buildmode {Name}");
@@ -124,7 +124,7 @@ public class BuildMode implements CommandExecutor, Listener {
         for (Player online : Bukkit.getOnlinePlayers()) {
             online.showPlayer(main.getInstance(), p);
         }
-        if (SDuty.isSDuty(p) && !Script.hasRank(p, Rank.ADMINISTRATOR, false)) {
+        if (SDuty.isSDuty(p) && Script.hasRank(p, Rank.ADMINISTRATOR, false)) {
             p.setAllowFlight(true);
             p.setFlying(true);
         }

@@ -22,6 +22,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionAttachment;
+import org.bukkit.potion.PotionEffect;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
@@ -344,6 +345,17 @@ public class Script {
             e.printStackTrace();
             Debug.debug("SQLException -> " + sql);
             System.out.println("SQLException -> " + sql);
+        }
+    }
+
+    public static Location setDirection(Location loc, Direction direction) {
+        loc.setYaw(direction.getYaw());
+        return loc;
+    }
+
+    public static void resetPotionEffects(Player p) {
+        for (PotionEffect effect : p.getActivePotionEffects()) {
+            p.removePotionEffect(effect.getType());
         }
     }
 

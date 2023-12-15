@@ -1,15 +1,16 @@
 package de.newrp.Shop;
 
-import de.newrp.API.Cashflow;
-import de.newrp.API.Debug;
-import de.newrp.API.PaymentType;
-import de.newrp.API.Script;
+import de.newrp.API.*;
 import de.newrp.Government.Stadtkasse;
 import de.newrp.Government.Steuern;
+import de.newrp.House.House;
+import de.newrp.House.HouseAddon;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -20,6 +21,7 @@ public class PayShop implements Listener {
 
     public static HashMap<Player, ShopItem> items = new HashMap<>();
     public static HashMap<Player, Shops> shops = new HashMap<>();
+    public static HashMap<String, HouseAddon> houseaddon = new HashMap<>();
 
 
     public static void pay(Player p, PaymentType type, ShopItem si, Shops s) {
@@ -36,7 +38,7 @@ public class PayShop implements Listener {
             return;
         }
 
-        p.getInventory().addItem(i);
+        if(si.addToInventory()) p.getInventory().addItem(i);
 
         if(type == PaymentType.BANK) {
             Cashflow.addEntry(p, -price, "Einkauf: " + si.getName());
@@ -50,7 +52,18 @@ public class PayShop implements Listener {
         int add = price - (int) Script.getPercent(mwst, price);
         s.addKasse(add);
         s.removeKasse(si.getBuyPrice());
-        if(si == ShopItem.LOTTOSCHEIN) BuyClick.sendMessage(p, "Die Lottoziehung ist jeden Mittwoch und Sonntag um 18 Uhr!");
+        Log.NORMAL.write(p, "hat " + si.getName() + " für " + price + "€ gekauft.");
+
+        switch (si) {
+            case LOTTOSCHEIN:
+                BuyClick.sendMessage(p, "Die Lottoziehung findet jeden Mittwoch und Sonntag um 18 Uhr statt.");
+                break;
+            case HAUSKASSE:
+                houseaddon.put(p.getName(), HouseAddon.HAUSKASSE);
+                p.sendMessage(Messages.INFO + "Gehe zu deinem Haus und nutze §8/§6installaddon§r um das Hauskassen-Addon zu installieren.");
+                break;
+        }
+
         if(si.isReopen()) BuyClick.reopen(p);
     }
 

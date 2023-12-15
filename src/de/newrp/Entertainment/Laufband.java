@@ -21,7 +21,8 @@ public class Laufband implements CommandExecutor, Listener {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
         Player p = (Player) cs;
-        ontrain.add(p);
+        p.sendMessage(Script.PREFIX + "Coming soon..");
+        //ontrain.add(p);
         return false;
     }
 

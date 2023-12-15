@@ -4,6 +4,7 @@ import com.google.common.base.Function;
 import com.google.common.base.Functions;
 import com.google.common.collect.ImmutableMap;
 import de.newrp.Administrator.BuildMode;
+import de.newrp.Administrator.Notications;
 import de.newrp.Administrator.SDuty;
 import de.newrp.Government.Wahlen;
 import org.bukkit.Bukkit;
@@ -132,6 +133,7 @@ public class Utils implements Listener {
         SDuty.updateScoreboard();
         p.setFlySpeed(0.1f);
         if(Wahlen.wahlenActive()) p.sendMessage(Messages.INFO + "Die Wahlen sind aktiv! Du kannst mit §8/§6wahlen §rdeine Stimme abgeben.");
+        Notications.sendMessage(Notications.NotificationType.LEAVE, "§e" + Script.getName(e.getPlayer()) + " §7hat den Server betreten.");
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
@@ -148,6 +150,9 @@ public class Utils implements Listener {
 
     @EventHandler
     public void FrameEntity(EntityDamageByEntityEvent e) {
+        if(e.getEntity() instanceof ArmorStand) {
+            if(!BuildMode.isInBuildMode((Player) e.getDamager())) e.setCancelled(true);
+        }
         if (e.getEntity() instanceof ItemFrame) {
             if (e.getDamager() instanceof Player) {
                 if (!BuildMode.isInBuildMode((Player) e.getDamager())) {
@@ -190,6 +195,11 @@ public class Utils implements Listener {
 
             if(e.getClickedBlock().getType() == Material.TNT && !Script.hasRank(e.getPlayer(), Rank.ADMINISTRATOR, false)) {
                 e.setCancelled(true);
+                return;
+            }
+
+            if(e.getClickedBlock().getType() == Material.CRAFTING_TABLE && BuildMode.isInBuildMode(e.getPlayer())) {
+                e.setCancelled(false);
                 return;
             }
 

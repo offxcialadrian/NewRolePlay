@@ -73,10 +73,10 @@ public class RentCommand implements CommandExecutor {
 
         p.sendMessage(PREFIX + "Du hast " + Script.getName(tg) + " einen Mietvertrag für das Haus " + houseID + " in Höhe von " + price + "€ angeboten.");
         tg.sendMessage(PREFIX + Script.getName(p) + " hat dir einen Mietvertrag für das Haus " + houseID + " in Höhe von " + price + "€ angeboten.");
-        Script.sendAcceptMessage(p);
-        Annehmen.offer.put(tg + ".house.rent", "" + houseID);
-        Annehmen.offer.put(tg + ".house.rent.price", "" + price);
-        Annehmen.offer.put(tg + ".house.rent.owner", p.getName());
+        Script.sendAcceptMessage(tg);
+        Annehmen.offer.put(tg.getName() + ".house.rent", "" + houseID);
+        Annehmen.offer.put(tg.getName() + ".house.rent.price", "" + price);
+        Annehmen.offer.put(tg.getName() + ".house.rent.owner", p.getName());
 
         return false;
     }

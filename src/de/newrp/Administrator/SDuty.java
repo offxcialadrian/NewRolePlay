@@ -207,6 +207,7 @@ public class SDuty implements CommandExecutor, Listener {
     @EventHandler
     public void foodChange(FoodLevelChangeEvent e) {
         if (e.getEntity() instanceof Player) {
+            if (e.getFoodLevel() > ((Player) e.getEntity()).getFoodLevel()) return;
             Player p = (Player) e.getEntity();
             if (isSDuty(p)) e.setCancelled(true);
         }

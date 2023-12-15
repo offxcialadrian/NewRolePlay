@@ -11,9 +11,10 @@ import java.sql.Statement;
 
 public enum ShopItem {
 
-    BROT(0, "§fBrot", new ItemStack(Material.BREAD), 16, 1, 20, 2, 2400, true, new ShopType[] {ShopType.CAFE}),
-    KAFFEE(1, "§fKaffee", new ItemStack(Material.POTION, 1, (short) 16421), 1, 1, 20, 2, 3900, true, new ShopType[] {ShopType.CAFE}),
-    LOTTOSCHEIN(2, "§7Lottoschein", new ItemStack(Material.PAPER), 1, 1, 20, 30, 1000, false, new ShopType[] {ShopType.CAFE});
+    BROT(0, "§fBrot", new ItemStack(Material.BREAD), 16, 1, 20, 2, 2400, true, true, new ShopType[] {ShopType.CAFE}),
+    KAFFEE(1, "§fKaffee", new ItemStack(Material.POTION, 1, (short) 16421), 1, 1, 20, 2, 3900, true, true, new ShopType[] {ShopType.CAFE}),
+    LOTTOSCHEIN(2, "§7Lottoschein", new ItemStack(Material.PAPER), 1, 1, 20, 30, 1000, false, true, new ShopType[] {ShopType.CAFE}),
+    HAUSKASSE(3, "§7Hauskasse", new ItemStack(Material.CHEST), 1, 1, 20, 12000, 34000, false, false, new ShopType[] {ShopType.HAUSADDON});
 
     private final int id;
     private final String name;
@@ -24,9 +25,10 @@ public enum ShopItem {
     private final int buyPrice;
     private final int licensePrice;
     private final boolean reopen;
+    private final boolean addtoinv;
     private ShopType[] types;
 
-    ShopItem(int id, String name, ItemStack is, int size, int min, int max, int buyPrice, int licensePrice, boolean reopen, ShopType[] types) {
+    ShopItem(int id, String name, ItemStack is, int size, int min, int max, int buyPrice, int licensePrice, boolean reopen, boolean addtoinv, ShopType[] types) {
         this.id = id;
         this.name = name;
         this.is = is;
@@ -36,6 +38,7 @@ public enum ShopItem {
         this.buyPrice = buyPrice;
         this.licensePrice = licensePrice;
         this.reopen = reopen;
+        this.addtoinv = addtoinv;
         this.types = types;
     }
 
@@ -113,6 +116,10 @@ public enum ShopItem {
 
     public int getBuyPrice() {
         return this.buyPrice;
+    }
+
+    public boolean addToInventory() {
+        return this.addtoinv;
     }
 
     public void setPrice(Shops b, int price) {

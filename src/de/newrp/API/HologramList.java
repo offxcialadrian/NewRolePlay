@@ -4,7 +4,8 @@ import org.bukkit.Location;
 
 public enum HologramList {
 
-    CAFE_SH(1, "§8/§6buy", new Location(Script.WORLD, 626, 67, 1030));
+    CAFE_SH(1, "§8/§6buy", new Location(Script.WORLD, 626, 67, 1030)),
+    BANKENCOMMAND(2, "§8/§6banken", new Location(Script.WORLD, 949, 77, 934));
 
     private final int id;
     private final String name;

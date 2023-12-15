@@ -57,6 +57,10 @@ public class CheckPlayerCommand implements CommandExecutor {
             p.sendMessage("§7Beruf §8× §e" + (Beruf.hasBeruf(offtg) ? Beruf.getBeruf(offtg).getName() : "Kein Beruf"));
             StringBuilder houses = new StringBuilder();
             for(House house : House.getHouses(Script.getNRPID(offtg))) {
+                if(House.getHouses(Script.getNRPID(offtg)).size() == 1) {
+                    houses.append("Haus " + house.getID());
+                    break;
+                }
                 houses.append(house.getID()).append(house.getID() == House.getHouses(Script.getNRPID(offtg)).get(House.getHouses(Script.getNRPID(offtg)).size() - 1).getID() ? "" : ", ");
             }
             if(houses.toString().equalsIgnoreCase("")) houses = new StringBuilder("Keine Häuser");
@@ -86,6 +90,10 @@ public class CheckPlayerCommand implements CommandExecutor {
         p.sendMessage("§7Beruf §8× §e" + (Beruf.hasBeruf(tg) ? Beruf.getBeruf(tg).getName() : "Kein Beruf"));
         StringBuilder houses = new StringBuilder();
         for(House house : House.getHouses(Script.getNRPID(tg))) {
+            if(House.getHouses(Script.getNRPID(tg)).size() == 1) {
+                houses.append("Haus " + house.getID());
+                break;
+            }
             houses.append(house.getID()).append(house.getID() == House.getHouses(Script.getNRPID(tg)).get(House.getHouses(Script.getNRPID(tg)).size() - 1).getID() ? "" : ", ");
         }
         if(houses.toString().equalsIgnoreCase("")) houses = new StringBuilder("Keine Häuser");

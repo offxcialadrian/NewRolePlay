@@ -26,7 +26,7 @@ public class Banken implements CommandExecutor, Listener {
 
 
     private static final String PREFIX = "§8[§bBank§8] §7";
-    private static final Location LOCATION = new Location(Script.WORLD, 0, 0, 0);
+    private static final Location LOCATION = new Location(Script.WORLD, 949, 77, 934);
 
     public enum Bank {
         BANK1(1, "Bank1", 1000, 1000, 1000, 25, 0.0003),

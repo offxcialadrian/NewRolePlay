@@ -12,10 +12,8 @@ import de.newrp.Entertainment.Laufband;
 import de.newrp.Entertainment.Lotto;
 import de.newrp.Fraktion.Tazer;
 import de.newrp.Government.*;
-import de.newrp.House.House;
-import de.newrp.House.HouseOpen;
-import de.newrp.House.HouseRegister;
-import de.newrp.House.RentCommand;
+import de.newrp.House.*;
+import de.newrp.Medic.ReviveCommand;
 import de.newrp.Player.*;
 import de.newrp.Runnable.AsyncDaylightCycle;
 import de.newrp.Runnable.AsyncHour;
@@ -159,6 +157,9 @@ public class main extends JavaPlugin {
         getCommand("berufskasse").setExecutor(new Berufkasse());
         getCommand("member").setExecutor(new MemberCommand());
         getCommand("addberufsdoor").setExecutor(new AddBerufsDoor());
+        getCommand("installaddon").setExecutor(new InstallAddon());
+        getCommand("revive").setExecutor(new ReviveCommand());
+        getCommand("friedhof").setExecutor(new FriedhofInfo());
 
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new SDuty(), this);
@@ -192,6 +193,7 @@ public class main extends JavaPlugin {
         pm.registerEvents(new HouseRegister(), this);
         pm.registerEvents(new HouseOpen(), this);
         pm.registerEvents(new AddBerufsDoor(), this);
+        pm.registerEvents(new FriedhofListener(), this);
 
         new PayDay().runTaskTimerAsynchronously(this, 60 * 20L, 60 * 20L);
         new AsyncMinute().runTaskTimerAsynchronously(this, 60 * 20L, 60 * 20L);

@@ -39,6 +39,29 @@ public class NaviCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
+        if(args.length == 2) {
+            if(args[0].equalsIgnoreCase("haus") || args[0].equalsIgnoreCase("house")) {
+                if(Script.isInt(args[1])) {
+                    int id = Integer.parseInt(args[1]);
+                    House house = House.getHouseByID(id);
+                    if(house == null) {
+                        p.sendMessage(Messages.ERROR + "Das Haus wurde nicht gefunden.");
+                        return true;
+                    }
+
+                    Location sign = house.getSignLocation();
+                    if(sign == null) {
+                        p.sendMessage(Messages.ERROR + "Das Haus wurde nicht gefunden.");
+                        return true;
+                    }
+
+                    new Route(p.getName(), Script.getNRPID(p), p.getLocation(), sign).start();
+                    p.sendMessage(Navi.PREFIX + "Dir wird nun die Route zum Haus §6§l" + id + "§r§6 angezeigt.");
+                    return true;
+                }
+            }
+        }
+
         String arguments = String.join(" ", args);
         if (arguments.toLowerCase().contains("haus:") || arguments.toLowerCase().contains("house:") || arguments.toLowerCase().contains("wohnung:")) {
             if (arguments.split(":").length >= 2) {

@@ -109,7 +109,6 @@ public class Annehmen implements CommandExecutor {
             p.sendMessage(ACCEPTED + "Du hast den Shop erfolgreich gekauft.");
             sell.sendMessage(PREFIX + Script.getName(p) + " hat deinen Shop " + shop.getPublicName() + " gekauft.");
             Log.HIGH.write(p.getName() + " hat den Shop " + shop.getPublicName() + " gekauft.");
-            Script.sendTeamMessage(PREFIX + Script.getName(p) + " hat von " + Script.getName(sell) + " den Shop " + shop.getPublicName() + " gekauft.");
             offer.remove(p.getName() + ".shop.sell");
             offer.remove(p.getName() + ".shop.sell.seller");
             offer.remove(p.getName() + ".shop.sell.price");

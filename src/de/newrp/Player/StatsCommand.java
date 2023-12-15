@@ -36,6 +36,10 @@ public class StatsCommand implements CommandExecutor {
         }
         StringBuilder houses = new StringBuilder();
         for(House house : House.getHouses(Script.getNRPID(p))) {
+            if(House.getHouses(Script.getNRPID(p)).size() == 1) {
+                houses.append("Haus " + house.getID());
+                break;
+            }
             houses.append(house.getID()).append(house.getID() == House.getHouses(Script.getNRPID(p)).get(House.getHouses(Script.getNRPID(p)).size() - 1).getID() ? "" : ", ");
         }
         if(houses.toString().equalsIgnoreCase("")) houses = new StringBuilder("Keine Häuser");

@@ -34,7 +34,7 @@ public class Buy implements CommandExecutor {
         }
 
         if (s == null) {
-            p.sendMessage("§cDu bist nicht in der nähe von einem Shop.");
+            p.sendMessage("§cDu bist nicht in der Nähe von einem Shop.");
             return true;
         }
 

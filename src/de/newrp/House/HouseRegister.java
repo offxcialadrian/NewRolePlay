@@ -362,12 +362,12 @@ public class HouseRegister implements CommandExecutor, Listener {
                         s.setLine(2, reg.getOwnerName());
                     } else {
                         s.setLine(2, "Frei");
-                        s.setLine(3, reg.getPrice() + "$");
+                        s.setLine(3, reg.getPrice() + "€");
                     }
                 } else {
                     s.setLine(1, "== " + reg.getHouseID() + " ==");
                     s.setLine(2, "Frei");
-                    s.setLine(3, reg.getPrice() + "$");
+                    s.setLine(3, reg.getPrice() + "€");
                 }
                 s.update(true);
             } else {
@@ -437,12 +437,12 @@ public class HouseRegister implements CommandExecutor, Listener {
                         s.setLine(2, reg.getOwnerName());
                     } else {
                         s.setLine(2, "Frei");
-                        s.setLine(3, reg.getPrice() + "$");
+                        s.setLine(3, reg.getPrice() + "€");
                     }
                 } else {
                     s.setLine(1, "== " + reg.getHouseID() + " ==");
                     s.setLine(2, "Frei");
-                    s.setLine(3, reg.getPrice() + "$");
+                    s.setLine(3, reg.getPrice() + "€");
                 }
                 s.update(true);
             }

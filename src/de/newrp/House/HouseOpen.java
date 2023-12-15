@@ -35,16 +35,25 @@ public class HouseOpen implements Listener {
     }
 
     public boolean canOpen(Player p, Block b) {
+        if (isPlayersDoor(p, b)) return true;
+        return berufsDoor(p, b);
+    }
+
+    public boolean isPlayersDoor(Player p, Block b) {
+        House house = House.getHouseByDoor(b.getLocation());
+        List<House> houses = House.getHouses(Script.getNRPID(p));
+        return houses.contains(house);
+    }
+
+    public boolean berufsDoor(Player p, Block b) {
         Beruf.Berufe beruf = Beruf.getBeruf(p);
+        if(beruf == null) return false;
         ArrayList<Location> locs = beruf.getDoors();
         if (locs != null) {
             for (Location l : locs) {
                 if (b.getLocation().equals(l)) return true;
             }
         }
-        House house = House.getHouseByDoor(b.getLocation());
-        if (house == null) return false;
-        List<House> houses = House.getHouses(Script.getNRPID(p));
-        return houses.contains(house);
+        return false;
     }
 }
