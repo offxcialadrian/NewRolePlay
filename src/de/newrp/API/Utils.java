@@ -7,6 +7,7 @@ import de.newrp.Administrator.BuildMode;
 import de.newrp.Administrator.Notications;
 import de.newrp.Administrator.SDuty;
 import de.newrp.Government.Wahlen;
+import de.newrp.main;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -27,6 +28,7 @@ import org.bukkit.help.HelpTopic;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
@@ -130,10 +132,16 @@ public class Utils implements Listener {
         Script.checkPlayerName(p);
         Script.sendTabTitle(e.getPlayer());
         Script.resetHealth(p);
-        SDuty.updateScoreboard();
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                SDuty.updateScoreboard();
+            }
+        }.runTaskLater(main.getInstance(), 20L);
         p.setFlySpeed(0.1f);
         if(Wahlen.wahlenActive()) p.sendMessage(Messages.INFO + "Die Wahlen sind aktiv! Du kannst mit §8/§6wahlen §rdeine Stimme abgeben.");
         Notications.sendMessage(Notications.NotificationType.LEAVE, "§e" + Script.getName(e.getPlayer()) + " §7hat den Server betreten.");
+        Script.executeAsyncUpdate("INSERT INTO last_disconnect (nrp_id, time) VALUES (" + Script.getNRPID(p)  + ", " + System.currentTimeMillis() + ")");
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
@@ -198,7 +206,7 @@ public class Utils implements Listener {
                 return;
             }
 
-            if(e.getClickedBlock().getType() == Material.CRAFTING_TABLE && BuildMode.isInBuildMode(e.getPlayer())) {
+            if((e.getClickedBlock().getType() == Material.CRAFTING_TABLE || e.getClickedBlock().getType() == Material.FURNACE || e.getClickedBlock().getType() == Material.LOOM) && BuildMode.isInBuildMode(e.getPlayer())) {
                 e.setCancelled(false);
                 return;
             }
@@ -267,7 +275,13 @@ public class Utils implements Listener {
             SDuty.removeSDuty(p);
         }
         e.setQuitMessage(null);
-        SDuty.updateScoreboard();
+        new BukkitRunnable() {
+
+            @Override
+            public void run() {
+                SDuty.updateScoreboard();
+            }
+        }.runTaskLater(main.getInstance(), 20L);
     }
 
     @EventHandler

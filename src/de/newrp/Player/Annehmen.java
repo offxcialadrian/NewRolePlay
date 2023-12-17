@@ -1,6 +1,7 @@
 package de.newrp.Player;
 
 import de.newrp.API.*;
+import de.newrp.Administrator.Notications;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Government.Stadtkasse;
 import de.newrp.Government.Steuern;
@@ -104,6 +105,7 @@ public class Annehmen implements CommandExecutor {
             double tax = Steuern.Steuer.SHOP_VERKAUFSSTEUER.getPercentage();
             Stadtkasse.addStadtkasse((int) Script.getPercent(tax, price));
             int add = price - (int) Script.getPercent(tax, price);
+            Notications.sendMessage(Notications.NotificationType.SHOP, "§6" + Script.getName(sell) + "§7 hat §6" + Script.getName(p) + " §7" + (Script.getGender(p)==Gender.MALE?"seinen":"ihren") + " Shop §6" + shop.getPublicName() + "§7 für §6" + price + "€ §7verkauft.");
             Script.addMoney(sell, PaymentType.BANK, add);
             shop.setOwner(Script.getNRPID(p));
             p.sendMessage(ACCEPTED + "Du hast den Shop erfolgreich gekauft.");

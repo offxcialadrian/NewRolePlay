@@ -6,6 +6,7 @@ import de.newrp.API.Rank;
 import de.newrp.API.Script;
 import de.newrp.Administrator.SDuty;
 import de.newrp.Berufe.Beruf;
+import de.newrp.News.NewsCommand;
 import de.newrp.main;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -177,6 +178,7 @@ public class Wahlen implements CommandExecutor, Listener {
     }
 
     public static void getWahlResult() {
+        NewsCommand.wahlenNewsActive = true;
         if (getWinner() == -1 && !alreadyExtended) {
             Beruf.Berufe.NEWS.sendMessage(PREFIX + "Es gibt keinen Gewinner. Die Wahlen werden bis 20 Uhr verlängert.");
             return;
@@ -192,12 +194,20 @@ public class Wahlen implements CommandExecutor, Listener {
         }
 
         Beruf.Berufe.NEWS.sendMessage("§6Wahlen: " + Script.getPlayer(getWinner()).getName() + " hat die Wahlen gewonnen.");
-        Beruf.Berufe.NEWS.sendMessage("§6Die nächsten Wahlen finden am " + getNextElection() + " statt.");
+        Beruf.Berufe.NEWS.sendMessage("§6Die Nächsten Wahlen finden am " + getNextElection() + " statt.");
         new BukkitRunnable() {
 
             @Override
             public void run() {
                 OfflinePlayer winner = Script.getOfflinePlayer(getWinner());
+                if(!NewsCommand.wahlenNews) {
+                    Bukkit.broadcastMessage(NewsCommand.NEWS + winner.getName() + " hat die Wahlen mit " + getVotes(winner) + " Stimmen gewonnen!");
+                    Bukkit.broadcastMessage(NewsCommand.NEWS + "Die Nächsten Wahlen finden am " + getNextElection() + " statt!");
+                    Beruf.Berufe.NEWS.sendMessage(PREFIX + "Die News hat es nicht rechtzeitig geschafft das Ergebnis der Wahlen zu verkünden. Es wurde automatisch eine Meldung abegegebn.");
+                    Script.sendTeamMessage(PREFIX + "Die News hat es nicht rechtzeitig geschafft das Ergebnis der Wahlen zu verkünden.");
+                }
+                NewsCommand.wahlenNews = false;
+                NewsCommand.wahlenNewsActive = false;
                 if(Beruf.getBeruf(winner) != Beruf.Berufe.GOVERNMENT) Beruf.Berufe.GOVERNMENT.addMember(winner);
                 Beruf.setLeader(winner);
                 if(Script.getPlayer(winner.getName()) != null)

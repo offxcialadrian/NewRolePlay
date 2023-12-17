@@ -15,7 +15,7 @@ public enum Shops {
 
     SH_CAFE(0, "Cafe", "Café Stadthalle", 25000, new Location(Script.WORLD, 626, 68, 1030), 200, 600, true, ShopType.CAFE),
     TEST(1, "Café am X3", "Café am X3", 50000, new Location(Script.WORLD, 754, 72, 924), 200, 600, true, ShopType.CAFE),
-    IKEA(2, "AEKI", "AEKI", 50000, new Location(Script.WORLD, 673, 68, 898), 200, 600, true, ShopType.HAUSADDON);
+    IKEA(2, "AEKI", "AEKI", 50000, new Location(Script.WORLD, 681, 68, 902), 200, 600, true, ShopType.HAUSADDON);
 
     private final int id;
     private final String name;

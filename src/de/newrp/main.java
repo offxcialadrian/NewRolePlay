@@ -14,6 +14,7 @@ import de.newrp.Fraktion.Tazer;
 import de.newrp.Government.*;
 import de.newrp.House.*;
 import de.newrp.Medic.ReviveCommand;
+import de.newrp.News.NewsCommand;
 import de.newrp.Player.*;
 import de.newrp.Runnable.AsyncDaylightCycle;
 import de.newrp.Runnable.AsyncHour;
@@ -161,6 +162,10 @@ public class main extends JavaPlugin {
         getCommand("revive").setExecutor(new ReviveCommand());
         getCommand("friedhof").setExecutor(new FriedhofInfo());
         getCommand("debugstick").setExecutor(new GetDebugStick());
+        getCommand("head").setExecutor(new HeadCommand());
+        getCommand("news").setExecutor(new NewsCommand());
+        getCommand("mieter").setExecutor(new MieterCommand());
+        getCommand("unrent").setExecutor(new UnrentCommand());
 
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new SDuty(), this);

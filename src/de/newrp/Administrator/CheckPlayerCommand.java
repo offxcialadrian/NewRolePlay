@@ -49,6 +49,7 @@ public class CheckPlayerCommand implements CommandExecutor {
                     p.sendMessage("  §7» §e" + Script.dateFormat2.format(entry.getKey()) + " §8× §e" + entry.getValue());
                 }
             }
+            p.sendMessage("§7Offline §8× §eseit: " + Script.dateFormat.format(Script.getLastDisconnect(offtg)));
             p.sendMessage("§7Geld §8× §e" + Script.getMoney(offtg, PaymentType.CASH) + "€ | " + Script.getMoney(offtg, PaymentType.BANK) + "€");
             p.sendMessage("§7Geschlecht §8× §e" + Script.getGender(offtg).getName());
             p.sendMessage("§7Team §8× §e" + (Team.getTeam(offtg) != null ? Team.getTeam(offtg).getName() : "Kein Team"));

@@ -1,5 +1,6 @@
 package de.newrp.Shop;
 
+import de.newrp.House.HouseAddon;
 import de.newrp.main;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -14,7 +15,7 @@ public enum ShopItem {
     BROT(0, "§fBrot", new ItemStack(Material.BREAD), 16, 1, 20, 2, 2400, true, true, new ShopType[] {ShopType.CAFE}),
     KAFFEE(1, "§fKaffee", new ItemStack(Material.POTION, 1, (short) 16421), 1, 1, 20, 2, 3900, true, true, new ShopType[] {ShopType.CAFE}),
     LOTTOSCHEIN(2, "§7Lottoschein", new ItemStack(Material.PAPER), 1, 1, 20, 30, 1000, false, true, new ShopType[] {ShopType.CAFE}),
-    HAUSKASSE(3, "§7Hauskasse", new ItemStack(Material.CHEST), 1, 1, 20, 12000, 34000, false, false, new ShopType[] {ShopType.HAUSADDON});
+    HAUSKASSE(3, "§7Hauskasse", new ItemStack(Material.CHEST), 1, 1, 20, HouseAddon.HAUSKASSE.getPrice(), 34000, false, false, new ShopType[] {ShopType.HAUSADDON});
 
     private final int id;
     private final String name;

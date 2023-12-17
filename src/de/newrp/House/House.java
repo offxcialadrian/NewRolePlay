@@ -6,6 +6,7 @@ import de.newrp.main;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -448,6 +449,10 @@ public class House {
     }
 
     public boolean livesInHouse(Player p) {
+        return getHouses(Script.getNRPID(p)).contains(this);
+    }
+
+    public boolean livesInHouse(OfflinePlayer p) {
         return getHouses(Script.getNRPID(p)).contains(this);
     }
 

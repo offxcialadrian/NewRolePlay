@@ -46,14 +46,12 @@ public class AFK implements CommandExecutor, Listener {
     public static void setAFK(Player p, boolean b) {
         if (b) {
             afk.put(p.getName(), new SimpleDateFormat("HH:mm").format(Calendar.getInstance().getTime()));
-            Log.LOW.write(p, "hat den AFK-Modus betreten.");
             p.setCollidable(false);
             p.setCanPickupItems(false);
             if (p.isFlying()) p.setFlying(false);
             Bukkit.getScoreboardManager().getMainScoreboard().getTeam("nopush").addEntry(p.getName());
         } else {
             afk.remove(p.getName());
-            Log.LOW.write(p, "hat den AFK-Modus verlassen.");
             p.setCollidable(true);
             p.setCanPickupItems(true);
             Bukkit.getScoreboardManager().getMainScoreboard().getTeam("nopush").removeEntry(p.getName());

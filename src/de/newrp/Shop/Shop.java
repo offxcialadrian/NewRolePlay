@@ -3,6 +3,7 @@ package de.newrp.Shop;
 import de.newrp.API.Messages;
 import de.newrp.API.PaymentType;
 import de.newrp.API.Script;
+import de.newrp.Administrator.Notications;
 import de.newrp.Government.Stadtkasse;
 import de.newrp.Government.Steuern;
 import de.newrp.Player.Annehmen;
@@ -230,7 +231,7 @@ public class Shop implements CommandExecutor, Listener {
             shop.removeKasse(price);
             shop.addLager(100);
             p.sendMessage(PREFIX + "Du hast dein Lager um 100 Lagerplätze erweitert.");
-            Script.sendTeamMessage(PREFIX + Script.getName(p) + " hat sein Lager um 100 Lagerplätze erweitert. [Shop: " + shop.getPublicName() + "]");
+            Notications.sendMessage(Notications.NotificationType.SHOP,  Script.getName(p) + " hat sein Lager um 100 Lagerplätze erweitert. [Shop: " + shop.getPublicName() + "]");
             Stadtkasse.addStadtkasse((int) Script.getPercent(Steuern.Steuer.MEHRWERTSTEUER.getPercentage(), price));
             return true;
         }
@@ -297,7 +298,7 @@ public class Shop implements CommandExecutor, Listener {
             priceMap.remove(p);
             si.setPrice(s, price);
             p.sendMessage(PREFIX + "Du hast den Preis von " + si.getName() + " §7auf " + price + "€ gesetzt.");
-            Script.sendTeamMessage(PREFIX + Script.getName(p) + " hat den Preis von " + si.getName() + " §7auf " + price + "€ gesetzt. [Shop: " + s.getPublicName() + "]");
+            Notications.sendMessage(Notications.NotificationType.SHOP,Script.getName(p) + " hat den Preis von " + si.getName() + " §7auf " + price + "€ gesetzt. [Shop: " + s.getPublicName() + "]");
             p.closeInventory();
             return;
         }
@@ -339,7 +340,7 @@ public class Shop implements CommandExecutor, Listener {
 
                 s.removeKasse(si.getLicensePrice());
                 p.sendMessage(PREFIX + "Du hast " + si.getName() + " §7in dein Shop-Sortiment aufgenommen.");
-                Script.sendTeamMessage(PREFIX + Script.getName(p) + " hat " + si.getName() + " §7in sein Shop-Sortiment aufgenommen. [Shop: " + s.getPublicName() + "]");
+                Notications.sendMessage(Notications.NotificationType.SHOP, Script.getName(p) + " hat " + si.getName() + " §7in sein Shop-Sortiment aufgenommen. [Shop: " + s.getPublicName() + "]");
                 Script.executeAsyncUpdate("INSERT INTO shopprice (amount, price, itemID, shopID) VALUES (" + 1 + ", " + si.getBuyPrice() + ", " + si.getID() + ", " + s.getID() + ")");
                 p.closeInventory();
                 return;
@@ -347,7 +348,7 @@ public class Shop implements CommandExecutor, Listener {
 
             Script.executeAsyncUpdate("DELETE FROM shopprice WHERE shopID=" + s.getID() + " AND itemID=" + si.getID());
             p.sendMessage(PREFIX + "Du hast " + si.getName() + " §7aus deinem Shop-Sortiment entfernt.");
-            Script.sendTeamMessage(PREFIX + Script.getName(p) + " hat " + si.getName() + " §7aus sein Shop-Sortiment entfernt. [Shop: " + s.getPublicName() + "]");
+            Notications.sendMessage(Notications.NotificationType.SHOP, Script.getName(p) + " hat " + si.getName() + " §7aus sein Shop-Sortiment entfernt. [Shop: " + s.getPublicName() + "]");
             p.closeInventory();
             return;
         }

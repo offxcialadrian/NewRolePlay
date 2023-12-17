@@ -565,6 +565,10 @@ public class Script {
         }
     }
 
+    public static long getLastDisconnect(OfflinePlayer p) {
+        return Script.getLong(p, "last_disconnect", "time");
+    }
+
 
     public static void setBoolean(Player p, String dbName, String bool, boolean value) {
         executeAsyncUpdate("UPDATE " + dbName + " SET " + bool + "=" + value + " WHERE nrp_id=" + getNRPID(p));

@@ -9,6 +9,7 @@ import de.newrp.House.House;
 import de.newrp.Player.AFK;
 import de.newrp.Player.Banken;
 import de.newrp.Shop.Shops;
+import de.newrp.main;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -137,6 +138,12 @@ public class PayDay extends BukkitRunnable {
             else Script.removeMoney(p, PaymentType.BANK, payday);
             setPayDayTime(p, 0);
             Script.executeAsyncUpdate("UPDATE payday SET money = 0 WHERE nrp_id = '" + Script.getNRPID(p) + "'");
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    SDuty.updateScoreboard();
+                }
+            }.runTaskLater(main.getInstance(), 20L);
         }
     }
 

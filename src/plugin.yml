@@ -208,3 +208,13 @@ commands:
   debugstick:
     description: get a debug stick
     aliases: [ getdebugstick ]
+  head:
+    description: get a players head
+  news:
+    description: schalte eine news
+  mieter:
+    description: check your mieters
+    aliases: [ mieters ]
+  unrent:
+    description: unrent a player
+    aliases: [ dismissrent ]
