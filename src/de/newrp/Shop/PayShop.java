@@ -50,7 +50,7 @@ public class PayShop implements Listener {
         s.removeLager(si.getSize());
         double mwst = Steuern.Steuer.MEHRWERTSTEUER.getPercentage();
         Stadtkasse.addStadtkasse((int) Script.getPercent(mwst, price));
-        int add = price - (int) Script.getPercent(mwst, price);
+        int add = price - (int) Script.getPercent(mwst, price) + (type == PaymentType.BANK ? - (int) Script.getPercent(2, price):0);
         s.addKasse(add);
         s.removeKasse(si.getBuyPrice());
         Log.NORMAL.write(p, "hat " + si.getName() + " für " + price + "€ gekauft.");
