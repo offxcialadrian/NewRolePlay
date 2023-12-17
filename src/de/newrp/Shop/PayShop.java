@@ -54,6 +54,8 @@ public class PayShop implements Listener {
         s.addKasse(add);
         s.removeKasse(si.getBuyPrice());
         Log.NORMAL.write(p, "hat " + si.getName() + " für " + price + "€ gekauft.");
+        if(Script.getOfflinePlayer(s.getOwner()).isOnline())
+            Script.getPlayer(s.getOwner()).sendMessage(Shop.PREFIX + "Dein Shop §6" + s.getPublicName() + " §7hat §6" + add + "€ §7Gewinn gemacht aus dem Verkauf von §6" + si.getName());
 
         switch (si) {
             case LOTTOSCHEIN:
@@ -61,6 +63,10 @@ public class PayShop implements Listener {
                 break;
             case HAUSKASSE:
                 houseaddon.put(p.getName(), HouseAddon.HAUSKASSE);
+                p.sendMessage(Messages.INFO + "Gehe zu deinem Haus und nutze §8/§6installaddon§r um das Hauskassen-Addon zu installieren.");
+                break;
+            case MIETERSLOT:
+                houseaddon.put(p.getName(), HouseAddon.SLOT);
                 p.sendMessage(Messages.INFO + "Gehe zu deinem Haus und nutze §8/§6installaddon§r um das Hauskassen-Addon zu installieren.");
                 break;
         }

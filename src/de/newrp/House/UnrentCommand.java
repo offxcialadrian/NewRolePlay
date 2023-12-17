@@ -120,8 +120,11 @@ public class UnrentCommand implements CommandExecutor {
 
         house.removeMieter(Script.getNRPID(tg));
         p.sendMessage(PREFIX + "Du hast " + tg.getName() + "s Mietvertrag für das Haus " + houseID + " aufgelöst.");
-        if(tg.isOnline())
+        if(tg.isOnline()) {
             Script.getPlayer(Script.getNRPID(tg)).sendMessage(PREFIX + Script.getName(p) + " hat deinen Mietvertrag für das Haus " + houseID + " aufgelöst.");
+        } else {
+            Script.addOfflineMessage(Script.getNRPID(tg), PREFIX + Script.getName(p) + " hat deinen Mietvertrag für das Haus " + houseID + " aufgelöst.");
+        }
         return true;
     }
 }
