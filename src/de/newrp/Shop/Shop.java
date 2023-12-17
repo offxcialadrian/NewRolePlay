@@ -266,7 +266,7 @@ public class Shop implements CommandExecutor, Listener {
             Script.executeAsyncUpdate("UPDATE shops SET card = 1 WHERE shopID = " + shop.getID());
             p.sendMessage(PREFIX + "Du bietest nun Kartenzahlung in deinem Shop an.");
             p.sendMessage(Messages.INFO + "Du zahlst auf jede Kartenzahlung eine Gebühr von 2%");
-            Notications.sendMessage(Notications.NotificationType.SHOP,  Script.getName(p) + "bietet nun Kartenzahlung in seinem Shop an. [Shop: " + shop.getPublicName() + "]");
+            Notications.sendMessage(Notications.NotificationType.SHOP,  Script.getName(p) + " bietet nun Kartenzahlung im Shop an. [Shop: " + shop.getPublicName() + "]");
             Stadtkasse.addStadtkasse((int) Script.getPercent(Steuern.Steuer.MEHRWERTSTEUER.getPercentage(), price));
             return true;
         }
