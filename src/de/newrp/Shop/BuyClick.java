@@ -91,8 +91,8 @@ public class BuyClick implements Listener {
 
 
             if(!s.acceptCard()) {
-                PayShop.pay(p, PaymentType.CASH, si, s);
                 sendMessage(p, "Wir akzeptieren leider keine Kartenzahlung.");
+                PayShop.pay(p, PaymentType.CASH, si, s);
                 return;
             }
             Script.sendPaymentTypeGUI(p, si.getPrice(s));

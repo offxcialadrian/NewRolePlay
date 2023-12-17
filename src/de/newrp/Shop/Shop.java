@@ -54,7 +54,7 @@ public class Shop implements CommandExecutor, Listener {
 
 
         if (args.length == 0) {
-            p.sendMessage(Messages.ERROR + "Verwendung: /shop [kasse|sell|info|setprice|upgradelager|sortiment]");
+            p.sendMessage(Messages.ERROR + "Verwendung: /shop [kasse/sell/karte/info/setprice/upgradelager/sortiment]");
             return true;
         }
 
@@ -287,7 +287,7 @@ public class Shop implements CommandExecutor, Listener {
             return true;
         }
 
-        p.sendMessage(Messages.ERROR + "Verwendung: /shop [kasse/sell/info/setprice/upgradelager/sortiment]");
+        p.sendMessage(Messages.ERROR + "Verwendung: /shop [kasse/sell/info/karte/setprice/upgradelager/sortiment]");
 
         return false;
     }
@@ -333,7 +333,7 @@ public class Shop implements CommandExecutor, Listener {
             priceMap.remove(p);
             si.setPrice(s, price);
             p.sendMessage(PREFIX + "Du hast den Preis von " + si.getName() + " §7auf " + price + "€ gesetzt.");
-            Notications.sendMessage(Notications.NotificationType.SHOP,Script.getName(p) + " hat den Preis von " + si.getName() + " §7auf " + price + "€ gesetzt. [Shop: " + s.getPublicName() + "]");
+            Notications.sendMessage(Notications.NotificationType.SHOP,Script.getName(p) + " hat den Preis von " + si.getName() + " §aauf " + price + "€ gesetzt. [Shop: " + s.getPublicName() + "]");
             p.closeInventory();
             return;
         }
