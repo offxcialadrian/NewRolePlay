@@ -55,7 +55,7 @@ public class PayShop implements Listener {
         s.removeKasse(si.getBuyPrice());
         Log.NORMAL.write(p, "hat " + si.getName() + " für " + price + "€ gekauft.");
         if(Script.getOfflinePlayer(s.getOwner()).isOnline())
-            Script.getPlayer(s.getOwner()).sendMessage(Shop.PREFIX + "Dein Shop §6" + s.getPublicName() + " §7hat §6" + (add-si.getBuyPrice()) + "€ §7Gewinn gemacht aus dem Verkauf von §6" + si.getName() + " §8(§6" + price + "€§7)");
+            Script.sendActionBar(Script.getPlayer(s.getOwner()), Shop.PREFIX + "Dein Shop §6" + s.getPublicName() + " §7hat §6" + (add-si.getBuyPrice()) + "€ §7Gewinn gemacht aus dem Verkauf von §6" + si.getName() + " §8(§6" + price + "€§7)");
 
         switch (si) {
             case LOTTOSCHEIN:
