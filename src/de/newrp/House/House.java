@@ -457,7 +457,7 @@ public class House {
     }
 
     public void updateSign() {
-        if (this.sign.getBlock().getType().equals(Material.SPRUCE_SIGN)) {
+        if (this.sign.getBlock().getType().equals(Material.OAK_WALL_SIGN)) {
             Sign s = (Sign) this.sign.getBlock().getState();
             s.setLine(0, "");
             s.setLine(1, "== " + this.houseID + " ==");
@@ -468,7 +468,7 @@ public class House {
     }
 
     public void updateSign(String username) {
-        if (this.sign.getBlock().getType().equals(Material.SPRUCE_SIGN)) {
+        if (this.sign.getBlock().getType().equals(Material.OAK_WALL_SIGN)) {
             Sign s = (Sign) this.sign.getBlock().getState();
             s.setLine(0, "");
             s.setLine(1, "== " + this.houseID + " ==");
@@ -479,7 +479,7 @@ public class House {
     }
 
     public void clearSign() {
-        if (this.sign.getBlock().getType().equals(Material.SPRUCE_SIGN)) {
+        if (this.sign.getBlock().getType().equals(Material.OAK_WALL_SIGN)) {
             Sign s = (Sign) this.sign.getBlock().getState();
             s.setLine(0, "");
             s.setLine(1, "== " + this.houseID + " ==");

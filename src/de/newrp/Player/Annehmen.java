@@ -128,10 +128,6 @@ public class Annehmen implements CommandExecutor {
                 return true;
             }
 
-            if(Script.getMoney(p, PaymentType.BANK) < price) {
-                p.sendMessage(Messages.ERROR + "Du hast nicht genug Geld auf deinem Bankkonto.");
-                return true;
-            }
 
             if(house == null) {
                 p.sendMessage(Messages.ERROR + "Das Haus existiert nicht mehr.");
