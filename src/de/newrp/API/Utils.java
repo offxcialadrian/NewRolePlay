@@ -224,6 +224,8 @@ public class Utils implements Listener {
                     e.getClickedBlock().getType() == Material.SMOKER ||
                     e.getClickedBlock().getType() == Material.BREWING_STAND ||
                     e.getClickedBlock().getType() == Material.ANVIL ||
+                    e.getClickedBlock().getType() == Material.COMMAND_BLOCK ||
+                    e.getClickedBlock().getType() == Material.COMMAND_BLOCK_MINECART ||
                     e.getClickedBlock().getType() == Material.CHIPPED_ANVIL ||
                     e.getClickedBlock().getType() == Material.DAMAGED_ANVIL ||
                     e.getClickedBlock().getType() == Material.ENCHANTING_TABLE ||

@@ -35,14 +35,14 @@ public class NewsCommand implements CommandExecutor {
             return true;
         }
 
-        if(Beruf.getAbteilung(p) != Abteilung.Abteilungen.NEWS_NONE) {
+        if(Beruf.getAbteilung(p) != Abteilung.Abteilungen.NEWS_NACHRICHTEN) {
             p.sendMessage(Messages.ERROR + "Du bist nicht in der richtigen Abteilung um News zu schalten.");
             return true;
         }
 
         StringBuilder msg = new StringBuilder(NEWS);
         for(String arg : args) {
-            msg.append(arg);
+            msg.append(arg).append(" ");
         }
 
         if(wahlenNewsActive) wahlenNews = true;

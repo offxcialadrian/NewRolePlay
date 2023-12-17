@@ -18,6 +18,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static de.newrp.Berufe.Beruf.Berufe.GOVERNMENT;
+import static de.newrp.Berufe.Beruf.Berufe.NEWS;
 
 public class Abteilung implements CommandExecutor, TabCompleter {
 
@@ -31,7 +32,8 @@ public class Abteilung implements CommandExecutor, TabCompleter {
         AUSSENMINISTERIUM(4, GOVERNMENT, "Außenministerium"),
         BAUMINISTERIUM(5, GOVERNMENT, "Bauministerium"),
         STAATSOBERHAUPT(6, GOVERNMENT, "Staatsoberhaupt"),
-        NEWS_NONE(0, Beruf.Berufe.NEWS, "Keine_Abteilung");
+        NEWS_NONE(0, NEWS, "Keine_Abteilung"),
+        NEWS_NACHRICHTEN(1, NEWS, "Nachrichten-Abteilung");
 
         private final int id;
         private final Beruf.Berufe beruf;

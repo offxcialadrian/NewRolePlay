@@ -176,6 +176,7 @@ public class Lotto implements CommandExecutor {
 
     public boolean activate() {
         return Calendar.getInstance().get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY
+                || Calendar.getInstance().get(Calendar.DAY_OF_WEEK) != Calendar.WEDNESDAY
                 || Calendar.getInstance().get(Calendar.HOUR_OF_DAY) != 18
                 || Calendar.getInstance().get(Calendar.MINUTE) < 10
                 || Calendar.getInstance().get(Calendar.MINUTE) > 20;
