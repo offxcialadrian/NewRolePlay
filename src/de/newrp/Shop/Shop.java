@@ -169,6 +169,7 @@ public class Shop implements CommandExecutor, Listener {
             return true;
         }
 
+
         if(args.length == 2 && args[0].equalsIgnoreCase("setprice")) {
             HashMap<Integer, ItemStack> c = shop.getItems();
             int size = (c.size() > 9 ? 3 : 2) * 9;
@@ -232,6 +233,40 @@ public class Shop implements CommandExecutor, Listener {
             shop.addLager(100);
             p.sendMessage(PREFIX + "Du hast dein Lager um 100 Lagerplätze erweitert.");
             Notications.sendMessage(Notications.NotificationType.SHOP,  Script.getName(p) + " hat sein Lager um 100 Lagerplätze erweitert. [Shop: " + shop.getPublicName() + "]");
+            Stadtkasse.addStadtkasse((int) Script.getPercent(Steuern.Steuer.MEHRWERTSTEUER.getPercentage(), price));
+            return true;
+        }
+
+        if(args.length == 1 && args[0].equalsIgnoreCase("karte")) {
+            if(shop.acceptCard()) {
+                p.sendMessage(PREFIX + "Dein Shop akzeptiert bereits Kartenzahlung.");
+                p.sendMessage(Messages.INFO + "Du zahlst auf jede Kartenzahlung eine Gebühr von 2%");
+            }
+            int price = 21000;
+            p.sendMessage(PREFIX + "Du kannst Kartenzahlung für " + price + "€ anbieten.");
+            p.sendMessage(Messages.INFO + "Nutze /shop karte confirm um Kartenzahlung anzubieten.");
+            return true;
+        }
+
+        if(args.length == 2 && args[0].equalsIgnoreCase("karte")) {
+            if(!args[1].equalsIgnoreCase("confirm")) {
+                p.sendMessage(Messages.ERROR + "Verwendung: /shop karte confirm");
+                return true;
+            }
+
+            int price = 21000;
+
+            if(shop.getKasse() < price) {
+                p.sendMessage(Messages.ERROR + "Du hast nicht genug Geld.");
+                p.sendMessage(Messages.INFO + "Du benötigst " + price + "€.");
+                return true;
+            }
+
+            shop.removeKasse(price);
+            Script.executeAsyncUpdate("UPDATE shops SET card = 1 WHERE shopID = " + shop.getID());
+            p.sendMessage(PREFIX + "Du bietest nun Kartenzahlung in deinem Shop an.");
+            p.sendMessage(Messages.INFO + "Du zahlst auf jede Kartenzahlung eine Gebühr von 2%");
+            Notications.sendMessage(Notications.NotificationType.SHOP,  Script.getName(p) + "bietet nun Kartenzahlung in seinem Shop an. [Shop: " + shop.getPublicName() + "]");
             Stadtkasse.addStadtkasse((int) Script.getPercent(Steuern.Steuer.MEHRWERTSTEUER.getPercentage(), price));
             return true;
         }

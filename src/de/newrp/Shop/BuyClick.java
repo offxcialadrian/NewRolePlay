@@ -2,6 +2,7 @@ package de.newrp.Shop;
 
 import de.newrp.API.Debug;
 import de.newrp.API.Messages;
+import de.newrp.API.PaymentType;
 import de.newrp.API.Script;
 import de.newrp.Chat.Chat;
 import de.newrp.Entertainment.Lotto;
@@ -90,6 +91,11 @@ public class BuyClick implements Listener {
 
 
             Script.sendPaymentTypeGUI(p, si.getPrice(s));
+            if(!s.acceptCard()) {
+                PayShop.pay(p, PaymentType.CASH, si, s);
+                sendMessage(p, "Wir akzeptieren leider keine Kartenzahlung.");
+                return;
+            }
             sendMessage(p, "Möchten Sie Bar oder mit Karte bezahlen?");
 
         } else {

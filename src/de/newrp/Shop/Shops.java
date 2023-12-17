@@ -119,6 +119,18 @@ public enum Shops {
         Script.executeUpdate("UPDATE shops SET lager_max=" + (getLagerSize() + i) + " WHERE shopID=" + this.id);
     }
 
+    public boolean acceptCard() {
+        try (Statement stmt = main.getConnection().createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT card FROM shops WHERE shopID=" + this.id)) {
+            if (rs.next()) {
+                return rs.getInt("card")==1;
+            }
+        } catch (SQLException e1) {
+            e1.printStackTrace();
+        }
+        return false;
+    }
+
     public int getLager() {
         try (Statement stmt = main.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT lager FROM shops WHERE shopID=" + this.id)) {
