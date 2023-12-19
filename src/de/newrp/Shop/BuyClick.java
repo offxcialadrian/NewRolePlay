@@ -100,7 +100,7 @@ public class BuyClick implements Listener {
 
         } else {
             String[] sorry = new String[]{"Verzeihung", "Tut mir Leid", "Tut uns Leid"};
-            sendMessage(p, sorry[Script.getRandom(0, sorry.length - 1)] + ", aber wir haben nicht mehr genug auf Lager.");
+            sendMessage(p, sorry[Script.getRandom(0, sorry.length - 1)] + ", aber wir haben nicht mehr genug "+ si.getName() + "§r auf Lager.");
         }
     }
 

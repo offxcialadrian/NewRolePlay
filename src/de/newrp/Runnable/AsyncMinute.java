@@ -41,7 +41,8 @@ public class AsyncMinute extends BukkitRunnable {
 
         for (Player p : Bukkit.getOnlinePlayers()) {
             if (!AFK.isAFK(p)) AFK.updateAFK(p);
-            if (!AFK.isAFK(p)) Script.increasePlayTime(p);
+            if (!AFK.isAFK(p)) Script.increaseActivePlayTime(p);
+            Script.increasePlayTime(p);
             Script.sendTabTitle(p);
         }
     }

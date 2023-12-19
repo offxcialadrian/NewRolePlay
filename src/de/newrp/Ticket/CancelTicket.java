@@ -41,7 +41,7 @@ public class CancelTicket implements CommandExecutor {
                 Script.executeAsyncUpdate("INSERT INTO ticket_conv (ticketID, sender, message, time) VALUES(" + t.getID() + ", " + Script.getNRPID(p) + ", '" + TicketCommand.getFarewell(p) + "', " + System.currentTimeMillis() + ")");
             }
             p.sendMessage(TicketCommand.PREFIX + "Du hast das Ticket mit " + Script.getName(tg) + " beendet! §7(§6#" + id + "§7)");
-            tg.sendMessage(TicketCommand.PREFIX + Script.getName(p) + " hat das Ticket beendet! §7(§6#" + id + "§7)");
+            tg.sendMessage(TicketCommand.PREFIX + Script.getRank(p).getName(p) + " " + Script.getName(p) + " hat das Ticket beendet! §7(§6#" + id + "§7)");
             Script.sendTeamMessage(p, ChatColor.AQUA, "hat das Ticket mit " + Script.getName(tg) + " beendet! §7(§6#" + id + "§7)", true);
 
             TicketCommand.close(t);

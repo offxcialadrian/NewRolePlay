@@ -233,6 +233,10 @@ public class Beruf {
         Script.setInt(p, "berufe", "leader", 1);
     }
 
+    public static void removeLeader(OfflinePlayer p) {
+        Script.setInt(p, "berufe", "leader", 0);
+    }
+
     public static Abteilung.Abteilungen getAbteilung(Player p) {
         return Abteilung.Abteilungen.getAbteilung(Script.getInt(p, "berufe", "abteilung"), getBeruf(p));
     }

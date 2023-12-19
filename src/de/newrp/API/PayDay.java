@@ -24,12 +24,12 @@ public class PayDay extends BukkitRunnable {
             if (SDuty.isSDuty(p)) continue;
             if (getPayDayTime(p) < 59) {
                 addPayDayTime(p);
-                return;
+                continue;
             }
 
             if (!Banken.hasBank(p)) {
                 p.sendMessage(Messages.INFO + "Du hast kein Geld am PayDay erhalten, da du kein Konto hast.");
-                return;
+                continue;
             }
 
             int payday = 0;

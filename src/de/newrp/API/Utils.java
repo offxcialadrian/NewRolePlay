@@ -51,7 +51,7 @@ public class Utils implements Listener {
             "/ops", "/pardon", "/pardon-ip", "/particle", "/perf", "/permission", "/place", "/playanimation", "/playsound", "/publish",
             "/random", "/recipe", "/reload", "/replaceitem", "/return", "/ride", "/save", "/save-all", "/save-off", "/save-on",
             "/say", "/schedule", "/scoreboard", "/script", "/scriptevent", "/seed", "/setblock", "/setidletimeout", "/setmaxplayers",
-            "/setworldspawn", "/spawnpoint", "/spectate", "/spreadplayers", "/stop", "/stopsound", "/structure", "/summon", "/tag",
+            "/setworldspawn", "/spawnpoint", "/spreadplayers", "/stop", "/stopsound", "/structure", "/summon", "/tag",
             "/teammsg", "/tell", "/tellraw", "/testfor", "/testforblock", "/testforblocks", "/tickingarea", "/time", "/title",
             "/titleraw", "/tm", "/toggledownfall", "/trigger", "/volumearea", "/wb", "/whitelist", "/worldborder",
             "/worldbuilder", "/wsserver", "/xp"
@@ -253,7 +253,11 @@ public class Utils implements Listener {
         int move_z = e.getTo().getBlockZ();
 
         if (move_x > WORLD_BORDER_MAX_X || move_x < WORLD_BORDER_MIN_X || move_z > WORLD_BORDER_MAX_Z || move_z < WORLD_BORDER_MIN_Z) {
-            e.setCancelled(true);
+            e.setCancelled(!BuildMode.isInBuildMode(e.getPlayer()));
+            if(BuildMode.isInBuildMode(e.getPlayer())) {
+                Script.sendActionBar(e.getPlayer(), Messages.INFO + "Du kannst dieses Gebiet nur betreten, da du im BuildMode bist.");
+                return;
+            }
             Location playerCenterLocation = e.getTo();
             Location playerToThrowLocation = e.getPlayer().getEyeLocation();
             double x = playerToThrowLocation.getX() - playerCenterLocation.getX();

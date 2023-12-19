@@ -133,6 +133,11 @@ public class Shop implements CommandExecutor, Listener {
                 return true;
             }
 
+            if(p.getLocation().distance(buyer.getLocation()) > 5) {
+                p.sendMessage(Messages.ERROR + "Du bist zu weit weg.");
+                return true;
+            }
+
             Annehmen.offer.put(buyer.getName() + ".shop.sell.seller", p.getName());
             Annehmen.offer.put(buyer.getName() + ".shop.sell.price", "" + price);
             Annehmen.offer.put(buyer.getName() + ".shop.sell.shop", "" + shop.getID());
@@ -374,6 +379,7 @@ public class Shop implements CommandExecutor, Listener {
                 }
 
                 s.removeKasse(si.getLicensePrice());
+                Stadtkasse.addStadtkasse((int) Script.getPercent(Steuern.Steuer.MEHRWERTSTEUER.getPercentage(), si.getLicensePrice()));
                 p.sendMessage(PREFIX + "Du hast " + si.getName() + " §7in dein Shop-Sortiment aufgenommen.");
                 Notications.sendMessage(Notications.NotificationType.SHOP, Script.getName(p) + " hat " + si.getName() + " §7in sein Shop-Sortiment aufgenommen. [Shop: " + s.getPublicName() + "]");
                 Script.executeAsyncUpdate("INSERT INTO shopprice (amount, price, itemID, shopID) VALUES (" + 1 + ", " + si.getBuyPrice() + ", " + si.getID() + ", " + s.getID() + ")");

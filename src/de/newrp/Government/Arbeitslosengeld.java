@@ -29,7 +29,6 @@ public class Arbeitslosengeld implements CommandExecutor {
             if (args.length == 0) {
                 if(Beruf.getAbteilung(p) == Abteilung.Abteilungen.ARBEITSAMT) {
                     sendApplications(p);
-                    p.sendMessage(Messages.ERROR + "Du bist nicht im Arbeitsamt.");
                     return true;
                 }
             }

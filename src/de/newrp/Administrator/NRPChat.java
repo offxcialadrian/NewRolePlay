@@ -39,8 +39,7 @@ public class NRPChat implements CommandExecutor {
             msg = msg.replace("-r ", "");
             for (Player all : Bukkit.getOnlinePlayers()) {
                 if (isNRPTeam(all)) {
-                    if (all != p || isInTestMode())
-                        all.sendMessage("§5§lRNRP » §5" + Script.getName(p) + ": §3" + msg);
+                    all.sendMessage("§5§lRNRP » §5" + Script.getName(p) + ": §3" + msg);
                 }
             }
         } else {

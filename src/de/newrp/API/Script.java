@@ -20,8 +20,6 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.permissions.Permission;
-import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
@@ -67,7 +65,7 @@ public class Script {
         } else if (SDuty.isSDuty(p)) {
             p.setPlayerListName("§cNRP §8× §9" + p.getName());
         } else {
-            p.setPlayerListName(Script.getName(p));
+            p.setPlayerListName((TicketCommand.isInTicket(p)?"§8[§b§lT§8]" + Script.getName(p):Script.getName(p)));
         }
     }
 
@@ -705,11 +703,10 @@ public class Script {
         executeUpdate("INSERT INTO nrp_id (id, uuid, name, first_join) VALUES (NULL, '" + p.getUniqueId() + "', '" + p.getName() + "', NOW())");
         executeUpdate("INSERT INTO money (nrp_id, cash, bank) VALUES (" + getNRPID(p) + ", 0, NULL)");
         executeUpdate("INSERT INTO level (nrp_id, level, exp) VALUES (" + getNRPID(p) + ", 1, 0)");
-        executeUpdate("INSERT INTO playtime (id, nrp_id, hours, minutes) VALUES (NULL, " + getNRPID(p) + ", 0, 1)");
+        executeUpdate("INSERT INTO playtime (id, nrp_id, hours, minutes, a_minutes, a_hours) VALUES (NULL, " + getNRPID(p) + ", 0, 1, 0, 0)");
         executeUpdate("INSERT INTO payday (id, nrp_id, time, money) VALUES (NULL, " + getNRPID(p) + ", 1, 0)");
 
         p.setLevel(1);
-        setMoney(p, PaymentType.BANK, 500);
         setMoney(p, PaymentType.CASH, 50);
         p.sendMessage(Messages.INFO + "Du hast dich erfolgreich registriert.");
     }
@@ -721,6 +718,20 @@ public class Script {
             if (rs.next()) {
                 if (rs.getInt("minutes") == 59) {
                     executeAsyncUpdate("UPDATE playtime SET hours=hours+1, minutes=0 WHERE nrp_id=" + getNRPID(p));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void increaseActivePlayTime(Player p) {
+        executeAsyncUpdate("UPDATE playtime SET a_minutes=a_minutes+1 WHERE nrp_id=" + getNRPID(p));
+        try (Statement stmt = main.getConnection().createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT * FROM playtime WHERE nrp_id=" + getNRPID(p))) {
+            if (rs.next()) {
+                if (rs.getInt("a_minutes") == 59) {
+                    executeAsyncUpdate("UPDATE playtime SET a_hours=a_hours+1, a_minutes=0 WHERE nrp_id=" + getNRPID(p));
                 }
             }
         } catch (Exception e) {
@@ -833,6 +844,16 @@ public class Script {
         executeUpdate("UPDATE level SET exp=" + i + " WHERE nrp_id=" + getNRPID(p));
         if (getPlayer(p) != null) {
             updateExpBar(getPlayer(p));
+        }
+    }
+
+    public static void removeEXP(OfflinePlayer p, int exp) {
+        int i = (getExp(getNRPID(p)) - exp);
+        if (i < 0) i = 0;
+        executeUpdate("UPDATE level SET exp=" + i + " WHERE nrp_id=" + getNRPID(p));
+        if (p.isOnline()) {
+            Script.getPlayer(getNRPID(p)).sendMessage("  §c-" + exp + " Exp!");
+            updateExpBar(Script.getPlayer(getNRPID(p)));
         }
     }
 
@@ -991,6 +1012,30 @@ public class Script {
              ResultSet rs = stmt.executeQuery("SELECT * FROM playtime WHERE nrp_id=" + getNRPID(p))) {
             if (rs.next()) {
                 return rs.getInt(hours ? "hours" : "minutes");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public static int getActivePlayTime(Player p, boolean hours) {
+        try (Statement stmt = main.getConnection().createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT * FROM playtime WHERE nrp_id=" + getNRPID(p))) {
+            if (rs.next()) {
+                return rs.getInt(hours ? "a_hours" : "a_minutes");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public static int getActivePlayTime(OfflinePlayer p, boolean hours) {
+        try (Statement stmt = main.getConnection().createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT * FROM playtime WHERE nrp_id=" + getNRPID(p))) {
+            if (rs.next()) {
+                return rs.getInt(hours ? "a_hours" : "a_minutes");
             }
         } catch (Exception e) {
             e.printStackTrace();

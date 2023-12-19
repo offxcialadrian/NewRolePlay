@@ -118,7 +118,7 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
         EXTREMISMUS(7, Punishment.BAN, null, 0, "Extremismus", "Du hast extremistische Äußerungen getätigt."),
         DROHUNG(8, Punishment.BAN, null, TimeUnit.HOURS.toMillis(24), "Drohung", "Du hast anderen Spielern gedroht."),
         BUGUSE(9, Punishment.BAN, null, TimeUnit.HOURS.toMillis(12), "Buguse", "Du hast Spielfehler ausgenutzt."),
-        SUPPORTABUSE(10, Punishment.BAN, null, TimeUnit.HOURS.toMillis(1), "Support Missbrauch", "Du hast das Ticket-System missbraucht.");
+        SUPPORTABUSE(10, Punishment.BAN, null, TimeUnit.HOURS.toMillis(1), "Support_Missbrauch", "Du hast das Ticket-System missbraucht.");
 
 
         int id;
@@ -218,7 +218,7 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
                 p.sendMessage(PREFIX + "Du hast " + Script.getName(tg) + " für " + v.getName() + " gebannt.");
                 tg.sendMessage(PREFIX + "Du wurdest von " + Script.getName(p) + " für " + v.getName() + " gebannt.");
                 tg.sendMessage(PREFIX + "Grund: " + v.getDescription());
-                tg.kickPlayer("§8» §cNRP × New RolePlay §8┃ §cKICK §8« \n\n§8§m------------------------------\n\n§7Du wurdest vom Server gebannt§8.\n\n§7Grund §8× §e" + v.getName() + "\n§7Gebannt bis §8× §e" + "Lebenslang" + "\n\n§7Einen Entbannungsantrag kannst du auf der Webseite stellen.\n\n§8§m------------------------------");
+                tg.kickPlayer("§8» §cNRP × New RolePlay §8┃ §cBANN §8« \n\n§8§m------------------------------\n\n§7Du wurdest vom Server gebannt§8.\n\n§7Grund §8× §e" + v.getName() + "\n§7Gebannt bis §8× §e" + "Lebenslang" + "\n\n§7Einen Entbannungsantrag kannst du auf der Webseite stellen.\n\n§8§m------------------------------");
                 Script.sendTeamMessage(p, ChatColor.RED, "hat " + Script.getName(tg) + " für " + v.getName() + " gebannt.", true);
                 Script.executeUpdate("INSERT INTO `ban` (id, ban_id, nrp_id, since, until, reason, banned_by) VALUES (NULL, '" + generatePunishID() + "', '" + Script.getNRPID(tg) + "', '" + System.currentTimeMillis() + "', " + (v.getDuration() > 0 ? untilLong : "NULL") + ", '" + v.getName() + "', '" + Script.getNRPID(p) + "');");
                 Log.WARNING.write(tg, "wurde von " + Script.getName(p) + " für " + v.getName() + " gebannt.");
@@ -228,7 +228,7 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
                 p.sendMessage(PREFIX + "Du hast " + Script.getName(tg) + " bis zum " + dateFormat.format(until) + " Uhr für " + v.getName() + " gebannt.");
                 tg.sendMessage(PREFIX + "Du wurdest von " + Script.getName(p) + " bis zum " + dateFormat.format(until) + " Uhr für " + v.getName() + " gebannt.");
                 tg.sendMessage(PREFIX + "Grund: " + v.getDescription());
-                tg.kickPlayer("§8» §cNRP × New RolePlay §8┃ §cKICK §8« \n\n§8§m------------------------------\n\n§7Du wurdest vom Server gebannt§8.\n\n§7Grund §8× §e" + v.getName() + "\n§7Gebannt bis §8× §e" + dateFormat.format(until) + "\n§7Einen Entbannungsantrag kannst du auf der Webseite stellen.\n\n§8§m------------------------------");
+                tg.kickPlayer("§8» §cNRP × New RolePlay §8┃ §cBANN §8« \n\n§8§m------------------------------\n\n§7Du wurdest vom Server gebannt§8.\n\n§7Grund §8× §e" + v.getName() + "\n§7Gebannt bis §8× §e" + dateFormat.format(until) + "\n§7Einen Entbannungsantrag kannst du auf der Webseite stellen.\n\n§8§m------------------------------");
                 Script.sendTeamMessage(p, ChatColor.RED, "hat " + Script.getName(tg) + " bis zum " + dateFormat.format(until) + " Uhr für " + v.getName() + " gebannt.", true);
                 Script.executeUpdate("INSERT INTO `ban` (id, ban_id, nrp_id, since, until, reason, banned_by) VALUES (NULL, '" + generatePunishID() + "', '" + Script.getNRPID(tg) + "', '" + System.currentTimeMillis() + "', " + (v.getDuration() > 0 ? untilLong : "NULL") + ", '" + v.getName() + "', '" + Script.getNRPID(p) + "');");
                 Log.WARNING.write(tg, "wurde von " + Script.getName(p) + " bis zum " + dateFormat.format(until) + " Uhr für " + v.getName() + " gebannt.");

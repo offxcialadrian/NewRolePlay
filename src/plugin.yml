@@ -1,6 +1,6 @@
 name: NewRolePlay
 main: de.newrp.main
-version: 0.1
+version: ALPHA
 description: NewRP Serversystem
 author: NewRP Entwicklungs-Team
 api-version: 1.16
@@ -218,3 +218,20 @@ commands:
   unrent:
     description: unrent a player
     aliases: [ dismissrent ]
+  resetpassword:
+    description: reset a players password
+    aliases: [ resetpasswort ]
+  spectate:
+    description: spectate a player
+    aliases: [ spec ]
+  hauskasse:
+    description: view the hauskasse
+    aliases: [ housekasse, hkasse ]
+  hausaddon:
+    description: view the hausaddons
+    aliases: [ housesaddons, haddons ]
+  addleaderrechte:
+    description: add leaderrechte to a player
+    aliases: [ giveleaderrechte ]
+  removeleaderrechte:
+    description: remove leaderrechte from a player

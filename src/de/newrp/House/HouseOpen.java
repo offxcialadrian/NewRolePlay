@@ -2,6 +2,7 @@ package de.newrp.House;
 
 import de.newrp.API.Debug;
 import de.newrp.API.Script;
+import de.newrp.Administrator.BuildMode;
 import de.newrp.Administrator.SDuty;
 import de.newrp.Berufe.Beruf;
 import org.bukkit.Location;
@@ -29,12 +30,14 @@ public class HouseOpen implements Listener {
             if (b == null) return;
             if (b.getType().equals(Material.OAK_DOOR)) {
                 Player p = e.getPlayer();
-                e.setCancelled(!(SDuty.isSDuty(p) || canOpen(p, e.getClickedBlock())));
+                e.setCancelled(!canOpen(p, e.getClickedBlock()));
             }
         }
     }
 
     public boolean canOpen(Player p, Block b) {
+        if(SDuty.isSDuty(p)) return true;
+        if(BuildMode.isInBuildMode(p)) return true;
         if (isPlayersDoor(p, b)) return true;
         return berufsDoor(p, b);
     }

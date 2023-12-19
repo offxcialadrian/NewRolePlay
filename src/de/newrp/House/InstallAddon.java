@@ -37,6 +37,14 @@ public class InstallAddon implements CommandExecutor {
             return true;
         }
 
+        if(addon == HouseAddon.SLOT) {
+            house.setSlots(house.getSlots() + 1);
+            Log.NORMAL.write(p, "hat das Addon " + addon.getName() + " installiert.");
+            p.sendMessage( "§8[§6Haus§8] §6" + Messages.ARROW + " Du hast das Addon " + addon.getName() + " installiert.");
+            PayShop.houseaddon.remove(p.getName());
+            return true;
+        }
+
         house.addAddon(addon);
         Log.NORMAL.write(p, "hat das Addon " + addon.getName() + " installiert.");
         p.sendMessage( "§8[§6Haus§8] §6" + Messages.ARROW + " Du hast das Addon " + addon.getName() + " installiert.");

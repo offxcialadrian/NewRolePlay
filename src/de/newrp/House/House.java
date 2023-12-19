@@ -142,9 +142,6 @@ public class House {
     }
 
     public static List<House> getHouses(int id) {
-        if (PLAYER_HOUSES.containsKey(id)) {
-            return PLAYER_HOUSES.get(id);
-        }
         ArrayList<Integer> houses = new ArrayList<>();
         try (Statement stmt = main.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT houseID FROM house_bewohner WHERE mieterID = " + id + " ORDER BY houseID")) {
@@ -155,7 +152,6 @@ public class House {
             e.printStackTrace();
         }
         if (houses.isEmpty()) {
-            PLAYER_HOUSES.put(id, new ArrayList<>());
             return new ArrayList<>();
         } else {
             List<House> list = new ArrayList<>();
@@ -164,7 +160,6 @@ public class House {
                     list.add(h);
                 }
             }
-            PLAYER_HOUSES.put(id, list);
             return list;
         }
     }
@@ -338,16 +333,7 @@ public class House {
     public void addAddon(HouseAddon addon) {
         if (!this.addons.contains(addon)) this.addons.add(addon);
         final int houseID = this.houseID;
-        Bukkit.getScheduler().runTaskAsynchronously(main.getInstance(), () -> {
-            try (Statement stmt = main.getConnection().createStatement();
-                 ResultSet rs = stmt.executeQuery("SELECT houseAddonID FROM house_addon WHERE houseID = " + houseID + " AND addonID = " + addon.getID())) {
-                if (!rs.next()) {
-                    Script.executeAsyncUpdate("INSERT INTO house_addon (houseID, addonID) VALUES (" + houseID + ", " + addon.getID() + ");");
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        });
+        Script.executeAsyncUpdate("INSERT INTO house_addon (houseID, addonID) VALUES (" + houseID + ", " + addon.getID() + ");");
     }
 
     public void removeAddon(HouseAddon addon) {
@@ -362,16 +348,7 @@ public class House {
     public void addMieter(Mieter mieter, boolean vermieter) {
         if (!this.mieter.contains(mieter)) this.mieter.add(mieter);
         final int houseID = this.houseID;
-        Bukkit.getScheduler().runTaskAsynchronously(main.getInstance(), () -> {
-            try (Statement stmt = main.getConnection().createStatement();
-                 ResultSet rs = stmt.executeQuery("SELECT bewohnerID FROM house_bewohner WHERE houseID = " + houseID + " AND mieterID = " + mieter.getID())) {
-                if (!rs.next()) {
-                    Script.executeAsyncUpdate("INSERT INTO house_bewohner (houseID, mieterID, vermieter, miete, nebenkosten, immobilienmarkt) VALUES (" + houseID + ", " + mieter.getID() + ", " + vermieter + ", " + mieter.getMiete() + ", 0, FALSE);");
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        });
+        Script.executeAsyncUpdate("INSERT INTO house_bewohner (houseID, mieterID, vermieter, miete, nebenkosten, immobilienmarkt) VALUES (" + houseID + ", " + mieter.getID() + ", " + vermieter + ", " + mieter.getMiete() + ", 0, FALSE);");
         if (PLAYER_HOUSES.containsKey(mieter.getID())) {
             PLAYER_HOUSES.get(mieter.getID()).add(this);
         } else {
@@ -470,11 +447,19 @@ public class House {
     public void updateSign(String username) {
         if (this.sign.getBlock().getType().equals(Material.OAK_WALL_SIGN)) {
             Sign s = (Sign) this.sign.getBlock().getState();
-            s.setLine(0, "");
-            s.setLine(1, "== " + this.houseID + " ==");
-            s.setLine(2, username);
-            s.setLine(3, "");
-            s.update(true);
+            if (this.owner != 0 && username != null) {
+                s.setLine(0, "");
+                s.setLine(1, "== " + this.houseID + " ==");
+                s.setLine(2, username);
+                s.setLine(3, "");
+                s.update(true);
+            } else {
+                s.setLine(0, "");
+                s.setLine(1, "== " + this.houseID + " ==");
+                s.setLine(2, "Frei");
+                s.setLine(3, this.price + "€");
+                s.update(true);
+            }
         }
     }
 
@@ -504,7 +489,7 @@ public class House {
             if (h.getID() == getID()) return true;
             i++;
         }
-        return true;
+        return false;
     }
 
     public int getMiete(int userID) {

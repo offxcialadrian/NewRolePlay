@@ -19,10 +19,14 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.inventory.ItemStack;
+
+import java.util.ArrayList;
 
 public class BuildMode implements CommandExecutor, Listener {
 
     public static String PREFIX = "§8[§eBuildMode§8] §e" + Messages.ARROW + " ";
+    public static ArrayList<String> wasBuildMode = new ArrayList<>();
 
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
@@ -120,6 +124,7 @@ public class BuildMode implements CommandExecutor, Listener {
         if(!Script.hasRank(p, Rank.ADMINISTRATOR, false)) p.setOp(false);
         p.getInventory().clear();
         Chache.loadInventory(p);
+        wasBuildMode.remove(p.getName());
         p.setGameMode(GameMode.SURVIVAL);
         for (Player online : Bukkit.getOnlinePlayers()) {
             online.showPlayer(main.getInstance(), p);
@@ -134,6 +139,8 @@ public class BuildMode implements CommandExecutor, Listener {
         if(Script.isInTestMode()) p.setOp(true);
         Chache.saveInventory(p);
         p.getInventory().clear();
+        wasBuildMode.add(p.getName());
+        if(Script.hasRank(p, Rank.ADMINISTRATOR, false)) p.getInventory().addItem(new ItemStack(Material.COMPASS));
         p.setGameMode(GameMode.CREATIVE);
         for (Player online : Bukkit.getOnlinePlayers()) {
             if (!Script.hasRank(online, Rank.SUPPORTER, false))

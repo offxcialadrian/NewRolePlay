@@ -60,7 +60,7 @@ public class Team {
     }
 
     public static boolean isTeamLeader(Player p) {
-        return Script.getBoolean(p, "teams", "leader");
+        return Script.getInt(p, "teams", "leader") == 1;
     }
 
     public static Teams getTeam(Player p) {

@@ -63,6 +63,7 @@ public class JoinBeruf implements CommandExecutor, Listener {
             Script.executeUpdate("INSERT INTO berufe (nrp_id, berufID, salary, abteilung, leader) VALUES ('" + Script.getNRPID(p) + "', '" + beruf.getID() + "', '0', '0', '1')");
             p.sendMessage(PREFIX + "Du bist nun Teil der " + beruf.getName() + ".");
             Script.sendTeamMessage(p, ChatColor.YELLOW, "ist nun Teil der " + beruf.getName() + ".", true);
+            p.sendMessage(Messages.INFO + "Du hast automatisch die Leaderrechte erhalten.");
             if (Arbeitslosengeld.hasArbeitslosengeld(p))
                 p.sendMessage(Messages.INFO + "Dein Arbeitslosengeld wurde automatisch gekündigt.");
             Arbeitslosengeld.deleteArbeitslosengeld(p);

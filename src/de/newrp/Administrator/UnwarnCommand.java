@@ -45,7 +45,6 @@ public class UnwarnCommand implements CommandExecutor {
             }
 
             tg.sendMessage(Punish.PREFIX + "Du hast einen Warn von " + p.getName() + " entfernt bekommen.");
-            return true;
         }
 
 

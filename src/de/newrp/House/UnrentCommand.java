@@ -46,7 +46,15 @@ public class UnrentCommand implements CommandExecutor {
         }
 
         if(args.length == 1) {
+
             if(!Script.isInt(args[0])) {
+                p.sendMessage(Messages.ERROR + "Bitte gebe eine valide Hausnummer an.");
+                return true;
+            }
+
+            try {
+                Integer.parseInt(args[0]);
+            } catch (NumberFormatException e) {
                 p.sendMessage(Messages.ERROR + "Bitte gebe eine valide Hausnummer an.");
                 return true;
             }
@@ -86,12 +94,12 @@ public class UnrentCommand implements CommandExecutor {
             return true;
         }
 
-        if (!Script.isInt(args[1])) {
+        if (!Script.isInt(args[0])) {
             p.sendMessage(Messages.ERROR + "/unrent [Spieler] [Haus]");
             return true;
         }
 
-        if (!Script.isInt(args[2])) {
+        if (!Script.isInt(args[1])) {
             p.sendMessage(Messages.ERROR + "/unrent [Spieler] [Haus]");
             return true;
         }

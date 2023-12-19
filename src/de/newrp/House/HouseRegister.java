@@ -469,9 +469,8 @@ public class HouseRegister implements CommandExecutor, Listener {
                     } else if (b.getType().equals(Material.OAK_DOOR)) {
                         boolean top;
                         top = b.getRelative(BlockFace.DOWN).getType().equals(b.getType());
-
                         HouseRegister.getRegistration(p).addDoor(loc);
-                        HouseRegister.getRegistration(p).addDoor(loc.clone().add(0, (top ? -1 : 0), 0));
+                        HouseRegister.getRegistration(p).addDoor(loc.clone().add(0, (top ? -1 : +1), 0));
 
                         p.sendMessage(House.PREFIX + "Du hast eine Tür mit der Position " + loc.getBlockX() + "/" + loc.getBlockY() + "/" + loc.getBlockZ() + " hinzugefügt.");
                     } else {

@@ -9,9 +9,12 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.text.DecimalFormat;
 import java.util.Map;
 
 public class CheckPlayerCommand implements CommandExecutor {
+
+    DecimalFormat df = new DecimalFormat("#.#");
 
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
@@ -53,9 +56,9 @@ public class CheckPlayerCommand implements CommandExecutor {
             p.sendMessage("§7Geld §8× §e" + Script.getMoney(offtg, PaymentType.CASH) + "€ | " + Script.getMoney(offtg, PaymentType.BANK) + "€");
             p.sendMessage("§7Geschlecht §8× §e" + Script.getGender(offtg).getName());
             p.sendMessage("§7Team §8× §e" + (Team.getTeam(offtg) != null ? Team.getTeam(offtg).getName() : "Kein Team"));
-            p.sendMessage("§7PlayTime §8× §e" + Script.getPlayTime(offtg, true) + ":§e" + String.format("%02d", Script.getPlayTime(offtg, false)) + " Stunden");
+            p.sendMessage("§7PlayTime §8× §e" + Script.getPlayTime(offtg, true) + ":§e" + String.format("%02d", Script.getPlayTime(offtg, false)) + " Stunden " + " §8(§e" + Script.getActivePlayTime(offtg, true) + ":§e" + String.format("%02d", Script.getActivePlayTime(offtg, false)) + " Stunden§8)");
             p.sendMessage("§7Level §8× §e" + Script.getLevel(offtg));
-            p.sendMessage("§7Beruf §8× §e" + (Beruf.hasBeruf(offtg) ? Beruf.getBeruf(offtg).getName() : "Kein Beruf"));
+            p.sendMessage("§7Beruf §8× §e" + (Beruf.hasBeruf(offtg) ? Beruf.getBeruf(offtg).getName() : "Kein Beruf") + (Beruf.isLeader(offtg) ? " §8(§eLeader§8)" : ""));
             StringBuilder houses = new StringBuilder();
             for(House house : House.getHouses(Script.getNRPID(offtg))) {
                 if(House.getHouses(Script.getNRPID(offtg)).size() == 1) {
@@ -84,11 +87,11 @@ public class CheckPlayerCommand implements CommandExecutor {
         p.sendMessage("§7UUID §8× §e" + tg.getUniqueId());
         p.sendMessage("§7Geschlecht §8× §e" + Script.getGender(tg).getName());
         p.sendMessage("§7Team §8× §e" + (Team.getTeam(tg) != null ? Team.getTeam(tg).getName() : "Kein Team"));
-        p.sendMessage("§7PlayTime §8× §e" + Script.getPlayTime(tg, true) + ":§e" + String.format("%02d", Script.getPlayTime(tg, false)) + " Stunden");
+        p.sendMessage("§7PlayTime §8× §e" + Script.getPlayTime(tg, true) + ":§e" + String.format("%02d", Script.getPlayTime(tg, false)) + " Stunden " + " §8(§e" + Script.getActivePlayTime(tg, true) + ":§e" + String.format("%02d", Script.getActivePlayTime(tg, false)) + " Stunden§8)");
         p.sendMessage("§7PayDay §8× §e" + PayDay.getPayDayTime(tg) + "/60 Minuten");
         p.sendMessage("§7Exp §8× §e" + Script.getExp(tg) + "/" + Script.getLevelCost(tg) + " Exp");
-        p.sendMessage("§7Health §8× §e" + (tg.getHealth()/2) + "/" + (tg.getMaxHealth()/2) + " HP");
-        p.sendMessage("§7Beruf §8× §e" + (Beruf.hasBeruf(tg) ? Beruf.getBeruf(tg).getName() : "Kein Beruf"));
+        p.sendMessage("§7Health §8× §e" + df.format(tg.getHealth()/2) + "/" + df.format(tg.getMaxHealth()/2) + " HP");
+        p.sendMessage("§7Beruf §8× §e" + (Beruf.hasBeruf(tg) ? Beruf.getBeruf(tg).getName() : "Kein Beruf") + (Beruf.isLeader(tg) ? " §8(§eLeader§8)" : ""));
         StringBuilder houses = new StringBuilder();
         for(House house : House.getHouses(Script.getNRPID(tg))) {
             if(House.getHouses(Script.getNRPID(tg)).size() == 1) {

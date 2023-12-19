@@ -71,6 +71,11 @@ public class RentCommand implements CommandExecutor {
             return true;
         }
 
+        if(p.getLocation().distance(tg.getLocation()) > 5) {
+            p.sendMessage(Messages.ERROR + "Der Spieler ist zu weit entfernt.");
+            return true;
+        }
+
         p.sendMessage(PREFIX + "Du hast " + Script.getName(tg) + " einen Mietvertrag für das Haus " + houseID + " in Höhe von " + price + "€ angeboten.");
         tg.sendMessage(PREFIX + Script.getName(p) + " hat dir einen Mietvertrag für das Haus " + houseID + " in Höhe von " + price + "€ angeboten.");
         Script.sendAcceptMessage(tg);

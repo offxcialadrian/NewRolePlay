@@ -166,6 +166,12 @@ public class main extends JavaPlugin {
         getCommand("news").setExecutor(new NewsCommand());
         getCommand("mieter").setExecutor(new MieterCommand());
         getCommand("unrent").setExecutor(new UnrentCommand());
+        getCommand("resetpassword").setExecutor(new ResetPassword());
+        getCommand("spectate").setExecutor(new Spectate());
+        getCommand("hauskasse").setExecutor(new Housekasse());
+        getCommand("hausaddon").setExecutor(new HausAddonCommand());
+        getCommand("addleaderrechte").setExecutor(new GiveLeaderrechte());
+        getCommand("removeleaderrechte").setExecutor(new RemoveLeaderrechte());
 
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new SDuty(), this);
@@ -200,6 +206,7 @@ public class main extends JavaPlugin {
         pm.registerEvents(new HouseOpen(), this);
         pm.registerEvents(new AddBerufsDoor(), this);
         pm.registerEvents(new FriedhofListener(), this);
+        pm.registerEvents(new Spectate(), this);
 
         new PayDay().runTaskTimerAsynchronously(this, 60 * 20L, 60 * 20L);
         new AsyncMinute().runTaskTimerAsynchronously(this, 60 * 20L, 60 * 20L);

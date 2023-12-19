@@ -6,6 +6,7 @@ import de.newrp.API.Script;
 import de.newrp.main;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -54,6 +55,10 @@ public class Passwort implements CommandExecutor, Listener {
     }
 
     public static void removePasswort(Player p) {
+        Script.executeAsyncUpdate("DELETE FROM password WHERE nrp_id=" + Script.getNRPID(p));
+    }
+
+    public static void removePasswort(OfflinePlayer p) {
         Script.executeAsyncUpdate("DELETE FROM password WHERE nrp_id=" + Script.getNRPID(p));
     }
 

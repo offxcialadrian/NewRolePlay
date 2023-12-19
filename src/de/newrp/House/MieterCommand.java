@@ -21,7 +21,7 @@ public class MieterCommand implements CommandExecutor {
                 return true;
             }
 
-            if(!h.hasAccess(Script.getNRPID(p))) {
+            if(!h.livesInHouse(p)) {
                 p.sendMessage(Messages.ERROR + "Du wohnst nicht in diesem Haus.");
                 return true;
             }
@@ -29,7 +29,7 @@ public class MieterCommand implements CommandExecutor {
             p.sendMessage("§6=== Haus " + h.getID() + " ===");
             for(House.Mieter mieter : h.getMieter()) {
                 OfflinePlayer tg = Script.getOfflinePlayer(mieter.getID());
-                p.sendMessage("§8» §6" + mieter.getName() + " §8× §6" + mieter.getMiete() + " §8× §6" + (!tg.isOnline()?"Offline seit " + Script.dateFormat2.format(Script.getLastDisconnect(tg)):"Online"));
+                p.sendMessage("§8» §6" + mieter.getName() + (Script.getNRPID(p)==h.getOwner()?" §8× §6" + mieter.getMiete()+ "€":"") +  " §8× §6" + (!tg.isOnline()?"Offline seit " + Script.dateFormat2.format(Script.getLastDisconnect(tg)):"Online"));
             }
             return true;
         }
@@ -48,7 +48,7 @@ public class MieterCommand implements CommandExecutor {
                 return true;
             }
 
-            if(!h.hasAccess(Script.getNRPID(p))) {
+            if(!h.livesInHouse(p)) {
                 p.sendMessage(Messages.ERROR + "Du wohnst nicht in diesem Haus.");
                 return true;
             }
@@ -56,7 +56,7 @@ public class MieterCommand implements CommandExecutor {
             p.sendMessage("§6=== Haus " + h.getID() + " ===");
             for(House.Mieter mieter : h.getMieter()) {
                 OfflinePlayer tg = Script.getOfflinePlayer(mieter.getID());
-                p.sendMessage("§8» §6" + mieter.getName() + " §8× §6" + mieter.getMiete() + "€ §8× §6" + (!tg.isOnline()?"Offline seit " + Script.dateFormat2.format(Script.getLastDisconnect(tg)):"Online"));
+                p.sendMessage("§8» §6" + mieter.getName() + (Script.getNRPID(p)==h.getOwner()?" §8× §6" + mieter.getMiete()+ "€":"") +  " §8× §6" + (!tg.isOnline()?"Offline seit " + Script.dateFormat2.format(Script.getLastDisconnect(tg)):"Online"));
             }
 
         }

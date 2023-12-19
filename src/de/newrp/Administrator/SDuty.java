@@ -2,6 +2,7 @@ package de.newrp.Administrator;
 
 import de.newrp.API.*;
 import de.newrp.Government.Stadtkasse;
+import de.newrp.Player.AFK;
 import de.newrp.Ticket.TicketCommand;
 import de.newrp.Ticket.TicketTopic;
 import org.bukkit.Bukkit;
@@ -111,7 +112,7 @@ public class SDuty implements CommandExecutor, Listener {
         Score platzhalter1 = o.getScore(ChatColor.RED + "");
         Score platzhalter2 = o.getScore(ChatColor.YELLOW + "");
         Score score1 = o.getScore(ChatColor.GRAY + "§bOnline§8:");
-        Score score2 = o.getScore(ChatColor.DARK_AQUA + " §8» §e" + Bukkit.getOnlinePlayers().size() + "§8/§e" + Bukkit.getMaxPlayers());
+        Score score2 = o.getScore(ChatColor.DARK_AQUA + " §8» §a" + (Bukkit.getOnlinePlayers().size()- AFK.afk.size()) + " §8| §c" + AFK.afk.size() + " §8| §e" + Bukkit.getOnlinePlayers().size());
         Score score3 = o.getScore(ChatColor.GRAY + "§bTickets§8:");
         Score score4 = o.getScore(ChatColor.DARK_AQUA + " §8» §eBug: " + amount.get(TicketTopic.BUG));
         Score score5 = o.getScore(ChatColor.DARK_AQUA + " §8» §eFrage: " + amount.get(TicketTopic.FRAGE));
@@ -154,7 +155,7 @@ public class SDuty implements CommandExecutor, Listener {
                 Score platzhalter1 = o.getScore(ChatColor.RED + "");
                 Score platzhalter2 = o.getScore(ChatColor.YELLOW + "");
                 Score score1 = o.getScore(ChatColor.GRAY + "§bOnline§8:");
-                Score score2 = o.getScore(ChatColor.DARK_AQUA + " §8» §e" + Bukkit.getOnlinePlayers().size() + "§8/§e" + Bukkit.getMaxPlayers());
+                Score score2 = o.getScore(ChatColor.DARK_AQUA + " §8» §a" + (Bukkit.getOnlinePlayers().size()- AFK.afk.size()) + " §8| §c" + AFK.afk.size() + " §8| §e" + Bukkit.getOnlinePlayers().size());
                 Score score3 = o.getScore(ChatColor.GRAY + "§bTickets§8:");
                 Score score4 = o.getScore(ChatColor.DARK_AQUA + " §8» §eBug: " + amount.get(TicketTopic.BUG));
                 Score score5 = o.getScore(ChatColor.DARK_AQUA + " §8» §eFrage: " + amount.get(TicketTopic.FRAGE));

@@ -91,7 +91,7 @@ public class Lotto implements CommandExecutor {
                     }
                 }
             } else {
-                Bukkit.broadcastMessage(NEWS + "Es gab keinen Gewinner. Der Jackpot von " + jackpot + "€ wird auf den nächsten Sonntag übertragen!");
+                Bukkit.broadcastMessage(NEWS + "Es gab keinen Gewinner. Der Jackpot von " + jackpot + "€ wird auf die nächste Ziehung übertragen!");
             }
             for (int id : getLottoPlayer()) {
                 if (!winner.contains(id)) {
