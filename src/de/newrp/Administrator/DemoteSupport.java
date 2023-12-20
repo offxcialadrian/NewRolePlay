@@ -4,6 +4,7 @@ import de.newrp.API.Log;
 import de.newrp.API.Messages;
 import de.newrp.API.Rank;
 import de.newrp.API.Script;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -31,9 +32,9 @@ public class DemoteSupport implements CommandExecutor {
             return true;
         }
 
-        Player tg = Script.getPlayer(args[0]);
+        OfflinePlayer tg = Script.getPlayer(args[0]);
 
-        if (tg == null) {
+        if (Script.getNRPID(tg) == 0) {
             p.sendMessage(Messages.PLAYER_NOT_FOUND);
             return true;
         }
@@ -43,10 +44,11 @@ public class DemoteSupport implements CommandExecutor {
         return false;
     }
 
-    private static void demote(Player p, Player tg) {
+    private static void demote(Player p, OfflinePlayer tg) {
         Rank rank = Rank.values()[Script.getRank(tg).ordinal() - 1];
         p.sendMessage(PREFIX + "Du hast " + tg.getName() + " zu " + rank.getName() + " degradiert.");
-        tg.sendMessage(PREFIX + "Du wurdest zu " + rank.getName() + " degradiert.");
+        if(tg.isOnline())
+            tg.getPlayer().sendMessage(PREFIX + "Du wurdest zu " + rank.getName() + " degradiert.");
         Log.HIGH.write(p, "hat " + tg.getName() + " zu " + rank.getName() + " degradiert.");
         Log.WARNING.write(tg, "wurde von " + Script.getName(p) + " zu " + rank.getName() + " degradiert.");
         Script.executeUpdate("UPDATE ranks SET rank_id=" + rank.getID() + " WHERE nrp_id=" + Script.getNRPID(tg));

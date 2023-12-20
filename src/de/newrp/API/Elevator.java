@@ -23,7 +23,7 @@ public class Elevator implements Listener {
     private static final HashMap<String, Double> progress = new HashMap<>();
 
     public enum ElevatorAPI {
-        KRANKENHAUS(0, "X3", new Location[]{
+        X3(0, "X3", new Location[]{
                 new Location(Script.WORLD, 313.5153370885389, 69.0, 207.5364310836603, 89.839485f, 0.16981012f),
                 new Location(Script.WORLD, 313.4076426478934, 75.0, 207.4999539989459, 89.83922f, 0.16050917f),
                 new Location(Script.WORLD, 313.414672048562, 81.0, 207.4671358359385, 89.6696f, 0.83986866f),

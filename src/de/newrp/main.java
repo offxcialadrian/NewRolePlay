@@ -16,11 +16,16 @@ import de.newrp.House.*;
 import de.newrp.Medic.ReviveCommand;
 import de.newrp.News.NewsCommand;
 import de.newrp.Player.*;
+import de.newrp.Police.CheckGun;
 import de.newrp.Runnable.AsyncDaylightCycle;
 import de.newrp.Runnable.AsyncHour;
 import de.newrp.Runnable.AsyncMinute;
 import de.newrp.Shop.*;
 import de.newrp.Ticket.*;
+import de.newrp.Waffen.GetAmmo;
+import de.newrp.Waffen.GetGun;
+import de.newrp.Waffen.Waffen;
+import de.newrp.Waffen.WaffenDamage;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
@@ -172,6 +177,18 @@ public class main extends JavaPlugin {
         getCommand("hausaddon").setExecutor(new HausAddonCommand());
         getCommand("addleaderrechte").setExecutor(new GiveLeaderrechte());
         getCommand("removeleaderrechte").setExecutor(new RemoveLeaderrechte());
+        getCommand("removeentities").setExecutor(new ButcherCommand());
+        getCommand("flyspeed").setExecutor(new Flyspeed());
+        getCommand("getlocation").setExecutor(new GetLocation());
+        getCommand("rnrp").setExecutor(new RNRPChat());
+        getCommand("duty").setExecutor(new Duty());
+        getCommand("msg").setExecutor(new MSG());
+        getCommand("getgun").setExecutor(new GetGun());
+        getCommand("getammo").setExecutor(new GetAmmo());
+        getCommand("checkgun").setExecutor(new CheckGun());
+        getCommand("achievements").setExecutor(new AchievementCommand());
+        getCommand("setteamleader").setExecutor(new SetTeamLeader());
+        getCommand("removeteamleader").setExecutor(new RemoveTeamLeader());
 
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new SDuty(), this);
@@ -207,6 +224,10 @@ public class main extends JavaPlugin {
         pm.registerEvents(new AddBerufsDoor(), this);
         pm.registerEvents(new FriedhofListener(), this);
         pm.registerEvents(new Spectate(), this);
+        pm.registerEvents(new GetLocation(), this);
+        pm.registerEvents(new Waffen(), this);
+        pm.registerEvents(new WaffenDamage(), this);
+        pm.registerEvents(new GetGun(), this);
 
         new PayDay().runTaskTimerAsynchronously(this, 60 * 20L, 60 * 20L);
         new AsyncMinute().runTaskTimerAsynchronously(this, 60 * 20L, 60 * 20L);

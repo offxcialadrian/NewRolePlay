@@ -3,6 +3,7 @@ package de.newrp.Administrator;
 import de.newrp.API.*;
 import de.newrp.Berufe.Beruf;
 import de.newrp.main;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -34,7 +35,7 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
         Player p = (Player) cs;
         Violation v;
 
-        if (!Script.hasRank(p, Rank.MODERATOR, false)) {
+        if (!Script.hasRank(p, Rank.MODERATOR, true)) {
             p.sendMessage(Messages.NO_PERMISSION);
             return true;
         }
@@ -50,6 +51,11 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
         }
 
         v = Violation.getViolationByName(args[1]);
+
+        if(v != Violation.SICHERHEITSBANN && !Script.hasRank(p, Rank.MODERATOR, false)) {
+            p.sendMessage(Messages.NO_PERMISSION);
+            return true;
+        }
 
         if (v == null) {
             p.sendMessage(Messages.ERROR + "Verstoß nicht gefunden.");
@@ -118,7 +124,9 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
         EXTREMISMUS(7, Punishment.BAN, null, 0, "Extremismus", "Du hast extremistische Äußerungen getätigt."),
         DROHUNG(8, Punishment.BAN, null, TimeUnit.HOURS.toMillis(24), "Drohung", "Du hast anderen Spielern gedroht."),
         BUGUSE(9, Punishment.BAN, null, TimeUnit.HOURS.toMillis(12), "Buguse", "Du hast Spielfehler ausgenutzt."),
-        SUPPORTABUSE(10, Punishment.BAN, null, TimeUnit.HOURS.toMillis(1), "Support_Missbrauch", "Du hast das Ticket-System missbraucht.");
+        SUPPORTABUSE(10, Punishment.BAN, null, TimeUnit.HOURS.toMillis(1), "Support_Missbrauch", "Du hast das Ticket-System missbraucht."),
+        RECHTEMISSBRAUCH(11, Punishment.BAN, Punishment.WARN, TimeUnit.DAYS.toMillis(7), "Rechte_Missbrauch", "Du hast deine Rechte missbraucht."),
+        SICHERHEITSBANN(12, Punishment.BAN, null, 0, "Sicherheitsbann", "Du wurdest zur Sicherheit gebannt. Sollte dir der Grund nicht bekannt sein, melde dich bei uns im Support.");
 
 
         int id;
@@ -223,6 +231,7 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
                 Script.executeUpdate("INSERT INTO `ban` (id, ban_id, nrp_id, since, until, reason, banned_by) VALUES (NULL, '" + generatePunishID() + "', '" + Script.getNRPID(tg) + "', '" + System.currentTimeMillis() + "', " + (v.getDuration() > 0 ? untilLong : "NULL") + ", '" + v.getName() + "', '" + Script.getNRPID(p) + "');");
                 Log.WARNING.write(tg, "wurde von " + Script.getName(p) + " für " + v.getName() + " gebannt.");
                 Log.HIGH.write(p, "hat " + Script.getName(tg) + " für " + v.getName() + " gebannt.");
+                Bukkit.broadcastMessage(Script.PREFIX + "§c" + Script.getName(tg) + " wurde von " + Script.getName(p) + " für " + v.getName() + " gebannt.");
                 if(Beruf.isLeader(p)) Script.setInt(p, "berufe", "leader", 0);
             } else {
                 p.sendMessage(PREFIX + "Du hast " + Script.getName(tg) + " bis zum " + dateFormat.format(until) + " Uhr für " + v.getName() + " gebannt.");
@@ -233,6 +242,7 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
                 Script.executeUpdate("INSERT INTO `ban` (id, ban_id, nrp_id, since, until, reason, banned_by) VALUES (NULL, '" + generatePunishID() + "', '" + Script.getNRPID(tg) + "', '" + System.currentTimeMillis() + "', " + (v.getDuration() > 0 ? untilLong : "NULL") + ", '" + v.getName() + "', '" + Script.getNRPID(p) + "');");
                 Log.WARNING.write(tg, "wurde von " + Script.getName(p) + " bis zum " + dateFormat.format(until) + " Uhr für " + v.getName() + " gebannt.");
                 Log.HIGH.write(p, "hat " + Script.getName(tg) + " bis zum " + dateFormat.format(until) + " Uhr für " + v.getName() + " gebannt.");
+                Bukkit.broadcastMessage(Script.PREFIX + "§c" + Script.getName(tg) + " wurde von " + Script.getName(p) + " bis zum " + dateFormat.format(until) + " Uhr für " + v.getName() + " gebannt.");
             }
         }
 
@@ -264,6 +274,7 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
             Log.WARNING.write(tg, "wurde von " + Script.getName(p) + " für " + v.getName() + " gekickt.");
             Log.HIGH.write(p, "hat " + Script.getName(tg) + " für " + v.getName() + " gekickt.");
             tg.kickPlayer("§8» §cNRP × New RolePlay §8┃ §cKICK §8« \n\n§8§m------------------------------\n\n§7Du wurdest vom Server gekickt§8.\n\n§7Grund §8× §e" + v.getDescription() + "\n\n§8§m------------------------------");
+            Bukkit.broadcastMessage(Script.PREFIX + "§c" + Script.getName(tg) + " wurde von " + Script.getName(p) + " für " + v.getName() + " gekickt.");
         }
 
         if (punishment == Punishment.WARN || secondaryPunishment == Punishment.WARN) {
@@ -277,6 +288,7 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
             if(getWarns(tg) >= 3) {
                 Script.executeUpdate("INSERT INTO `ban` (id, ban_id, nrp_id, since, until, reason, banned_by) VALUES (NULL, '" + generatePunishID() + "', '" + Script.getNRPID(tg) + "', '" + System.currentTimeMillis() + "', NULL, 'maximale Anzahl an Warns überschritten', '0');");
                 Script.sendTeamMessage(PREFIX + tg.getName() + " wurde automatisch gebannt (3/3 Warns)");
+                Bukkit.broadcastMessage(Script.PREFIX + "§c" + Script.getName(tg) + " wurde automatisch gebannt (3/3 Warns)");
             }
         }
 

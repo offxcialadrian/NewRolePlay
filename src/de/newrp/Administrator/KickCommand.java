@@ -3,6 +3,7 @@ package de.newrp.Administrator;
 import de.newrp.API.Messages;
 import de.newrp.API.Rank;
 import de.newrp.API.Script;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -53,6 +54,7 @@ public class KickCommand implements CommandExecutor {
         p.sendMessage("§8[§cKick§8] §cDu hast " + Script.getName(tg) + " gekickt.");
         Script.sendTeamMessage(p, ChatColor.RED, "hat " + Script.getName(tg) + " gekickt " + Messages.ARROW + " " + reason, true);
         tg.kickPlayer("§8» §cNRP × New RolePlay §8┃ §cBann §8« \n\n§8§m------------------------------\n\n§7Du wurdest vom Server gekickt§8.\n\n§7Grund §8× §e" + reason);
+        Bukkit.broadcastMessage(Script.PREFIX + "§c" + Script.getName(tg) + " wurde von " + Script.getName(p) + " für " + reason + "gekickt.");
 
         return false;
     }

@@ -152,6 +152,8 @@ public class Notications implements CommandExecutor, Listener {
         if(e.getMessage().startsWith("/password")) return;
         if(e.getMessage().startsWith("/schreien")) return;
         if(e.getMessage().startsWith("/whisper")) return;
+        if(e.getMessage().startsWith("/rnrp")) return;
+        if(e.getMessage().startsWith("/nrp")) return;
         sendMessage(NotificationType.COMMAND, "§e" + Script.getName(e.getPlayer()) + " §7hat den Befehl §e" + e.getMessage() + " §7ausgeführt.", e.getPlayer());
     }
 

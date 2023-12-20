@@ -381,15 +381,15 @@ public class Shop implements CommandExecutor, Listener {
                 s.removeKasse(si.getLicensePrice());
                 Stadtkasse.addStadtkasse((int) Script.getPercent(Steuern.Steuer.MEHRWERTSTEUER.getPercentage(), si.getLicensePrice()));
                 p.sendMessage(PREFIX + "Du hast " + si.getName() + " §7in dein Shop-Sortiment aufgenommen.");
-                Notications.sendMessage(Notications.NotificationType.SHOP, Script.getName(p) + " hat " + si.getName() + " §7in sein Shop-Sortiment aufgenommen. [Shop: " + s.getPublicName() + "]");
-                Script.executeAsyncUpdate("INSERT INTO shopprice (amount, price, itemID, shopID) VALUES (" + 1 + ", " + si.getBuyPrice() + ", " + si.getID() + ", " + s.getID() + ")");
+                Notications.sendMessage(Notications.NotificationType.SHOP, Script.getName(p) + " hat " + si.getName() + " §ain sein Shop-Sortiment aufgenommen. [Shop: " + s.getPublicName() + "]");
+                Script.executeAsyncUpdate("INSERT INTO shopprice (amount, price, itemID, shopID) VALUES (" + si.getSize() + ", " + si.getBuyPrice() + ", " + si.getID() + ", " + s.getID() + ")");
                 p.closeInventory();
                 return;
             }
 
             Script.executeAsyncUpdate("DELETE FROM shopprice WHERE shopID=" + s.getID() + " AND itemID=" + si.getID());
             p.sendMessage(PREFIX + "Du hast " + si.getName() + " §7aus deinem Shop-Sortiment entfernt.");
-            Notications.sendMessage(Notications.NotificationType.SHOP, Script.getName(p) + " hat " + si.getName() + " §7aus sein Shop-Sortiment entfernt. [Shop: " + s.getPublicName() + "]");
+            Notications.sendMessage(Notications.NotificationType.SHOP, Script.getName(p) + " hat " + si.getName() + " §aaus sein Shop-Sortiment entfernt. [Shop: " + s.getPublicName() + "]");
             p.closeInventory();
             return;
         }

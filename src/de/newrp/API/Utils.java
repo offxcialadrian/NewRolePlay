@@ -21,6 +21,7 @@ import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
+import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.event.server.TabCompleteEvent;
@@ -42,12 +43,12 @@ public class Utils implements Listener {
     private static final String[] BLOCKED_COMMANDS = new String[]{
             "/minecraft", "/spi", "/pl", "/protocol", "/rl", "/restart", "/bukkit", "/stop", "/time", "/ver", "/icanhasbukkit", "/xp", "/tell",
             "/toggledownfall", "/testfor", "/recipe", "/help", "/give", "/effect", "/enchant", "/deop", "/defaultgamemode", "/ban-ip",
-            "/banlist", "/achievement", "/advancement", "/?", "/gamemode", "/gamerule", "/give", "/help", "/kill", "/list", "/about",
+            "/banlist", "/advancement", "/?", "/gamemode", "/gamerule", "/give", "/help", "/kill", "/list", "/about",
             "/ability", "/advancement", "/alwaysday", "/attribute", "/ban-ip", "/banlist", "/bossbar", "/camera", "/camerashake",
             "/changesetting", "/clear", "/clearspawnpoint", "/clone", "/connect", "/damage", "/data", "/datapack", "/daylock",
             "/dedicatedwsserver", "/defaultgamemode", "/deop", "/dialogue", "/difficulty", "/effect", "/enchant", "/event", "/execute",
             "/experience", "/fill", "/fillbiome", "/fog", "/forceload", "/function", "/gamemode", "/gamerule", "/gametest", "/give", "/help",
-            "/immutableworld", "/item", "/jfr", "/kill", "/list", "/locate", "/loot", "/mobevent", "/msg", "/music", "/op",
+            "/immutableworld", "/item", "/jfr", "/kill", "/list", "/locate", "/loot", "/mobevent", "/music", "/op",
             "/ops", "/pardon", "/pardon-ip", "/particle", "/perf", "/permission", "/place", "/playanimation", "/playsound", "/publish",
             "/random", "/recipe", "/reload", "/replaceitem", "/return", "/ride", "/save", "/save-all", "/save-off", "/save-on",
             "/say", "/schedule", "/scoreboard", "/script", "/scriptevent", "/seed", "/setblock", "/setidletimeout", "/setmaxplayers",
@@ -117,7 +118,8 @@ public class Utils implements Listener {
         e.setJoinMessage(null);
         Script.sendOfflineMessages(p);
         if (e.getPlayer().hasPlayedBefore()) {
-            e.getPlayer().sendMessage(Messages.INFO + "Willkommen zurück auf §eNewRP§7!");
+            e.getPlayer().sendMessage(Script.PREFIX + "Willkommen zurück auf §eNewRP§7!");
+            if(Script.hasRank(p, Rank.MODERATOR, false)) e.getPlayer().sendMessage(Messages.INFO + "Aufgrund deines Status als " + Script.getRank(p).getName(p) + " hast du automatisch einen Premium-Account.");
             Script.sendActionBar(e.getPlayer(), "§7Willkommen zurück auf §eNewRP§7!");
         } else {
             if (!Script.getCountry(p).contains("Germany") && !Script.getCountry(p).contains("Austria") && !Script.getCountry(p).contains("Switzerland")) {
@@ -127,6 +129,7 @@ public class Utils implements Listener {
             Script.registerPlayer(e.getPlayer());
             Script.sendActionBar(e.getPlayer(), "§7Willkommen auf §eNewRP§7!");
             e.getPlayer().sendMessage("§eNew RolePlay" + "§rWillkommen auf §eNewRP§7!");
+            Achievement.FIRST_JOIN.grant(p);
         }
         e.getPlayer().setPlayerListName(Script.getName(e.getPlayer()));
         Script.checkPlayerName(p);
@@ -135,6 +138,7 @@ public class Utils implements Listener {
         new BukkitRunnable() {
             @Override
             public void run() {
+                Script.resetHealth(p);
                 SDuty.updateScoreboard();
             }
         }.runTaskLater(main.getInstance(), 20L);
@@ -154,6 +158,13 @@ public class Utils implements Listener {
                 e.setCancelled(true);
             }
         }
+    }
+
+    @EventHandler
+    public void onHeal(EntityRegainHealthEvent e) {
+        if(!(e.getEntity() instanceof Player)) return;
+        if(e.getRegainReason() == EntityRegainHealthEvent.RegainReason.EATING || e.getRegainReason() == EntityRegainHealthEvent.RegainReason.SATIATED && ((Player) e.getEntity()).getHealth() >= 19)
+            e.setCancelled(true);
     }
 
     @EventHandler
@@ -203,6 +214,11 @@ public class Utils implements Listener {
 
             if(e.getClickedBlock().getType() == Material.TNT && !Script.hasRank(e.getPlayer(), Rank.ADMINISTRATOR, false)) {
                 e.setCancelled(true);
+                return;
+            }
+
+            if(e.getClickedBlock().getType() == Material.CHEST && Script.hasRank(e.getPlayer(), Rank.ADMINISTRATOR, false)) {
+                e.setCancelled(false);
                 return;
             }
 
@@ -279,6 +295,10 @@ public class Utils implements Listener {
         Player p = e.getPlayer();
         if (SDuty.isSDuty(p)) {
             SDuty.removeSDuty(p);
+        }
+
+        if(BuildMode.isInBuildMode(p) && !Script.isInTestMode()) {
+            BuildMode.removeBuildMode(p);
         }
         e.setQuitMessage(null);
         new BukkitRunnable() {

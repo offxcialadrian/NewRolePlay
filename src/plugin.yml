@@ -235,3 +235,32 @@ commands:
     aliases: [ giveleaderrechte ]
   removeleaderrechte:
     description: remove leaderrechte from a player
+  removeentities:
+    description: remove all entities
+  flyspeed:
+    description: set your flyspeed
+  getlocation:
+    description: get your location
+    aliases: [ location ]
+  rnrp:
+    description: write into the chat
+  duty:
+    description: enter duty
+    aliases: [ dienstantritt, dienst ]
+  msg:
+    description: send a message to a player
+    aliases: [ message, tell ]
+  getgun:
+    description: get a gun
+  getammo:
+    description: get ammo
+  checkgun:
+    description: check a gun
+    aliases: [ guninfo, waffeninfo, winfo, ginfo ]
+  achievements:
+    description: view your achievements
+    aliases: [ achievement, erfolge ]
+  setteamleader:
+    description: set a player to teamleader
+  removeteamleader:
+    description: remove a player from teamleader

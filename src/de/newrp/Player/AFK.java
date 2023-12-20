@@ -33,6 +33,8 @@ public class AFK implements CommandExecutor, Listener {
     static final HashMap<Player, Location> loc = new HashMap<>();
     static final ArrayList<Player> counter = new ArrayList<>();
 
+    public static String PREFIX = "§8[§6AFK§8] §6» ";
+
     public static boolean isAFK(Player p) {
         return afk.containsKey(p.getName());
     }
@@ -89,7 +91,7 @@ public class AFK implements CommandExecutor, Listener {
         }
         Bukkit.getScheduler().runTask(main.getInstance(), () -> AFK.setAFK(p, true));
         Script.sendLocalMessage(5, p, "§a§o  " + Script.getName(p) + " ist nun abwesend.");
-        p.sendMessage("§6Du bist nun im AFK-Modus.");
+        p.sendMessage(PREFIX + "Du bist nun im AFK-Modus.");
     }
 
     @Override
@@ -97,18 +99,18 @@ public class AFK implements CommandExecutor, Listener {
         Player p = (Player) cs;
         if (isAFK(p)) {
             setAFK(p, false);
-            p.sendMessage("§6Du bist nun nicht mehr im AFK-Modus.");
+            p.sendMessage(PREFIX + "Du bist nun nicht mehr im AFK-Modus.");
             if(Script.getLevel(p) <= 5) p.sendMessage(Messages.INFO + "Deine PayDay-Zeit läuft nun weiter.");
             Script.sendLocalMessage(5, p, "§a§o  " + Script.getName(p) + " ist wieder anwesend.");
         } else {
             long time = System.currentTimeMillis();
             Long lastUsage = lastDmg.get(p.getName());
             if (p.hasPotionEffect(PotionEffectType.WITHER) || (lastUsage != null && lastUsage + 15 * 1000 > time)) {
-                p.sendMessage("§cDu kannst noch nicht in den AFK Modus wechseln.");
+                p.sendMessage(Messages.ERROR + "Du kannst noch nicht in den AFK Modus wechseln.");
                 return true;
             }
             setAFK(p, true);
-            p.sendMessage("§6Du bist nun im AFK-Modus.");
+            p.sendMessage(PREFIX + "Du bist nun im AFK-Modus.");
             Script.sendLocalMessage(5, p, "§a§o  " + Script.getName(p) + " ist nun abwesend.");
         }
         return true;
@@ -123,7 +125,7 @@ public class AFK implements CommandExecutor, Listener {
             boolean z = e.getFrom().getBlockZ() != e.getTo().getBlockZ();
             if (y || x || z) {
                 AFK.setAFK(p, false);
-                p.sendMessage("§6Du bist nun nicht mehr im AFK-Modus.");
+                p.sendMessage(PREFIX + "Du bist nun nicht mehr im AFK-Modus.");
                 if(Script.getLevel(p) <= 5) p.sendMessage(Messages.INFO + "Deine PayDay-Zeit läuft nun weiter.");
                 Script.sendLocalMessage(5, p, "§a§o  " + Script.getName(p) + " ist wieder anwesend.");
             }
@@ -147,7 +149,7 @@ public class AFK implements CommandExecutor, Listener {
         lastActions.add(p.getName());
         if (AFK.isAFK(p)) {
             AFK.setAFK(p, false);
-            p.sendMessage("§6Du bist nun nicht mehr im AFK-Modus.");
+            p.sendMessage(PREFIX + "Du bist nun nicht mehr im AFK-Modus.");
             if(Script.getLevel(p) <= 5) p.sendMessage(Messages.INFO + "Deine PayDay-Zeit läuft nun weiter.");
             Script.sendLocalMessage(5, p, "§a§o  " + Script.getName(p) + " ist wieder anwesend.");
         }
@@ -161,7 +163,7 @@ public class AFK implements CommandExecutor, Listener {
 
         if (AFK.isAFK(p)) {
             AFK.setAFK(p, false);
-            p.sendMessage("§6Du bist nun nicht mehr im AFK-Modus.");
+            p.sendMessage(PREFIX+ "Du bist nun nicht mehr im AFK-Modus.");
             if(Script.getLevel(p) <= 5) p.sendMessage(Messages.INFO + "Deine PayDay-Zeit läuft nun weiter.");
             Script.sendLocalMessage(5, p, "§a§o  " + Script.getName(p) + " ist wieder anwesend.");
         }
@@ -176,7 +178,7 @@ public class AFK implements CommandExecutor, Listener {
 
         if (AFK.isAFK(p)) {
             AFK.setAFK(p, false);
-            p.sendMessage("§6Du bist nun nicht mehr im AFK-Modus.");
+            p.sendMessage(PREFIX + "Du bist nun nicht mehr im AFK-Modus.");
             if(Script.getLevel(p) <= 5) p.sendMessage(Messages.INFO + "Deine PayDay-Zeit läuft nun weiter.");
             Script.sendLocalMessage(5, p, "§a§o  " + Script.getName(p) + " ist wieder anwesend.");
         }

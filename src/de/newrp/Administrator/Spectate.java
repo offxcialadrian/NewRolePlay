@@ -146,6 +146,10 @@ public class Spectate implements CommandExecutor, Listener {
         return null;
     }
 
+    public Player getSpecTarget(Player admin) {
+        return admin.getSpectatorTarget() == null ? null : Script.getPlayer(admin.getSpectatorTarget().getName());
+    }
+
     @EventHandler
     public void onSneak(PlayerToggleSneakEvent e) {
         Player p = e.getPlayer();
@@ -173,6 +177,14 @@ public class Spectate implements CommandExecutor, Listener {
         Spectate spec = new Spectate();
         if (!spec.isSpectated(p)) return;
 
+        if(isSpectating(p)) {
+            if(e.getCause() == PlayerTeleportEvent.TeleportCause.SPECTATE) {
+                p.setSpectatorTarget(spec.getSpecTarget(p));
+                e.setCancelled(true);
+                return;
+            }
+        }
+
         Player admin = spec.getSpectator(p);
         if (admin == null) return;
         if (admin.getSpectatorTarget() == null) return;
@@ -189,13 +201,22 @@ public class Spectate implements CommandExecutor, Listener {
         }
     }
 
+     @EventHandler
+     public void onMove(PlayerMoveEvent e) {
+         Player p = e.getPlayer();
+         if (!Spectate.isSpectating(p)) return;
+         if (e.getTo() != e.getFrom()) {
+             e.setCancelled(true);
+         }
+     }
+
     @EventHandler
     public void onCommand(PlayerCommandPreprocessEvent e) {
         if (e.getMessage().startsWith("/passwort")) return;
         Player p = e.getPlayer();
         Spectate spec = new Spectate();
         if (spec.isSpectated(p)) {
-            spec.getSpectator(p).sendMessage(PREFIX + Script.getName(p) + " hat den Befehl §7\"§6" + e.getMessage() + "§7\" benutzt.");
+            spec.getSpectator(p).sendMessage(PREFIX + Script.getName(p) + " hat den Befehl §7\"§6" + e.getMessage() + "§7\" ausgeführt.");
         }
     }
 }

@@ -79,7 +79,7 @@ public class AddBerufsDoor implements CommandExecutor, Listener {
                 if (b.getType().equals(Material.OAK_DOOR)) {
                     boolean top;
                     top = b.getRelative(BlockFace.DOWN).getType().equals(b.getType());
-                    Location loc2 = loc.clone().add(0, (top ? -1 : 1), 0);
+                    Location loc2 = loc.clone().add(0, (top ? -1 : +1), 0);
                     Script.executeAsyncUpdate("INSERT INTO berufsdoor (berufID, x, y, z) VALUES (" + changing.get(p.getName()).getID() + ", " + loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ() + ");");
                     Script.executeAsyncUpdate("INSERT INTO berufsdoor (berufID, x, y, z) VALUES (" + changing.get(p.getName()).getID() + ", " + loc2.getBlockX() + ", " + loc2.getBlockY() + ", " + loc2.getBlockZ() + ");");
                     p.sendMessage(PREFIX + "Du hast die Tür hinzugefügt.");

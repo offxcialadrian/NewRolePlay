@@ -32,13 +32,18 @@ public class BuildMode implements CommandExecutor, Listener {
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
         Player p = (Player) cs;
 
-        if (!Script.hasRank(p, Rank.ADMINISTRATOR, true) && (Team.getTeam(p) != Team.Teams.BAU && Team.isTeamLeader(p))) {
+        if (!Script.hasRank(p, Rank.ADMINISTRATOR, true) && Team.getTeam(p) != Team.Teams.BAU) {
             p.sendMessage(Messages.NO_PERMISSION);
             return true;
         }
 
         if (!SDuty.isSDuty(p) && Team.getTeam(p) != Team.Teams.BAU) {
             p.sendMessage(Messages.NO_SDUTY);
+            return true;
+        }
+
+        if(!Script.hasRank(p, Rank.ADMINISTRATOR, false) && !Team.isTeamLeader(p)) {
+            p.sendMessage(Messages.NO_PERMISSION);
             return true;
         }
 
@@ -64,6 +69,11 @@ public class BuildMode implements CommandExecutor, Listener {
 
         if (tg == null) {
             p.sendMessage(Messages.PLAYER_NOT_FOUND);
+            return true;
+        }
+
+        if(Team.getTeam(tg) != Team.Teams.BAU) {
+            p.sendMessage(Messages.ERROR + "Dieser Spieler ist kein Bau-Team Mitglied.");
             return true;
         }
 
@@ -126,6 +136,7 @@ public class BuildMode implements CommandExecutor, Listener {
         Chache.loadInventory(p);
         wasBuildMode.remove(p.getName());
         p.setGameMode(GameMode.SURVIVAL);
+        Log.NORMAL.write(p, "hat den BuildMode verlassen.");
         for (Player online : Bukkit.getOnlinePlayers()) {
             online.showPlayer(main.getInstance(), p);
         }
@@ -133,6 +144,7 @@ public class BuildMode implements CommandExecutor, Listener {
             p.setAllowFlight(true);
             p.setFlying(true);
         }
+        Script.updateListname(p);
     }
 
     public static void setBuildMode(Player p) {
@@ -142,10 +154,15 @@ public class BuildMode implements CommandExecutor, Listener {
         wasBuildMode.add(p.getName());
         if(Script.hasRank(p, Rank.ADMINISTRATOR, false)) p.getInventory().addItem(new ItemStack(Material.COMPASS));
         p.setGameMode(GameMode.CREATIVE);
+        Log.NORMAL.write(p, "hat den BuildMode betreten.");
         for (Player online : Bukkit.getOnlinePlayers()) {
-            if (!Script.hasRank(online, Rank.SUPPORTER, false))
-                online.hidePlayer(main.getInstance(), p);
+            if (!Script.hasRank(online, Rank.SUPPORTER, false)) {
+                if (Team.getTeam(online) != Team.Teams.BAU) {
+                    Debug.debug("hiding " + p.getName() + " from " + online.getName());
+                    online.hidePlayer(main.getInstance(), p);
+                }
+            }
         }
+        Script.updateListname(p);
     }
-
 }

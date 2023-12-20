@@ -130,7 +130,7 @@ public class Wahlen implements CommandExecutor, Listener {
                     return true;
                 }
 
-                Player tg = Script.getPlayer(args[1]);
+                OfflinePlayer tg = Script.getPlayer(args[1]);
                 if(tg == null) {
                     p.sendMessage(Messages.PLAYER_NOT_FOUND);
                     return true;
@@ -142,9 +142,11 @@ public class Wahlen implements CommandExecutor, Listener {
                 }
 
                 addToWahlen(tg);
-                p.sendMessage(PREFIX + "Du hast den Spieler erfolgreich aufgestellt.");
-                tg.sendMessage(PREFIX + "Du wurdest von " + Script.getName(p) + " aufgestellt.");
-                Script.sendTeamMessage(p, ChatColor.GOLD, "hat " + Script.getName(tg) + " zur Wahl aufgestellt.", true);
+                p.sendMessage(PREFIX + "Du hast " + tg.getName() + " erfolgreich aufgestellt.");
+                Script.sendTeamMessage(p, ChatColor.GOLD, "hat " + tg.getName() + " zur Wahl aufgestellt.", true);
+                if(tg.isOnline()) {
+                    tg.getPlayer().sendMessage(PREFIX + "Du wurdest von " + Messages.RANK_PREFIX(p) + " zur Wahl aufgestellt.");
+                }
                 return true;
 
             }
@@ -331,7 +333,15 @@ public class Wahlen implements CommandExecutor, Listener {
         Script.executeAsyncUpdate("INSERT INTO wahlen (id, nrp_id, quartal, year, votings) VALUES (NULL, '" + Script.getNRPID(p) + "', '" + getCurrentQuartal() + "', '" + Calendar.getInstance().get(Calendar.YEAR) + "', '0');");
     }
 
+    public static void addToWahlen(OfflinePlayer p) {
+        Script.executeAsyncUpdate("INSERT INTO wahlen (id, nrp_id, quartal, year, votings) VALUES (NULL, '" + Script.getNRPID(p) + "', '" + getCurrentQuartal() + "', '" + Calendar.getInstance().get(Calendar.YEAR) + "', '0');");
+    }
+
     public static boolean hasApplied(Player p) {
+        return Script.getInt(p, "wahlen", "quartal") == getCurrentQuartal() && Script.getInt(p, "wahlen", "year") == Calendar.getInstance().get(Calendar.YEAR);
+    }
+
+    public static boolean hasApplied(OfflinePlayer p) {
         return Script.getInt(p, "wahlen", "quartal") == getCurrentQuartal() && Script.getInt(p, "wahlen", "year") == Calendar.getInstance().get(Calendar.YEAR);
     }
 

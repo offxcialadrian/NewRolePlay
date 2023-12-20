@@ -19,7 +19,7 @@ public class AddTeam implements CommandExecutor {
             return true;
         }
 
-        if (Team.isTeamLeader(p)) {
+        if (!Team.isTeamLeader(p)) {
             p.sendMessage(Messages.ERROR + "Du bist kein Teamleiter.");
             return true;
         }

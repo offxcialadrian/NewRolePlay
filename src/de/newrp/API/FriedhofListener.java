@@ -1,6 +1,7 @@
 package de.newrp.API;
 
 import de.newrp.Administrator.Notications;
+import de.newrp.Administrator.SDuty;
 import de.newrp.main;
 import org.bukkit.*;
 import org.bukkit.entity.EntityType;
@@ -13,6 +14,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.ItemDespawnEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
@@ -110,6 +112,17 @@ public class FriedhofListener implements Listener {
         Item item = e.getEntity();
         if (item.getItemStack().getType() == Material.PLAYER_HEAD) {
             e.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onCommand(PlayerCommandPreprocessEvent e) {
+        Player p = e.getPlayer();
+        if (Friedhof.isDead(p)) {
+            if (!e.getMessage().startsWith("/friedhof") && !e.getMessage().startsWith("/aduty") && !e.getMessage().startsWith("/tc") && !e.getMessage().startsWith("/sduty") && !SDuty.isSDuty(p)) {
+                e.setCancelled(true);
+                p.sendMessage(Messages.ERROR + "Du kannst während du tot bist keine Befehle ausführen.");
+            }
         }
     }
 }

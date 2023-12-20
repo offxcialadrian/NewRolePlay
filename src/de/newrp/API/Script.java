@@ -1,8 +1,12 @@
 package de.newrp.API;
 
+import de.newrp.Administrator.BuildMode;
 import de.newrp.Administrator.SDuty;
+import de.newrp.Berufe.Duty;
+import de.newrp.Player.AFK;
 import de.newrp.Player.Passwort;
 import de.newrp.Ticket.TicketCommand;
+import de.newrp.Waffen.Weapon;
 import de.newrp.main;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -60,13 +64,18 @@ public class Script {
     }
 
     public static void updateListname(Player p) {
-        if (SDuty.isSDuty(p) && TicketCommand.isInTicket(p)) {
-            p.setPlayerListName("§8[§b§lT§8] §cNRP §8× §9" + p.getName());
-        } else if (SDuty.isSDuty(p)) {
-            p.setPlayerListName("§cNRP §8× §9" + p.getName());
-        } else {
-            p.setPlayerListName((TicketCommand.isInTicket(p)?"§8[§b§lT§8]" + Script.getName(p):Script.getName(p)));
-        }
+        if(SDuty.isSDuty(p)) p.setPlayerListName("§cNRP §8× §9" + p.getName());
+        if(!SDuty.isSDuty(p)) p.setPlayerListName("§r" + p.getName());
+        if(Duty.isInDuty(p)) p.setPlayerListName(Duty.color + p.getPlayerListName());
+        if(BuildMode.isInBuildMode(p)) p.setPlayerListName("§eB §8× §r" + p.getPlayerListName());
+        if(TicketCommand.isInTicket(p)) p.setPlayerListName("§8[§b§lT§8] §r" + p.getPlayerListName());
+    }
+
+    public static ItemStack setName(ItemStack is, String s) {
+        ItemMeta meta = is.getItemMeta();
+        meta.setDisplayName(s);
+        is.setItemMeta(meta);
+        return is;
     }
 
     public static ItemStack setNameAndLore(Material mat, String s1, String... s2) {
@@ -78,6 +87,58 @@ public class Script {
         return is;
     }
 
+    public static Weapon getWeapon(String name) {
+        for (Weapon weapon : Weapon.values()) {
+            if (name.equalsIgnoreCase(weapon.getName())) {
+                return weapon;
+            }
+        }
+        return null;
+    }
+
+    public static int getRandomAlt(int min, int max) {
+        boolean min_neg = min <= 0, max_neg = max <= 0;
+        min = Math.abs(min);
+        max = Math.abs(max);
+        int r;
+        if (max > min) {
+            r = io.netty.util.internal.ThreadLocalRandom.current().nextInt(max - min + 1) + min;
+        } else {
+            r = io.netty.util.internal.ThreadLocalRandom.current().nextInt(min - max + 1) + max;
+        }
+        return (min_neg && max_neg ? -r : r);
+    }
+
+    public static ItemStack setLore(Material mat, String... s) {
+        ItemStack is = new ItemStack(mat);
+        ItemMeta meta = is.getItemMeta();
+        meta.setLore(Arrays.asList(s));
+        is.setItemMeta(meta);
+        return is;
+    }
+
+    public static ItemStack removeLore(ItemStack is) {
+        ItemMeta meta = is.getItemMeta();
+        meta.setLore(null);
+        is.setItemMeta(meta);
+        return is;
+    }
+
+    public static ItemStack setLore(ItemStack is, String... s) {
+        ItemMeta meta = is.getItemMeta();
+        meta.setLore(Arrays.asList(s));
+        is.setItemMeta(meta);
+        return is;
+    }
+
+    public static boolean haveGunInInventory(Player p, Weapon weapon) {
+        if (p.getInventory().contains(weapon.getWeapon().getType())) {
+            return true;
+        } else {
+            return p.getInventory().getItemInOffHand().getType().equals(weapon.getWeapon().getType());
+        }
+    }
+
     public static ItemStack setNameAndLore(ItemStack is, String s1, String... s2) {
         ItemMeta meta = is.getItemMeta();
         meta.setDisplayName(s1);
@@ -87,6 +148,18 @@ public class Script {
     }
 
     public static Rank getRank(Player p) {
+        try (Statement stmt = main.getConnection().createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT rank_id FROM ranks WHERE nrp_id=" + getNRPID(p))) {
+            if (rs.next()) {
+                return Rank.getRankByID(rs.getInt("rank_id"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return PLAYER;
+    }
+
+    public static Rank getRank(OfflinePlayer p) {
         try (Statement stmt = main.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT rank_id FROM ranks WHERE nrp_id=" + getNRPID(p))) {
             if (rs.next()) {
@@ -181,7 +254,7 @@ public class Script {
             return false;
         }
         if (allowDesc) {
-            if (getOnlineAmountByRank(rank) == 0) {
+            if (getActiveAmountByRank(rank) == 0) {
                 return getRank(p).getWeight() - 50 == rank.getWeight();
             } else {
                 return getRank(p).getWeight() >= rank.getWeight();
@@ -195,6 +268,16 @@ public class Script {
         int i = 0;
         for (Player all : Bukkit.getOnlinePlayers()) {
             if (hasRank(all, rank, false)) {
+                i++;
+            }
+        }
+        return i;
+    }
+
+    public static int getActiveAmountByRank(Rank rank) {
+        int i = 0;
+        for (Player all : Bukkit.getOnlinePlayers()) {
+            if (hasRank(all, rank, false) && !AFK.isAFK(all)) {
                 i++;
             }
         }
@@ -905,6 +988,13 @@ public class Script {
     public static void sendClickableMessage(Player p, String msg, String cmd, String hover) {
         TextComponent msg1 = new TextComponent(msg);
         msg1.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, cmd));
+        msg1.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(hover).create()));
+        p.spigot().sendMessage(msg1);
+    }
+
+    public static void sendCopyMessage(Player p, String msg, String copy, String hover) {
+        TextComponent msg1 = new TextComponent(msg);
+        msg1.setClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, copy));
         msg1.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(hover).create()));
         p.spigot().sendMessage(msg1);
     }

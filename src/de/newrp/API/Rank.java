@@ -4,7 +4,7 @@ import org.bukkit.entity.Player;
 
 public enum Rank {
 
-    OWNER(0, 300, "Administrator", "Administrator"),
+    OWNER(0, 300, "Administrator", "Administration"),
     ADMINISTRATOR(1, 250, "Administrator", "Administration"),
     MODERATOR(2, 150, "Moderator", "Moderation"),
     SUPPORTER(3, 100, "Supporter", "Support"),

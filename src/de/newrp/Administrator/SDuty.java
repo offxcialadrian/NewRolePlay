@@ -5,6 +5,7 @@ import de.newrp.Government.Stadtkasse;
 import de.newrp.Player.AFK;
 import de.newrp.Ticket.TicketCommand;
 import de.newrp.Ticket.TicketTopic;
+import de.newrp.main;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -17,6 +18,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.ScoreboardManager;
 import org.bukkit.scoreboard.Team;
 import org.bukkit.scoreboard.*;
@@ -75,7 +77,6 @@ public class SDuty implements CommandExecutor, Listener {
         p.sendMessage(Messages.INFO + "Du darfst nun wieder am aktiven Spielgeschehen teilnehmen.");
         p.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
         Chache.loadScoreboard(p);
-        p.setPlayerListName(Script.getName(p));
         p.setCollidable(true);
         p.setGameMode(GameMode.SURVIVAL);
         p.setFlying(false);
@@ -86,6 +87,7 @@ public class SDuty implements CommandExecutor, Listener {
             t.setOption(Team.Option.COLLISION_RULE, Team.OptionStatus.NEVER);
             t.addEntry(p.getName());
         }
+        Script.updateListname(p);
     }
 
     public static void setSDuty(Player p) {
@@ -121,7 +123,6 @@ public class SDuty implements CommandExecutor, Listener {
         Score score8 = o.getScore(ChatColor.GRAY + "");
         Score score9 = o.getScore(ChatColor.GRAY + "§bStadtkasse§8:");
         Score score10 = o.getScore(ChatColor.DARK_AQUA + " §8» §e" + df.format(stadtkasse) + "€");
-        p.setPlayerListName("§cNRP §8× §9" + p.getName());
         p.setCollidable(false);
         platzhalter1.setScore(9);
         score1.setScore(8);
@@ -138,6 +139,7 @@ public class SDuty implements CommandExecutor, Listener {
             score10.setScore(-2);
         }
         p.setScoreboard(b);
+        Script.updateListname(p);
     }
 
     public static void updateScoreboard() {

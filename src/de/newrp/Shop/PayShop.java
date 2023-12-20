@@ -6,6 +6,7 @@ import de.newrp.Government.Stadtkasse;
 import de.newrp.Government.Steuern;
 import de.newrp.House.House;
 import de.newrp.House.HouseAddon;
+import de.newrp.Waffen.Weapon;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -17,6 +18,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Collections;
 import java.util.HashMap;
+
+import static de.newrp.Waffen.GetGun.haveGun;
 
 public class PayShop implements Listener {
 
@@ -45,18 +48,6 @@ public class PayShop implements Listener {
             Cashflow.addEntry(p, -price, "Einkauf: " + si.getName());
         }
 
-        BuyClick.sendMessage(p, "Vielen Dank für deinen Einkauf!");
-        Script.removeMoney(p, type, price);
-        s.removeLager(si.getSize());
-        double mwst = Steuern.Steuer.MEHRWERTSTEUER.getPercentage();
-        Stadtkasse.addStadtkasse((int) Script.getPercent(mwst, price));
-        int add = price - (int) Script.getPercent(mwst, price) + (type == PaymentType.BANK ? - (int) Script.getPercent(2, price):0);
-        s.addKasse(add);
-        s.removeKasse(si.getBuyPrice());
-        Log.NORMAL.write(p, "hat " + si.getName() + " für " + price + "€ gekauft.");
-        if(Script.getOfflinePlayer(s.getOwner()).isOnline())
-            Script.sendActionBar(Script.getPlayer(s.getOwner()), Shop.PREFIX + "Dein Shop §6" + s.getPublicName() + " §7hat §6" + (add-si.getBuyPrice()) + "€ §7Gewinn gemacht aus dem Verkauf von §6" + si.getName() + " §7(§6" + price + "€§7)");
-
         switch (si) {
             case LOTTOSCHEIN:
                 BuyClick.sendMessage(p, "Die Lottoziehung findet jeden Mittwoch und Sonntag um 18 Uhr statt.");
@@ -69,7 +60,37 @@ public class PayShop implements Listener {
                 houseaddon.put(p.getName(), HouseAddon.SLOT);
                 p.sendMessage(Messages.INFO + "Gehe zu deinem Haus und nutze §8/§6installaddon§r um das Hauskassen-Addon zu installieren.");
                 break;
+            case PISTOLE:
+                if(!haveGun(p, Weapon.PISTOLE)) {
+                    p.sendMessage(Messages.INFO + "Du kannst deine Pistole im Waffenschrank holen.");
+                    Weapon.PISTOLE.addToInventory(Script.getNRPID(p));
+                } else {
+                    p.sendMessage(Messages.ERROR + "Du hast bereits eine Pistole.");
+                    return;
+                }
+                break;
+            case AMMO_9MM:
+                if(!haveGun(p, Weapon.PISTOLE)) {
+                    p.sendMessage(Messages.ERROR + "Du hast keine Pistole.");
+                    return;
+                }
+                Weapon.PISTOLE.addMunition(Script.getNRPID(p), si.getAmount(s));
+                break;
         }
+
+        BuyClick.sendMessage(p, "Vielen Dank für deinen Einkauf!");
+        Script.removeMoney(p, type, price);
+        s.removeLager(si.getSize());
+        double mwst = Steuern.Steuer.MEHRWERTSTEUER.getPercentage();
+        Stadtkasse.addStadtkasse((int) Script.getPercent(mwst, price));
+        int add = price - (int) Script.getPercent(mwst, price) + (type == PaymentType.BANK ? - (int) Script.getPercent(2, price):0);
+        s.addKasse(add);
+        s.removeKasse(si.getBuyPrice());
+        Log.NORMAL.write(p, "hat " + si.getName() + " für " + price + "€ gekauft.");
+        if(Script.getOfflinePlayer(s.getOwner()).isOnline())
+            Script.sendActionBar(Script.getPlayer(s.getOwner()), Shop.PREFIX + "Dein Shop §6" + s.getPublicName() + " §7hat §6" + (add-si.getBuyPrice()) + "€ §7Gewinn gemacht aus dem Verkauf von §6" + si.getName() + " §7(§6" + price + "€§7)");
+
+
 
         if(si.isReopen()) BuyClick.reopen(p);
         SDuty.updateScoreboard();

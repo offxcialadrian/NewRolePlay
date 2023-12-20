@@ -55,12 +55,30 @@ public class Team {
         }
 
         public void removeMember(Player p) {
+            setTeamLeader(p, false);
+            Script.executeUpdate("DELETE FROM teams WHERE nrp_id=" + Script.getNRPID(p));
+        }
+
+        public void removeMember(OfflinePlayer p) {
+            setTeamLeader(p, false);
             Script.executeUpdate("DELETE FROM teams WHERE nrp_id=" + Script.getNRPID(p));
         }
     }
 
     public static boolean isTeamLeader(Player p) {
         return Script.getInt(p, "teams", "leader") == 1;
+    }
+
+    public static boolean isTeamLeader(OfflinePlayer p) {
+        return Script.getInt(p, "teams", "leader") == 1;
+    }
+
+    public static void setTeamLeader(Player p, boolean leader) {
+        Script.executeUpdate("UPDATE teams SET leader=" + (leader ? 1 : 0) + " WHERE nrp_id=" + Script.getNRPID(p));
+    }
+
+    public static void setTeamLeader(OfflinePlayer p, boolean leader) {
+        Script.executeUpdate("UPDATE teams SET leader=" + (leader ? 1 : 0) + " WHERE nrp_id=" + Script.getNRPID(p));
     }
 
     public static Teams getTeam(Player p) {
@@ -88,6 +106,12 @@ public class Team {
     }
 
     public static void removeTeam(Player p) {
+        setTeamLeader(p, false);
+        Script.executeUpdate("DELETE FROM teams WHERE nrp_id=" + Script.getNRPID(p));
+    }
+
+    public static void removeTeam(OfflinePlayer p) {
+        setTeamLeader(p, false);
         Script.executeUpdate("DELETE FROM teams WHERE nrp_id=" + Script.getNRPID(p));
     }
 

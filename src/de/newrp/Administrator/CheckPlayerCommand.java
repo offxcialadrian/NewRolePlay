@@ -3,6 +3,7 @@ package de.newrp.Administrator;
 import de.newrp.API.*;
 import de.newrp.Berufe.Beruf;
 import de.newrp.House.House;
+import de.newrp.Player.Banken;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -53,10 +54,10 @@ public class CheckPlayerCommand implements CommandExecutor {
                 }
             }
             p.sendMessage("§7Offline §8× §eseit: " + Script.dateFormat.format(Script.getLastDisconnect(offtg)));
-            p.sendMessage("§7Geld §8× §e" + Script.getMoney(offtg, PaymentType.CASH) + "€ | " + Script.getMoney(offtg, PaymentType.BANK) + "€");
+            p.sendMessage("§7Geld §8× §e" + Script.getMoney(offtg, PaymentType.CASH) + "€ | " + Script.getMoney(offtg, PaymentType.BANK) + "€" + (Banken.hasBank(offtg)? " §8(§e" + Banken.getBankByPlayer(offtg) + "§8)" : " §8(§c" + "Keine Bank" + "§8)"));
             p.sendMessage("§7Geschlecht §8× §e" + Script.getGender(offtg).getName());
             p.sendMessage("§7Team §8× §e" + (Team.getTeam(offtg) != null ? Team.getTeam(offtg).getName() : "Kein Team"));
-            p.sendMessage("§7PlayTime §8× §e" + Script.getPlayTime(offtg, true) + ":§e" + String.format("%02d", Script.getPlayTime(offtg, false)) + " Stunden " + " §8(§e" + Script.getActivePlayTime(offtg, true) + ":§e" + String.format("%02d", Script.getActivePlayTime(offtg, false)) + " Stunden§8)");
+            p.sendMessage("§7PlayTime §8× §e" + Script.getPlayTime(offtg, true) + ":§e" + String.format("%02d", Script.getPlayTime(offtg, false)) + " Stunden" + " §8(§e" + Script.getActivePlayTime(offtg, true) + ":§e" + String.format("%02d", Script.getActivePlayTime(offtg, false)) + " Stunden§8)");
             p.sendMessage("§7Level §8× §e" + Script.getLevel(offtg));
             p.sendMessage("§7Beruf §8× §e" + (Beruf.hasBeruf(offtg) ? Beruf.getBeruf(offtg).getName() : "Kein Beruf") + (Beruf.isLeader(offtg) ? " §8(§eLeader§8)" : ""));
             StringBuilder houses = new StringBuilder();
@@ -83,11 +84,11 @@ public class CheckPlayerCommand implements CommandExecutor {
             }
         }
         p.sendMessage("§7Rang §8× §e" + Script.getRank(tg).getName(tg));
-        p.sendMessage("§7Geld §8× §e" + Script.getMoney(tg, PaymentType.CASH) + "€ | " + Script.getMoney(tg, PaymentType.BANK) + "€");
+        p.sendMessage("§7Geld §8× §e" + Script.getMoney(tg, PaymentType.CASH) + "€ | " + Script.getMoney(tg, PaymentType.BANK) + "€" + (Banken.hasBank(tg)? " §8(§e" + Banken.getBankByPlayer(tg) + "§8)" : " §8(§c" + "Keine Bank" + "§8)"));
         p.sendMessage("§7UUID §8× §e" + tg.getUniqueId());
         p.sendMessage("§7Geschlecht §8× §e" + Script.getGender(tg).getName());
         p.sendMessage("§7Team §8× §e" + (Team.getTeam(tg) != null ? Team.getTeam(tg).getName() : "Kein Team"));
-        p.sendMessage("§7PlayTime §8× §e" + Script.getPlayTime(tg, true) + ":§e" + String.format("%02d", Script.getPlayTime(tg, false)) + " Stunden " + " §8(§e" + Script.getActivePlayTime(tg, true) + ":§e" + String.format("%02d", Script.getActivePlayTime(tg, false)) + " Stunden§8)");
+        p.sendMessage("§7PlayTime §8× §e" + Script.getPlayTime(tg, true) + ":§e" + String.format("%02d", Script.getPlayTime(tg, false)) + " Stunden" + " §8(§e" + Script.getActivePlayTime(tg, true) + ":§e" + String.format("%02d", Script.getActivePlayTime(tg, false)) + " Stunden§8)");
         p.sendMessage("§7PayDay §8× §e" + PayDay.getPayDayTime(tg) + "/60 Minuten");
         p.sendMessage("§7Exp §8× §e" + Script.getExp(tg) + "/" + Script.getLevelCost(tg) + " Exp");
         p.sendMessage("§7Health §8× §e" + df.format(tg.getHealth()/2) + "/" + df.format(tg.getMaxHealth()/2) + " HP");

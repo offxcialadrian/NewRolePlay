@@ -71,17 +71,7 @@ public class Friedhof {
 
         World w = p.getWorld();
             p.setPlayerWeather(WeatherType.DOWNFALL);
-            locs = new Location[]{Script.setDirection(new Location(w, 342, 72, -74), Direction.WEST),
-                    Script.setDirection(new Location(w, 341, 72, -71), Direction.NORTH),
-                    Script.setDirection(new Location(w, 344, 72, -80), Direction.WEST),
-                    Script.setDirection(new Location(w, 340, 72, -80), Direction.SOUTH),
-                    Script.setDirection(new Location(w, 334, 72, -80), Direction.SOUTH),
-                    Script.setDirection(new Location(w, 335, 72, -73), Direction.NORTH),
-                    Script.setDirection(new Location(w, 331, 72, -75), Direction.NORTH),
-                    Script.setDirection(new Location(w, 328, 72, -81), Direction.NORTH),
-                    Script.setDirection(new Location(w, 322, 72, -81), Direction.NORTH),
-                    Script.setDirection(new Location(w, 325, 72, -85), Direction.SOUTH),
-                    Script.setDirection(new Location(w, 321, 72, -87), Direction.SOUTH)};
+            locs = new Location[]{Script.setDirection(new Location(w, 221, 76, 673), Direction.WEST)};
 
         Location loc = locs[Script.getRandom(0, locs.length - 1)];
 
@@ -112,10 +102,11 @@ public class Friedhof {
         new BukkitRunnable() {
             @Override
             public void run() {
-                if (progress.get(p.getName()) < sec && isDead(p)) {
-                    progress.put(p.getName(), progress.get(p.getName()) + 1);
-                    progressBar(sec, p);
+                if (isDead(p)) {
+                    progress.replace(p.getName(), progress.get(p.getName()) + 1);
+                    progressBar(left, p);
                 } else {
+                    progress.remove(p.getName());
                     cancel();
                 }
             }
@@ -154,7 +145,7 @@ public class Friedhof {
                 p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 12 * 20, 2, false, false));
                 p.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 12 * 20, 2, false, false));
             } else {
-                Location loc = new Location(p.getWorld(), 275, 69, 207);
+                Location loc = new Location(p.getWorld(), 333, 78, 1159);
                 loc.getChunk().load();
 
                 p.teleport(loc);

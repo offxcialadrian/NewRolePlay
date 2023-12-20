@@ -4,6 +4,7 @@ import de.newrp.API.Log;
 import de.newrp.API.Messages;
 import de.newrp.API.Rank;
 import de.newrp.API.Script;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -31,9 +32,9 @@ public class RemoveSupport implements CommandExecutor {
             return true;
         }
 
-        Player tg = Script.getPlayer(args[0]);
+        OfflinePlayer tg = Script.getPlayer(args[0]);
 
-        if (tg == null) {
+        if (Script.getNRPID(tg) == 0) {
             p.sendMessage(Messages.PLAYER_NOT_FOUND);
             return true;
         }
@@ -43,11 +44,13 @@ public class RemoveSupport implements CommandExecutor {
         return false;
     }
 
-    private static void remove(Player p, Player tg) {
+    private static void remove(Player p, OfflinePlayer tg) {
         p.sendMessage(PREFIX + "Du hast " + tg.getName() + " aus dem Support-Team entfernt.");
-        tg.sendMessage(PREFIX + "Du wurdest aus dem Support-Team entfernt.");
-        tg.sendMessage(Messages.INFO + "Vielen Dank für deine Unterstützung!");
-        SDuty.removeSDuty(tg);
+        if(tg.isOnline()) {
+            tg.getPlayer().sendMessage(PREFIX + "Du wurdest aus dem Support-Team entfernt.");
+            tg.getPlayer().sendMessage(Messages.INFO + "Vielen Dank für deine Unterstützung!");
+            SDuty.removeSDuty(tg.getPlayer());
+        }
         Log.HIGH.write(p, "hat " + tg.getName() + " aus dem Support-Team entfernt.");
         Script.executeUpdate("DELETE FROM ranks WHERE nrp_id=" + Script.getNRPID(tg));
         Script.executeAsyncUpdate("DELETE FROM ticket_greeting WHERE nrp_id=" + Script.getNRPID(tg));

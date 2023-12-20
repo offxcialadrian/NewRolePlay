@@ -5,10 +5,7 @@ import de.newrp.API.Messages;
 import de.newrp.API.PaymentType;
 import de.newrp.API.Script;
 import de.newrp.main;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -130,6 +127,21 @@ public class Banken implements CommandExecutor, Listener {
         return false;
     }
 
+    public static boolean hasBank(OfflinePlayer p) {
+        try (PreparedStatement preparedStatement = main.getConnection().prepareStatement("SELECT * FROM banks WHERE nrp_id=" + Script.getNRPID(p))) {
+            ResultSet rs = preparedStatement.executeQuery();
+            if (rs.next()) {
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+
+
 
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
@@ -155,6 +167,19 @@ public class Banken implements CommandExecutor, Listener {
     }
 
     public static Bank getBankByPlayer(Player p) {
+        try (PreparedStatement preparedStatement = main.getConnection().prepareStatement("SELECT * FROM banks WHERE nrp_id=" + Script.getNRPID(p))) {
+            ResultSet rs = preparedStatement.executeQuery();
+            if (rs.next()) {
+                return Bank.getBankByID(rs.getInt("bank_id"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public static Bank getBankByPlayer(OfflinePlayer p) {
         try (PreparedStatement preparedStatement = main.getConnection().prepareStatement("SELECT * FROM banks WHERE nrp_id=" + Script.getNRPID(p))) {
             ResultSet rs = preparedStatement.executeQuery();
             if (rs.next()) {

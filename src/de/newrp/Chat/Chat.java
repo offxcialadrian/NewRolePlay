@@ -1,5 +1,6 @@
 package de.newrp.Chat;
 
+import de.newrp.API.Friedhof;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.Administrator.Notications;
@@ -123,6 +124,11 @@ public class Chat implements Listener {
 
         if (Punish.isMuted(p)) {
             p.sendMessage(Messages.ERROR + "Du bist gemutet!");
+            return;
+        }
+
+        if(Friedhof.isDead(p)) {
+            p.sendMessage(Messages.ERROR + "Tote können nicht reden!");
             return;
         }
 

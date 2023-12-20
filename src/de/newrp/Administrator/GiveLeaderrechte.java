@@ -31,7 +31,7 @@ public class GiveLeaderrechte implements CommandExecutor {
         }
 
         if(args.length != 1) {
-            p.sendMessage(Messages.ERROR + "/giveleaderrechte <Spieler>");
+            p.sendMessage(Messages.ERROR + "/giveleaderrechte [Spieler]");
             return true;
         }
 

@@ -29,7 +29,7 @@ public class ElevatorDoor implements Listener {
                 new Location(Script.WORLD, 310, 63, 208),
                 new Location(Script.WORLD, 310, 63, 207),
                 new Location(Script.WORLD, 310, 63, 206),
-        }, Elevator.ElevatorAPI.KRANKENHAUS, 0),
+        }, Elevator.ElevatorAPI.X3, 0),
         KH_ETAGE_EG(1, new Location[]{
                 new Location(Script.WORLD, 309, 70, 208),
                 new Location(Script.WORLD, 311, 70, 206)}
@@ -46,7 +46,7 @@ public class ElevatorDoor implements Listener {
                 new Location(Script.WORLD, 310, 69, 208),
                 new Location(Script.WORLD, 310, 69, 207),
                 new Location(Script.WORLD, 310, 69, 206),
-        }, Elevator.ElevatorAPI.KRANKENHAUS, 1),
+        }, Elevator.ElevatorAPI.X3, 1),
         KH_ETAGE_1(2, new Location[]{
                 new Location(Script.WORLD, 309, 76, 208),
                 new Location(Script.WORLD, 311, 76, 206)}
@@ -63,7 +63,7 @@ public class ElevatorDoor implements Listener {
                 new Location(Script.WORLD, 310, 75, 208),
                 new Location(Script.WORLD, 310, 75, 207),
                 new Location(Script.WORLD, 310, 75, 206),
-        }, Elevator.ElevatorAPI.KRANKENHAUS, 2),
+        }, Elevator.ElevatorAPI.X3, 2),
         KH_ETAGE_2(3, new Location[]{
                 new Location(Script.WORLD, 309, 82, 208),
                 new Location(Script.WORLD, 311, 82, 206)}
@@ -80,7 +80,7 @@ public class ElevatorDoor implements Listener {
                 new Location(Script.WORLD, 310, 81, 208),
                 new Location(Script.WORLD, 310, 81, 207),
                 new Location(Script.WORLD, 310, 81, 206),
-        }, Elevator.ElevatorAPI.KRANKENHAUS, 3),
+        }, Elevator.ElevatorAPI.X3, 3),
         KH_ETAGE_3(20, new Location[]{
                 new Location(Script.WORLD, 309, 88, 208),
                 new Location(Script.WORLD, 311, 88, 206)}
@@ -97,7 +97,7 @@ public class ElevatorDoor implements Listener {
                 new Location(Script.WORLD, 310, 87, 208),
                 new Location(Script.WORLD, 310, 87, 207),
                 new Location(Script.WORLD, 310, 87, 206),
-        }, Elevator.ElevatorAPI.KRANKENHAUS, 4),
+        }, Elevator.ElevatorAPI.X3, 4),
         SH_ETAGE_EG(4, new Location[]{
                 new Location(Script.WORLD, 154, 73, 158),
                 new Location(Script.WORLD, 157, 73, 156)}

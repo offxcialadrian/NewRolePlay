@@ -1,9 +1,6 @@
 package de.newrp.Administrator;
 
-import de.newrp.API.Log;
-import de.newrp.API.Messages;
-import de.newrp.API.Rank;
-import de.newrp.API.Script;
+import de.newrp.API.*;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -12,7 +9,7 @@ import org.bukkit.entity.Player;
 
 public class SetSupport implements CommandExecutor {
 
-    private static final String PREFIX = "§8[§bSupport§8] §7";
+    private static final String PREFIX = "§8[§c§lSupport§8] §c§l» §c§l";
 
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
@@ -62,6 +59,7 @@ public class SetSupport implements CommandExecutor {
         tg.sendMessage(PREFIX + "Herzlichen Glückwunsch! Du wurdest zum " + rank.getName(tg) + " ernannt");
         Bukkit.broadcastMessage(PREFIX + Script.getName(tg) + " wurde zum " + rank.getName(tg) + " ernannt.");
         Log.WARNING.write(p, "hat " + Script.getName(tg) + " zum " + rank.getName(tg) + " ernannt.");
+        Achievement.SERVERTEAM.grant(tg);
         if (Script.isNRPTeam(tg)) {
             Script.executeUpdate("UPDATE ranks SET rank_id=" + rank.getID() + " WHERE nrp_id=" + Script.getNRPID(tg));
         } else {
