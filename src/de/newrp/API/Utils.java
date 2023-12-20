@@ -12,6 +12,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.data.type.TrapDoor;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -41,7 +42,7 @@ public class Utils implements Listener {
 
     private static final Material[] DROP_BLACKLIST = new Material[]{};
     private static final String[] BLOCKED_COMMANDS = new String[]{
-            "/minecraft", "/spi", "/pl", "/protocol", "/rl", "/restart", "/bukkit", "/stop", "/time", "/ver", "/icanhasbukkit", "/xp", "/tell",
+            "/minecraft", "/spi", "/pl", "/protocol", "/rl", "/restart", "/bukkit", "/time", "/ver", "/icanhasbukkit", "/xp", "/tell",
             "/toggledownfall", "/testfor", "/recipe", "/help", "/give", "/effect", "/enchant", "/deop", "/defaultgamemode", "/ban-ip",
             "/banlist", "/advancement", "/?", "/gamemode", "/gamerule", "/give", "/help", "/kill", "/list", "/about",
             "/ability", "/advancement", "/alwaysday", "/attribute", "/ban-ip", "/banlist", "/bossbar", "/camera", "/camerashake",
@@ -73,6 +74,16 @@ public class Utils implements Listener {
         double z = e.getBlock().getLocation().getZ();
         Script.WORLD.createExplosion(x, y, z, 25F, false, false);
         e.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onInteractEvent(PlayerInteractEvent e) {
+        if(e.getAction() == Action.RIGHT_CLICK_BLOCK) {
+            if(e.getClickedBlock() == null) return;
+            if(e.getClickedBlock() instanceof TrapDoor && e.getClickedBlock().getType() != Material.OAK_TRAPDOOR) {
+                e.setCancelled(true);
+            }
+        }
     }
 
     @EventHandler
@@ -113,6 +124,17 @@ public class Utils implements Listener {
     }
 
     @EventHandler
+    public void onBedEnter(PlayerBedEnterEvent e) {
+        e.getPlayer().setBedSpawnLocation(null);
+        e.setCancelled(false);
+    }
+
+    @EventHandler
+    public void onBedLeave(PlayerBedLeaveEvent e) {
+        e.getPlayer().setBedSpawnLocation(null);
+    }
+
+    @EventHandler
     public void onJoin(PlayerJoinEvent e) {
         Player p = e.getPlayer();
         e.setJoinMessage(null);
@@ -135,6 +157,7 @@ public class Utils implements Listener {
         Script.checkPlayerName(p);
         Script.sendTabTitle(e.getPlayer());
         Script.resetHealth(p);
+        Log.LOW.write(p, "hat den Server betreten.");
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -145,7 +168,6 @@ public class Utils implements Listener {
         p.setFlySpeed(0.1f);
         if(Wahlen.wahlenActive()) p.sendMessage(Messages.INFO + "Die Wahlen sind aktiv! Du kannst mit §8/§6wahlen §rdeine Stimme abgeben.");
         Notications.sendMessage(Notications.NotificationType.LEAVE, "§e" + Script.getName(e.getPlayer()) + " §7hat den Server betreten.");
-        Script.executeAsyncUpdate("INSERT INTO last_disconnect (nrp_id, time) VALUES (" + Script.getNRPID(p)  + ", " + System.currentTimeMillis() + ")");
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
@@ -204,6 +226,9 @@ public class Utils implements Listener {
         if (Script.isInTestMode() && !Script.isNRPTeam(e.getPlayer()) && !e.getPlayer().isWhitelisted()) {
             e.getPlayer().kickPlayer("§eDer Server ist momentan im Wartungsmodus.");
             Debug.debug("Der Spieler " + e.getPlayer().getName() + " wurde gekickt, da der Server im Wartungsmodus ist.");
+        } else if(Script.isInTestMode()) {
+            e.getPlayer().sendMessage(Messages.INFO + "Der Server ist momentan im Wartungsmodus.");
+            Achievement.BETA_TESTER.grant(e.getPlayer());
         }
     }
 
@@ -301,6 +326,8 @@ public class Utils implements Listener {
             BuildMode.removeBuildMode(p);
         }
         e.setQuitMessage(null);
+        Log.LOW.write(p, "hat den Server verlassen.");
+        Script.executeAsyncUpdate("INSERT INTO last_disconnect (nrp_id, time) VALUES (" + Script.getNRPID(p)  + ", " + System.currentTimeMillis() + ")");
         new BukkitRunnable() {
 
             @Override

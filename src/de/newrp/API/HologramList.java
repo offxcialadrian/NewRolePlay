@@ -6,7 +6,8 @@ public enum HologramList {
 
     CAFE_SH(1, "§8/§6buy", new Location(Script.WORLD, 626, 67, 1030)),
     BANKENCOMMAND(2, "§8/§6banken", new Location(Script.WORLD, 949, 77, 934.5)),
-    AEKI(3, "§8/§6buy", new Location(Script.WORLD, 681, 67, 902));
+    AEKI(3, "§8/§6buy", new Location(Script.WORLD, 681, 67, 902)),
+    AEKI_CAFE(4, "§8/§6buy", new Location(Script.WORLD, 688, 138, 908)),;
 
     private final int id;
     private final String name;

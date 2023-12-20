@@ -189,6 +189,7 @@ public class main extends JavaPlugin {
         getCommand("achievements").setExecutor(new AchievementCommand());
         getCommand("setteamleader").setExecutor(new SetTeamLeader());
         getCommand("removeteamleader").setExecutor(new RemoveTeamLeader());
+        getCommand("forcelotto").setExecutor(new ForceLotto());
 
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new SDuty(), this);
@@ -200,6 +201,7 @@ public class main extends JavaPlugin {
         pm.registerEvents(new Test(), this);
         pm.registerEvents(new WeatherControl(), this);
         pm.registerEvents(new Elevator(), this);
+        pm.registerEvents(new ElevatorDoor(), this);
         pm.registerEvents(new AFK(), this);
         pm.registerEvents(new Punish(), this);
         pm.registerEvents(new HungerFix(), this);
@@ -228,6 +230,10 @@ public class main extends JavaPlugin {
         pm.registerEvents(new Waffen(), this);
         pm.registerEvents(new WaffenDamage(), this);
         pm.registerEvents(new GetGun(), this);
+        pm.registerEvents(new AntiCheatSystem(), this);
+        pm.registerEvents(new AntiCheatFly(), this);
+        pm.registerEvents(new AntiOfflineFlucht(), this);
+        pm.registerEvents(new Spawnschutz(), this);
 
         new PayDay().runTaskTimerAsynchronously(this, 60 * 20L, 60 * 20L);
         new AsyncMinute().runTaskTimerAsynchronously(this, 60 * 20L, 60 * 20L);

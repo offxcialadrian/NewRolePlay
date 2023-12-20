@@ -55,7 +55,7 @@ public class GetLocation implements CommandExecutor, Listener {
 
         p.sendMessage(PREFIX + "Die Position lautet: " + p.getLocation().getBlockX() + "/" + p.getLocation().getBlockY() + "/" + p.getLocation().getBlockZ());
         if(Script.hasRank(p, Rank.ADMINISTRATOR, false))
-            Script.sendCopyMessage(p, Messages.INFO + "Klicke hier um die Location zu kopieren.", "new Location(Script.WORLD, " + p.getLocation().getBlockX() + ", " + p.getLocation().getBlockY() + ", " + p.getLocation().getBlockZ() + ", " + p.getLocation().getYaw() + ", " + p.getLocation().getPitch() + ")", "§aKlicke um die Location zu kopieren.");
+            Script.sendCopyMessage(p, Messages.INFO + "Klicke hier um die Location zu kopieren.", "new Location(Script.WORLD, " + p.getLocation().getBlockX() + ", " + p.getLocation().getBlockY() + ", " + p.getLocation().getBlockZ() + ", " + p.getLocation().getYaw() + "f, " + p.getLocation().getPitch() + "f)", "§aKlicke um die Location zu kopieren.");
 
         return false;
     }

@@ -13,7 +13,11 @@ public enum Achievement {
     FIRST_JOIN(1, "Willkommen!", "Ein neuer Bewohner!", 50),
     SERVERTEAM(2, "Serverteam", "Du bist ein Teil des Serverteams!", 100),
     TEAMJOIN(3, "Teammitglied", "Du bist einem Team beigetreten!", 30),
-    TEAMLEADER(4, "Teamleiter", "Du bist Teamleiter geworden!", 50);
+    TEAMLEADER(4, "Teamleiter", "Du bist Teamleiter geworden!", 50),
+    BETA_TESTER(5, "Beta-Tester", "Du hast an der Beta-Phase teilgenommen!", 100),
+    BERUF_JOIN(6, "Berufseinsteiger", "Du bist deinem erstem Beruf beigetreten!", 50),
+    SHOP_OWNER(7, "Shopbesitzer", "Du hast deinen ersten Shop gekauft!", 50),
+    HOUSE_RENT(8, "Hausmieter", "Du hast dein erstes Haus gemietet!", 50);
 
     private final int id;
     private final String text;
@@ -59,7 +63,7 @@ public enum Achievement {
         }
         if (!done) {
             Title.sendTitle(p, 20, 100, 20, "§aAchievement freigeschaltet!");
-            p.sendMessage("§8[§aAchievement§8]§6 Du hast das Achievement \"§6§l" + this.getText() + "§r§6\" freigeschaltet!");
+            p.sendMessage("§8[§aAchievement§8] §6» Du hast das Achievement \"§6§l" + this.getText() + "§r§6\" freigeschaltet!");
             Script.addEXP(p, this.getExp());
             p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1.0F, 1.0F);
             Script.executeAsyncUpdate("INSERT INTO achievements (userID, achievementID, time, done) VALUES (" + id + ", " + this.getID() + ", " + System.currentTimeMillis() + ", TRUE);");
@@ -78,11 +82,11 @@ public enum Achievement {
             if(p.isOnline()) {
                 Player player = p.getPlayer();
                 Title.sendTitle(player, 20, 100, 20, "§aAchievement freigeschaltet!");
-                player.sendMessage("§8[§aAchievement§8]§6 Du hast das Achievement \"§6§l" + this.getText() + "§r§6\" freigeschaltet!");
+                player.sendMessage("§8[§aAchievement§8] §6» Du hast das Achievement \"§6§l" + this.getText() + "§r§6\" freigeschaltet!");
                 Script.addEXP(player, this.getExp());
                 player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1.0F, 1.0F);
             } else {
-                Script.addOfflineMessage(p, "§8[§aAchievement§8]§6 Du hast das Achievement \"§6§l" + this.getText() + "§r§6\" freigeschaltet!");
+                Script.addOfflineMessage(p, "§8[§aAchievement§8] §6» Du hast das Achievement \"§6§l" + this.getText() + "§r§6\" freigeschaltet!");
                 Script.addEXP(Script.getNRPID(p), this.getExp());
             }
         }

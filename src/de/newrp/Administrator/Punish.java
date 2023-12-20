@@ -63,12 +63,12 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
         }
 
         Player tg = Script.getPlayer(args[0]);
-        if (tg == null && Script.getNRPID(args[0]) == 0) {
-            p.sendMessage(Messages.PLAYER_NOT_FOUND);
-            return true;
+        OfflinePlayer offtg = Script.getOfflinePlayer(Script.getNRPID(args[0]));
+        if(Script.getNRPID(offtg) == 0) {
+            Script.registerPlayer(offtg);
+            p.sendMessage(Messages.INFO + "Der Spieler hat noch nie auf New RolePlay gespielt. Er wurde registriert.");
         }
 
-        OfflinePlayer offtg = Script.getOfflinePlayer(Script.getNRPID(args[0]));
         if (tg == null && offtg != null) {
             Punish.punish(p, offtg, v);
             return true;
@@ -227,22 +227,20 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
                 tg.sendMessage(PREFIX + "Du wurdest von " + Script.getName(p) + " für " + v.getName() + " gebannt.");
                 tg.sendMessage(PREFIX + "Grund: " + v.getDescription());
                 tg.kickPlayer("§8» §cNRP × New RolePlay §8┃ §cBANN §8« \n\n§8§m------------------------------\n\n§7Du wurdest vom Server gebannt§8.\n\n§7Grund §8× §e" + v.getName() + "\n§7Gebannt bis §8× §e" + "Lebenslang" + "\n\n§7Einen Entbannungsantrag kannst du auf der Webseite stellen.\n\n§8§m------------------------------");
-                Script.sendTeamMessage(p, ChatColor.RED, "hat " + Script.getName(tg) + " für " + v.getName() + " gebannt.", true);
                 Script.executeUpdate("INSERT INTO `ban` (id, ban_id, nrp_id, since, until, reason, banned_by) VALUES (NULL, '" + generatePunishID() + "', '" + Script.getNRPID(tg) + "', '" + System.currentTimeMillis() + "', " + (v.getDuration() > 0 ? untilLong : "NULL") + ", '" + v.getName() + "', '" + Script.getNRPID(p) + "');");
-                Log.WARNING.write(tg, "wurde von " + Script.getName(p) + " für " + v.getName() + " gebannt.");
+                Log.WARNING.write(tg, "wurde von " + Messages.RANK_PREFIX(p) + " für " + v.getName() + " gebannt.");
                 Log.HIGH.write(p, "hat " + Script.getName(tg) + " für " + v.getName() + " gebannt.");
-                Bukkit.broadcastMessage(Script.PREFIX + "§c" + Script.getName(tg) + " wurde von " + Script.getName(p) + " für " + v.getName() + " gebannt.");
+                Bukkit.broadcastMessage(Script.PREFIX + "§c" + Script.getName(tg) + " wurde von " + Messages.RANK_PREFIX(p) + " für " + v.getName() + " gebannt.");
                 if(Beruf.isLeader(p)) Script.setInt(p, "berufe", "leader", 0);
             } else {
                 p.sendMessage(PREFIX + "Du hast " + Script.getName(tg) + " bis zum " + dateFormat.format(until) + " Uhr für " + v.getName() + " gebannt.");
                 tg.sendMessage(PREFIX + "Du wurdest von " + Script.getName(p) + " bis zum " + dateFormat.format(until) + " Uhr für " + v.getName() + " gebannt.");
                 tg.sendMessage(PREFIX + "Grund: " + v.getDescription());
                 tg.kickPlayer("§8» §cNRP × New RolePlay §8┃ §cBANN §8« \n\n§8§m------------------------------\n\n§7Du wurdest vom Server gebannt§8.\n\n§7Grund §8× §e" + v.getName() + "\n§7Gebannt bis §8× §e" + dateFormat.format(until) + "\n§7Einen Entbannungsantrag kannst du auf der Webseite stellen.\n\n§8§m------------------------------");
-                Script.sendTeamMessage(p, ChatColor.RED, "hat " + Script.getName(tg) + " bis zum " + dateFormat.format(until) + " Uhr für " + v.getName() + " gebannt.", true);
                 Script.executeUpdate("INSERT INTO `ban` (id, ban_id, nrp_id, since, until, reason, banned_by) VALUES (NULL, '" + generatePunishID() + "', '" + Script.getNRPID(tg) + "', '" + System.currentTimeMillis() + "', " + (v.getDuration() > 0 ? untilLong : "NULL") + ", '" + v.getName() + "', '" + Script.getNRPID(p) + "');");
-                Log.WARNING.write(tg, "wurde von " + Script.getName(p) + " bis zum " + dateFormat.format(until) + " Uhr für " + v.getName() + " gebannt.");
+                Log.WARNING.write(tg, "wurde von " + Messages.RANK_PREFIX(p) + " bis zum " + dateFormat.format(until) + " Uhr für " + v.getName() + " gebannt.");
                 Log.HIGH.write(p, "hat " + Script.getName(tg) + " bis zum " + dateFormat.format(until) + " Uhr für " + v.getName() + " gebannt.");
-                Bukkit.broadcastMessage(Script.PREFIX + "§c" + Script.getName(tg) + " wurde von " + Script.getName(p) + " bis zum " + dateFormat.format(until) + " Uhr für " + v.getName() + " gebannt.");
+                Bukkit.broadcastMessage(Script.PREFIX + "§c" + Script.getName(tg) + " wurde von " + Messages.RANK_PREFIX(p) + " bis zum " + dateFormat.format(until) + " Uhr für " + v.getName() + " gebannt.");
             }
         }
 
@@ -253,7 +251,7 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
                 tg.sendMessage(PREFIX + "Grund: " + v.getDescription());
                 Script.sendTeamMessage(p, ChatColor.RED, "hat " + Script.getName(tg) + " für " + v.getName() + " gemutet.", true);
                 Script.executeUpdate("INSERT INTO `mute` (id, mute_id, nrp_id, since, until, reason, muted_by) VALUES (NULL, '" + generatePunishID() + "', '" + Script.getNRPID(tg) + "', '" + System.currentTimeMillis() + "', " + (v.getDuration() > 0 ? untilLong : "NULL") + ", '" + v.getName() + "', '" + Script.getNRPID(p) + "');");
-                Log.WARNING.write(tg, "wurde von " + Script.getName(p) + " für " + v.getName() + " gemutet.");
+                Log.WARNING.write(tg, "wurde von " + Messages.RANK_PREFIX(p) + " für " + v.getName() + " gemutet.");
                 Log.HIGH.write(p, "hat " + Script.getName(tg) + " für " + v.getName() + " gemutet.");
             } else {
                 p.sendMessage(PREFIX + "Du hast " + Script.getName(tg) + " bis zum " + dateFormat.format(until) + " Uhr für " + v.getName() + " gemutet.");
@@ -261,7 +259,7 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
                 tg.sendMessage(PREFIX + "Grund: " + v.getDescription());
                 Script.sendTeamMessage(p, ChatColor.RED, "hat " + Script.getName(tg) + " bis zum " + dateFormat.format(until) + " Uhr für " + v.getName() + " gemutet.", true);
                 Script.executeUpdate("INSERT INTO `mute` (id, mute_id, nrp_id, since, until, reason, muted_by) VALUES (NULL, '" + generatePunishID() + "', '" + Script.getNRPID(tg) + "', '" + System.currentTimeMillis() + "', " + (v.getDuration() > 0 ? untilLong : "NULL") + ", '" + v.getName() + "', '" + Script.getNRPID(p) + "');");
-                Log.WARNING.write(tg, "wurde von " + Script.getName(p) + " bis zum " + dateFormat.format(until) + " Uhr für " + v.getName() + " gemutet.");
+                Log.WARNING.write(tg, "wurde von " + Messages.RANK_PREFIX(p) + " bis zum " + dateFormat.format(until) + " Uhr für " + v.getName() + " gemutet.");
                 Log.HIGH.write(p, "hat " + Script.getName(tg) + " bis zum " + dateFormat.format(until) + " Uhr für " + v.getName() + " gemutet.");
             }
         }
@@ -270,8 +268,7 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
             p.sendMessage(PREFIX + "Du hast " + Script.getName(tg) + " für " + v.getName() + " gekickt.");
             tg.sendMessage(PREFIX + "Du wurdest von " + Script.getName(p) + " für " + v.getName() + " gekickt.");
             tg.sendMessage(PREFIX + "Grund: " + v.getDescription());
-            Script.sendTeamMessage(p, ChatColor.RED, "hat " + Script.getName(tg) + " für " + v.getName() + " gekickt.", true);
-            Log.WARNING.write(tg, "wurde von " + Script.getName(p) + " für " + v.getName() + " gekickt.");
+            Log.WARNING.write(tg, "wurde von " + Messages.RANK_PREFIX(p) + " für " + v.getName() + " gekickt.");
             Log.HIGH.write(p, "hat " + Script.getName(tg) + " für " + v.getName() + " gekickt.");
             tg.kickPlayer("§8» §cNRP × New RolePlay §8┃ §cKICK §8« \n\n§8§m------------------------------\n\n§7Du wurdest vom Server gekickt§8.\n\n§7Grund §8× §e" + v.getDescription() + "\n\n§8§m------------------------------");
             Bukkit.broadcastMessage(Script.PREFIX + "§c" + Script.getName(tg) + " wurde von " + Script.getName(p) + " für " + v.getName() + " gekickt.");
@@ -283,11 +280,10 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
             tg.sendMessage(PREFIX + "Grund: " + v.getDescription());
             Script.executeUpdate("INSERT INTO `warns` (id, warn_id, nrp_id, since, until, reason, warned_by) VALUES (NULL, '" + generatePunishID() + "', '" + Script.getNRPID(tg) + "', '" + System.currentTimeMillis() + "', NULL, '" + v.getName() + "', '" + Script.getNRPID(p) + "');");
             Script.sendTeamMessage(p, ChatColor.RED, "hat " + Script.getName(tg) + " für " + v.getName() + " verwarnt.", true);
-            Log.WARNING.write(tg, "wurde von " + Script.getName(p) + " für " + v.getName() + " verwarnt.");
+            Log.WARNING.write(tg, "wurde von " + Messages.RANK_PREFIX(p) + " für " + v.getName() + " verwarnt.");
             Log.HIGH.write(p, "hat " + Script.getName(tg) + " für " + v.getName() + " verwarnt.");
             if(getWarns(tg) >= 3) {
                 Script.executeUpdate("INSERT INTO `ban` (id, ban_id, nrp_id, since, until, reason, banned_by) VALUES (NULL, '" + generatePunishID() + "', '" + Script.getNRPID(tg) + "', '" + System.currentTimeMillis() + "', NULL, 'maximale Anzahl an Warns überschritten', '0');");
-                Script.sendTeamMessage(PREFIX + tg.getName() + " wurde automatisch gebannt (3/3 Warns)");
                 Bukkit.broadcastMessage(Script.PREFIX + "§c" + Script.getName(tg) + " wurde automatisch gebannt (3/3 Warns)");
             }
         }
@@ -306,12 +302,14 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
                 Script.executeUpdate("INSERT INTO `ban` (id, ban_id, nrp_id, since, until, reason, banned_by) VALUES (NULL, '" + generatePunishID() + "', '" + Script.getNRPID(tg) + "', '" + System.currentTimeMillis() + "', " + (v.getDuration() > 0 ? untilLong : "NULL") + ", '" + v.getName() + "', '" + Script.getNRPID(p) + "');");
                 Log.WARNING.write(tg, "wurde von " + Script.getName(p) + " für " + v.getName() + " gebannt.");
                 Log.HIGH.write(p, "hat " + tg.getName() + " für " + v.getName() + " gebannt.");
+                Bukkit.broadcastMessage(Script.PREFIX + "§c" + tg.getName() + " wurde von " + Messages.RANK_PREFIX(p) + " für " + v.getName() + " gebannt.");
             } else {
                 p.sendMessage(PREFIX + "Du hast " + tg.getName() + " bis zum " + dateFormat.format(until) + " Uhr für " + v.getName() + " gebannt.");
                 Script.sendTeamMessage(p, ChatColor.RED, "hat " + tg.getName() + " bis zum " + dateFormat.format(until) + " Uhr für " + v.getName() + " gebannt.", true);
                 Script.executeUpdate("INSERT INTO `ban` (id, ban_id, nrp_id, since, until, reason, banned_by) VALUES (NULL, '" + generatePunishID() + "', '" + Script.getNRPID(tg) + "', '" + System.currentTimeMillis() + "', " + (v.getDuration() > 0 ? untilLong : "NULL") + ", '" + v.getName() + "', '" + Script.getNRPID(p) + "');");
                 Log.WARNING.write(tg, "wurde von " + Script.getName(p) + " bis zum " + dateFormat.format(until) + " Uhr für " + v.getName() + " gebannt.");
                 Log.HIGH.write(p, "hat " + tg.getName() + " bis zum " + dateFormat.format(until) + " Uhr für " + v.getName() + " gebannt.");
+                Bukkit.broadcastMessage(Script.PREFIX + "§c" + tg.getName() + " wurde von " + Messages.RANK_PREFIX(p) + " bis zum " + dateFormat.format(until) + " Uhr für " + v.getName() + " gebannt.");
             }
         }
 
@@ -320,7 +318,7 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
                 p.sendMessage(PREFIX + "Du hast " + tg.getName() + " für " + v.getName() + " gemutet.");
                 Script.sendTeamMessage(p, ChatColor.RED, "hat " + tg.getName() + " für " + v.getName() + " gemutet.", true);
                 Script.executeUpdate("INSERT INTO `mute` (id, mute_id, nrp_id, since, until, reason, muted_by) VALUES (NULL, '" + generatePunishID() + "', '" + Script.getNRPID(tg) + "', '" + System.currentTimeMillis() + "', " + (v.getDuration() > 0 ? untilLong : "NULL") + ", '" + v.getName() + "', '" + Script.getNRPID(p) + "');");
-                Log.WARNING.write(tg, "wurde von " + Script.getName(p) + " für " + v.getName() + " gemutet.");
+                Log.WARNING.write(tg, "wurde von " + Messages.RANK_PREFIX(p) + " für " + v.getName() + " gemutet.");
                 Log.HIGH.write(p, "hat " + tg.getName() + " für " + v.getName() + " gemutet.");
                 Script.addOfflineMessage(tg,"Du wurdest von " + Script.getName(p) + " für " + v.getName() + " gemutet.");
                 Script.addOfflineMessage(tg, "Grund: " + v.getDescription());
@@ -328,7 +326,7 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
                 p.sendMessage(PREFIX + "Du hast " + tg.getName() + " bis zum " + dateFormat.format(until) + " Uhr für " + v.getName() + " gemutet.");
                 Script.sendTeamMessage(p, ChatColor.RED, "hat " + tg.getName() + " bis zum " + dateFormat.format(until) + " Uhr für " + v.getName() + " gemutet.", true);
                 Script.executeUpdate("INSERT INTO `mute` (id, mute_id, nrp_id, since, until, reason, muted_by) VALUES (NULL, '" + generatePunishID() + "', '" + Script.getNRPID(tg) + "', '" + System.currentTimeMillis() + "', " + (v.getDuration() > 0 ? untilLong : "NULL") + ", '" + v.getName() + "', '" + Script.getNRPID(p) + "');");
-                Log.WARNING.write(tg, "wurde von " + Script.getName(p) + " bis zum " + dateFormat.format(until) + " Uhr für " + v.getName() + " gemutet.");
+                Log.WARNING.write(tg, "wurde von " + Messages.RANK_PREFIX(p) + " bis zum " + dateFormat.format(until) + " Uhr für " + v.getName() + " gemutet.");
                 Log.HIGH.write(p, "hat " + tg.getName() + " bis zum " + dateFormat.format(until) + " Uhr für " + v.getName() + " gemutet.");
                 Script.addOfflineMessage(tg, PREFIX + "Du wurdest von " + Script.getName(p) + " bis zum " + dateFormat.format(until) + " Uhr für " + v.getName() + " gemutet.");
                 Script.addOfflineMessage(tg, PREFIX + "Grund: " + v.getDescription());
@@ -336,20 +334,20 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
         }
 
         if (punishment == Punishment.KICK || secondaryPunishment == Punishment.KICK) {
-            p.sendMessage(PREFIX + "Der Kick wurde nicht ausgeführt, da der Spieler nicht online ist.");
+            p.sendMessage(Messages.INFO + "Der Kick wurde nicht ausgeführt, da der Spieler nicht online ist.");
         }
 
         if (punishment == Punishment.WARN || secondaryPunishment == Punishment.WARN) {
             p.sendMessage(PREFIX + "Du hast " + tg.getName() + " für " + v.getName() + " verwarnt.");
             Script.executeUpdate("INSERT INTO `warns` (id, warn_id, nrp_id, since, until, reason, warned_by) VALUES (NULL, '" + generatePunishID() + "', '" + Script.getNRPID(tg) + "', '" + System.currentTimeMillis() + "', NULL, '" + v.getName() + "', '" + Script.getNRPID(p) + "');");
             Script.sendTeamMessage(p, ChatColor.RED, "hat " + tg.getName() + " für " + v.getName() + " verwarnt.", true);
-            Log.WARNING.write(tg, "wurde von " + Script.getName(p) + " für " + v.getName() + " verwarnt.");
+            Log.WARNING.write(tg, "wurde von " + Messages.RANK_PREFIX(p) + " für " + v.getName() + " verwarnt.");
             Log.HIGH.write(p, "hat " + tg.getName() + " für " + v.getName() + " verwarnt.");
             Script.addOfflineMessage(tg, PREFIX + "Du hast für " + v.getName() + " einen Warn erhalten.");
             Script.addOfflineMessage(tg, PREFIX + "Grund: " + v.getDescription());
             if(getWarns(tg) >= 3) {
                 Script.executeUpdate("INSERT INTO `ban` (id, ban_id, nrp_id, since, until, reason, banned_by) VALUES (NULL, '" + generatePunishID() + "', '" + Script.getNRPID(tg) + "', '" + System.currentTimeMillis() + "', NULL, 'maximale Anzahl an Warns überschritten', '0');");
-                Script.sendTeamMessage(PREFIX + tg.getName() + " wurde automatisch gebannt (3/3 Warns)");
+                Bukkit.broadcastMessage(Script.PREFIX + "§c" + tg.getName() + " wurde automatisch gebannt (3/3 Warns)");
             }
         }
 

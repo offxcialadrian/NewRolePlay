@@ -264,3 +264,5 @@ commands:
     description: set a player to teamleader
   removeteamleader:
     description: remove a player from teamleader
+  forcelotto:
+    description: force the lotto

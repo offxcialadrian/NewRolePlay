@@ -16,6 +16,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -123,6 +124,17 @@ public class BuildMode implements CommandExecutor, Listener {
         if (e.getAction() == Action.RIGHT_CLICK_BLOCK) {
             if (e.getClickedBlock().getType().equals(Material.CHEST))
                 if (!isInBuildMode(p)) e.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onHit(EntityDamageByEntityEvent e) {
+        if(e.getDamager() instanceof Player) {
+            Player p = (Player) e.getDamager();
+            if(isInBuildMode(p) && e.getEntity() instanceof Player) {
+                p.sendMessage(Messages.INFO + "Du kannst im BuildMode keine Spieler schlagen.");
+                e.setCancelled(true);
+            }
         }
     }
 

@@ -157,7 +157,7 @@ public class Lotto implements CommandExecutor {
                             if (nummer >= 1 && nummer <= 999) {
                                 Script.executeUpdate("INSERT INTO lotto (nrp_id, number) VALUES (" + Script.getNRPID(p) + ", " + nummer + ");");
                                 p.getInventory().remove(lotto);
-                                p.sendMessage(PREFIX + "Du hast nun ein Lottoschein mit der Nummer " + nummer + ".");
+                                p.sendMessage(PREFIX + "Du hast nun einen Lottoschein mit der Nummer " + nummer + ".");
                                 addLottoJackpot(ShopItem.LOTTOSCHEIN.getBuyPrice());
                             } else {
                                 p.sendMessage(Messages.ERROR + "Es gibt nur Lottonummer zwischen 1 und 999.");

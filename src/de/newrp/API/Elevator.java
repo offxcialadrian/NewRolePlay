@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -24,11 +25,22 @@ public class Elevator implements Listener {
 
     public enum ElevatorAPI {
         X3(0, "X3", new Location[]{
-                new Location(Script.WORLD, 313.5153370885389, 69.0, 207.5364310836603, 89.839485f, 0.16981012f),
-                new Location(Script.WORLD, 313.4076426478934, 75.0, 207.4999539989459, 89.83922f, 0.16050917f),
-                new Location(Script.WORLD, 313.414672048562, 81.0, 207.4671358359385, 89.6696f, 0.83986866f),
-                new Location(Script.WORLD, 313.4123509146941, 87.0, 207.54640666609998, 90.17921f, -0.009289116f),
+                new Location(Script.WORLD, 677, 71, 992, 269.86963f,1.9499868f),
+                new Location(Script.WORLD, 677, 83, 991, 271.0594f,0.62371284f),
         }),
+        AEKI(1, "AEKI", new Location[]{
+                new Location(Script.WORLD, 683, 68, 914, 180.1789f, -1.8678606f),
+                new Location(Script.WORLD, 683, 77, 914, 180.18433f, 0.2998221f),
+                new Location(Script.WORLD, 683, 84, 914, 180.03833f, 0.2998364f),
+                new Location(Script.WORLD, 683, 91, 914, 179.8894f, -0.45017368f),
+                new Location(Script.WORLD, 683, 98, 914, 180.19122f, -0.6002175f),
+                new Location(Script.WORLD, 683, 105, 914, 180.34047f, -1.0502068f),
+                new Location(Script.WORLD, 683, 112, 914, -179.95894f, -0.15020083f),
+                new Location(Script.WORLD, 683, 119, 914, -179.9613f, -0.4501556f),
+                new Location(Script.WORLD, 683, 126, 914, -181.30792f, 0.59986407f),
+                new Location(Script.WORLD, 683, 131, 914, -181.00977f, -1.4027208f),
+                new Location(Script.WORLD, 683, 138, 914, -180.10474f, 0.74987704f)
+    }),
         STADTHALLE(1, "Stadthalle", new Location[]{
                 new Location(Script.WORLD, 158.84728054152365, 72.0625, 157.00266976620682, 90.08899f, 1.7017052f),
                 new Location(Script.WORLD, 158.85873310514444, 80.0625, 157.00331873640653, 90.25882f, 1.361892f),
@@ -115,15 +127,39 @@ public class Elevator implements Listener {
 
     }
 
+    public static ElevatorAPI getElevatorByDriveLoc(Location loc) {
+        for (ElevatorDoor.ElevatorDoors elevator : ElevatorDoor.ElevatorDoors.values()) {
+            if (elevator.getDriveLoc().equals(loc)) {
+                return elevator.getElevator();
+            }
+        }
+        return null;
+    }
+
     @EventHandler
     public void onClick(PlayerInteractEvent e) {
         Player p = e.getPlayer();
         if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
             if (e.getClickedBlock().getType().equals(Material.STONE_BUTTON)) {
-                if (ElevatorDoor.ElevatorDoors.getDoorByLoc(e.getClickedBlock().getLocation()) != null) return;
-                ElevatorAPI elevator = ElevatorAPI.getNearestElevator(3, p.getLocation());
-                if (elevator != null)
+                if (ElevatorDoor.ElevatorDoors.getDoorByDriveLoc(e.getClickedBlock().getLocation()) == null) return;
+                if(progress.containsKey(p.getName())) return;
+                ElevatorAPI elevator = Elevator.getElevatorByDriveLoc(e.getClickedBlock().getLocation());
+                if (elevator != null) {
                     openGUI(p);
+                } else {
+                    Debug.debug("elevator is null");
+                }
+            }
+        }
+    }
+
+    @EventHandler
+    public void onDamage(EntityDamageEvent e) {
+        if(e.getEntity() instanceof Player) {
+            Player p = (Player) e.getEntity();
+            if(progress.containsKey(p.getName()) && !e.isCancelled()) {
+                progress.remove(p.getName());
+                p.sendMessage("§cDie Fahrt wurde abgebrochen, da du Schaden erlitten hast.");
             }
         }
     }
@@ -141,31 +177,40 @@ public class Elevator implements Listener {
                 p.sendMessage(Messages.ERROR + "Du bist bereits in diesem Stockwerk.");
                 p.closeInventory();
             } else if (e.getCurrentItem().getType().equals(Material.CHEST) && e.getCurrentItem().hasItemMeta()) {
-                int ziel_etage = Character.getNumericValue(e.getCurrentItem().getItemMeta().getDisplayName().charAt(2));
-                if (e.getCurrentItem().getItemMeta().getDisplayName().equals("§6EG")) ziel_etage = 0;
+                int current_etage = elevator.getEtageByLoc(p.getLocation());
+                int ziel_etage = 0;
+                if(e.getCurrentItem().getItemMeta().getDisplayName().equals("§6EG")) {
+                    ziel_etage = 0;
+                } else {
+                    ziel_etage = Integer.parseInt(e.getCurrentItem().getItemMeta().getDisplayName().replace("§6", "").replace(". Etage", ""));
+                }
                 final int Ziel_etage = ziel_etage;
                 int etage = elevator.getEtageByLoc(p.getLocation());
-                int way = etage + ziel_etage * 3;
+                int way = Math.abs(etage - Ziel_etage) *3;
                 progress.put(p.getName(), 0.0);
                 p.sendMessage("§8[§c" + elevator.getName() + "§8] " + "§6Du fährst nun " + (Ziel_etage > 0 ? "in die " + Ziel_etage + ". Etage" : "ins EG") + "...");
                 p.closeInventory();
                 new BukkitRunnable() {
                     @Override
                     public void run() {
-                        if (progress.get(p.getName()) < way) {
-                            if (p.getLocation().distance(elevator.getLocByEtage(Ziel_etage)) < 3) {
-                                progressBar(way, p);
+                        if (progress.containsKey(p.getName())) {
+                            if (progress.get(p.getName()) < way) {
+                                if (p.getLocation().distance(elevator.getLocByEtage(current_etage)) < 5) {
+                                    progressBar(way, p);
+                                } else {
+                                    cancel();
+                                    progress.remove(p.getName());
+                                    Script.sendActionBar(p, "§cDie Fahrt wurde abgebrochen, da du dich zu weit entfernt hast.");
+                                }
                             } else {
                                 cancel();
                                 progress.remove(p.getName());
-                                Script.sendActionBar(p, "Die Fahrt wurde abgebrochen, da du dich zu weit entfernt hast.");
+                                elevator.teleportToEtage(p, Ziel_etage);
+                                p.sendMessage("§8[§c" + elevator.getName() + "§8] " + "§6Du hast die Etage erreicht.");
+                                ElevatorDoor.openDoors(p, elevator, Ziel_etage);
                             }
                         } else {
                             cancel();
-                            progress.remove(p.getName());
-                            elevator.teleportToEtage(p, Ziel_etage);
-                            p.sendMessage("§8[§c" + elevator.getName() + "§8] " + "§6Du hast die Etage erreicht.");
-                            ElevatorDoor.openDoors(p, elevator, Ziel_etage);
                         }
                     }
                 }.runTaskTimer(main.getInstance(), 20, 20);
@@ -174,17 +219,18 @@ public class Elevator implements Listener {
     }
 
     public static void openGUI(Player p) {
-        ElevatorAPI elevator = ElevatorAPI.getNearestElevator(3, p.getLocation());
+        ElevatorAPI elevator = ElevatorAPI.getNearestElevator(5, p.getLocation());
         int etagen_amount = 0;
         Inventory inv;
         for (Location loc : elevator.getLocs()) {
             etagen_amount++;
         }
 
+
         if (etagen_amount <= 5) {
             inv = Bukkit.createInventory(null, InventoryType.HOPPER, "§c" + elevator.getName() + " Fahrstuhl");
         } else {
-            inv = Bukkit.createInventory(null, 9, "§c" + elevator.getName() + " Fahrstuhl");
+            inv = Bukkit.createInventory(null, (etagen_amount<=9?9:18), "§c" + elevator.getName() + " Fahrstuhl");
         }
         int i = 0;
         String etage;

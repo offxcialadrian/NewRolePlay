@@ -13,282 +13,228 @@ import org.bukkit.scheduler.BukkitRunnable;
 public class ElevatorDoor implements Listener {
 
     public enum ElevatorDoors {
-        KH_ETAGE_UG(0, new Location[]{
-                new Location(Script.WORLD, 309, 64, 208),
-                new Location(Script.WORLD, 311, 64, 206)}
-                , new Location[]{
-                new Location(Script.WORLD, 310, 66, 208),
-                new Location(Script.WORLD, 310, 66, 207),
-                new Location(Script.WORLD, 310, 66, 206),
-                new Location(Script.WORLD, 310, 65, 208),
-                new Location(Script.WORLD, 310, 65, 207),
-                new Location(Script.WORLD, 310, 65, 206),
-                new Location(Script.WORLD, 310, 64, 208),
-                new Location(Script.WORLD, 310, 64, 207),
-                new Location(Script.WORLD, 310, 64, 206),
-                new Location(Script.WORLD, 310, 63, 208),
-                new Location(Script.WORLD, 310, 63, 207),
-                new Location(Script.WORLD, 310, 63, 206),
-        }, Elevator.ElevatorAPI.X3, 0),
-        KH_ETAGE_EG(1, new Location[]{
-                new Location(Script.WORLD, 309, 70, 208),
-                new Location(Script.WORLD, 311, 70, 206)}
-                , new Location[]{
-                new Location(Script.WORLD, 310, 72, 208),
-                new Location(Script.WORLD, 310, 72, 207),
-                new Location(Script.WORLD, 310, 72, 206),
-                new Location(Script.WORLD, 310, 71, 208),
-                new Location(Script.WORLD, 310, 71, 207),
-                new Location(Script.WORLD, 310, 71, 206),
-                new Location(Script.WORLD, 310, 70, 208),
-                new Location(Script.WORLD, 310, 70, 207),
-                new Location(Script.WORLD, 310, 70, 206),
-                new Location(Script.WORLD, 310, 69, 208),
-                new Location(Script.WORLD, 310, 69, 207),
-                new Location(Script.WORLD, 310, 69, 206),
-        }, Elevator.ElevatorAPI.X3, 1),
-        KH_ETAGE_1(2, new Location[]{
-                new Location(Script.WORLD, 309, 76, 208),
-                new Location(Script.WORLD, 311, 76, 206)}
-                , new Location[]{
-                new Location(Script.WORLD, 310, 78, 208),
-                new Location(Script.WORLD, 310, 78, 207),
-                new Location(Script.WORLD, 310, 78, 206),
-                new Location(Script.WORLD, 310, 77, 208),
-                new Location(Script.WORLD, 310, 77, 207),
-                new Location(Script.WORLD, 310, 77, 206),
-                new Location(Script.WORLD, 310, 76, 208),
-                new Location(Script.WORLD, 310, 76, 207),
-                new Location(Script.WORLD, 310, 76, 206),
-                new Location(Script.WORLD, 310, 75, 208),
-                new Location(Script.WORLD, 310, 75, 207),
-                new Location(Script.WORLD, 310, 75, 206),
-        }, Elevator.ElevatorAPI.X3, 2),
-        KH_ETAGE_2(3, new Location[]{
-                new Location(Script.WORLD, 309, 82, 208),
-                new Location(Script.WORLD, 311, 82, 206)}
-                , new Location[]{
-                new Location(Script.WORLD, 310, 84, 208),
-                new Location(Script.WORLD, 310, 84, 207),
-                new Location(Script.WORLD, 310, 84, 206),
-                new Location(Script.WORLD, 310, 83, 208),
-                new Location(Script.WORLD, 310, 83, 207),
-                new Location(Script.WORLD, 310, 83, 206),
-                new Location(Script.WORLD, 310, 82, 208),
-                new Location(Script.WORLD, 310, 82, 207),
-                new Location(Script.WORLD, 310, 82, 206),
-                new Location(Script.WORLD, 310, 81, 208),
-                new Location(Script.WORLD, 310, 81, 207),
-                new Location(Script.WORLD, 310, 81, 206),
-        }, Elevator.ElevatorAPI.X3, 3),
-        KH_ETAGE_3(20, new Location[]{
-                new Location(Script.WORLD, 309, 88, 208),
-                new Location(Script.WORLD, 311, 88, 206)}
-                , new Location[]{
-                new Location(Script.WORLD, 310, 90, 208),
-                new Location(Script.WORLD, 310, 90, 207),
-                new Location(Script.WORLD, 310, 90, 206),
-                new Location(Script.WORLD, 310, 89, 208),
-                new Location(Script.WORLD, 310, 89, 207),
-                new Location(Script.WORLD, 310, 89, 206),
-                new Location(Script.WORLD, 310, 88, 208),
-                new Location(Script.WORLD, 310, 88, 207),
-                new Location(Script.WORLD, 310, 88, 206),
-                new Location(Script.WORLD, 310, 87, 208),
-                new Location(Script.WORLD, 310, 87, 207),
-                new Location(Script.WORLD, 310, 87, 206),
-        }, Elevator.ElevatorAPI.X3, 4),
-        SH_ETAGE_EG(4, new Location[]{
-                new Location(Script.WORLD, 154, 73, 158),
-                new Location(Script.WORLD, 157, 73, 156)}
-                , new Location[]{
-                new Location(Script.WORLD, 156, 74, 156),
-                new Location(Script.WORLD, 156, 74, 157),
-                new Location(Script.WORLD, 156, 73, 156),
-                new Location(Script.WORLD, 156, 73, 157),
-                new Location(Script.WORLD, 156, 72, 156),
-                new Location(Script.WORLD, 156, 72, 157)
-        }, Elevator.ElevatorAPI.STADTHALLE, 0),
-        SH_ETAGE_1(5, new Location[]{
-                new Location(Script.WORLD, 155, 81, 157),
-                new Location(Script.WORLD, 157, 81, 157)}
-                , new Location[]{
-                new Location(Script.WORLD, 156, 82, 156),
-                new Location(Script.WORLD, 156, 82, 157),
-                new Location(Script.WORLD, 156, 81, 156),
-                new Location(Script.WORLD, 156, 81, 157),
-                new Location(Script.WORLD, 156, 80, 156),
-                new Location(Script.WORLD, 156, 80, 157)
-        }, Elevator.ElevatorAPI.STADTHALLE, 1),
-        SH_ETAGE_2(6, new Location[]{
-                new Location(Script.WORLD, 148, 90, 157),
-                new Location(Script.WORLD, 150, 90, 157)}
-                , new Location[]{
-                new Location(Script.WORLD, 149, 91, 156),
-                new Location(Script.WORLD, 149, 91, 157),
-                new Location(Script.WORLD, 149, 90, 156),
-                new Location(Script.WORLD, 149, 90, 157),
-                new Location(Script.WORLD, 149, 89, 156),
-                new Location(Script.WORLD, 149, 89, 157)
-        }, Elevator.ElevatorAPI.STADTHALLE, 2),
-        SH_ETAGE_3(7, new Location[]{
-                new Location(Script.WORLD, 148, 99, 157),
-                new Location(Script.WORLD, 150, 99, 157)}
-                , new Location[]{
-                new Location(Script.WORLD, 149, 100, 156),
-                new Location(Script.WORLD, 149, 100, 157),
-                new Location(Script.WORLD, 149, 99, 156),
-                new Location(Script.WORLD, 149, 99, 157),
-                new Location(Script.WORLD, 149, 98, 156),
-                new Location(Script.WORLD, 149, 98, 157)
-        }, Elevator.ElevatorAPI.STADTHALLE, 3),
-        SH_ETAGE_4(8, new Location[]{
-                new Location(Script.WORLD, 148, 108, 157),
-                new Location(Script.WORLD, 150, 108, 157)}
-                , new Location[]{
-                new Location(Script.WORLD, 149, 109, 156),
-                new Location(Script.WORLD, 149, 109, 157),
-                new Location(Script.WORLD, 149, 108, 156),
-                new Location(Script.WORLD, 149, 108, 157),
-                new Location(Script.WORLD, 149, 107, 156),
-                new Location(Script.WORLD, 149, 107, 157)
-        }, Elevator.ElevatorAPI.STADTHALLE, 4),
-        ZNA_ETAGE_EG(9, new Location[]{
-                new Location(Script.WORLD, 225, 70, 212),
-                new Location(Script.WORLD, 222, 70, 210)}
-                , new Location[]{
-                new Location(Script.WORLD, 222, 71, 211),
-                new Location(Script.WORLD, 223, 71, 211),
-                new Location(Script.WORLD, 224, 71, 211),
-                new Location(Script.WORLD, 222, 70, 211),
-                new Location(Script.WORLD, 223, 70, 211),
-                new Location(Script.WORLD, 224, 70, 211),
-                new Location(Script.WORLD, 222, 69, 211),
-                new Location(Script.WORLD, 223, 69, 211),
-                new Location(Script.WORLD, 224, 69, 211),
-        }, Elevator.ElevatorAPI.NOTAUFNAHME, 0),
-        ZNA_ETAGE_1(10, new Location[]{
-                new Location(Script.WORLD, 225, 76, 212),
-                new Location(Script.WORLD, 222, 76, 210)}
-                , new Location[]{
-                new Location(Script.WORLD, 222, 77, 211),
-                new Location(Script.WORLD, 223, 77, 211),
-                new Location(Script.WORLD, 224, 77, 211),
-                new Location(Script.WORLD, 222, 76, 211),
-                new Location(Script.WORLD, 223, 76, 211),
-                new Location(Script.WORLD, 224, 76, 211),
-                new Location(Script.WORLD, 222, 75, 211),
-                new Location(Script.WORLD, 223, 75, 211),
-                new Location(Script.WORLD, 224, 75, 211),
-        }, Elevator.ElevatorAPI.NOTAUFNAHME, 1),
-        NEWS_ETAGE_EG(11, new Location[]{
-                new Location(Script.WORLD, -100, 20, -375),
-                new Location(Script.WORLD, -102, 20, -372)}
-                , new Location[]{
-                new Location(Script.WORLD, -101, 21, -374),
-                new Location(Script.WORLD, -101, 21, -373),
-                new Location(Script.WORLD, -101, 20, -374),
-                new Location(Script.WORLD, -101, 20, -373),
-                new Location(Script.WORLD, -101, 19, -374),
-                new Location(Script.WORLD, -101, 19, -373),
-        }, Elevator.ElevatorAPI.NEWS, 0),
-        NEWS_ETAGE_1(12, new Location[]{
-                new Location(Script.WORLD, -102, 70, -367),
-                new Location(Script.WORLD, -104, 70, -365)}
-                , new Location[]{
-                new Location(Script.WORLD, -103, 71, -365),
-                new Location(Script.WORLD, -103, 71, -366),
-                new Location(Script.WORLD, -103, 70, -365),
-                new Location(Script.WORLD, -103, 70, -366),
-                new Location(Script.WORLD, -103, 69, -365),
-                new Location(Script.WORLD, -103, 69, -366),
-        }, Elevator.ElevatorAPI.NEWS, 1),
-        CHERRYS_ETAGE_EG(13, new Location[]{
-                new Location(Script.WORLD, 37, 81, 427),
-                new Location(Script.WORLD, 40, 81, 429)}
-                , new Location[]{
-                new Location(Script.WORLD, 38, 82, 428),
-                new Location(Script.WORLD, 39, 82, 428),
-                new Location(Script.WORLD, 38, 81, 428),
-                new Location(Script.WORLD, 39, 81, 428),
-                new Location(Script.WORLD, 38, 80, 428),
-                new Location(Script.WORLD, 39, 80, 428),
-        }, Elevator.ElevatorAPI.CHERRYS, 0),
-        CHERRYS_ETAGE_1(14, new Location[]{
-                new Location(Script.WORLD, 37, 95, 427),
-                new Location(Script.WORLD, 40, 95, 429)}
-                , new Location[]{
-                new Location(Script.WORLD, 38, 96, 428),
-                new Location(Script.WORLD, 39, 96, 428),
-                new Location(Script.WORLD, 38, 95, 428),
-                new Location(Script.WORLD, 39, 95, 428),
-                new Location(Script.WORLD, 38, 94, 428),
-                new Location(Script.WORLD, 39, 94, 428),
-        }, Elevator.ElevatorAPI.CHERRYS, 1),
-        CHERRYS_ETAGE_2(15, new Location[]{
-                new Location(Script.WORLD, 37, 101, 427),
-                new Location(Script.WORLD, 40, 101, 429)}
-                , new Location[]{
-                new Location(Script.WORLD, 38, 102, 428),
-                new Location(Script.WORLD, 39, 102, 428),
-                new Location(Script.WORLD, 38, 101, 428),
-                new Location(Script.WORLD, 39, 101, 428),
-                new Location(Script.WORLD, 38, 100, 428),
-                new Location(Script.WORLD, 39, 100, 428),
-        }, Elevator.ElevatorAPI.CHERRYS, 2),
-        CHERRYS_ETAGE_3(16, new Location[]{
-                new Location(Script.WORLD, 37, 107, 427),
-                new Location(Script.WORLD, 40, 107, 429)}
-                , new Location[]{
-                new Location(Script.WORLD, 38, 108, 428),
-                new Location(Script.WORLD, 39, 108, 428),
-                new Location(Script.WORLD, 38, 107, 428),
-                new Location(Script.WORLD, 39, 107, 428),
-                new Location(Script.WORLD, 38, 106, 428),
-                new Location(Script.WORLD, 39, 106, 428),
-        }, Elevator.ElevatorAPI.CHERRYS, 3),
-        CHERRYS_ETAGE_4(17, new Location[]{
-                new Location(Script.WORLD, 37, 113, 427),
-                new Location(Script.WORLD, 40, 113, 429)}
-                , new Location[]{
-                new Location(Script.WORLD, 38, 114, 428),
-                new Location(Script.WORLD, 39, 114, 428),
-                new Location(Script.WORLD, 38, 113, 428),
-                new Location(Script.WORLD, 39, 113, 428),
-                new Location(Script.WORLD, 38, 112, 428),
-                new Location(Script.WORLD, 39, 112, 428),
-        }, Elevator.ElevatorAPI.CHERRYS, 4),
-        CHERRYS_ETAGE_5(18, new Location[]{
-                new Location(Script.WORLD, 37, 119, 427),
-                new Location(Script.WORLD, 40, 119, 429)}
-                , new Location[]{
-                new Location(Script.WORLD, 38, 120, 428),
-                new Location(Script.WORLD, 39, 120, 428),
-                new Location(Script.WORLD, 38, 119, 428),
-                new Location(Script.WORLD, 39, 119, 428),
-                new Location(Script.WORLD, 38, 118, 428),
-                new Location(Script.WORLD, 39, 118, 428),
-        }, Elevator.ElevatorAPI.CHERRYS, 5),
-        CHERRYS_ETAGE_6(19, new Location[]{
-                new Location(Script.WORLD, 37, 125, 427),
-                new Location(Script.WORLD, 40, 125, 429)}
-                , new Location[]{
-                new Location(Script.WORLD, 38, 126, 428),
-                new Location(Script.WORLD, 39, 126, 428),
-                new Location(Script.WORLD, 38, 125, 428),
-                new Location(Script.WORLD, 39, 125, 428),
-                new Location(Script.WORLD, 38, 124, 428),
-                new Location(Script.WORLD, 39, 124, 428),
-        }, Elevator.ElevatorAPI.CHERRYS, 6);
+
+        X3_ETAGE_0(0, new Location(Script.WORLD, 677, 72, 990),
+                new Location[]{
+                        new Location(Script.WORLD, 674, 72, 993),
+                        new Location(Script.WORLD, 680, 72, 990),
+                        new Location(Script.WORLD, 677, 72, 993)},
+                new Location[]{
+                        new Location(Script.WORLD, 679, 73, 991),
+                        new Location(Script.WORLD, 679, 73, 992),
+                        new Location(Script.WORLD, 679, 72, 991),
+                        new Location(Script.WORLD, 679, 72, 992),
+                        new Location(Script.WORLD, 679, 71, 991),
+                        new Location(Script.WORLD, 679, 71, 992),
+                        new Location(Script.WORLD, 675, 73, 992),
+                        new Location(Script.WORLD, 675, 73, 991),
+                        new Location(Script.WORLD, 675, 72, 992),
+                        new Location(Script.WORLD, 675, 72, 991),
+                        new Location(Script.WORLD, 675, 71, 991),
+                        new Location(Script.WORLD, 675, 71, 992)
+                }, Elevator.ElevatorAPI.X3, 0),
+        X3_ETAGE_1(1, new Location(Script.WORLD, 677, 84, 990),
+                new Location[]{
+                        new Location(Script.WORLD, 677, 84, 990),
+                        new Location(Script.WORLD, 680, 84, 990),
+                        new Location(Script.WORLD, 674, 84, 990)},
+                new Location[]{
+                        new Location(Script.WORLD, 679, 85, 991),
+                        new Location(Script.WORLD, 679, 85, 992),
+                        new Location(Script.WORLD, 679, 84, 991),
+                        new Location(Script.WORLD, 679, 84, 992),
+                        new Location(Script.WORLD, 679, 83, 991),
+                        new Location(Script.WORLD, 679, 83, 992),
+                        new Location(Script.WORLD, 675, 85, 992),
+                        new Location(Script.WORLD, 675, 85, 991),
+                        new Location(Script.WORLD, 675, 84, 992),
+                        new Location(Script.WORLD, 675, 84, 991),
+                        new Location(Script.WORLD, 675, 83, 992),
+                        new Location(Script.WORLD, 675, 83, 991)
+                }, Elevator.ElevatorAPI.X3, 1),
+        AEKI_ETAGE_0(0, new Location(Script.WORLD, 682, 69, 914),
+                new Location[]{
+                        new Location(Script.WORLD, 682, 69, 914),
+                        new Location(Script.WORLD, 685, 69, 911)},
+                new Location[]{
+                        new Location(Script.WORLD, 684, 70, 912),
+                        new Location(Script.WORLD, 683, 70, 912),
+                        new Location(Script.WORLD, 682, 70, 912),
+                        new Location(Script.WORLD, 684, 69, 912),
+                        new Location(Script.WORLD, 683, 69, 912),
+                        new Location(Script.WORLD, 682, 69, 912),
+                        new Location(Script.WORLD, 684, 68, 912),
+                        new Location(Script.WORLD, 683, 68, 912),
+                        new Location(Script.WORLD, 682, 68, 912),
+                }, Elevator.ElevatorAPI.AEKI, 0),
+        AEKI_ETAGE_1(1, new Location(Script.WORLD, 682, 78, 914),
+                new Location[]{
+                        new Location(Script.WORLD, 682, 78, 914),
+                        new Location(Script.WORLD, 685, 78, 911)},
+                new Location[]{
+                        new Location(Script.WORLD, 682, 79, 912),
+                        new Location(Script.WORLD, 683, 79, 912),
+                        new Location(Script.WORLD, 684, 79, 912),
+                        new Location(Script.WORLD, 682, 78, 912),
+                        new Location(Script.WORLD, 683, 78, 912),
+                        new Location(Script.WORLD, 684, 78, 912),
+                        new Location(Script.WORLD, 682, 77, 912),
+                        new Location(Script.WORLD, 683, 77, 912),
+                        new Location(Script.WORLD, 684, 77, 912),
+                }, Elevator.ElevatorAPI.AEKI, 1),
+        AEKI_ETAGE_2(2, new Location(Script.WORLD, 682, 85, 914),
+                new Location[]{
+                        new Location(Script.WORLD, 682, 85, 914),
+                        new Location(Script.WORLD, 685, 85, 911)},
+                new Location[]{
+                        new Location(Script.WORLD, 682, 86, 912),
+                        new Location(Script.WORLD, 683, 86, 912),
+                        new Location(Script.WORLD, 684, 86, 912),
+                        new Location(Script.WORLD, 682, 85, 912),
+                        new Location(Script.WORLD, 683, 85, 912),
+                        new Location(Script.WORLD, 684, 85, 912),
+                        new Location(Script.WORLD, 682, 84, 912),
+                        new Location(Script.WORLD, 683, 84, 912),
+                        new Location(Script.WORLD, 684, 84, 912),
+                }, Elevator.ElevatorAPI.AEKI, 2),
+
+        AEKI_ETAGE_3(3, new Location(Script.WORLD, 682, 92, 914),
+                new Location[]{
+                        new Location(Script.WORLD, 685, 92, 911),
+                        new Location(Script.WORLD, 682, 92, 914)},
+                new Location[]{
+                        new Location(Script.WORLD, 682, 93, 912),
+                        new Location(Script.WORLD, 683, 93, 912),
+                        new Location(Script.WORLD, 684, 93, 912),
+                        new Location(Script.WORLD, 682, 92, 912),
+                        new Location(Script.WORLD, 683, 92, 912),
+                        new Location(Script.WORLD, 684, 92, 912),
+                        new Location(Script.WORLD, 682, 91, 912),
+                        new Location(Script.WORLD, 683, 91, 912),
+                        new Location(Script.WORLD, 684, 91, 912),
+                }, Elevator.ElevatorAPI.AEKI, 3),
+
+        AEKI_ETAGE_4(4, new Location(Script.WORLD, 682, 99, 914),
+                new Location[]{
+                        new Location(Script.WORLD, 682, 99, 914),
+                        new Location(Script.WORLD, 685, 99, 911)},
+                new Location[]{
+                        new Location(Script.WORLD, 682, 100, 912),
+                        new Location(Script.WORLD, 683, 100, 912),
+                        new Location(Script.WORLD, 684, 100, 912),
+                        new Location(Script.WORLD, 682, 99, 912),
+                        new Location(Script.WORLD, 683, 99, 912),
+                        new Location(Script.WORLD, 684, 99, 912),
+                        new Location(Script.WORLD, 682, 98, 912),
+                        new Location(Script.WORLD, 683, 98, 912),
+                        new Location(Script.WORLD, 684, 98, 912),
+                }, Elevator.ElevatorAPI.AEKI, 4),
+
+
+        AEKI_ETAGE_5(5, new Location(Script.WORLD, 682, 106, 914),
+                new Location[]{
+                        new Location(Script.WORLD, 682, 106, 914),
+                        new Location(Script.WORLD, 685, 106, 911)},
+                new Location[]{
+                        new Location(Script.WORLD, 682, 107, 912),
+                        new Location(Script.WORLD, 683, 107, 912),
+                        new Location(Script.WORLD, 684, 107, 912),
+                        new Location(Script.WORLD, 682, 106, 912),
+                        new Location(Script.WORLD, 683, 106, 912),
+                        new Location(Script.WORLD, 684, 106, 912),
+                        new Location(Script.WORLD, 682, 105, 912),
+                        new Location(Script.WORLD, 683, 105, 912),
+                        new Location(Script.WORLD, 684, 105, 912),
+                }, Elevator.ElevatorAPI.AEKI, 5),
+
+
+        AEKI_ETAGE_6(6, new Location(Script.WORLD, 682, 113, 914),
+                new Location[]{
+                        new Location(Script.WORLD, 682, 113, 914),
+                        new Location(Script.WORLD, 685, 113, 911)},
+                new Location[]{
+                        new Location(Script.WORLD, 682, 114, 912),
+                        new Location(Script.WORLD, 683, 114, 912),
+                        new Location(Script.WORLD, 684, 114, 912),
+                        new Location(Script.WORLD, 682, 113, 912),
+                        new Location(Script.WORLD, 683, 113, 912),
+                        new Location(Script.WORLD, 684, 113, 912),
+                        new Location(Script.WORLD, 682, 112, 912),
+                        new Location(Script.WORLD, 683, 112, 912),
+                        new Location(Script.WORLD, 684, 112, 912),
+                }, Elevator.ElevatorAPI.AEKI, 6),
+
+
+        AEKI_ETAGE_7(7, new Location(Script.WORLD, 682, 120, 914),
+                new Location[]{
+                        new Location(Script.WORLD, 682, 120, 914),
+                        new Location(Script.WORLD, 685, 120, 911)},
+                new Location[]{
+                        new Location(Script.WORLD, 682, 121, 912),
+                        new Location(Script.WORLD, 683, 121, 912),
+                        new Location(Script.WORLD, 684, 121, 912),
+                        new Location(Script.WORLD, 682, 120, 912),
+                        new Location(Script.WORLD, 683, 120, 912),
+                        new Location(Script.WORLD, 684, 120, 912),
+                        new Location(Script.WORLD, 682, 119, 912),
+                        new Location(Script.WORLD, 683, 119, 912),
+                        new Location(Script.WORLD, 684, 119, 912),
+                }, Elevator.ElevatorAPI.AEKI, 7),
+
+        AEKI_ETAGE_8(8, new Location(Script.WORLD, 682, 127, 914),
+                new Location[]{
+                        new Location(Script.WORLD, 682, 127, 914),
+                        new Location(Script.WORLD, 685, 127, 911)},
+                new Location[]{
+                        new Location(Script.WORLD, 682, 127, 912),
+                        new Location(Script.WORLD, 683, 127, 912),
+                        new Location(Script.WORLD, 684, 127, 912),
+                        new Location(Script.WORLD, 682, 126, 912),
+                        new Location(Script.WORLD, 683, 126, 912),
+                        new Location(Script.WORLD, 684, 126, 912),
+                }, Elevator.ElevatorAPI.AEKI, 8),
+        AEKI_ETAGE_9(9, new Location(Script.WORLD, 682, 132, 914),
+                new Location[]{
+                        new Location(Script.WORLD, 682, 132, 914),
+                        new Location(Script.WORLD, 685, 132, 911)},
+                new Location[]{
+                        new Location(Script.WORLD, 682, 133, 912),
+                        new Location(Script.WORLD, 683, 133, 912),
+                        new Location(Script.WORLD, 684, 133, 912),
+                        new Location(Script.WORLD, 682, 132, 912),
+                        new Location(Script.WORLD, 683, 132, 912),
+                        new Location(Script.WORLD, 684, 132, 912),
+                        new Location(Script.WORLD, 682, 131, 912),
+                        new Location(Script.WORLD, 683, 131, 912),
+                        new Location(Script.WORLD, 684, 131, 912),
+                }, Elevator.ElevatorAPI.AEKI, 9),
+        AEKI_ETAGE_10(9, new Location(Script.WORLD, 682, 139, 914),
+                new Location[]{
+                        new Location(Script.WORLD, 682, 132, 914),
+                        new Location(Script.WORLD, 685, 139, 911)},
+                new Location[]{
+                        new Location(Script.WORLD, 682, 140, 912),
+                        new Location(Script.WORLD, 683, 140, 912),
+                        new Location(Script.WORLD, 684, 140, 912),
+                        new Location(Script.WORLD, 682, 139, 912),
+                        new Location(Script.WORLD, 683, 139, 912),
+                        new Location(Script.WORLD, 684, 139, 912),
+                        new Location(Script.WORLD, 682, 138, 912),
+                        new Location(Script.WORLD, 683, 138, 912),
+                        new Location(Script.WORLD, 684, 138, 912),
+                }, Elevator.ElevatorAPI.AEKI, 10);
+
 
         int id;
         Location[] button;
+        Location loc;
         Location[] blocks;
         Elevator.ElevatorAPI elevator;
         int etage;
 
-        ElevatorDoors(int id, Location[] button, Location[] blocks, Elevator.ElevatorAPI elevator, int etage) {
+        ElevatorDoors(int id, Location loc, Location[] button, Location[] blocks, Elevator.ElevatorAPI elevator, int etage) {
             this.id = id;
+            this.loc = loc;
             this.button = button;
             this.blocks = blocks;
             this.elevator = elevator;
@@ -311,10 +257,23 @@ public class ElevatorDoor implements Listener {
             return etage;
         }
 
+        public Location getDriveLoc() {
+            return loc;
+        }
+
         public static ElevatorDoors getDoorByLoc(Location loc) {
             for (ElevatorDoors elevatorDoors : ElevatorDoors.values()) {
                 for (Location loc2 : elevatorDoors.getButtons()) {
                     if (loc2.equals(loc)) return elevatorDoors;
+                }
+            }
+            return null;
+        }
+
+        public static ElevatorDoors getDoorByDriveLoc(Location loc) {
+            for (ElevatorDoors elevatorDoors : ElevatorDoors.values()) {
+                if (elevatorDoors.getDriveLoc().equals(loc)) {
+                    return elevatorDoors;
                 }
             }
             return null;

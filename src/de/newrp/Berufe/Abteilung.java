@@ -190,8 +190,7 @@ public class Abteilung implements CommandExecutor, TabCompleter {
     public List<String> onTabComplete(CommandSender cs, Command cmd, String alias, String[] args) {
         Player p = (Player) cs;
         if (cmd.getName().equalsIgnoreCase("abteilung")) {
-            if(!Beruf.hasBeruf(p)) return Collections.EMPTY_LIST;
-            if(!Beruf.isLeader(p)) return Collections.EMPTY_LIST;
+            if(!Beruf.isLeader(p) && !SDuty.isSDuty(p)) return Collections.EMPTY_LIST;
             final List<String> oneArgList = new ArrayList<>();
             final List<String> completions = new ArrayList<>();
             for (Abteilungen abteilung : Abteilungen.getAbteilungen(Beruf.getBeruf(p))) {

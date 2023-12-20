@@ -53,6 +53,11 @@ public class SalaryCommand implements CommandExecutor {
                     return true;
                 }
 
+                if(Script.getNRPID(args[0]) != 0) {
+                    p.sendMessage(PREFIX + "§6" + tg.getName() + " hat ein Gehalt von §6" + Beruf.getSalary(tg) + "€");
+                    return true;
+                }
+
                 Beruf.Berufe b = Beruf.Berufe.getBeruf(args[0]);
                 if(b == null) {
                     p.sendMessage(Messages.ERROR + "Der Beruf wurde nicht gefunden.");
@@ -61,12 +66,6 @@ public class SalaryCommand implements CommandExecutor {
 
                 if(Beruf.getBeruf(p) != b && !SDuty.isSDuty(p)) {
                     p.sendMessage(Messages.ERROR + "Du bist nicht in diesem Beruf.");
-                    return true;
-                }
-
-
-                if(Script.getNRPID(args[0]) != 0) {
-                    p.sendMessage(PREFIX + "§6" + tg.getName() + " hat ein Gehalt von §6" + Beruf.getSalary(tg) + "€");
                     return true;
                 }
 

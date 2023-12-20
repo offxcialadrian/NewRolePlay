@@ -48,6 +48,7 @@ public class Annehmen implements CommandExecutor {
                     all.sendMessage("§8[§e" + team.getName() + "§8] §e" + p.getName() + " §8» §7ist dem Team beigetreten.");
             }
             offer.remove(p.getName() + ".jointeam");
+            Achievement.TEAMJOIN.grant(p);
 
         } else if (offer.containsKey(p.getName() + ".joinberuf")) {
             Player leader = Bukkit.getPlayer(offer.get(p.getName() + ".joinberuf"));
@@ -67,8 +68,8 @@ public class Annehmen implements CommandExecutor {
             leader.sendMessage(Messages.INFO + "Nutze /abteilung [Spieler] [Abteilung], um " + Script.getName(p) + " in eine Abteilung zu verschieben.");
             leader.sendMessage(Messages.INFO + "Nutze /salary [Spieler] [Gehalt], um " + Script.getName(p) + " ein Gehalt zu geben.");
             beruf.addMember(p, leader);
-            Script.addEXP(p, Script.getRandom(50, 100));
             offer.remove(p.getName() + ".joinberuf");
+            Achievement.BERUF_JOIN.grant(p);
 
         } else if (offer.containsKey(p.getName() + ".shop.sell")) {
             Player sell = Script.getPlayer(offer.get(p.getName() + ".shop.sell.seller"));
@@ -115,6 +116,7 @@ public class Annehmen implements CommandExecutor {
             offer.remove(p.getName() + ".shop.sell.seller");
             offer.remove(p.getName() + ".shop.sell.price");
             offer.remove(p.getName() + ".shop.sell.shop");
+            Achievement.SHOP_OWNER.grant(p);
 
         } else if(offer.containsKey(p.getName() + ".house.rent")) {
             Player owner = Script.getPlayer(offer.get(p.getName() + ".house.rent.owner"));
@@ -162,6 +164,7 @@ public class Annehmen implements CommandExecutor {
             offer.remove(p.getName() + ".house.rent");
             offer.remove(p.getName() + ".house.rent.owner");
             offer.remove(p.getName() + ".house.rent.price");
+            Achievement.HOUSE_RENT.grant(p);
         } else {
             p.sendMessage(Messages.ERROR + "Dir wird nichts angeboten.");
         }

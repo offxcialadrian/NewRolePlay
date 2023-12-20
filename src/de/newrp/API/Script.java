@@ -667,6 +667,10 @@ public class Script {
         executeUpdate("UPDATE money SET " + paymentType.getName() + "=" + amount + " WHERE nrp_id=" + getNRPID(p));
     }
 
+    public static void setMoney(OfflinePlayer p, PaymentType paymentType, int amount) {
+        executeUpdate("UPDATE money SET " + paymentType.getName() + "=" + amount + " WHERE nrp_id=" + getNRPID(p));
+    }
+
     public static void addMoney(Player p, PaymentType paymentType, int amount) {
         amount = Math.abs(amount);
         executeUpdate("UPDATE money SET " + paymentType.getName() + "=" + (getMoney(p, paymentType) + amount) + " WHERE nrp_id=" + getNRPID(p));
@@ -792,6 +796,22 @@ public class Script {
         p.setLevel(1);
         setMoney(p, PaymentType.CASH, 50);
         p.sendMessage(Messages.INFO + "Du hast dich erfolgreich registriert.");
+    }
+
+    public static void registerPlayer(OfflinePlayer p) {
+        executeUpdate("INSERT INTO nrp_id (id, uuid, name, first_join) VALUES (NULL, '" + p.getUniqueId() + "', '" + p.getName() + "', NOW())");
+        executeUpdate("INSERT INTO money (nrp_id, cash, bank) VALUES (" + getNRPID(p) + ", 0, NULL)");
+        executeUpdate("INSERT INTO level (nrp_id, level, exp) VALUES (" + getNRPID(p) + ", 1, 0)");
+        executeUpdate("INSERT INTO playtime (id, nrp_id, hours, minutes, a_minutes, a_hours) VALUES (NULL, " + getNRPID(p) + ", 0, 1, 0, 0)");
+        executeUpdate("INSERT INTO payday (id, nrp_id, time, money) VALUES (NULL, " + getNRPID(p) + ", 1, 0)");
+
+
+        setMoney(p, PaymentType.CASH, 50);
+        if(p.isOnline()) {
+            Player pl = p.getPlayer();
+            pl.setLevel(1);
+            pl.sendMessage(Messages.INFO + "Du hast dich erfolgreich registriert.");
+        }
     }
 
     public static void increasePlayTime(Player p) {
