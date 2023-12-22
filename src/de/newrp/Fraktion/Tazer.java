@@ -1,5 +1,6 @@
 package de.newrp.Fraktion;
 
+import de.newrp.API.Achievement;
 import de.newrp.API.Particle;
 import de.newrp.API.Script;
 import de.newrp.Administrator.SDuty;
@@ -94,6 +95,7 @@ public class Tazer implements Listener {
         p.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 10, 1));
         p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 8 * 20, 2));
 
+        Achievement.TAZED.grant(p);
         p.sendMessage("§8[§eTazer§8] §e" + Script.getName(cop) + " hat dich getazert.");
         Me.sendMessage(p, "wurde von " + Script.getName(cop) + " getazert.");
     }
