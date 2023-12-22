@@ -43,11 +43,13 @@ public class Tragen implements CommandExecutor, Listener {
             return true;
         }
 
-        if(tragen.containsKey(p) && tragen.get(p) == tg) {
+        if(tragen.containsKey(p) && tragen.get(p) == tg && p.getPassenger() != null) {
             tg.teleport(p.getLocation());
             p.sendMessage(PREFIX + "Du hast " + Script.getName(tg) + " abgesetzt.");
             tg.sendMessage(PREFIX + "Du wurdest von " + Script.getName(p) + " abgesetzt.");
             Me.sendMessage(p, "hat " + Script.getName(tg) + " abgesetzt.");
+            tragen.remove(p);
+            tragen.remove(tg);
             return true;
         }
 

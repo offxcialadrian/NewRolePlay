@@ -27,7 +27,7 @@ public enum Weather {
         if (currentWeatherDescription.contains("Sunny") || currentWeatherDescription.contains("Partly cloudy") || currentWeatherDescription.contains("Clear") || currentWeatherDescription.contains("Overcast")) {
             Script.WORLD.setStorm(false);
             Debug.debug("updated weather to sunny");
-        } else if (currentWeatherDescription.contains("rain") || currentWeatherDescription.contains("Light Rain") || currentWeatherDescription.contains("Light Drizzle") || currentWeatherDescription.contains("Light Drizzle And Rain, Mist, Light") || currentWeatherDescription.contains("Light Rain,")) {
+        } else if (currentWeatherDescription.contains("rain") || currentWeatherDescription.contains("Light Rain") || currentWeatherDescription.contains("Light Drizzle") || currentWeatherDescription.contains("Light Drizzle And Rain, Mist, Light") || currentWeatherDescription.contains("Light Rain,") || currentWeatherDescription.contains("Light Drizzle,")) {
             Script.WORLD.setStorm(true);
             Debug.debug("updated weather to rain");
         } else if (currentWeatherDescription.contains("thunder")) {

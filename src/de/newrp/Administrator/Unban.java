@@ -32,7 +32,7 @@ public class Unban implements CommandExecutor {
 
 
         OfflinePlayer tg = Script.getOfflinePlayer(args[0]);
-        if (tg == null) {
+        if(Script.getNRPID(tg) == 0) {
             p.sendMessage(Messages.PLAYER_NOT_FOUND);
             return true;
         }
