@@ -28,7 +28,7 @@ public class Tragen implements CommandExecutor, Listener {
         Player p = (Player) cs;
 
         if(args.length != 1) {
-            p.sendMessage("/tragen [Spieler]");
+            p.sendMessage(Messages.ERROR  + "/tragen [Spieler]");
             return true;
         }
 

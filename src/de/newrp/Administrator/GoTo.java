@@ -23,7 +23,7 @@ public class GoTo implements CommandExecutor, TabCompleter {
     public enum Points {
 
         STADTHALLE(1, "Stadthalle", new String[]{"SH", "Regierung"},new Location(Script.WORLD, 588, 69, 991, -270.83252f, -2.236781f)),
-        POLIZEIREVIER(2, "Polizeirevier", new String[]{"PR", "Polizeirevier", "Police"}, new Location(Script.WORLD, 405, 71, 852, 177.84886f, 5.210484f)),
+        POLIZEIREVIER(2, "Polizeirevier", new String[]{"PR", "Polizeirevier", "Police", "Cop", "Cops", "police"}, new Location(Script.WORLD, 405, 71, 852, 177.84886f, 5.210484f)),
         KRANKENHAUS  (3, "Krankenhaus", new String[]{"Krankenhaus", "KH", "Hospital"}, new Location(Script.WORLD, 333, 77, 1132)),
         MALL (4, "Mall", new String[]{"Einkaufszentrum"}, new Location(Script.WORLD, 827, 74, 935)),
         NEWS (5, "News", new String[]{"News", "Nachrichten", "Redaktion"}, new Location(Script.WORLD, 326, 67, 763)),

@@ -154,7 +154,7 @@ public class ReviveCommand implements CommandExecutor {
         cooldowns.put(tg.getName(), time);
         final Location loc = p.getLocation();
         Bukkit.getScheduler().runTaskLater(main.getInstance(), () -> {
-            if (p.getLocation().distance(skullItem.getLocation()) > 3D) {
+            if (p.getLocation().distance(skullItem.getLocation()) > 3D && p.getLocation().distance(f.getDeathLocation()) > 3D) {
                 p.sendMessage(Messages.ERROR + "Du bist zuweit von der Leiche weg.");
                 return;
             }

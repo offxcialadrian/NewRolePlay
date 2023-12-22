@@ -52,7 +52,7 @@ public class SetTeamLeader implements CommandExecutor {
         p.sendMessage(PREFIX + " Du hast " + tg.getName() + " TL-Rechte gegeben.");
         Script.sendTeamMessage(p, ChatColor.RED, "hat " + tg.getName() + " TL-Rechte gegeben.", true);
         if (tg.isOnline()) {
-            tg.getPlayer().sendMessage(PREFIX + " Du hast nun TL-Rechte.");
+            tg.getPlayer().sendMessage(PREFIX + " Du hast nun TeamLeiter-Rechte.");
         }
         Achievement.TEAMLEADER.grant(tg);
         Log.HIGH.write(p, "hat " + tg.getName() + " TL-Rechte gegeben.");
