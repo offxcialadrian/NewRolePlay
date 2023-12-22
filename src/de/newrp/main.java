@@ -204,6 +204,9 @@ public class main extends JavaPlugin {
         getCommand("addhousedoor").setExecutor(new AddHouseDoor());
         getCommand("back").setExecutor(new BackCommand());
         getCommand("baulog").setExecutor(new Baulog());
+        getCommand("tragen").setExecutor(new Tragen());
+        getCommand("removetragensperre").setExecutor(new TragenSperre());
+        getCommand("sperrinfo").setExecutor(new Sperrinfo());
 
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new SDuty(), this);

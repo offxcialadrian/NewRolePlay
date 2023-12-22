@@ -5,6 +5,7 @@ import de.newrp.Administrator.SDuty;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Berufe.Duty;
 import de.newrp.Chat.Me;
+import de.newrp.Waffen.Waffen;
 import de.newrp.main;
 import org.apache.logging.log4j.core.jmx.AppenderAdmin;
 import org.bukkit.Bukkit;
@@ -181,6 +182,7 @@ public class ReviveCommand implements CommandExecutor {
             }
             Script.addEXP(p, Script.getRandom(4, 12));
             exp_cooldowns.put(p.getName(), time1);
+            Waffen.REVIVE_COOLDOWN.put(p.getName(), System.currentTimeMillis());
         }, 5 * 20L);
         return false;
     }

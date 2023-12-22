@@ -128,7 +128,10 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
         RECHTEMISSBRAUCH(11, Punishment.BAN, Punishment.WARN, TimeUnit.DAYS.toMillis(7), "Rechte_Missbrauch", "Du hast deine Rechte missbraucht."),
         SICHERHEITSBANN(12, Punishment.BAN, null, 0, "Sicherheitsbann", "Du wurdest zur Sicherheit gebannt. Sollte dir der Grund nicht bekannt sein, melde dich bei uns im Support."),
         BAD_NEWS(13, Punishment.BAN, null, TimeUnit.DAYS.toMillis(1), "Bad_/news", "Du hast den Befehl /news missbraucht."),
-        BAD_STAATSMELDUNG(14, Punishment.BAN, null, TimeUnit.DAYS.toMillis(1), "Bad_/staatsmeldung", "Du hast den Befehl /staatsmeldung missbraucht.");
+        BAD_STAATSMELDUNG(14, Punishment.BAN, null, TimeUnit.DAYS.toMillis(1), "Bad_/staatsmeldung", "Du hast den Befehl /staatsmeldung missbraucht."),
+        MISSBRAUCH_TRAGEN(15, Punishment.TRAGEN_SPERRE, null, 120, "Missbrauch_von_/tragen", "Du hast den Befehl /tragen missbraucht."),
+        REPEATING_MISSBRAUCH_TRAGEN(16, Punishment.BAN, null, TimeUnit.DAYS.toMillis(1), "Wiederholter_Missbrauch_von_/tragen", "Du hast den Befehl /tragen wiederholt missbraucht.");
+
 
 
         int id;
@@ -196,7 +199,8 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
         BAN("Bann"),
         MUTE("Mute"),
         KICK("Kick"),
-        WARN("Warn");
+        WARN("Warn"),
+        TRAGEN_SPERRE("Tragensperre");
 
         String name;
 
@@ -290,6 +294,15 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
             }
         }
 
+        if(punishment == Punishment.TRAGEN_SPERRE || secondaryPunishment == Punishment.TRAGEN_SPERRE) {
+            p.sendMessage(PREFIX + "Du hast " + tg.getName() + " eine Tragensperre für " + v.getDuration() + " Minuten gegeben.");
+            tg.sendMessage(PREFIX + "Du hast von " + Script.getName(p) + " eine Tragensperre für " + v.getDuration() + " Minuten bekommen.");
+            Script.sendTeamMessage(p, ChatColor.RED, "hat " + tg.getName() + " eine Tragensperre für " + v.getDuration() + " Minuten gegeben.", true);
+            Log.WARNING.write(tg, "hat von " + Messages.RANK_PREFIX(p) + " eine Tragensperre für " + v.getDuration() + " Minuten bekommen.");
+            Log.HIGH.write(p, "hat " + tg.getName() + " eine Tragensperre für " + v.getDuration() + " Minuten gegeben.");
+            Sperre.TRAGENSPERRE.setSperre(Script.getNRPID(tg), v.getDuration());
+        }
+
     }
 
     public static void punish(Player p, OfflinePlayer tg, Violation v) {
@@ -351,6 +364,14 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
                 Script.executeUpdate("INSERT INTO `ban` (id, ban_id, nrp_id, since, until, reason, banned_by) VALUES (NULL, '" + generatePunishID() + "', '" + Script.getNRPID(tg) + "', '" + System.currentTimeMillis() + "', NULL, 'maximale Anzahl an Warns überschritten', '0');");
                 Bukkit.broadcastMessage(Script.PREFIX + "§c" + tg.getName() + " wurde automatisch gebannt (3/3 Warns)");
             }
+        }
+
+        if(punishment == Punishment.TRAGEN_SPERRE || secondaryPunishment == Punishment.TRAGEN_SPERRE) {
+            p.sendMessage(PREFIX + "Du hast " + tg.getName() + " eine Tragensperre für " + v.getDuration() + " Minuten gegeben.");
+            Script.sendTeamMessage(p, ChatColor.RED, "hat " + tg.getName() + " eine Tragensperre für " + v.getDuration() + " Minuten gegeben.", true);
+            Log.WARNING.write(tg, "hat von " + Messages.RANK_PREFIX(p) + " eine Tragensperre für " + v.getDuration() + " Minuten bekommen.");
+            Log.HIGH.write(p, "hat " + tg.getName() + " eine Tragensperre für " + v.getDuration() + " Minuten gegeben.");
+            Sperre.TRAGENSPERRE.setSperre(Script.getNRPID(tg), v.getDuration());
         }
 
     }

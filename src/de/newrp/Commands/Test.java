@@ -15,7 +15,7 @@ public class Test implements CommandExecutor, Listener {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
         Player p = (Player) cs;
-
+        p.setPassenger(Bukkit.getPlayer(args[0]));
 
         return false;
     }

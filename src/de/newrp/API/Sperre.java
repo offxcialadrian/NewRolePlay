@@ -12,7 +12,8 @@ public enum Sperre {
     TIMEBAN(3, "timeban", true),
     FRAKTIONSSPERRE(4, "fraktionsperre", true),
     WAFFENSPERRE(5, "waffensperre", true),
-    ADSPERRE(6, "adsperre", true);
+    ADSPERRE(6, "adsperre", true),
+    TRAGENSPERRE(7, "tragensperre", true);
 
     private final int id;
     private final String database;

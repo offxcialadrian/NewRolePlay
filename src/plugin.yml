@@ -288,3 +288,11 @@ commands:
   baulog:
     description: view the baulog
     aliases: [ baulogs ]
+  tragen:
+    description: trage jemanden
+    aliases: [ carry ]
+  removetragensperre:
+    description: remove a tragensperre
+  sperrinfo:
+    description: view the sperrinfo
+    aliases: [ sperrinfos ]
