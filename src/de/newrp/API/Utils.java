@@ -39,7 +39,7 @@ import java.util.List;
 
 public class Utils implements Listener {
 
-    private static final Material[] DROP_BLACKLIST = new Material[]{ Material.WOODEN_HOE };
+    private static final Material[] DROP_BLACKLIST = new Material[]{ Material.WOODEN_HOE, Material.LEAD };
     private static final String[] BLOCKED_COMMANDS = new String[]{
             "/minecraft", "/spi", "/pl", "/protocol", "/rl", "/restart", "/bukkit", "/time", "/ver", "/icanhasbukkit", "/xp", "/tell",
             "/toggledownfall", "/testfor", "/recipe", "/help", "/give", "/effect", "/enchant", "/deop", "/defaultgamemode", "/ban-ip",
