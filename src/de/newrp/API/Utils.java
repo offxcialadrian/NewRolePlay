@@ -19,12 +19,11 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockExplodeEvent;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityExplodeEvent;
-import org.bukkit.event.entity.EntityRegainHealthEvent;
+import org.bukkit.event.entity.*;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
+import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.player.*;
+import org.bukkit.event.server.ServerListPingEvent;
 import org.bukkit.event.server.TabCompleteEvent;
 import org.bukkit.help.HelpTopic;
 import org.bukkit.inventory.ItemStack;
@@ -40,7 +39,7 @@ import java.util.List;
 
 public class Utils implements Listener {
 
-    private static final Material[] DROP_BLACKLIST = new Material[]{};
+    private static final Material[] DROP_BLACKLIST = new Material[]{ Material.WOODEN_HOE };
     private static final String[] BLOCKED_COMMANDS = new String[]{
             "/minecraft", "/spi", "/pl", "/protocol", "/rl", "/restart", "/bukkit", "/time", "/ver", "/icanhasbukkit", "/xp", "/tell",
             "/toggledownfall", "/testfor", "/recipe", "/help", "/give", "/effect", "/enchant", "/deop", "/defaultgamemode", "/ban-ip",
@@ -80,16 +79,27 @@ public class Utils implements Listener {
     public void onInteractEvent(PlayerInteractEvent e) {
         if(e.getAction() == Action.RIGHT_CLICK_BLOCK) {
             if(e.getClickedBlock() == null) return;
-            if(e.getClickedBlock() instanceof TrapDoor && e.getClickedBlock().getType() != Material.OAK_TRAPDOOR) {
-                e.setCancelled(true);
+            if(e.getClickedBlock().getType() == Material.BIRCH_TRAPDOOR || e.getClickedBlock().getType() == Material.ACACIA_TRAPDOOR || e.getClickedBlock().getType() == Material.DARK_OAK_TRAPDOOR || e.getClickedBlock().getType() == Material.JUNGLE_TRAPDOOR || e.getClickedBlock().getType() == Material.SPRUCE_TRAPDOOR) {
+                boolean block = true;
+                if(SDuty.isSDuty(e.getPlayer())) block = false;
+                if(BuildMode.isInBuildMode(e.getPlayer())) block = false;
+                e.setCancelled(block);
             }
+        }
+    }
+
+    @EventHandler
+    public void onPing(ServerListPingEvent e) {
+        if(Script.isInTestMode()) {
+            e.setMotd("§8» §eWartungsarbeiten");
+        } else {
+            e.setMotd( "§5New RolePlay §8┃ §5Reallife §8× §5RolePlay §8┃ §c1.16.5\n§8» §7" + main.getInstance().getDescription().getVersion() + "§8- §eWerde Teil einer neuen Ära!");
         }
     }
 
     @EventHandler
     public void blockEntityExplode(EntityExplodeEvent e) {
         Location bombLocation = e.getLocation();
-        Navi navi = Navi.getNextNaviLocation(bombLocation);
         bombLocation.add(0, -1, 0);
         for (Location l : Script.getBlocksAroundLocation(bombLocation, 5, 5, false, false, -1)) {
             Block b = l.getBlock();
@@ -144,7 +154,7 @@ public class Utils implements Listener {
             if(Script.hasRank(p, Rank.MODERATOR, false)) e.getPlayer().sendMessage(Messages.INFO + "Aufgrund deines Status als " + Script.getRank(p).getName(p) + " hast du automatisch einen Premium-Account.");
             Script.sendActionBar(e.getPlayer(), "§7Willkommen zurück auf §eNewRP§7!");
         } else {
-            if (!Script.getCountry(p).contains("Germany") && !Script.getCountry(p).contains("Austria") && !Script.getCountry(p).contains("Switzerland")) {
+            if (!Script.getCountry(p).contains("Germany") && !Script.getCountry(p).contains("Austria") && !Script.getCountry(p).contains("Switzerland") && !Script.isWhitelistedIP(p.getAddress().getAddress().getHostAddress())) {
                 p.kickPlayer("§8» §cNRP × New RolePlay §8┃ §cAccess denied §8« \n\n§8§m------------------------------\n\n§7We are sorry to inform you that only players inside DE, AT & CH can join the server.\n\n§7If you think this is a mistake, please contact our support.\n\n§8§m------------------------------");
                 return;
             }
@@ -243,12 +253,12 @@ public class Utils implements Listener {
             }
 
             if(e.getClickedBlock().getType() == Material.CHEST && Script.hasRank(e.getPlayer(), Rank.ADMINISTRATOR, false)) {
-                e.setCancelled(false);
+                e.setCancelled(!SDuty.isSDuty(e.getPlayer()));
                 return;
             }
 
-            if((e.getClickedBlock().getType() == Material.CRAFTING_TABLE || e.getClickedBlock().getType() == Material.FURNACE || e.getClickedBlock().getType() == Material.LOOM) && BuildMode.isInBuildMode(e.getPlayer())) {
-                e.setCancelled(false);
+            if((e.getClickedBlock().getType() == Material.CRAFTING_TABLE || e.getClickedBlock().getType() == Material.FURNACE || e.getClickedBlock().getType() == Material.LOOM)) {
+                e.setCancelled(!BuildMode.isInBuildMode(e.getPlayer()));
                 return;
             }
 
@@ -271,6 +281,7 @@ public class Utils implements Listener {
                     e.getClickedBlock().getType() == Material.DAMAGED_ANVIL ||
                     e.getClickedBlock().getType() == Material.ENCHANTING_TABLE ||
                     e.getClickedBlock().getType() == Material.CRAFTING_TABLE ||
+                    e.getClickedBlock().getType() == Material.LECTERN ||
                     e.getClickedBlock().getType() == Material.BEACON ||
                     e.getClickedBlock().getType() == Material.DAYLIGHT_DETECTOR ||
                     e.getClickedBlock().getType() == Material.GRINDSTONE ||
@@ -325,6 +336,7 @@ public class Utils implements Listener {
         if(BuildMode.isInBuildMode(p) && !Script.isInTestMode()) {
             BuildMode.removeBuildMode(p);
         }
+
         e.setQuitMessage(null);
         Log.LOW.write(p, "hat den Server verlassen.");
         Script.executeAsyncUpdate("INSERT INTO last_disconnect (nrp_id, time) VALUES (" + Script.getNRPID(p)  + ", " + System.currentTimeMillis() + ")");
@@ -341,10 +353,21 @@ public class Utils implements Listener {
     public void onDrop(PlayerDropItemEvent e) {
         boolean block = false;
         for (Material material : DROP_BLACKLIST) {
-            block = true;
+            if(e.getItemDrop().getItemStack().getType() == material) {
+                block = true;
+                break;
+            }
         }
         if (block)
             e.setCancelled(true);
+    }
+
+
+    @EventHandler(priority=EventPriority.HIGH, ignoreCancelled=true)
+    public void RicochetingArrow(ProjectileHitEvent hit) {
+        if (hit.getEntity() instanceof Arrow) {
+            hit.getEntity().remove();
+        }
     }
 
 

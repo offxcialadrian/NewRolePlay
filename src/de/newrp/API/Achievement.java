@@ -17,7 +17,10 @@ public enum Achievement {
     BETA_TESTER(5, "Beta-Tester", "Du hast an der Beta-Phase teilgenommen!", 100),
     BERUF_JOIN(6, "Berufseinsteiger", "Du bist deinem erstem Beruf beigetreten!", 50),
     SHOP_OWNER(7, "Shopbesitzer", "Du hast deinen ersten Shop gekauft!", 50),
-    HOUSE_RENT(8, "Hausmieter", "Du hast dein erstes Haus gemietet!", 50);
+    HOUSE_RENT(8, "Hausmieter", "Du hast dein erstes Haus gemietet!", 50),
+    WAHL_GEWONNEN(9, "Wahlsieger", "Du hast eine Wahl gewonnen!", 400),
+    WAEHLER(10, "Wähler", "Du hast an einer Wahl teilgenommen!", 50),
+    PET_OWNER(11, "Haustierbesitzer", "Du hast dein erstes Haustier gekauft!", 50);
 
     private final int id;
     private final String text;

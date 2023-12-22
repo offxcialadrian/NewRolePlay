@@ -1,15 +1,20 @@
 package de.newrp.Runnable;
 
+import de.newrp.API.Debug;
 import de.newrp.API.Script;
+import de.newrp.Berufe.Beruf;
 import de.newrp.Entertainment.Lotto;
 import de.newrp.Government.Wahlen;
 import de.newrp.Player.AFK;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Sign;
 import org.bukkit.entity.*;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Calendar;
+import java.util.concurrent.TimeUnit;
 
 public class AsyncMinute extends BukkitRunnable {
 
@@ -41,6 +46,7 @@ public class AsyncMinute extends BukkitRunnable {
         } else if (Calendar.getInstance().get(Calendar.MONTH) == Calendar.OCTOBER && Calendar.getInstance().get(Calendar.DAY_OF_MONTH) == 15 && Calendar.getInstance().get(Calendar.HOUR_OF_DAY) == 20 && Calendar.getInstance().get(Calendar.MINUTE) == 0 && Wahlen.extend) {
             Wahlen.getWahlResult();
         }
+
 
         if(i == 5) {
             for(Entity e : Script.WORLD.getEntities()) {

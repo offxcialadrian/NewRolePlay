@@ -4,6 +4,7 @@ import de.newrp.API.Messages;
 import de.newrp.API.Rank;
 import de.newrp.API.Script;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -13,11 +14,13 @@ import org.bukkit.util.StringUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 public class Teleport implements CommandExecutor, TabCompleter {
 
     public static String PREFIX = "§8[§eTeleport§8] §e" + Messages.ARROW + " ";
+    public static HashMap<Player, Location> back = new HashMap<>();
 
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
@@ -49,6 +52,7 @@ public class Teleport implements CommandExecutor, TabCompleter {
         }
 
         if(args.length == 1) {
+            back.put(p, p.getLocation());
             p.teleport(tg.getLocation());
             p.sendMessage(PREFIX + "Du hast dich zu " + Script.getName(tg) + " teleportiert.");
             Script.sendTeamMessage(p, ChatColor.YELLOW, "hat sich zu " + Script.getName(tg) + " teleportiert.", true);
@@ -61,6 +65,7 @@ public class Teleport implements CommandExecutor, TabCompleter {
             return true;
         }
 
+        back.put(tg, tg.getLocation());
         tg.teleport(gp.getLocation());
         p.sendMessage(PREFIX + "Du hast " + Script.getName(tg) + " zu " + gp.getName() + " teleportiert.");
         tg.sendMessage(PREFIX + "Du wurdest zu " + gp.getName() + " teleportiert.");

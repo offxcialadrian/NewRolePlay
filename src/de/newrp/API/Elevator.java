@@ -25,8 +25,16 @@ public class Elevator implements Listener {
 
     public enum ElevatorAPI {
         X3(0, "X3", new Location[]{
-                new Location(Script.WORLD, 677, 71, 992, 269.86963f,1.9499868f),
-                new Location(Script.WORLD, 677, 83, 991, 271.0594f,0.62371284f),
+                new Location(Script.WORLD, 677, 71, 992, 90.30029f, -0.8999349f),
+                new Location(Script.WORLD, 677, 83, 992, 268.51172f, 1.3737835f),
+                new Location(Script.WORLD, 677, 90, 991, 87.00944f, 4.9500804f),
+                new Location(Script.WORLD, 677, 96, 991, 91.35059f, -0.29995036f),
+                new Location(Script.WORLD, 677, 102, 991, 89.24286f, 0.90017503f),
+                new Location(Script.WORLD, 678, 108, 991, 89.98947f, 2.100277f),
+                new Location(Script.WORLD, 677, 114, 992, 90.590225f, 1.8002541f),
+                new Location(Script.WORLD, 677, 120, 992, 90.59046f, 2.1000636f),
+                new Location(Script.WORLD, 677, 126, 992, -269.4025f, 1.8001311f),
+                new Location(Script.WORLD, 677, 132, 991, -270.00256f, 2.2501912f),
         }),
         AEKI(1, "AEKI", new Location[]{
                 new Location(Script.WORLD, 683, 68, 914, 180.1789f, -1.8678606f),
@@ -40,30 +48,10 @@ public class Elevator implements Listener {
                 new Location(Script.WORLD, 683, 126, 914, -181.30792f, 0.59986407f),
                 new Location(Script.WORLD, 683, 131, 914, -181.00977f, -1.4027208f),
                 new Location(Script.WORLD, 683, 138, 914, -180.10474f, 0.74987704f)
-    }),
-        STADTHALLE(1, "Stadthalle", new Location[]{
-                new Location(Script.WORLD, 158.84728054152365, 72.0625, 157.00266976620682, 90.08899f, 1.7017052f),
-                new Location(Script.WORLD, 158.85873310514444, 80.0625, 157.00331873640653, 90.25882f, 1.361892f),
-                new Location(Script.WORLD, 151.9346966195919, 89.0625, 157.03359206453865, 90.0894f, 0.16041285f),
-                new Location(Script.WORLD, 151.81743255966438, 98.0625, 157.0097766732797, 89.919556f, 1.198105f),
-                new Location(Script.WORLD, 151.69999998807907, 107.0, 156.98890079623362, 89.74982f, 0.85838294f),
         }),
-        NOTAUFNAHME(2, "Notaufnahme", new Location[]{
-                new Location(Script.WORLD, 223.50338177551546, 69.0, 208.5283757516812, -0.25895947f, 0.8398185f),
-                new Location(Script.WORLD, 223.50338177551546, 75.0, 208.5283757516812, 0.080697f, 2.7079785f),
-        }),
-        NEWS(3, "News", new Location[]{
-                new Location(Script.WORLD, -103.14341092870598, 19.0, -373.0438723706381, -89.40045f, 2.5384421f),
-                new Location(Script.WORLD, -104.4608556244416, 69.0, -364.459107468096, -90.25056f, 3.0476258f),
-        }),
-        CHERRYS(4, "Cherrys", new Location[]{
-                new Location(Script.WORLD, 38.94811672523405, 80.0, 431.3165495248266, -179.67859f, 0.6699593f),
-                new Location(Script.WORLD, 39.021404512493916, 94.0, 431.52721705186906, -180.86755f, 3.5568366f),
-                new Location(Script.WORLD, 38.98596644589013, 100.0, 431.54116302879754, -180.01816f, 1.688792f),
-                new Location(Script.WORLD, 38.99267615070082, 106.0, 431.2306982036481, -179.84831f, 0.8583616f),
-                new Location(Script.WORLD, 38.98406357923558, 112.0, 431.5643886870891, -179.84831f, 2.7265282f),
-                new Location(Script.WORLD, 39.026637086598136, 118.0, 431.4368865510465, -180.69748f, 3.745513f),
-                new Location(Script.WORLD, 39.04205665503477, 124.0, 431.4894230966401, -180.35782f, 3.405899f),
+        STADTHALLE(2, "Stadthalle", new Location[]{
+                new Location(Script.WORLD, 545, 70, 991, -90.51386f, -3.9811409f),
+                new Location(Script.WORLD, 545, 78, 992, -90.06347f, 1.4188595f)
         });
 
         int id;
@@ -170,11 +158,17 @@ public class Elevator implements Listener {
         if (!e.getCurrentItem().hasItemMeta()) return;
         Player p = (Player) e.getWhoClicked();
         ElevatorAPI elevator = ElevatorAPI.getNearestElevator(3, p.getLocation());
-        if (elevator == null) return;
+        if(!e.getView().getTitle().contains("Fahrstuhl")) return;
+        if(elevator == null) {
+            p.closeInventory();
+            return;
+        }
+        int etage = elevator.getEtageByLoc(p.getLocation());
         if (e.getView().getTitle().equals("§c" + elevator.getName() + " Fahrstuhl")) {
             e.setCancelled(true);
-            if (e.getCurrentItem().getType().equals(Material.BARRIER)) {
-                p.sendMessage(Messages.ERROR + "Du bist bereits in diesem Stockwerk.");
+            if (e.getCurrentItem().getType().equals(Material.IRON_DOOR)) {
+                p.sendMessage("§8[§c" + elevator.getName() + "§8] " + "§6Du hast die Türen geöffnet.");
+                ElevatorDoor.openDoors(p, elevator, etage);
                 p.closeInventory();
             } else if (e.getCurrentItem().getType().equals(Material.CHEST) && e.getCurrentItem().hasItemMeta()) {
                 int current_etage = elevator.getEtageByLoc(p.getLocation());
@@ -185,7 +179,6 @@ public class Elevator implements Listener {
                     ziel_etage = Integer.parseInt(e.getCurrentItem().getItemMeta().getDisplayName().replace("§6", "").replace(". Etage", ""));
                 }
                 final int Ziel_etage = ziel_etage;
-                int etage = elevator.getEtageByLoc(p.getLocation());
                 int way = Math.abs(etage - Ziel_etage) *3;
                 progress.put(p.getName(), 0.0);
                 p.sendMessage("§8[§c" + elevator.getName() + "§8] " + "§6Du fährst nun " + (Ziel_etage > 0 ? "in die " + Ziel_etage + ". Etage" : "ins EG") + "...");
@@ -200,6 +193,7 @@ public class Elevator implements Listener {
                                 } else {
                                     cancel();
                                     progress.remove(p.getName());
+                                    p.closeInventory();
                                     Script.sendActionBar(p, "§cDie Fahrt wurde abgebrochen, da du dich zu weit entfernt hast.");
                                 }
                             } else {
@@ -241,9 +235,9 @@ public class Elevator implements Listener {
             } else {
                 etage = "§6EG";
             }
-            ItemStack no = new ItemStack(Material.BARRIER);
+            ItemStack no = new ItemStack(Material.IRON_DOOR);
             ItemMeta noMeta = no.getItemMeta();
-            noMeta.setDisplayName(etage);
+            noMeta.setDisplayName("§6Tür öffnen");
             no.setItemMeta(noMeta);
 
             ItemStack is = new ItemStack(Material.CHEST);

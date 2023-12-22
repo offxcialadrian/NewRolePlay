@@ -11,6 +11,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -26,6 +27,7 @@ public class Tazer implements Listener {
     @EventHandler
     public void onInteract(PlayerInteractEvent e) {
         Player p = e.getPlayer();
+        if(e.getAction() != Action.RIGHT_CLICK_BLOCK && e.getAction() != Action.RIGHT_CLICK_AIR) return;
         if (p.getInventory().getItemInMainHand().getType().equals(Material.WOODEN_HOE)) {
             if (canUse(p)) {
                 Location loc = p.getEyeLocation();
@@ -92,7 +94,7 @@ public class Tazer implements Listener {
         p.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 10, 1));
         p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 8 * 20, 2));
 
-        p.sendMessage("§8[§eTazer§8] " + Script.getName(cop) + " hat dich getazert.");
+        p.sendMessage("§8[§eTazer§8] §e" + Script.getName(cop) + " hat dich getazert.");
         Me.sendMessage(p, "wurde von " + Script.getName(cop) + " getazert.");
     }
 

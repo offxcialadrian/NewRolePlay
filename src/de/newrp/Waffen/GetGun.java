@@ -1,6 +1,7 @@
 package de.newrp.Waffen;
 
 import de.newrp.API.*;
+import de.newrp.Administrator.BuildMode;
 import de.newrp.House.House;
 import de.newrp.House.HouseAddon;
 import org.bukkit.Material;
@@ -50,6 +51,11 @@ public class GetGun implements CommandExecutor, Listener {
                 HashMap<Weapon, WeaponData> weapon_data = WeaponData.getWeaponData(id);
                 if (weapon_data.isEmpty()) {
                     p.sendMessage(GetAmmo.PREFIX + "Du besitzt keine Waffen.");
+                    return true;
+                }
+
+                if(BuildMode.isInBuildMode(p)) {
+                    p.sendMessage(Messages.ERROR + "Du kannst keine Waffen aus dem Waffenschrank nehmen wenn du im BuildMode bist.");
                     return true;
                 }
 

@@ -19,19 +19,21 @@ import java.util.UUID;
 public class Beruf {
 
     public enum Berufe {
-        GOVERNMENT(1, "Regierung", false),
-        NEWS(2, "News", true),
-        POLICE(3, "Polizei", false),
-        RETTUNGSDIENST(4, "Rettungsdienst", false);
+        GOVERNMENT(1, "Regierung", false, false),
+        NEWS(2, "News", true, false),
+        POLICE(3, "Polizei", false, true),
+        RETTUNGSDIENST(4, "Rettungsdienst", false, true);
 
         int id;
         private final String name;
         boolean kasse;
+        boolean equip;
 
-        Berufe(int id, String name, boolean kasse) {
+        Berufe(int id, String name, boolean kasse, boolean equip) {
             this.id = id;
             this.name = name;
             this.kasse = kasse;
+            this.equip = equip;
         }
 
         public int getID() {
@@ -40,6 +42,10 @@ public class Beruf {
 
         public String getName() {
             return name;
+        }
+
+        public boolean hasEquip() {
+            return equip;
         }
 
         public static Berufe getBeruf(int id) {
@@ -196,6 +202,13 @@ public class Beruf {
             }
             sendLeaderMessage("§8[§e" + getName() + "§8] §e" + Script.getName(leader) + " §ehat " + p.getName() + " aus dem Beruf geworfen.");
             Script.sendTeamMessage("§8[§eBerufeControl§8] §e" + Script.getName(leader) + " §ehat " + p.getName() + " aus dem Beruf " + getName() + " geworfen.");
+        }
+
+        public void removeMember(OfflinePlayer p) {
+            Script.executeUpdate("DELETE FROM berufe WHERE nrp_id = '" + Script.getNRPID(p) + "'");
+            for (Player members : getPlayersFromBeruf(this)) {
+                members.sendMessage("§8[§e" + getName() + "§8] §e" + p.getName() + " §ehat den Beruf verlassen.");
+            }
         }
 
 

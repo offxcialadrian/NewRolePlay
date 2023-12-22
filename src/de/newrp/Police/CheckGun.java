@@ -3,6 +3,8 @@ package de.newrp.Police;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.Berufe.Beruf;
+import de.newrp.Berufe.Duty;
+import de.newrp.Chat.Me;
 import de.newrp.Waffen.Weapon;
 import de.newrp.Waffen.WeaponData;
 import org.bukkit.Material;
@@ -15,6 +17,8 @@ import org.bukkit.inventory.ItemStack;
 import java.util.HashMap;
 
 public class CheckGun implements CommandExecutor {
+
+    private static String PREFIX = "§8[§6Waffen§8] " + Messages.ARROW + " §7";
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         Player p = (Player) cs;
@@ -32,13 +36,18 @@ public class CheckGun implements CommandExecutor {
             }
         } else if (args.length == 1) {
             if (Beruf.getBeruf(p) == Beruf.Berufe.POLICE) {
+                if(!Duty.isInDuty(p)) {
+                    p.sendMessage(Messages.ERROR + "Du musst im Dienst sein um diese Funktion zu nutzen.");
+                    return true;
+                }
                 Player tg = Script.getPlayer(args[0]);
                 if (tg != null) {
                     if (!Script.isInRange(p.getLocation(), tg.getLocation(), 5)) {
                         p.sendMessage(Messages.ERROR+ "Der Spieler ist zu weit entfernt.");
                     } else {
-                        p.sendMessage("§9Du hast " + Script.getName(tg) + " nach Waffen durchsucht..");
-                        tg.sendMessage("§9" + Script.getName(p) + " hat dich nach Waffen durchsucht..");
+                        p.sendMessage(PREFIX + "Du hast " + Script.getName(tg) + " nach Waffen durchsucht..");
+                        tg.sendMessage(PREFIX + Script.getName(p) + " hat dich nach Waffen durchsucht..");
+                        Me.sendMessage(p, "durchsucht " + Script.getName(tg) + " nach Waffen.");
 
                         boolean b = false;
                         ItemStack[] inventory = tg.getInventory().getContents();
@@ -54,9 +63,9 @@ public class CheckGun implements CommandExecutor {
                             }
                         }
                         if (b) {
-                            p.sendMessage("§cAchtung, der Spieler ist bewaffnet!");
+                            p.sendMessage(PREFIX + "§cAchtung, der Spieler ist bewaffnet!");
                         } else {
-                            p.sendMessage("§9Der Spieler trägt keine Waffen bei sich.");
+                            p.sendMessage(PREFIX + "Der Spieler trägt keine Waffen bei sich.");
                         }
                     }
                 } else {

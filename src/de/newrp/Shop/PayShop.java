@@ -6,6 +6,7 @@ import de.newrp.Government.Stadtkasse;
 import de.newrp.Government.Steuern;
 import de.newrp.House.House;
 import de.newrp.House.HouseAddon;
+import de.newrp.Waffen.Waffen;
 import de.newrp.Waffen.Weapon;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -63,9 +64,22 @@ public class PayShop implements Listener {
             case PISTOLE:
                 if(!haveGun(p, Weapon.PISTOLE)) {
                     p.sendMessage(Messages.INFO + "Du kannst deine Pistole im Waffenschrank holen.");
+                    Weapon w = Weapon.PISTOLE;
+                    p.getInventory().addItem(Waffen.setAmmo(w.getWeapon(), 0, 0));
                     Weapon.PISTOLE.addToInventory(Script.getNRPID(p));
                 } else {
                     p.sendMessage(Messages.ERROR + "Du hast bereits eine Pistole.");
+                    return;
+                }
+                break;
+            case AK47:
+                if(!haveGun(p, Weapon.AK47)) {
+                    p.sendMessage(Messages.INFO + "Du kannst deine AK-47 im Waffenschrank holen.");
+                    Weapon w = Weapon.AK47;
+                    p.getInventory().addItem(Waffen.setAmmo(w.getWeapon(), 0, 0));
+                    Weapon.AK47.addToInventory(Script.getNRPID(p));
+                } else {
+                    p.sendMessage(Messages.ERROR + "Du hast bereits eine AK-47.");
                     return;
                 }
                 break;

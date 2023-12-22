@@ -62,7 +62,25 @@ public class PayDay extends BukkitRunnable {
                 int salary = Beruf.getSalary(p);
                 p.sendMessage("§8" + Messages.ARROW + " §7Lohn/Gehalt: §a+" + salary + "€");
                 payday += salary;
-                if (!Beruf.getBeruf(p).hasKasse()) Stadtkasse.removeStadtkasse(salary);
+                if (!Beruf.getBeruf(p).hasKasse()) {
+                    if(Stadtkasse.getStadtkasse() < salary) {
+                        Beruf.Berufe.NEWS.sendMessage("§8[§eBerufskasse§8] §eDie Stadtkasse ist Insolvent!");
+                        for(Beruf.Berufe beruf : Beruf.Berufe.values()) {
+                            if(!beruf.hasKasse()) {
+                                for(OfflinePlayer members : beruf.getAllMembers()) {
+                                    Script.setInt(members, "berufe", "salary", 0);
+                                    if(!members.isOnline()) {
+                                        Script.addOfflineMessage(members, "§8[§eBerufskasse§8] §eDie Stadtkasse ist Insolvent. Alle Gehälter wurden auf 0€ gesetzt");
+                                    } else {
+                                        members.getPlayer().sendMessage("§8[§eBerufskasse§8] §eDie Stadtkasse ist Insolvent. Alle Gehälter wurden auf 0€ gesetzt");
+                                    }
+                                }
+                            }
+                        }
+                    } else {
+                        Stadtkasse.removeStadtkasse(salary);
+                    }
+                }
                 if(Beruf.getBeruf(p).hasKasse()) {
                     if(Beruf.getBeruf(p).getKasse() >= salary) {
                         Beruf.getBeruf(p).removeKasse(salary);

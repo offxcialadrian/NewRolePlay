@@ -67,7 +67,9 @@ public class SDuty implements CommandExecutor, Listener {
 
     public static void removeSDuty(Player p) {
         Log.NORMAL.write(p, "hat den Supporter-Dienst verlassen.");
-        if (BuildMode.isInBuildMode(p)) {
+        if (BuildMode.isInBuildMode(p)) {;
+            p.getInventory().clear();
+            Chache.loadInventory(p);
             BuildMode.removeBuildMode(p);
             p.sendMessage(BuildMode.PREFIX + "Du hast den BuildMode verlassen.");
             Script.sendTeamMessage(p, ChatColor.YELLOW, "hat den BuildMode verlassen.", true);
@@ -120,23 +122,25 @@ public class SDuty implements CommandExecutor, Listener {
         Score score5 = o.getScore(ChatColor.DARK_AQUA + " §8» §eFrage: " + amount.get(TicketTopic.FRAGE));
         Score score6 = o.getScore(ChatColor.DARK_AQUA + " §8» §eSpieler: " + amount.get(TicketTopic.SPIELER));
         Score score7 = o.getScore(ChatColor.DARK_AQUA + " §8» §eAccount: " + amount.get(TicketTopic.ACCOUNT));
-        Score score8 = o.getScore(ChatColor.GRAY + "");
-        Score score9 = o.getScore(ChatColor.GRAY + "§bStadtkasse§8:");
-        Score score10 = o.getScore(ChatColor.DARK_AQUA + " §8» §e" + df.format(stadtkasse) + "€");
+        Score score8 = o.getScore(ChatColor.DARK_AQUA + " §8» §eBaufehler: " + amount.get(TicketTopic.BAUFEHLER));
+        Score score9 = o.getScore(ChatColor.GRAY + "");
+        Score score10 = o.getScore(ChatColor.GRAY + "§bStadtkasse§8:");
+        Score score11 = o.getScore(ChatColor.DARK_AQUA + " §8» §e" + df.format(stadtkasse) + "€");
         p.setCollidable(false);
-        platzhalter1.setScore(9);
-        score1.setScore(8);
-        score2.setScore(7);
-        platzhalter2.setScore(6);
-        score3.setScore(5);
-        score4.setScore(4);
-        score5.setScore(3);
-        score6.setScore(2);
-        score7.setScore(1);
+        platzhalter1.setScore(10);
+        score1.setScore(9);
+        score2.setScore(8);
+        platzhalter2.setScore(7);
+        score3.setScore(6);
+        score4.setScore(5);
+        score5.setScore(4);
+        score6.setScore(3);
+        score7.setScore(2);
+        score8.setScore(1);
         if (Script.hasRank(p, Rank.ADMINISTRATOR, false)) {
-            score8.setScore(0);
-            score9.setScore(-1);
-            score10.setScore(-2);
+            score9.setScore(0);
+            score10.setScore(-1);
+            score11.setScore(-2);
         }
         p.setScoreboard(b);
         Script.updateListname(p);
@@ -147,8 +151,10 @@ public class SDuty implements CommandExecutor, Listener {
             if (isSDuty(p)) {
                 int stadtkasse = Stadtkasse.getStadtkasse();
                 DecimalFormat df = new DecimalFormat("#,###");
+
                 ScoreboardManager m = Bukkit.getScoreboardManager();
                 Scoreboard b = m.getNewScoreboard();
+
                 Objective o = b.registerNewObjective("Gold", "");
                 o.setDisplaySlot(DisplaySlot.SIDEBAR);
                 o.setDisplayName(ChatColor.BLUE + "" + ChatColor.BOLD + "§cNRP × Support");
@@ -163,24 +169,25 @@ public class SDuty implements CommandExecutor, Listener {
                 Score score5 = o.getScore(ChatColor.DARK_AQUA + " §8» §eFrage: " + amount.get(TicketTopic.FRAGE));
                 Score score6 = o.getScore(ChatColor.DARK_AQUA + " §8» §eSpieler: " + amount.get(TicketTopic.SPIELER));
                 Score score7 = o.getScore(ChatColor.DARK_AQUA + " §8» §eAccount: " + amount.get(TicketTopic.ACCOUNT));
-                Score score8 = o.getScore(ChatColor.GRAY + "");
-                Score score9 = o.getScore(ChatColor.GRAY + "§bStadtkasse§8:");
-                Score score10 = o.getScore(ChatColor.DARK_AQUA + " §8» §e" + df.format(stadtkasse) + "€");
-                p.setPlayerListName("§cNRP §8× §9" + p.getName());
+                Score score8 = o.getScore(ChatColor.DARK_AQUA + " §8» §eBaufehler: " + amount.get(TicketTopic.BAUFEHLER));
+                Score score9 = o.getScore(ChatColor.GRAY + "");
+                Score score10 = o.getScore(ChatColor.GRAY + "§bStadtkasse§8:");
+                Score score11 = o.getScore(ChatColor.DARK_AQUA + " §8» §e" + df.format(stadtkasse) + "€");
                 p.setCollidable(false);
-                platzhalter1.setScore(9);
-                score1.setScore(8);
-                score2.setScore(7);
-                platzhalter2.setScore(6);
-                score3.setScore(5);
-                score4.setScore(4);
-                score5.setScore(3);
-                score6.setScore(2);
-                score7.setScore(1);
+                platzhalter1.setScore(10);
+                score1.setScore(9);
+                score2.setScore(8);
+                platzhalter2.setScore(7);
+                score3.setScore(6);
+                score4.setScore(5);
+                score5.setScore(4);
+                score6.setScore(3);
+                score7.setScore(2);
+                score8.setScore(1);
                 if (Script.hasRank(p, Rank.ADMINISTRATOR, false)) {
-                    score8.setScore(0);
-                    score9.setScore(-1);
-                    score10.setScore(-2);
+                    score9.setScore(0);
+                    score10.setScore(-1);
+                    score11.setScore(-2);
                 }
                 p.setScoreboard(b);
             }

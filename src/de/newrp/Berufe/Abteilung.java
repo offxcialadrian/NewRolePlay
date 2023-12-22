@@ -17,8 +17,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static de.newrp.Berufe.Beruf.Berufe.GOVERNMENT;
-import static de.newrp.Berufe.Beruf.Berufe.NEWS;
+import static de.newrp.Berufe.Beruf.Berufe.*;
 
 public class Abteilung implements CommandExecutor, TabCompleter {
 
@@ -32,6 +31,12 @@ public class Abteilung implements CommandExecutor, TabCompleter {
         AUSSENMINISTERIUM(4, GOVERNMENT, "Außenministerium"),
         BAUMINISTERIUM(5, GOVERNMENT, "Bauministerium"),
         STAATSOBERHAUPT(6, GOVERNMENT, "Staatsoberhaupt"),
+        STREIFENDIENST(0, POLICE, "Streifendienst"),
+        SEK(1, POLICE, "SEK"),
+        PRESSE(2, POLICE, "Presse"),
+        KRIPO(3, POLICE, "Kriminalpolizei"),
+        BESCHAFFUNG(4, POLICE, "Beschaffung"),
+        ZIVILPOLICE(5, POLICE, "Zivilpolizei"),
         NEWS_NONE(0, NEWS, "Keine_Abteilung"),
         NEWS_NACHRICHTEN(1, NEWS, "Nachrichten-Abteilung");
 

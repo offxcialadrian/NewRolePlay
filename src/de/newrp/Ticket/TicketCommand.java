@@ -4,11 +4,13 @@ import de.newrp.API.*;
 import de.newrp.Administrator.SDuty;
 import de.newrp.Player.AFK;
 import de.newrp.main;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
@@ -27,11 +29,12 @@ public class TicketCommand implements CommandExecutor {
     public static final String PREFIX = "§8[§bTicket§8] §b" + Messages.ARROW + " ";
 
     public static void openTicket(Player p) {
-        Inventory inv = p.getPlayer().getServer().createInventory(null, 2 * 9, "§l§bTicket");
-        inv.setItem(11, Script.setNameAndLore(Material.BUCKET, "§6Bug", "§bFehler melden"));
-        inv.setItem(12, Script.setNameAndLore(Material.ACACIA_SIGN, "§6Frage", "§bAllgemeine Frage"));
-        inv.setItem(13, Script.setNameAndLore(new ItemStack(Material.SKELETON_SKULL, 1, (short) 3), "§6Spieler", "§bEinen Spieler melden (§cbitte Beweise davor bereithalten!§b)"));
-        inv.setItem(14, Script.setNameAndLore(Material.COMPASS, "§6Account", "§bProbleme mit deinem Account auf der Plattform"));
+        Inventory inv = Bukkit.createInventory(null, InventoryType.HOPPER, "§b§lTicket");
+        inv.setItem(0, Script.setNameAndLore(Material.BUCKET, "§6Bug", "§bFehler melden"));
+        inv.setItem(1, Script.setNameAndLore(Material.BOOK, "§6Baufehler", "§bMelde einen Baufehler"));
+        inv.setItem(2, Script.setNameAndLore(Material.ACACIA_SIGN, "§6Frage", "§bAllgemeine Frage"));
+        inv.setItem(3, Script.setNameAndLore(Material.SKELETON_SKULL, "§6Spieler", "§bEinen Spieler melden"));
+        inv.setItem(4, Script.setNameAndLore(Material.COMPASS, "§6Account", "§bProbleme mit deinem Account auf der Plattform"));
         p.openInventory(inv);
     }
 
@@ -349,6 +352,11 @@ public class TicketCommand implements CommandExecutor {
             }
             Script.executeAsyncUpdate("DELETE FROM ticket_farewell WHERE nrp_id=" + Script.getNRPID(p) + ";");
             p.sendMessage(PREFIX + "Du hast die Verabschiedungsnachricht gelöscht.");
+            return true;
+        }
+
+        if(Script.isNRPTeam(p)) {
+            p.sendMessage(Messages.ERROR + "Teammitglieder können keine Tickets schreiben.");
             return true;
         }
 

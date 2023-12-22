@@ -2,6 +2,8 @@ package de.newrp.API;
 
 import de.newrp.Administrator.BuildMode;
 import de.newrp.Administrator.SDuty;
+import de.newrp.Berufe.Abteilung;
+import de.newrp.Berufe.Beruf;
 import de.newrp.Berufe.Duty;
 import de.newrp.Player.AFK;
 import de.newrp.Player.Passwort;
@@ -21,17 +23,19 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.craftbukkit.v1_16_R3.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.lang.reflect.Field;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.sql.ResultSet;
@@ -64,11 +68,12 @@ public class Script {
     }
 
     public static void updateListname(Player p) {
-        if(SDuty.isSDuty(p)) p.setPlayerListName("§cNRP §8× §9" + p.getName());
-        if(!SDuty.isSDuty(p)) p.setPlayerListName("§r" + p.getName());
-        if(Duty.isInDuty(p)) p.setPlayerListName(Duty.color + p.getPlayerListName());
-        if(BuildMode.isInBuildMode(p)) p.setPlayerListName("§eB §8× §r" + p.getPlayerListName());
-        if(TicketCommand.isInTicket(p)) p.setPlayerListName("§8[§b§lT§8] §r" + p.getPlayerListName());
+        if (SDuty.isSDuty(p)) p.setPlayerListName("§cNRP §8× §9" + p.getName());
+        if (!SDuty.isSDuty(p)) p.setPlayerListName("§r" + p.getName());
+        if (Duty.isInDuty(p) && Beruf.getAbteilung(p) != Abteilung.Abteilungen.ZIVILPOLICE)
+            p.setPlayerListName((Beruf.getBeruf(p) == Beruf.Berufe.POLICE ? "§9" : "§4") + p.getPlayerListName());
+        if (BuildMode.isInBuildMode(p)) p.setPlayerListName("§eB §8× §r" + p.getPlayerListName());
+        if (TicketCommand.isInTicket(p)) p.setPlayerListName("§8[§b§lT§8] §r" + p.getPlayerListName());
     }
 
     public static ItemStack setName(ItemStack is, String s) {
@@ -78,6 +83,66 @@ public class Script {
         return is;
     }
 
+    public static ItemStack kevlar(int lvl) {
+        ItemStack is = new ItemStack(Material.LEATHER_CHESTPLATE, 1, (short) (lvl == 1 ? 50 : 30));
+        ItemMeta meta = is.getItemMeta();
+        meta.setDisplayName("§7Schutzweste");
+        LeatherArmorMeta armormeta = (LeatherArmorMeta) meta;
+        if (lvl == 1) {
+            armormeta.setColor(Color.fromRGB(2105376));
+        } else {
+            armormeta.setColor(Color.fromRGB(5000268));
+        }
+        is.setItemMeta(meta);
+        return removeAttributes(is);
+    }
+
+    public static boolean isFalling(PlayerMoveEvent event) {
+        Location from = event.getFrom();
+        Location to = event.getTo();
+        boolean upY = from.getY() - to.getY() <= .45;
+        return !upY;
+    }
+
+    public static ItemStack einsatzschild(int level) {
+        ItemStack schild = new ItemStack(Material.SHIELD, 1, (short) (level == 1 ? 240 : 160));
+        ItemMeta meta = schild.getItemMeta();
+        meta.setDisplayName("§7Einsatzschild");
+        schild.setItemMeta(meta);
+        return schild;
+    }
+
+    public static ItemStack fallschirm() {
+        return setName(Material.ELYTRA, "§7Fallschirm");
+    }
+
+    public static ArrayList<Location> getBlocksAroundCenter(Location loc, int radius) {
+        ArrayList<Location> blocks = new ArrayList<>();
+        for (int x = (loc.getBlockX() - radius); x <= (loc.getBlockX() + radius); x++) {
+            for (int y = (loc.getBlockY() - radius); y <= (loc.getBlockY() + radius); y++) {
+                for (int z = (loc.getBlockZ() - radius); z <= (loc.getBlockZ() + radius); z++) {
+                    Location l = new Location(loc.getWorld(), x, y, z);
+                    if (isInRange(l, loc, radius)) {
+                        blocks.add(l);
+                    }
+                }
+            }
+        }
+        return blocks;
+    }
+
+    public static ItemStack flashbang() {
+        ItemStack i = new ItemStack(Material.SLIME_BALL);
+        ItemMeta meta = i.getItemMeta();
+        meta.setDisplayName("§7Flashbang");
+        i.setItemMeta(meta);
+        return i;
+    }
+
+    public static ItemStack rauchgranate() {
+        return setName(Material.FIREWORK_STAR, "§7Rauchgranate");
+    }
+
     public static ItemStack setNameAndLore(Material mat, String s1, String... s2) {
         ItemStack is = new ItemStack(mat);
         ItemMeta meta = is.getItemMeta();
@@ -85,6 +150,33 @@ public class Script {
         meta.setLore(Arrays.asList(s2));
         is.setItemMeta(meta);
         return is;
+    }
+
+    public static boolean isWhitelistedIP(String ip) {
+        try (Statement stmt = main.getConnection().createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT * FROM whitelisted_ips WHERE ip=" + ip)) {
+            if (rs.next()) {
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static void addWhitelistedIP(String ip) {
+        executeUpdate("INSERT INTO whitelisted_ips (ip) VALUES ('" + ip + "')");
+    }
+
+    public static void freeze(Player p) {
+        p.setWalkSpeed(0f);
+        p.removePotionEffect(PotionEffectType.JUMP);
+        p.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, Integer.MAX_VALUE, -100, false, false));
+    }
+
+    public static void unfreeze(Player p) {
+        p.setWalkSpeed(0.2f);
+        p.removePotionEffect(PotionEffectType.JUMP);
     }
 
     public static Weapon getWeapon(String name) {
@@ -249,7 +341,7 @@ public class Script {
     }
 
     public static Boolean hasRank(Player p, Rank rank, Boolean allowDesc) {
-        if(!Passwort.hasPasswort(p)) {
+        if (!Passwort.hasPasswort(p)) {
             p.sendMessage(PREFIX + "Du kannst Team-Befehle nur nutzen, wenn du ein Passwort hast.");
             return false;
         }
@@ -444,9 +536,6 @@ public class Script {
         return main.isTest();
     }
 
-    public static boolean isAdmin(Player p) {
-        return true;
-    }
 
     public static Gender getGender(Player p) {
         try (Statement stmt = main.getConnection().createStatement();
@@ -647,7 +736,31 @@ public class Script {
     }
 
     public static long getLastDisconnect(OfflinePlayer p) {
-        return Script.getLong(p, "last_disconnect", "time");
+        try (Statement stmt = main.getConnection().createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT * FROM last_disconnect WHERE nrp_id='" + getNRPID(p) + "' ORDER BY id DESC LIMIT 1")) {
+            if (rs.next()) {
+                return rs.getLong("time");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public static long getLastDeadOfficer() {
+        try (Statement stmt = main.getConnection().createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT * FROM last_officer_dead")) {
+            if (rs.next()) {
+                return rs.getLong("time");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public static void setLastDeadOfficer(long time) {
+        executeUpdate("UPDATE last_officer_dead SET time=" + time);
     }
 
 
@@ -807,7 +920,7 @@ public class Script {
 
 
         setMoney(p, PaymentType.CASH, 50);
-        if(p.isOnline()) {
+        if (p.isOnline()) {
             Player pl = p.getPlayer();
             pl.setLevel(1);
             pl.sendMessage(Messages.INFO + "Du hast dich erfolgreich registriert.");
@@ -1058,7 +1171,7 @@ public class Script {
     }
 
     public static int manipulateInt(int i) {
-        if(i == 0) return 0;
+        if (i == 0) return 0;
         int climbingorfalling = Script.getRandom(1, 100);
         if (climbingorfalling <= 50) {
             i += (int) Script.getPercent(Script.getRandom(1, 20), i);
@@ -1129,6 +1242,23 @@ public class Script {
         return 0;
     }
 
+    public static void addToBauLog(Player p, Material m, Location loc, boolean removed) {
+        String location = loc.getBlockX() + "/" + loc.getBlockY() + "/" + loc.getBlockZ();
+        executeAsyncUpdate("INSERT INTO baulog (id, nrp_id, material, location, time, removed) VALUES (NULL, " + getNRPID(p) + ", '" + m.name() + "', '" + location + "', " + System.currentTimeMillis() + ", " + removed + ")");
+    }
+
+    public static int getBuiltBlocks(OfflinePlayer p) {
+        try (Statement stmt = main.getConnection().createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT COUNT(id) AS total FROM baulog WHERE nrp_id=" + getNRPID(p))) {
+            if (rs.next()) {
+                return rs.getInt("total");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
     public static int getActivePlayTime(Player p, boolean hours) {
         try (Statement stmt = main.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM playtime WHERE nrp_id=" + getNRPID(p))) {
@@ -1179,6 +1309,7 @@ public class Script {
             return false;
         }
     }
+
     public static void sendTabTitle(Player p) {
         String header = "\n§5§lNEW ROLEPLAY\n";
         String footer;

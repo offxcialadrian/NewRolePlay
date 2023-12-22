@@ -22,18 +22,18 @@ public class GoTo implements CommandExecutor, TabCompleter {
 
     public enum Points {
 
-        STADTHALLE(1, "Stadthalle", new String[]{"SH", "Regierung"}, new Location(Script.WORLD, 544, 69, 975)),
-        POLIZEIREVIER(2, "Polizeirevier", new String[]{"PR", "Polizeirevier", "Police"}, new Location(Script.WORLD, 403, 71, 854)),
+        STADTHALLE(1, "Stadthalle", new String[]{"SH", "Regierung"},new Location(Script.WORLD, 588, 69, 991, -270.83252f, -2.236781f)),
+        POLIZEIREVIER(2, "Polizeirevier", new String[]{"PR", "Polizeirevier", "Police"}, new Location(Script.WORLD, 405, 71, 852, 177.84886f, 5.210484f)),
         KRANKENHAUS  (3, "Krankenhaus", new String[]{"Krankenhaus", "KH", "Hospital"}, new Location(Script.WORLD, 333, 77, 1132)),
         MALL (4, "Mall", new String[]{"Einkaufszentrum"}, new Location(Script.WORLD, 827, 74, 935)),
         NEWS (5, "News", new String[]{"News", "Nachrichten", "Redaktion"}, new Location(Script.WORLD, 326, 67, 763)),
         X3 (6, "X3", new String[]{"X3-Tower"}, new Location(Script.WORLD, 696, 71, 975)),
         GERICHT   (7, "Gericht", new String[]{"Court"}, new Location(Script.WORLD, 763, 77, 950)),
-        HAUSADDON   (8, "Hausaddon", new String[]{"AEKI"}, new Location(Script.WORLD, 674, 68, 897)),
+        HAUSADDON   (8, "AEKI", new String[]{"Hausaddon", "Houseaddon"}, new Location(Script.WORLD, 674, 68, 897)),
         HAFEN (9, "Hafen", new String[]{"Harbor"}, new Location(Script.WORLD, 983, 66, 107)),
         STAATSBANK (10, "Staatsbank", new String[]{"SB", "Bank"}, new Location(Script.WORLD, 924, 77, 934)),
         FLUGHAFEN (11, "Flughafen", new String[]{"Airport"}, new Location(Script.WORLD, 872, 66, 1166)),
-        LKA (12, "LKA", new String[]{"Landeskriminalamt"}, new Location(Script.WORLD, 698, 68, 796)),
+        Schule (12, "Schule", new String[]{"Berufsschule, BS"}, new Location(Script.WORLD, 698, 68, 796)),
         TAXI (13, "Taxi", new String[]{"Taxihq"}, new Location(Script.WORLD, 690, 66, 1066)),
         ARCADE (14, "Arcade", new String[]{"Arcadehalle"}, new Location(Script.WORLD, 451, 66, 753)),
         FREIZEITPARK (15, "Freizeitpark", new String[]{"Park"}, new Location(Script.WORLD, 817, 66, 723)),
@@ -107,6 +107,7 @@ public class GoTo implements CommandExecutor, TabCompleter {
 
         p.sendMessage(PREFIX + "Du hast dich zu " + gp.getName() + " teleportiert.");
         Script.sendTeamMessage(p, ChatColor.YELLOW, "hat sich zu " + gp.getName() + " teleportiert.", true);
+        Teleport.back.put(p, p.getLocation());
         p.teleport(gp.getLocation());
 
         return false;

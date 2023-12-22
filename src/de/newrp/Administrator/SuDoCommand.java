@@ -47,7 +47,7 @@ public class SuDoCommand implements CommandExecutor {
 
 
         tg.performCommand(command);
-        p.sendMessage(PREFIX + "Du hast " + Script.getName(tg) + " den Befehl §e/" + command + " §4auführen lassen.");
+        p.sendMessage(PREFIX + "Du hast " + Script.getName(tg) + " den Befehl §e/" + command + " §4ausführen lassen.");
         Log.HIGH.write(p, "hat " + Script.getName(tg) + " den Befehl §e/" + command + " §4ausgeführen lassen.");
         Log.WARNING.write(tg, "wurde von " + Script.getName(p) + " den Befehl §e/" + command + " §4ausgeführen lassen.");
 

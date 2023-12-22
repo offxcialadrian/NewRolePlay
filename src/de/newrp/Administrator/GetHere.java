@@ -1,5 +1,6 @@
 package de.newrp.Administrator;
 
+import de.newrp.API.Friedhof;
 import de.newrp.API.Messages;
 import de.newrp.API.Rank;
 import de.newrp.API.Script;
@@ -11,7 +12,7 @@ import org.bukkit.entity.Player;
 
 public class GetHere implements CommandExecutor {
 
-    private static final String PREFIX = "§8[§eTeleport§8] §e";
+    public static String PREFIX = "§8[§eTeleport§8] §e" + Messages.ARROW + " ";
 
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
@@ -37,8 +38,19 @@ public class GetHere implements CommandExecutor {
             return true;
         }
 
+        if(Friedhof.isDead(tg)) {
+            p.sendMessage(Messages.ERROR + "Der Spieler ist tot.");
+            return true;
+        }
+
+        if (tg == p) {
+            p.sendMessage(Messages.ERROR + "Du kannst dich nicht selbst teleportieren.");
+            return true;
+        }
+
+        Teleport.back.put(tg, tg.getLocation());
         tg.teleport(p.getLocation());
-        p.sendMessage(PREFIX + " Du hast " + Script.getName(tg) + " zu dir teleportiert.");
+        p.sendMessage(PREFIX + "Du hast " + Script.getName(tg) + " zu dir teleportiert.");
         tg.sendMessage(PREFIX + Script.getRank(p).getName(p) + " " + Script.getName(p) + " hat dich zu sich teleportiert.");
         Script.sendTeamMessage(p, ChatColor.YELLOW, "hat " + Script.getName(tg) + " zu sich teleportiert.", true);
 

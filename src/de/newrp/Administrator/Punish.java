@@ -119,14 +119,16 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
         BELEIDIGUNG(2, Punishment.BAN, null, TimeUnit.HOURS.toMillis(3), "Beleidigung", "Du hast einen Spieler beleidigt."),
         FREMDWERBUNG(3, Punishment.BAN, Punishment.WARN, TimeUnit.DAYS.toMillis(3), "Fremdwerbung", "Du hast Fremdwerbung verbreitet."),
         MOBBING_LEICHT(4, Punishment.BAN, null, TimeUnit.DAYS.toMillis(3), "Mobbing_(Leicht)", "Du hast andere Spieler gemobbt."),
-        MOBBING_SCHWER(5, Punishment.BAN, null, 0, "Mobbing_(Schwer)", "Du hast andere Spieler gemobbt."),
+        MOBBING_SCHWER(5, Punishment.BAN, Punishment.WARN, 0, "Mobbing_(Schwer)", "Du hast andere Spieler gemobbt."),
         RASSISMUS(6, Punishment.BAN, null, 0, "Rassismus", "Du hast rassistische Äußerungen getätigt."),
         EXTREMISMUS(7, Punishment.BAN, null, 0, "Extremismus", "Du hast extremistische Äußerungen getätigt."),
         DROHUNG(8, Punishment.BAN, null, TimeUnit.HOURS.toMillis(24), "Drohung", "Du hast anderen Spielern gedroht."),
         BUGUSE(9, Punishment.BAN, null, TimeUnit.HOURS.toMillis(12), "Buguse", "Du hast Spielfehler ausgenutzt."),
         SUPPORTABUSE(10, Punishment.BAN, null, TimeUnit.HOURS.toMillis(1), "Support_Missbrauch", "Du hast das Ticket-System missbraucht."),
         RECHTEMISSBRAUCH(11, Punishment.BAN, Punishment.WARN, TimeUnit.DAYS.toMillis(7), "Rechte_Missbrauch", "Du hast deine Rechte missbraucht."),
-        SICHERHEITSBANN(12, Punishment.BAN, null, 0, "Sicherheitsbann", "Du wurdest zur Sicherheit gebannt. Sollte dir der Grund nicht bekannt sein, melde dich bei uns im Support.");
+        SICHERHEITSBANN(12, Punishment.BAN, null, 0, "Sicherheitsbann", "Du wurdest zur Sicherheit gebannt. Sollte dir der Grund nicht bekannt sein, melde dich bei uns im Support."),
+        BAD_NEWS(13, Punishment.BAN, null, TimeUnit.DAYS.toMillis(1), "Bad_/news", "Du hast den Befehl /news missbraucht."),
+        BAD_STAATSMELDUNG(14, Punishment.BAN, null, TimeUnit.DAYS.toMillis(1), "Bad_/staatsmeldung", "Du hast den Befehl /staatsmeldung missbraucht.");
 
 
         int id;

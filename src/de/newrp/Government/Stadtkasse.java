@@ -47,6 +47,12 @@ public class Stadtkasse implements CommandExecutor {
 
     public static void removeStadtkasse(int betrag) {
         Script.executeAsyncUpdate("UPDATE city SET money = money - " + betrag);
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                SDuty.updateScoreboard();
+            }
+        }.runTaskLater(main.getInstance(), 20L);
     }
 
     public static void setStadtkasse(int betrag) {

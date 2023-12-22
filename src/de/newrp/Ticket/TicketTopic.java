@@ -5,7 +5,8 @@ public enum TicketTopic {
     FRAGE(0, "Frage"),
     SPIELER(1, "Spieler"),
     BUG(2, "Bug"),
-    ACCOUNT(3, "Account");
+    ACCOUNT(3, "Account"),
+    BAUFEHLER(4, "Baufehler");
 
     private final int id;
     private final String name;

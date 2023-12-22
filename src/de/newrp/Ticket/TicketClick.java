@@ -1,5 +1,6 @@
 package de.newrp.Ticket;
 
+import de.newrp.API.Debug;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -13,7 +14,7 @@ public class TicketClick implements Listener {
 
     @EventHandler
     public void onClick(InventoryClickEvent e) {
-        if (e.getView().getTitle() != null && e.getView().getTitle().equals("§l§bTicket")) {
+        if (e.getView().getTitle().equals("§b§lTicket")) {
             Player p = (Player) e.getWhoClicked();
             if (e.getCurrentItem() != null && e.getCurrentItem().getType() != Material.AIR) {
                 e.setCancelled(true);
@@ -33,13 +34,17 @@ public class TicketClick implements Listener {
                     case COMPASS:
                         topic = TicketTopic.ACCOUNT;
                         break;
+                    case BOOK:
+                        topic = TicketTopic.BAUFEHLER;
+                        break;
                     default:
+                        Debug.debug("Item is null");
                         break;
                 }
                 if (topic != null) {
                     TicketCommand.addToQueue(p, topic);
                     TicketCommand.sendTicketMessage(p, topic);
-                } else if (e.getCurrentItem().getType().equals(Material.BOOK)) {
+                } else if (e.getCurrentItem().getType().equals(Material.QUARTZ_BRICKS)) {
                     e.setCancelled(true);
                     e.getView().close();
                     p.sendMessage("§8[§cF.A.Q§8]§6 In unserem FAQ sind viele Fragen bereits beantwortet.");

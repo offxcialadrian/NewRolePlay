@@ -1,8 +1,10 @@
 package de.newrp.API;
 
+import de.newrp.Berufe.Beruf;
 import de.newrp.main;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
+import org.bukkit.block.Sign;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -66,6 +68,10 @@ public class Friedhof {
 
         f.setSkullTaskID(taskID_skull);
 
+        if(Beruf.getBeruf(p) == Beruf.Berufe.POLICE) {
+            Script.setLastDeadOfficer(System.currentTimeMillis());
+        }
+
         FRIEDHOF.put(p.getName(), f);
         Location[] locs;
 
@@ -104,7 +110,7 @@ public class Friedhof {
             public void run() {
                 if (isDead(p)) {
                     progress.replace(p.getName(), progress.get(p.getName()) + 1);
-                    progressBar(left, p);
+                    progressBar(16*60, p, f);
                 } else {
                     progress.remove(p.getName());
                     cancel();
@@ -340,7 +346,7 @@ public class Friedhof {
         return this.duration - (int) TimeUnit.MILLISECONDS.toSeconds(current - this.deathTime);
     }
 
-    private static void progressBar(double required_progress, Player p) {
+    private static void progressBar(double required_progress, Player p, Friedhof f) {
         double current_progress = progress.get(p.getName());
         double progress_percentage = current_progress / required_progress;
         StringBuilder sb = new StringBuilder();
@@ -352,7 +358,22 @@ public class Friedhof {
                 sb.append("§8▉");
             }
         }
+        String lefttime;
+        int left = f.getDeathtimeLeft();
+        if (left > 60) {
+            int min = left / 60;
+            int sec = left - (min * 60);
+            if (sec == 0) {
+                lefttime = min + " " + (min == 1 ? "Minute" : "Minuten");
+            } else {
+                lefttime = min + " " + (min == 1 ? "Minute" : "Minuten") + " und " + sec + " Sekunden";
+            }
+        } else if (left == 60) {
+            lefttime = "eine Minute";
+        } else {
+            lefttime = left + " Sekunden";
+        }
         progress.replace(p.getName(), progress.get(p.getName())+1.0);
-        Script.sendActionBar(p, "§eWarte! §8» §a" + sb.toString());
+        Script.sendActionBar(p, "§cTOT! §8» §a" + sb.toString() + " §8× §7" + lefttime);
     }
 }

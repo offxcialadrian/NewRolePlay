@@ -52,9 +52,105 @@ public class ElevatorDoor implements Listener {
                         new Location(Script.WORLD, 675, 83, 992),
                         new Location(Script.WORLD, 675, 83, 991)
                 }, Elevator.ElevatorAPI.X3, 1),
+
+        X3_ETAGE_2(2, new Location(Script.WORLD, 677, 91, 993),
+                new Location[]{
+                        new Location(Script.WORLD, 674, 91, 993)},
+                new Location[]{
+                        new Location(Script.WORLD, 675, 92, 992),
+                        new Location(Script.WORLD, 675, 92, 991),
+                        new Location(Script.WORLD, 675, 91, 992),
+                        new Location(Script.WORLD, 675, 91, 991),
+                        new Location(Script.WORLD, 675, 90, 992),
+                        new Location(Script.WORLD, 675, 90, 991),
+                }, Elevator.ElevatorAPI.X3, 2),
+
+        X3_ETAGE_3(3,new Location(Script.WORLD, 677, 97, 993),
+                new Location[]{
+                        new Location(Script.WORLD, 674, 97, 993)},
+                new Location[]{
+                        new Location(Script.WORLD, 675, 98, 992),
+                        new Location(Script.WORLD, 675, 98, 991),
+                        new Location(Script.WORLD, 675, 97, 992),
+                        new Location(Script.WORLD, 675, 97, 991),
+                        new Location(Script.WORLD, 675, 96, 992),
+                        new Location(Script.WORLD, 675, 96, 991),
+                }, Elevator.ElevatorAPI.X3, 3),
+
+        X3_ETAGE_4(4, new Location(Script.WORLD, 677, 103, 993),
+                new Location[]{
+                        new Location(Script.WORLD, 674, 103, 993)},
+                new Location[]{
+                        new Location(Script.WORLD, 675, 104, 992),
+                        new Location(Script.WORLD, 675, 104, 991),
+                        new Location(Script.WORLD, 675, 103, 992),
+                        new Location(Script.WORLD, 675, 103, 991),
+                        new Location(Script.WORLD, 675, 102, 992),
+                        new Location(Script.WORLD, 675, 103, 991),
+                        new Location(Script.WORLD, 675, 102, 991),
+                }, Elevator.ElevatorAPI.X3, 4),
+
+        X3_ETAGE_5(5, new Location(Script.WORLD, 677, 109, 993),
+                new Location[]{
+                        new Location(Script.WORLD, 674, 109, 993)},
+                new Location[]{
+                        new Location(Script.WORLD, 675, 110, 992),
+                        new Location(Script.WORLD, 675, 110, 991),
+                        new Location(Script.WORLD, 675, 109, 992),
+                        new Location(Script.WORLD, 675, 109, 991),
+                        new Location(Script.WORLD, 675, 108, 992),
+                        new Location(Script.WORLD, 675, 108, 991),
+                }, Elevator.ElevatorAPI.X3, 5),
+
+        X3_ETAGE_6(6, new Location(Script.WORLD, 677, 115, 993),
+                new Location[]{
+                        new Location(Script.WORLD, 674, 115, 993)},
+                new Location[]{
+                        new Location(Script.WORLD, 675, 116, 992),
+                        new Location(Script.WORLD, 675, 116, 991),
+                        new Location(Script.WORLD, 675, 115, 992),
+                        new Location(Script.WORLD, 675, 115, 991),
+                        new Location(Script.WORLD, 675, 114, 992),
+                        new Location(Script.WORLD, 675, 114, 991),
+                }, Elevator.ElevatorAPI.X3, 6),
+
+        X3_ETAGE_7(7, new Location(Script.WORLD, 677, 121, 993),
+                new Location[]{
+                        new Location(Script.WORLD, 674, 121, 993)},
+                new Location[]{
+                        new Location(Script.WORLD, 675, 122, 992),
+                        new Location(Script.WORLD, 675, 122, 991),
+                        new Location(Script.WORLD, 675, 121, 992),
+                        new Location(Script.WORLD, 675, 121, 991),
+                        new Location(Script.WORLD, 675, 120, 992),
+                        new Location(Script.WORLD, 675, 120, 991),
+                }, Elevator.ElevatorAPI.X3, 7),
+
+        X3_ETAGE_8(8, new Location(Script.WORLD, 677, 127, 993),
+                new Location[]{
+                        new Location(Script.WORLD, 674, 127, 993)},
+                new Location[]{
+                        new Location(Script.WORLD, 675, 128, 992),
+                        new Location(Script.WORLD, 675, 128, 991),
+                        new Location(Script.WORLD, 675, 127, 992),
+                        new Location(Script.WORLD, 675, 127, 991),
+                        new Location(Script.WORLD, 675, 126, 992),
+                        new Location(Script.WORLD, 675, 126, 991),
+                }, Elevator.ElevatorAPI.X3, 8),
+
+        X3_ETAGE_9(9, new Location(Script.WORLD, 677, 133, 993),
+                new Location[]{
+                        new Location(Script.WORLD, 674, 133, 993)},
+                new Location[]{
+                        new Location(Script.WORLD, 675, 134, 992),
+                        new Location(Script.WORLD, 675, 134, 991),
+                        new Location(Script.WORLD, 675, 133, 992),
+                        new Location(Script.WORLD, 675, 133, 991),
+                        new Location(Script.WORLD, 675, 132, 992),
+                        new Location(Script.WORLD, 675, 132, 991),
+                }, Elevator.ElevatorAPI.X3, 9),
         AEKI_ETAGE_0(0, new Location(Script.WORLD, 682, 69, 914),
                 new Location[]{
-                        new Location(Script.WORLD, 682, 69, 914),
                         new Location(Script.WORLD, 685, 69, 911)},
                 new Location[]{
                         new Location(Script.WORLD, 684, 70, 912),
@@ -69,7 +165,6 @@ public class ElevatorDoor implements Listener {
                 }, Elevator.ElevatorAPI.AEKI, 0),
         AEKI_ETAGE_1(1, new Location(Script.WORLD, 682, 78, 914),
                 new Location[]{
-                        new Location(Script.WORLD, 682, 78, 914),
                         new Location(Script.WORLD, 685, 78, 911)},
                 new Location[]{
                         new Location(Script.WORLD, 682, 79, 912),
@@ -84,7 +179,6 @@ public class ElevatorDoor implements Listener {
                 }, Elevator.ElevatorAPI.AEKI, 1),
         AEKI_ETAGE_2(2, new Location(Script.WORLD, 682, 85, 914),
                 new Location[]{
-                        new Location(Script.WORLD, 682, 85, 914),
                         new Location(Script.WORLD, 685, 85, 911)},
                 new Location[]{
                         new Location(Script.WORLD, 682, 86, 912),
@@ -100,7 +194,6 @@ public class ElevatorDoor implements Listener {
 
         AEKI_ETAGE_3(3, new Location(Script.WORLD, 682, 92, 914),
                 new Location[]{
-                        new Location(Script.WORLD, 685, 92, 911),
                         new Location(Script.WORLD, 682, 92, 914)},
                 new Location[]{
                         new Location(Script.WORLD, 682, 93, 912),
@@ -116,7 +209,6 @@ public class ElevatorDoor implements Listener {
 
         AEKI_ETAGE_4(4, new Location(Script.WORLD, 682, 99, 914),
                 new Location[]{
-                        new Location(Script.WORLD, 682, 99, 914),
                         new Location(Script.WORLD, 685, 99, 911)},
                 new Location[]{
                         new Location(Script.WORLD, 682, 100, 912),
@@ -133,7 +225,6 @@ public class ElevatorDoor implements Listener {
 
         AEKI_ETAGE_5(5, new Location(Script.WORLD, 682, 106, 914),
                 new Location[]{
-                        new Location(Script.WORLD, 682, 106, 914),
                         new Location(Script.WORLD, 685, 106, 911)},
                 new Location[]{
                         new Location(Script.WORLD, 682, 107, 912),
@@ -150,7 +241,6 @@ public class ElevatorDoor implements Listener {
 
         AEKI_ETAGE_6(6, new Location(Script.WORLD, 682, 113, 914),
                 new Location[]{
-                        new Location(Script.WORLD, 682, 113, 914),
                         new Location(Script.WORLD, 685, 113, 911)},
                 new Location[]{
                         new Location(Script.WORLD, 682, 114, 912),
@@ -167,7 +257,6 @@ public class ElevatorDoor implements Listener {
 
         AEKI_ETAGE_7(7, new Location(Script.WORLD, 682, 120, 914),
                 new Location[]{
-                        new Location(Script.WORLD, 682, 120, 914),
                         new Location(Script.WORLD, 685, 120, 911)},
                 new Location[]{
                         new Location(Script.WORLD, 682, 121, 912),
@@ -183,7 +272,6 @@ public class ElevatorDoor implements Listener {
 
         AEKI_ETAGE_8(8, new Location(Script.WORLD, 682, 127, 914),
                 new Location[]{
-                        new Location(Script.WORLD, 682, 127, 914),
                         new Location(Script.WORLD, 685, 127, 911)},
                 new Location[]{
                         new Location(Script.WORLD, 682, 127, 912),
@@ -195,7 +283,6 @@ public class ElevatorDoor implements Listener {
                 }, Elevator.ElevatorAPI.AEKI, 8),
         AEKI_ETAGE_9(9, new Location(Script.WORLD, 682, 132, 914),
                 new Location[]{
-                        new Location(Script.WORLD, 682, 132, 914),
                         new Location(Script.WORLD, 685, 132, 911)},
                 new Location[]{
                         new Location(Script.WORLD, 682, 133, 912),
@@ -210,7 +297,6 @@ public class ElevatorDoor implements Listener {
                 }, Elevator.ElevatorAPI.AEKI, 9),
         AEKI_ETAGE_10(9, new Location(Script.WORLD, 682, 139, 914),
                 new Location[]{
-                        new Location(Script.WORLD, 682, 132, 914),
                         new Location(Script.WORLD, 685, 139, 911)},
                 new Location[]{
                         new Location(Script.WORLD, 682, 140, 912),
@@ -222,7 +308,43 @@ public class ElevatorDoor implements Listener {
                         new Location(Script.WORLD, 682, 138, 912),
                         new Location(Script.WORLD, 683, 138, 912),
                         new Location(Script.WORLD, 684, 138, 912),
-                }, Elevator.ElevatorAPI.AEKI, 10);
+                }, Elevator.ElevatorAPI.AEKI, 10),
+        STADTHALLE_ETAGE_0(10, new Location(Script.WORLD, 546, 71, 993),
+                new Location[]{
+                        new Location(Script.WORLD, 548, 71, 990),
+                        new Location(Script.WORLD, 542, 71, 993)},
+                new Location[]{
+                        new Location(Script.WORLD, 543, 70, 991),
+                        new Location(Script.WORLD, 543, 71, 991),
+                        new Location(Script.WORLD, 543, 72, 991),
+                        new Location(Script.WORLD, 543, 70, 992),
+                        new Location(Script.WORLD, 543, 71, 992),
+                        new Location(Script.WORLD, 543, 72, 992),
+                        new Location(Script.WORLD, 547, 70, 992),
+                        new Location(Script.WORLD, 547, 71, 992),
+                        new Location(Script.WORLD, 547, 72, 992),
+                        new Location(Script.WORLD, 547, 70, 991),
+                        new Location(Script.WORLD, 547, 71, 991),
+                        new Location(Script.WORLD, 547, 72, 991)
+                }, Elevator.ElevatorAPI.STADTHALLE, 0),
+        STADTHALLE_ETAGE_1(11, new Location(Script.WORLD, 546, 79, 993),
+                new Location[]{
+                        new Location(Script.WORLD, 548, 79, 990),
+                        new Location(Script.WORLD, 542, 79, 993)},
+                new Location[]{
+                        new Location(Script.WORLD, 543, 78, 991),
+                        new Location(Script.WORLD, 543, 79, 991),
+                        new Location(Script.WORLD, 543, 80, 991),
+                        new Location(Script.WORLD, 543, 78, 992),
+                        new Location(Script.WORLD, 543, 79, 992),
+                        new Location(Script.WORLD, 543, 80, 992),
+                        new Location(Script.WORLD, 547, 78, 992),
+                        new Location(Script.WORLD, 547, 79, 992),
+                        new Location(Script.WORLD, 547, 80, 992),
+                        new Location(Script.WORLD, 547, 79, 991),
+                        new Location(Script.WORLD, 547, 78, 991),
+                        new Location(Script.WORLD, 547, 80, 991)
+                }, Elevator.ElevatorAPI.STADTHALLE, 1);
 
 
         int id;

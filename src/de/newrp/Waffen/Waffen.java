@@ -3,6 +3,7 @@ package de.newrp.Waffen;
 import de.newrp.API.Debug;
 import de.newrp.API.Particle;
 import de.newrp.API.Script;
+import de.newrp.main;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -18,6 +19,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -74,11 +76,6 @@ public class Waffen implements Listener {
 
         if (!name.startsWith("§7")) return;
 
-        if (p.getLevel() == 1) {
-            p.getInventory().clear();
-            p.getInventory().getItemInOffHand().setAmount(0);
-            return;
-        }
         Weapon weapon = null;
         for (Weapon w1 : Weapon.values()) {
             if (hand.getType().equals(w1.getWeapon().getType())) {
@@ -135,7 +132,7 @@ public class Waffen implements Listener {
         int skill = 6;
         float recoil = w.getRecoil();
 
-        recoil = recoil - (recoil / ((10 - skill) == 0 ? 2 : (10 - skill)));
+        recoil = recoil - recoil / (10 - skill);
 
         if (!p.isSprinting()) recoil = (recoil * .3F);
 
@@ -164,12 +161,16 @@ public class Waffen implements Listener {
             /*case SCATTER3:
                 v = 2.0F;
                 v1 = 1.0F;
+                break;*/
+            case AK47:
+                v = 2.5F;
+                v1 = .85F;
                 break;
-            case TS19:
-                v = 3.0F;
-                v1 = .7F;
+            case MP7:
+                v = 2.2F;
+                v1 = .90F;
                 break;
-            case VIPER9:
+            /*case VIPER9:
                 v = 10.0F;
                 v1 = .1F;
                 cloud = true;
@@ -188,7 +189,6 @@ public class Waffen implements Listener {
                 break;
         }
 
-        Debug.debug(w);
 
         Location ploc = p.getLocation();
 

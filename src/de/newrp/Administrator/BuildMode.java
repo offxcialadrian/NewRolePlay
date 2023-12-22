@@ -101,11 +101,13 @@ public class BuildMode implements CommandExecutor, Listener {
     @EventHandler
     public void onBlockBreak(BlockBreakEvent e) {
         if (!isInBuildMode(e.getPlayer())) e.setCancelled(true);
+        if(!e.isCancelled()) Script.addToBauLog(e.getPlayer(), e.getBlock().getType() , e.getBlock().getLocation(), false);
     }
 
     @EventHandler
     public void onBlockSet(BlockPlaceEvent e) {
         if (!isInBuildMode(e.getPlayer())) e.setCancelled(true);
+        if(!e.isCancelled()) Script.addToBauLog(e.getPlayer(), e.getBlock().getType() , e.getBlock().getLocation(), true);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
@@ -163,7 +165,7 @@ public class BuildMode implements CommandExecutor, Listener {
         if(Script.isInTestMode()) p.setOp(true);
         Chache.saveInventory(p);
         p.getInventory().clear();
-        wasBuildMode.add(p.getName());
+        if(!wasBuildMode.contains(p.getName())) wasBuildMode.add(p.getName());
         if(Script.hasRank(p, Rank.ADMINISTRATOR, false)) p.getInventory().addItem(new ItemStack(Material.COMPASS));
         p.setGameMode(GameMode.CREATIVE);
         Log.NORMAL.write(p, "hat den BuildMode betreten.");

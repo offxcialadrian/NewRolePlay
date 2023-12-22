@@ -17,9 +17,13 @@ import de.newrp.Medic.ReviveCommand;
 import de.newrp.News.NewsCommand;
 import de.newrp.Player.*;
 import de.newrp.Police.CheckGun;
+import de.newrp.Police.Handschellen;
+import de.newrp.Police.Staatsmeldung;
+import de.newrp.Police.Uncuff;
 import de.newrp.Runnable.AsyncDaylightCycle;
 import de.newrp.Runnable.AsyncHour;
 import de.newrp.Runnable.AsyncMinute;
+import de.newrp.Runnable.SyncMinute;
 import de.newrp.Shop.*;
 import de.newrp.Ticket.*;
 import de.newrp.Waffen.GetAmmo;
@@ -27,11 +31,13 @@ import de.newrp.Waffen.GetGun;
 import de.newrp.Waffen.Waffen;
 import de.newrp.Waffen.WaffenDamage;
 import org.bukkit.Bukkit;
+import org.bukkit.block.Sign;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.sql.Connection;
+import java.util.concurrent.TimeUnit;
 
 public class main extends JavaPlugin {
 
@@ -190,6 +196,14 @@ public class main extends JavaPlugin {
         getCommand("setteamleader").setExecutor(new SetTeamLeader());
         getCommand("removeteamleader").setExecutor(new RemoveTeamLeader());
         getCommand("forcelotto").setExecutor(new ForceLotto());
+        getCommand("whitelistip").setExecutor(new WhitelistIP());
+        getCommand("equip").setExecutor(new Equip());
+        getCommand("uncuff").setExecutor(new Uncuff());
+        getCommand("spenden").setExecutor(new SpendenCommand());
+        getCommand("staatsmeldung").setExecutor(new Staatsmeldung());
+        getCommand("addhousedoor").setExecutor(new AddHouseDoor());
+        getCommand("back").setExecutor(new BackCommand());
+        getCommand("baulog").setExecutor(new Baulog());
 
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new SDuty(), this);
@@ -234,16 +248,23 @@ public class main extends JavaPlugin {
         pm.registerEvents(new AntiCheatFly(), this);
         pm.registerEvents(new AntiOfflineFlucht(), this);
         pm.registerEvents(new Spawnschutz(), this);
+        pm.registerEvents(new Equip(), this);
+        pm.registerEvents(new Handschellen(), this);
+        pm.registerEvents(new Flashbang(), this);
+        pm.registerEvents(new Rauchgranate(), this);
+        pm.registerEvents(new WingsuitListener(), this);
 
         new PayDay().runTaskTimerAsynchronously(this, 60 * 20L, 60 * 20L);
         new AsyncMinute().runTaskTimerAsynchronously(this, 60 * 20L, 60 * 20L);
         new AsyncHour().runTaskTimerAsynchronously(this, 60 * 60 * 20L, 60 * 60 * 20L);
         new AsyncDaylightCycle().runTaskTimer(this, 20L, 600L);
+        new SyncMinute().runTaskTimer(this, 60 * 20L, 60 * 20L);
 
         ScoreboardManager.initMainScoreboard();
         Hologram.reload();
         ATM.restore();
         House.loadHouses();
+
 
         Bukkit.getConsoleSender().sendMessage("§cNRP §8× §aloading complete..");
         Bukkit.getConsoleSender().sendMessage("§cNRP §8× §astarting complete..");

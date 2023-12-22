@@ -148,7 +148,7 @@ public class ReviveCommand implements CommandExecutor {
         Me.sendMessage(p, "hat mit der Wiederbelebung von " + Script.getName(tg) + " begonnen.");
         Log.LOW.write(p, "hat mit der Wiederbelebung von " + Script.getName(tg) + " begonnen.");
         p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 8 * 20, 2));
-        tg.sendMessage("§7Du wirst von " + (Script.isAdmin(p) ? "[UC]" + p.getName() : p.getName()) + " wiederbelebt.");
+        tg.sendMessage("§7Du wirst von " + Script.getName(p) + " wiederbelebt.");
         cooldowns.put(p.getName(), time);
         cooldowns.put(tg.getName(), time);
         final Location loc = p.getLocation();

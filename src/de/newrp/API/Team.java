@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 public class Team {
 
@@ -48,6 +49,32 @@ public class Team {
                 }
             }
             return null;
+        }
+
+        public ArrayList<OfflinePlayer> getAllMembers() {
+            ArrayList<OfflinePlayer> members = new ArrayList<>();
+            try (Statement stmt = main.getConnection().createStatement();
+                 ResultSet rs = stmt.executeQuery("SELECT * FROM teams WHERE team_id=" + this.getID())) {
+                while (rs.next()) {
+                    members.add(Script.getOfflinePlayer(rs.getInt("nrp_id")));
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return members;
+        }
+
+        public ArrayList<Player> getAllOnlineMembers() {
+            ArrayList<Player> members = new ArrayList<>();
+            try (Statement stmt = main.getConnection().createStatement();
+                 ResultSet rs = stmt.executeQuery("SELECT * FROM teams WHERE team_id=" + this.getID())) {
+                while (rs.next()) {
+                    members.add(Script.getPlayer(rs.getInt("nrp_id")));
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return members;
         }
 
         public void addMember(Player p) {

@@ -1,9 +1,6 @@
 package de.newrp.Government;
 
-import de.newrp.API.Debug;
-import de.newrp.API.Messages;
-import de.newrp.API.Rank;
-import de.newrp.API.Script;
+import de.newrp.API.*;
 import de.newrp.Administrator.SDuty;
 import de.newrp.Berufe.Beruf;
 import de.newrp.News.NewsCommand;
@@ -85,7 +82,7 @@ public class Wahlen implements CommandExecutor, Listener {
                     return true;
                 }
 
-                if(Beruf.getBeruf(p) == Beruf.Berufe.NEWS) {
+                if(Beruf.getBeruf(p) == Beruf.Berufe.NEWS && !SDuty.isSDuty(p)) {
                     p.sendMessage(PREFIX + "Aktuelle Hochrechnungen:");
                     try (Statement stmt = main.getConnection().createStatement();
                          ResultSet rs = stmt.executeQuery("SELECT * FROM wahlen WHERE quartal = '" + getCurrentQuartal() + "' AND year = '" + Calendar.getInstance().get(Calendar.YEAR) + "'")) {
@@ -205,13 +202,15 @@ public class Wahlen implements CommandExecutor, Listener {
                 if(!NewsCommand.wahlenNews) {
                     Bukkit.broadcastMessage(NewsCommand.NEWS + winner.getName() + " hat die Wahlen mit " + getVotes(winner) + " Stimmen gewonnen!");
                     Bukkit.broadcastMessage(NewsCommand.NEWS + "Die Nächsten Wahlen finden am " + getNextElection() + " statt!");
-                    Beruf.Berufe.NEWS.sendMessage(PREFIX + "Die News hat es nicht rechtzeitig geschafft das Ergebnis der Wahlen zu verkünden. Es wurde automatisch eine Meldung abegegebn.");
+                    Beruf.Berufe.NEWS.sendMessage(PREFIX + "Die News hat es nicht rechtzeitig geschafft das Ergebnis der Wahlen zu verkünden. Es wurde automatisch eine Meldung abgegeben.");
                     Script.sendTeamMessage(PREFIX + "Die News hat es nicht rechtzeitig geschafft das Ergebnis der Wahlen zu verkünden.");
                 }
                 NewsCommand.wahlenNews = false;
                 NewsCommand.wahlenNewsActive = false;
+                if(Beruf.hasBeruf(winner) && Beruf.getBeruf(winner) != Beruf.Berufe.GOVERNMENT)  Beruf.getBeruf(winner).removeMember(winner);
                 if(Beruf.getBeruf(winner) != Beruf.Berufe.GOVERNMENT) Beruf.Berufe.GOVERNMENT.addMember(winner);
                 Beruf.setLeader(winner);
+                Achievement.WAHL_GEWONNEN.grant(winner);
                 if(Script.getPlayer(winner.getName()) != null)
                     Script.getPlayer(winner.getName()).sendMessage(Messages.INFO + "Herzlichen Glückwunsch! Du hast die Wahlen gewonnen! Du hast hiermit deine Rechte erhalten. Solltest du Hilfe benötigen, steht das Server-Team dir jederzeite zur Verfügung.");
 
@@ -399,6 +398,7 @@ public class Wahlen implements CommandExecutor, Listener {
                 }
                 addVote(p, Script.getNRPID(president));
                 p.sendMessage(PREFIX + "Du hast erfolgreich für " + president.getName() + " abgestimmt.");
+                Achievement.WAEHLER.grant(p);
             }
         }
     }

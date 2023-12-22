@@ -177,7 +177,7 @@ public class Passwort implements CommandExecutor, Listener {
             }, 1144L);
             Bukkit.getScheduler().runTaskLater(main.getInstance(), () -> {
                 if (Passwort.isLocked(p)) {
-                    p.kickPlayer("§8» §cNRP × New RolePlay §8┃ §cKICK §8« \n\n§8§m------------------------------\n\n§7Du wurdest vom Server gekickt§8.\n\n§7Grund §8× §eDu hast dein Passwort nicht eigegeben\n\n§7Solltest du dein Passwort vergessen haben, melde dich bitte auf unserem Discord beim Support!\n\n§8§m------------------------------");
+                    p.kickPlayer("§8» §cNRP × New RolePlay §8┃ §cKICK §8« \n\n§8§m------------------------------\n\n§7Du wurdest vom Server gekickt§8.\n\n§7Grund §8× §eDu hast dein Passwort nicht eingegeben\n\n§7Solltest du dein Passwort vergessen haben, melde dich bitte auf unserem Discord beim Support!\n\n§8§m------------------------------");
                 }
             }, 1408L);
         }

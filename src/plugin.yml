@@ -17,7 +17,7 @@ commands:
     description: write into the chat
   tc:
     description: teamchat
-    aliases: [ teamchat ]
+    aliases: [ teamchat, team ]
   heal:
     description: heile einen spieler
   blackjack:
@@ -266,3 +266,25 @@ commands:
     description: remove a player from teamleader
   forcelotto:
     description: force the lotto
+  whitelistip:
+    description: whitelist an ip
+  equip:
+    description: equip something
+  uncuff:
+    description: uncuff a player
+    aliases: [ removecuffs ]
+  spenden:
+    description: spende geld
+    aliases: [ spend ]
+  staatsmeldung:
+    description: send a staatsmeldung
+    aliases: [ staatsmeldungen, gov ]
+  addhousedoor:
+    description: add a door to a house
+    aliases: [ housedoor ]
+  back:
+    description: teleport back
+    aliases: [ tpback, goback ]
+  baulog:
+    description: view the baulog
+    aliases: [ baulogs ]

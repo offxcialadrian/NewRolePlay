@@ -192,6 +192,7 @@ public class Chair implements Listener {
         if (p.isInsideVehicle()) return false;
         if (Script.isInAir(p)) return false;
         if (b.getData() > 3) return false;
+        if(Friedhof.isDead(p)) return false;
         if (CHAIRS.containsKey(b.getLocation())) return false;
         if (!b.getRelative(BlockFace.UP).getType().equals(Material.AIR) || b.getRelative(BlockFace.DOWN).getType().equals(Material.AIR))
             return false;
