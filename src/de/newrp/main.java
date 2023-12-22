@@ -256,6 +256,7 @@ public class main extends JavaPlugin {
         pm.registerEvents(new Flashbang(), this);
         pm.registerEvents(new Rauchgranate(), this);
         pm.registerEvents(new WingsuitListener(), this);
+        pm.registerEvents(new AntiVPN(), this);
 
         new PayDay().runTaskTimerAsynchronously(this, 60 * 20L, 60 * 20L);
         new AsyncMinute().runTaskTimerAsynchronously(this, 60 * 20L, 60 * 20L);
