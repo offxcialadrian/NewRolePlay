@@ -21,7 +21,7 @@ public enum Achievement {
     WAHL_GEWONNEN(9, "Wahlsieger", "Du hast eine Wahl gewonnen!", 400),
     WAEHLER(10, "Wähler", "Du hast an einer Wahl teilgenommen!", 50),
     PET_OWNER(11, "Haustierbesitzer", "Du hast dein erstes Haustier gekauft!", 50),
-    TAZED(12, "Tazer", "Du wurdest zum ersten Mal getazed!", 50);
+    TAZED(12, "Tazer", "Du wurdest zum ersten Mal getased!", 50);
 
     private final int id;
     private final String text;
