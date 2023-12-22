@@ -40,6 +40,13 @@ public class GetGun implements CommandExecutor, Listener {
             p.sendMessage(Messages.ERROR + "Mit einer Waffensperre kannst du keine Waffen aus dem Waffenschrank nehmen.");
             return true;
         }
+
+        if(House.getHouses(Script.getNRPID(p)).size() > SlotLimit.HOUSE.get(Script.getNRPID(p))) {
+            p.sendMessage(Messages.ERROR + "Du wohnst in " + House.getHouses(Script.getNRPID(p)).size() + " Häusern. Du kannst nur " + SlotLimit.HOUSE.get(Script.getNRPID(p)) + " Häuser besitzen.");
+            p.sendMessage(Messages.INFO + "Du kannst einen weiteren Hausslot im Shop erwerben.");
+            return true;
+        }
+
         House h = House.getInsideHouse(p);
         if (h != null) {
             if (h.hasAddon(HouseAddon.WAFFENSCHRANK)) {

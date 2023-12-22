@@ -2,6 +2,7 @@ package de.newrp.House;
 
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
+import de.newrp.API.SlotLimit;
 import de.newrp.Player.Annehmen;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -73,6 +74,11 @@ public class RentCommand implements CommandExecutor {
 
         if(p.getLocation().distance(tg.getLocation()) > 5) {
             p.sendMessage(Messages.ERROR + "Der Spieler ist zu weit entfernt.");
+            return true;
+        }
+
+        if(House.getHouses(Script.getNRPID(tg)).size() >= SlotLimit.HOUSE.get(Script.getNRPID(tg))) {
+            p.sendMessage(Messages.ERROR + "Der Spieler hat bereits die maximale Anzahl an Häusern.");
             return true;
         }
 

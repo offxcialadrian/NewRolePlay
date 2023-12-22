@@ -1,6 +1,8 @@
 package de.newrp.Waffen;
 
+import de.newrp.API.Messages;
 import de.newrp.API.Script;
+import de.newrp.API.SlotLimit;
 import de.newrp.House.House;
 import de.newrp.House.HouseAddon;
 import org.bukkit.command.Command;
@@ -16,6 +18,12 @@ public class GetAmmo implements CommandExecutor {
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         Player p = (Player) cs;
         House h = House.getInsideHouse(p);
+        if(House.getHouses(Script.getNRPID(p)).size() > SlotLimit.HOUSE.get(Script.getNRPID(p))) {
+            p.sendMessage(Messages.ERROR + "Du wohnst in " + House.getHouses(Script.getNRPID(p)).size() + " Häusern. Du kannst nur " + SlotLimit.HOUSE.get(Script.getNRPID(p)) + " Häuser besitzen.");
+            p.sendMessage(Messages.INFO + "Du kannst einen weiteren Hausslot im Shop erwerben.");
+            return true;
+        }
+
         if (h == null) {
             p.sendMessage(PREFIX + "Deine Waffen sind zuhause im Waffenschrank.");
             return true;
