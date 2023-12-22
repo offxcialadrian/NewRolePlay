@@ -898,6 +898,25 @@ public class Script {
         return Bukkit.getOfflinePlayer(name);
     }
 
+    public static void playLocalSound(Location loc, Sound sound, int radius) {
+        Bukkit.getScheduler().runTaskAsynchronously(main.getInstance(), () -> {
+            for (Player online : Bukkit.getOnlinePlayers()) {
+                if (isInRange(loc, online.getLocation(), radius)) {
+                    online.playSound(loc, sound, 1.0F, 1.0F);
+                }
+            }
+        });
+    }
+
+    public static void playLocalSound(Location loc, Sound sound, int radius, float f, float f2) {
+        Bukkit.getScheduler().runTaskAsynchronously(main.getInstance(), () -> {
+            for (Player online : Bukkit.getOnlinePlayers()) {
+                if (isInRange(loc, online.getLocation(), radius)) {
+                    online.playSound(loc, sound, f, f2);
+                }
+            }
+        });
+    }
 
     public static void registerPlayer(Player p) {
         executeUpdate("INSERT INTO nrp_id (id, uuid, name, first_join) VALUES (NULL, '" + p.getUniqueId() + "', '" + p.getName() + "', NOW())");

@@ -11,6 +11,7 @@ import de.newrp.main;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.type.TrapDoor;
 import org.bukkit.entity.*;
@@ -26,6 +27,7 @@ import org.bukkit.event.player.*;
 import org.bukkit.event.server.ServerListPingEvent;
 import org.bukkit.event.server.TabCompleteEvent;
 import org.bukkit.help.HelpTopic;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -188,6 +190,23 @@ public class Utils implements Listener {
                 e.setCancelled(!BuildMode.isInBuildMode(p));
             } else {
                 e.setCancelled(true);
+            }
+        }
+    }
+
+    @EventHandler
+    public void onDrink(PlayerInteractEvent e) {
+        if (e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) {
+            Player p = e.getPlayer();
+            if (p.getInventory().getItemInMainHand().getType().equals(Material.FLOWER_POT)) {
+                if (!BuildMode.isInBuildMode(p)) {
+                    if (e.getHand().equals(EquipmentSlot.OFF_HAND)) {
+                        p.getInventory().setItemInOffHand(new ItemStack(Material.AIR));
+                    } else {
+                        p.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
+                    }
+                    Script.playLocalSound(p.getLocation(), Sound.ENTITY_GENERIC_DRINK, 5);
+                }
             }
         }
     }
