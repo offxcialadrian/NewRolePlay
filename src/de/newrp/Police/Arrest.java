@@ -35,6 +35,11 @@ public class Arrest implements CommandExecutor {
             return true;
         }
 
+        if(!Duty.isInDuty(p)) {
+            p.sendMessage(Messages.ERROR + "Du musst im Dienst sein, um jemanden zu verhaften.");
+            return true;
+        }
+
         if(args.length != 1) {
             p.sendMessage(Messages.ERROR + "/arrest [Spieler]");
             return true;
@@ -51,13 +56,13 @@ public class Arrest implements CommandExecutor {
             return true;
         }
 
-        if(!Duty.isInDuty(p)) {
-            p.sendMessage(Messages.ERROR + "Du musst im Dienst sein, um jemanden zu verhaften.");
+        if(!Script.isInRange(p.getLocation(), tg.getLocation(), 5)) {
+            p.sendMessage(Messages.ERROR + "Der Spieler ist zu weit entfernt.");
             return true;
         }
 
-        if(!Script.isInRange(p.getLocation(), tg.getLocation(), 5)) {
-            p.sendMessage(Messages.ERROR + "Der Spieler ist zu weit entfernt.");
+        if(!Handschellen.isCuffed(tg)) {
+            p.sendMessage(Messages.ERROR + "Der Spieler ist nicht in Handschellen.");
             return true;
         }
 
@@ -65,7 +70,7 @@ public class Arrest implements CommandExecutor {
         int wanteds = Straftat.getWanteds(fahndungID);
         long time = Fahndung.getFahndedTime(tg);
 
-        if(wanteds < 5) {
+        if(wanteds < 2) {
             p.sendMessage(Messages.ERROR + "Der Spieler hat zu wenig Wanteds.");
             return true;
         }
