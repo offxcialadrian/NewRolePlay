@@ -32,6 +32,7 @@ public class Wahlen implements CommandExecutor, Listener {
     private static final String PREFIX = "§8[§6Wahlen§8] " + Messages.ARROW + " §6";
     public static boolean extend = false;
     public static boolean alreadyExtended = false;
+    public static boolean neuWahlen = false;
 
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
@@ -113,6 +114,24 @@ public class Wahlen implements CommandExecutor, Listener {
                 getWahlResult();
                 return true;
             }
+
+            if(args[0].equalsIgnoreCase("neuwahlen")) {
+                if(!Script.hasRank(p, Rank.ADMINISTRATOR, false)) {
+                    p.sendMessage(Messages.NO_PERMISSION);
+                    return true;
+                }
+
+                if(!SDuty.isSDuty(p)) {
+                    p.sendMessage(Messages.NO_SDUTY);
+                    return true;
+                }
+
+                neuWahlen = true;
+                p.sendMessage(PREFIX + "Du hast die Neuwahlen aktiviert.");
+                Bukkit.broadcastMessage(PREFIX + "Es wurden Neuwahlen ausgerufen und die Wahllokale haben mit sofortiger Wirkung geöffnet!");
+                return true;
+
+            }
         }
 
         if(args.length == 2) {
@@ -159,6 +178,7 @@ public class Wahlen implements CommandExecutor, Listener {
     }
 
     public static boolean wahlenActive() {
+        if(neuWahlen) return true;
         if (Calendar.getInstance().get(Calendar.MONTH) == Calendar.JANUARY && Calendar.getInstance().get(Calendar.DAY_OF_MONTH) == 15 && Calendar.getInstance().get(Calendar.HOUR_OF_DAY) < 18) {
             return true;
         } else if (Calendar.getInstance().get(Calendar.MONTH) == Calendar.JANUARY && Calendar.getInstance().get(Calendar.DAY_OF_MONTH) == 15 && (Calendar.getInstance().get(Calendar.HOUR_OF_DAY) < 20 && extend)) {
@@ -194,6 +214,7 @@ public class Wahlen implements CommandExecutor, Listener {
 
         Beruf.Berufe.NEWS.sendMessage("§6Wahlen: " + Script.getPlayer(getWinner()).getName() + " hat die Wahlen gewonnen.");
         Beruf.Berufe.NEWS.sendMessage("§6Die Nächsten Wahlen finden am " + getNextElection() + " statt.");
+        neuWahlen = false;
         new BukkitRunnable() {
 
             @Override

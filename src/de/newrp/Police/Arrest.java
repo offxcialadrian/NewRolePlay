@@ -67,8 +67,12 @@ public class Arrest implements CommandExecutor {
         }
 
         int fahndungID = Fahndung.getStraftatID(tg);
-        int wanteds = Straftat.getWanteds(fahndungID);
         long time = Fahndung.getFahndedTime(tg);
+        int wanteds = 0;
+
+        for(int i : Fahndung.getStraftatIDs(tg)) {
+            wanteds += Straftat.getWanteds(i);
+        }
 
         if(wanteds < 2) {
             p.sendMessage(Messages.ERROR + "Der Spieler hat zu wenig Wanteds.");
@@ -81,7 +85,7 @@ public class Arrest implements CommandExecutor {
         }
 
         p.sendMessage(Fahndung.PREFIX + "Du hast " + Script.getName(tg) + " verhaftet.");
-        Jail.arrest(tg, wanteds*30, true);
+        Jail.arrest(tg, wanteds*15, true);
         Fahndung.removeFahndung(tg);
         int minute = 0;
         int hour = (int) TimeUnit.MILLISECONDS.toHours(time);
@@ -91,13 +95,16 @@ public class Arrest implements CommandExecutor {
         }
         String message;
         if (hour > 0) {
-            message = Fahndung.PREFIX + Script.getName(tg) + " wurde von " + Script.getName(p) + " eingesperrt.\n"
-                    + Fahndung.PREFIX + "Fahndungsgrund: " + Straftat.getReason(fahndungID) + " | Fahndungszeit: " + hour + " Stunden.";
+            Beruf.Berufe.POLICE.sendMessage(Fahndung.PREFIX + Script.getName(tg) + " wurde von " + Script.getName(p) + " eingesperrt. Fahndungszeit: " + hour + " Stunden.");
+            for(int i : Fahndung.getStraftatIDs(tg)) {
+                Beruf.Berufe.POLICE.sendMessage(Fahndung.PREFIX + "Fahndungsgrund: " + Straftat.getReason(i) + " | WantedPunkte: " + Straftat.getWanteds(i));
+            }
         } else {
-            message = Fahndung.PREFIX + Script.getName(tg) + " wurde von " + Script.getName(p) + " eingesperrt.\n"
-                    + Fahndung.PREFIX + "Fahndungsgrund: " + Straftat.getReason(fahndungID) + " | Fahndungszeit: " + minute + " Minuten.";
+            Beruf.Berufe.POLICE.sendMessage(Fahndung.PREFIX + Script.getName(tg) + " wurde von " + Script.getName(p) + " eingesperrt. Fahndungszeit: " + minute + " Minuten.");
+            for(int i : Fahndung.getStraftatIDs(tg)) {
+                Beruf.Berufe.POLICE.sendMessage(Fahndung.PREFIX + "Fahndungsgrund: " + Straftat.getReason(i) + " | WantedPunkte: " + Straftat.getWanteds(i));
+            }
         }
-        Beruf.Berufe.POLICE.sendMessage(message);
 
         Script.addEXP(p, (Script.getRandom(10, 15) + Math.abs(wanteds / 6)));
         Script.removeWeapons(tg);

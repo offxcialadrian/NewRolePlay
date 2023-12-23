@@ -57,7 +57,7 @@ public class CheckPlayerCommand implements CommandExecutor {
             }
             p.sendMessage("§7Offline §8× §eseit: " + Script.dateFormat.format(Script.getLastDisconnect(offtg)));
             p.sendMessage("§7Geld §8× §e" + Script.getMoney(offtg, PaymentType.CASH) + "€ | " + Script.getMoney(offtg, PaymentType.BANK) + "€" + (Banken.hasBank(offtg)? " §8(§e" + Banken.getBankByPlayer(offtg) + "§8)" : " §8(§c" + "Keine Bank" + "§8)"));
-            p.sendMessage("§7Fahndung §8× §e" + (Fahndung.isFahnded(offtg) ? Straftat.getWanteds(Fahndung.getStraftatID(offtg)) + " WantedPunkte" : "Nein"));
+            p.sendMessage("§7Fahndung §8× §e" + (Fahndung.isFahnded(offtg) ? Fahndung.getWanteds(offtg) + " WantedPunkte" : "Nein"));
             p.sendMessage("§7Geschlecht §8× §e" + Script.getGender(offtg).getName());
             p.sendMessage("§7Team §8× §e" + (Team.getTeam(offtg) != null ? Team.getTeam(offtg).getName() : "Kein Team"));
             p.sendMessage("§7PlayTime §8× §e" + Script.getPlayTime(offtg, true) + ":§e" + String.format("%02d", Script.getPlayTime(offtg, false)) + " Stunden" + " §8(§e" + Script.getActivePlayTime(offtg, true) + ":§e" + String.format("%02d", Script.getActivePlayTime(offtg, false)) + " Stunden§8)");
@@ -88,7 +88,7 @@ public class CheckPlayerCommand implements CommandExecutor {
         }
         p.sendMessage("§7Rang §8× §e" + Script.getRank(tg).getName(tg));
         p.sendMessage("§7Geld §8× §e" + Script.getMoney(tg, PaymentType.CASH) + "€ | " + Script.getMoney(tg, PaymentType.BANK) + "€" + (Banken.hasBank(tg)? " §8(§e" + Banken.getBankByPlayer(tg) + "§8)" : " §8(§c" + "Keine Bank" + "§8)"));
-        p.sendMessage("§7Fahndung §8× §e" + (Fahndung.isFahnded(tg) ? Straftat.getWanteds(Fahndung.getStraftatID(tg)) + " WantedPunkte" : "Nein"));
+        p.sendMessage("§7Fahndung §8× §e" + (Fahndung.isFahnded(tg) ? Fahndung.getWanteds(tg) + " WantedPunkte" : "Nein"));
         p.sendMessage("§7UUID §8× §e" + tg.getUniqueId());
         p.sendMessage("§7Geschlecht §8× §e" + Script.getGender(tg).getName());
         p.sendMessage("§7Team §8× §e" + (Team.getTeam(tg) != null ? Team.getTeam(tg).getName() : "Kein Team"));

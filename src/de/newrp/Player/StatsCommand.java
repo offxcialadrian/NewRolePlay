@@ -23,7 +23,7 @@ public class StatsCommand implements CommandExecutor {
         p.sendMessage("§7ID §8× §e" + Script.getNRPID(p));
         p.sendMessage("§7Rang §8× §e" + Script.getRank(p).getName(p));
         p.sendMessage("§7Bargeld §8× §e" + Script.getMoney(p, PaymentType.CASH) + "€");
-        p.sendMessage("§7Fahndung §8× §e" + (Fahndung.isFahnded(p) ? Straftat.getWanteds(Fahndung.getStraftatID(p)) + " WantedPunkte" : "Nein"));
+        p.sendMessage("§7Fahndung §8× §e" + (Fahndung.isFahnded(p) ? Fahndung.getWanteds(p) + " WantedPunkte" : "Nein"));
         p.sendMessage("§7UUID §8× §e" + p.getUniqueId());
         p.sendMessage("§7Geschlecht §8× §e" + Script.getGender(p).getName());
         p.sendMessage("§7Team §8× §e" + (Team.getTeam(p) != null ? Team.getTeam(p).getName() : "Kein Team"));

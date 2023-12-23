@@ -2,6 +2,7 @@ package de.newrp.Runnable;
 
 import de.newrp.API.Script;
 import de.newrp.API.Weather;
+import de.newrp.Berufe.Abteilung;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Government.Stadtkasse;
 import de.newrp.Shop.Shops;
@@ -23,7 +24,7 @@ public class AsyncHour extends BukkitRunnable {
                     Script.getPlayer(shop.getOwner()).sendMessage("§8[§eSHOP§8] §7Dein Shop §e" + shop.getPublicName() + " §7hat §e" + shop.getRent() + "€ §7Miete und §e" + shop.getRunningCost() + "€ §7Betriebskosten verloren.");
                 }
             } else {
-                Beruf.Berufe.GOVERNMENT.sendMessage("§8[§eSHOP§8] §7Der Shop §e" + shop.getPublicName() + " §7hat nicht genug Geld für die Betriebskosten und Miete (Verdacht auf Steuerhinterziehung).");
+                Abteilung.Abteilungen.FINANZAMT.sendMessage("§8[§eSHOP§8] §7Der Shop §e" + shop.getPublicName() + " §7hat nicht genug Geld für die Betriebskosten und Miete (Verdacht auf Steuerhinterziehung).");
                 if(Script.getPlayer(shop.getOwner()) != null) {
                     Script.getPlayer(shop.getOwner()).sendMessage("§8[§eSHOP§8] §7Dein Shop §e" + shop.getPublicName() + " §7hat nicht genug Kapital um Miete und Betriebskosten zu bezahlen. Eine Meldung ans Finanzamt wurde abgesetzt.");
                     Script.getPlayer(shop.getOwner()).sendMessage("§8[§eSHOP§8] §7Beachte bitte, dass es eine Schließung deines Shops und eine Strafanzeige zur Folge haben kann.");

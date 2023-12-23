@@ -7,6 +7,7 @@ import de.newrp.Berufe.Beruf;
 import de.newrp.Berufe.Duty;
 import de.newrp.Government.Straftat;
 import de.newrp.main;
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -48,11 +49,35 @@ public class Fahndung implements CommandExecutor, TabCompleter {
 
         if(args.length == 0) {
             p.sendMessage(Straftat.PREFIX + "Alle Fahndungen:");
-            for(Player all : getList()) {
+            for(Player all : Bukkit.getOnlinePlayers()) {
                 if(SDuty.isSDuty(all)) continue;
-                p.sendMessage("§8» §6" + Script.getName(all) + " §8» §6" + Straftat.getReason(getStraftatID(all)));
+                if(getStraftatIDs(all).isEmpty()) continue;
+                int wanteds = 0;
+                for(int i : getStraftatIDs(all)) {
+                    wanteds += Straftat.getWanteds(i);
+                }
+                p.sendMessage("§8» §6" + Script.getName(all) + " §8× §6" + wanteds + " WantedPunkte");
             }
             return true;
+        }
+
+        if(args.length == 1) {
+            Player tg = Script.getPlayer(args[0]);
+            if(tg == null) {
+                p.sendMessage(Messages.PLAYER_NOT_FOUND);
+                return true;
+            }
+
+            if(!getStraftatIDs(tg).isEmpty()) {
+                for(int i : getStraftatIDs(tg)) {
+                    p.sendMessage("§8» §6" + Script.getName(tg) + " §8× §6" + Straftat.getWanteds(i) + " WantedPunkte " + " §8× §6" + Straftat.getReason(i).replace("-"," "));
+                }
+            } else {
+                p.sendMessage(Messages.ERROR + "Dieser Spieler wird nicht gefahndet.");
+            }
+
+            return true;
+
         }
 
         if(args.length != 2) {
@@ -72,11 +97,6 @@ public class Fahndung implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        if(isFahnded(tg)) {
-            p.sendMessage(Messages.ERROR + "Der Spieler wird bereits gefahndet.");
-            return true;
-        }
-
         if(Beruf.getBeruf(tg) == Beruf.Berufe.POLICE && Duty.isInDuty(tg)) {
             p.sendMessage(Messages.ERROR + "Du kannst keine Polizisten im Dienst fahnden.");
             return true;
@@ -84,6 +104,16 @@ public class Fahndung implements CommandExecutor, TabCompleter {
 
         if(!Straftat.straftatExists(args[1])) {
             p.sendMessage(Messages.ERROR + "Dieser Fahndungsgrund existiert nicht.");
+            return true;
+        }
+
+        if(SDuty.isSDuty(tg)) {
+            p.sendMessage(Messages.ERROR + "Du kannst keine Spieler im Supporter-Dienst fahnden.");
+            return true;
+        }
+
+        if(Beruf.getBeruf(tg) == Beruf.Berufe.GOVERNMENT) {
+            p.sendMessage(Messages.ERROR + "Du kannst keine Regierungsmitglieder fahnden.");
             return true;
         }
 
@@ -106,7 +136,7 @@ public class Fahndung implements CommandExecutor, TabCompleter {
 
     public static long getFahndedTime(Player p) {
         try (Statement stmt = main.getConnection().createStatement();
-             ResultSet rs = stmt.executeQuery("SELECT * FROM wanted WHERE nrp_id=" + Script.getNRPID(p))) {
+             ResultSet rs = stmt.executeQuery("SELECT * FROM wanted WHERE nrp_id=" + Script.getNRPID(p) + " ORDER BY id ASC LIMIT 1")) {
             if (rs.next()) {
                 return (System.currentTimeMillis() - rs.getLong("time"));
             }
@@ -114,6 +144,22 @@ public class Fahndung implements CommandExecutor, TabCompleter {
             e.printStackTrace();
         }
         return 0;
+    }
+
+    public static int getWanteds(Player p) {
+        int wanteds = 0;
+        for(int i : getStraftatIDs(p)) {
+            wanteds += Straftat.getWanteds(i);
+        }
+        return wanteds;
+    }
+
+    public static int getWanteds(OfflinePlayer p) {
+        int wanteds = 0;
+        for(int i : getStraftatIDs(p)) {
+            wanteds += Straftat.getWanteds(i);
+        }
+        return wanteds;
     }
 
     @Override
@@ -158,16 +204,30 @@ public class Fahndung implements CommandExecutor, TabCompleter {
         return list;
     }
 
-    public static int getStraftatID(Player p) {
+    public static List<Integer> getStraftatIDs(Player p) {
+        List<Integer> list = new ArrayList<>();
         try (Statement stmt = main.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM wanted WHERE nrp_id=" + Script.getNRPID(p))) {
-            if (rs.next()) {
-                return rs.getInt("wantedreason");
+            while (rs.next()) {
+               list.add(rs.getInt("wantedreason"));
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return 0;
+        return list;
+    }
+
+    public static List<Integer> getStraftatIDs(OfflinePlayer p) {
+        List<Integer> list = new ArrayList<>();
+        try (Statement stmt = main.getConnection().createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT * FROM wanted WHERE nrp_id=" + Script.getNRPID(p))) {
+            while (rs.next()) {
+                list.add(rs.getInt("wantedreason"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
     }
 
     public static int getStraftatID(OfflinePlayer p) {

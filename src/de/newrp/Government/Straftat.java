@@ -24,14 +24,14 @@ public class Straftat implements CommandExecutor {
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
         Player p = (Player) cs;
 
-        if(!Beruf.hasBeruf(p)) {
-            p.sendMessage(Messages.ERROR + "Du bist nicht in der Regierung.");
-            return true;
-        }
-
         if(args.length == 0) {
             p.sendMessage(PREFIX + "Alle Straftaten:");
             sendAllReason(p);
+            return true;
+        }
+
+        if(!Beruf.hasBeruf(p)) {
+            p.sendMessage(Messages.ERROR + "Du bist nicht in der Regierung.");
             return true;
         }
 
@@ -46,7 +46,7 @@ public class Straftat implements CommandExecutor {
         }
 
 
-        if(args.length < 3) {
+        if(args.length < 2) {
             p.sendMessage(Messages.ERROR + "/straftat [WantedPunkte] [Grund]");
             return true;
         }

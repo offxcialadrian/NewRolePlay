@@ -4,6 +4,7 @@ import de.newrp.API.Messages;
 import de.newrp.API.Rank;
 import de.newrp.API.Script;
 import de.newrp.Administrator.SDuty;
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -23,7 +24,7 @@ public class Abteilung implements CommandExecutor, TabCompleter {
     private static final String PREFIX = "§8[§eAbteilung§8] §e» ";
 
     public enum Abteilungen {
-        GOVERNMENT_NONE(0, GOVERNMENT, "Keine_Abteilung"),
+        GOVERNMENT_NONE(0, GOVERNMENT, "Regierungsmitglied"),
         ARBEITSAMT(1, GOVERNMENT, "Arbeitsamt"),
         FINANZAMT(2, GOVERNMENT, "Finanzamt"),
         JUSTIZMINISTERIUM(3, GOVERNMENT, "Justizministerium"),
@@ -36,7 +37,7 @@ public class Abteilung implements CommandExecutor, TabCompleter {
         KRIPO(3, POLICE, "Kriminalpolizei"),
         BESCHAFFUNG(4, POLICE, "Beschaffung"),
         ZIVILPOLICE(5, POLICE, "Zivilpolizei"),
-        NEWS_NONE(0, NEWS, "Keine_Abteilung"),
+        NEWS_NONE(0, NEWS, "Newsmitglied"),
         NEWS_NACHRICHTEN(1, NEWS, "Nachrichten-Abteilung");
 
         private final int id;
@@ -92,6 +93,24 @@ public class Abteilung implements CommandExecutor, TabCompleter {
             }
             return abteilungen;
         }
+
+        public List<Player> getOnlineMembers() {
+            List<Player> list = new ArrayList<>();
+            for (Player all : Bukkit.getOnlinePlayers()) {
+                if(Beruf.getAbteilung(all) == this)
+                    list.add(all.getPlayer());
+            }
+            return list;
+        }
+
+        public void sendMessage(String message) {
+            for (OfflinePlayer all : getOnlineMembers()) {
+                if (all.isOnline()) {
+                    all.getPlayer().sendMessage(message);
+                }
+            }
+        }
+
     }
 
 

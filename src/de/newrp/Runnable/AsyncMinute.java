@@ -45,6 +45,10 @@ public class AsyncMinute extends BukkitRunnable {
             Wahlen.getWahlResult();
         } else if (Calendar.getInstance().get(Calendar.MONTH) == Calendar.OCTOBER && Calendar.getInstance().get(Calendar.DAY_OF_MONTH) == 15 && Calendar.getInstance().get(Calendar.HOUR_OF_DAY) == 20 && Calendar.getInstance().get(Calendar.MINUTE) == 0 && Wahlen.extend) {
             Wahlen.getWahlResult();
+        }  else if (Wahlen.neuWahlen && Calendar.getInstance().get(Calendar.HOUR_OF_DAY) == 18 && Calendar.getInstance().get(Calendar.MINUTE) == 0) {
+            Wahlen.getWahlResult();
+        } else if (Wahlen.neuWahlen && Calendar.getInstance().get(Calendar.HOUR_OF_DAY) == 20 && Calendar.getInstance().get(Calendar.MINUTE) == 0 && Wahlen.extend) {
+            Wahlen.getWahlResult();
         }
 
 

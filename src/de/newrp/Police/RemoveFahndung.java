@@ -17,17 +17,17 @@ public class RemoveFahndung implements CommandExecutor {
         Player p = (Player) cs;
 
         if(!Beruf.hasBeruf(p)) {
-            p.sendMessage(Messages.ERROR + "Du bist nicht in der Regierung.");
+            p.sendMessage(Messages.NO_PERMISSION);
             return true;
         }
 
-        if(!Beruf.getBeruf(p).equals(Beruf.Berufe.GOVERNMENT)) {
-            p.sendMessage(Messages.ERROR + "Du bist nicht in der Regierung.");
+        if(!Beruf.getBeruf(p).equals(Beruf.Berufe.GOVERNMENT) && !Beruf.getBeruf(p).equals(Beruf.Berufe.POLICE)) {
+            p.sendMessage(Messages.NO_PERMISSION);
             return true;
         }
 
-        if(Beruf.getAbteilung(p) != Abteilung.Abteilungen.JUSTIZMINISTERIUM) {
-            p.sendMessage(Messages.ERROR + "Du bist nicht im Justizministerium.");
+        if(Beruf.getAbteilung(p) != Abteilung.Abteilungen.JUSTIZMINISTERIUM && Beruf.getAbteilung(p) != Abteilung.Abteilungen.STREIFENDIENST && !Beruf.isLeader(p)) {
+            p.sendMessage(Messages.NO_PERMISSION);
             return true;
         }
 
