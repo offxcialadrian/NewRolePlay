@@ -18,13 +18,13 @@ public class Baulog implements CommandExecutor {
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
         Player p = (Player) cs;
         
-        if(!Script.hasRank(p, Rank.ADMINISTRATOR, false)) {
+        if(!Script.hasRank(p, Rank.ADMINISTRATOR, false) && Team.getTeam(p) != Team.Teams.BAU) {
             p.sendMessage(Messages.NO_PERMISSION);
             return true;
         }
 
-        if(!SDuty.isSDuty(p)) {
-            p.sendMessage(Messages.NO_SDUTY);
+        if(!SDuty.isSDuty(p) && Team.isTeamLeader(p)) {
+            p.sendMessage(Messages.NO_PERMISSION);
             return true;
         }
 
