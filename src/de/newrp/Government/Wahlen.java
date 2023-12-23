@@ -121,7 +121,7 @@ public class Wahlen implements CommandExecutor, Listener {
                     return true;
                 }
 
-                Script.executeUpdate("DELETE FROM wahlen WHERE quartal = '" + getCurrentQuartal() + "' AND year = '" + Calendar.getInstance().get(Calendar.YEAR) + "'");
+                Script.executeAsyncUpdate("UPDATE wahlen SET votes = 0 WHERE quartal = '" + getCurrentQuartal() + "' AND year = '" + Calendar.getInstance().get(Calendar.YEAR) + "'");
 
                 neuWahlen = true;
                 p.sendMessage(PREFIX + "Du hast die Neuwahlen aktiviert.");
