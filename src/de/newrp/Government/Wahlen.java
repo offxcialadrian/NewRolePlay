@@ -51,11 +51,6 @@ public class Wahlen implements CommandExecutor, Listener {
                     return true;
                 }
 
-                if (wahlenActive()) {
-                    p.sendMessage(PREFIX + "Es sind derzeit Wahlen aktiv.");
-                    return true;
-                }
-
                 if (hasApplied(p)) {
                     p.sendMessage(PREFIX + "Du hast dich bereits aufgestellt.");
                     return true;
@@ -125,6 +120,8 @@ public class Wahlen implements CommandExecutor, Listener {
                     p.sendMessage(Messages.NO_SDUTY);
                     return true;
                 }
+
+                Script.executeUpdate("DELETE FROM wahlen WHERE quartal = '" + getCurrentQuartal() + "' AND year = '" + Calendar.getInstance().get(Calendar.YEAR) + "'");
 
                 neuWahlen = true;
                 p.sendMessage(PREFIX + "Du hast die Neuwahlen aktiviert.");
