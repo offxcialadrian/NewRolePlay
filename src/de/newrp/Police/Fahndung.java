@@ -7,6 +7,7 @@ import de.newrp.Berufe.Beruf;
 import de.newrp.Berufe.Duty;
 import de.newrp.Government.Straftat;
 import de.newrp.main;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -99,6 +100,10 @@ public class Fahndung implements CommandExecutor, TabCompleter {
         return Script.getInt(p, "wanted", "id") != 0;
     }
 
+    public static boolean isFahnded(OfflinePlayer p) {
+        return Script.getInt(p, "wanted", "id") != 0;
+    }
+
     public static long getFahndedTime(Player p) {
         try (Statement stmt = main.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM wanted WHERE nrp_id=" + Script.getNRPID(p))) {
@@ -154,6 +159,18 @@ public class Fahndung implements CommandExecutor, TabCompleter {
     }
 
     public static int getStraftatID(Player p) {
+        try (Statement stmt = main.getConnection().createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT * FROM wanted WHERE nrp_id=" + Script.getNRPID(p))) {
+            if (rs.next()) {
+                return rs.getInt("wantedreason");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public static int getStraftatID(OfflinePlayer p) {
         try (Statement stmt = main.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM wanted WHERE nrp_id=" + Script.getNRPID(p))) {
             if (rs.next()) {
