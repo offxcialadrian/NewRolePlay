@@ -108,7 +108,7 @@ public class Jail {
 
         Block cp;
         while (true) {
-            cp = new Location(p.getWorld(), -Script.getRandom(645, 669), 69, Script.getRandom(160, 185)).getBlock();
+            cp = new Location(p.getWorld(), -Script.getRandom(597, 970), 69, Script.getRandom(574, 1016)).getBlock();
             if (cp.getType().equals(Material.AIR) || cp.getType().equals(Material.GRASS)) {
                 cp.getLocation().getChunk().load();
                 p.teleport(cp.getLocation());

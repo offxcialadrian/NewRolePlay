@@ -3,6 +3,7 @@ package de.newrp.Shop;
 import de.newrp.API.Messages;
 import de.newrp.API.PaymentType;
 import de.newrp.API.Script;
+import de.newrp.API.SlotLimit;
 import de.newrp.Administrator.Notications;
 import de.newrp.Government.Stadtkasse;
 import de.newrp.Government.Steuern;
@@ -55,6 +56,12 @@ public class Shop implements CommandExecutor, Listener {
 
         if (args.length == 0) {
             p.sendMessage(Messages.ERROR + "Verwendung: /shop [kasse/sell/karte/info/setprice/upgradelager/sortiment]");
+            return true;
+        }
+
+        if(Shops.getShopsByPlayer(Script.getNRPID(p)).size() > SlotLimit.SHOP.get(Script.getNRPID(p)) && !args[0].equalsIgnoreCase("sell")) {
+            p.sendMessage(Messages.ERROR + "Du hast zuviele Shops");
+            p.sendMessage(Messages.INFO + "Du kannst einen weiteren Shopslot im Shop erwerben.");
             return true;
         }
 

@@ -8,7 +8,9 @@ import org.bukkit.inventory.ItemStack;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public enum Shops {
@@ -206,6 +208,29 @@ public enum Shops {
             l.put(bi.getID(), Script.setNameAndLore(i, bi.getName(), "§8× §6" + a[1] + "€"));
         }
         return l;
+    }
+
+    public static Shops getShopyByID(int id) {
+        for (Shops s : Shops.values()) {
+            if (s.getID() == id) {
+                return s;
+            }
+        }
+        return null;
+    }
+
+    public static List<Shops> getShopsByPlayer(int id) {
+        ArrayList<Shops> s = new ArrayList<>();
+        try (
+                Statement stmt = main.getConnection().createStatement();
+                ResultSet rs = stmt.executeQuery("SELECT * FROM shops WHERE ownerID=" + id)) {
+            while (rs.next()) {
+                s.add(getShopyByID(rs.getInt("shopID")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return s;
     }
 
 }

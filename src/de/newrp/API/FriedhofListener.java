@@ -53,9 +53,9 @@ public class FriedhofListener implements Listener {
         head.setItemMeta(meta);
         Item item = w.dropItemNaturally(deathLocation, head);
         if (deathtime > 480 || explosion) {
-            item.setCustomName("§8\u271F" + p.getName());
+            item.setCustomName("§8✟" + p.getName());
         } else {
-            item.setCustomName("§7\u271F" + p.getName());
+            item.setCustomName("§7✟" + p.getName());
         }
         item.setCustomNameVisible(true);
         item.setVelocity(item.getVelocity().zero());
@@ -69,7 +69,7 @@ public class FriedhofListener implements Listener {
         if (p.getItemOnCursor() != null) p.getItemOnCursor().setType(Material.AIR);
 
         Player killer = p.getKiller();
-        Notications.sendMessage(Notications.NotificationType.DEAD, Script.getName(p) + " ist gestorben. " + (killer!=null ? Messages.ARROW + " " + Script.getName(killer):""));
+        Notications.sendMessage(Notications.NotificationType.DEAD, Script.getName(p) + " ist gestorben " + (killer!=null ? Messages.ARROW + " " + Script.getName(killer):Messages.ARROW + " " + p.getLastDamageCause().getCause().name()));
         Friedhof friedhof = new Friedhof(Script.getNRPID(p), p.getName(), deathLocation, System.currentTimeMillis(), deathtime, item, cash, inventoryContent);
         Friedhof.setDead(p, friedhof);
     }

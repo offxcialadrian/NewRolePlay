@@ -10,7 +10,8 @@ public enum SlotLimit {
 
     HOUSE(0, 1, 2, "houselimit", "houselimit"),
     VEHICLE(1, 1, 2, "carlimit", "carlimit"),
-    PET(2, 0, 1, "petlimit", "petlimit");
+    PET(2, 0, 1, "petlimit", "petlimit"),
+    SHOP(3, 1, 2, "shoplimit", "shoplimit");
 
     private final int id;
     private final int defaultAmount;

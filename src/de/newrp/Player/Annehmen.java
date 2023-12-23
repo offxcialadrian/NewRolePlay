@@ -102,6 +102,12 @@ public class Annehmen implements CommandExecutor {
                 return true;
             }
 
+            if(Shops.getShopsByPlayer(Script.getNRPID(p)).size() > SlotLimit.SHOP.get(Script.getNRPID(p))) {
+                p.sendMessage(Messages.ERROR + "Du hast zuviele Shops");
+                p.sendMessage(Messages.INFO + "Du kannst einen weiteren Shopslot im Shop erwerben.");
+                return true;
+            }
+
             Script.removeMoney(p, PaymentType.BANK, price);
             double tax = Steuern.Steuer.SHOP_VERKAUFSSTEUER.getPercentage();
             Stadtkasse.addStadtkasse((int) Script.getPercent(tax, price));
@@ -153,6 +159,12 @@ public class Annehmen implements CommandExecutor {
 
             if(house.getFreeSlots() == 0) {
                 p.sendMessage(Messages.ERROR + "Das Haus ist voll.");
+                return true;
+            }
+
+            if(House.getHouses(Script.getNRPID(p)).size() >= SlotLimit.HOUSE.get(Script.getNRPID(p))) {
+                p.sendMessage(Messages.ERROR + "Du hast zuviele Häuser um in noch einem weiteren zu wohnen.");
+                p.sendMessage(Messages.INFO + "Du kannst einen weiteren Hausslot im Shop erwerben.");
                 return true;
             }
 

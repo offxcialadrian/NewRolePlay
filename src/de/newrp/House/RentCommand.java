@@ -77,8 +77,9 @@ public class RentCommand implements CommandExecutor {
             return true;
         }
 
-        if(House.getHouses(Script.getNRPID(tg)).size() >= SlotLimit.HOUSE.get(Script.getNRPID(tg))) {
-            p.sendMessage(Messages.ERROR + "Der Spieler hat bereits die maximale Anzahl an Häusern.");
+        if(House.getHouses(Script.getNRPID(p)).size() > SlotLimit.HOUSE.get(Script.getNRPID(p))) {
+            p.sendMessage(Messages.ERROR + "Du hast zuviele Häuser");
+            p.sendMessage(Messages.INFO + "Du kannst einen weiteren Hausslot im Shop erwerben.");
             return true;
         }
 

@@ -3,6 +3,7 @@ package de.newrp.House;
 import de.newrp.API.Messages;
 import de.newrp.API.PaymentType;
 import de.newrp.API.Script;
+import de.newrp.API.SlotLimit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -34,6 +35,12 @@ public class Housekasse implements CommandExecutor {
 
         if(!h.getAddons().contains(HouseAddon.HAUSKASSE)) {
             p.sendMessage(Messages.ERROR + "Dieses Haus hat keine Hauskasse.");
+            return true;
+        }
+
+        if(House.getHouses(Script.getNRPID(p)).size() > SlotLimit.HOUSE.get(Script.getNRPID(p))) {
+            p.sendMessage(Messages.ERROR + "Du hast zuviele Häuser");
+            p.sendMessage(Messages.INFO + "Du kannst einen weiteren Hausslot im Shop erwerben.");
             return true;
         }
 
