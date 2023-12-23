@@ -78,6 +78,8 @@ public class AFK implements CommandExecutor, Listener {
             return;
         }
 
+        if(SDuty.isSDuty(p)) return;
+
         if (!loc.containsKey(p)) {
             loc.put(p, p.getLocation());
             lastActions.remove(p.getName());
