@@ -323,3 +323,11 @@ commands:
   staatschat:
     description: send a message to the staatschat
     aliases: [ govchat, dchat, d ]
+  channel:
+    description: create a channel
+    aliases: [ createchannel ]
+  teamspeak:
+    description: connect to the teamspeak
+    aliases: [ ts ]
+  takeshop:
+    description: take a shop

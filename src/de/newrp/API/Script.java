@@ -68,7 +68,7 @@ public class Script {
     }
 
     public static void updateListname(Player p) {
-        if (SDuty.isSDuty(p)) p.setPlayerListName("§cNRP §8× §9" + p.getName());
+        if (SDuty.isSDuty(p)) p.setPlayerListName("§c§lNRP §8× §9" + p.getName());
         if (!SDuty.isSDuty(p)) p.setPlayerListName("§r" + p.getName());
         if (Duty.isInDuty(p) && Beruf.getAbteilung(p) != Abteilung.Abteilungen.ZIVILPOLICE)
             p.setPlayerListName((Beruf.getBeruf(p) == Beruf.Berufe.POLICE ? "§9" : "§4") + p.getPlayerListName());

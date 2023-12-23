@@ -52,6 +52,8 @@ public class RemoveTeamLeader implements CommandExecutor {
         Script.sendTeamMessage(p, ChatColor.RED, "hat " + tg.getName() + " TL-Rechte entzogen.", true);
         if (tg.isOnline()) {
             tg.getPlayer().sendMessage(PREFIX + " Du hast die TL-Rechte entzogen bekommen.");
+        } else {
+            Script.addOfflineMessage(tg, PREFIX + " Du hast die TL-Rechte entzogen bekommen.");
         }
         Log.HIGH.write(p, "hat " + tg.getName() + " TL-Rechte entzogen.");
         Log.HIGH.write(tg, "hat TL-Rechte entzogen bekommen.");

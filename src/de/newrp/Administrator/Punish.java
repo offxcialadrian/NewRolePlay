@@ -2,6 +2,7 @@ package de.newrp.Administrator;
 
 import de.newrp.API.*;
 import de.newrp.Berufe.Beruf;
+import de.newrp.TeamSpeak.TeamSpeak;
 import de.newrp.main;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -307,6 +308,7 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
             Sperre.TRAGENSPERRE.setSperre(Script.getNRPID(tg), v.getDuration());
         }
 
+        TeamSpeak.sync(Script.getNRPID(tg));
     }
 
     public static void punish(Player p, OfflinePlayer tg, Violation v) {
@@ -377,6 +379,9 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
             Log.HIGH.write(p, "hat " + tg.getName() + " eine Tragensperre für " + v.getDuration() + " Minuten gegeben.");
             Sperre.TRAGENSPERRE.setSperre(Script.getNRPID(tg), v.getDuration());
         }
+
+
+        TeamSpeak.sync(Script.getNRPID(tg));
 
     }
 

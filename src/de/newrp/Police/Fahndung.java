@@ -69,6 +69,7 @@ public class Fahndung implements CommandExecutor, TabCompleter {
             }
 
             if(!getStraftatIDs(tg).isEmpty()) {
+                p.sendMessage(Straftat.PREFIX + "Fahndungen von " + Script.getName(tg) + ":");
                 for(int i : getStraftatIDs(tg)) {
                     p.sendMessage("§8» §6" + Script.getName(tg) + " §8× §6" + Straftat.getWanteds(i) + " WantedPunkte " + " §8× §6" + Straftat.getReason(i).replace("-"," "));
                 }

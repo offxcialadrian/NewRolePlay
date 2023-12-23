@@ -3,6 +3,7 @@ package de.newrp.Berufe;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.Government.Arbeitslosengeld;
+import de.newrp.TeamSpeak.TeamspeakServerGroup;
 import de.newrp.main;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -19,21 +20,25 @@ import java.util.UUID;
 public class Beruf {
 
     public enum Berufe {
-        GOVERNMENT(1, "Regierung", false, false),
-        NEWS(2, "News", true, false),
-        POLICE(3, "Polizei", false, true),
-        RETTUNGSDIENST(4, "Rettungsdienst", false, true);
+        GOVERNMENT(1, "Regierung", false, false, 0, TeamspeakServerGroup.GOVERNMENT),
+        NEWS(2, "News", true, false, 0, TeamspeakServerGroup.NEWS),
+        POLICE(3, "Polizei", false, true, 0, TeamspeakServerGroup.POLICE),
+        RETTUNGSDIENST(4, "Rettungsdienst", false, true, 0, TeamspeakServerGroup.RETTUNGSDIENST);
 
         int id;
         private final String name;
         boolean kasse;
         boolean equip;
+        int channelid;
+        TeamspeakServerGroup serverGroup;
 
-        Berufe(int id, String name, boolean kasse, boolean equip) {
+        Berufe(int id, String name, boolean kasse, boolean equip, int channelid, TeamspeakServerGroup serverGroup) {
             this.id = id;
             this.name = name;
             this.kasse = kasse;
             this.equip = equip;
+            this.channelid = channelid;
+            this.serverGroup = serverGroup;
         }
 
         public int getID() {
@@ -48,14 +53,15 @@ public class Beruf {
             return equip;
         }
 
-        public static Berufe getBeruf(int id) {
-            for (Berufe beruf : Berufe.values()) {
-                if (beruf.getID() == id) {
-                    return beruf;
-                }
-            }
-            return null;
+        public int getChannelID() {
+            return channelid;
         }
+
+        public TeamspeakServerGroup getTeamspeakServerGroup() {
+            return serverGroup;
+        }
+
+
 
         public static Berufe getBeruf(String name) {
             for (Berufe beruf : Berufe.values()) {
@@ -114,6 +120,11 @@ public class Beruf {
 
 
         public boolean isLeader(Player p) {
+            return Script.getInt(p, "berufe", "leader") == 1;
+        }
+
+        public boolean isLeader(int id) {
+            Player p = Script.getPlayer(id);
             return Script.getInt(p, "berufe", "leader") == 1;
         }
 
@@ -211,8 +222,28 @@ public class Beruf {
             }
         }
 
+        public static Berufe getBeruf(int id) {
+            for (Berufe beruf : Berufe.values()) {
+                if (beruf.getID() == id) {
+                    return beruf;
+                }
+            }
+            return null;
+        }
+
 
     }
+
+    public static Berufe getBeruf(int id) {
+        for (Berufe beruf : Berufe.values()) {
+            if (beruf.getID() == id) {
+                return beruf;
+            }
+        }
+        return null;
+    }
+
+
 
 
     public static Berufe getBeruf(Player p) {

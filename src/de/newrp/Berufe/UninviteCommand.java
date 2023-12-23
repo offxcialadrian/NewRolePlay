@@ -2,6 +2,7 @@ package de.newrp.Berufe;
 
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
+import de.newrp.TeamSpeak.TeamSpeak;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -54,6 +55,7 @@ public class UninviteCommand implements CommandExecutor {
 
         beruf.removeMember(tg, p);
         Script.removeEXP(tg.getName(), Script.getRandom(50, 100));
+        TeamSpeak.sync(Script.getNRPID(tg));
 
 
         return false;

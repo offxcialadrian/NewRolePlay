@@ -1,6 +1,7 @@
 package de.newrp.Government;
 
 import de.newrp.API.Messages;
+import de.newrp.API.Rank;
 import de.newrp.API.Script;
 import de.newrp.Administrator.SDuty;
 import de.newrp.Berufe.Beruf;
@@ -21,7 +22,12 @@ public class Stadtkasse implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
         Player p = (Player) cs;
-        if (Beruf.getBeruf(p) != Beruf.Berufe.GOVERNMENT) {
+        if (Beruf.getBeruf(p) != Beruf.Berufe.GOVERNMENT && !SDuty.isSDuty(p)) {
+            p.sendMessage(Messages.ERROR + "Du bist kein Regierungsmitglied.");
+            return true;
+        }
+
+        if(!Beruf.getBeruf(p).equals(Beruf.Berufe.GOVERNMENT) && !Script.hasRank(p, Rank.ADMINISTRATOR, false)) {
             p.sendMessage(Messages.ERROR + "Du bist kein Regierungsmitglied.");
             return true;
         }

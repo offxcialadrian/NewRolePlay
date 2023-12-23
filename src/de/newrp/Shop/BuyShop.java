@@ -1,9 +1,6 @@
 package de.newrp.Shop;
 
-import de.newrp.API.Log;
-import de.newrp.API.Messages;
-import de.newrp.API.PaymentType;
-import de.newrp.API.Script;
+import de.newrp.API.*;
 import de.newrp.Government.Stadtkasse;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -63,6 +60,12 @@ public class BuyShop implements CommandExecutor {
 
                 if(Script.getMoney(p, PaymentType.BANK) < shop.getPrice()) {
                     p.sendMessage(Messages.ERROR + "Du hast nicht genug Geld.");
+                    return true;
+                }
+
+                if(Shops.getShopsByPlayer(Script.getNRPID(p)).size() >= SlotLimit.SHOP.get(Script.getNRPID(p))) {
+                    p.sendMessage(Messages.ERROR + "Du hast nicht genug Shopslots");
+                    p.sendMessage(Messages.INFO + "Du kannst einen weiteren Shopslot im Shop erwerben.");
                     return true;
                 }
 

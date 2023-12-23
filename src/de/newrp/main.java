@@ -22,6 +22,7 @@ import de.newrp.Runnable.AsyncHour;
 import de.newrp.Runnable.AsyncMinute;
 import de.newrp.Runnable.SyncMinute;
 import de.newrp.Shop.*;
+import de.newrp.TeamSpeak.*;
 import de.newrp.Ticket.*;
 import de.newrp.Waffen.GetAmmo;
 import de.newrp.Waffen.GetGun;
@@ -75,6 +76,13 @@ public class main extends JavaPlugin {
             Bukkit.getConsoleSender().sendMessage("§cNRP §8× §cFehler: " + e1.getMessage());
             Bukkit.getConsoleSender().sendMessage("§cNRP §8× §cFahre Server herunter..");
             this.getServer().shutdown();
+        }
+
+        try {
+            TeamSpeak.connect();
+            System.out.println("TEAMSPEAK QUERY GESTARTET.");
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         if (!test) new ClearLog();
@@ -212,6 +220,9 @@ public class main extends JavaPlugin {
         getCommand("jaillist").setExecutor(new JailList());
         getCommand("jailtime").setExecutor(new JailTime());
         getCommand("staatschat").setExecutor(new StaatsChat());
+        getCommand("teamspeak").setExecutor(new TeamspeakCommand());
+        getCommand("channel").setExecutor(new PremiumChannel());
+        getCommand("takeshop").setExecutor(new TakeShop());
 
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new SDuty(), this);
@@ -263,6 +274,7 @@ public class main extends JavaPlugin {
         pm.registerEvents(new WingsuitListener(), this);
         pm.registerEvents(new AntiVPN(), this);
         pm.registerEvents(new JailTime(), this);
+        pm.registerEvents(new TeamspeakUpdate(), this);
 
         new PayDay().runTaskTimerAsynchronously(this, 60 * 20L, 60 * 20L);
         new AsyncMinute().runTaskTimerAsynchronously(this, 60 * 20L, 60 * 20L);

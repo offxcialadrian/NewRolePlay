@@ -1,5 +1,6 @@
 package de.newrp.API;
 
+import de.newrp.TeamSpeak.TeamspeakServerGroup;
 import de.newrp.main;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -13,16 +14,18 @@ public class Team {
 
 
     public enum Teams {
-        SOCIALMEDIA(1, "Social-Media-Team"),
-        EVENT(2, "Event-Team"),
-        BAU(3, "Bau-Team");
+        SOCIALMEDIA(1, "Social-Media-Team", TeamspeakServerGroup.SOCIALMEDIA),
+        EVENT(2, "Event-Team", TeamspeakServerGroup.EVENTTEAM),
+        BAU(3, "Bau-Team", TeamspeakServerGroup.BAUTEAM);
 
         int id;
         String name;
+        TeamspeakServerGroup group;
 
-        Teams(int id, String name) {
+        Teams(int id, String name, TeamspeakServerGroup group) {
             this.name = name;
             this.id = id;
+            this.group = group;
         }
 
         public String getName() {
@@ -31,6 +34,10 @@ public class Team {
 
         public int getID() {
             return id;
+        }
+
+        public TeamspeakServerGroup getTeamspeakServerGroup() {
+            return group;
         }
 
         public static Teams getTeam(String name) {

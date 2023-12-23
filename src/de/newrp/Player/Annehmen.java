@@ -7,6 +7,7 @@ import de.newrp.Government.Stadtkasse;
 import de.newrp.Government.Steuern;
 import de.newrp.House.House;
 import de.newrp.Shop.Shops;
+import de.newrp.TeamSpeak.TeamSpeak;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -49,6 +50,7 @@ public class Annehmen implements CommandExecutor {
             }
             offer.remove(p.getName() + ".jointeam");
             Achievement.TEAMJOIN.grant(p);
+            TeamSpeak.sync(Script.getNRPID(p));
 
         } else if (offer.containsKey(p.getName() + ".joinberuf")) {
             Player leader = Bukkit.getPlayer(offer.get(p.getName() + ".joinberuf"));
@@ -70,6 +72,7 @@ public class Annehmen implements CommandExecutor {
             beruf.addMember(p, leader);
             offer.remove(p.getName() + ".joinberuf");
             Achievement.BERUF_JOIN.grant(p);
+            TeamSpeak.sync(Script.getNRPID(p));
 
         } else if (offer.containsKey(p.getName() + ".shop.sell")) {
             Player sell = Script.getPlayer(offer.get(p.getName() + ".shop.sell.seller"));

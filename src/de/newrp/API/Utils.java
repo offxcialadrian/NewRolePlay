@@ -7,6 +7,7 @@ import de.newrp.Administrator.BuildMode;
 import de.newrp.Administrator.Notications;
 import de.newrp.Administrator.SDuty;
 import de.newrp.Government.Wahlen;
+import de.newrp.TeamSpeak.TeamSpeak;
 import de.newrp.main;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -151,7 +152,7 @@ public class Utils implements Listener {
         Player p = e.getPlayer();
         e.setJoinMessage(null);
         Script.sendOfflineMessages(p);
-        if (e.getPlayer().hasPlayedBefore()) {
+        if (Script.getNRPID(p) != 0) {
             e.getPlayer().sendMessage(Script.PREFIX + "Willkommen zurück auf §eNewRP§7!");
             if(Script.hasRank(p, Rank.MODERATOR, false)) e.getPlayer().sendMessage(Messages.INFO + "Aufgrund deines Status als " + Script.getRank(p).getName(p) + " hast du automatisch einen Premium-Account.");
             Script.sendActionBar(e.getPlayer(), "§7Willkommen zurück auf §eNewRP§7!");

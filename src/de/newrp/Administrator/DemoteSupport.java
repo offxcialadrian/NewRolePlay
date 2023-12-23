@@ -4,6 +4,7 @@ import de.newrp.API.Log;
 import de.newrp.API.Messages;
 import de.newrp.API.Rank;
 import de.newrp.API.Script;
+import de.newrp.TeamSpeak.TeamSpeak;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -52,6 +53,8 @@ public class DemoteSupport implements CommandExecutor {
         Log.HIGH.write(p, "hat " + tg.getName() + " zu " + rank.getName() + " degradiert.");
         Log.WARNING.write(tg, "wurde von " + Script.getName(p) + " zu " + rank.getName() + " degradiert.");
         Script.executeUpdate("UPDATE ranks SET rank_id=" + rank.getID() + " WHERE nrp_id=" + Script.getNRPID(tg));
+
+        TeamSpeak.sync(Script.getNRPID(tg));
 
     }
 
