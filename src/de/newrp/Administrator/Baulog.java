@@ -34,7 +34,7 @@ public class Baulog implements CommandExecutor {
         }
 
         if(args.length == 0) {
-            p.sendMessage(PREFIX);
+            p.sendMessage(PREFIX + "Übersicht:");
             for(OfflinePlayer builder : Team.Teams.BAU.getAllMembers()) {
                 p.sendMessage(PREFIX + builder.getName() + " §8× §6" + Script.getBuiltBlocks(builder));
             }

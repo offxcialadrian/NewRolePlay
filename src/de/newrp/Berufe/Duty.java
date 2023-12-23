@@ -2,6 +2,7 @@ package de.newrp.Berufe;
 
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
+import de.newrp.Police.Fahndung;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -25,6 +26,11 @@ public class Duty implements CommandExecutor {
 
         if (args.length != 0) {
             p.sendMessage(Messages.ERROR + "/duty");
+            return true;
+        }
+
+        if(Fahndung.isFahnded(p)) {
+            p.sendMessage(Messages.ERROR + "Du kannst nicht in den Dienst gehen, während du gefahndet wirst.");
             return true;
         }
 

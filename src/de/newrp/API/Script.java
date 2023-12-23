@@ -926,7 +926,7 @@ public class Script {
         executeUpdate("INSERT INTO payday (id, nrp_id, time, money) VALUES (NULL, " + getNRPID(p) + ", 1, 0)");
 
         p.setLevel(1);
-        setMoney(p, PaymentType.CASH, 50);
+        setMoney(p, PaymentType.CASH, 1500);
         p.sendMessage(Messages.INFO + "Du hast dich erfolgreich registriert.");
     }
 
@@ -938,7 +938,7 @@ public class Script {
         executeUpdate("INSERT INTO payday (id, nrp_id, time, money) VALUES (NULL, " + getNRPID(p) + ", 1, 0)");
 
 
-        setMoney(p, PaymentType.CASH, 50);
+        setMoney(p, PaymentType.CASH, 1500);
         if (p.isOnline()) {
             Player pl = p.getPlayer();
             pl.setLevel(1);

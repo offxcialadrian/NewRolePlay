@@ -16,10 +16,7 @@ import de.newrp.House.*;
 import de.newrp.Medic.ReviveCommand;
 import de.newrp.News.NewsCommand;
 import de.newrp.Player.*;
-import de.newrp.Police.CheckGun;
-import de.newrp.Police.Handschellen;
-import de.newrp.Police.Staatsmeldung;
-import de.newrp.Police.Uncuff;
+import de.newrp.Police.*;
 import de.newrp.Runnable.AsyncDaylightCycle;
 import de.newrp.Runnable.AsyncHour;
 import de.newrp.Runnable.AsyncMinute;
@@ -31,13 +28,11 @@ import de.newrp.Waffen.GetGun;
 import de.newrp.Waffen.Waffen;
 import de.newrp.Waffen.WaffenDamage;
 import org.bukkit.Bukkit;
-import org.bukkit.block.Sign;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.sql.Connection;
-import java.util.concurrent.TimeUnit;
 
 public class main extends JavaPlugin {
 
@@ -91,6 +86,7 @@ public class main extends JavaPlugin {
         getCommand("debug").setTabCompleter(new DebugCommand());
         getCommand("punish").setTabCompleter(new Punish());
         getCommand("tp").setTabCompleter(new Teleport());
+        getCommand("fahndung").setTabCompleter(new Fahndung());
 
         getCommand("sduty").setExecutor(new SDuty());
         getCommand("debug").setExecutor(new DebugCommand());
@@ -207,6 +203,10 @@ public class main extends JavaPlugin {
         getCommand("tragen").setExecutor(new Tragen());
         getCommand("removetragensperre").setExecutor(new TragenSperre());
         getCommand("sperrinfo").setExecutor(new Sperrinfo());
+        getCommand("straftat").setExecutor(new Straftat());
+        getCommand("deletestraftat").setExecutor(new DeleteStraftat());
+        getCommand("wanted").setExecutor(new Fahndung());
+        getCommand("removefahndung").setExecutor(new RemoveFahndung());
 
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new SDuty(), this);

@@ -38,7 +38,7 @@ public class UnwarnCommand implements CommandExecutor {
         }
 
         OfflinePlayer offtg = Script.getOfflinePlayer(Script.getNRPID(args[0]));
-        if (tg != null) {
+        if (Script.getNRPID(offtg) != 0) {
             if (Punish.getWarns(tg) == 0) {
                 p.sendMessage(Messages.ERROR + "Der Spieler hat keine Warns.");
                 return true;

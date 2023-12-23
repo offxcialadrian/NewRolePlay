@@ -70,7 +70,7 @@ public class Tragen implements CommandExecutor, Listener {
             return true;
         }
 
-        if(tragen.containsKey(p)) {
+        if(p.getPassenger() == null) {
             p.sendMessage(Messages.ERROR + "Du trägst bereits einen Spieler.");
             return true;
         }

@@ -296,3 +296,15 @@ commands:
   sperrinfo:
     description: view the sperrinfo
     aliases: [ sperrinfos ]
+  straftat:
+    description: add a wantedreason
+    aliases: [ straaftaten ]
+  deletestraftat:
+    description: delete a wantedreason
+    aliases: [ deletefahndungsgrund ]
+  wanted:
+    description: view the wanted
+    aliases: [ fahndung ]
+  removefahndung:
+    description: remove a wanted
+    aliases: [ deletefahndung ]
