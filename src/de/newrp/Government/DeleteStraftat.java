@@ -25,7 +25,7 @@ public class DeleteStraftat implements CommandExecutor {
             return true;
         }
 
-        if(Beruf.getAbteilung(p) != Abteilung.Abteilungen.JUSTIZMINSTERIUM) {
+        if(Beruf.getAbteilung(p) != Abteilung.Abteilungen.JUSTIZMINISTERIUM) {
             p.sendMessage(Messages.ERROR + "Du bist nicht im Justizministerium.");
             return true;
         }

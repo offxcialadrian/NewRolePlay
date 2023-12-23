@@ -4,7 +4,6 @@ import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.Berufe.Abteilung;
 import de.newrp.Berufe.Beruf;
-import de.newrp.Berufe.Duty;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -27,7 +26,7 @@ public class RemoveFahndung implements CommandExecutor {
             return true;
         }
 
-        if(Beruf.getAbteilung(p) != Abteilung.Abteilungen.JUSTIZMINSTERIUM) {
+        if(Beruf.getAbteilung(p) != Abteilung.Abteilungen.JUSTIZMINISTERIUM) {
             p.sendMessage(Messages.ERROR + "Du bist nicht im Justizministerium.");
             return true;
         }

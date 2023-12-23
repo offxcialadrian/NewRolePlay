@@ -3,7 +3,6 @@ package de.newrp.Berufe;
 import de.newrp.API.Messages;
 import de.newrp.API.Rank;
 import de.newrp.API.Script;
-import de.newrp.Administrator.GoTo;
 import de.newrp.Administrator.SDuty;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -27,7 +26,7 @@ public class Abteilung implements CommandExecutor, TabCompleter {
         GOVERNMENT_NONE(0, GOVERNMENT, "Keine_Abteilung"),
         ARBEITSAMT(1, GOVERNMENT, "Arbeitsamt"),
         FINANZAMT(2, GOVERNMENT, "Finanzamt"),
-        JUSTIZMINSTERIUM(3, GOVERNMENT, "Justizministerium"),
+        JUSTIZMINISTERIUM(3, GOVERNMENT, "Justizministerium"),
         AUSSENMINISTERIUM(4, GOVERNMENT, "Außenministerium"),
         BAUMINISTERIUM(5, GOVERNMENT, "Bauministerium"),
         STAATSOBERHAUPT(6, GOVERNMENT, "Staatsoberhaupt"),

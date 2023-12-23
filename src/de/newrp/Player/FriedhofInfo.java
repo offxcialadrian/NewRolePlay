@@ -25,8 +25,8 @@ public class FriedhofInfo implements CommandExecutor {
                 p.sendMessage("§7Du bist noch " + min + " " + (min == 1 ? "Minute" : "Minuten") + " und " + sec + " Sekunden auf dem Friedhof.");
             }
         } else {
-            if (Script.isInRegion(p, new Location(p.getWorld(), 317, 74, -84), new Location(p.getWorld(), 320, 72, -88))) {
-                p.teleport(new Location(p.getWorld(), 289, 69, 222));
+            if (Script.isInRegion(p, new Location(Script.WORLD, 245, 82, 668, 60.599842f, 26.550053f), new Location(Script.WORLD, 212, 71, 689, 219.15007f, 5.700036f))) {
+                p.teleport(new Location(p.getWorld(), 333, 78, 1159));
             }
         }
         return true;

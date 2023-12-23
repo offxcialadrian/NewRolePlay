@@ -25,12 +25,12 @@ public class Unarrest implements CommandExecutor {
             return true;
         }
 
-        if(!Beruf.getBeruf(p).equals(Beruf.Berufe.POLICE) && !Beruf.getAbteilung(p).equals(Abteilung.Abteilungen.JUSTIZMINSTERIUM)) {
+        if(!Beruf.getBeruf(p).equals(Beruf.Berufe.POLICE) && !Beruf.getAbteilung(p).equals(Abteilung.Abteilungen.JUSTIZMINISTERIUM)) {
             p.sendMessage(Messages.NO_PERMISSION);
             return true;
         }
 
-        if(!Beruf.isLeader(p) && !Beruf.getAbteilung(p).equals(Abteilung.Abteilungen.JUSTIZMINSTERIUM)) {
+        if(!Beruf.isLeader(p) && !Beruf.getAbteilung(p).equals(Abteilung.Abteilungen.JUSTIZMINISTERIUM)) {
             p.sendMessage(Messages.ERROR + "Nur der Polizeipräsident oder das Justizministerium können Spieler aus dem Gefängnis entlassen.");
             return true;
         }

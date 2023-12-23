@@ -40,7 +40,7 @@ public class Straftat implements CommandExecutor {
             return true;
         }
 
-        if(Beruf.getAbteilung(p) != Abteilung.Abteilungen.JUSTIZMINSTERIUM) {
+        if(Beruf.getAbteilung(p) != Abteilung.Abteilungen.JUSTIZMINISTERIUM) {
             p.sendMessage(Messages.ERROR + "Du bist nicht im Justizministerium.");
             return true;
         }
@@ -94,7 +94,7 @@ public class Straftat implements CommandExecutor {
              ResultSet rs = stmt.executeQuery("SELECT * FROM wanted_reason")) {
             if (rs.next()) {
                 do {
-                    p.sendMessage("§8» §6§l#" + rs.getInt("id") + "§8: §6" + rs.getString("reason") + " §8(§6" + rs.getInt("amount") + " WantedPunkte§8)");
+                    p.sendMessage("§8» " + (Beruf.getBeruf(p) == Beruf.Berufe.GOVERNMENT && Beruf.getAbteilung(p) == Abteilung.Abteilungen.JUSTIZMINISTERIUM ? "§6§l#" + rs.getInt("id") + "§8: ":"") + "§6" + rs.getString("reason") + " §8(§6" + rs.getInt("amount") + " WantedPunkte§8)");
                 } while (rs.next());
             }
         } catch (Exception e) {

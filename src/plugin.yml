@@ -298,7 +298,7 @@ commands:
     aliases: [ sperrinfos ]
   straftat:
     description: add a wantedreason
-    aliases: [ straaftaten ]
+    aliases: [ straftaten ]
   deletestraftat:
     description: delete a wantedreason
     aliases: [ deletefahndungsgrund ]
@@ -320,3 +320,6 @@ commands:
   jailtime:
     description: view the jailtime
     aliases: [ gefangenenzeit ]
+  staatschat:
+    description: send a message to the staatschat
+    aliases: [ govchat, dchat, d ]

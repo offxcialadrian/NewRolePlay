@@ -211,6 +211,7 @@ public class main extends JavaPlugin {
         getCommand("unarrest").setExecutor(new Unarrest());
         getCommand("jaillist").setExecutor(new JailList());
         getCommand("jailtime").setExecutor(new JailTime());
+        getCommand("staatschat").setExecutor(new StaatsChat());
 
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new SDuty(), this);

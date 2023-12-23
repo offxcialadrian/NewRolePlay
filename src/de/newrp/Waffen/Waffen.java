@@ -1,6 +1,7 @@
 package de.newrp.Waffen;
 
 import de.newrp.API.Debug;
+import de.newrp.API.Messages;
 import de.newrp.API.Particle;
 import de.newrp.API.Script;
 import de.newrp.Administrator.SDuty;
@@ -88,7 +89,7 @@ public class Waffen implements Listener {
         if (weapon == null) return;
 
         if(SDuty.isSDuty(p)) {
-            p.sendMessage("§cDu kannst keine Waffen benutzen, wenn du im Supporter-Dienst bist.");
+            Script.sendActionBar(p, Messages.ERROR + "Du kannst keine Waffen benutzen, wenn du im Supporter-Dienst bist.");
             e.setCancelled(true);
             return;
         }

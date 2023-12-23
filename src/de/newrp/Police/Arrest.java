@@ -81,7 +81,6 @@ public class Arrest implements CommandExecutor {
         }
 
         p.sendMessage(Fahndung.PREFIX + "Du hast " + Script.getName(tg) + " verhaftet.");
-        Script.addEXP(p, Script.getRandom(5, 15));
         Jail.arrest(tg, wanteds*30, true);
         Fahndung.removeFahndung(tg);
         int minute = 0;
@@ -99,6 +98,11 @@ public class Arrest implements CommandExecutor {
                     + Fahndung.PREFIX + "Fahndungsgrund: " + Straftat.getReason(fahndungID) + " | Fahndungszeit: " + minute + " Minuten.";
         }
         Beruf.Berufe.POLICE.sendMessage(message);
+
+        Script.addEXP(p, (Script.getRandom(10, 15) + Math.abs(wanteds / 6)));
+        Script.removeWeapons(tg);
+        Handschellen.uncuff(tg);
+        p.getInventory().addItem(Script.setName(new ItemStack(Material.LEAD), "§7Handschellen"));
         return false;
     }
 
