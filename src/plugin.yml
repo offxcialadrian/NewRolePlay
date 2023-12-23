@@ -308,3 +308,15 @@ commands:
   removefahndung:
     description: remove a wanted
     aliases: [ deletefahndung ]
+  arrest:
+    description: arrest a player
+    aliases: [ einsperren ]
+  unarrest:
+    description: unarrest a player
+    aliases: [ entlassen ]
+  jaillist:
+    description: view the jaillist
+    aliases: [ jailliste ]
+  jailtime:
+    description: view the jailtime
+    aliases: [ gefangenenzeit ]

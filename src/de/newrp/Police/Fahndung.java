@@ -99,6 +99,18 @@ public class Fahndung implements CommandExecutor, TabCompleter {
         return Script.getInt(p, "wanted", "id") != 0;
     }
 
+    public static long getFahndedTime(Player p) {
+        try (Statement stmt = main.getConnection().createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT * FROM wanted WHERE nrp_id=" + Script.getNRPID(p))) {
+            if (rs.next()) {
+                return (System.currentTimeMillis() - rs.getLong("time"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
     @Override
     public List<String> onTabComplete(CommandSender cs, Command cmd, String alias, String[] args) {
         Player p = (Player) cs;

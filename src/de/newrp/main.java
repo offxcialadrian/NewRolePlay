@@ -207,6 +207,10 @@ public class main extends JavaPlugin {
         getCommand("deletestraftat").setExecutor(new DeleteStraftat());
         getCommand("wanted").setExecutor(new Fahndung());
         getCommand("removefahndung").setExecutor(new RemoveFahndung());
+        getCommand("arrest").setExecutor(new Arrest());
+        getCommand("unarrest").setExecutor(new Unarrest());
+        getCommand("jaillist").setExecutor(new JailList());
+        getCommand("jailtime").setExecutor(new JailTime());
 
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new SDuty(), this);
@@ -257,6 +261,7 @@ public class main extends JavaPlugin {
         pm.registerEvents(new Rauchgranate(), this);
         pm.registerEvents(new WingsuitListener(), this);
         pm.registerEvents(new AntiVPN(), this);
+        pm.registerEvents(new JailTime(), this);
 
         new PayDay().runTaskTimerAsynchronously(this, 60 * 20L, 60 * 20L);
         new AsyncMinute().runTaskTimerAsynchronously(this, 60 * 20L, 60 * 20L);

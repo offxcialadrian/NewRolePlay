@@ -960,6 +960,30 @@ public class Script {
         }
     }
 
+    public static void removeWeapons(Player p) {
+        for (Weapon w : Weapon.values()) {
+            Material mat = w.getWeapon().getType();
+            if (p.getInventory().contains(mat)) p.getInventory().remove(mat);
+            if (p.getItemOnCursor().getType().equals(mat)) p.setItemOnCursor(null);
+        }
+        if (p.getInventory().getItemInOffHand() != null) {
+            for (Weapon w : Weapon.values()) {
+                Material mat = w.getWeapon().getType();
+                if (p.getInventory().getItemInOffHand().getType().equals(mat)) {
+                    p.getInventory().setItemInOffHand(new ItemStack(Material.AIR));
+                }
+            }
+        }
+
+        Material[] blocked = new Material[]{Material.TNT, Material.LEATHER_CHESTPLATE, Material.FEATHER, Material.BONE, Material.FLINT};
+        for (Material mat : blocked) {
+            p.getInventory().remove(mat);
+            if (p.getInventory().getItemInOffHand().getType().equals(mat)) {
+                p.getInventory().setItemInOffHand(new ItemStack(Material.AIR));
+            }
+            if (p.getItemOnCursor().getType().equals(mat)) p.setItemOnCursor(null);
+        }
+    }
     public static void increaseActivePlayTime(Player p) {
         executeAsyncUpdate("UPDATE playtime SET a_minutes=a_minutes+1 WHERE nrp_id=" + getNRPID(p));
         try (Statement stmt = main.getConnection().createStatement();
