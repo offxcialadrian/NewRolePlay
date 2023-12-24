@@ -4,6 +4,7 @@ import de.newrp.API.Debug;
 import de.newrp.API.ItemBuilder;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
+import de.newrp.Administrator.SDuty;
 import de.newrp.Berufe.AcceptNotruf;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Berufe.Duty;
@@ -27,7 +28,7 @@ import static java.util.Map.Entry.comparingByValue;
 
 public class Notruf implements CommandExecutor, Listener {
 
-    public static final String PREFIX = "§8[§cNotruf§8] §c" + Messages.ARROW + "§7 ";
+    public static final String PREFIX = "§8[§4Notruf§8] §c" + Messages.ARROW + "§7 ";
     public static HashMap<Player, Questions> questions = new HashMap<>();
     public static HashMap<String, String> answers = new HashMap<>();
     public static HashMap<Player, Location> call = new HashMap<>();
@@ -232,7 +233,10 @@ public class Notruf implements CommandExecutor, Listener {
             stringJoiner.add(name + " (" + distance + "m)");
         }
 
-        return stringJoiner.toString();
+        if(stringJoiner.toString().isEmpty()) {
+            return PREFIX + "Es ist niemand in der Nähe.";
+        }
+        return PREFIX + "Am nächsten sind: " + stringJoiner.toString() + "";
     }
 
     public static Map<Player, Double> getNearestPlayers(Beruf.Berufe b, Location loc) {

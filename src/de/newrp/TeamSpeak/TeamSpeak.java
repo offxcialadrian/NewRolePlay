@@ -109,9 +109,12 @@ public class TeamSpeak {
             String name = Script.getPlayer(id).getName();
             boolean admin = Script.isNRPTeam(Script.getPlayer(id));
             setDescription(c.getId(), (admin ? "NRP × " + name : name));
+            addToServerGroup(TeamspeakServerGroup.VERIFIED, dbID);
             Beruf.Berufe f = Beruf.getBeruf(id);
-            addToServerGroup(f.getTeamspeakServerGroup(), dbID);
-            addToChannelGroup(f.getChannelID(), (f.isLeader(Script.getPlayer(id)) ? TeamspeakServerGroup.TeamspeakChannelGroup.LEADER : TeamspeakServerGroup.TeamspeakChannelGroup.MEMBER), dbID);
+            if(f != null) {
+                addToServerGroup(f.getTeamspeakServerGroup(), dbID);
+                addToChannelGroup(f.getChannelID(), (f.isLeader(Script.getPlayer(id)) ? TeamspeakServerGroup.TeamspeakChannelGroup.LEADER : TeamspeakServerGroup.TeamspeakChannelGroup.MEMBER), dbID);
+            }
 
             Rank rank = Script.getRank(Script.getPlayer(id));
             switch (rank) {
@@ -132,7 +135,6 @@ public class TeamSpeak {
                     break;
             }
 
-            addToServerGroup(TeamspeakServerGroup.VERIFIED, dbID);
             if (!admin) {
                 if(Premium.hasPremium(Script.getPlayer(id))) {
                     addToServerGroup(TeamspeakServerGroup.PREMIUM, dbID);
@@ -166,12 +168,16 @@ public class TeamSpeak {
             for (int g : c.getServerGroups()) {
                 removeFromServerGroup(g, dbID);
             }
+            addToServerGroup(TeamspeakServerGroup.VERIFIED, dbID);
             String name = Script.getPlayer(id).getName();
             boolean admin = Script.isNRPTeam(Script.getPlayer(id));
             setDescription(c.getId(), (admin ? "NRP × " + name : name));
+            addToServerGroup(TeamspeakServerGroup.VERIFIED, dbID);
             Beruf.Berufe f = Beruf.getBeruf(id);
-            addToServerGroup(f.getTeamspeakServerGroup(), dbID);
-            addToChannelGroup(f.getChannelID(), (f.isLeader(Script.getPlayer(id)) ? TeamspeakServerGroup.TeamspeakChannelGroup.LEADER : TeamspeakServerGroup.TeamspeakChannelGroup.MEMBER), dbID);
+            if (f != null) {
+                addToServerGroup(f.getTeamspeakServerGroup(), dbID);
+                addToChannelGroup(f.getChannelID(), (f.isLeader(Script.getPlayer(id)) ? TeamspeakServerGroup.TeamspeakChannelGroup.LEADER : TeamspeakServerGroup.TeamspeakChannelGroup.MEMBER), dbID);
+            }
 
             Rank rank = Script.getRank(Script.getPlayer(id));
             switch (rank) {
@@ -192,7 +198,6 @@ public class TeamSpeak {
                     break;
             }
 
-            addToServerGroup(TeamspeakServerGroup.VERIFIED, dbID);
             if (!admin) {
                 if(Premium.hasPremium(Script.getPlayer(id))) {
                     addToServerGroup(TeamspeakServerGroup.PREMIUM, dbID);

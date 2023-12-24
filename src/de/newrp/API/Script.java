@@ -52,7 +52,8 @@ import static de.newrp.API.Rank.SUPPORTER;
 public class Script {
 
     public static World WORLD = Bukkit.getServer().getWorld("World");
-    public static String PREFIX = "§8[§cNRP§8] §8" + Messages.ARROW + " §c";
+    public static String PREFIX = "§8[§cNew RolePlay§8] §8" + Messages.ARROW + " §c";
+    public static String TEAM = "§8[§cTeam§8] §8» §c";
     public static SimpleDateFormat dateFormat = new SimpleDateFormat("d.M.y HH:mm:ss", Locale.GERMANY);
     public static SimpleDateFormat dateFormat2 = new SimpleDateFormat("d.M.y", Locale.GERMANY);
     public static DecimalFormat df = new DecimalFormat("#,###");
@@ -438,13 +439,13 @@ public class Script {
             for (Player all : Bukkit.getOnlinePlayers()) {
                 if (isNRPTeam(all)) {
                     if (all != p)
-                        all.sendMessage(PREFIX + cc + getRank(p).getName(p) + " " + getName(p) + " " + msg);
+                        all.sendMessage(TEAM + cc + getRank(p).getName(p) + " " + getName(p) + " " + msg);
                 }
             }
         } else {
             for (Player all : Bukkit.getOnlinePlayers()) {
                 if (isNRPTeam(all)) {
-                    all.sendMessage(PREFIX + cc + getRank(p).getName(p) + " " + getName(p) + " " + msg);
+                    all.sendMessage(TEAM + cc + getRank(p).getName(p) + " " + getName(p) + " " + msg);
                 }
             }
         }
@@ -464,7 +465,7 @@ public class Script {
                 if (isNRPTeam(all)) {
                     if (getRank(p).getWeight() >= rank.getWeight()) {
                         if (all != p)
-                            all.sendMessage(PREFIX + cc + getRank(p).getName(p) + " " + getName(p) + " " + msg);
+                            all.sendMessage(TEAM + cc + getRank(p).getName(p) + " " + getName(p) + " " + msg);
                     }
                 }
             }
@@ -472,20 +473,13 @@ public class Script {
             for (Player all : Bukkit.getOnlinePlayers()) {
                 if (isNRPTeam(all)) {
                     if (getRank(p).getWeight() >= rank.getWeight()) {
-                        all.sendMessage(PREFIX + cc + getRank(p).getName(p) + " " + getName(p) + " " + msg);
+                        all.sendMessage(TEAM + cc + getRank(p).getName(p) + " " + getName(p) + " " + msg);
                     }
                 }
             }
         }
     }
 
-    public static void sendLocalChatMessage(Player p, int radius, String msg) {
-        for (Player all : Bukkit.getOnlinePlayers()) {
-            if (all.getLocation().distance(p.getLocation()) <= radius) {
-                all.sendMessage("§8[§c" + p.getLevel() + "§8] §r" + Script.getName(p) + " sagt: " + msg);
-            }
-        }
-    }
 
     public static void sendLocalMessage(int radius, Player p, String msg) {
         for (Player all : Bukkit.getOnlinePlayers()) {

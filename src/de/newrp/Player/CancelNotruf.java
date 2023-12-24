@@ -32,6 +32,10 @@ public class CancelNotruf implements CommandExecutor {
             Route.invalidate(all);
         }
 
+        for(Beruf.Berufe beruf : Notruf.call2.get(p)) {
+            beruf.sendMessage(Notruf.PREFIX + "Der Notruf von " + p.getName() + " wurde abgebrochen.");
+        }
+
         Notruf.call.remove(p);
         Notruf.call2.remove(p);
         p.sendMessage(Notruf.PREFIX + "Du hast deinen Notruf abgebrochen.");
