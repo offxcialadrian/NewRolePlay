@@ -187,7 +187,7 @@ public class Personalausweis implements CommandExecutor, Listener {
                         p.sendMessage(PREFIX + "Alles klar. " + (g.equals(Gender.MALE) ? "Herr " : "Frau ") + p.getName() + ", Ihr Personalausweis ist in 5 Minuten fertig.");
                         p.sendMessage(PREFIX + "Kommen Sie dann wieder und geben Sie erneut §7/§6personalausweis§6 ein.");
                         p.sendMessage(Messages.INFO + "Mit /sperrinfo kannst du sehen wie lange du noch warten musst.");
-                        Sperre.PERSONALAUSWEIS.setSperre(id, 5);
+                        Sperre.PERSONALAUSWEIS.setSperre(id, 6);
                         Personalausweis.cooldown.put(p, System.currentTimeMillis());
                         e.getView().close();
                         Bukkit.getScheduler().runTaskLater(main.getInstance(), () -> {

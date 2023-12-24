@@ -232,6 +232,8 @@ public class main extends JavaPlugin {
         getCommand("showperso").setExecutor(new ShowPerso());
         getCommand("showfinances").setExecutor(new ShowFinances());
         getCommand("showlicenses").setExecutor(new ShowLicenses());
+        getCommand("policecomputer").setExecutor(new Policecomputer());
+        getCommand("dangerlevel").setExecutor(new DangerLevel());
 
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new SDuty(), this);

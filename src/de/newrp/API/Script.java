@@ -28,6 +28,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scoreboard.Scoreboard;
@@ -982,6 +983,30 @@ public class Script {
                 }
             }
         });
+    }
+
+    public static ItemStack playerHead(Player p) {
+        ItemStack is = new ItemStack(Material.PLAYER_HEAD);
+        SkullMeta meta = (SkullMeta) is.getItemMeta();
+        meta.setOwningPlayer(p);
+        is.setItemMeta(meta);
+        return is;
+    }
+
+    public static boolean canOpenGeschenk(Player p) {
+        try (Statement stmt = main.getConnection().createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT geschenk FROM birthday WHERE id=" + getNRPID(p))  ) {
+            if (rs.next()) {
+                return rs.getBoolean("geschenk");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static void toggleCanOpenGeschenk(Player p, boolean canopen) {
+        executeUpdate("UPDATE birthday SET geschenk=" + canopen + " WHERE id=" + getNRPID(p));
     }
 
     public static void registerPlayer(Player p) {

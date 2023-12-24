@@ -1,6 +1,7 @@
 package de.newrp.Player;
 
 import de.newrp.API.Gender;
+import de.newrp.API.Licenses;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.Chat.Me;
@@ -17,23 +18,30 @@ public class ShowPerso implements CommandExecutor {
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
         Player p = (Player) cs;
         int id = Script.getNRPID(p);
+
+        if(!Licenses.PERSONALAUSWEIS.hasLicense(id)) {
+            p.sendMessage(Messages.ERROR + "Du hast keinen Personalausweis!");
+            p.sendMessage(Messages.INFO + "Du kannst dir einen mit §8/§6personalausweis §rausstellen lassen.");
+            return true;
+        }
+
         if(args.length == 0) {
             p.sendMessage(PREFIX + "Deine Personalien:");
             p.sendMessage(PREFIX + "Name: " + Script.getName(p));
-            p.sendMessage(" §8- §6Geburtsdatum: §c" + Script.getBirthday(id) + " (" + Script.getAge(Script.getNRPID(p)) + ")");
+            p.sendMessage(PREFIX + " §8- §6Geburtsdatum: §c" + Script.getBirthday(id) + " (" + Script.getAge(Script.getNRPID(p)) + ")");
             if (Script.getGender(p).equals(Gender.MALE)) {
-                p.sendMessage(" §8- §6Geschlecht: §cMännlich");
+                p.sendMessage(PREFIX + " §8- §6Geschlecht: §cMännlich");
             } else if (Script.getGender(p).equals(Gender.FEMALE)) {
-                p.sendMessage(" §8- §6Geschlecht: §cWeiblich");
+                p.sendMessage(PREFIX+ " §8- §6Geschlecht: §cWeiblich");
             }
             if (House.hasHouse(id)) {
                 StringBuilder houses = new StringBuilder();
                 for (House h : House.getHouses(id)) {
                     houses.append(", ").append(h.getID());
                 }
-                p.sendMessage(" §8- §6Wohnhaft:§6" + houses.substring(1));
+                p.sendMessage(PREFIX + " §8- §6Wohnhaft:§6" + houses.substring(1));
             } else {
-                p.sendMessage(" §8- §6Wohnhaft: §6Obdachlos");
+                p.sendMessage(PREFIX + " §8- §6Wohnhaft: §6Obdachlos");
             }
             return true;
         }
@@ -51,20 +59,20 @@ public class ShowPerso implements CommandExecutor {
 
             tg.sendMessage(PREFIX + Script.getName(p) + "s Personalien:");
             tg.sendMessage(PREFIX + "Name: " + Script.getName(p));
-            tg.sendMessage(" §8- §6Geburtsdatum: §c" + Script.getBirthday(id) + " (" + Script.getAge(Script.getNRPID(p)) + ")");
+            tg.sendMessage(PREFIX + " §8- §6Geburtsdatum: §c" + Script.getBirthday(id) + " (" + Script.getAge(Script.getNRPID(p)) + ")");
             if (Script.getGender(p).equals(Gender.MALE)) {
-                tg.sendMessage(" §8- §6Geschlecht: §cMännlich");
+                tg.sendMessage(PREFIX + " §8- §6Geschlecht: §cMännlich");
             } else if (Script.getGender(p).equals(Gender.FEMALE)) {
-                tg.sendMessage(" §8- §6Geschlecht: §cWeiblich");
+                tg.sendMessage(PREFIX + " §8- §6Geschlecht: §cWeiblich");
             }
             if (House.hasHouse(id)) {
                 StringBuilder houses = new StringBuilder();
                 for (House h : House.getHouses(id)) {
                     houses.append(", ").append(h.getID());
                 }
-                tg.sendMessage(" §8- §6Wohnhaft:§6" + houses.substring(1));
+                tg.sendMessage(PREFIX + " §8- §6Wohnhaft:§6" + houses.substring(1));
             } else {
-                tg.sendMessage(" §8- §6Wohnhaft: §6Obdachlos");
+                tg.sendMessage(PREFIX + " §8- §6Wohnhaft: §6Obdachlos");
             }
             Me.sendMessage(p, "zeigt " + Script.getName(tg) + " " + (Script.getGender(p)==Gender.MALE?"seinen":"ihren") + " Personalausweis.");
 

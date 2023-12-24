@@ -359,3 +359,9 @@ commands:
   showlicenses:
     description: show your licenses
     aliases: [ showlizenzen, licenses ]
+  policecomputer:
+    description: view the policecomputer
+    aliases: [ polizeicomputer, pc ]
+  dangerlevel:
+    description: set the dangerlevel
+    aliases: [ gefahrenstufe ]

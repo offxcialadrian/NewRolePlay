@@ -1,5 +1,6 @@
 package de.newrp.API;
 
+import de.newrp.Administrator.Notications;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.ArmorStand;
@@ -38,6 +39,7 @@ public class HologramClick implements Listener {
             if (name == null) return;
             name = ChatColor.stripColor(name);
             if (!name.startsWith("/")) return;
+            Notications.sendMessage(Notications.NotificationType.COMMAND, "§e" + Script.getName(e.getPlayer()) + " §7hat den Befehl §e" + name + " §7ausgeführt.", e.getPlayer());
             String cmd = name.replace("/", "");
             e.getPlayer().performCommand(cmd);
         }
