@@ -5,6 +5,7 @@ import de.newrp.API.Messages;
 import de.newrp.API.Rank;
 import de.newrp.API.Script;
 import de.newrp.Berufe.Beruf;
+import de.newrp.TeamSpeak.TeamSpeak;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -55,6 +56,7 @@ public class RemoveLeaderrechte implements CommandExecutor {
         Script.removeEXP(tg, Script.getRandom(10, 20));
         Log.HIGH.write(p, "hat " + tg.getName() + " die Leaderrechte entzogen.");
         Log.HIGH.write(tg, "hat die Leaderrechte entzogen bekommen.");
+        TeamSpeak.sync(Script.getNRPID(tg));
 
         return false;
     }

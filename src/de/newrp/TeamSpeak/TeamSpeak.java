@@ -64,6 +64,8 @@ public class TeamSpeak {
 
     public static void verify(int id, Client c) {
         String uid = c.getUniqueIdentifier();
+        int dbID = c.getDatabaseId();
+        addToServerGroup(TeamspeakServerGroup.VERIFIED, dbID);
         Script.executeUpdate("INSERT INTO teamspeak (id, uid) VALUES (" + id + ", '" + uid + "');");
         sync(id, c);
     }
@@ -130,7 +132,7 @@ public class TeamSpeak {
                     break;
             }
 
-            addToServerGroup(TeamspeakServerGroup.ZIVILIST, dbID);
+            addToServerGroup(TeamspeakServerGroup.VERIFIED, dbID);
             if (!admin) {
                 if(Premium.hasPremium(Script.getPlayer(id))) {
                     addToServerGroup(TeamspeakServerGroup.PREMIUM, dbID);
@@ -190,7 +192,7 @@ public class TeamSpeak {
                     break;
             }
 
-            addToServerGroup(TeamspeakServerGroup.ZIVILIST, dbID);
+            addToServerGroup(TeamspeakServerGroup.VERIFIED, dbID);
             if (!admin) {
                 if(Premium.hasPremium(Script.getPlayer(id))) {
                     addToServerGroup(TeamspeakServerGroup.PREMIUM, dbID);

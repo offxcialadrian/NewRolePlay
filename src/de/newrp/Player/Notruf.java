@@ -4,7 +4,9 @@ import de.newrp.API.Debug;
 import de.newrp.API.ItemBuilder;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
+import de.newrp.Berufe.AcceptNotruf;
 import de.newrp.Berufe.Beruf;
+import de.newrp.Berufe.Duty;
 import de.newrp.Chat.Me;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -18,17 +20,18 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+
+import static java.util.Map.Entry.comparingByValue;
 
 public class Notruf implements CommandExecutor, Listener {
 
-    private static final String PREFIX = "§8[§cNotruf§8] §c" + Messages.ARROW + "§7 ";
+    public static final String PREFIX = "§8[§cNotruf§8] §c" + Messages.ARROW + "§7 ";
     public static HashMap<Player, Questions> questions = new HashMap<>();
     public static HashMap<String, String> answers = new HashMap<>();
     public static HashMap<Player, Location> call = new HashMap<>();
-    public static ArrayList<Player> accepted = new ArrayList<>();
+    public static HashMap<Player, List<Beruf.Berufe>> call2 = new HashMap<>();
 
     public static void openGUI(Player p, Questions question) {
         int size = (int) Math.ceil(question.getAnswers().size() / 9.0) * 9;
@@ -91,27 +94,37 @@ public class Notruf implements CommandExecutor, Listener {
 
                         boolean straftat = answers.get(p.getName() + Questions.FRAGE3.getID()).equals("Ja");
 
+                        ArrayList<Beruf.Berufe> berufe = new ArrayList<>();
                         if (verletzte != 0 && straftat) {
                             Beruf.Berufe.POLICE.sendMessage(sb.toString());
+                            Beruf.Berufe.POLICE.sendMessage(getNearestPlayersString(Beruf.Berufe.POLICE, p.getLocation()));
                             for (Player police : Beruf.Berufe.POLICE.getMembers()) {
                                 Script.sendClickableMessage(police, PREFIX + "§6Notruf annehmen und Route anzeigen", "/acceptnotruf " + p.getName(), "Klicke hier um den Notruf anzunehmen.");
                             }
                             Beruf.Berufe.RETTUNGSDIENST.sendMessage(sb.toString());
+                            Beruf.Berufe.RETTUNGSDIENST.sendMessage(getNearestPlayersString(Beruf.Berufe.RETTUNGSDIENST, p.getLocation()));
                             for (Player police : Beruf.Berufe.RETTUNGSDIENST.getMembers()) {
                                 Script.sendClickableMessage(police, PREFIX + "§6Notruf annehmen und Route anzeigen", "/acceptnotruf " + p.getName(), "Klicke hier um den Notruf anzunehmen.");
                             }
+                            berufe.add(Beruf.Berufe.POLICE);
+                            berufe.add(Beruf.Berufe.RETTUNGSDIENST);
                         } else if (verletzte > 0 || verletzte == -1) {
                             Beruf.Berufe.RETTUNGSDIENST.sendMessage(sb.toString());
+                            Beruf.Berufe.RETTUNGSDIENST.sendMessage(getNearestPlayersString(Beruf.Berufe.RETTUNGSDIENST, p.getLocation()));
                             for (Player police : Beruf.Berufe.RETTUNGSDIENST.getMembers()) {
                                 Script.sendClickableMessage(police, PREFIX + "§6Notruf annehmen und Route anzeigen", "/acceptnotruf " + p.getName(), "Klicke hier um den Notruf anzunehmen.");
                             }
+                            berufe.add(Beruf.Berufe.RETTUNGSDIENST);
                         } else if (straftat) {
                             Beruf.Berufe.POLICE.sendMessage(sb.toString());
+                            Beruf.Berufe.POLICE.sendMessage(getNearestPlayersString(Beruf.Berufe.POLICE, p.getLocation()));
                             for (Player police : Beruf.Berufe.POLICE.getMembers()) {
                                 Script.sendClickableMessage(police, PREFIX + "§6Notruf annehmen und Route anzeigen", "/acceptnotruf " + p.getName(), "Klicke hier um den Notruf anzunehmen.");
                             }
+                            berufe.add(Beruf.Berufe.POLICE);
                         }
 
+                        call2.put(p, berufe);
                         p.closeInventory();
                         questions.remove(p);
                         answers.remove(p.getName() + questionID);
@@ -208,6 +221,53 @@ public class Notruf implements CommandExecutor, Listener {
         public int getID() {
             return id;
         }
+    }
+
+    public String getNearestPlayersString(Beruf.Berufe b, Location loc) {
+        StringJoiner stringJoiner = new StringJoiner(", ");
+        for (Map.Entry<Player, Double> entry : getNearestPlayers(b, loc).entrySet()) {
+            String name = entry.getKey().getName();
+            int distance = entry.getValue().intValue();
+
+            stringJoiner.add(name + " (" + distance + "m)");
+        }
+
+        return stringJoiner.toString();
+    }
+
+    public static Map<Player, Double> getNearestPlayers(Beruf.Berufe b, Location loc) {
+        List<Player> players = new ArrayList<>();
+        for (Player p : b.getMembers()) {
+            if (!Duty.isInDuty(p)) continue;
+            if (AFK.isAFK(p)) continue;
+            if (AcceptNotruf.accept.containsKey(p)) continue;
+
+            players.add(p);
+        }
+
+        Map<Player, Double> playerDistances = new HashMap<>(players.size());
+
+        for (Player onlinePlayer : players) {
+            playerDistances.put(onlinePlayer, onlinePlayer.getLocation().distance(loc));
+        }
+
+        playerDistances = playerDistances
+                .entrySet()
+                .stream()
+                .sorted(comparingByValue())
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e2,
+                        LinkedHashMap::new));
+
+        Map<Player, Double> nearestPlayers = new LinkedHashMap<>();
+
+        int i = 0;
+        for (Map.Entry<Player, Double> entry : playerDistances.entrySet()) {
+            if (++i == 3) break;
+
+            nearestPlayers.put(entry.getKey(), entry.getValue());
+        }
+
+        return nearestPlayers;
     }
 
 }

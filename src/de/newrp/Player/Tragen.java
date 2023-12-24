@@ -100,6 +100,7 @@ public class Tragen implements CommandExecutor, Listener {
             return true;
         }
 
+        tg.closeInventory();
         tragen.put(p, tg);
         cooldown.put(p, System.currentTimeMillis());
         cooldown.put(tg, System.currentTimeMillis());

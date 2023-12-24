@@ -10,7 +10,7 @@ public enum TeamspeakServerGroup {
     POLICE(26),
     GOVERNMENT(27),
     NEWS(37),
-    ZIVILIST(10),
+    VERIFIED(10),
     PREMIUM(15),
     SOCIALMEDIA(23),
     EVENTTEAM(24),
@@ -32,7 +32,6 @@ public enum TeamspeakServerGroup {
         MEMBER(9),
         CHANNEL_ERSTELLER(13),
         LEADER(10),
-        VOLUNTEER(11),
         TEAMMITGLIED(12);
 
         private final int groupID;

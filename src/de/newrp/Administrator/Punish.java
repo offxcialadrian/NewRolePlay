@@ -51,9 +51,9 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
             return true;
         }
 
-        v = Violation.getViolationByName(args[1]);
+        v = Violation.getViolationByName(args[1].replace("-", " "));
 
-        if(v != Violation.SICHERHEITSBANN && !Script.hasRank(p, Rank.MODERATOR, false)) {
+        if(v != Violation.SICHERHEITSBANN && v != Violation.SPAM && !Script.hasRank(p, Rank.MODERATOR, false)) {
             p.sendMessage(Messages.NO_PERMISSION);
             return true;
         }
@@ -119,23 +119,23 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
         CHEATEN(1, Punishment.BAN, Punishment.WARN, TimeUnit.DAYS.toMillis(7), "Cheaten", "Wir konnten bei dir Cheats feststellen."),
         BELEIDIGUNG(2, Punishment.BAN, null, TimeUnit.HOURS.toMillis(3), "Beleidigung", "Du hast einen Spieler beleidigt."),
         FREMDWERBUNG(3, Punishment.BAN, Punishment.WARN, TimeUnit.DAYS.toMillis(3), "Fremdwerbung", "Du hast Fremdwerbung verbreitet."),
-        MOBBING_LEICHT(4, Punishment.BAN, null, TimeUnit.DAYS.toMillis(3), "Mobbing_(Leicht)", "Du hast andere Spieler gemobbt."),
-        MOBBING_SCHWER(5, Punishment.BAN, Punishment.WARN, 0, "Mobbing_(Schwer)", "Du hast andere Spieler gemobbt."),
+        MOBBING_LEICHT(4, Punishment.BAN, null, TimeUnit.DAYS.toMillis(3), "Mobbing (Leicht)", "Du hast andere Spieler gemobbt."),
+        MOBBING_SCHWER(5, Punishment.BAN, Punishment.WARN, 0, "Mobbing (Schwer)", "Du hast andere Spieler gemobbt."),
         RASSISMUS(6, Punishment.BAN, null, 0, "Rassismus", "Du hast rassistische Äußerungen getätigt."),
         EXTREMISMUS(7, Punishment.BAN, null, 0, "Extremismus", "Du hast extremistische Äußerungen getätigt."),
         DROHUNG(8, Punishment.BAN, null, TimeUnit.HOURS.toMillis(24), "Drohung", "Du hast anderen Spielern gedroht."),
         BUGUSE(9, Punishment.BAN, null, TimeUnit.HOURS.toMillis(12), "Buguse", "Du hast Spielfehler ausgenutzt."),
-        SUPPORTABUSE(10, Punishment.BAN, null, TimeUnit.HOURS.toMillis(1), "Support_Missbrauch", "Du hast das Ticket-System missbraucht."),
-        RECHTEMISSBRAUCH(11, Punishment.BAN, Punishment.WARN, TimeUnit.DAYS.toMillis(7), "Rechte_Missbrauch", "Du hast deine Rechte missbraucht."),
+        SUPPORTABUSE(10, Punishment.BAN, null, TimeUnit.HOURS.toMillis(1), "Support Missbrauch", "Du hast das Ticket-System missbraucht."),
+        RECHTEMISSBRAUCH(11, Punishment.BAN, Punishment.WARN, TimeUnit.DAYS.toMillis(7), "Rechte Missbrauch", "Du hast deine Rechte missbraucht."),
         SICHERHEITSBANN(12, Punishment.BAN, null, 0, "Sicherheitsbann", "Du wurdest zur Sicherheit gebannt. Sollte dir der Grund nicht bekannt sein, melde dich bei uns im Support."),
-        BAD_NEWS(13, Punishment.BAN, null, TimeUnit.DAYS.toMillis(1), "Bad_/news", "Du hast den Befehl /news missbraucht."),
-        BAD_STAATSMELDUNG(14, Punishment.BAN, null, TimeUnit.DAYS.toMillis(1), "Bad_/staatsmeldung", "Du hast den Befehl /staatsmeldung missbraucht."),
-        MISSBRAUCH_TRAGEN(15, Punishment.TRAGEN_SPERRE, null, 120, "Missbrauch_von_/tragen", "Du hast den Befehl /tragen missbraucht."),
-        REPEATING_MISSBRAUCH_TRAGEN(16, Punishment.BAN, null, TimeUnit.DAYS.toMillis(1), "Wiederholter_Missbrauch_von_/tragen", "Du hast den Befehl /tragen wiederholt missbraucht."),
-        EXTREMER_MISSBRAUCH_TRAGEN(17, Punishment.BAN, Punishment.WARN, TimeUnit.DAYS.toMillis(14), "Extremer_Missbrauch_von_/tragen", "Du hast den Befehl /tragen extrem missbraucht."),
+        BAD_NEWS(13, Punishment.BAN, null, TimeUnit.DAYS.toMillis(1), "Bad /news", "Du hast den Befehl /news missbraucht."),
+        BAD_STAATSMELDUNG(14, Punishment.BAN, null, TimeUnit.DAYS.toMillis(1), "Bad /staatsmeldung", "Du hast den Befehl /staatsmeldung missbraucht."),
+        MISSBRAUCH_TRAGEN(15, Punishment.TRAGEN_SPERRE, null, 120, "Missbrauch von /tragen", "Du hast den Befehl /tragen missbraucht."),
+        REPEATING_MISSBRAUCH_TRAGEN(16, Punishment.BAN, null, TimeUnit.DAYS.toMillis(1), "Wiederholter Missbrauch von /tragen", "Du hast den Befehl /tragen wiederholt missbraucht."),
+        EXTREMER_MISSBRAUCH_TRAGEN(17, Punishment.BAN, Punishment.WARN, TimeUnit.DAYS.toMillis(14), "Extremer Missbrauch von /tragen", "Du hast den Befehl /tragen extrem missbraucht."),
         SPAM(18, Punishment.KICK, null, 0, "Spam", "Du hast gespammt."),
-        WIEDERHOLTER_SPAM(19, Punishment.BAN, null, TimeUnit.MINUTES.toMillis(30), "Wiederholter_Spam", "Du hast wiederholt gespammt."),
-        EXTREMER_SPAM(20, Punishment.BAN, null, TimeUnit.HOURS.toMillis(1), "Extremer_Spam", "Du hast extrem gespammt.");
+        WIEDERHOLTER_SPAM(19, Punishment.BAN, null, TimeUnit.MINUTES.toMillis(30), "Wiederholter Spam", "Du hast wiederholt gespammt."),
+        EXTREMER_SPAM(20, Punishment.BAN, null, TimeUnit.HOURS.toMillis(1), "Extremer Spam", "Du hast extrem gespammt.");
 
 
 
@@ -158,11 +158,11 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
         }
 
         public String getName() {
-            return name.replace("_", " ");
+            return name;
         }
 
         public String getArgName() {
-            return name;
+            return name.replace(" ", "-");
         }
 
         public String getDescription() {

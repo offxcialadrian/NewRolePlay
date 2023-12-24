@@ -1,6 +1,8 @@
 package de.newrp.API;
 
+import de.newrp.Berufe.AcceptNotruf;
 import de.newrp.Berufe.Beruf;
+import de.newrp.Player.Notruf;
 import de.newrp.main;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
@@ -70,6 +72,14 @@ public class Friedhof {
 
         if(Beruf.getBeruf(p) == Beruf.Berufe.POLICE) {
             Script.setLastDeadOfficer(System.currentTimeMillis());
+        }
+
+        if(AcceptNotruf.accept.containsKey(p)) {
+            AcceptNotruf.reOpenNotruf(p);
+        }
+
+        if(Notruf.call.containsKey(p)) {
+            AcceptNotruf.deleteNotruf(p);
         }
 
         FRIEDHOF.put(p.getName(), f);

@@ -23,7 +23,7 @@ public class Baulog implements CommandExecutor {
             return true;
         }
 
-        if(!SDuty.isSDuty(p) && Team.isTeamLeader(p)) {
+        if(!SDuty.isSDuty(p) && !Team.isTeamLeader(p)) {
             p.sendMessage(Messages.NO_PERMISSION);
             return true;
         }

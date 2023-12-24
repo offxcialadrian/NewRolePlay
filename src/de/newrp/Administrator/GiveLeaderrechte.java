@@ -5,6 +5,7 @@ import de.newrp.API.Messages;
 import de.newrp.API.Rank;
 import de.newrp.API.Script;
 import de.newrp.Berufe.Beruf;
+import de.newrp.TeamSpeak.TeamSpeak;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -55,6 +56,7 @@ public class GiveLeaderrechte implements CommandExecutor {
         Script.addEXP(Script.getNRPID(tg), Script.getRandom(10, 20));
         Log.HIGH.write(p, "hat " + tg.getName() + " Leaderrechte gegeben.");
         Log.HIGH.write(tg, "hat Leaderrechte bekommen.");
+        TeamSpeak.sync(Script.getNRPID(tg));
 
         return false;
     }

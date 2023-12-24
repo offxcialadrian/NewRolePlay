@@ -224,6 +224,10 @@ public class main extends JavaPlugin {
         getCommand("channel").setExecutor(new PremiumChannel());
         getCommand("takeshop").setExecutor(new TakeShop());
         getCommand("notruf").setExecutor(new Notruf());
+        getCommand("acceptnotruf").setExecutor(new AcceptNotruf());
+        getCommand("donenotruf").setExecutor(new DoneNotruf());
+        getCommand("cancelnotruf").setExecutor(new CancelNotruf());
+        getCommand("sharenotruf").setExecutor(new ShareNotruf());
 
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new SDuty(), this);
@@ -277,6 +281,7 @@ public class main extends JavaPlugin {
         pm.registerEvents(new JailTime(), this);
         pm.registerEvents(new TeamspeakUpdate(), this);
         pm.registerEvents(new Notruf(), this);
+        pm.registerEvents(new AcceptNotruf(), this);
 
         new PayDay().runTaskTimerAsynchronously(this, 60 * 20L, 60 * 20L);
         new AsyncMinute().runTaskTimerAsynchronously(this, 60 * 20L, 60 * 20L);
