@@ -990,6 +990,7 @@ public class Script {
         executeUpdate("INSERT INTO level (nrp_id, level, exp) VALUES (" + getNRPID(p) + ", 1, 0)");
         executeUpdate("INSERT INTO playtime (id, nrp_id, hours, minutes, a_minutes, a_hours) VALUES (NULL, " + getNRPID(p) + ", 0, 1, 0, 0)");
         executeUpdate("INSERT INTO payday (id, nrp_id, time, money) VALUES (NULL, " + getNRPID(p) + ", 1, 0)");
+        executeUpdate("INSERT INTO licenses (id, personalausweis, fuehrerschein, waffenschein, angelschein, jagdlizenz) VALUES (" + getNRPID(p) + ", FALSE, FALSE, FALSE, FALSE, FALSE)");
 
         p.setLevel(1);
         setMoney(p, PaymentType.CASH, 1500);

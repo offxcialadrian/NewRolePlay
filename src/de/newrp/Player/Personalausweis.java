@@ -91,7 +91,7 @@ public class Personalausweis implements CommandExecutor, Listener {
                 } else {
                     Licenses.PERSONALAUSWEIS.grant(id);
                     Achievement.PERSONALAUSWEIS.grant(p);
-                    p.sendMessage(PREFIX + "Dein Personalausweis wurde fertiggestellt.");
+                    p.sendMessage(PREFIX + "Dein Personalausweis ist fertig.");
                 }
             } else {
                 Inventory inv = p.getServer().createInventory(null, 9, "§3Personalausweis");
