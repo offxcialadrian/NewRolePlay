@@ -228,6 +228,7 @@ public class main extends JavaPlugin {
         getCommand("donenotruf").setExecutor(new DoneNotruf());
         getCommand("cancelnotruf").setExecutor(new CancelNotruf());
         getCommand("sharenotruf").setExecutor(new ShareNotruf());
+        getCommand("personalausweis").setExecutor(new Personalausweis());
 
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new SDuty(), this);
@@ -282,6 +283,7 @@ public class main extends JavaPlugin {
         pm.registerEvents(new TeamspeakUpdate(), this);
         pm.registerEvents(new Notruf(), this);
         pm.registerEvents(new AcceptNotruf(), this);
+        pm.registerEvents(new Personalausweis(), this);
 
         new PayDay().runTaskTimerAsynchronously(this, 60 * 20L, 60 * 20L);
         new AsyncMinute().runTaskTimerAsynchronously(this, 60 * 20L, 60 * 20L);

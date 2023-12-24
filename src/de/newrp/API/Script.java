@@ -43,6 +43,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -499,6 +501,76 @@ public class Script {
             Team t = board.registerNewTeam("nopush");
             t.setOption(Team.Option.COLLISION_RULE, Team.OptionStatus.NEVER);
         }
+    }
+
+    public static String getBirthday(int id) {
+        try (Statement stmt = main.getConnection().createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT day, month, year FROM birthday WHERE id=" + id)) {
+            if (rs.next()) {
+                int month = rs.getInt("month");
+                int day = rs.getInt("day");
+                int year = rs.getInt("year");
+
+                return day + "." + month + "." + year;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "01.01." + Calendar.YEAR;
+    }
+
+    public static void setGender(Player p, Gender gender) {
+        Script.executeAsyncUpdate("INSERT INTO gender (nrp_id, gender) VALUES (" + Script.getNRPID(p) + ", " + gender.getName().charAt(0) + ")");
+    }
+
+    public static String getMonth(int i, boolean UFT8) {
+        String[] s = {"Januar", "Februar", UFT8 ? "März" : "Maerz", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"};
+        return s[i - 1];
+    }
+
+    public static int getMonth(String m) {
+        String[] s = {"Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"};
+        for (int i = 0; i < s.length; i++) {
+            if (m.equalsIgnoreCase(s[i])) {
+                return (i + 1);
+            }
+        }
+        return 1;
+    }
+
+    public static void setBirthDay(Player p, int tag, int monat, int jahr, int control) {
+        try (Statement stmt = main.getConnection().createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT id FROM birthday WHERE id=" + getNRPID(p))) {
+            if (rs.next()) {
+                executeUpdate("UPDATE birthday SET year=" + jahr + ", month=" + monat + ", day=" + tag + ", control=" + control + ", geschenk=FALSE WHERE id=" + getNRPID(p));
+            } else {
+                executeUpdate("INSERT INTO birthday(id, year, month, day, control, geschenk) VALUES(" + getNRPID(p) + ", " + jahr + ", " + monat + ", " + tag + ", " + control + ", FALSE)");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static Integer getAge(int id) {
+        try (Statement stmt = main.getConnection().createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT day, month, year FROM birthday WHERE id=" + id)) {
+            if (rs.next()) {
+                int month = rs.getInt("month");
+                int day = rs.getInt("day");
+                if (month == 2) {
+                    if (day == 29) {
+                        day = 1;
+                        month = 3;
+                    }
+                }
+                int year = rs.getInt("year");
+                LocalDate birthDate = LocalDate.of(year, month, day);
+                return Period.between(birthDate, LocalDate.now()).getYears();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 
     public static int getRandom(int min, int max) {

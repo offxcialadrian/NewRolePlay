@@ -51,7 +51,7 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
             return true;
         }
 
-        v = Violation.getViolationByName(args[1].replace("-", " "));
+        v = Violation.getViolationByArg(args[1]);
 
         if(v != Violation.SICHERHEITSBANN && v != Violation.SPAM && !Script.hasRank(p, Rank.MODERATOR, false)) {
             p.sendMessage(Messages.NO_PERMISSION);
@@ -198,6 +198,14 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
             }
             return null;
         }
+
+        public static Violation getViolationByArg(String arg) {
+            for (Violation v : Violation.values()) {
+                if (v.getArgName().equalsIgnoreCase(arg)) return v;
+            }
+            return null;
+        }
+
     }
 
     public enum Punishment {
@@ -253,6 +261,8 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
                 Log.HIGH.write(p, "hat " + Script.getName(tg) + " bis zum " + dateFormat.format(until) + " Uhr für " + v.getName() + " gebannt.");
                 Bukkit.broadcastMessage(Script.PREFIX + "§c" + Script.getName(tg) + " wurde von " + Messages.RANK_PREFIX(p) + " bis zum " + dateFormat.format(until) + " Uhr für §l" + v.getName() + " §cgebannt.");
             }
+
+            TeamSpeak.sync(Script.getNRPID(tg));
         }
 
         if (punishment == Punishment.MUTE || secondaryPunishment == Punishment.MUTE) {
@@ -332,6 +342,8 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
                 Log.HIGH.write(p, "hat " + tg.getName() + " bis zum " + dateFormat.format(until) + " Uhr für " + v.getName() + " gebannt.");
                 Bukkit.broadcastMessage(Script.PREFIX + "§c" + tg.getName() + " wurde von " + Messages.RANK_PREFIX(p) + " bis zum " + dateFormat.format(until) + " Uhr für §l" + v.getName() + " §cgebannt.");
             }
+
+            TeamSpeak.sync(Script.getNRPID(tg));
         }
 
         if (punishment == Punishment.MUTE || secondaryPunishment == Punishment.MUTE) {
@@ -381,7 +393,6 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
         }
 
 
-        TeamSpeak.sync(Script.getNRPID(tg));
 
     }
 

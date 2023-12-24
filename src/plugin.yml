@@ -347,3 +347,6 @@ commands:
   sharenotruf:
     description: share a notruf
     aliases: [ sharecall ]
+  personalausweis:
+    description: view your personalausweis
+    aliases: [ ausweis, perso ]
