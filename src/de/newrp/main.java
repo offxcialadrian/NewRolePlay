@@ -229,6 +229,9 @@ public class main extends JavaPlugin {
         getCommand("cancelnotruf").setExecutor(new CancelNotruf());
         getCommand("sharenotruf").setExecutor(new ShareNotruf());
         getCommand("personalausweis").setExecutor(new Personalausweis());
+        getCommand("showperso").setExecutor(new ShowPerso());
+        getCommand("showfinances").setExecutor(new ShowFinances());
+        getCommand("showlicenses").setExecutor(new ShowLicenses());
 
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new SDuty(), this);

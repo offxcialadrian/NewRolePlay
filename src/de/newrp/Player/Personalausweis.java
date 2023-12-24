@@ -42,22 +42,21 @@ public class Personalausweis implements CommandExecutor, Listener {
             if (args.length == 1 && args[0].equalsIgnoreCase("info")) {
                 p.sendMessage(PREFIX + "Deine Personalien:");
                 p.sendMessage(PREFIX + "Name: " + Script.getName(p));
-                p.sendMessage(" §8- §6Geburtsdatum: §c" + Script.getBirthday(id) + " (" + Script.getAge(Script.getNRPID(p)) + ")");
+                p.sendMessage(PREFIX + " §8- §6Geburtsdatum: §c" + Script.getBirthday(id) + " (" + Script.getAge(Script.getNRPID(p)) + ")");
                 if (Script.getGender(p).equals(Gender.MALE)) {
-                    p.sendMessage(" §8- §6Geschlecht: §cMännlich");
+                    p.sendMessage(PREFIX + " §8- §6Geschlecht: §cMännlich");
                 } else if (Script.getGender(p).equals(Gender.FEMALE)) {
-                    p.sendMessage(" §8- §6Geschlecht: §cWeiblich");
+                    p.sendMessage(PREFIX +" §8- §6Geschlecht: §cWeiblich");
                 }
                 if (House.hasHouse(id)) {
                     StringBuilder houses = new StringBuilder();
                     for (House h : House.getHouses(id)) {
                         houses.append(", ").append(h.getID());
                     }
-                    p.sendMessage(" §8- §6Wohnhaft:§6" + houses.substring(1));
+                    p.sendMessage(PREFIX + " §8- §6Wohnhaft:§6" + houses.substring(1));
                 } else {
-                    p.sendMessage(" §8- §6Wohnhaft: §6Obdachlos");
+                    p.sendMessage(PREFIX + " §8- §6Wohnhaft: §6Obdachlos");
                 }
-                p.sendMessage("");
                 return true;
             }
             int i = Token.PERSONALAUSWEIS.get(id);
@@ -65,7 +64,7 @@ public class Personalausweis implements CommandExecutor, Listener {
                 if (args.length == 0) {
                     p.sendMessage(Messages.ERROR + "/personalausweis change");
                 } else {
-                    if (Script.isInRange(p.getLocation(), new Location(p.getWorld(), 133, 72, 156), 4)) {
+                    if (Script.isInRange(p.getLocation(), new Location(p.getWorld(), 554, 70, 984), 4)) {
                         Inventory inv = p.getServer().createInventory(null, 9, "§3Personalausweis");
                         inv.setItem(3, Script.setName(new ItemStack(Material.INK_SAC, 1, (byte) 12), "§bMännlich"));
                         inv.setItem(5, Script.setName(new ItemStack(Material.INK_SAC, 1, (byte) 13), "§cWeiblich"));
@@ -79,18 +78,19 @@ public class Personalausweis implements CommandExecutor, Listener {
                 p.sendMessage(Messages.ERROR + "Du hast bereits einen Personalausweis.");
                 p.sendMessage(Messages.ERROR + "Du hast keine ChangeToken für eine Personalausweisänderung.");
             }
-        } else if (!Script.isInRange(p.getLocation(), new Location(p.getWorld(), 133, 72, 156), 4)) {
+        } else if (!Script.isInRange(p.getLocation(),new Location(Script.WORLD, 554, 70, 984), 4)) {
             p.sendMessage("§7Du kannst deinen Personalausweis nur in der Stadthalle anmelden.");
         } else {
             long time = System.currentTimeMillis();
             Long lastUsage = cooldown.get(p);
             if (cooldown.containsKey(p)) {
                 if (lastUsage + 300 * 1000 > time) {
-                    p.sendMessage("§8[§6Stadthalle§8] §9Ihr Personalausweis ist noch nicht fertig.");
+                    p.sendMessage(PREFIX + "Ihr Personalausweis ist noch nicht fertig.");
                     p.sendMessage(Messages.INFO + "Mit /sperrinfo siehst du deine Wartezeit.");
                     return false;
                 } else {
                     Licenses.PERSONALAUSWEIS.grant(id);
+                    Achievement.PERSONALAUSWEIS.grant(p);
                     p.sendMessage(PREFIX + "Dein Personalausweis wurde fertiggestellt.");
                 }
             } else {
@@ -185,8 +185,9 @@ public class Personalausweis implements CommandExecutor, Listener {
                         Gender g = Script.getGender(p);
 
                         p.sendMessage(PREFIX + "Alles klar. " + (g.equals(Gender.MALE) ? "Herr " : "Frau ") + p.getName() + ", Ihr Personalausweis ist in 5 Minuten fertig.");
-                        p.sendMessage(PREFIX + "Kommen Sie dann wieder und geben Sie erneut §7/§6personalausweis§9 ein.");
+                        p.sendMessage(PREFIX + "Kommen Sie dann wieder und geben Sie erneut §7/§6personalausweis§6 ein.");
                         p.sendMessage(Messages.INFO + "Mit /sperrinfo kannst du sehen wie lange du noch warten musst.");
+                        Sperre.PERSONALAUSWEIS.setSperre(id, 5);
                         Personalausweis.cooldown.put(p, System.currentTimeMillis());
                         e.getView().close();
                         Bukkit.getScheduler().runTaskLater(main.getInstance(), () -> {

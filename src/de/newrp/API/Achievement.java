@@ -22,7 +22,8 @@ public enum Achievement {
     WAEHLER(10, "Wähler", "Du hast an einer Wahl teilgenommen!", 50),
     PET_OWNER(11, "Haustierbesitzer", "Du hast dein erstes Haustier gekauft!", 50),
     TAZED(12, "Tazer", "Du wurdest zum ersten Mal Getasert!", 50),
-    TEAMSPEAK(13, "Teamspeak", "Du hast dich zum ersten Mal auf dem Teamspeak verbunden!", 50);
+    TEAMSPEAK(13, "Teamspeak", "Du hast dich zum ersten Mal auf dem Teamspeak verbunden!", 50),
+    PERSONALAUSWEIS(14, "Personalausweis", "Du hast deinen Personalausweis beantragt!", 50);
 
     private final int id;
     private final String text;

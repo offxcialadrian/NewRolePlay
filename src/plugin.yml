@@ -350,3 +350,12 @@ commands:
   personalausweis:
     description: view your personalausweis
     aliases: [ ausweis, perso ]
+  showperso:
+    description: show your personalausweis
+    aliases: [ showausweis ]
+  showfinances:
+    description: show your finances
+    aliases: [ showfinanzen ]
+  showlicenses:
+    description: show your licenses
+    aliases: [ showlizenzen, licenses ]

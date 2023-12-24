@@ -11,7 +11,8 @@ public enum HologramList {
     CAFE_AM_X3(5, "§8/§6buy",new Location(Script.WORLD, 754, 71, 924)),
     GUNSHOP(6, "§8/§6buy",new Location(Script.WORLD, 454, 68, 929)),
     EQUIP_COPS(7, "§8/§6equip",new Location(Script.WORLD, 405, 70, 824)),
-    DUTY_COPS(8, "§8/§6duty",new Location(Script.WORLD, 408, 70, 824));
+    DUTY_COPS(8, "§8/§6duty",new Location(Script.WORLD, 408, 70, 824)),
+    PERSONALAUSWEIS(9, "§8/§6personalausweis",new Location(Script.WORLD, 554, 69, 984));
 
     private final int id;
     private final String name;

@@ -10,6 +10,7 @@ public class Messages {
     public static String NO_SDUTY = ERROR + "Du bist nicht im Supporter-Dienst.";
     public static String INFO = "  §bInfo§8: §r";
     public static String WRONG_PLAYER = ERROR + "Du kannst das nicht mit dir selbst.";
+    public static String PLAYER_FAR = ERROR + "Der Spieler ist zu weit entfernt.";
     public static String ARROW = "»";
 
     public static String RANK_PREFIX(Player p) {

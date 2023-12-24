@@ -14,7 +14,7 @@ import java.sql.Statement;
 
 public class Sperrinfo implements CommandExecutor {
 
-    private static String PREFIX = "§8[§aSperrinfo§8] §a" + Messages.ARROW + " ";
+    private static String PREFIX = "§8[§cSperrinfo§8] §c" + Messages.ARROW + " ";
 
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
@@ -36,6 +36,24 @@ public class Sperrinfo implements CommandExecutor {
             } else {
                 p.sendMessage(PREFIX + "Deine Tragensperre ist nicht mehr aktiv.");
                 Sperre.TRAGENSPERRE.remove(id);
+            }
+        }
+
+        if(Sperre.PERSONALAUSWEIS.isActive(id)) {
+            nothing = false;
+            long time = System.currentTimeMillis();
+            long sperre = Sperre.PERSONALAUSWEIS.getTime(id);
+            long left = sperre - time;
+            int min = (int) (left / 1000) / 60;
+            int hour = min / 60;
+            min -= hour * 60;
+            if (hour > 0) {
+                p.sendMessage(PREFIX + "Dein Personalausweis braucht noch " + hour + " Stunden und " + min + " Minuten.");
+            } else if (min > 0) {
+                p.sendMessage(PREFIX + "Dein Personalausweis braucht noch " + min + " Minuten.");
+            } else {
+                p.sendMessage(PREFIX + "Dein Personalausweis ist fertig.");
+                Sperre.PERSONALAUSWEIS.remove(id);
             }
         }
 

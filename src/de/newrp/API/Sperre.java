@@ -8,6 +8,7 @@ import de.newrp.main;
 
 public enum Sperre {
 
+    PERSONALAUSWEIS(1, "personalausweis", true),
     MUTE(2, "mute", true),
     TIMEBAN(3, "timeban", true),
     FRAKTIONSSPERRE(4, "fraktionsperre", true),
