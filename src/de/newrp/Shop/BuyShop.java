@@ -24,7 +24,7 @@ public class BuyShop implements CommandExecutor {
         }
 
         if (shop == null) {
-            p.sendMessage(Messages.ERROR + "Du bist nicht in der nähe von einem Shop.");
+            p.sendMessage(Messages.ERROR + "Du bist nicht in der Nähe von einem Shop.");
             return true;
         }
 

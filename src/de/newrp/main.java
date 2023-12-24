@@ -80,7 +80,7 @@ public class main extends JavaPlugin {
 
         try {
             TeamSpeak.connect();
-            System.out.println("TEAMSPEAK QUERY GESTARTET.");
+            Bukkit.getConsoleSender().sendMessage("§cNRP §8× §aTeamspeak Verbindung hergestellt.");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -223,6 +223,7 @@ public class main extends JavaPlugin {
         getCommand("teamspeak").setExecutor(new TeamspeakCommand());
         getCommand("channel").setExecutor(new PremiumChannel());
         getCommand("takeshop").setExecutor(new TakeShop());
+        getCommand("notruf").setExecutor(new Notruf());
 
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new SDuty(), this);
@@ -275,11 +276,12 @@ public class main extends JavaPlugin {
         pm.registerEvents(new AntiVPN(), this);
         pm.registerEvents(new JailTime(), this);
         pm.registerEvents(new TeamspeakUpdate(), this);
+        pm.registerEvents(new Notruf(), this);
 
         new PayDay().runTaskTimerAsynchronously(this, 60 * 20L, 60 * 20L);
         new AsyncMinute().runTaskTimerAsynchronously(this, 60 * 20L, 60 * 20L);
         new AsyncHour().runTaskTimerAsynchronously(this, 60 * 60 * 20L, 60 * 60 * 20L);
-        new AsyncDaylightCycle().runTaskTimer(this, 20L, 600L);
+        new AsyncDaylightCycle().runTaskTimer(this, 60 * 60 * 20L, 60 * 60 * 20L);
         new SyncMinute().runTaskTimer(this, 60 * 20L, 60 * 20L);
 
         ScoreboardManager.initMainScoreboard();

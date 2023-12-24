@@ -121,7 +121,8 @@ public class Wahlen implements CommandExecutor, Listener {
                     return true;
                 }
 
-                Script.executeAsyncUpdate("UPDATE wahlen SET votes = 0 WHERE quartal = '" + getCurrentQuartal() + "' AND year = '" + Calendar.getInstance().get(Calendar.YEAR) + "'");
+                Script.executeAsyncUpdate("UPDATE wahlen SET votings = 0 WHERE quartal = '" + getCurrentQuartal() + "' AND year = '" + Calendar.getInstance().get(Calendar.YEAR) + "'");
+                Script.executeUpdate("DELETE FROM votes WHERE quartal = '" + getCurrentQuartal() + "' AND year = '" + Calendar.getInstance().get(Calendar.YEAR) + "'");
 
                 neuWahlen = true;
                 p.sendMessage(PREFIX + "Du hast die Neuwahlen aktiviert.");
@@ -209,8 +210,16 @@ public class Wahlen implements CommandExecutor, Listener {
             Beruf.Berufe.NEWS.sendMessage(PREFIX + "Es gibt keine Kandidaten. Die Legislaturperiode der aktuellen Regierung wird um 1 Quartal verlängert.");
         }
 
-        Beruf.Berufe.NEWS.sendMessage("§6Wahlen: " + Script.getPlayer(getWinner()).getName() + " hat die Wahlen gewonnen.");
-        Beruf.Berufe.NEWS.sendMessage("§6Die Nächsten Wahlen finden am " + getNextElection() + " statt.");
+        Beruf.Berufe.NEWS.sendMessage(PREFIX + Script.getPlayer(getWinner()).getName() + " hat die Wahlen gewonnen.");
+        Beruf.Berufe.NEWS.sendMessage(PREFIX + "Die Nächsten Wahlen finden am §e" + getNextElection() + "§6 statt.");
+
+        Beruf.Berufe.NEWS.sendMessage(PREFIX + "Das Ergebnis der Wahlen:");
+        for(OfflinePlayer p : Bukkit.getOnlinePlayers()) {
+            if(hasApplied(p)) {
+                Beruf.Berufe.NEWS.sendMessage(PREFIX + "§6" + p.getName() + " §8× §6" + getVotes(p) + " Stimmen (" + Script.getPercentage(getVotes(p), getTotalVotes()) + "%=");
+            }
+        }
+
         neuWahlen = false;
         new BukkitRunnable() {
 
@@ -223,6 +232,15 @@ public class Wahlen implements CommandExecutor, Listener {
                     Beruf.Berufe.NEWS.sendMessage(PREFIX + "Die News hat es nicht rechtzeitig geschafft das Ergebnis der Wahlen zu verkünden. Es wurde automatisch eine Meldung abgegeben.");
                     Script.sendTeamMessage(PREFIX + "Die News hat es nicht rechtzeitig geschafft das Ergebnis der Wahlen zu verkünden.");
                 }
+
+                if(Beruf.getBeruf(winner) != Beruf.Berufe.GOVERNMENT || !Beruf.isLeader(winner)) {
+                    for(Player all : Beruf.Berufe.GOVERNMENT.getMembers()) {
+                        all.sendMessage(PREFIX + "Die Legislaturperiode der aktuellen Regierung ist abgelaufen. Du bist nun nicht mehr in der Regierung.");
+                    }
+
+                    Script.executeUpdate("DELETE FROM berufe WHERE berufID = '" + Beruf.Berufe.GOVERNMENT.getID() + "'");
+                }
+
                 NewsCommand.wahlenNews = false;
                 NewsCommand.wahlenNewsActive = false;
                 if(Beruf.hasBeruf(winner) && Beruf.getBeruf(winner) != Beruf.Berufe.GOVERNMENT)  Beruf.getBeruf(winner).removeMember(winner);
@@ -230,7 +248,7 @@ public class Wahlen implements CommandExecutor, Listener {
                 Beruf.setLeader(winner);
                 Achievement.WAHL_GEWONNEN.grant(winner);
                 if(Script.getPlayer(winner.getName()) != null)
-                    Script.getPlayer(winner.getName()).sendMessage(Messages.INFO + "Herzlichen Glückwunsch! Du hast die Wahlen gewonnen! Du hast hiermit deine Rechte erhalten. Solltest du Hilfe benötigen, steht das Server-Team dir jederzeite zur Verfügung.");
+                    Script.getPlayer(winner.getName()).sendMessage(Messages.INFO + "Herzlichen Glückwunsch! Du hast die Wahlen gewonnen! Du hast hiermit deine Rechte erhalten. Solltest du Hilfe benötigen, steht das Server-Team dir jederzeit zur Verfügung.");
 
 
             }
@@ -256,6 +274,18 @@ public class Wahlen implements CommandExecutor, Listener {
             return "15.10.";
         }
         return "15.01.";
+    }
+
+    public static int getTotalVotes() {
+        try (Statement stmt = main.getConnection().createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT COUNT(*) AS total FROM votes WHERE quartal = '" + getCurrentQuartal() + "' AND year = '" + Calendar.getInstance().get(Calendar.YEAR) + "'")) {
+            if (rs.next()) {
+                return rs.getInt("total");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 
     public static void sendWahlGUI(Player p) {

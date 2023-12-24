@@ -80,6 +80,11 @@ public class Spectate implements CommandExecutor, Listener {
             return true;
         }
 
+        if(Spectate.isSpectating(p)) {
+            p.sendMessage(Messages.ERROR + "Du beobachtest bereits einen Spieler.");
+            return true;
+        }
+
         if(tg == p) {
             p.sendMessage(Messages.ERROR + "Du kannst dich nicht selber beobachten!");
             return true;

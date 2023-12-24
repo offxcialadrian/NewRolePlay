@@ -1344,6 +1344,10 @@ public class Script {
         return ((double) total / 100) * percent;
     }
 
+    public static int getPercentage(int amount, int total) {
+        return (int) ((double) amount / total * 100);
+    }
+
     public static boolean isLong(String str) {
         try {
             Long.parseLong(str);

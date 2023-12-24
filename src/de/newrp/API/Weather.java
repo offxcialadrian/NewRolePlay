@@ -29,8 +29,10 @@ public enum Weather {
             Debug.debug("updated weather to sunny");
         } else if (currentWeatherDescription.contains("rain") || currentWeatherDescription.contains("Light Rain") || currentWeatherDescription.contains("Light Drizzle") || currentWeatherDescription.contains("Light Drizzle And Rain, Mist, Light") || currentWeatherDescription.contains("Light Rain,") || currentWeatherDescription.contains("Light Drizzle,")) {
             Script.WORLD.setStorm(true);
+            Script.WORLD.setThundering(false);
             Debug.debug("updated weather to rain");
         } else if (currentWeatherDescription.contains("thunder")) {
+            Script.WORLD.setStorm(true);
             Script.WORLD.setThundering(true);
             Debug.debug("updated weather to thunder");
         }

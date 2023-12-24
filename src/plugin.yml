@@ -115,6 +115,7 @@ commands:
     description: open the navi
   ticket:
     description: create a ticket
+    aliases: [ help, report ]
   acceptticket:
     description: accept a ticket
     aliases: [ at ]
@@ -331,3 +332,6 @@ commands:
     aliases: [ ts ]
   takeshop:
     description: take a shop
+  notruf:
+    description: call emergency
+    aliases: [ callpolice, callmedic ]
