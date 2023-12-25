@@ -25,6 +25,11 @@ public static String PREFIX = "§8[§9Polizeicomputer§8] §9" + Messages.ARROW 
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
         Player p = (Player) cs;
 
+        if(!Beruf.hasBeruf(p)) {
+            p.sendMessage(Messages.NO_PERMISSION);
+            return true;
+        }
+
         if(!Beruf.getBeruf(p).equals(Beruf.Berufe.POLICE)) {
             p.sendMessage(Messages.NO_PERMISSION);
             return true;
@@ -64,7 +69,8 @@ public static String PREFIX = "§8[§9Polizeicomputer§8] §9" + Messages.ARROW 
     }
 
     public static void setDangerLevel(Player p, int level) {
-        Script.setInt(p, "dangerlevel", "dangerlevel", level);
+        if(getDangerLevel(p) == 0) Script.executeUpdate("INSERT INTO dangerlevel (nrp_id, dangerlevel) VALUES (" + Script.getNRPID(p) + ", " + level + ");");
+        else Script.setInt(p, "dangerlevel", "dangerlevel", level);
     }
 
     @EventHandler
@@ -147,13 +153,13 @@ public static String PREFIX = "§8[§9Polizeicomputer§8] §9" + Messages.ARROW 
                 if(title.equals("Orten")) {
                     p.sendMessage(PREFIX + "Du hast " + Script.getName(tg) + " geortet.");
                     Navi navi = Navi.getNextNaviLocation(tg.getLocation());
-                    Script.sendClickableMessage(p, PREFIX + "§8» " + Script.getName(tg) + " befindet sich bei " + navi.getName(), "/navi " + navi.getName(), "Klicke um dich zum nächsten Punkt zu navigieren.");
+                    Script.sendClickableMessage(p, PREFIX + "§8» §9" + Script.getName(tg) + " befindet sich bei " + navi.getName(), "/navi " + navi.getName(), "Klicke um dich zum nächsten Punkt zu navigieren.");
                     p.closeInventory();
                     return;
                 }
 
                 if(title.equals("Gesucht?")) {
-                    p.sendMessage(PREFIX + Script.getName(tg) + " ist " + (Fahndung.isFahnded(tg) ? "§cGesucht" : "§aNicht gesucht"));
+                    p.sendMessage(PREFIX + Script.getName(tg) + " ist " + (Fahndung.isFahnded(tg) ? "§cGesucht!" : "§anicht gesucht"));
                     p.closeInventory();
                     return;
                 }

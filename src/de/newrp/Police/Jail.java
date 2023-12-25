@@ -105,16 +105,7 @@ public class Jail {
         Script.removeWeapons(p);
 
         p.getInventory().setChestplate(new ItemStack(Material.AIR));
-
-        Block cp;
-        while (true) {
-            cp = new Location(p.getWorld(), -Script.getRandom(597, 970), 69, Script.getRandom(574, 1016)).getBlock();
-            if (cp.getType().equals(Material.AIR) || cp.getType().equals(Material.GRASS)) {
-                cp.getLocation().getChunk().load();
-                p.teleport(cp.getLocation());
-                break;
-            }
-        }
+        p.teleport(new Location(Script.WORLD, 1032, 69, 556, -180.42438f, 6.574746f));
 
         if (msg) p.sendMessage(PREFIX + "Du bist nun für " + (time / 60) + " Minuten im Gefängnis.");
         p.sendMessage(Messages.INFO + "Mit \"/jailtime\" kannst du sehen, wie lange du noch im Gefängnis bist.");
@@ -141,7 +132,7 @@ public class Jail {
 
             Bukkit.getScheduler().runTaskLater(main.getInstance(), () -> p.teleport(loc), 5);
         } else {
-            p.teleport(new Location(p.getWorld(), -634, 70, 219));
+            p.teleport(new Location(Script.WORLD, 1020, 67, 548, -20.52356f, 11.824921f));
         }
 
     }

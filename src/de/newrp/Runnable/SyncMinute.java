@@ -2,9 +2,12 @@ package de.newrp.Runnable;
 
 import de.newrp.API.Debug;
 import de.newrp.API.Script;
+import org.bukkit.Bukkit;
 import org.bukkit.block.Sign;
 import org.bukkit.scheduler.BukkitRunnable;
+import de.newrp.main;
 
+import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
 
 public class SyncMinute extends BukkitRunnable {
@@ -23,5 +26,13 @@ public class SyncMinute extends BukkitRunnable {
         }
         sign.setLine(2, lastdead);
         sign.update();
+
+        if(Calendar.getInstance().get(Calendar.HOUR_OF_DAY) == 23 && Calendar.getInstance().get(Calendar.MINUTE) == 59) {
+            Bukkit.broadcastMessage(Script.PREFIX + "§4§lACHTUNG: §cDer Server startet in einer Minute neu!");
+            Bukkit.getScheduler().runTaskLater(main.getInstance(), () -> {
+                Bukkit.broadcastMessage(Script.PREFIX + "§4§lACHTUNG: §cDer Server startet jetzt neu!");
+                Bukkit.getServer().shutdown();
+            }, 20*60);
+        }
     }
 }

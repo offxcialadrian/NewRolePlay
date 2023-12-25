@@ -234,6 +234,7 @@ public class main extends JavaPlugin {
         getCommand("showlicenses").setExecutor(new ShowLicenses());
         getCommand("policecomputer").setExecutor(new Policecomputer());
         getCommand("dangerlevel").setExecutor(new DangerLevel());
+        getCommand("gmx").setExecutor(new GMX());
 
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new SDuty(), this);
@@ -289,6 +290,7 @@ public class main extends JavaPlugin {
         pm.registerEvents(new Notruf(), this);
         pm.registerEvents(new AcceptNotruf(), this);
         pm.registerEvents(new Personalausweis(), this);
+        pm.registerEvents(new Policecomputer(), this);
 
         new PayDay().runTaskTimerAsynchronously(this, 60 * 20L, 60 * 20L);
         new AsyncMinute().runTaskTimerAsynchronously(this, 60 * 20L, 60 * 20L);

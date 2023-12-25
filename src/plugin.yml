@@ -365,3 +365,5 @@ commands:
   dangerlevel:
     description: set the dangerlevel
     aliases: [ gefahrenstufe ]
+  gmx:
+    description: shutdown
