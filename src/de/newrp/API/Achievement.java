@@ -23,7 +23,8 @@ public enum Achievement {
     PET_OWNER(11, "Haustierbesitzer", "Du hast dein erstes Haustier gekauft!", 50),
     TAZED(12, "Tazer", "Du wurdest zum ersten Mal Getasert!", 50),
     TEAMSPEAK(13, "Teamspeak", "Du hast dich zum ersten Mal auf dem Teamspeak verbunden!", 50),
-    PERSONALAUSWEIS(14, "Personalausweis", "Du hast deinen Personalausweis beantragt!", 50);
+    PERSONALAUSWEIS(14, "Personalausweis", "Du hast deinen Personalausweis beantragt!", 50),
+    FORUM_VERIFIKATION(15, "Forum Verifikation", "Du hast dich mit dem Forum verbunden!", 50);
 
     private final int id;
     private final String text;

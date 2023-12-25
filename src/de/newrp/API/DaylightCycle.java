@@ -42,9 +42,7 @@ public class DaylightCycle {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ssX");
         try {
             sunriseTime = sdf.parse(jsonObject.get("sunrise").getAsString());
-            Debug.debug("Sunrise: " + sunriseTime);
             sunsetTime = sdf.parse(jsonObject.get("sunset").getAsString());
-            Debug.debug("Sunset: " + sunsetTime);
         } catch (ParseException e) {
             e.printStackTrace();
             sunriseTime = Calendar.getInstance().getTime();

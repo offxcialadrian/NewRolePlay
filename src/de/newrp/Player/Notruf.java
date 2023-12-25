@@ -227,16 +227,16 @@ public class Notruf implements CommandExecutor, Listener {
     public String getNearestPlayersString(Beruf.Berufe b, Location loc) {
         StringJoiner stringJoiner = new StringJoiner(", ");
         for (Map.Entry<Player, Double> entry : getNearestPlayers(b, loc).entrySet()) {
-            String name = entry.getKey().getName();
+            String name = Script.getName(entry.getKey());
             int distance = entry.getValue().intValue();
 
             stringJoiner.add(name + " (" + distance + "m)");
         }
 
         if(stringJoiner.toString().isEmpty()) {
-            return PREFIX + "Es ist niemand in der Nähe.";
+            return PREFIX + "§6Es ist niemand in der Nähe.";
         }
-        return PREFIX + "Am nächsten sind: " + stringJoiner.toString() + "";
+        return PREFIX + "§6Am nächsten sind: " + stringJoiner.toString() + "";
     }
 
     public static Map<Player, Double> getNearestPlayers(Beruf.Berufe b, Location loc) {

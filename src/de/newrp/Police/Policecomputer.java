@@ -153,7 +153,7 @@ public static String PREFIX = "§8[§9Polizeicomputer§8] §9" + Messages.ARROW 
                 if(title.equals("Orten")) {
                     p.sendMessage(PREFIX + "Du hast " + Script.getName(tg) + " geortet.");
                     Navi navi = Navi.getNextNaviLocation(tg.getLocation());
-                    Script.sendClickableMessage(p, PREFIX + "§8» §9" + Script.getName(tg) + " befindet sich bei " + navi.getName(), "/navi " + navi.getName(), "Klicke um dich zum nächsten Punkt zu navigieren.");
+                    Script.sendClickableMessage(p, PREFIX  + Script.getName(tg) + " befindet sich bei " + navi.getName(), "/navi " + navi.getName(), "Klicke um dich zum nächsten Punkt zu navigieren.");
                     p.closeInventory();
                     return;
                 }

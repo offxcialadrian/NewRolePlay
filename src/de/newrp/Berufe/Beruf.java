@@ -2,6 +2,7 @@ package de.newrp.Berufe;
 
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
+import de.newrp.Forum.ForumGroup;
 import de.newrp.Government.Arbeitslosengeld;
 import de.newrp.TeamSpeak.TeamspeakServerGroup;
 import de.newrp.main;
@@ -20,10 +21,10 @@ import java.util.UUID;
 public class Beruf {
 
     public enum Berufe {
-        GOVERNMENT(1, "Regierung", false, false, 0, TeamspeakServerGroup.GOVERNMENT),
-        NEWS(2, "News", true, false, 0, TeamspeakServerGroup.NEWS),
-        POLICE(3, "Polizei", false, true, 0, TeamspeakServerGroup.POLICE),
-        RETTUNGSDIENST(4, "Rettungsdienst", false, true, 0, TeamspeakServerGroup.RETTUNGSDIENST);
+        GOVERNMENT(1, "Regierung", false, false, 0, TeamspeakServerGroup.GOVERNMENT, new ForumGroup[]{ForumGroup.GOVERNMENT, ForumGroup.GOVERNMENT_LEADER}),
+        NEWS(2, "News", true, false, 0, TeamspeakServerGroup.NEWS, new ForumGroup[]{ForumGroup.NEWS, ForumGroup.NEWS_LEADER}),
+        POLICE(3, "Polizei", false, true, 0, TeamspeakServerGroup.POLICE, new ForumGroup[]{ForumGroup.POLICE, ForumGroup.POLICE_LEADER}),
+        RETTUNGSDIENST(4, "Rettungsdienst", false, true, 0, TeamspeakServerGroup.RETTUNGSDIENST, new ForumGroup[]{ForumGroup.RETTUNGSDIENST, ForumGroup.RETTUNGSDIENST_LEADER});
 
         int id;
         private final String name;
@@ -31,14 +32,16 @@ public class Beruf {
         boolean equip;
         int channelid;
         TeamspeakServerGroup serverGroup;
+        ForumGroup[] forumGroup;
 
-        Berufe(int id, String name, boolean kasse, boolean equip, int channelid, TeamspeakServerGroup serverGroup) {
+        Berufe(int id, String name, boolean kasse, boolean equip, int channelid, TeamspeakServerGroup serverGroup, ForumGroup[] forumGroup) {
             this.id = id;
             this.name = name;
             this.kasse = kasse;
             this.equip = equip;
             this.channelid = channelid;
             this.serverGroup = serverGroup;
+            this.forumGroup = forumGroup;
         }
 
         public int getID() {
@@ -61,7 +64,9 @@ public class Beruf {
             return serverGroup;
         }
 
-
+        public ForumGroup getForumGroup(boolean leader) {
+            return leader ? this.forumGroup[1] : this.forumGroup[0];
+        }
 
         public static Berufe getBeruf(String name) {
             for (Berufe beruf : Berufe.values()) {

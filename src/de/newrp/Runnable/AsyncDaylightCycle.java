@@ -13,6 +13,7 @@ import java.net.URL;
 public class AsyncDaylightCycle extends BukkitRunnable {
     @Override
     public void run() {
+        DaylightCycle.refreshDaylight();
         String currentWeather = null;
         try {
             String apiKey = "08ce8dd5e80b428283d3cb21bed7db42";
@@ -36,16 +37,14 @@ public class AsyncDaylightCycle extends BukkitRunnable {
             e.printStackTrace();
         }
         String currentWeatherDescription = currentWeather;
-        Debug.debug("current weather: " + currentWeatherDescription);
         if (currentWeatherDescription.contains("Sunny") || currentWeatherDescription.contains("Partly cloudy") || currentWeatherDescription.contains("Clear") || currentWeatherDescription.contains("Overcast")) {
             Script.WORLD.setStorm(false);
-            Debug.debug("updated weather to sunny");
         } else if (currentWeatherDescription.contains("rain") || currentWeatherDescription.contains("Light Rain") || currentWeatherDescription.contains("Light Drizzle") || currentWeatherDescription.contains("Light Drizzle And Rain, Mist, Light") || currentWeatherDescription.contains("Light Rain,") || currentWeatherDescription.contains("Light Drizzle,")) {
             Script.WORLD.setStorm(true);
-            Debug.debug("updated weather to rain");
+            Script.WORLD.setThundering(false);
         } else if (currentWeatherDescription.contains("thunder")) {
+            Script.WORLD.setStorm(true);
             Script.WORLD.setThundering(true);
-            Debug.debug("updated weather to thunder");
         }
     }
 }

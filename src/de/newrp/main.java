@@ -5,11 +5,11 @@ import de.newrp.Administrator.*;
 import de.newrp.Berufe.*;
 import de.newrp.Chat.*;
 import de.newrp.Commands.DiscordCommand;
-import de.newrp.Commands.ForumCommand;
 import de.newrp.Commands.Test;
 import de.newrp.Entertainment.BlackJack;
 import de.newrp.Entertainment.Laufband;
 import de.newrp.Entertainment.Lotto;
+import de.newrp.Forum.ForumCommand;
 import de.newrp.Fraktion.Tazer;
 import de.newrp.Government.*;
 import de.newrp.House.*;
@@ -295,7 +295,7 @@ public class main extends JavaPlugin {
         new PayDay().runTaskTimerAsynchronously(this, 60 * 20L, 60 * 20L);
         new AsyncMinute().runTaskTimerAsynchronously(this, 60 * 20L, 60 * 20L);
         new AsyncHour().runTaskTimerAsynchronously(this, 60 * 60 * 20L, 60 * 60 * 20L);
-        new AsyncDaylightCycle().runTaskTimer(this, 60 * 60 * 20L, 60 * 60 * 20L);
+        new AsyncDaylightCycle().runTaskTimer(this, 20L, 600L);
         new SyncMinute().runTaskTimer(this, 60 * 20L, 60 * 20L);
 
         ScoreboardManager.initMainScoreboard();
