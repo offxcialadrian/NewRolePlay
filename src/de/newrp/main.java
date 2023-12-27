@@ -256,6 +256,7 @@ public class main extends JavaPlugin {
         getCommand("dangerlevel").setExecutor(new DangerLevel());
         getCommand("gmx").setExecutor(new GMX());
         getCommand("signedit").setExecutor(new SignEdit());
+        getCommand("blockcommand").setExecutor(new BlockCommand());
 
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new SDuty(), this);
@@ -312,6 +313,7 @@ public class main extends JavaPlugin {
         pm.registerEvents(new AcceptNotruf(), this);
         pm.registerEvents(new Personalausweis(), this);
         pm.registerEvents(new Policecomputer(), this);
+        pm.registerEvents(new BlockCommand(), this);
 
         new PayDay().runTaskTimerAsynchronously(this, 60 * 20L, 60 * 20L);
         new AsyncMinute().runTaskTimerAsynchronously(this, 60 * 20L, 60 * 20L);

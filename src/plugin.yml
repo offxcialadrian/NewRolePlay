@@ -370,3 +370,5 @@ commands:
   signedit:
     description: sign an item
     aliases: [ sign ]
+  blockcommand:
+    description: block a command
