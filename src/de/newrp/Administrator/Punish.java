@@ -119,7 +119,7 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
     public enum Violation {
         CHEATEN(1, Punishment.BAN, Punishment.WARN, TimeUnit.DAYS.toMillis(7), "Cheaten", "Wir konnten bei dir Cheats feststellen."),
         BELEIDIGUNG(2, Punishment.BAN, null, TimeUnit.HOURS.toMillis(3), "Beleidigung", "Du hast einen Spieler beleidigt."),
-        FREMDWERBUNG(3, Punishment.BAN, Punishment.WARN, TimeUnit.DAYS.toMillis(3), "Fremdwerbung", "Du hast Fremdwerbung verbreitet."),
+        FREMDWERBUNG(3, Punishment.MUTE, null, TimeUnit.HOURS.toMillis(1), "Fremdwerbung", "Du hast Fremdwerbung verbreitet."),
         MOBBING_LEICHT(4, Punishment.BAN, null, TimeUnit.DAYS.toMillis(3), "Mobbing (Leicht)", "Du hast andere Spieler gemobbt."),
         MOBBING_SCHWER(5, Punishment.BAN, Punishment.WARN, 0, "Mobbing (Schwer)", "Du hast andere Spieler gemobbt."),
         RASSISMUS(6, Punishment.BAN, null, 0, "Rassismus", "Du hast rassistische Äußerungen getätigt."),
@@ -136,7 +136,8 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
         EXTREMER_MISSBRAUCH_TRAGEN(17, Punishment.BAN, Punishment.WARN, TimeUnit.DAYS.toMillis(14), "Extremer Missbrauch von /tragen", "Du hast den Befehl /tragen extrem missbraucht."),
         SPAM(18, Punishment.KICK, null, 0, "Spam", "Du hast gespammt."),
         WIEDERHOLTER_SPAM(19, Punishment.BAN, null, TimeUnit.MINUTES.toMillis(30), "Wiederholter Spam", "Du hast wiederholt gespammt."),
-        EXTREMER_SPAM(20, Punishment.BAN, null, TimeUnit.HOURS.toMillis(1), "Extremer Spam", "Du hast extrem gespammt.");
+        EXTREMER_SPAM(20, Punishment.BAN, null, TimeUnit.HOURS.toMillis(1), "Extremer Spam", "Du hast extrem gespammt."),
+        WIEDERHOLTE_FREMDWERBUNG(21, Punishment.BAN, Punishment.WARN, TimeUnit.DAYS.toMillis(3), "Wiederholte Fremdwerbung", "Du hast wiederholt Fremdwerbung verbreitet.");
 
 
 

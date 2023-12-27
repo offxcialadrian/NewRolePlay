@@ -30,6 +30,18 @@ public class Whisper implements CommandExecutor {
             return true;
         }
 
+        for(String arg : args) {
+            if(arg.contains("http://") || arg.contains("https://") || arg.contains("www.") || arg.contains(".de")) {
+                p.sendMessage(Messages.ERROR + "Du darfst keine Links in den RolePlay-Chat senden!");
+                return true;
+            }
+
+            if(Script.isIP(arg)) {
+                p.sendMessage(Messages.ERROR + "Du darfst keine IPs in den RolePlay-Chat senden!");
+                return true;
+            }
+        }
+
         Set<String> foundNames = Chat.getMentionedNames(message);
         Location pLoc = p.getLocation();
         String speakWord = "flüstert";

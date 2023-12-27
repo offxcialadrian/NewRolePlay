@@ -364,6 +364,10 @@ public class Script {
         }
     }
 
+    public static boolean isIP(String s) {
+        return s.matches("^(?:[0-9]{1,3}\\.){3}[0-9]{1,3}$");
+    }
+
     public static Boolean hasRank(OfflinePlayer p, Rank rank, Boolean allowDesc) {
         if (allowDesc) {
             if (getActiveAmountByRank(rank) == 0) {

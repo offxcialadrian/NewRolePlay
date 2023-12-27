@@ -132,6 +132,18 @@ public class Chat implements Listener {
             return;
         }
 
+        for(String arg : e.getMessage().split(" ")) {
+            if(arg.contains("http://") || arg.contains("https://") || arg.contains("www.") || arg.contains(".de")) {
+                p.sendMessage(Messages.ERROR + "Du darfst keine Links in den RolePlay-Chat senden!");
+                return;
+            }
+
+            if(Script.isIP(arg)) {
+                p.sendMessage(Messages.ERROR + "Du darfst keine IPs in den RolePlay-Chat senden!");
+                return;
+            }
+        }
+
         String message = e.getMessage();
         Set<String> foundNames = getMentionedNames(message);
         String speakWord = "sagt";

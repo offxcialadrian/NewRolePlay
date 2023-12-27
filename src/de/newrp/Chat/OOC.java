@@ -2,6 +2,7 @@ package de.newrp.Chat;
 
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
+import de.newrp.Administrator.AntiCheatSystem;
 import de.newrp.Administrator.Notications;
 import de.newrp.Administrator.Punish;
 import org.bukkit.command.Command;
@@ -28,6 +29,18 @@ public class OOC implements CommandExecutor {
         String msg = "";
         for(int i = 0; i < args.length; i++) {
             msg += args[i] + " ";
+        }
+
+        for(String arg : args) {
+            if(arg.contains("http://") || arg.contains("https://") || arg.contains("www.") || arg.contains(".de")) {
+                Script.sendTeamMessage(AntiCheatSystem.PREFIX + "Verdacht auf Fremdwerbung bei " + Script.getName(p) + " (Level " + p.getLevel() + ") §8» §7" + msg);
+                return true;
+            }
+
+            if(Script.isIP(arg)) {
+                Script.sendTeamMessage(AntiCheatSystem.PREFIX + "Verdacht auf Fremdwerbung bei " + Script.getName(p) + " (Level " + p.getLevel() + ") §8» §7" + msg);
+                return true;
+            }
         }
 
         for(Player all : p.getWorld().getPlayers()) {
