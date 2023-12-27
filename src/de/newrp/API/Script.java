@@ -344,11 +344,27 @@ public class Script {
         return getRank(p).getWeight() >= SUPPORTER.getWeight();
     }
 
+    public static Boolean isNRPTeam(OfflinePlayer p) {
+        return getRank(p).getWeight() >= SUPPORTER.getWeight();
+    }
+
     public static Boolean hasRank(Player p, Rank rank, Boolean allowDesc) {
         if (!Passwort.hasPasswort(p)) {
             p.sendMessage(PREFIX + "Du kannst Team-Befehle nur nutzen, wenn du ein Passwort hast.");
             return false;
         }
+        if (allowDesc) {
+            if (getActiveAmountByRank(rank) == 0) {
+                return getRank(p).getWeight() - 50 == rank.getWeight();
+            } else {
+                return getRank(p).getWeight() >= rank.getWeight();
+            }
+        } else {
+            return getRank(p).getWeight() >= rank.getWeight();
+        }
+    }
+
+    public static Boolean hasRank(OfflinePlayer p, Rank rank, Boolean allowDesc) {
         if (allowDesc) {
             if (getActiveAmountByRank(rank) == 0) {
                 return getRank(p).getWeight() - 50 == rank.getWeight();
@@ -580,6 +596,16 @@ public class Script {
 
     public static void executeUpdate(String sql) {
         try (Statement stmt = main.getConnection().createStatement()) {
+            stmt.executeUpdate(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            Debug.debug("SQLException -> " + sql);
+            System.out.println("SQLException -> " + sql);
+        }
+    }
+
+    public static void executeForumUpdate(String sql) {
+        try (Statement stmt = main.getForumConnection().createStatement()) {
             stmt.executeUpdate(sql);
         } catch (SQLException e) {
             e.printStackTrace();

@@ -127,6 +127,11 @@ public class Equip implements CommandExecutor, Listener {
             return true;
         }
 
+        if(Beruf.getBeruf(p) == Beruf.Berufe.RETTUNGSDIENST && p.getLocation().distance(new Location(Script.WORLD,267,75,1253)) > 5) {
+            p.sendMessage(Messages.ERROR + "Du musst dich in der Nähe des Duty-Punktes befinden.");
+            return true;
+        }
+
         for (Stuff stuff : Stuff.values()) {
             if (stuff.getBeruf() == beruf) {
                 if (stuff.getAbteilung() == null) {

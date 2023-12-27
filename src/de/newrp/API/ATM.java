@@ -5,7 +5,8 @@ import org.bukkit.entity.Player;
 
 public enum ATM {
 
-    ATM_1(1, new Location(Script.WORLD, 645, 66, 1056), 0);
+    ATM_1(1, new Location(Script.WORLD, 645, 66, 1056), 0),
+    ATM_2(2, new Location(Script.WORLD, 645, 66, 1059), 0);
 
     private final int id;
     private final Location loc;

@@ -1,6 +1,7 @@
 package de.newrp.Administrator;
 
 import de.newrp.API.*;
+import de.newrp.Forum.Forum;
 import de.newrp.TeamSpeak.TeamSpeak;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -67,5 +68,6 @@ public class SetSupport implements CommandExecutor {
             Script.executeUpdate("INSERT INTO ranks (nrp_id, rank_id, since) VALUES (" + Script.getNRPID(tg) + ", " + rank.getID() + ", NOW())");
         }
         TeamSpeak.sync(Script.getNRPID(tg));
+        Forum.syncPermission(tg);
     }
 }

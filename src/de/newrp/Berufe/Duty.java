@@ -35,7 +35,7 @@ public class Duty implements CommandExecutor {
         }
 
         if (Beruf.getBeruf(p) == Beruf.Berufe.RETTUNGSDIENST) {
-            if (p.getLocation().distance(new Location(Script.WORLD, 338, 78, 1155)) > 10) {
+            if (p.getLocation().distance(new Location(Script.WORLD, 347, 76, 1265)) > 5 && p.getLocation().distance(new Location(Script.WORLD, 281, 75, 1239)) > 5) {
                 p.sendMessage(Messages.ERROR + "Du befindest dich nicht in der Nähe des Duty-Punkt");
                 return true;
             }

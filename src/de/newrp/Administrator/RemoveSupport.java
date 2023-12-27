@@ -4,6 +4,7 @@ import de.newrp.API.Log;
 import de.newrp.API.Messages;
 import de.newrp.API.Rank;
 import de.newrp.API.Script;
+import de.newrp.Forum.Forum;
 import de.newrp.TeamSpeak.TeamSpeak;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -57,6 +58,8 @@ public class RemoveSupport implements CommandExecutor {
         Script.executeAsyncUpdate("DELETE FROM ticket_greeting WHERE nrp_id=" + Script.getNRPID(tg));
         Script.executeAsyncUpdate("DELETE FROM ticket_farewell WHERE nrp_id=" + Script.getNRPID(tg));
 
+        Forum.syncPermission(tg);
         TeamSpeak.sync(Script.getNRPID(tg));
+
     }
 }

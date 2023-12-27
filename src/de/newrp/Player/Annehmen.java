@@ -3,6 +3,7 @@ package de.newrp.Player;
 import de.newrp.API.*;
 import de.newrp.Administrator.Notications;
 import de.newrp.Berufe.Beruf;
+import de.newrp.Forum.Forum;
 import de.newrp.Government.Stadtkasse;
 import de.newrp.Government.Steuern;
 import de.newrp.House.House;
@@ -73,6 +74,7 @@ public class Annehmen implements CommandExecutor {
             offer.remove(p.getName() + ".joinberuf");
             Achievement.BERUF_JOIN.grant(p);
             TeamSpeak.sync(Script.getNRPID(p));
+            Forum.syncPermission(p);
 
         } else if (offer.containsKey(p.getName() + ".shop.sell")) {
             Player sell = Script.getPlayer(offer.get(p.getName() + ".shop.sell.seller"));

@@ -14,6 +14,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
+import org.bukkit.block.ShulkerBox;
 import org.bukkit.block.data.type.TrapDoor;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
@@ -82,9 +83,8 @@ public class Utils implements Listener {
     public void onInteractEvent(PlayerInteractEvent e) {
         if(e.getAction() == Action.RIGHT_CLICK_BLOCK) {
             if(e.getClickedBlock() == null) return;
-            if(e.getClickedBlock().getType() == Material.BIRCH_TRAPDOOR || e.getClickedBlock().getType() == Material.ACACIA_TRAPDOOR || e.getClickedBlock().getType() == Material.DARK_OAK_TRAPDOOR || e.getClickedBlock().getType() == Material.JUNGLE_TRAPDOOR || e.getClickedBlock().getType() == Material.SPRUCE_TRAPDOOR) {
-                boolean block = true;
-                if(SDuty.isSDuty(e.getPlayer())) block = false;
+            if(e.getClickedBlock().getState() instanceof TrapDoor && e.getClickedBlock().getType() != Material.OAK_TRAPDOOR) {
+                boolean block = !SDuty.isSDuty(e.getPlayer());
                 if(BuildMode.isInBuildMode(e.getPlayer())) block = false;
                 e.setCancelled(block);
             }
@@ -282,10 +282,16 @@ public class Utils implements Listener {
                 return;
             }
 
+            if(e.getClickedBlock().getState() instanceof ShulkerBox) {
+                if(!BuildMode.isInBuildMode(e.getPlayer()) && !SDuty.isSDuty(e.getPlayer())) {
+                    e.setCancelled(true);
+                    return;
+                }
+            }
+
             if (e.getClickedBlock().getType() == Material.CHEST ||
                     e.getClickedBlock().getType() == Material.TRAPPED_CHEST ||
                     e.getClickedBlock().getType() == Material.ENDER_CHEST ||
-                    e.getClickedBlock().getType() == Material.SHULKER_BOX ||
                     e.getClickedBlock().getType() == Material.BARREL ||
                     e.getClickedBlock().getType() == Material.DISPENSER ||
                     e.getClickedBlock().getType() == Material.DROPPER ||

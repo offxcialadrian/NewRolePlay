@@ -2,6 +2,7 @@ package de.newrp.Administrator;
 
 import de.newrp.API.*;
 import de.newrp.Berufe.Beruf;
+import de.newrp.Forum.Forum;
 import de.newrp.TeamSpeak.TeamSpeak;
 import de.newrp.main;
 import org.bukkit.Bukkit;
@@ -263,6 +264,7 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
             }
 
             TeamSpeak.sync(Script.getNRPID(tg));
+            Forum.syncPermission(tg);
         }
 
         if (punishment == Punishment.MUTE || secondaryPunishment == Punishment.MUTE) {
@@ -319,6 +321,7 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
         }
 
         TeamSpeak.sync(Script.getNRPID(tg));
+        Forum.syncPermission(tg);
     }
 
     public static void punish(Player p, OfflinePlayer tg, Violation v) {

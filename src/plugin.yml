@@ -367,3 +367,6 @@ commands:
     aliases: [ gefahrenstufe ]
   gmx:
     description: shutdown
+  signedit:
+    description: sign an item
+    aliases: [ sign ]

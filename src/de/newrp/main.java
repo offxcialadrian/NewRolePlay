@@ -17,10 +17,7 @@ import de.newrp.Medic.ReviveCommand;
 import de.newrp.News.NewsCommand;
 import de.newrp.Player.*;
 import de.newrp.Police.*;
-import de.newrp.Runnable.AsyncDaylightCycle;
-import de.newrp.Runnable.AsyncHour;
-import de.newrp.Runnable.AsyncMinute;
-import de.newrp.Runnable.SyncMinute;
+import de.newrp.Runnable.*;
 import de.newrp.Shop.*;
 import de.newrp.TeamSpeak.*;
 import de.newrp.Ticket.*;
@@ -39,7 +36,10 @@ public class main extends JavaPlugin {
 
     private static Plugin instance;
     private static MySQL mysql;
+    private static MySQL mysql2;
     private static Connection con;
+
+    private static Connection con2;
 
     private static boolean test;
 
@@ -51,8 +51,16 @@ public class main extends JavaPlugin {
         return mysql;
     }
 
+    public static MySQL MySQL2() {
+        return mysql2;
+    }
+
     public static Connection getConnection() {
         return con;
+    }
+
+    public static Connection getForumConnection() {
+        return con2;
     }
 
     public static boolean isTest() {
@@ -72,6 +80,18 @@ public class main extends JavaPlugin {
             Bukkit.getConsoleSender().sendMessage("§cNRP §8× §aVerbindung zur Datenbank hergestellt.");
         } catch (Exception e1) {
             Bukkit.getConsoleSender().sendMessage("§cNRP §8× §cVerbindung zur Datenbank konnte nicht hergestellt werden.");
+            Bukkit.getConsoleSender().sendMessage("§cNRP §8× §cPlugin wird gestoppt..");
+            Bukkit.getConsoleSender().sendMessage("§cNRP §8× §cFehler: " + e1.getMessage());
+            Bukkit.getConsoleSender().sendMessage("§cNRP §8× §cFahre Server herunter..");
+            this.getServer().shutdown();
+        }
+
+        try {
+            mysql2 = new MySQL("localhost", "3306", "forum", "forumadmin", "TtXf*H&gqkSTC2a2");
+            con2 = mysql2.openConnection();
+            Bukkit.getConsoleSender().sendMessage("§cNRP §8× §aVerbindung zur Forum-Datenbank hergestellt.");
+        } catch (Exception e1) {
+            Bukkit.getConsoleSender().sendMessage("§cNRP §8× §cVerbindung zur Forum-Datenbank konnte nicht hergestellt werden.");
             Bukkit.getConsoleSender().sendMessage("§cNRP §8× §cPlugin wird gestoppt..");
             Bukkit.getConsoleSender().sendMessage("§cNRP §8× §cFehler: " + e1.getMessage());
             Bukkit.getConsoleSender().sendMessage("§cNRP §8× §cFahre Server herunter..");
@@ -235,6 +255,7 @@ public class main extends JavaPlugin {
         getCommand("policecomputer").setExecutor(new Policecomputer());
         getCommand("dangerlevel").setExecutor(new DangerLevel());
         getCommand("gmx").setExecutor(new GMX());
+        getCommand("signedit").setExecutor(new SignEdit());
 
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new SDuty(), this);
@@ -295,6 +316,7 @@ public class main extends JavaPlugin {
         new PayDay().runTaskTimerAsynchronously(this, 60 * 20L, 60 * 20L);
         new AsyncMinute().runTaskTimerAsynchronously(this, 60 * 20L, 60 * 20L);
         new AsyncHour().runTaskTimerAsynchronously(this, 60 * 60 * 20L, 60 * 60 * 20L);
+        new SyncHour().runTaskTimer(this, 60 * 60 * 20L, 60 * 60 * 20L);
         new AsyncDaylightCycle().runTaskTimer(this, 20L, 600L);
         new SyncMinute().runTaskTimer(this, 60 * 20L, 60 * 20L);
 
