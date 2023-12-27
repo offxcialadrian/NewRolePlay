@@ -31,7 +31,7 @@ public class Whisper implements CommandExecutor {
         }
 
         for(String arg : args) {
-            if(arg.contains("http://") || arg.contains("https://") || arg.contains("www.") || arg.contains(".de")) {
+            if(arg.contains("http://") || arg.contains("https://") || arg.contains("www.") || arg.contains(".de")  || arg.contains(".eu")) {
                 p.sendMessage(Messages.ERROR + "Du darfst keine Links in den RolePlay-Chat senden!");
                 return true;
             }

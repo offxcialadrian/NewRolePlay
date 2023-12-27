@@ -133,7 +133,7 @@ public class Chat implements Listener {
         }
 
         for(String arg : e.getMessage().split(" ")) {
-            if(arg.contains("http://") || arg.contains("https://") || arg.contains("www.") || arg.contains(".de")) {
+            if(arg.contains("http://") || arg.contains("https://") || arg.contains("www.") || arg.contains(".de")  || arg.contains(".eu")) {
                 p.sendMessage(Messages.ERROR + "Du darfst keine Links in den RolePlay-Chat senden!");
                 return;
             }
