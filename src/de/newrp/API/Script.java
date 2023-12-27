@@ -1,5 +1,6 @@
 package de.newrp.API;
 
+import de.newrp.Administrator.AntiCheatSystem;
 import de.newrp.Administrator.BuildMode;
 import de.newrp.Administrator.SDuty;
 import de.newrp.Berufe.Abteilung;
@@ -884,16 +885,20 @@ public class Script {
     public static void addMoney(Player p, PaymentType paymentType, int amount) {
         amount = Math.abs(amount);
         executeUpdate("UPDATE money SET " + paymentType.getName() + "=" + (getMoney(p, paymentType) + amount) + " WHERE nrp_id=" + getNRPID(p));
+        if(Script.getLevel(p) == 1 && getMoney(p, paymentType) >= 100000) Script.sendTeamMessage(AntiCheatSystem.PREFIX + "Verdächtige Geldmenge: " + Script.getName(p) + " (" + getMoney(p, paymentType) + "€)");
     }
 
     public static void addMoney(int id, PaymentType paymentType, int amount) {
         amount = Math.abs(amount);
         executeUpdate("UPDATE money SET " + paymentType.getName() + "=" + (getMoney(id, paymentType) + amount) + " WHERE nrp_id=" + id);
+
+        if(Script.getLevel(Script.getOfflinePlayer(id)) == 1 && getMoney(id, paymentType) >= 100000) Script.sendTeamMessage(AntiCheatSystem.PREFIX + "Verdächtige Geldmenge: " + Script.getOfflinePlayer(id) + " (" + getMoney(id, paymentType) + "€)");
     }
 
     public static void addMoney(OfflinePlayer p, PaymentType paymentType, int amount) {
         amount = Math.abs(amount);
         executeUpdate("UPDATE money SET " + paymentType.getName() + "=" + (getMoney(p, paymentType) + amount) + " WHERE nrp_id=" + getNRPID(p));
+        if(Script.getLevel(p) == 1 && getMoney(p, paymentType) >= 100000) Script.sendTeamMessage(AntiCheatSystem.PREFIX + "Verdächtige Geldmenge: " + p.getName() + " (" + getMoney(p, paymentType) + "€)");
     }
 
     public static void removeMoney(Player p, PaymentType paymentType, int amount) {

@@ -15,7 +15,7 @@ public class WhitelistIP implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
         Player p = (Player) cs;
-        if(Script.hasRank(p, Rank.ADMINISTRATOR, false)) {
+        if(!Script.hasRank(p, Rank.ADMINISTRATOR, false)) {
             p.sendMessage(Messages.NO_PERMISSION);
             return false;
         }

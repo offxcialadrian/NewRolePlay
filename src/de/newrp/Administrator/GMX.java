@@ -31,11 +31,32 @@ public class GMX implements CommandExecutor {
             return true;
         }
 
-        Bukkit.broadcastMessage(Script.PREFIX + "§4§lACHTUNG: §cDer Server startet in 10 Sekunden neu!");
+        Bukkit.broadcastMessage(Script.PREFIX + "§4§lACHTUNG: §cDer Server startet in einer Minute neu!");
         Bukkit.getScheduler().runTaskLater(main.getInstance(), () -> {
-            Bukkit.broadcastMessage(Script.PREFIX + "§4§lACHTUNG: §cDer Server startet jetzt neu!");
-            Bukkit.getServer().shutdown();
-        }, 20 * 10);
+            Bukkit.broadcastMessage(Script.PREFIX + "§4§lACHTUNG: §cDer Server startet in 30 Sekunden neu!");
+            Bukkit.getScheduler().runTaskLater(main.getInstance(), () -> {
+                Bukkit.broadcastMessage(Script.PREFIX + "§4§lACHTUNG: §cDer Server startet in 10 Sekunden neu!");
+                Bukkit.getScheduler().runTaskLater(main.getInstance(), () -> {
+                    Bukkit.broadcastMessage(Script.PREFIX + "§4§lACHTUNG: §cDer Server startet in 5 Sekunden neu!");
+                    Bukkit.getScheduler().runTaskLater(main.getInstance(), () -> {
+                        Bukkit.broadcastMessage(Script.PREFIX + "§4§lACHTUNG: §cDer Server startet in 4 Sekunden neu!");
+                        Bukkit.getScheduler().runTaskLater(main.getInstance(), () -> {
+                            Bukkit.broadcastMessage(Script.PREFIX + "§4§lACHTUNG: §cDer Server startet in 3 Sekunden neu!");
+                            Bukkit.getScheduler().runTaskLater(main.getInstance(), () -> {
+                                Bukkit.broadcastMessage(Script.PREFIX + "§4§lACHTUNG: §cDer Server startet in 2 Sekunden neu!");
+                                Bukkit.getScheduler().runTaskLater(main.getInstance(), () -> {
+                                    Bukkit.broadcastMessage(Script.PREFIX + "§4§lACHTUNG: §cDer Server startet in 1 Sekunde neu!");
+                                    Bukkit.getScheduler().runTaskLater(main.getInstance(), () -> {
+                                        Bukkit.broadcastMessage(Script.PREFIX + "§4§lACHTUNG: §cDer Server startet jetzt neu!");
+                                        Bukkit.getServer().shutdown();
+                                    }, 20);
+                                }, 20);
+                            }, 20);
+                        }, 20);
+                    }, 20);
+                }, 20*5);
+            }, 20*15);
+        }, 20*45);
 
         return false;
     }

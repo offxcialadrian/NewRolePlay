@@ -33,13 +33,19 @@ public class OOC implements CommandExecutor {
 
         for(String arg : args) {
             if(arg.contains("http://") || arg.contains("https://") || arg.contains("www.") || arg.contains(".de")  || arg.contains(".eu")) {
-                Script.sendTeamMessage(AntiCheatSystem.PREFIX + "Verdacht auf Fremdwerbung bei " + Script.getName(p) + " (Level " + p.getLevel() + ") §8» §7" + msg);
-                return true;
+                Script.sendTeamMessage(AntiCheatSystem.PREFIX + "Verdacht auf Fremdwerbung bei " + Script.getName(p) + " (Level " + p.getLevel() + ") §8» §c" + msg);
+                if(Script.getNRPTeam().isEmpty()) {
+                    p.sendMessage(AntiCheatSystem.PREFIX + "Es liegt ein Verdacht auf Fremdwerbung vor. Die Nachricht wurde nicht gesendet. Wenn du denkst, dass es sich um einen Fehler handelt, melde ihn bitte im Forum.");
+                    return true;
+                }
             }
 
             if(Script.isIP(arg)) {
-                Script.sendTeamMessage(AntiCheatSystem.PREFIX + "Verdacht auf Fremdwerbung bei " + Script.getName(p) + " (Level " + p.getLevel() + ") §8» §7" + msg);
-                return true;
+                Script.sendTeamMessage(AntiCheatSystem.PREFIX + "Verdacht auf Fremdwerbung bei " + Script.getName(p) + " (Level " + p.getLevel() + ") §8» §c" + msg);
+                if(Script.getNRPTeam().isEmpty()) {
+                    p.sendMessage(AntiCheatSystem.PREFIX + "Es liegt ein Verdacht auf Fremdwerbung vor. Die Nachricht wurde nicht gesendet. Wenn du denkst, dass es sich um einen Fehler handelt, melde ihn bitte im Forum.");
+                    return true;
+                }
             }
         }
 
