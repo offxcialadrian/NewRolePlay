@@ -15,6 +15,7 @@ import de.newrp.Government.*;
 import de.newrp.House.*;
 import de.newrp.Medic.ReviveCommand;
 import de.newrp.News.NewsCommand;
+import de.newrp.News.Zeitung;
 import de.newrp.Player.*;
 import de.newrp.Police.*;
 import de.newrp.Runnable.*;
@@ -257,6 +258,8 @@ public class main extends JavaPlugin {
         getCommand("gmx").setExecutor(new GMX());
         getCommand("signedit").setExecutor(new SignEdit());
         getCommand("blockcommand").setExecutor(new BlockCommand());
+        getCommand("tippoftheday").setExecutor(new TippOfTheDay());
+        getCommand("zeitung").setExecutor(new Zeitung());
 
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new SDuty(), this);
@@ -314,6 +317,7 @@ public class main extends JavaPlugin {
         pm.registerEvents(new Personalausweis(), this);
         pm.registerEvents(new Policecomputer(), this);
         pm.registerEvents(new BlockCommand(), this);
+        pm.registerEvents(new Zeitung(), this);
 
         new PayDay().runTaskTimerAsynchronously(this, 60 * 20L, 60 * 20L);
         new AsyncMinute().runTaskTimerAsynchronously(this, 60 * 20L, 60 * 20L);

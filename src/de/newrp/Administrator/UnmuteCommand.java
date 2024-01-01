@@ -44,7 +44,7 @@ public class UnmuteCommand implements CommandExecutor {
 
         Script.executeAsyncUpdate("DELETE FROM mute WHERE nrp_id = '" + Script.getNRPID(tg) + "'");
         p.sendMessage(Punish.PREFIX + "Du hast " + tg.getName() + " entmutet.");
-        tg.sendMessage(Punish.PREFIX + "Du wurdest von " + p.getName() + " entmutet.");
+        tg.sendMessage(Punish.PREFIX + "Du wurdest von " + Script.getName(p) + " entmutet.");
         Script.sendTeamMessage(p, ChatColor.RED, "hat " + tg.getName() + " entmutet.", true);
 
 

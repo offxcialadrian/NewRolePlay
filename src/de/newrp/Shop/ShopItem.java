@@ -1,6 +1,7 @@
 package de.newrp.Shop;
 
 import de.newrp.House.HouseAddon;
+import de.newrp.News.Zeitung;
 import de.newrp.Waffen.Weapon;
 import de.newrp.main;
 import org.bukkit.Material;
@@ -29,7 +30,8 @@ public enum ShopItem {
     FILTERKAFFEE(44, "§rFilterkaffee", new ItemStack(Material.FLOWER_POT), 1, 2, 25, 2, 3000, true, true, new ShopType[] {ShopType.CAFE}),
     LATTE_MACCHIATO(45, "§rLatte Macchiato", new ItemStack(Material.FLOWER_POT), 1, 2, 25, 2, 3000, true, true, new ShopType[] {ShopType.CAFE}),
     ESPRESSO(46, "§rEspresso", new ItemStack(Material.FLOWER_POT), 1, 2, 25, 2, 3000, true, true, new ShopType[] {ShopType.CAFE}),
-    CRAPPUCHINO(47, "§rCrappuchino", new ItemStack(Material.FLOWER_POT), 1, 2, 25, 2, 3000, true, true, new ShopType[] {ShopType.CAFE});
+    CRAPPUCHINO(47, "§rCrappuchino", new ItemStack(Material.FLOWER_POT), 1, 2, 25, 2, 3000, true, true, new ShopType[] {ShopType.CAFE}),
+    Zeitung(48, "§9Zeitung", de.newrp.News.Zeitung.zeitung, 1, 2, 25, 2, 3000, true, true, new ShopType[] {ShopType.CAFE, ShopType.SUPERMARKET});
 
     private final int id;
     private final String name;

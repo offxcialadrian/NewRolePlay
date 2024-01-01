@@ -35,7 +35,7 @@ public class NewsCommand implements CommandExecutor {
             return true;
         }
 
-        if(Beruf.getAbteilung(p) != Abteilung.Abteilungen.NEWS_NACHRICHTEN) {
+        if(Beruf.getAbteilung(p) != Abteilung.Abteilungen.NEWS_2 && Beruf.getAbteilung(p) != Abteilung.Abteilungen.NEWS_1) {
             p.sendMessage(Messages.ERROR + "Du bist nicht in der richtigen Abteilung um News zu schalten.");
             return true;
         }

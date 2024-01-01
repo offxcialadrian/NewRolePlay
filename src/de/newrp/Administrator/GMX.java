@@ -56,7 +56,7 @@ public class GMX implements CommandExecutor {
                     }, 20);
                 }, 20*5);
             }, 20*15);
-        }, 20*45);
+        }, 20*15);
 
         return false;
     }

@@ -57,6 +57,24 @@ public class Sperrinfo implements CommandExecutor {
             }
         }
 
+        if(Sperre.MUTE.isActive(id)) {
+            nothing = false;
+            long time = System.currentTimeMillis();
+            long sperre = Sperre.MUTE.getTime(id);
+            long left = sperre - time;
+            int min = (int) (left / 1000) / 60;
+            int hour = min / 60;
+            min -= hour * 60;
+            if (hour > 0) {
+                p.sendMessage(PREFIX + "Dein Mute geht noch " + hour + " Stunden und " + min + " Minuten.");
+            } else if (min > 0) {
+                p.sendMessage(PREFIX + "Dein Mute geht noch " + min + " Minuten.");
+            } else {
+                p.sendMessage(PREFIX + "Dein Mute ist nicht mehr aktiv.");
+                Sperre.MUTE.remove(id);
+            }
+        }
+
         if (nothing) {
             p.sendMessage(PREFIX + "Du hast keine Sperre.");
         }

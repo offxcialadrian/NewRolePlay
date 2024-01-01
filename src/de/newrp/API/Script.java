@@ -857,6 +857,28 @@ public class Script {
         return 0;
     }
 
+    public static boolean haveBirthDay(Player p) {
+        try (Statement stmt = main.getConnection().createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT day, month FROM birthday WHERE id=" + Script.getNRPID(p))) {
+            if (rs.next()) {
+                int month = rs.getInt("month");
+                int day = rs.getInt("day");
+
+                int c_m = Calendar.getInstance().get(Calendar.MONTH) + 1;
+                int c_d = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+
+                if (month == c_m) {
+                    return day == c_d;
+                } else {
+                    return false;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     public static void setLastDeadOfficer(long time) {
         executeUpdate("UPDATE last_officer_dead SET time=" + time);
     }

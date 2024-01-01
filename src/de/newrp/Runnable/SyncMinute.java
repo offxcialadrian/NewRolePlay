@@ -53,7 +53,7 @@ public class SyncMinute extends BukkitRunnable {
                         }, 20);
                     }, 20*5);
                 }, 20*15);
-            }, 20*45);
+            }, 20*15);
         }
     }
 }

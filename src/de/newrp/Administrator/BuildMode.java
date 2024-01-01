@@ -9,6 +9,7 @@ import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -107,6 +108,7 @@ public class BuildMode implements CommandExecutor, Listener {
     @EventHandler
     public void onBlockSet(BlockPlaceEvent e) {
         if (!isInBuildMode(e.getPlayer())) e.setCancelled(true);
+        if(!e.isCancelled() && e.getBlock().getState() instanceof ItemFrame) e.getPlayer().sendMessage(Messages.INFO + "Bitte beachte, dass ItemFrames den Server zum laggen bringen können und daher ggf. später entfernt werden.");
         if(!e.isCancelled()) Script.addToBauLog(e.getPlayer(), e.getBlock().getType() , e.getBlock().getLocation(), true);
     }
 

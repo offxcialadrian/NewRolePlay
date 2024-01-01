@@ -36,7 +36,8 @@ public class Equip implements CommandExecutor, Listener {
         EINSAZTZSCHILD_2("Einsatzschild", Script.einsatzschild(2), 1500, 0, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE),
         RAUCHGRANATE("Rauchgranate", Script.rauchgranate(), 100, 0, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE),
         FLASHBANG("Flashbang", Script.flashbang(), 100, 0, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE),
-        FALLSCHIRM("Fallschirm", Script.fallschirm(), 100, 0, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE);
+        FALLSCHIRM("Fallschirm", Script.fallschirm(), 100, 0, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE),
+        ZEITUNG("Zeitung", Script.setName(new ItemStack(Material.WRITABLE_BOOK), "§7Zeitung"), 100, 0, Abteilung.Abteilungen.NEWS_3, Beruf.Berufe.NEWS);
 
         private String name;
         private ItemStack item;
@@ -117,7 +118,7 @@ public class Equip implements CommandExecutor, Listener {
             return true;
         }
 
-        if (!Duty.isInDuty(p)) {
+        if (!Duty.isInDuty(p) && beruf.hasDuty()) {
             p.sendMessage(Messages.ERROR + "Du musst im Dienst sein.");
             return true;
         }
@@ -128,6 +129,11 @@ public class Equip implements CommandExecutor, Listener {
         }
 
         if(Beruf.getBeruf(p) == Beruf.Berufe.RETTUNGSDIENST && p.getLocation().distance(new Location(Script.WORLD,267,75,1253)) > 5) {
+            p.sendMessage(Messages.ERROR + "Du musst dich in der Nähe des Duty-Punktes befinden.");
+            return true;
+        }
+
+        if(Beruf.getBeruf(p) == Beruf.Berufe.NEWS && p.getLocation().distance(new Location(Script.WORLD,289, 67, 788)) > 5) {
             p.sendMessage(Messages.ERROR + "Du musst dich in der Nähe des Duty-Punktes befinden.");
             return true;
         }

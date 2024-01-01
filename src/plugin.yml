@@ -269,6 +269,7 @@ commands:
     description: force the lotto
   whitelistip:
     description: whitelist an ip
+    aliases: [ ipwhitelist ]
   equip:
     description: equip something
   uncuff:
@@ -372,3 +373,8 @@ commands:
     aliases: [ sign ]
   blockcommand:
     description: block a command
+  tippoftheday:
+    description: view the tippoftheday
+    aliases: [ totd ]
+  zeitung:
+    description: publish a zeitung

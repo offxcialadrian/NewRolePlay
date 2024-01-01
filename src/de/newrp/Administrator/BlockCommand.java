@@ -58,7 +58,10 @@ public class BlockCommand implements CommandExecutor, Listener {
         Player p = e.getPlayer();
         if(blocked.contains(e.getMessage().split(" ")[0])) {
             e.setCancelled(!SDuty.isSDuty(p));
-            if(SDuty.isSDuty(p)) p.sendMessage(Messages.INFO + "Dieser Befehl ist derzeit gesperrt. Du konntest ihn nur ausführen, weil du im Supporter-Dienst bist.");
+            if(SDuty.isSDuty(p)) {
+                p.sendMessage(Messages.INFO + "Dieser Befehl ist derzeit gesperrt. Du konntest ihn nur ausführen, weil du im Supporter-Dienst bist.");
+                return;
+            }
             p.sendMessage(Messages.ERROR + "Dieser Befehl ist derzeit gesperrt.");
         }
     }

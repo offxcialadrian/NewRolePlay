@@ -287,6 +287,9 @@ public class Shop implements CommandExecutor, Listener {
             Inventory inv = Bukkit.createInventory(null, 9*3, "§7Sortiment " + shop.getPublicName());
             for(ShopItem si : ShopItem.values()) {
                 ItemStack is = si.getItemStack();
+                if(is == null && si == ShopItem.Zeitung) {
+                    is = Script.setNameAndLore(Material.WRITTEN_BOOK, "Zeitung", "§8» §6Lizensierungsgebühr: §6" + si.getLicensePrice() + "€", "§8» §6Einkaufspreis: §6" + si.getBuyPrice() + "€");
+                }
                 if(!containsType(si, shop)) continue;
                 if(shop.getItems().get(si.getID()) == null) {
                     is = Script.setNameAndLore(is, si.getName(), "§8» §6Lizensierungsgebühr: §6" + si.getLicensePrice() + "€", "§8» §6Einkaufspreis: §6" + si.getBuyPrice() + "€");
@@ -331,6 +334,10 @@ public class Shop implements CommandExecutor, Listener {
             ItemStack is = e.getCurrentItem();
             si = ShopItem.getShopItem(is);
 
+            if(is.getType() == Material.WRITTEN_BOOK) {
+                si = ShopItem.Zeitung;
+            }
+
             if(si == null) {
                 p.sendMessage(Messages.ERROR + "Dieses Item ist nicht im Shop verfügbar.");
                 return;
@@ -371,6 +378,10 @@ public class Shop implements CommandExecutor, Listener {
 
 
             si = ShopItem.getShopItem(is);
+
+            if(is.getType() == Material.WRITTEN_BOOK) {
+                si = ShopItem.Zeitung;
+            }
 
             if(si == null) {
                 p.sendMessage(Messages.ERROR + "Dieses Item ist nicht verfügbar.");

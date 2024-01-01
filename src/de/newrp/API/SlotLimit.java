@@ -37,6 +37,7 @@ public enum SlotLimit {
 
     public int get(int id) {
         HashMap<SlotLimit, Integer> map = getSlotLimits(id);
+        Debug.debug(map.get(this));
         return map.get(this);
     }
 
@@ -56,18 +57,20 @@ public enum SlotLimit {
         for (SlotLimit sl : SlotLimit.values()) {
             map.put(sl, 0);
         }
-        int h = SlotLimit.HOUSE.getDefaultAmount(premium), c = SlotLimit.VEHICLE.getDefaultAmount(premium), p = SlotLimit.PET.getDefaultAmount(premium);
+        int h = SlotLimit.HOUSE.getDefaultAmount(premium), c = SlotLimit.VEHICLE.getDefaultAmount(premium), p = SlotLimit.PET.getDefaultAmount(premium), s = SlotLimit.SHOP.getDefaultAmount(premium);
         try (PreparedStatement statement = main.getConnection().prepareStatement(
                 "SELECT ( SELECT houselimit " +
-                        "FROM houselimit WHERE id = ? ) AS house, ( SELECT carlimit FROM carlimit WHERE id = ?) AS car, ( SELECT petlimit FROM petlimit WHERE id = ? ) AS pet")) {
+                        "FROM houselimit WHERE id = ? ) AS house, ( SELECT carlimit FROM carlimit WHERE id = ?) AS car, ( SELECT petlimit FROM petlimit WHERE id = ? ) AS pet, ( SELECT shoplimit FROM shoplimit WHERE id = ? ) AS pet")) {
             statement.setInt(1, id);
             statement.setInt(2, id);
             statement.setInt(3, id);
+            statement.setInt(4, id);
             try (ResultSet rs = statement.executeQuery()) {
                 if (rs.next()) {
                     h += rs.getInt("house");
                     c += rs.getInt("car");
                     p += rs.getInt("pet");
+                    s += rs.getInt("shop");
                 }
             }
         } catch (SQLException e) {
@@ -77,6 +80,7 @@ public enum SlotLimit {
         map.put(SlotLimit.HOUSE, h);
         map.put(SlotLimit.VEHICLE, c);
         map.put(SlotLimit.PET, p);
+        map.put(SlotLimit.SHOP, s);
 
         return map;
     }

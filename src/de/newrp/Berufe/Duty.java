@@ -41,14 +41,12 @@ public class Duty implements CommandExecutor {
             }
 
             if (isInDuty(p)) {
-                p.sendMessage(PREFIX + "Du hast den Dienst verlassen.");
                 Beruf.Berufe.RETTUNGSDIENST.sendMessage(PREFIX + Script.getName(p) + " hat den Dienst verlassen.");
                 duty.remove(p);
                 Script.updateListname(p);
                 return true;
             }
 
-            p.sendMessage(PREFIX + "Du hast den Dienst betreten.");
             Beruf.Berufe.RETTUNGSDIENST.sendMessage(PREFIX + Script.getName(p) + " hat den Dienst betreten.");
             duty.add(p);
             Script.updateListname(p);

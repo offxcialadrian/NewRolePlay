@@ -21,23 +21,25 @@ import java.util.UUID;
 public class Beruf {
 
     public enum Berufe {
-        GOVERNMENT(1, "Regierung", false, false, 0, TeamspeakServerGroup.GOVERNMENT, new ForumGroup[]{ForumGroup.GOVERNMENT, ForumGroup.GOVERNMENT_LEADER}),
-        NEWS(2, "News", true, false, 0, TeamspeakServerGroup.NEWS, new ForumGroup[]{ForumGroup.NEWS, ForumGroup.NEWS_LEADER}),
-        POLICE(3, "Polizei", false, true, 0, TeamspeakServerGroup.POLICE, new ForumGroup[]{ForumGroup.POLICE, ForumGroup.POLICE_LEADER}),
-        RETTUNGSDIENST(4, "Rettungsdienst", false, true, 0, TeamspeakServerGroup.RETTUNGSDIENST, new ForumGroup[]{ForumGroup.RETTUNGSDIENST, ForumGroup.RETTUNGSDIENST_LEADER});
+        GOVERNMENT(1, "Regierung", false, false, false, 0, TeamspeakServerGroup.GOVERNMENT, new ForumGroup[]{ForumGroup.GOVERNMENT, ForumGroup.GOVERNMENT_LEADER}),
+        NEWS(2, "News", true, false, true, 0, TeamspeakServerGroup.NEWS, new ForumGroup[]{ForumGroup.NEWS, ForumGroup.NEWS_LEADER}),
+        POLICE(3, "Polizei", false, true, true, 0, TeamspeakServerGroup.POLICE, new ForumGroup[]{ForumGroup.POLICE, ForumGroup.POLICE_LEADER}),
+        RETTUNGSDIENST(4, "Rettungsdienst", false, true,true, 0, TeamspeakServerGroup.RETTUNGSDIENST, new ForumGroup[]{ForumGroup.RETTUNGSDIENST, ForumGroup.RETTUNGSDIENST_LEADER});
 
         int id;
         private final String name;
         boolean kasse;
+        boolean duty;
         boolean equip;
         int channelid;
         TeamspeakServerGroup serverGroup;
         ForumGroup[] forumGroup;
 
-        Berufe(int id, String name, boolean kasse, boolean equip, int channelid, TeamspeakServerGroup serverGroup, ForumGroup[] forumGroup) {
+        Berufe(int id, String name, boolean kasse, boolean duty, boolean equip, int channelid, TeamspeakServerGroup serverGroup, ForumGroup[] forumGroup) {
             this.id = id;
             this.name = name;
             this.kasse = kasse;
+            this.duty = duty;
             this.equip = equip;
             this.channelid = channelid;
             this.serverGroup = serverGroup;
@@ -58,6 +60,10 @@ public class Beruf {
 
         public int getChannelID() {
             return channelid;
+        }
+
+        public boolean hasDuty() {
+            return duty;
         }
 
         public TeamspeakServerGroup getTeamspeakServerGroup() {

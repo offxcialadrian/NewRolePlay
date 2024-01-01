@@ -6,6 +6,7 @@ import com.google.common.collect.ImmutableMap;
 import de.newrp.Administrator.BuildMode;
 import de.newrp.Administrator.Notications;
 import de.newrp.Administrator.SDuty;
+import de.newrp.Administrator.TippOfTheDay;
 import de.newrp.Government.Wahlen;
 import de.newrp.TeamSpeak.TeamSpeak;
 import de.newrp.main;
@@ -156,6 +157,13 @@ public class Utils implements Listener {
             e.getPlayer().sendMessage(Script.PREFIX + "Willkommen zurück auf §eNewRP§7!");
             if(Script.hasRank(p, Rank.MODERATOR, false)) e.getPlayer().sendMessage(Messages.INFO + "Aufgrund deines Status als " + Script.getRank(p).getName(p) + " hast du automatisch einen Premium-Account.");
             Script.sendActionBar(e.getPlayer(), "§7Willkommen zurück auf §eNewRP§7!");
+            p.sendMessage(TippOfTheDay.PREFIX + TippOfTheDay.getRandomTipp());
+            if(Script.haveBirthDay(p)) {
+                p.sendMessage(Messages.INFO + "§lDas Team von New RolePlay wünscht dir alles Gute zum Geburtstag!");
+                p.sendMessage(Messages.INFO + "Als Geschenk erhhältst du 500 Exp!");
+                Script.addEXP(p, 500);
+            }
+
         } else {
             if (!Script.getCountry(p).contains("Germany") && !Script.getCountry(p).contains("Austria") && !Script.getCountry(p).contains("Switzerland") && !Script.isWhitelistedIP(p.getAddress().getAddress().getHostAddress())) {
                 p.kickPlayer("§8» §cNRP × New RolePlay §8┃ §cAccess denied §8« \n\n§8§m------------------------------\n\n§7We are sorry to inform you that only players inside DE, AT & CH can join the server.\n\n§7If you think this is a mistake, please contact our support.\n\n§8§m------------------------------");

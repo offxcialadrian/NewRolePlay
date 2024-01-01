@@ -3,6 +3,7 @@ package de.newrp.Chat;
 import de.newrp.API.Friedhof;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
+import de.newrp.Administrator.AntiCheatSystem;
 import de.newrp.Administrator.Notications;
 import de.newrp.Administrator.Punish;
 import de.newrp.Player.Passwort;
@@ -133,9 +134,12 @@ public class Chat implements Listener {
         }
 
         for(String arg : e.getMessage().split(" ")) {
-            if(arg.contains("http://") || arg.contains("https://") || arg.contains("www.") || arg.contains(".de")  || arg.contains(".eu")) {
-                p.sendMessage(Messages.ERROR + "Du darfst keine Links in den RolePlay-Chat senden!");
-                return;
+            if(arg.contains("http://") || arg.contains("https://") || arg.contains("www.") || arg.contains(".de")  || arg.contains(".eu") || arg.contains("germanrp") || arg.contains("grp") || arg.contains("unicacity")) {
+                Script.sendTeamMessage(AntiCheatSystem.PREFIX + "Verdacht auf Fremdwerbung bei " + Script.getName(p) + " (Level " + p.getLevel() + ") §8» §c" + e.getMessage());
+                if(Script.getNRPTeam().isEmpty()) {
+                    p.sendMessage(AntiCheatSystem.PREFIX + "Es liegt ein Verdacht auf Fremdwerbung vor. Die Nachricht wurde nicht gesendet. Wenn du denkst, dass es sich um einen Fehler handelt, melde ihn bitte im Forum.");
+                    return;
+                }
             }
 
             if(Script.isIP(arg)) {

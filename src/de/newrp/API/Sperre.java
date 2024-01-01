@@ -9,11 +9,11 @@ import de.newrp.main;
 public enum Sperre {
 
     PERSONALAUSWEIS(1, "personalausweis", true),
-    MUTE(2, "mute", true),
+    MUTE(2, "mutesperre", true),
     TIMEBAN(3, "timeban", true),
-    FRAKTIONSSPERRE(4, "fraktionsperre", true),
+    FRAKTIONSSPERRE(4, "fraktionsperre", false),
     WAFFENSPERRE(5, "waffensperre", true),
-    ADSPERRE(6, "adsperre", true),
+    ADSPERRE(6, "adsperre", false),
     TRAGENSPERRE(7, "tragensperre", true);
 
     private final int id;

@@ -137,7 +137,7 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
         SPAM(18, Punishment.KICK, null, 0, "Spam", "Du hast gespammt."),
         WIEDERHOLTER_SPAM(19, Punishment.BAN, null, TimeUnit.MINUTES.toMillis(30), "Wiederholter Spam", "Du hast wiederholt gespammt."),
         EXTREMER_SPAM(20, Punishment.BAN, null, TimeUnit.HOURS.toMillis(1), "Extremer Spam", "Du hast extrem gespammt."),
-        WIEDERHOLTE_FREMDWERBUNG(21, Punishment.BAN, Punishment.WARN, TimeUnit.DAYS.toMillis(3), "Wiederholte Fremdwerbung", "Du hast wiederholt Fremdwerbung verbreitet.");
+        WIEDERHOLTE_FREMDWERBUNG(21, Punishment.BAN, Punishment.WARN, TimeUnit.DAYS.toMillis(7), "Wiederholte Fremdwerbung", "Du hast wiederholt Fremdwerbung verbreitet.");
 
 
 
@@ -286,6 +286,8 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
                 Log.WARNING.write(tg, "wurde von " + Messages.RANK_PREFIX(p) + " bis zum " + dateFormat.format(until) + " Uhr für " + v.getName() + " gemutet.");
                 Log.HIGH.write(p, "hat " + Script.getName(tg) + " bis zum " + dateFormat.format(until) + " Uhr für " + v.getName() + " gemutet.");
             }
+            int muteminutes = (int) (v.getDuration() / 1000) / 60;
+            Sperre.MUTE.setSperre(Script.getNRPID(tg), muteminutes);
         }
 
         if (punishment == Punishment.KICK || secondaryPunishment == Punishment.KICK) {
@@ -368,6 +370,9 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
                 Script.addOfflineMessage(tg, PREFIX + "Du wurdest von " + Script.getName(p) + " bis zum " + dateFormat.format(until) + " Uhr für §l" + v.getName() + "§c gemutet.");
                 Script.addOfflineMessage(tg, PREFIX + "Grund: " + v.getDescription());
             }
+
+            int muteminutes = (int) (v.getDuration() / 1000) / 60;
+            Sperre.MUTE.setSperre(Script.getNRPID(tg), muteminutes);
         }
 
         if (punishment == Punishment.KICK || secondaryPunishment == Punishment.KICK) {

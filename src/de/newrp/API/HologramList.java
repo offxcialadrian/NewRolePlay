@@ -15,7 +15,8 @@ public enum HologramList {
     PERSONALAUSWEIS(9, "§8/§6personalausweis",new Location(Script.WORLD, 554, 69, 984)),
     DUTY_MEDIC(10, "§8/§6duty",new Location(Script.WORLD, 348, 75, 1267)),
     DUTY_MEDIC_2(11, "§8/§6duty",new Location(Script.WORLD, 286, 74, 1239)),
-    EQUIP_MEDIC(12, "§8/§6equip",new Location(Script.WORLD, 267,74,1253));
+    EQUIP_MEDIC(12, "§8/§6equip",new Location(Script.WORLD, 267,74,1253)),
+    EQUIP_NEWS(13, "§8/§6equip",new Location(Script.WORLD, 289, 66, 788));
 
     private final int id;
     private final String name;
