@@ -69,6 +69,20 @@ public class TippOfTheDay implements CommandExecutor {
             return true;
         }
 
+        if(args.length == 1 && args[0].equalsIgnoreCase("list")) {
+            assert getIDs() != null;
+            if(getIDs().isEmpty()) {
+                p.sendMessage(Messages.ERROR + "Es gibt keine Tipps.");
+                return true;
+            }
+            p.sendMessage(PREFIX + "§8=== §6Tipp Übersicht §8===");
+            for(int i = 0; i < getIDs().size(); i++) {
+                p.sendMessage(PREFIX + "§7- §6" + getTipp(getIDs().get(i)));
+            }
+            p.sendMessage(PREFIX + "§8=========");
+            return true;
+        }
+
         String tipp = "";
         for(int i = 0; i < args.length; i++) {
             tipp += args[i] + " ";

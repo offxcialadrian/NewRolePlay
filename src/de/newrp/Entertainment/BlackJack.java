@@ -36,7 +36,7 @@ public class BlackJack implements CommandExecutor, Listener {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
         Player p = (Player) cs;
-        if (p.getLocation().distance(new Location(Script.WORLD, 266, 69, -25)) < 5) {
+        if (p.getLocation().distance(new Location(Script.WORLD, 790, 109, 858)) < 5) {
             if (!bet.containsKey(p.getName())) {
                 if (args.length == 1) {
                     try {

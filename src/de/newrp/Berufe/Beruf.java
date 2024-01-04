@@ -23,7 +23,7 @@ public class Beruf {
     public enum Berufe {
         GOVERNMENT(1, "Regierung", false, false, false, 0, TeamspeakServerGroup.GOVERNMENT, new ForumGroup[]{ForumGroup.GOVERNMENT, ForumGroup.GOVERNMENT_LEADER}),
         NEWS(2, "News", true, false, true, 0, TeamspeakServerGroup.NEWS, new ForumGroup[]{ForumGroup.NEWS, ForumGroup.NEWS_LEADER}),
-        POLICE(3, "Polizei", false, true, true, 0, TeamspeakServerGroup.POLICE, new ForumGroup[]{ForumGroup.POLICE, ForumGroup.POLICE_LEADER}),
+        POLICE(3, "Polizei", false, true, true, 65, TeamspeakServerGroup.POLICE, new ForumGroup[]{ForumGroup.POLICE, ForumGroup.POLICE_LEADER}),
         RETTUNGSDIENST(4, "Rettungsdienst", false, true,true, 0, TeamspeakServerGroup.RETTUNGSDIENST, new ForumGroup[]{ForumGroup.RETTUNGSDIENST, ForumGroup.RETTUNGSDIENST_LEADER});
 
         int id;

@@ -62,7 +62,8 @@ public class Personalausweis implements CommandExecutor, Listener {
             int i = Token.PERSONALAUSWEIS.get(id);
             if (i >= 1) {
                 if (args.length == 0) {
-                    p.sendMessage(Messages.ERROR + "/personalausweis change");
+                    p.sendMessage(PREFIX + "Du hast bereits einen Personalausweis.");
+                    p.sendMessage(Messages.INFO + "Mit /personalausweis change deinen Personalausweis ändern");
                 } else {
                     if (Script.isInRange(p.getLocation(), new Location(p.getWorld(), 554, 70, 984), 4)) {
                         Inventory inv = p.getServer().createInventory(null, 9, "§3Personalausweis");

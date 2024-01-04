@@ -56,7 +56,8 @@ public class Checkfinances implements CommandExecutor {
         if(check.containsKey(tg.getName())) {
             if(check.get(tg.getName()) > System.currentTimeMillis()) {
                 p.sendMessage(PREFIX + "Du hast bereits Daten bei der Bank angefordert.");
-                p.sendMessage(Messages.INFO + "Bitte warte noch " + ((check.get(tg.getName()) - System.currentTimeMillis()) / 1000 / 60) + " Minuten.");
+                int seconds = (int) ((check.get(tg.getName()) - System.currentTimeMillis()) / 1000);
+                p.sendMessage(Messages.INFO + "Bitte führe den Befehl in " + seconds + " Sekunden erneut aus.");
                 return true;
             } else {
                 check.remove(p.getName());

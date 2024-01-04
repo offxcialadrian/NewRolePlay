@@ -26,10 +26,16 @@ public class GMX implements CommandExecutor {
             return true;
         }
 
-        if (args.length != 0) {
-            p.sendMessage(Messages.ERROR + "/gmx");
+        if (args.length < 1) {
+            p.sendMessage(Messages.ERROR + "/gmx [Grund]");
             return true;
         }
+
+        StringBuilder msg = new StringBuilder();
+        for(int i = 0; i < args.length; i++) {
+            msg.append(args[i]).append(" ");
+        }
+
 
         Bukkit.broadcastMessage(Script.PREFIX + "§4§lACHTUNG: §cDer Server startet in einer Minute neu!");
         Bukkit.getScheduler().runTaskLater(main.getInstance(), () -> {
@@ -48,6 +54,9 @@ public class GMX implements CommandExecutor {
                                     Bukkit.broadcastMessage(Script.PREFIX + "§4§lACHTUNG: §cDer Server startet in 1 Sekunde neu!");
                                     Bukkit.getScheduler().runTaskLater(main.getInstance(), () -> {
                                         Bukkit.broadcastMessage(Script.PREFIX + "§4§lACHTUNG: §cDer Server startet jetzt neu!");
+                                        for(Player all : Bukkit.getOnlinePlayers()) {
+                                            all.kickPlayer("§8» §cNRP × New RolePlay §8┃ §cKICK §8« \n\n§8§m------------------------------\n\n§7Der Server startet neu§8.\n\n§7Grund §8× §e" + msg + "\n\n§8§m------------------------------");
+                                        }
                                         Bukkit.getServer().shutdown();
                                     }, 20);
                                 }, 20);
@@ -56,7 +65,7 @@ public class GMX implements CommandExecutor {
                     }, 20);
                 }, 20*5);
             }, 20*15);
-        }, 20*15);
+        }, 20*30);
 
         return false;
     }

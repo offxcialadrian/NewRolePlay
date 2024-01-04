@@ -39,9 +39,9 @@ public class Bank implements CommandExecutor {
         }
 
         if(args.length == 1 && args[0].equalsIgnoreCase("info")) {
-            p.sendMessage(PREFIX + "=== " + Banken.getBankByPlayer(p).getName() + " ===");
+            p.sendMessage(PREFIX + "§8=== §6" + Banken.getBankByPlayer(p).getName() + " §8===");
             p.sendMessage(PREFIX + "Kontostand: " + Script.getMoney(p, PaymentType.BANK) + "€");
-            p.sendMessage(PREFIX + "=========");
+            p.sendMessage(PREFIX + "§8=========");
             return true;
         }
 
@@ -73,11 +73,11 @@ public class Bank implements CommandExecutor {
 
                 Script.removeMoney(p, PaymentType.CASH, betrag);
                 Script.addMoney(p, PaymentType.BANK, betrag);
-                p.sendMessage(PREFIX + "=== " + Banken.getBankByPlayer(p).getName() + " ===");
+                p.sendMessage(PREFIX + "§8=== §6" + Banken.getBankByPlayer(p).getName() + " §8===");
                 p.sendMessage(PREFIX + "Alter Kontostand§8: §c" + (Script.getMoney(p, PaymentType.BANK) - betrag) + "€");
                 p.sendMessage(PREFIX + "Eingezahlt§8: §a" + betrag + "€");
                 p.sendMessage(PREFIX + "Neuer Kontostand§8: §a" + Script.getMoney(p, PaymentType.BANK) + "€");
-                p.sendMessage(PREFIX + "=========");
+                p.sendMessage(PREFIX + "§8=========");
                 atm.addCash(betrag);
                 Notications.sendMessage(Notications.NotificationType.PAYMENT, Script.getName(p) + " hat " + betrag + "€ eingezahlt.");
                 Log.NORMAL.write(p, "hat " + betrag + "€ eingezahlt.");
@@ -104,11 +104,11 @@ public class Bank implements CommandExecutor {
 
                 Script.removeMoney(p, PaymentType.BANK, betrag+Banken.getBankByPlayer(p).getTransactionKosten());
                 Script.addMoney(p, PaymentType.CASH, betrag);
-                p.sendMessage(PREFIX + "=== " + Banken.getBankByPlayer(p).getName() + " ===");
+                p.sendMessage(PREFIX + "§8=== §6" + Banken.getBankByPlayer(p).getName() + " §8===");
                 p.sendMessage(PREFIX + "Alter Kontostand§8: §c" + (Script.getMoney(p, PaymentType.BANK) + betrag) + "€");
                 p.sendMessage(PREFIX + "Abgehoben§8: §c" + betrag + "€");
                 p.sendMessage(PREFIX + "Neuer Kontostand§8: §a" + Script.getMoney(p, PaymentType.BANK) + "€");
-                p.sendMessage(PREFIX + "=========");
+                p.sendMessage(PREFIX + "§8=========");
                 atm.removeCash(betrag);
                 p.sendMessage(Messages.INFO + "Es wurden " + Banken.getBankByPlayer(p).getTransactionKosten() + "€ Transaktionskosten abgezogen.");
                 Notications.sendMessage(Notications.NotificationType.PAYMENT, Script.getName(p) + " hat " + betrag + "€ ausgezahlt.");
