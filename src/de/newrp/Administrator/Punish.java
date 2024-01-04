@@ -348,8 +348,8 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
                 Log.HIGH.write(p, "hat " + tg.getName() + " bis zum " + dateFormat.format(until) + " Uhr für " + v.getName() + " gebannt.");
                 Bukkit.broadcastMessage(Script.PREFIX + "§c" + tg.getName() + " wurde von " + Messages.RANK_PREFIX(p) + " bis zum " + dateFormat.format(until) + " Uhr für §l" + v.getName() + " §cgebannt.");
             }
-
             TeamSpeak.sync(Script.getNRPID(tg));
+            Forum.syncPermission(tg);
         }
 
         if (punishment == Punishment.MUTE || secondaryPunishment == Punishment.MUTE) {

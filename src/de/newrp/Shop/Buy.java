@@ -1,5 +1,6 @@
 package de.newrp.Shop;
 
+import de.newrp.API.Licenses;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import org.bukkit.Location;
@@ -54,6 +55,11 @@ public class Buy implements CommandExecutor {
 
         if(i == 0) {
             p.sendMessage(Messages.ERROR + "Dieser Shop bietet derzeit nichts an.");
+            return true;
+        }
+
+        if(s.getType().equals(ShopType.GUNSHOP) && !Licenses.WAFFENSCHEIN.hasLicense(Script.getNRPID(p))) {
+            p.sendMessage(Messages.ERROR + "Du benötigst einen Waffenschein um in einem Waffenladen einkaufen zu können.");
             return true;
         }
 

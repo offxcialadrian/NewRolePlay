@@ -36,8 +36,18 @@ public class GMX implements CommandExecutor {
             msg.append(args[i]).append(" ");
         }
 
+        if(args[0].equals("instant")) {
+            Bukkit.broadcastMessage(Script.PREFIX + "§4§lACHTUNG: §cDer Server startet jetzt neu!");
+            for(Player all : Bukkit.getOnlinePlayers()) {
+                all.kickPlayer("§8» §cNRP × New RolePlay §8┃ §cKICK §8« \n\n§8§m------------------------------\n\n§7Der Server startet neu§8.\n\n§7Grund §8× §e" + "Kein Grund angegeben" + "\n\n§8§m------------------------------");
+            }
+            Bukkit.getServer().shutdown();
+            return true;
+        }
+
 
         Bukkit.broadcastMessage(Script.PREFIX + "§4§lACHTUNG: §cDer Server startet in einer Minute neu!");
+        Bukkit.broadcastMessage(Script.PREFIX + "§4Grund §8× §c" + msg);
         Bukkit.getScheduler().runTaskLater(main.getInstance(), () -> {
             Bukkit.broadcastMessage(Script.PREFIX + "§4§lACHTUNG: §cDer Server startet in 30 Sekunden neu!");
             Bukkit.getScheduler().runTaskLater(main.getInstance(), () -> {

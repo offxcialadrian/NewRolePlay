@@ -1,7 +1,9 @@
 package de.newrp.TeamSpeak;
 
 import com.github.theholywaffle.teamspeak3.api.ChannelProperty;
+import de.newrp.API.Messages;
 import de.newrp.API.Script;
+import de.newrp.API.Team;
 import de.newrp.main;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
@@ -21,15 +23,15 @@ public class TeamspeakUpdate implements Listener {
         Bukkit.getScheduler().runTaskAsynchronously(main.getInstance(), () -> {
             try {
                 String name = "[cspacer]» " + (Bukkit.getOnlinePlayers().size()) + "/" + (Bukkit.getServer().getMaxPlayers()) + " Spieler online «";
-                if (!TeamSpeak.getApi().getChannelInfo(2).getName().equals(name)) {
+                if (!TeamSpeak.getApi().getChannelInfo(117).getName().equals(name)) {
                     Map<ChannelProperty, String> options = new HashMap<>();
                     options.put(ChannelProperty.CHANNEL_NAME, name);
-                    TeamSpeak.getApi().editChannel(2, options);
+                    TeamSpeak.getApi().editChannel(117, options);
                 }
             } catch (Exception e1) {
                 e1.printStackTrace();
-                Script.sendTeamMessage("§cDie Verbindung zum TeamSpeak-System wurde unterbrochen.");
-                Script.sendTeamMessage("Bei längeren Ausfällen bitte manuell neu starten.");
+                Script.sendTeamMessage(TeamSpeak.PREFIX + "§cDie Verbindung zum TeamSpeak-System wurde unterbrochen.");
+                Script.sendTeamMessage(Messages.INFO + "Bei längeren Ausfällen bitte manuell neu starten.");
 			/*AdminChat.sendMessage("Die Verbindung zum Teamspeak wurde unterbrochen.");
 			if(SELF_TRY) {
 				AdminChat.sendMessage("Versuche automatisch verbindung herzustellen...");

@@ -14,18 +14,20 @@ public class Team {
 
 
     public enum Teams {
-        SOCIALMEDIA(1, "Social-Media-Team", TeamspeakServerGroup.SOCIALMEDIA),
-        EVENT(2, "Event-Team", TeamspeakServerGroup.EVENTTEAM),
-        BAU(3, "Bau-Team", TeamspeakServerGroup.BAUTEAM);
+        SOCIALMEDIA(1, "Social-Media-Team", TeamspeakServerGroup.SOCIALMEDIA, 134),
+        EVENT(2, "Event-Team", TeamspeakServerGroup.EVENTTEAM, 138),
+        BAU(3, "Bau-Team", TeamspeakServerGroup.BAUTEAM, 135);
 
         int id;
         String name;
         TeamspeakServerGroup group;
+        int channelID;
 
-        Teams(int id, String name, TeamspeakServerGroup group) {
+        Teams(int id, String name, TeamspeakServerGroup group, int channelID) {
             this.name = name;
             this.id = id;
             this.group = group;
+            this.channelID = channelID;
         }
 
         public String getName() {
@@ -38,6 +40,10 @@ public class Team {
 
         public TeamspeakServerGroup getTeamspeakServerGroup() {
             return group;
+        }
+
+        public int getChannelID() {
+            return channelID;
         }
 
         public static Teams getTeam(String name) {

@@ -46,7 +46,7 @@ public class Straftat implements CommandExecutor {
         }
 
 
-        if(args.length < 2) {
+        if(args.length <= 2) {
             p.sendMessage(Messages.ERROR + "/straftat [WantedPunkte] [Grund]");
             return true;
         }

@@ -101,7 +101,6 @@ public class AFK implements CommandExecutor, Listener {
         if (isAFK(p)) {
             setAFK(p, false);
             p.sendMessage(PREFIX + "Du bist nun nicht mehr im AFK-Modus.");
-            if(Script.getLevel(p) <= 5) p.sendMessage(Messages.INFO + "Deine PayDay-Zeit läuft nun weiter.");
             Script.sendLocalMessage(5, p, "§a§o  " + Script.getName(p) + " ist wieder anwesend.");
         } else {
             long time = System.currentTimeMillis();
@@ -127,7 +126,6 @@ public class AFK implements CommandExecutor, Listener {
             if (y || x || z) {
                 AFK.setAFK(p, false);
                 p.sendMessage(PREFIX + "Du bist nun nicht mehr im AFK-Modus.");
-                if(Script.getLevel(p) <= 5) p.sendMessage(Messages.INFO + "Deine PayDay-Zeit läuft nun weiter.");
                 if(!SDuty.isSDuty(p)) Script.sendLocalMessage(5, p, "§a§o  " + Script.getName(p) + " ist wieder anwesend.");
             }
         }
@@ -151,7 +149,6 @@ public class AFK implements CommandExecutor, Listener {
         if (AFK.isAFK(p)) {
             AFK.setAFK(p, false);
             p.sendMessage(PREFIX + "Du bist nun nicht mehr im AFK-Modus.");
-            if(Script.getLevel(p) <= 5) p.sendMessage(Messages.INFO + "Deine PayDay-Zeit läuft nun weiter.");
             if(!SDuty.isSDuty(p)) Script.sendLocalMessage(5, p, "§a§o  " + Script.getName(p) + " ist wieder anwesend.");
         }
     }
@@ -165,7 +162,6 @@ public class AFK implements CommandExecutor, Listener {
         if (AFK.isAFK(p)) {
             AFK.setAFK(p, false);
             p.sendMessage(PREFIX+ "Du bist nun nicht mehr im AFK-Modus.");
-            if(Script.getLevel(p) <= 5) p.sendMessage(Messages.INFO + "Deine PayDay-Zeit läuft nun weiter.");
             if(!SDuty.isSDuty(p)) Script.sendLocalMessage(5, p, "§a§o  " + Script.getName(p) + " ist wieder anwesend.");
         }
     }
@@ -180,7 +176,6 @@ public class AFK implements CommandExecutor, Listener {
         if (AFK.isAFK(p)) {
             AFK.setAFK(p, false);
             p.sendMessage(PREFIX + "Du bist nun nicht mehr im AFK-Modus.");
-            if(Script.getLevel(p) <= 5) p.sendMessage(Messages.INFO + "Deine PayDay-Zeit läuft nun weiter.");
             if(!SDuty.isSDuty(p)) Script.sendLocalMessage(5, p, "§a§o  " + Script.getName(p) + " ist wieder anwesend.");
         }
     }

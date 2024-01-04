@@ -1,5 +1,6 @@
 package de.newrp.Government;
 
+import de.newrp.API.Log;
 import de.newrp.API.Messages;
 import de.newrp.API.PaymentType;
 import de.newrp.API.Script;
@@ -60,6 +61,7 @@ public class TakeShop implements CommandExecutor {
         } else {
             Script.addOfflineMessage(shop.getOwner(), Shop.PREFIX + "Dein Shop " + shop.getPublicName() + " wurde von der Stadt abgekauft.");
         }
+        Log.WARNING.write(p, "hat den Shop " + shop.getPublicName() + " von " + Script.getOfflinePlayer(shop.getOwner()).getName() + " für " + (shop.getPrice()/2) + "€ abgekauft (TAKESHOP).");
         shop.setOwner(0);
         Script.addMoney(shop.getOwner(), PaymentType.BANK, shop.getPrice()/2);
 

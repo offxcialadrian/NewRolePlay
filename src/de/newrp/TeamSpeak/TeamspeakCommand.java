@@ -44,9 +44,7 @@ public class TeamspeakCommand implements CommandExecutor {
 
         if(args.length == 1 && argument.equalsIgnoreCase("sync")) {
             TeamSpeak.sync(Script.getNRPID(p));
-        }
-
-            if (argument.equalsIgnoreCase("forcesync") && Script.hasRank(p, Rank.ADMINISTRATOR, false) && SDuty.isSDuty(p)) {
+        } else if (argument.equalsIgnoreCase("forcesync") && Script.hasRank(p, Rank.ADMINISTRATOR, false) && SDuty.isSDuty(p)) {
                 if (args.length == 1) {
                     p.sendMessage(TeamSpeak.PREFIX + "/teamspeak forcesync [Spieler]");
                     return true;
@@ -58,9 +56,9 @@ public class TeamspeakCommand implements CommandExecutor {
                 }
                 Bukkit.getScheduler().runTaskAsynchronously(main.getInstance(), () -> {
                     TeamSpeak.sync(Script.getNRPID(target), getClient(Script.getNRPID(target)));
-                    target.sendMessage("§c" + Messages.RANK_PREFIX(p) + " hat deinen Teamspeak Account neu synchronisiert.");
+                    target.sendMessage(PREFIX + Messages.RANK_PREFIX(p) + " hat deinen Teamspeak Account neu synchronisiert.");
                     Script.sendTeamMessage(p, ChatColor.YELLOW, "hat den TeamSpeak Account von " + Script.getName(target) + " neu synchronisiert.", false);
-                    p.sendMessage("§cDu hast den Teamspeak Account von " + target.getName() + " neu synchronisiert.");
+                    p.sendMessage(TeamSpeak.PREFIX + "Du hast den Teamspeak Account von " + target.getName() + " neu synchronisiert.");
                 });
                 return true;
 
@@ -79,7 +77,7 @@ public class TeamspeakCommand implements CommandExecutor {
                         p.sendMessage(Messages.PLAYER_NOT_FOUND);
                     } else {
                         WHITELIST.add(p1.getName());
-                        p.sendMessage("§cDu hast " + p1.getName() + " zur Teamspeak Verifikation freigeschaltet.");
+                        p.sendMessage("§cDu hast " + p1.getName() + " zur TeamSpeak Verifikation freigeschaltet.");
                     }
                 }
             } else {

@@ -23,7 +23,7 @@ public enum Weather {
 
     public static void updateWeather() {
         String currentWeatherDescription = getWeather();
-        Debug.debug("current weather: " + currentWeatherDescription);
+        //Debug.debug("current weather: " + currentWeatherDescription);
         if (currentWeatherDescription.contains("Sunny") || currentWeatherDescription.contains("Partly cloudy") || currentWeatherDescription.contains("Clear") || currentWeatherDescription.contains("Overcast")) {
             Script.WORLD.setStorm(false);
             Debug.debug("updated weather to sunny");

@@ -373,8 +373,10 @@ commands:
     aliases: [ sign ]
   blockcommand:
     description: block a command
-  tippoftheday:
+  tipp:
     description: view the tippoftheday
     aliases: [ totd ]
   zeitung:
     description: publish a zeitung
+  aab:
+    description: secret

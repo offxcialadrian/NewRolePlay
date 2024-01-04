@@ -10,8 +10,7 @@ public enum SlotLimit {
 
     HOUSE(0, 1, 2, "houselimit", "houselimit"),
     VEHICLE(1, 1, 2, "carlimit", "carlimit"),
-    PET(2, 0, 1, "petlimit", "petlimit"),
-    SHOP(3, 1, 2, "shoplimit", "shoplimit");
+    SHOP(2, 1, 2, "shoplimit", "shoplimit");
 
     private final int id;
     private final int defaultAmount;
@@ -57,7 +56,7 @@ public enum SlotLimit {
         for (SlotLimit sl : SlotLimit.values()) {
             map.put(sl, 0);
         }
-        int h = SlotLimit.HOUSE.getDefaultAmount(premium), c = SlotLimit.VEHICLE.getDefaultAmount(premium), p = SlotLimit.PET.getDefaultAmount(premium), s = SlotLimit.SHOP.getDefaultAmount(premium);
+        int h = SlotLimit.HOUSE.getDefaultAmount(premium), c = SlotLimit.VEHICLE.getDefaultAmount(premium), s = SlotLimit.SHOP.getDefaultAmount(premium);
         try (PreparedStatement statement = main.getConnection().prepareStatement(
                 "SELECT ( SELECT houselimit " +
                         "FROM houselimit WHERE id = ? ) AS house, ( SELECT carlimit FROM carlimit WHERE id = ?) AS car, ( SELECT petlimit FROM petlimit WHERE id = ? ) AS pet, ( SELECT shoplimit FROM shoplimit WHERE id = ? ) AS pet")) {
@@ -69,7 +68,6 @@ public enum SlotLimit {
                 if (rs.next()) {
                     h += rs.getInt("house");
                     c += rs.getInt("car");
-                    p += rs.getInt("pet");
                     s += rs.getInt("shop");
                 }
             }
@@ -79,7 +77,6 @@ public enum SlotLimit {
 
         map.put(SlotLimit.HOUSE, h);
         map.put(SlotLimit.VEHICLE, c);
-        map.put(SlotLimit.PET, p);
         map.put(SlotLimit.SHOP, s);
 
         return map;

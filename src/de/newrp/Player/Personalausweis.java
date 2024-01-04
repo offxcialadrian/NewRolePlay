@@ -41,7 +41,7 @@ public class Personalausweis implements CommandExecutor, Listener {
         if (Licenses.PERSONALAUSWEIS.hasLicense(id)) {
             if (args.length == 1 && args[0].equalsIgnoreCase("info")) {
                 p.sendMessage(PREFIX + "Deine Personalien:");
-                p.sendMessage(PREFIX + "Name: " + Script.getName(p));
+                p.sendMessage(PREFIX + " §8- §6Name: " + Script.getName(p));
                 p.sendMessage(PREFIX + " §8- §6Geburtsdatum: §c" + Script.getBirthday(id) + " (" + Script.getAge(Script.getNRPID(p)) + ")");
                 if (Script.getGender(p).equals(Gender.MALE)) {
                     p.sendMessage(PREFIX + " §8- §6Geschlecht: §cMännlich");

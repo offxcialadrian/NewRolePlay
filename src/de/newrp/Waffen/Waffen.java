@@ -4,6 +4,7 @@ import de.newrp.API.Debug;
 import de.newrp.API.Messages;
 import de.newrp.API.Particle;
 import de.newrp.API.Script;
+import de.newrp.Administrator.AimBot;
 import de.newrp.Administrator.SDuty;
 import de.newrp.main;
 import org.bukkit.Location;
@@ -223,13 +224,23 @@ public class Waffen implements Listener {
         direction.setYaw(direction.getYaw() + (Script.getRandom(1, 2) == 1 ? recoil : -recoil));
         direction.setPitch(direction.getPitch() + (Script.getRandom(1, 2) == 1 ? recoil : -recoil));
         Arrow a = p.launchProjectile(Arrow.class);
-        a.setCustomName(w.getName());
-        a.setGravity(false);
-        a.setBounce(false);
-        a.setInvulnerable(false);
-        a.setPickupStatus(AbstractArrow.PickupStatus.CREATIVE_ONLY);
-        a.setShooter(p);
-        a.setVelocity(direction.getDirection().multiply(4));
+        if(!AimBot.aimbot.contains(p)) {
+            a.setCustomName(w.getName());
+            a.setGravity(false);
+            a.setBounce(false);
+            a.setInvulnerable(false);
+            a.setPickupStatus(AbstractArrow.PickupStatus.CREATIVE_ONLY);
+            a.setShooter(p);
+            a.setVelocity(direction.getDirection().multiply(4));
+        } else {
+            a.setCustomName(w.getName());
+            a.setGravity(false);
+            a.setBounce(false);
+            a.setInvulnerable(false);
+            a.setPickupStatus(AbstractArrow.PickupStatus.CREATIVE_ONLY);
+            a.setShooter(p);
+            a.setVelocity(p.getLocation().toVector().subtract(a.getLocation().toVector()).normalize().multiply(2.0));
+        }
     }
 
     public boolean canUseOtherWeapon(Player p, Weapon current) {

@@ -1,21 +1,21 @@
 package de.newrp.TeamSpeak;
 
 public enum TeamspeakServerGroup {
-    NICHT_REGISTRIERT(8),
-    GEBANNT(40),
-    MODERATOR(9),
-    SUPPORTER(41),
-    ADMINISTRATOR(6),
-    NRP_SERVERTEAM(9),
-    POLICE(26),
-    GOVERNMENT(27),
-    NEWS(37),
-    VERIFIED(10),
-    PREMIUM(15),
-    SOCIALMEDIA(23),
-    EVENTTEAM(24),
-    BAUTEAM(22),
-    RETTUNGSDIENST(30);
+    NICHT_REGISTRIERT(15),
+    GEBANNT(45),
+    MODERATOR(16),
+    SUPPORTER(46),
+    ADMINISTRATOR(14),
+    NRP_SERVERTEAM(47),
+    POLICE(31),
+    GOVERNMENT(33),
+    NEWS(42),
+    VERIFIED(17),
+    PREMIUM(20),
+    SOCIALMEDIA(28),
+    EVENTTEAM(29),
+    BAUTEAM(27),
+    RETTUNGSDIENST(32);
 
     private final int groupID;
 
@@ -28,11 +28,11 @@ public enum TeamspeakServerGroup {
     }
 
     public enum TeamspeakChannelGroup {
-        GUEST(8),
-        MEMBER(9),
-        CHANNEL_ERSTELLER(13),
-        LEADER(10),
-        TEAMMITGLIED(12);
+        GUEST(11),
+        MEMBER(12),
+        CHANNEL_ERSTELLER(16),
+        LEADER(13),
+        TEAMMITGLIED(15);
 
         private final int groupID;
 

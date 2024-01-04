@@ -18,7 +18,7 @@ import java.util.List;
 
 public class TippOfTheDay implements CommandExecutor {
 
-    public static String PREFIX = "§8[§eTippOfTheDay§8] §e" + Messages.ARROW + " §7";
+    public static String PREFIX = "§8[§eTipp§8] §e" + Messages.ARROW + " §7";
 
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
@@ -35,7 +35,7 @@ public class TippOfTheDay implements CommandExecutor {
         }
 
         if(args.length == 0) {
-            p.sendMessage(Messages.ERROR + "/tippoftheday [Tipp]");
+            p.sendMessage(Messages.ERROR + "/tipp [Tipp]");
             return true;
         }
 

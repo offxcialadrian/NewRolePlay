@@ -1,5 +1,6 @@
 package de.newrp.API;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scoreboard.DisplaySlot;
@@ -19,8 +20,11 @@ public class Chache {
     }
 
     public static void loadScoreboard(Player p) {
-        if (getScoreboard(p) != null)
+        if (getScoreboard(p) != null) {
             p.setScoreboard(getScoreboard(p));
+        } else {
+            p.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
+        }
     }
 
     public static void saveScoreboard(Player p) {

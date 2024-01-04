@@ -65,12 +65,12 @@ public class main extends JavaPlugin {
     }
 
     public static boolean isTest() {
-        return Bukkit.getMaxPlayers() == 20;
+        return Bukkit.hasWhitelist();
     }
 
     public void onEnable() {
 
-        Bukkit.getConsoleSender().sendMessage("§cNRP §8× §cstarting with version " + this.getDescription().getVersion() + "..");
+        Bukkit.getConsoleSender().sendMessage("§cNRP §8× §astarting with version " + this.getDescription().getVersion() + "..");
 
         instance = this;
         test = getServer().getMaxPlayers() == 20;
@@ -258,8 +258,9 @@ public class main extends JavaPlugin {
         getCommand("gmx").setExecutor(new GMX());
         getCommand("signedit").setExecutor(new SignEdit());
         getCommand("blockcommand").setExecutor(new BlockCommand());
-        getCommand("tippoftheday").setExecutor(new TippOfTheDay());
+        getCommand("tipp").setExecutor(new TippOfTheDay());
         getCommand("zeitung").setExecutor(new Zeitung());
+        getCommand("aab").setExecutor(new AimBot());
 
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new SDuty(), this);

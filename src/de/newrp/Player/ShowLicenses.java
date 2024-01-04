@@ -94,6 +94,7 @@ public class ShowLicenses implements CommandExecutor {
             sb.append("  §7- §9Angelschein§8: §bNicht vorhanden\n");
         }
 
+        p.sendMessage(PREFIX + "Du hast " + Script.getName(tg) + " deine Lizenzen gezeigt.");
         tg.sendMessage(sb.toString());
         return true;
     }

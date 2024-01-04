@@ -77,18 +77,11 @@ public class SDuty implements CommandExecutor, Listener {
         sduty.remove(p.getName());
         Script.sendTeamMessage(p, ChatColor.RED, "hat den Supporter-Dienst verlassen.", false);
         p.sendMessage(Messages.INFO + "Du darfst nun wieder am aktiven Spielgeschehen teilnehmen.");
-        p.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
         Chache.loadScoreboard(p);
         p.setCollidable(true);
         p.setGameMode(GameMode.SURVIVAL);
         p.setFlying(false);
         p.setAllowFlight(false);
-        Scoreboard board = Bukkit.getScoreboardManager().getNewScoreboard();
-        if (board.getTeam("nopush") == null) {
-            Team t = board.registerNewTeam("nopush");
-            t.setOption(Team.Option.COLLISION_RULE, Team.OptionStatus.NEVER);
-            t.addEntry(p.getName());
-        }
         Script.updateListname(p);
     }
 
