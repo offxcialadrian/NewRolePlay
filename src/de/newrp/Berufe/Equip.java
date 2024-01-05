@@ -37,7 +37,8 @@ public class Equip implements CommandExecutor, Listener {
         RAUCHGRANATE("Rauchgranate", Script.rauchgranate(), 100, 0, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE),
         FLASHBANG("Flashbang", Script.flashbang(), 100, 0, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE),
         FALLSCHIRM("Fallschirm", Script.fallschirm(), 100, 0, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE),
-        ZEITUNG("Zeitung", Script.setName(new ItemStack(Material.WRITABLE_BOOK), "§7Zeitung"), 100, 0, Abteilung.Abteilungen.NEWS_3, Beruf.Berufe.NEWS);
+        ZEITUNG("Zeitung", Script.setName(new ItemStack(Material.WRITABLE_BOOK), "§7Zeitung"), 100, 0, Abteilung.Abteilungen.NEWS_3, Beruf.Berufe.NEWS),
+        VERBAND("Verband", Script.setName(new ItemStack(Material.PAPER), "§cVerband"), 5, 0, null, Beruf.Berufe.RETTUNGSDIENST);
 
         private String name;
         private ItemStack item;

@@ -10,7 +10,7 @@ public class DiscordCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
         Player p = (Player) cs;
-        p.sendMessage("§8[§9Discord§8] §9» §7https://discord.gg/8Q9QY5Q");
+        p.sendMessage("§8[§9Discord§8] §9» §7https://discord.gg/newroleplay");
         return false;
     }
 }

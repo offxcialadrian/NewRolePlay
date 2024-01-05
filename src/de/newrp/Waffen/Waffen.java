@@ -1,9 +1,6 @@
 package de.newrp.Waffen;
 
-import de.newrp.API.Debug;
-import de.newrp.API.Messages;
-import de.newrp.API.Particle;
-import de.newrp.API.Script;
+import de.newrp.API.*;
 import de.newrp.Administrator.AimBot;
 import de.newrp.Administrator.SDuty;
 import de.newrp.main;
@@ -89,11 +86,18 @@ public class Waffen implements Listener {
 
         if (weapon == null) return;
 
+        if(Sperre.WAFFENSPERRE.isActive(Script.getNRPID(p))) {
+            p.sendMessage(Messages.ERROR + "Du hast noch eine Waffensperre.");
+            return;
+        }
+
         if(SDuty.isSDuty(p)) {
             Script.sendActionBar(p, Messages.ERROR + "Du kannst keine Waffen benutzen, wenn du im Supporter-Dienst bist.");
             e.setCancelled(true);
             return;
         }
+
+
 
         Long globalCooldown = REVIVE_COOLDOWN.get(p.getName());
         if (globalCooldown != null && globalCooldown > System.currentTimeMillis()) {
@@ -101,6 +105,7 @@ public class Waffen implements Listener {
             e.setCancelled(true);
             return;
         }
+
 
         if (!canUseOtherWeapon(p, weapon)) return;
 

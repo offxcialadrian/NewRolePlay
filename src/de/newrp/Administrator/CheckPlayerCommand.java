@@ -49,13 +49,14 @@ public class CheckPlayerCommand implements CommandExecutor {
             p.sendMessage("§7ID §8× §e" + Script.getNRPID(offtg));
             if (Punish.getBanUntil(offtg) > System.currentTimeMillis() || Punish.getBanUntil(offtg) == 0)
                 p.sendMessage("§cGebannt §8× §c" + (Punish.getBanUntil(offtg) != 0 ? "bis " + Script.dateFormat.format(Punish.getBanUntil(offtg)) + " Uhr" : "Lebenslang")  + " §8(§c" + Punish.getBanReason(offtg) + "§8)");
+            p.sendMessage("§7Premium §8× §e" + (Premium.hasPremium(offtg) ? "Ja" : "Nein"));
             p.sendMessage("§7Warns §8× §e" + Punish.getWarns(offtg) + "/3");
             if(!Punish.getWarnsMap(offtg).isEmpty()) {
                 for(Map.Entry<Long, String> entry : Punish.getWarnsMap(offtg).entrySet()) {
                     p.sendMessage("  §7» §e" + Script.dateFormat2.format(entry.getKey()) + " §8× §e" + entry.getValue());
                 }
             }
-            p.sendMessage("§7Offline §8× §eseit: " + Script.dateFormat.format(Script.getLastDisconnect(offtg)));
+            p.sendMessage("§7Offline §8× §eseit: " + Script.dateFormat.format(Script.getLastDisconnect(offtg)) + " Uhr");
             p.sendMessage("§7Geld §8× §e" + Script.getMoney(offtg, PaymentType.CASH) + "€ | " + Script.getMoney(offtg, PaymentType.BANK) + "€" + (Banken.hasBank(offtg)? " §8(§e" + Banken.getBankByPlayer(offtg) + "§8)" : " §8(§c" + "Keine Bank" + "§8)"));
             p.sendMessage("§7Fahndung §8× §e" + (Fahndung.isFahnded(offtg) ? Fahndung.getWanteds(offtg) + " WantedPunkte" : "Nein"));
             p.sendMessage("§7Geschlecht §8× §e" + Script.getGender(offtg).getName());
@@ -87,6 +88,7 @@ public class CheckPlayerCommand implements CommandExecutor {
             }
         }
         p.sendMessage("§7Rang §8× §e" + Script.getRank(tg).getName(tg));
+        p.sendMessage("§7Premium §8× §e" + (Premium.hasPremium(tg) ? "Ja" : "Nein"));
         p.sendMessage("§7Geld §8× §e" + Script.getMoney(tg, PaymentType.CASH) + "€ | " + Script.getMoney(tg, PaymentType.BANK) + "€" + (Banken.hasBank(tg)? " §8(§e" + Banken.getBankByPlayer(tg) + "§8)" : " §8(§c" + "Keine Bank" + "§8)"));
         p.sendMessage("§7Fahndung §8× §e" + (Fahndung.isFahnded(tg) ? Fahndung.getWanteds(tg) + " WantedPunkte" : "Nein"));
         p.sendMessage("§7UUID §8× §e" + tg.getUniqueId());
@@ -94,6 +96,7 @@ public class CheckPlayerCommand implements CommandExecutor {
         p.sendMessage("§7Team §8× §e" + (Team.getTeam(tg) != null ? Team.getTeam(tg).getName() : "Kein Team"));
         p.sendMessage("§7PlayTime §8× §e" + Script.getPlayTime(tg, true) + ":§e" + String.format("%02d", Script.getPlayTime(tg, false)) + " Stunden" + " §8(§e" + Script.getActivePlayTime(tg, true) + ":§e" + String.format("%02d", Script.getActivePlayTime(tg, false)) + " Stunden§8)");
         p.sendMessage("§7PayDay §8× §e" + PayDay.getPayDayTime(tg) + "/60 Minuten");
+        p.sendMessage("§7Level §8× §e" + Script.getLevel(tg));
         p.sendMessage("§7Exp §8× §e" + Script.getExp(tg) + "/" + Script.getLevelCost(tg) + " Exp");
         p.sendMessage("§7Health §8× §e" + df.format(tg.getHealth()/2) + "/" + df.format(tg.getMaxHealth()/2) + " HP");
         p.sendMessage("§7Beruf §8× §e" + (Beruf.hasBeruf(tg) ? Beruf.getBeruf(tg).getName() : "Kein Beruf") + (Beruf.isLeader(tg) ? " §8(§eLeader§8)" : ""));

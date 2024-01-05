@@ -12,8 +12,7 @@ public enum Licenses {
     PERSONALAUSWEIS(0, "personalausweis"),
     FUEHRERSCHEIN(1, "fuehrerschein"),
     WAFFENSCHEIN(2, "waffenschein"),
-    ANGELSCHEIN(3, "angelschein"),
-    JADDLIZENZ(4, "jagdlizenz");
+    ANGELSCHEIN(3, "angelschein");
 
     private final int id;
     private final String dbName;
@@ -53,7 +52,6 @@ public enum Licenses {
                 cache.put(Licenses.FUEHRERSCHEIN, rs.getBoolean("fuehrerschein"));
                 cache.put(Licenses.WAFFENSCHEIN, rs.getBoolean("waffenschein"));
                 cache.put(Licenses.ANGELSCHEIN, rs.getBoolean("angelschein"));
-                cache.put(Licenses.JADDLIZENZ, rs.getBoolean("jagdlizenz"));
             }
         } catch (SQLException e) {
             e.printStackTrace();

@@ -385,3 +385,5 @@ commands:
     aliases: [ requeuecall ]
   ramm:
     description: ramm a door
+  transferticket:
+    description: transfer a ticket

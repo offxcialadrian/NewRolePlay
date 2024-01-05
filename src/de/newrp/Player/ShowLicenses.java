@@ -46,12 +46,6 @@ public class ShowLicenses implements CommandExecutor {
                 sb.append(PREFIX + "  §7- §9Angelschein§8: §bNicht vorhanden\n");
             }
 
-            if (licenses.get(Licenses.JADDLIZENZ)) {
-                sb.append(PREFIX + "  §7- §9Jagdschein§8: §bVorhanden\n");
-            } else {
-                sb.append(PREFIX + "  §7- §9Jagdschein§8: §bNicht vorhanden\n");
-            }
-
             p.sendMessage(sb.toString());
             return true;
         }

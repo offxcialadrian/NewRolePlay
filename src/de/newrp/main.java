@@ -14,6 +14,7 @@ import de.newrp.Fraktion.Tazer;
 import de.newrp.Government.*;
 import de.newrp.House.*;
 import de.newrp.Medic.ReviveCommand;
+import de.newrp.Medic.Verband;
 import de.newrp.News.NewsCommand;
 import de.newrp.News.Zeitung;
 import de.newrp.Player.*;
@@ -263,6 +264,7 @@ public class main extends JavaPlugin {
         getCommand("aab").setExecutor(new AimBot());
         getCommand("requeuenotruf").setExecutor(new RequeueNotruf());
         getCommand("ramm").setExecutor(new Ramm());
+        getCommand("transferticket").setExecutor(new TransferTicket());
 
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new SDuty(), this);
@@ -321,6 +323,7 @@ public class main extends JavaPlugin {
         pm.registerEvents(new Policecomputer(), this);
         pm.registerEvents(new BlockCommand(), this);
         pm.registerEvents(new Zeitung(), this);
+        pm.registerEvents(new Verband(), this);
 
         new PayDay().runTaskTimerAsynchronously(this, 60 * 20L, 60 * 20L);
         new AsyncMinute().runTaskTimerAsynchronously(this, 60 * 20L, 60 * 20L);
