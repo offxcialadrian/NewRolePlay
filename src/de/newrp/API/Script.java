@@ -595,6 +595,7 @@ public class Script {
         return 0;
     }
 
+
     public static int getRandom(int min, int max) {
         return ThreadLocalRandom.current().nextInt(max - min + 1) + min;
     }

@@ -5,5 +5,6 @@ public enum ShopType {
     CAFE(),
     SUPERMARKET(),
     GUNSHOP(),
+    APOTHEKE(),
     HAUSADDON();
 }

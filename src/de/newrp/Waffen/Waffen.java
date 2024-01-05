@@ -143,7 +143,7 @@ public class Waffen implements Listener {
     }
 
     public void fire(Player p, Weapon w, ItemStack is) {
-        int skill = 6;
+        int skill = (Krankheit.GEBROCHENES_BEIN.isInfected(Script.getNRPID(p)) ? 1 : 6);
         float recoil = w.getRecoil();
 
         recoil = recoil - recoil / (10 - skill);

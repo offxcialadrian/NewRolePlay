@@ -50,7 +50,7 @@ public class Verband implements Listener {
         }
 
         long difference = time - lastClick;
-        if (difference >= 100) LEVEL.remove(p.getName());
+        if (difference >= 80) LEVEL.remove(p.getName());
 
         int level = LEVEL.computeIfAbsent(p.getName(), k -> 0);
         progressBar(level,  p);

@@ -1,0 +1,228 @@
+package de.newrp.Medic;
+
+import de.newrp.main;
+import de.newrp.API.Gender;
+import de.newrp.API.Krankheit;
+import de.newrp.API.Messages;
+import de.newrp.API.Script;
+import de.newrp.Administrator.BuildMode;
+import de.newrp.Administrator.SDuty;
+import de.newrp.Chat.Me;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.player.*;
+import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitRunnable;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
+
+public class Gips implements Listener {
+
+    public static HashMap<Player, Integer> hits = new HashMap<>();
+
+    private static final Map<String, Long> BANDAGE_COOLDOWN = new HashMap<>();
+    private static final Map<String, Long> LAST_CLICK = new HashMap<>();
+    private static final Map<String, Integer> LEVEL = new HashMap<>();
+
+
+    @EventHandler
+    public void onInteract(PlayerInteractEntityEvent e) {
+        if (e.getHand() == EquipmentSlot.OFF_HAND) return;
+        if (!(e.getRightClicked() instanceof Player)) return;
+
+        Player p = e.getPlayer();
+        if (!interact(p)) return;
+
+        long time = System.currentTimeMillis();
+        Player rightClicked = (Player) e.getRightClicked();
+
+        Long lastUsage = BANDAGE_COOLDOWN.get(rightClicked.getName());
+        if (lastUsage != null && lastUsage + TimeUnit.MINUTES.toMillis(9) > time) {
+            p.sendMessage(Messages.ERROR + "Der Spieler hat bereits einen Gips");
+            return;
+        }
+
+        Long lastClick = LAST_CLICK.get(p.getName());
+        if (lastClick == null) {
+            LAST_CLICK.put(p.getName(), time);
+            return;
+        }
+
+        long difference = time - lastClick;
+        if (difference >= 30) LEVEL.remove(p.getName());
+
+        int level = LEVEL.computeIfAbsent(p.getName(), k -> 0);
+        progressBar(level,  p);
+
+        LAST_CLICK.put(p.getName(), time);
+        LEVEL.put(p.getName(), level + 1);
+
+        if (level >= 30) {
+            PlayerInventory inv = p.getInventory();
+            ItemStack is = inv.getItemInMainHand();
+            if (is.getAmount() > 1) {
+                is.setAmount(is.getAmount() - 1);
+            } else {
+                inv.setItemInMainHand(new ItemStack(Material.AIR));
+            }
+
+            Me.sendMessage(p, "legt " + Script.getName(rightClicked) + " einen Gips an.");
+
+            BANDAGE_COOLDOWN.put(rightClicked.getName(), time);
+            LAST_CLICK.remove(p.getName());
+            LEVEL.remove(p.getName());
+        }
+    }
+
+    public boolean interact(Player p) {
+        if (p.getInventory().getItemInMainHand() == null) return false;
+
+        ItemStack is = p.getInventory().getItemInMainHand();
+        return is.hasItemMeta() && is.getItemMeta().getDisplayName() != null && is.getItemMeta().getDisplayName().equals("§cGips");
+    }
+
+    private static void progressBar(double required_progress, Player p) {
+        double current_progress = LEVEL.get(p.getName());
+        double progress_percentage = current_progress / required_progress;
+        StringBuilder sb = new StringBuilder();
+        int bar_length = 10;
+        for (int i = 0; i < bar_length; i++) {
+            if (i < bar_length * progress_percentage) {
+                sb.append("§a▉");
+            } else {
+                sb.append("§8▉");
+            }
+        }
+        Script.sendActionBar(p, "§cGips anlegen.. §8» §a" + sb.toString());
+    }
+
+
+    @EventHandler
+    public void onFall(EntityDamageEvent e) {
+        if (!(e.getEntity() instanceof Player)) return;
+        if (e.getCause() != EntityDamageEvent.DamageCause.FALL) return;
+        Player p = (Player) e.getEntity();
+        if (e.getDamage() > 20 && Script.getRandom(1, 20) == 2) {
+            Krankheit.GEBROCHENES_BEIN.add(Script.getNRPID(p));
+            Me.sendMessage(p, (Script.getGender(p) == Gender.MALE ? "sein" : "ihr") + " Bein hat geknackt.");
+            p.setWalkSpeed(0.1F);
+            p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 40, 1, false, false));
+            p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20, 1, false, false));
+        }
+    }
+
+    @EventHandler
+    public void onJoin(PlayerJoinEvent e) {
+        Player p = e.getPlayer();
+        if (Krankheit.GEBROCHENES_BEIN.isInfected(Script.getNRPID(p))) {
+            p.setWalkSpeed(0.1F);
+            p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 280, 1, false, false));
+            p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20, 1, false, false));
+        }
+    }
+
+    @EventHandler
+    public void onJump(PlayerMoveEvent e) {
+        Player p = e.getPlayer();
+        if (SDuty.isSDuty(p)) return;
+        if (BuildMode.isInBuildMode(p)) return;
+        if (e.getFrom().getY() < e.getTo().getY()) {
+            if (Krankheit.GEBROCHENES_BEIN.isInfected(Script.getNRPID(p))) {
+                p.damage(1D);
+                p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20, 1, false, false));
+            }
+        }
+    }
+
+    @EventHandler
+    public void onSprint(PlayerToggleSprintEvent e) {
+        Player p = e.getPlayer();
+        if (e.isSprinting()) {
+            if (SDuty.isSDuty(p)) return;
+            if (BuildMode.isInBuildMode(p)) return;
+            if (Krankheit.GEBROCHENES_BEIN.isInfected(Script.getNRPID(p))) {
+                p.damage(1D);
+                p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20, 1, false, false));
+            }
+        }
+    }
+
+    @EventHandler
+    public void onHit(EntityDamageByEntityEvent e) {
+        if(e.isCancelled()) return;
+        if(!(e.getDamager() instanceof Player)) return;
+        if(!(e.getEntity() instanceof Player)) return;
+        EntityDamageEvent.DamageCause cause = e.getCause();
+
+        if(cause != EntityDamageEvent.DamageCause.ENTITY_ATTACK && cause != EntityDamageEvent.DamageCause.ENTITY_SWEEP_ATTACK) return;
+
+        Player p = (Player) e.getEntity();
+        Player d = (Player) e.getDamager();
+
+        if(!hits.containsKey(d)) {
+            hits.put(d, 1);
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    hits.remove(d);
+                }
+            }.runTaskLater(main.getInstance(), 20 * 5);
+        } else {
+            hits.put(d, hits.get(d) + 1);
+        }
+
+        if(hits.get(d) < 5) return;
+
+        if(Krankheit.GEBROCHENER_ARM.isInfected(Script.getNRPID(d))) {
+            d.damage(2D);
+            Script.sendActionBar(p, Messages.INFO + "Du hast Schaden erlitten, da du mit einem gebrochenen Arm schlägst.");
+            d.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 5, 1, false, false));
+            d.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 5, 1, false, false));
+        }
+
+        if (Script.getRandom(1, 100) <= 10) {
+            if(!Krankheit.GEBROCHENER_ARM.isInfected(Script.getNRPID(d))) {
+                Me.sendMessage(d, (Script.getGender(d) == Gender.MALE ? "sein" : "ihr") + " Arm hat geknackt.");
+                Krankheit.GEBROCHENER_ARM.add(Script.getNRPID(d));
+                d.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 40, 1, false, false));
+                d.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 5, 1, false, false));
+            }
+        }
+
+        if (Script.getRandom(1, 100) <= 5) {
+            if(!Krankheit.GEBROCHENER_ARM.isInfected(Script.getNRPID(d))) {
+                Me.sendMessage(p, (Script.getGender(p) == Gender.MALE ? "sein" : "ihr") + " Arm hat geknackt.");
+                Krankheit.GEBROCHENER_ARM.add(Script.getNRPID(d));
+                p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 40, 1, false, false));
+                p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 5, 1, false, false));
+            }
+        }
+    }
+
+    @EventHandler
+    public void onConsume(PlayerItemConsumeEvent e) {
+        Player p = e.getPlayer();
+        if (Krankheit.GEBROCHENER_ARM.isInfected(Script.getNRPID(p))) {
+            p.sendMessage(Messages.INFO + "Du hast Schaden erlitten, da du mit einem gebrochenen Arm etwas konsumierst.");
+            p.damage(2D);
+        }
+
+        for (Krankheit krankheit : Krankheit.getAllKrankheiten(Script.getNRPID(p))) {
+            if(krankheit.isFoodIntolerance()) {
+                p.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 30, 1, false, false));
+                p.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 30, 1, false, false));
+                p.sendMessage("§7Dir gehts nicht so gut...");
+            }
+        }
+    }
+}

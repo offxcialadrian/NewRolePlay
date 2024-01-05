@@ -284,7 +284,7 @@ public class Utils implements Listener {
                 return;
             }
 
-            if((e.getClickedBlock().getType() == Material.CRAFTING_TABLE || e.getClickedBlock().getType() == Material.FURNACE || e.getClickedBlock().getType() == Material.LOOM)) {
+            if((e.getClickedBlock().getType() == Material.CRAFTING_TABLE || e.getClickedBlock().getType() == Material.DAYLIGHT_DETECTOR || e.getClickedBlock().getType() == Material.LECTERN || e.getClickedBlock().getType() == Material.FURNACE || e.getClickedBlock().getType() == Material.LOOM)) {
                 e.setCancelled(!BuildMode.isInBuildMode(e.getPlayer()));
                 return;
             }

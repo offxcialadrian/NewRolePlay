@@ -13,6 +13,7 @@ import de.newrp.Forum.ForumCommand;
 import de.newrp.Fraktion.Tazer;
 import de.newrp.Government.*;
 import de.newrp.House.*;
+import de.newrp.Medic.Gips;
 import de.newrp.Medic.ReviveCommand;
 import de.newrp.Medic.Verband;
 import de.newrp.News.NewsCommand;
@@ -324,6 +325,7 @@ public class main extends JavaPlugin {
         pm.registerEvents(new BlockCommand(), this);
         pm.registerEvents(new Zeitung(), this);
         pm.registerEvents(new Verband(), this);
+        pm.registerEvents(new Gips(), this);
 
         new PayDay().runTaskTimerAsynchronously(this, 60 * 20L, 60 * 20L);
         new AsyncMinute().runTaskTimerAsynchronously(this, 60 * 20L, 60 * 20L);

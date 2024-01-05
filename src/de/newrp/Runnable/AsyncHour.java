@@ -1,11 +1,16 @@
 package de.newrp.Runnable;
 
+import de.newrp.API.Krankheit;
 import de.newrp.API.Script;
 import de.newrp.API.Weather;
 import de.newrp.Berufe.Abteilung;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Government.Stadtkasse;
+import de.newrp.Player.AFK;
 import de.newrp.Shop.Shops;
+import org.bukkit.Bukkit;
+import org.bukkit.World;
+import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class AsyncHour extends BukkitRunnable {
@@ -29,7 +34,15 @@ public class AsyncHour extends BukkitRunnable {
                     Script.getPlayer(shop.getOwner()).sendMessage("§8[§eSHOP§8] §7Beachte bitte, dass es eine Schließung deines Shops und eine Strafanzeige zur Folge haben kann.");
                 }
             }
+        }
 
+        for(Player all : Bukkit.getOnlinePlayers()) {
+            if(!Script.WORLD.hasStorm()) return;
+            if(AFK.isAFK(all)) continue;
+            if(Script.getRandom(1, 100) > 5) continue;
+            if(Script.WORLD.getHighestBlockYAt(all.getLocation()) < all.getLocation().getY()) {
+                Krankheit.HUSTEN.add(Script.getNRPID(all));
+            }
         }
     }
 }

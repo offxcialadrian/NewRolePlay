@@ -50,8 +50,8 @@ public class GetGun implements CommandExecutor, Listener {
         House h = House.getInsideHouse(p);
         if (h != null) {
             if (h.hasAddon(HouseAddon.WAFFENSCHRANK)) {
-                if (!canTakeAnotherWeapon(p)) {
-                    p.sendMessage(GetAmmo.PREFIX + "Du kannst nur mehrere Waffen tragen wenn diese über Waffenskill-Level 6 sind.");
+                if(hasWeaponInInventory(p) && Krankheit.GEBROCHENER_ARM.isInfected(id)) {
+                    p.sendMessage(Messages.ERROR + "Du kannst nicht mehrere Waffen aus dem Waffenschrank nehmen wenn du einen gebrochenen Arm hast.");
                     return true;
                 }
 
@@ -103,8 +103,19 @@ public class GetGun implements CommandExecutor, Listener {
                 }
             }
         }
-
         return true;
+    }
+
+    public static boolean hasWeaponInInventory(Player p) {
+        for (ItemStack is : p.getInventory().getContents()) {
+            if (is == null || is.getType().equals(Material.AIR)) continue;
+            for (Weapon w : Weapon.values()) {
+                if (is.getType().equals(w.getWeapon().getType())) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     @EventHandler
