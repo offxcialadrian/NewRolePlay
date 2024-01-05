@@ -73,7 +73,7 @@ public class Spawnschutz implements Listener {
                     e.setCancelled(true);
                 }
             }
-            //
+
             if (e.getDamager().getType().equals(EntityType.PLAYER)) {
                 Player p1 = (Player) e.getDamager();
                 if (spawnschutz.containsKey(p1.getName())) {

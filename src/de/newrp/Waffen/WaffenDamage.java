@@ -1,5 +1,6 @@
 package de.newrp.Waffen;
 
+import de.newrp.API.Health;
 import de.newrp.API.Script;
 import de.newrp.Player.AFK;
 import org.bukkit.Material;
@@ -26,6 +27,9 @@ public class WaffenDamage implements Listener {
         ItemStack chestplate = p.getInventory().getChestplate();
         if (chestplate == null || chestplate.getType() != Material.LEATHER_CHESTPLATE) {
             e.setDamage(isHeadshot(arrow, p) ? w.getDamage() + 2D : w.getDamage());
+            if (Script.getRandom(1, 200) == 2) {
+                Health.setBleeding(p);
+            }
         } else {
             if (!(p.getInventory().getItemInMainHand().getType().equals(Material.SHIELD))) {
                 if (e.getDamage() > 0 && !AFK.isAFK(p)) {

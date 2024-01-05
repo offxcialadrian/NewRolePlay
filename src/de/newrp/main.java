@@ -266,6 +266,7 @@ public class main extends JavaPlugin {
         getCommand("requeuenotruf").setExecutor(new RequeueNotruf());
         getCommand("ramm").setExecutor(new Ramm());
         getCommand("transferticket").setExecutor(new TransferTicket());
+        getCommand("health").setExecutor(new HealthCommand());
 
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new SDuty(), this);

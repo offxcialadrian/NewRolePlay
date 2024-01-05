@@ -387,3 +387,5 @@ commands:
     description: ramm a door
   transferticket:
     description: transfer a ticket
+  health:
+    description: view your health

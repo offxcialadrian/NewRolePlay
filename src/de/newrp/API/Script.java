@@ -595,6 +595,16 @@ public class Script {
         return 0;
     }
 
+    public static float getRandomFloat(float lower, float upper) {
+        Random random = new Random();
+        return lower + random.nextFloat() * (upper - lower);
+    }
+
+    public static double getRandomFloat(double lower, double upper) {
+        Random random = new Random();
+        return lower + random.nextFloat() * (upper - lower);
+    }
+
 
     public static int getRandom(int min, int max) {
         return ThreadLocalRandom.current().nextInt(max - min + 1) + min;
