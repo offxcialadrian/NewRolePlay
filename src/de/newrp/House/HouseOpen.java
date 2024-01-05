@@ -5,6 +5,7 @@ import de.newrp.API.Script;
 import de.newrp.Administrator.BuildMode;
 import de.newrp.Administrator.SDuty;
 import de.newrp.Berufe.Beruf;
+import de.newrp.Police.Ramm;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 public class HouseOpen implements Listener {
     public static final Set<Integer> OPENED_DOORS = new HashSet<>();
@@ -38,6 +40,13 @@ public class HouseOpen implements Listener {
     public boolean canOpen(Player p, Block b) {
         if(SDuty.isSDuty(p)) return true;
         if(BuildMode.isInBuildMode(p)) return true;
+        House house = House.getHouseByDoor(b.getLocation());
+        if (house != null) {
+            Long lastUsage = Ramm.cooldown.get(house);
+            if (lastUsage != null && lastUsage + TimeUnit.MINUTES.toMillis(5) > System.currentTimeMillis()) {
+                return false;
+            }
+        }
         if (isPlayersDoor(p, b)) return true;
         return berufsDoor(p, b);
     }

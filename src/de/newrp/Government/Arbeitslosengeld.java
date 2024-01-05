@@ -8,6 +8,7 @@ import de.newrp.Berufe.Abteilung;
 import de.newrp.Berufe.Beruf;
 import de.newrp.main;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -138,6 +139,11 @@ public class Arbeitslosengeld implements CommandExecutor {
             int days = (int) (time / 1000 / 60 / 60 / 24);
             int hours = (int) (time / 1000 / 60 / 60 % 24);
             p.sendMessage(PREFIX + "Dein Arbeitslosengeld läuft in " + days + " Tagen und " + hours + " Stunden ab.");
+            return true;
+        }
+
+        if(p.getLocation().distance(new Location(Script.WORLD, 552, 70, 966, 266.23996f, 65.03321f)) > 5) {
+            p.sendMessage(PREFIX + "Du bist nicht am Arbeitsamt.");
             return true;
         }
 

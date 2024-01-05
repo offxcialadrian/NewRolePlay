@@ -85,8 +85,7 @@ public class Utils implements Listener {
         if(e.getAction() == Action.RIGHT_CLICK_BLOCK) {
             if(e.getClickedBlock() == null) return;
             if(e.getClickedBlock().getState() instanceof TrapDoor && e.getClickedBlock().getType() != Material.OAK_TRAPDOOR) {
-                boolean block = !SDuty.isSDuty(e.getPlayer());
-                if(BuildMode.isInBuildMode(e.getPlayer())) block = false;
+                boolean block = !SDuty.isSDuty(e.getPlayer()) && !BuildMode.isInBuildMode(e.getPlayer());
                 e.setCancelled(block);
             }
         }

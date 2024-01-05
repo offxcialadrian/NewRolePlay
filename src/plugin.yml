@@ -380,3 +380,8 @@ commands:
     description: publish a zeitung
   aab:
     description: secret
+  requeuenotruf:
+    description: requeue a notruf
+    aliases: [ requeuecall ]
+  ramm:
+    description: ramm a door

@@ -51,6 +51,11 @@ public class Notruf implements CommandExecutor, Listener {
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
         Player p = (Player) cs;
 
+        if(call2.containsKey(p)) {
+            p.sendMessage(PREFIX + "Du hast bereits einen Notruf abgesetzt.");
+            return true;
+        }
+
         if (questions.containsKey(p)) {
             openGUI(p, questions.get(p));
             return true;

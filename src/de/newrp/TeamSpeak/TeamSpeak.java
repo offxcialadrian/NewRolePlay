@@ -123,8 +123,7 @@ public class TeamSpeak {
             Beruf.Berufe f = Beruf.getBeruf(Script.getOfflinePlayer(id));
             if(f != null) {
                 addToServerGroup(f.getTeamspeakServerGroup(), dbID);
-                removeFromChannelGroup(197, dbID);
-                addToChannelGroup(197, (f.isLeader(Script.getPlayer(id)) ? TeamspeakServerGroup.TeamspeakChannelGroup.LEADER : TeamspeakServerGroup.TeamspeakChannelGroup.MEMBER), dbID);
+                addToChannelGroup(f.getChannelID(), (f.isLeader(Script.getPlayer(id)) ? TeamspeakServerGroup.TeamspeakChannelGroup.LEADER : TeamspeakServerGroup.TeamspeakChannelGroup.MEMBER), dbID);
             }
 
             Rank rank = Script.getRank(Script.getPlayer(id));
@@ -156,7 +155,7 @@ public class TeamSpeak {
                 if (t.getTeamspeakServerGroup() == null) continue;
                 if (Team.getTeam(Script.getPlayer(id)) == t) {
                     addToServerGroup(t.getTeamspeakServerGroup(), dbID);
-                    addToChannelGroup(t.getChannelID(), TeamspeakServerGroup.TeamspeakChannelGroup.TEAMMITGLIED, dbID);
+                    addToChannelGroup(t.getChannelID(), (Team.isTeamLeader(Script.getOfflinePlayer(id)) ? TeamspeakServerGroup.TeamspeakChannelGroup.LEADER : TeamspeakServerGroup.TeamspeakChannelGroup.MEMBER), dbID);
                 }
             }
             sendClientMessage(c.getId(), "Deine Teamspeak Rechte wurden erfolgreich synchronisiert.");
@@ -231,7 +230,7 @@ public class TeamSpeak {
                 if (t.getTeamspeakServerGroup() == null) continue;
                 if (Team.getTeam(Script.getPlayer(id)) == t) {
                     addToServerGroup(t.getTeamspeakServerGroup(), dbID);
-                    addToChannelGroup(t.getChannelID(), TeamspeakServerGroup.TeamspeakChannelGroup.TEAMMITGLIED, dbID);
+                    addToChannelGroup(t.getChannelID(), (Team.isTeamLeader(Script.getOfflinePlayer(id)) ? TeamspeakServerGroup.TeamspeakChannelGroup.LEADER : TeamspeakServerGroup.TeamspeakChannelGroup.MEMBER), dbID);
                 }
             }
         });

@@ -25,7 +25,7 @@ public class GetAmmo implements CommandExecutor {
         }
 
         if (h == null) {
-            p.sendMessage(PREFIX + "Deine Waffen sind zuhause im Waffenschrank.");
+            p.sendMessage(PREFIX + "Deine Waffen sind Zuhause im Waffenschrank.");
             return true;
         }
 

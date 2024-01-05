@@ -5,10 +5,7 @@ import de.newrp.Administrator.SDuty;
 import de.newrp.Berufe.Beruf;
 import de.newrp.News.NewsCommand;
 import de.newrp.main;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
+import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -168,6 +165,11 @@ public class Wahlen implements CommandExecutor, Listener {
 
         if (!wahlenActive()) {
             p.sendMessage(PREFIX + "Es sind derzeit keine Wahlen aktiv.");
+            return true;
+        }
+
+        if(p.getLocation().distance(new Location(Script.WORLD, 545, 70, 1014, 0.46572876f, 14.078306f)) > 10) {
+            p.sendMessage(Messages.ERROR + "Du befindest dich nicht an einer Wahlurne.");
             return true;
         }
 

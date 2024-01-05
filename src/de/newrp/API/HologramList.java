@@ -17,7 +17,8 @@ public enum HologramList {
     DUTY_MEDIC_2(11, "§8/§6duty",new Location(Script.WORLD, 286, 74, 1239)),
     EQUIP_MEDIC(12, "§8/§6equip",new Location(Script.WORLD, 267,74,1253)),
     EQUIP_NEWS(13, "§8/§6equip",new Location(Script.WORLD, 289, 66, 788)),
-    BLACKJACK(14, "§8/§6blackjack",new Location(Script.WORLD, 790, 109, 858));
+    BLACKJACK(14, "§8/§6blackjack",new Location(Script.WORLD, 790, 108, 858)),
+    ARBEITSLOSENGELD(15, "§8/§6arbeitslosengeld",new Location(Script.WORLD, 552, 69, 966, 266.23996f, 65.03321f));
 
     private final int id;
     private final String name;

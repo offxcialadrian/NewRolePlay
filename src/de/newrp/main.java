@@ -261,6 +261,8 @@ public class main extends JavaPlugin {
         getCommand("tipp").setExecutor(new TippOfTheDay());
         getCommand("zeitung").setExecutor(new Zeitung());
         getCommand("aab").setExecutor(new AimBot());
+        getCommand("requeuenotruf").setExecutor(new RequeueNotruf());
+        getCommand("ramm").setExecutor(new Ramm());
 
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new SDuty(), this);
