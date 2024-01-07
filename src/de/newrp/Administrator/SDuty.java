@@ -5,7 +5,6 @@ import de.newrp.Government.Stadtkasse;
 import de.newrp.Player.AFK;
 import de.newrp.Ticket.TicketCommand;
 import de.newrp.Ticket.TicketTopic;
-import de.newrp.main;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -18,9 +17,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.ScoreboardManager;
-import org.bukkit.scoreboard.Team;
 import org.bukkit.scoreboard.*;
 
 import java.text.DecimalFormat;
@@ -69,7 +66,7 @@ public class SDuty implements CommandExecutor, Listener {
         Log.NORMAL.write(p, "hat den Supporter-Dienst verlassen.");
         if (BuildMode.isInBuildMode(p)) {;
             p.getInventory().clear();
-            Chache.loadInventory(p);
+            Cache.loadInventory(p);
             BuildMode.removeBuildMode(p);
             p.sendMessage(BuildMode.PREFIX + "Du hast den BuildMode verlassen.");
             Script.sendTeamMessage(p, ChatColor.YELLOW, "hat den BuildMode verlassen.", true);
@@ -77,7 +74,7 @@ public class SDuty implements CommandExecutor, Listener {
         sduty.remove(p.getName());
         Script.sendTeamMessage(p, ChatColor.RED, "hat den Supporter-Dienst verlassen.", false);
         p.sendMessage(Messages.INFO + "Du darfst nun wieder am aktiven Spielgeschehen teilnehmen.");
-        Chache.loadScoreboard(p);
+        Cache.loadScoreboard(p);
         p.setCollidable(true);
         p.setGameMode(GameMode.SURVIVAL);
         p.setFlying(false);
@@ -94,7 +91,7 @@ public class SDuty implements CommandExecutor, Listener {
         sduty.add(p.getName());
         Script.sendTeamMessage(p, ChatColor.RED, "hat den Supporter-Dienst betreten.", false);
         p.sendMessage(Messages.INFO + "Du darfst nun nicht mehr am aktiven Spielgeschehen teilnehmen.");
-        Chache.saveScoreboard(p);
+        Cache.saveScoreboard(p);
         int stadtkasse = Stadtkasse.getStadtkasse();
         DecimalFormat df = new DecimalFormat("#,###");
 

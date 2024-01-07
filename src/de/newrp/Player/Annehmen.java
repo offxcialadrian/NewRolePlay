@@ -143,6 +143,7 @@ public class Annehmen implements CommandExecutor {
             Beruf.Berufe.RETTUNGSDIENST.sendMessage(Rezept.PREFIX + Script.getName(tg) + " hat " + Script.getName(tg) + " ein Rezept für " + m.getName() + " ausgestellt.");
             offer.remove(p.getName() + ".rezept");
             offer.remove(p.getName() + ".medikament");
+            Stadtkasse.removeStadtkasse(30);
             Achievement.REZEPT.grant(p);
 
         } else if(offer.containsKey(p.getName() + ".house.rent")) {

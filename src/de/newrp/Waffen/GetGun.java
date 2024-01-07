@@ -76,8 +76,6 @@ public class GetGun implements CommandExecutor, Listener {
                         meta.setLore(Arrays.asList("§6Munition§8:§7 " + data.getAmmo(), "§6Verschleiss§8:§7 " + data.getWear() + "/" + data.getWeapon().getMaxWear()));
                         is.setItemMeta(meta);
                         inv.setItem(i++, is);
-                    } else {
-                        Debug.debug("has gun in inventory " + data.getWeapon().getName());
                     }
                 }
                 p.openInventory(inv);

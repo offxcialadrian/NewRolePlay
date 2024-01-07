@@ -265,6 +265,7 @@ public class main extends JavaPlugin {
         getCommand("notrufe").setExecutor(new Notrufe());
         getCommand("dropgun").setExecutor(new DropGuns());
         getCommand("rezept").setExecutor(new Rezept());
+        getCommand("selfstorage").setExecutor(new Selfstorage());
 
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new SDuty(), this);
@@ -328,6 +329,7 @@ public class main extends JavaPlugin {
         pm.registerEvents(new HealthCommand(), this);
         pm.registerEvents(new EatEvent(), this);
         pm.registerEvents(new UseMedikamente(), this);
+        pm.registerEvents(new Selfstorage(), this);
 
 
         new AsyncHealth().runTaskTimerAsynchronously(this, 120 * 20L, 120 * 20L);

@@ -11,6 +11,7 @@ public class EatEvent implements Listener {
     @EventHandler
     public void onFoodLevelChange(FoodLevelChangeEvent e) {
         if(!(e.getEntity() instanceof Player)) return;
+        if(e.getItem() == null) return;
         Player p = (Player) e.getEntity();
         if(e.getItem().getType() == Material.COOKIE) Health.FAT.add(Script.getNRPID(p), Script.getRandomFloat(.1F, .2F));
     }

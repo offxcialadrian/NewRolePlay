@@ -684,9 +684,6 @@ public class Script {
         }
     }
 
-    public static boolean isKrankenversichert(Player p) {
-        return getInt(p, "krankenversicherung", "versichert") == 1;
-    }
 
     public static void sendPaymentTypeGUI(Player p, int price) {
         Inventory inv = Bukkit.createInventory(null, InventoryType.HOPPER, "§8[§aZahlungsmethode§8]");

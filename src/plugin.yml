@@ -398,3 +398,5 @@ commands:
   rezept:
     description: stelle ein rezept aus
     aliases: [ rezepte ]
+  selfstorage:
+    description: open the selfstorage

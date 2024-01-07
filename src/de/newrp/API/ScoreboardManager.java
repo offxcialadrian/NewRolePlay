@@ -29,8 +29,7 @@ public class ScoreboardManager {
     }
 
     public enum ScoreboardTeam {
-        NO_PUSH("nopush", Option.COLLISION_RULE, OptionStatus.NEVER),
-        MASKED("masked", Option.NAME_TAG_VISIBILITY, OptionStatus.NEVER);
+        NO_PUSH("nopush", Option.COLLISION_RULE, OptionStatus.NEVER);
 
         private final String name;
         private final Option option;

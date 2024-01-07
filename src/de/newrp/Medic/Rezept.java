@@ -59,6 +59,10 @@ public class Rezept implements CommandExecutor {
         Medikamente m = Medikamente.getMedikament(args[1]);
         if(m == null) {
             p.sendMessage(Messages.ERROR + "Das Medikament wurde nicht gefunden.");
+            p.sendMessage(Messages.INFO + "Verfügbare Medikamente:");
+            for(Medikamente med : Medikamente.values()) {
+                p.sendMessage(Messages.INFO + "§8- " + med.getName());
+            }
             return true;
         }
 

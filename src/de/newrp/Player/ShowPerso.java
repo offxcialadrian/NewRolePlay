@@ -27,7 +27,7 @@ public class ShowPerso implements CommandExecutor {
 
         if(args.length == 0) {
             p.sendMessage(PREFIX + "Deine Personalien:");
-            p.sendMessage(PREFIX + "Name: " + Script.getName(p));
+            p.sendMessage(PREFIX + " §8- §6Name: " + Script.getName(p));
             p.sendMessage(PREFIX + " §8- §6Geburtsdatum: §c" + Script.getBirthday(id) + " (" + Script.getAge(Script.getNRPID(p)) + ")");
             if (Script.getGender(p).equals(Gender.MALE)) {
                 p.sendMessage(PREFIX + " §8- §6Geschlecht: §cMännlich");

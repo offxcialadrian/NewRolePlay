@@ -1,12 +1,11 @@
 package de.newrp.Commands;
 
-import de.newrp.API.Debug;
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
+import org.bukkit.inventory.Inventory;
 
 public class Test implements CommandExecutor, Listener {
 
@@ -15,7 +14,6 @@ public class Test implements CommandExecutor, Listener {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
         Player p = (Player) cs;
-
         return false;
     }
 

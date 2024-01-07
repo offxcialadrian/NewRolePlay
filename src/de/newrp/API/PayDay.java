@@ -8,6 +8,7 @@ import de.newrp.Government.Steuern;
 import de.newrp.House.House;
 import de.newrp.Player.AFK;
 import de.newrp.Player.Banken;
+import de.newrp.Player.Selfstorage;
 import de.newrp.Shop.Shops;
 import de.newrp.main;
 import org.bukkit.Bukkit;
@@ -29,6 +30,7 @@ public class PayDay extends BukkitRunnable {
 
             if (!Banken.hasBank(p)) {
                 p.sendMessage(Messages.INFO + "Du hast kein Geld am PayDay erhalten, da du kein Konto hast.");
+                setPayDayTime(p, 0);
                 continue;
             }
 
@@ -148,6 +150,12 @@ public class PayDay extends BukkitRunnable {
                 p.sendMessage("§8" + Messages.ARROW + " §7Grundsteuer für Haus " + house.getID() + ": §c-" + grundsteuer + "€");
                 payday -= grundsteuer;
                 Stadtkasse.addStadtkasse(grundsteuer);
+            }
+
+            if(Selfstorage.hasSelfstorage(p)) {
+                int price = 50;
+                p.sendMessage("§8" + Messages.ARROW + " §7Selfstorage-Room: §c-" + price + "€");
+                payday -= price;
             }
 
             if (payday > 0) {

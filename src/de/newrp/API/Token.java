@@ -1,23 +1,25 @@
 package de.newrp.API;
 
 import de.newrp.main;
+import org.bukkit.entity.Player;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 public enum Token {
-    PERSONALAUSWEIS(0, "personalausweis", 1),
-    ACCOUNT_RESET(1, "account_reset", 0);
+    PERSONALAUSWEIS(0, "personalausweis", 0, 1),
+    ACCOUNT_RESET(1, "account_reset", 0, 1);
 
     private final int id;
     private final String name;
     private final int default_amount;
-
-    Token(int id, String name, int default_amount) {
+    private final int default_premium_amount;
+    Token(int id, String name, int default_amount, int default_premium_amount) {
         this.id = id;
         this.name = name;
         this.default_amount = default_amount;
+        this.default_premium_amount = default_premium_amount;
     }
 
     public int getID() {
@@ -28,8 +30,16 @@ public enum Token {
         return this.name;
     }
 
-    public int getDefaultValue() {
+    public int getDefaultPremiumAmount() {
+        return this.default_premium_amount;
+    }
+
+    public int getDefaultAmount() {
         return this.default_amount;
+    }
+
+    public int getDefaultValue(Player p) {
+        return (Premium.hasPremium(p)?this.default_premium_amount:this.default_amount);
     }
 
     public int get(int id) {
@@ -41,7 +51,7 @@ public enum Token {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return this.default_amount;
+        return getDefaultValue(Script.getPlayer(id));
     }
 
     public void add(int id, int amount) {

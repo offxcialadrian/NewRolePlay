@@ -62,6 +62,26 @@ public class Personalausweis implements CommandExecutor, Listener {
             int i = Token.PERSONALAUSWEIS.get(id);
             if (i >= 1) {
                 if (args.length == 0) {
+                    if(p.getLocation().distance(new Location(Script.WORLD, 554, 70, 984)) > 4) {
+                        p.sendMessage(PREFIX + "Deine Personalien:");
+                        p.sendMessage(PREFIX + " §8- §6Name: " + Script.getName(p));
+                        p.sendMessage(PREFIX + " §8- §6Geburtsdatum: §c" + Script.getBirthday(id) + " (" + Script.getAge(Script.getNRPID(p)) + ")");
+                        if (Script.getGender(p).equals(Gender.MALE)) {
+                            p.sendMessage(PREFIX + " §8- §6Geschlecht: §cMännlich");
+                        } else if (Script.getGender(p).equals(Gender.FEMALE)) {
+                            p.sendMessage(PREFIX + " §8- §6Geschlecht: §cWeiblich");
+                        }
+                        if (House.hasHouse(id)) {
+                            StringBuilder houses = new StringBuilder();
+                            for (House h : House.getHouses(id)) {
+                                houses.append(", ").append(h.getID());
+                            }
+                            p.sendMessage(PREFIX + " §8- §6Wohnhaft:§6" + houses.substring(1));
+                        } else {
+                            p.sendMessage(PREFIX + " §8- §6Wohnhaft: §6Obdachlos");
+                        }
+                        return true;
+                    }
                     p.sendMessage(PREFIX + "Du hast bereits einen Personalausweis.");
                     p.sendMessage(Messages.INFO + "Mit /personalausweis change deinen Personalausweis ändern");
                 } else {

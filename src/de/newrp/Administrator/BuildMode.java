@@ -149,7 +149,7 @@ public class BuildMode implements CommandExecutor, Listener {
     public static void removeBuildMode(Player p) {
         if(!Script.hasRank(p, Rank.ADMINISTRATOR, false)) p.setOp(false);
         p.getInventory().clear();
-        Chache.loadInventory(p);
+        Cache.loadInventory(p);
         wasBuildMode.remove(p.getName());
         p.setGameMode(GameMode.SURVIVAL);
         Log.NORMAL.write(p, "hat den BuildMode verlassen.");
@@ -165,7 +165,7 @@ public class BuildMode implements CommandExecutor, Listener {
 
     public static void setBuildMode(Player p) {
         if(Script.isInTestMode()) p.setOp(true);
-        Chache.saveInventory(p);
+        Cache.saveInventory(p);
         p.getInventory().clear();
         if(!wasBuildMode.contains(p.getName())) wasBuildMode.add(p.getName());
         if(Script.hasRank(p, Rank.ADMINISTRATOR, false)) p.getInventory().addItem(new ItemStack(Material.COMPASS));

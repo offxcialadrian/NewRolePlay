@@ -1,6 +1,6 @@
 package de.newrp.Administrator;
 
-import de.newrp.API.Chache;
+import de.newrp.API.Cache;
 import de.newrp.API.Messages;
 import de.newrp.API.Rank;
 import de.newrp.API.Script;
@@ -51,12 +51,12 @@ public class DebugCommand implements CommandExecutor, TabCompleter {
             tg.sendMessage("§e" + Messages.ARROW + " " + Messages.RANK_PREFIX(p) + " hat dein Scoreboard zurückgesetzt.");
             Script.sendTeamMessage(p, ChatColor.YELLOW, "hat das Scoreboard von " + Script.getName(tg) + " zurückgesetzt.", true);
             tg.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
-            Chache.resetScoreboard(tg);
+            Cache.resetScoreboard(tg);
         } else if (args[1].equalsIgnoreCase("Inventar")) {
             p.sendMessage("§e" + Messages.ARROW + " Du hast das Inventar von " + Script.getName(tg) + " zurückgesetzt.");
             tg.sendMessage("§e" + Messages.ARROW + " " + Messages.RANK_PREFIX(p) + " hat dein Inventar zurückgesetzt.");
             Script.sendTeamMessage(p, ChatColor.YELLOW, "hat das Inventar von " + Script.getName(tg) + " zurückgesetzt.", true);
-            Chache.resetInventory(tg);
+            Cache.resetInventory(tg);
         }
 
         return false;

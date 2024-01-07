@@ -8,7 +8,7 @@ import org.bukkit.scoreboard.Scoreboard;
 
 import java.util.HashMap;
 
-public class Chache {
+public class Cache {
 
     private static final HashMap<String, Scoreboard> scoreboard = new HashMap<>();
     private static final HashMap<String, ItemStack[]> inventar = new HashMap<>();

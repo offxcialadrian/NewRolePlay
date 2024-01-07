@@ -39,7 +39,8 @@ public class GoTo implements CommandExecutor, TabCompleter {
         FREIZEITPARK (15, "Freizeitpark", new String[]{"Park"}, new Location(Script.WORLD, 817, 66, 723)),
         MOTEL (16, "Motel", new String[]{"Hotel"}, new Location(Script.WORLD, 795, 64, 1222)),
         KNAST (17, "Gefängnis", new String[]{"Knast, Jail, JVA"}, new Location(Script.WORLD, 1018, 68, 549, 180.84424f, -9.02183f)),
-        CASINO (18, "Casino", new String[]{"Spielhalle"}, new Location(Script.WORLD, 780, 109, 856, 0.22738647f, 5.2779894f));
+        CASINO (18, "Casino", new String[]{"Spielhalle"}, new Location(Script.WORLD, 780, 109, 856, 0.22738647f, 5.2779894f)),
+        SELFSTORAGE(19, "Selfstorage", new String[]{"Selfstorage, MyPlace, Lagerhalle"},new Location(Script.WORLD, 1001, 68, 1201, 274.2714f, 3.0181432f));
 
         int id;
         String name;
