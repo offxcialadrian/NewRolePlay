@@ -45,6 +45,10 @@ public class PayShop implements Listener {
             return;
         }
 
+        if(si.premiumNeeded() && !Premium.hasPremium(p)) {
+            p.sendMessage(Messages.ERROR + "Du kannst dieses Item nur mit Premium erwerben.");
+            return;
+        }
 
         switch (si) {
             case LOTTOSCHEIN:

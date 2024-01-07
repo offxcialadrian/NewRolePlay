@@ -2,6 +2,7 @@ package de.newrp.Runnable;
 
 import de.newrp.API.Debug;
 import de.newrp.API.Script;
+import de.newrp.TeamSpeak.TeamSpeak;
 import org.bukkit.Bukkit;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
@@ -30,6 +31,7 @@ public class SyncMinute extends BukkitRunnable {
 
         if(Calendar.getInstance().get(Calendar.HOUR_OF_DAY) == 23 && Calendar.getInstance().get(Calendar.MINUTE) == 59) {
             Bukkit.broadcastMessage(Script.PREFIX + "§4§lACHTUNG: §cDer Server startet in einer Minute neu!");
+            TeamSpeak.getApi().sendServerMessage("ACHTUNG! DER SERVER STARTET IN EINER MINUTE NEU!");
             Bukkit.getScheduler().runTaskLater(main.getInstance(), () -> {
                 Bukkit.broadcastMessage(Script.PREFIX + "§4§lACHTUNG: §cDer Server startet in 30 Sekunden neu!");
                 Bukkit.getScheduler().runTaskLater(main.getInstance(), () -> {

@@ -16,27 +16,27 @@ import java.sql.Statement;
 
 public enum ShopItem {
 
-    BROT(0, "§fBrot", new ItemStack(Material.BREAD), 16, 1, 20, 2, 2400, true, true, new ShopType[] {ShopType.SUPERMARKET}),
-    KAFFEE(1, "§fKaffee", new ItemStack(Material.POTION, 1), 1, 1, 20, 2, 3900, true, true, new ShopType[] {ShopType.SUPERMARKET}),
-    LOTTOSCHEIN(2, "§7Lottoschein", new ItemStack(Material.PAPER), 1, 1, 20, 30, 1000, false, true, new ShopType[] {ShopType.SUPERMARKET}),
-    HAUSKASSE(3, "§7Hauskasse", new ItemStack(Material.CHEST), 20, 1, 20, HouseAddon.HAUSKASSE.getPrice(), 34000, false, false, new ShopType[] {ShopType.HAUSADDON}),
-    MIETERSLOT(4, "§7Mieterslot", new ItemStack(Material.CHEST), 20, 1, 20, HouseAddon.SLOT.getPrice(), 39500, false, false, new ShopType[] {ShopType.HAUSADDON}),
-    WAFFENSCHRANK(5, "§7Waffenschrank", new ItemStack(Material.CHEST), 20, 1, 20, HouseAddon.WAFFENSCHRANK.getPrice(), 39500, false, false, new ShopType[] {ShopType.HAUSADDON}),
-    ALARMANLAGE(7, "§7Alarmanlage", new ItemStack(Material.REDSTONE), 20, 1, 20, HouseAddon.ALARM.getPrice(), 39500, false, false, new ShopType[] {ShopType.HAUSADDON}),
-    DROGENLAGER(8, "§7Drogenlager", new ItemStack(Material.CHEST), 20, 1, 20, HouseAddon.DROGENLAGER.getPrice(), 39500, false, false, new ShopType[] {ShopType.HAUSADDON}),
-    KUEHLSCHRANK(9, "§7Kühlschrank", new ItemStack(Material.CHEST), 20, 1, 20, HouseAddon.KUEHLSCHRANK.getPrice(), 39500, false, false, new ShopType[] {ShopType.HAUSADDON}),
-    PISTOLE(10, "§7Pistole", new ItemStack(Material.IRON_HORSE_ARMOR), 1, 1, 1, 1, 1, false, false, new ShopType[] {ShopType.GUNSHOP}),
-    AMMO_9MM(11, "§89mm Munition", new ItemStack(Material.ARROW), Weapon.PISTOLE.getMagazineSize(), 1, 1, 1, 1, false, false, new ShopType[] {ShopType.GUNSHOP}),
-    AK47(12, "§7AK-47", new ItemStack(Material.DIAMOND_HORSE_ARMOR), 1, 1, 1, 1, 1, false, false, new ShopType[] {ShopType.GUNSHOP}),
-    HEISSE_SCHOKOLADE(43, "§rHeiße Schokolade", new ItemStack(Material.FLOWER_POT), 1, 2, 25, 2, 3000, true, true, new ShopType[] {ShopType.CAFE}),
-    FILTERKAFFEE(44, "§rFilterkaffee", new ItemStack(Material.FLOWER_POT), 1, 2, 25, 2, 3000, true, true, new ShopType[] {ShopType.CAFE}),
-    LATTE_MACCHIATO(45, "§rLatte Macchiato", new ItemStack(Material.FLOWER_POT), 1, 2, 25, 2, 3000, true, true, new ShopType[] {ShopType.CAFE}),
-    ESPRESSO(46, "§rEspresso", new ItemStack(Material.FLOWER_POT), 1, 2, 25, 2, 3000, true, true, new ShopType[] {ShopType.CAFE}),
-    CRAPPUCHINO(47, "§rCrappuchino", new ItemStack(Material.FLOWER_POT), 1, 2, 25, 2, 3000, true, true, new ShopType[] {ShopType.CAFE}),
-    Zeitung(48, "§9Zeitung", de.newrp.News.Zeitung.zeitung, 1, 2, 25, 2, 3000, true, true, new ShopType[] {ShopType.CAFE, ShopType.SUPERMARKET, ShopType.ZEITUNGSLADEN}),
-    SCHMERZMITTEL(49, "§fSchmerzmittel", Medikamente.SCHMERZMITTEL.getItemStack(), 1, 2, 25, 2, 3000, true, true, new ShopType[] {ShopType.APOTHEKE, ShopType.SUPERMARKET}),
-    BASEBALLSCHLAEGER(50, "§7Baseballschläger", new ItemStack(Material.BONE), 1, 1, 1, 1, 1, false, false, new ShopType[] {ShopType.GUNSHOP}),
-    KEVLAR(51, "§7Schutzweste", Script.kevlar(1), 1, 1, 1, 1, 1, false, true, new ShopType[] {ShopType.GUNSHOP});
+    BROT(0, "§fBrot", new ItemStack(Material.BREAD), 16, 1, 20, 2, 2400, true, true, false, new ShopType[] {ShopType.SUPERMARKET}),
+    KAFFEE(1, "§fKaffee", new ItemStack(Material.POTION, 1), 1, 1, 20, 2, 3900, true, true, false, new ShopType[] {ShopType.SUPERMARKET}),
+    LOTTOSCHEIN(2, "§7Lottoschein", new ItemStack(Material.PAPER), 1, 1, 20, 30, 1000, false, true, false, new ShopType[] {ShopType.SUPERMARKET}),
+    HAUSKASSE(3, "§7Hauskasse", new ItemStack(Material.CHEST), 20, 1, 20, HouseAddon.HAUSKASSE.getPrice(), 34000, false, false, false, new ShopType[] {ShopType.HAUSADDON}),
+    MIETERSLOT(4, "§7Mieterslot", new ItemStack(Material.CHEST), 20, 1, 20, HouseAddon.SLOT.getPrice(), 39500, false, false, false, new ShopType[] {ShopType.HAUSADDON}),
+    WAFFENSCHRANK(5, "§7Waffenschrank", new ItemStack(Material.CHEST), 20, 1, 20, HouseAddon.WAFFENSCHRANK.getPrice(), 39500, false, false, false, new ShopType[] {ShopType.HAUSADDON}),
+    ALARMANLAGE(7, "§7Alarmanlage", new ItemStack(Material.REDSTONE), 20, 1, 20, HouseAddon.ALARM.getPrice(), 39500, false, false, false, new ShopType[] {ShopType.HAUSADDON}),
+    DROGENLAGER(8, "§7Drogenlager", new ItemStack(Material.CHEST), 20, 1, 20, HouseAddon.DROGENLAGER.getPrice(), 39500, false, false, false, new ShopType[] {ShopType.HAUSADDON}),
+    KUEHLSCHRANK(9, "§7Kühlschrank", new ItemStack(Material.CHEST), 20, 1, 20, HouseAddon.KUEHLSCHRANK.getPrice(), 39500, false, false, false, new ShopType[] {ShopType.HAUSADDON}),
+    PISTOLE(10, "§7Pistole", new ItemStack(Material.IRON_HORSE_ARMOR), 1, 1, 1, 1, 1, false, false, false, new ShopType[] {ShopType.GUNSHOP}),
+    AMMO_9MM(11, "§89mm Munition", new ItemStack(Material.ARROW), Weapon.PISTOLE.getMagazineSize(), 1, 1, 1, 1, false, false, false, new ShopType[] {ShopType.GUNSHOP}),
+    AK47(12, "§7AK-47", new ItemStack(Material.DIAMOND_HORSE_ARMOR), 1, 1, 1, 1, 1, false, false, false, new ShopType[] {ShopType.GUNSHOP}),
+    HEISSE_SCHOKOLADE(43, "§rHeiße Schokolade", new ItemStack(Material.FLOWER_POT), 1, 2, 25, 2, 3000, true, true, false, new ShopType[] {ShopType.CAFE}),
+    FILTERKAFFEE(44, "§rFilterkaffee", new ItemStack(Material.FLOWER_POT), 1, 2, 25, 2, 3000, true, true, false, new ShopType[] {ShopType.CAFE}),
+    LATTE_MACCHIATO(45, "§rLatte Macchiato", new ItemStack(Material.FLOWER_POT), 1, 2, 25, 2, 3000, true, true, false, new ShopType[] {ShopType.CAFE}),
+    ESPRESSO(46, "§rEspresso", new ItemStack(Material.FLOWER_POT), 1, 2, 25, 2, 3000, true, true, false, new ShopType[] {ShopType.CAFE}),
+    CRAPPUCHINO(47, "§rCrappuchino", new ItemStack(Material.FLOWER_POT), 1, 2, 25, 2, 3000, true, true, false, new ShopType[] {ShopType.CAFE}),
+    Zeitung(48, "§9Zeitung", de.newrp.News.Zeitung.zeitung, 1, 2, 25, 2, 3000, true, true, false, new ShopType[] {ShopType.CAFE, ShopType.SUPERMARKET, ShopType.ZEITUNGSLADEN}),
+    SCHMERZMITTEL(49, "§fSchmerzmittel", Medikamente.SCHMERZMITTEL.getItemStack(), 1, 2, 25, 2, 3000, true, true, false, new ShopType[] {ShopType.APOTHEKE, ShopType.SUPERMARKET}),
+    BASEBALLSCHLAEGER(50, "§7Baseballschläger", new ItemStack(Material.BONE), 1, 1, 1, 1, 1, false, false, false, new ShopType[] {ShopType.GUNSHOP}),
+    KEVLAR(51, "§7Schutzweste", Script.kevlar(1), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.GUNSHOP});
 
     private final int id;
     private final String name;
@@ -48,9 +48,10 @@ public enum ShopItem {
     private final int licensePrice;
     private final boolean reopen;
     private final boolean addtoinv;
+    private final boolean premium;
     private ShopType[] types;
 
-    ShopItem(int id, String name, ItemStack is, int size, int min, int max, int buyPrice, int licensePrice, boolean reopen, boolean addtoinv, ShopType[] types) {
+    ShopItem(int id, String name, ItemStack is, int size, int min, int max, int buyPrice, int licensePrice, boolean reopen, boolean addtoinv, boolean premium, ShopType[] types) {
         this.id = id;
         this.name = name;
         this.is = is;
@@ -61,6 +62,7 @@ public enum ShopItem {
         this.licensePrice = licensePrice;
         this.reopen = reopen;
         this.addtoinv = addtoinv;
+        this.premium = premium;
         this.types = types;
     }
 
@@ -135,6 +137,10 @@ public enum ShopItem {
 
     public int getMax() {
         return this.max;
+    }
+
+    public boolean premiumNeeded() {
+        return this.premium;
     }
 
     public int getBuyPrice() {

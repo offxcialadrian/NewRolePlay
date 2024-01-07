@@ -179,7 +179,7 @@ public class Elevator implements Listener {
                     ziel_etage = Integer.parseInt(e.getCurrentItem().getItemMeta().getDisplayName().replace("§6", "").replace(". Etage", ""));
                 }
                 final int Ziel_etage = ziel_etage;
-                int way = Math.abs(etage - Ziel_etage) *3;
+                int way = Math.abs(Math.abs(etage) - Math.abs(Ziel_etage)) *3;
                 progress.put(p.getName(), 0.0);
                 p.sendMessage("§8[§c" + elevator.getName() + "§8] " + "§6Du fährst nun " + (Ziel_etage > 0 ? "in die " + Ziel_etage + ". Etage" : "ins EG") + "...");
                 p.closeInventory();
