@@ -266,6 +266,8 @@ public class main extends JavaPlugin {
         getCommand("dropgun").setExecutor(new DropGuns());
         getCommand("rezept").setExecutor(new Rezept());
         getCommand("selfstorage").setExecutor(new Selfstorage());
+        getCommand("removeselfstorage").setExecutor(new RemoveSelfstorage());
+        getCommand("checkselfstorage").setExecutor(new CheckSelfstorage());
 
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new SDuty(), this);

@@ -87,7 +87,7 @@ public class Selfstorage implements CommandExecutor, Listener {
                     p.sendMessage(Messages.ERROR + "Du hast keinen Selfstorage-Room.");
                     return true;
                 }
-                removeSelfstorage(p);
+                removeSelfstorage(p, true);
                 p.sendMessage(PREFIX + "Du hast deinen Selfstorage-Room gekündigt.");
                 return true;
             }
@@ -110,9 +110,8 @@ public class Selfstorage implements CommandExecutor, Listener {
             return true;
         }
 
-        if(!hasSelfstorage(p) && p.getLocation().distance(new Location(Script.WORLD, 1012, 68, 1201)) > 5) {
-            p.sendMessage(Messages.ERROR + "Du hast keinen Selfstorage-Room.");
-            p.sendMessage(Messages.INFO + "Nutze §8/§6selfstorage §fum einen Selfstorage-Room zu mieten.");
+        if(!hasSelfstorage(p)) {
+            p.sendMessage(Messages.ERROR + "Du befindest dich nicht am Selfstorage-Gebäude.");
             return true;
         }
 
@@ -163,12 +162,24 @@ public class Selfstorage implements CommandExecutor, Listener {
         return getSelfstorage(p) != null;
     }
 
+    public static boolean hasSelfstorage(OfflinePlayer p) {
+        return getSelfstorage(p) != null;
+    }
+
     public static Rooms getSelfstorage(Player p) {
         return Rooms.getRoomByID(Script.getInt(p, "selfstorage", "room_id"));
     }
 
-    public static void removeSelfstorage(Player p) {
-        p.getEnderChest().clear();
+    public static Rooms getSelfstorage(OfflinePlayer p) {
+        return Rooms.getRoomByID(Script.getInt(p, "selfstorage", "room_id"));
+    }
+
+    public static void removeSelfstorage(Player p, boolean clear) {
+        if(clear) p.getEnderChest().clear();
+        Script.executeUpdate("DELETE FROM selfstorage WHERE nrp_id=" + Script.getNRPID(p));
+    }
+
+    public static void removeSelfstorageAdmin(OfflinePlayer p) {
         Script.executeUpdate("DELETE FROM selfstorage WHERE nrp_id=" + Script.getNRPID(p));
     }
 

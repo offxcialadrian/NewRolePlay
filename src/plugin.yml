@@ -400,3 +400,7 @@ commands:
     aliases: [ rezepte ]
   selfstorage:
     description: open the selfstorage
+  checkselfstorage:
+    description: check the selfstorage
+  removeselfstorage:
+    description: remove the selfstorage

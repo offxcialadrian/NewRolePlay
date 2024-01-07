@@ -59,8 +59,11 @@ public class PayShop implements Listener {
                 p.sendMessage(Messages.INFO + "Gehe zu deinem Haus und nutze §8/§6installaddon§r um das Hauskassen-Addon zu installieren.");
                 break;
             case PISTOLE:
+                if(!Licenses.WAFFENSCHEIN.hasLicense(Script.getNRPID(p))) {
+                    BuyClick.sendMessage(p, "Du hast keinen Waffenschein.");
+                    return;
+                }
                 if(!haveGun(p, Weapon.PISTOLE)) {
-                    p.sendMessage(Messages.INFO + "Du kannst deine Pistole im Waffenschrank holen.");
                     Weapon w = Weapon.PISTOLE;
                     p.getInventory().addItem(Waffen.setAmmo(w.getWeapon(), 0, 0));
                     Weapon.PISTOLE.addToInventory(Script.getNRPID(p));
@@ -70,8 +73,11 @@ public class PayShop implements Listener {
                 }
                 break;
             case AK47:
+                if(!Licenses.WAFFENSCHEIN.hasLicense(Script.getNRPID(p))) {
+                    BuyClick.sendMessage(p, "Du hast keinen Waffenschein.");
+                    return;
+                }
                 if(!haveGun(p, Weapon.AK47)) {
-                    p.sendMessage(Messages.INFO + "Du kannst deine AK-47 im Waffenschrank holen.");
                     Weapon w = Weapon.AK47;
                     p.getInventory().addItem(Waffen.setAmmo(w.getWeapon(), 0, 0));
                     Weapon.AK47.addToInventory(Script.getNRPID(p));
