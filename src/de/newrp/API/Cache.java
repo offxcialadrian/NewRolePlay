@@ -23,7 +23,7 @@ public class Cache {
         if (getScoreboard(p) != null) {
             p.setScoreboard(getScoreboard(p));
         } else {
-            p.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
+            p.setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
         }
     }
 

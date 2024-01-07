@@ -26,6 +26,7 @@ public class ForumCommand implements CommandExecutor {
             }
 
             Forum.syncPermission(p);
+            return true;
         }
 
         if (Forum.getForumID(Script.getNRPID(p)) != 0) {

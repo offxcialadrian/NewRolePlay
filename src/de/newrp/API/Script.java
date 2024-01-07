@@ -1,13 +1,17 @@
 package de.newrp.API;
 
+import com.github.theholywaffle.teamspeak3.api.wrapper.Client;
 import de.newrp.Administrator.AntiCheatSystem;
 import de.newrp.Administrator.BuildMode;
 import de.newrp.Administrator.SDuty;
 import de.newrp.Berufe.Abteilung;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Berufe.Duty;
+import de.newrp.Forum.Forum;
+import de.newrp.House.House;
 import de.newrp.Player.AFK;
 import de.newrp.Player.Passwort;
+import de.newrp.TeamSpeak.TeamSpeak;
 import de.newrp.Ticket.TicketCommand;
 import de.newrp.Waffen.Weapon;
 import de.newrp.main;
@@ -443,6 +447,15 @@ public class Script {
         if (getNameInDB(p) == null || !getNameInDB(p).equals(p.getName())) {
             executeUpdate("UPDATE nrp_id SET name='" + p.getName() + "' WHERE uuid='" + uuid + "'");
             p.sendMessage(Messages.INFO + "Dein Name wurde aktualisiert.");
+            int id = getNRPID(p);
+            if (Forum.getForumID(id) != 0) {
+                Forum.setForumName(Forum.getForumID(id), (isNRPTeam(p) ? "NRP × " : "") + p.getName());
+            }
+            for (House h : House.getHouses(id)) {
+                h.updateSign();
+            }
+            Client cl = TeamSpeak.getClient(id);
+            if (cl != null) TeamSpeak.setDescription(cl.getId(), (isNRPTeam(p) ? "NRP × " : "") + p.getName());
         }
     }
 
