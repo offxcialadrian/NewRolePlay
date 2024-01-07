@@ -151,7 +151,7 @@ public class Erstattung implements CommandExecutor {
             Script.executeAsyncUpdate("INSERT INTO erstattung (userID, erstattung, vertragID, time, aktenzeichen) VALUES (" + Script.getNRPID(tg) + ", " + summe + ", " + id + ", " + System.currentTimeMillis() + ", '" + aktenzeichen + "')");
             p.sendMessage(Vertrag.PREFIX + "Du hast die Erstattung aufgenommen.");
             p.sendMessage(Vertrag.PREFIX + "§6Aktenzeichen: " + aktenzeichen);
-            tg.sendMessage(Vertrag.PREFIX + "Deine Erstattung wurde von " + Script.getName(p) + " aufgenommen.");
+            tg.sendMessage(Vertrag.PREFIX + "§6Deine Erstattung wurde von " + Script.getName(p) + " aufgenommen.");
             Beruf.Berufe.GOVERNMENT.sendMessage(Vertrag.PREFIX + "§6" + Script.getName(p) + " hat einen Erstattungsantrag gestellt.");
             return true;
         }
