@@ -91,6 +91,15 @@ public class Equip implements CommandExecutor, Listener {
             return null;
         }
 
+        public static boolean isEquip(ItemStack is) {
+            for (Stuff stuff : values()) {
+                if (stuff.getItem().equals(is)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
     }
 
     @Override

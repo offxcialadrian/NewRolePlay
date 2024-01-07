@@ -4,6 +4,7 @@ import de.newrp.API.Debug;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.Administrator.BuildMode;
+import de.newrp.Berufe.Equip;
 import de.newrp.Waffen.Weapon;
 import de.newrp.Waffen.WeaponData;
 import de.newrp.main;
@@ -142,13 +143,20 @@ public class Selfstorage implements CommandExecutor, Listener {
             Inventory inv = e.getInventory();
             ItemStack[] contents = inv.getContents();
             for(ItemStack i : contents) {
+                if(i == null) continue;
                 for(Weapon w : Weapon.values()) {
-                    if(i != null && i.getType().equals(w.getWeapon().getType())) {
+                    if(i.getType().equals(w.getWeapon().getType())) {
                         inv.remove(i);
                         p.getInventory().addItem(i);
                         p.sendMessage(Messages.ERROR + "Du kannst keine Waffen in deinem Selfstorage-Room lagern.");
                         continue;
                     }
+                }
+                if(Equip.Stuff.isEquip(i)) {
+                    inv.remove(i);
+                    p.getInventory().addItem(i);
+                    p.sendMessage(Messages.ERROR + "Du kannst kein Equip in deinem Selfstorage-Room lagern.");
+                    continue;
                 }
             }
             p.sendMessage(PREFIX + "Speichere Selfstorage-Room...");
