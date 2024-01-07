@@ -3,6 +3,7 @@ package de.newrp.Player;
 import de.newrp.API.Debug;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
+import de.newrp.Administrator.BuildMode;
 import de.newrp.Waffen.Weapon;
 import de.newrp.Waffen.WeaponData;
 import de.newrp.main;
@@ -75,16 +76,25 @@ public class Selfstorage implements CommandExecutor, Listener {
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
         Player p = (Player) cs;
 
+        if(BuildMode.isInBuildMode(p)) {
+            p.sendMessage(Messages.ERROR + "Du kannst diesen Befehl nicht im BuildMode nutzen.");
+            return true;
+        }
+
         if(p.getLocation().distance(new Location(Script.WORLD, 1012, 68, 1201)) < 5) {
-            if(hasSelfstorage(p)) {
-                p.sendMessage(PREFIX + "Du hast bereits einen Selfstorage-Room.");
-                p.sendMessage(Messages.INFO + "Nutze §8/§6selfstorage remove §fum deinen Selfstorage-Room zu kündigen und alle Inhalte zu löschen.");
+            if(args.length == 1 && args[0].equalsIgnoreCase("remove")) {
+                if(!hasSelfstorage(p)) {
+                    p.sendMessage(Messages.ERROR + "Du hast keinen Selfstorage-Room.");
+                    return true;
+                }
+                removeSelfstorage(p);
+                p.sendMessage(PREFIX + "Du hast deinen Selfstorage-Room gekündigt.");
                 return true;
             }
 
-            if(args.length == 1 && args[0].equalsIgnoreCase("remove")) {
-                removeSelfstorage(p);
-                p.sendMessage(PREFIX + "Du hast deinen Selfstorage-Room gekündigt.");
+            if(hasSelfstorage(p)) {
+                p.sendMessage(PREFIX + "Du hast bereits einen Selfstorage-Room.");
+                p.sendMessage(Messages.INFO + "Nutze §8/§6selfstorage remove §fum deinen Selfstorage-Room zu kündigen und alle Inhalte zu löschen.");
                 return true;
             }
 

@@ -358,7 +358,7 @@ public class Utils implements Listener {
             e.getPlayer().setVelocity(throwVector);
             cooldowns.put(e.getPlayer().getName(), time);
             e.getPlayer().damage(2D);
-            e.getPlayer().sendMessage("§4§lVorsicht! §c§lDu hast das Ende der Welt erreicht.");
+            e.getPlayer().sendMessage(Script.PREFIX + "§c§lDu hast das Ende der Welt erreicht.");
         }
     }
 
