@@ -24,6 +24,7 @@ public class UseMedikamente implements Listener {
     public void onConsume(PlayerInteractEvent e) {
         if (e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) {
             Player p = e.getPlayer();
+            if(p.getInventory().getItemInMainHand() == null) return;
             Medikamente m = Medikamente.getMedikamentByItemStack(p.getInventory().getItemInMainHand());
             if(m == null) return;
 

@@ -377,11 +377,13 @@ public class Shop implements CommandExecutor, Listener {
             ItemStack is = e.getCurrentItem();
 
 
-            si = ShopItem.getShopItem(is);
 
             if(is.getType() == Material.WRITTEN_BOOK) {
                 si = ShopItem.Zeitung;
             }
+
+            si = ShopItem.getShopItem(is);
+
 
             if(si == null) {
                 p.sendMessage(Messages.ERROR + "Dieses Item ist nicht verfügbar.");

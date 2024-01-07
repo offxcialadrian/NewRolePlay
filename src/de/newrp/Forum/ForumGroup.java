@@ -10,12 +10,12 @@ public enum ForumGroup {
     SUPPORTER(6, "Supporter"),
     POLICE(9, "Polizei"),
     POLICE_LEADER(15, "Polizei Leader"),
-    RETTUNGSDIENST(10, "Rettungsdienst"),
-    RETTUNGSDIENST_LEADER(16, "Rettungsdienst Leader"),
-    GOVERNMENT(45, "Regierung"),
-    GOVERNMENT_LEADER(46, "Regierung Leader"),
-    NEWS(21, "News"),
-    NEWS_LEADER(22, "News Leader"),
+    RETTUNGSDIENST(11, "Rettungsdienst"),
+    RETTUNGSDIENST_LEADER(13, "Rettungsdienst Leader"),
+    GOVERNMENT(12, "Regierung"),
+    GOVERNMENT_LEADER(14, "Regierung Leader"),
+    NEWS(10, "News"),
+    NEWS_LEADER(16, "News Leader"),
     VERIFIED(50, "Verifiziert");
 
     private final int id;

@@ -35,8 +35,8 @@ public enum ShopItem {
     CRAPPUCHINO(47, "§rCrappuchino", new ItemStack(Material.FLOWER_POT), 1, 2, 25, 2, 3000, true, true, new ShopType[] {ShopType.CAFE}),
     Zeitung(48, "§9Zeitung", de.newrp.News.Zeitung.zeitung, 1, 2, 25, 2, 3000, true, true, new ShopType[] {ShopType.CAFE, ShopType.SUPERMARKET, ShopType.ZEITUNGSLADEN}),
     SCHMERZMITTEL(49, "§fSchmerzmittel", Medikamente.SCHMERZMITTEL.getItemStack(), 1, 2, 25, 2, 3000, true, true, new ShopType[] {ShopType.APOTHEKE, ShopType.SUPERMARKET}),
-    BASEBALLSCHLAEGER(50, "§7Baseballschläger", Script.setName(new ItemStack(Material.BONE), "§7Baseballschläger"), 1, 1, 1, 1, 1, false, false, new ShopType[] {ShopType.GUNSHOP}),
-    KEVLAR(51, "§7Schutzweste", Script.kevlar(1), 1, 1, 1, 1, 1, false, false, new ShopType[] {ShopType.GUNSHOP});
+    BASEBALLSCHLAEGER(50, "§7Baseballschläger", new ItemStack(Material.BONE), 1, 1, 1, 1, 1, false, false, new ShopType[] {ShopType.GUNSHOP}),
+    KEVLAR(51, "§7Schutzweste", Script.kevlar(1), 1, 1, 1, 1, 1, false, true, new ShopType[] {ShopType.GUNSHOP});
 
     private final int id;
     private final String name;
@@ -87,6 +87,7 @@ public enum ShopItem {
     }
 
     public static ShopItem getShopItem(ItemStack is) {
+        if (is == null) return null;
         for (ShopItem a : values()) {
             if (a.getItemStack().isSimilar(is)) return a;
         }

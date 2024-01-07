@@ -1,6 +1,7 @@
 package de.newrp.Administrator;
 
 import de.newrp.API.*;
+import de.newrp.TeamSpeak.TeamSpeak;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -60,6 +61,7 @@ public class JoinTeam implements CommandExecutor, Listener {
             Script.sendTeamMessage(p, ChatColor.YELLOW, "ist nun im " + team.getName() + ".", true);
             Log.HIGH.write(p.getName() + " hat das Team " + team.getName() + " betreten.");
             p.closeInventory();
+            TeamSpeak.sync(Script.getNRPID(p));
         }
     }
 

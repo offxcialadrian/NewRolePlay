@@ -413,3 +413,5 @@ commands:
     aliases: [ contracts, verträge ]
   erstattung:
     description: erstattung
+  showvertrag:
+    description: show a vertrag

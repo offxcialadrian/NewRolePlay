@@ -72,7 +72,7 @@ public class Zeitung implements CommandExecutor, Listener {
             return true;
         }
 
-        if (!Beruf.isLeader(p)) {
+        if (!Beruf.isLeader(p, true)) {
             p.sendMessage(Messages.ERROR + "Du bist kein Leader.");
             return true;
         }
@@ -101,7 +101,7 @@ public class Zeitung implements CommandExecutor, Listener {
             return;
         }
 
-        if (!Beruf.isLeader(p)) {
+        if (!Beruf.isLeader(p, true)) {
             p.sendMessage(Messages.ERROR + "Du bist kein Leader.");
             return;
         }
