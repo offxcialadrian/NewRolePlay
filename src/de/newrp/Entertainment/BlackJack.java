@@ -216,12 +216,12 @@ public class BlackJack implements CommandExecutor, Listener {
         playerMETA.setLore(plore);
         playerIS.setItemMeta(playerMETA);
 
-        ItemStack ziehen = new ItemStack(Material.PAPER, 1);
+        ItemStack ziehen = new ItemStack(Material.EMERALD_BLOCK, 1);
         ItemMeta ziehenM = ziehen.getItemMeta();
         ziehenM.setDisplayName("§aHit");
         ziehen.setItemMeta(ziehenM);
 
-        ItemStack halten = new ItemStack(Material.PAPER, 1);
+        ItemStack halten = new ItemStack(Material.REDSTONE_BLOCK, 1);
         ItemMeta haltenM = halten.getItemMeta();
         haltenM.setDisplayName("§cStand");
         halten.setItemMeta(haltenM);

@@ -7,6 +7,8 @@ import de.newrp.Forum.Forum;
 import de.newrp.Government.Stadtkasse;
 import de.newrp.Government.Steuern;
 import de.newrp.House.House;
+import de.newrp.Medic.Medikamente;
+import de.newrp.Medic.Rezept;
 import de.newrp.Shop.Shops;
 import de.newrp.TeamSpeak.TeamSpeak;
 import org.bukkit.Bukkit;
@@ -107,7 +109,7 @@ public class Annehmen implements CommandExecutor {
                 return true;
             }
 
-            if(Shops.getShopsByPlayer(Script.getNRPID(p)).size() > SlotLimit.SHOP.get(Script.getNRPID(p))) {
+            if (Shops.getShopsByPlayer(Script.getNRPID(p)).size() > SlotLimit.SHOP.get(Script.getNRPID(p))) {
                 p.sendMessage(Messages.ERROR + "Du hast zuviele Shops");
                 p.sendMessage(Messages.INFO + "Du kannst einen weiteren Shopslot im Shop erwerben.");
                 return true;
@@ -117,7 +119,7 @@ public class Annehmen implements CommandExecutor {
             double tax = Steuern.Steuer.SHOP_VERKAUFSSTEUER.getPercentage();
             Stadtkasse.addStadtkasse((int) Script.getPercent(tax, price));
             int add = price - (int) Script.getPercent(tax, price);
-            Notications.sendMessage(Notications.NotificationType.SHOP, "§6" + Script.getName(sell) + "§7 hat §6" + Script.getName(p) + " §7" + (Script.getGender(p)==Gender.MALE?"seinen":"ihren") + " Shop §6" + shop.getPublicName() + "§7 für §6" + price + "€ §7verkauft.");
+            Notications.sendMessage(Notications.NotificationType.SHOP, "§6" + Script.getName(sell) + "§7 hat §6" + Script.getName(p) + " §7" + (Script.getGender(p) == Gender.MALE ? "seinen" : "ihren") + " Shop §6" + shop.getPublicName() + "§7 für §6" + price + "€ §7verkauft.");
             Script.addMoney(sell, PaymentType.BANK, add);
             shop.setOwner(Script.getNRPID(p));
             p.sendMessage(ACCEPTED + "Du hast den Shop erfolgreich gekauft.");
@@ -128,6 +130,20 @@ public class Annehmen implements CommandExecutor {
             offer.remove(p.getName() + ".shop.sell.price");
             offer.remove(p.getName() + ".shop.sell.shop");
             Achievement.SHOP_OWNER.grant(p);
+
+        } else if(offer.containsKey(p.getName() + ".rezept")) {
+            Player tg = Script.getPlayer(offer.get(p.getName() + ".rezept"));
+            Medikamente m = Medikamente.getMedikament(offer.get(p.getName() + ".rezept.medikament"));
+            if (m == null) return true;
+            p.sendMessage(ACCEPTED + "Du hast ein Rezept für " + m.getName() + " erhalten.");
+            tg.sendMessage(ACCEPTED + Script.getName(p) + " hat das Rezept genommen.");
+            tg.getInventory().addItem(m.getRezept());
+            Log.NORMAL.write(p, "hat ein Rezept für " + m.getName() + " von " + Script.getName(tg) + " erhalten.");
+            Log.NORMAL.write(tg, "hat ein Rezept für " + m.getName() + " an " + Script.getName(p) + " gegeben.");
+            Beruf.Berufe.RETTUNGSDIENST.sendMessage(Rezept.PREFIX + Script.getName(tg) + " hat " + Script.getName(tg) + " ein Rezept für " + m.getName() + " ausgestellt.");
+            offer.remove(p.getName() + ".rezept");
+            offer.remove(p.getName() + ".medikament");
+            Achievement.REZEPT.grant(p);
 
         } else if(offer.containsKey(p.getName() + ".house.rent")) {
             Player owner = Script.getPlayer(offer.get(p.getName() + ".house.rent.owner"));

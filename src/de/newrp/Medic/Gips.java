@@ -1,10 +1,7 @@
 package de.newrp.Medic;
 
+import de.newrp.API.*;
 import de.newrp.main;
-import de.newrp.API.Gender;
-import de.newrp.API.Krankheit;
-import de.newrp.API.Messages;
-import de.newrp.API.Script;
 import de.newrp.Administrator.BuildMode;
 import de.newrp.Administrator.SDuty;
 import de.newrp.Chat.Me;
@@ -53,6 +50,11 @@ public class Gips implements Listener {
             return;
         }
 
+        if(!Krankheit.GEBROCHENER_ARM.isInfected(Script.getNRPID(rightClicked)) && !Krankheit.GEBROCHENES_BEIN.isInfected(Script.getNRPID(rightClicked))) {
+            p.sendMessage(Messages.ERROR + "Der Spieler hat keine gebrochenen Knochen");
+            return;
+        }
+
         Long lastClick = LAST_CLICK.get(p.getName());
         if (lastClick == null) {
             LAST_CLICK.put(p.getName(), time);
@@ -60,13 +62,13 @@ public class Gips implements Listener {
         }
 
         long difference = time - lastClick;
-        if (difference >= 30) LEVEL.remove(p.getName());
+        if (difference >= 500) LEVEL.remove(p.getName());
 
         int level = LEVEL.computeIfAbsent(p.getName(), k -> 0);
-        progressBar(level,  p);
 
         LAST_CLICK.put(p.getName(), time);
         LEVEL.put(p.getName(), level + 1);
+        progressBar(30,  p);
 
         if (level >= 30) {
             PlayerInventory inv = p.getInventory();
@@ -79,6 +81,14 @@ public class Gips implements Listener {
 
             Me.sendMessage(p, "legt " + Script.getName(rightClicked) + " einen Gips an.");
 
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    Krankheit.GEBROCHENER_ARM.remove(Script.getNRPID(rightClicked));
+                    Krankheit.GEBROCHENES_BEIN.remove(Script.getNRPID(rightClicked));
+                }
+            }. runTaskLater(main.getInstance(), 20L * 10);
+
             BANDAGE_COOLDOWN.put(rightClicked.getName(), time);
             LAST_CLICK.remove(p.getName());
             LEVEL.remove(p.getName());
@@ -89,7 +99,7 @@ public class Gips implements Listener {
         if (p.getInventory().getItemInMainHand() == null) return false;
 
         ItemStack is = p.getInventory().getItemInMainHand();
-        return is.hasItemMeta() && is.getItemMeta().getDisplayName() != null && is.getItemMeta().getDisplayName().equals("§cGips");
+        return is.hasItemMeta() && is.getItemMeta().getDisplayName() != null && is.getItemMeta().getDisplayName().equals("§7Gips");
     }
 
     private static void progressBar(double required_progress, Player p) {
@@ -170,6 +180,14 @@ public class Gips implements Listener {
         Player p = (Player) e.getEntity();
         Player d = (Player) e.getDamager();
 
+
+        if(Krankheit.GEBROCHENER_ARM.isInfected(Script.getNRPID(d))) {
+            d.damage(4D);
+            Script.sendActionBar(d, Messages.INFO + "Du hast Schaden erlitten, da du mit einem gebrochenen Arm schlägst.");
+            d.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 80, 1, false, false));
+            d.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 40, 1, false, false));
+        }
+
         if(!hits.containsKey(d)) {
             hits.put(d, 1);
             new BukkitRunnable() {
@@ -184,28 +202,21 @@ public class Gips implements Listener {
 
         if(hits.get(d) < 5) return;
 
-        if(Krankheit.GEBROCHENER_ARM.isInfected(Script.getNRPID(d))) {
-            d.damage(2D);
-            Script.sendActionBar(p, Messages.INFO + "Du hast Schaden erlitten, da du mit einem gebrochenen Arm schlägst.");
-            d.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 5, 1, false, false));
-            d.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 5, 1, false, false));
-        }
-
         if (Script.getRandom(1, 100) <= 10) {
             if(!Krankheit.GEBROCHENER_ARM.isInfected(Script.getNRPID(d))) {
                 Me.sendMessage(d, (Script.getGender(d) == Gender.MALE ? "sein" : "ihr") + " Arm hat geknackt.");
                 Krankheit.GEBROCHENER_ARM.add(Script.getNRPID(d));
-                d.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 40, 1, false, false));
-                d.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 5, 1, false, false));
+                d.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 160, 1, false, false));
+                d.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 80, 1, false, false));
             }
         }
 
-        if (Script.getRandom(1, 100) <= 5) {
+        if (Script.getRandom(1, 100) <= Health.getMuscleLevel(Script.getNRPID(d))) {
             if(!Krankheit.GEBROCHENER_ARM.isInfected(Script.getNRPID(d))) {
                 Me.sendMessage(p, (Script.getGender(p) == Gender.MALE ? "sein" : "ihr") + " Arm hat geknackt.");
                 Krankheit.GEBROCHENER_ARM.add(Script.getNRPID(d));
-                p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 40, 1, false, false));
-                p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 5, 1, false, false));
+                p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 160, 1, false, false));
+                p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 80, 1, false, false));
             }
         }
     }
@@ -215,7 +226,7 @@ public class Gips implements Listener {
         Player p = e.getPlayer();
         if (Krankheit.GEBROCHENER_ARM.isInfected(Script.getNRPID(p))) {
             p.sendMessage(Messages.INFO + "Du hast Schaden erlitten, da du mit einem gebrochenen Arm etwas konsumierst.");
-            p.damage(2D);
+            p.damage(4D);
         }
 
         for (Krankheit krankheit : Krankheit.getAllKrankheiten(Script.getNRPID(p))) {

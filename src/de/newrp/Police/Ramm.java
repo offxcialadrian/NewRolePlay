@@ -54,7 +54,7 @@ public class Ramm implements CommandExecutor {
         for(Player near : Bukkit.getOnlinePlayers()) {
             if(near.getLocation().distance(p.getLocation()) < 5) {
                 if(Beruf.hasBeruf(near)) {
-                    if(Beruf.getBeruf(near).equals(Beruf.Berufe.POLICE)) {
+                    if(Beruf.getBeruf(near).equals(Beruf.Berufe.POLICE) && Duty.isInDuty(near)) {
                         cops++;
                     }
                 }

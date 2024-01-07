@@ -48,7 +48,7 @@ public class Utils implements Listener {
     private static final String[] BLOCKED_COMMANDS = new String[]{
             "/minecraft", "/spi", "/pl", "/protocol", "/rl", "/restart", "/bukkit", "/time", "/ver", "/icanhasbukkit", "/xp", "/tell",
             "/toggledownfall", "/testfor", "/recipe", "/give", "/effect", "/enchant", "/deop", "/defaultgamemode", "/ban-ip",
-            "/banlist", "/advancement", "/?", "/gamemode", "/gamerule", "/give", "/help", "/kill", "/list", "/about",
+            "/banlist", "/advancement", "/?", "/gamemode", "/gamerule", "/give", "/kill", "/list", "/about",
             "/ability", "/advancement", "/alwaysday", "/attribute", "/ban-ip", "/banlist", "/bossbar", "/camera", "/camerashake",
             "/changesetting", "/clear", "/clearspawnpoint", "/clone", "/connect", "/damage", "/data", "/datapack", "/daylock",
             "/dedicatedwsserver", "/defaultgamemode", "/deop", "/dialogue", "/difficulty", "/effect", "/enchant", "/event", "/execute",
@@ -94,9 +94,9 @@ public class Utils implements Listener {
     @EventHandler
     public void onPing(ServerListPingEvent e) {
         if(Script.isInTestMode()) {
-            e.setMotd( "§5New RolePlay §8┃ §5Reallife §8× §5RolePlay §8┃ §c1.16.5\n§8» §7" + main.getInstance().getDescription().getVersion() + "§8- §eWartungsarbeiten!");
+            e.setMotd( "§5§lNew RolePlay §8┃ §5Reallife §8× §5RolePlay §8┃ §c1.16.5\n§8» §7" + main.getInstance().getDescription().getVersion() + " §8- §eWartungsarbeiten!");
         } else {
-            e.setMotd( "§5New RolePlay §8┃ §5Reallife §8× §5RolePlay §8┃ §c1.16.5\n§8» §7" + main.getInstance().getDescription().getVersion() + "§8- §eWerde Teil einer neuen Ära!");
+            e.setMotd( "§5§lNew RolePlay §8┃ §5Reallife §8× §5RolePlay §8┃ §c1.16.5\n§8» §7" + main.getInstance().getDescription().getVersion() + " §8- §eWerde Teil einer neuen Ära!");
         }
     }
 

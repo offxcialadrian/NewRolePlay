@@ -375,7 +375,7 @@ commands:
     description: block a command
   tipp:
     description: view the tippoftheday
-    aliases: [ totd ]
+    aliases: [ totd, tippoftheday ]
   zeitung:
     description: publish a zeitung
   aab:
@@ -389,3 +389,12 @@ commands:
     description: transfer a ticket
   health:
     description: view your health
+  notrufe:
+    description: view the notrufe
+    aliases: [ calls ]
+  dropgun:
+    description: drop a gun
+    aliases: [ dropwaffe, dropwaffen, dropguns ]
+  rezept:
+    description: stelle ein rezept aus
+    aliases: [ rezepte ]

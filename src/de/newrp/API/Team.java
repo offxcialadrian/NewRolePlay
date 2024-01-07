@@ -1,5 +1,7 @@
 package de.newrp.API;
 
+import de.newrp.Forum.Forum;
+import de.newrp.TeamSpeak.TeamSpeak;
 import de.newrp.TeamSpeak.TeamspeakServerGroup;
 import de.newrp.main;
 import org.bukkit.OfflinePlayer;
@@ -92,6 +94,8 @@ public class Team {
 
         public void addMember(Player p) {
             Script.executeUpdate("INSERT INTO teams (nrp_id, team_id, leader) VALUES (" + Script.getNRPID(p) + ", " + this.getID() + ", 0)");
+            Forum.syncPermission(p);
+            TeamSpeak.sync(Script.getNRPID(p));
         }
 
         public void removeMember(Player p) {
@@ -102,6 +106,8 @@ public class Team {
         public void removeMember(OfflinePlayer p) {
             setTeamLeader(p, false);
             Script.executeUpdate("DELETE FROM teams WHERE nrp_id=" + Script.getNRPID(p));
+            Forum.syncPermission(p);
+            TeamSpeak.sync(Script.getNRPID(p));
         }
     }
 

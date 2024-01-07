@@ -70,6 +70,7 @@ public class Tazer implements Listener {
                     }
                 }.runTaskTimer(main.getInstance(), 20, 20);
             }
+            e.setCancelled(true);
         }
     }
 

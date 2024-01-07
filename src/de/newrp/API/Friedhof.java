@@ -159,7 +159,7 @@ public class Friedhof {
 
                 p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 12 * 20, 2, false, false));
                 p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 12 * 20, 2, false, false));
-                p.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 12 * 20, 2, false, false));
+                p.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 48 * 20, 2, false, false));
             } else {
                 Location loc = new Location(p.getWorld(), 333, 78, 1159);
                 loc.getChunk().load();

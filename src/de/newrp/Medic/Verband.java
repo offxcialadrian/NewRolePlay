@@ -1,8 +1,6 @@
 package de.newrp.Medic;
 
-import de.newrp.API.Friedhof;
-import de.newrp.API.Messages;
-import de.newrp.API.Script;
+import de.newrp.API.*;
 import de.newrp.Chat.Me;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -50,13 +48,13 @@ public class Verband implements Listener {
         }
 
         long difference = time - lastClick;
-        if (difference >= 80) LEVEL.remove(p.getName());
+        if (difference >= 800) LEVEL.remove(p.getName());
 
         int level = LEVEL.computeIfAbsent(p.getName(), k -> 0);
-        progressBar(level,  p);
 
         LAST_CLICK.put(p.getName(), time);
-        LEVEL.put(p.getName(), level + 1);
+        LEVEL.replace(p.getName(), level + 1);
+        progressBar(11,  p);
 
         if (level >= 10) {
             PlayerInventory inv = p.getInventory();
@@ -67,7 +65,14 @@ public class Verband implements Listener {
                 inv.setItemInMainHand(new ItemStack(Material.AIR));
             }
 
-            Me.sendMessage(p, "legt " + Script.getName(rightClicked) + " eine Bandage an.");
+            if (Health.BLEEDING.containsKey(rightClicked.getName())) {
+                float amount = Health.BLEEDING.get(rightClicked.getName());
+                if (amount < 1F) {
+                    Health.BLEEDING.remove(rightClicked.getName());
+                }
+            }
+
+            Me.sendMessage(p, "legt " + Script.getName(rightClicked) + " einen Verband an.");
 
             BANDAGE_COOLDOWN.put(rightClicked.getName(), time);
             LAST_CLICK.remove(p.getName());
@@ -79,7 +84,7 @@ public class Verband implements Listener {
         if (p.getInventory().getItemInMainHand() == null) return false;
 
         ItemStack is = p.getInventory().getItemInMainHand();
-        return is.hasItemMeta() && is.getItemMeta().getDisplayName() != null && is.getItemMeta().getDisplayName().equals("§cVerband");
+        return is.hasItemMeta() && is.getItemMeta().getDisplayName() != null && is.getItemMeta().getDisplayName().equals("§7Verband");
     }
 
     private static void progressBar(double required_progress, Player p) {

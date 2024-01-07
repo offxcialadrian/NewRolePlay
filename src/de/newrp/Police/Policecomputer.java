@@ -131,13 +131,6 @@ public static String PREFIX = "§8[§9Polizeicomputer§8] §9" + Messages.ARROW 
                     } else {
                         sb.append(PREFIX + "  §7- §9Angelschein§8: §bNicht vorhanden\n");
                     }
-
-                    if (licenses.get(Licenses.JADDLIZENZ)) {
-                        sb.append(PREFIX + "  §7- §9Jagdschein§8: §bVorhanden\n");
-                    } else {
-                        sb.append(PREFIX + "  §7- §9Jagdschein§8: §bNicht vorhanden\n");
-                    }
-
                     p.sendMessage(sb.toString());
                     p.closeInventory();
                     return;

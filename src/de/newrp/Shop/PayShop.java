@@ -6,6 +6,8 @@ import de.newrp.Government.Stadtkasse;
 import de.newrp.Government.Steuern;
 import de.newrp.House.House;
 import de.newrp.House.HouseAddon;
+import de.newrp.Medic.Medikamente;
+import de.newrp.Medic.Rezept;
 import de.newrp.Waffen.Waffen;
 import de.newrp.Waffen.Weapon;
 import org.bukkit.Bukkit;
@@ -43,11 +45,6 @@ public class PayShop implements Listener {
             return;
         }
 
-        if(si.addToInventory()) p.getInventory().addItem(i);
-
-        if(type == PaymentType.BANK) {
-            Cashflow.addEntry(p, -price, "Einkauf: " + si.getName());
-        }
 
         switch (si) {
             case LOTTOSCHEIN:
@@ -90,6 +87,28 @@ public class PayShop implements Listener {
                 }
                 Weapon.PISTOLE.addMunition(Script.getNRPID(p), si.getAmount(s));
                 break;
+            case SCHMERZMITTEL:
+                Medikamente m = Medikamente.getMedikamentByShopItem(si);
+                if(m == null) return;
+                if(!Rezept.hasRezept(p, m) && m.isRezeptNeeded()) {
+                    p.sendMessage(Messages.ERROR + "Du hast kein Rezept für " + si.getName() + "§c.");
+                    return;
+                }
+
+                if(Rezept.hasRezept(p, m) && m.insurancePays()) {
+                    Rezept.removeRezept(p, m);
+                    p.sendMessage(Messages.INFO + "Deine Krankenversicherung hat die Kosten für das Medikament übernommen.");
+                    Script.addMoney(p, PaymentType.BANK, price);
+                    Stadtkasse.removeStadtkasse(price);
+                }
+                break;
+        }
+
+
+        if(si.addToInventory()) p.getInventory().addItem(i);
+
+        if(type == PaymentType.BANK) {
+            Cashflow.addEntry(p, -price, "Einkauf: " + si.getName());
         }
 
         BuyClick.sendMessage(p, "Vielen Dank für deinen Einkauf!");

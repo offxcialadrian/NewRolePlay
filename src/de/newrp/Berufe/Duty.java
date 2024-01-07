@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class Duty implements CommandExecutor {
 
     public static String PREFIX = "§8[§eDuty§8] §e» §7";
-    private static ArrayList<Player> duty = new ArrayList<>();
+    private static ArrayList<String> duty = new ArrayList<>();
 
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
@@ -42,13 +42,13 @@ public class Duty implements CommandExecutor {
 
             if (isInDuty(p)) {
                 Beruf.Berufe.RETTUNGSDIENST.sendMessage(PREFIX + Script.getName(p) + " hat den Dienst verlassen.");
-                duty.remove(p);
+                duty.remove(p.getName());
                 Script.updateListname(p);
                 return true;
             }
 
             Beruf.Berufe.RETTUNGSDIENST.sendMessage(PREFIX + Script.getName(p) + " hat den Dienst betreten.");
-            duty.add(p);
+            duty.add(p.getName());
             Script.updateListname(p);
             return true;
 
@@ -62,13 +62,13 @@ public class Duty implements CommandExecutor {
 
             if (isInDuty(p)) {
                 Beruf.Berufe.POLICE.sendMessage(PREFIX + Script.getName(p) + " hat den Dienst verlassen.");
-                duty.remove(p);
+                duty.remove(p.getName());
                 Script.updateListname(p);
                 return true;
             }
 
             Beruf.Berufe.POLICE.sendMessage(PREFIX + Script.getName(p) + " hat den Dienst betreten.");
-            duty.add(p);
+            duty.add(p.getName());
             Script.updateListname(p);
             return true;
         }
@@ -79,15 +79,15 @@ public class Duty implements CommandExecutor {
     }
 
     public static boolean isInDuty(Player p) {
-        return duty.contains(p);
+        return duty.contains(p.getName());
     }
 
     public static void setDuty(Player p) {
-        duty.add(p);
+        duty.add(p.getName());
     }
 
     public static void removeDuty(Player p) {
-        duty.remove(p);
+        duty.remove(p.getName());
     }
 
 }

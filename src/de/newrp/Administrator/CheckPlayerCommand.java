@@ -57,7 +57,7 @@ public class CheckPlayerCommand implements CommandExecutor {
                 }
             }
             p.sendMessage("§7Offline §8× §eseit: " + Script.dateFormat.format(Script.getLastDisconnect(offtg)) + " Uhr");
-            p.sendMessage("§7Geld §8× §e" + Script.getMoney(offtg, PaymentType.CASH) + "€ | " + Script.getMoney(offtg, PaymentType.BANK) + "€" + (Banken.hasBank(offtg)? " §8(§e" + Banken.getBankByPlayer(offtg) + "§8)" : " §8(§c" + "Keine Bank" + "§8)"));
+            p.sendMessage("§7Geld §8× §e" + Script.getMoney(offtg, PaymentType.CASH) + "€ | " + Script.getMoney(offtg, PaymentType.BANK) + "€" + (Banken.hasBank(offtg)? " §8(§e" + Banken.getBankByPlayer(offtg).getName() + "§8)" : " §8(§c" + "Keine Bank" + "§8)"));
             p.sendMessage("§7Fahndung §8× §e" + (Fahndung.isFahnded(offtg) ? Fahndung.getWanteds(offtg) + " WantedPunkte" : "Nein"));
             p.sendMessage("§7Geschlecht §8× §e" + Script.getGender(offtg).getName());
             p.sendMessage("§7Team §8× §e" + (Team.getTeam(offtg) != null ? Team.getTeam(offtg).getName()  + (Team.isTeamLeader(p)? " (TL)":""): "Kein Team"));
@@ -89,7 +89,7 @@ public class CheckPlayerCommand implements CommandExecutor {
         }
         p.sendMessage("§7Rang §8× §e" + Script.getRank(tg).getName(tg));
         p.sendMessage("§7Premium §8× §e" + (Premium.hasPremium(tg) ? "Ja" : "Nein"));
-        p.sendMessage("§7Geld §8× §e" + Script.getMoney(tg, PaymentType.CASH) + "€ | " + Script.getMoney(tg, PaymentType.BANK) + "€" + (Banken.hasBank(tg)? " §8(§e" + Banken.getBankByPlayer(tg) + "§8)" : " §8(§c" + "Keine Bank" + "§8)"));
+        p.sendMessage("§7Geld §8× §e" + Script.getMoney(tg, PaymentType.CASH) + "€ | " + Script.getMoney(tg, PaymentType.BANK) + "€" + (Banken.hasBank(tg)? " §8(§e" + Banken.getBankByPlayer(tg).getName()+ "§8)" : " §8(§c" + "Keine Bank" + "§8)"));
         p.sendMessage("§7Fahndung §8× §e" + (Fahndung.isFahnded(tg) ? Fahndung.getWanteds(tg) + " WantedPunkte" : "Nein"));
         p.sendMessage("§7UUID §8× §e" + tg.getUniqueId());
         p.sendMessage("§7Geschlecht §8× §e" + Script.getGender(tg).getName());

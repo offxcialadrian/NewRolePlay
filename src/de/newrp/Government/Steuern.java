@@ -40,7 +40,8 @@ public class Steuern implements CommandExecutor, TabCompleter {
         MEHRWERTSTEUER(6, "Mehrwertsteuer", "mehrwertsteuer", "Die Mehrwertsteuer wird auf jeden Kauf in Shops erhoben."),
         SHOP_VERKAUFSSTEUER(7, "Shop Verkaufssteuer", "shop_verkaufssteuer", "Die Shop Verkaufssteuer wird auf jeden Verkauf eines Shops erhoben."),
         GRUNDSTEUER(8, "Grundsteuer", "grundsteuer", "Die Grundsteuer wird jeden PayDay auf jedes Haus erhoben."),
-        HAUSVERKAUFSSTEUER(9, "Haus Verkaufssteuer", "haus_verkaufssteuer", "Die Haus Verkaufssteuer wird auf jeden Verkauf eines Hauses erhoben.");
+        HAUSVERKAUFSSTEUER(9, "Haus Verkaufssteuer", "haus_verkaufssteuer", "Die Haus Verkaufssteuer wird auf jeden Verkauf eines Hauses erhoben."),
+        KRANKENVERSICHERUNG(10, "Krankenversicherung", "krankenversicherung", "Die Krankenversicherung wird auf dein Gehalt am PayDay erhoben.");
 
         private final int id;
         private final String name;

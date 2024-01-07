@@ -38,6 +38,7 @@ public class PayDay extends BukkitRunnable {
             double arbeitslosenversicherung = Steuern.Steuer.ARBEITSLOSENVERSICHERUNG.getPercentage();
             double lohnsteuer = Steuern.Steuer.LOHNSTEUER.getPercentage();
             double gfb_lohnsteuer = Steuern.Steuer.GFB_LOHNSTEUER.getPercentage();
+            double krankenversicherung = Steuern.Steuer.KRANKENVERSICHERUNG.getPercentage();
             p.sendMessage("§9=== §l§ePayDay §9===");
             p.sendMessage("§8" + Messages.ARROW + " §7Kontostand: " + (Script.getMoney(p, PaymentType.BANK) >= 0 ? "§a" : "§c") + Script.getMoney(p, PaymentType.BANK) + "€");
             p.sendMessage("§8" + Messages.ARROW + " §7Kontoführungsgebühr: §c-" + Banken.getBankByPlayer(p).getKontoKosten() + "€");
@@ -55,6 +56,10 @@ public class PayDay extends BukkitRunnable {
                 p.sendMessage("§8" + Messages.ARROW + " §7Arbeitslosenversicherung (GFB) (" + arbeitslosenversicherung + "%): §c-" + (int) Script.getPercent(arbeitslosenversicherung, other_salary) + "€");
                 Stadtkasse.addStadtkasse((int) Script.getPercent(arbeitslosenversicherung, other_salary));
                 payday -= (int) Script.getPercent(arbeitslosenversicherung, other_salary);
+
+                p.sendMessage("§8" + Messages.ARROW + " §7Krankenversicherung (GFB) (" + krankenversicherung + "%): §c-" + (int) Script.getPercent(krankenversicherung, other_salary) + "€");
+                Stadtkasse.addStadtkasse((int) Script.getPercent(krankenversicherung, other_salary));
+                payday -= (int) Script.getPercent(krankenversicherung, other_salary);
             }
 
             if (Beruf.hasBeruf(p)) {
@@ -104,6 +109,10 @@ public class PayDay extends BukkitRunnable {
                 p.sendMessage("§8" + Messages.ARROW + " §7Arbeitslosenversicherung (" + arbeitslosenversicherung + "%): §c-" + (int) Script.getPercent(arbeitslosenversicherung, salary) + "€");
                 Stadtkasse.addStadtkasse((int) Script.getPercent(arbeitslosenversicherung, salary));
                 payday -= (int) Script.getPercent(arbeitslosenversicherung, salary);
+
+                p.sendMessage("§8" + Messages.ARROW + " §7Krankenversicherung (" + krankenversicherung + "%): §c-" + (int) Script.getPercent(krankenversicherung, salary) + "€");
+                Stadtkasse.addStadtkasse((int) Script.getPercent(krankenversicherung, salary));
+                payday -= (int) Script.getPercent(krankenversicherung, salary);
 
 
             } else if (Arbeitslosengeld.hasArbeitslosengeld(p)) {

@@ -26,7 +26,7 @@ public class HealthCommand implements CommandExecutor, Listener {
         TextComponent msg = new TextComponent(PREFIX + " §c» Gesundheit§7: ");
         double heal = p.getHealth() / 2;
         int max_heal = (int) p.getMaxHealth() / 2;
-        int percentage = ((int) Script.getPercent((int) heal, max_heal)) / 10;
+        int percentage = ((int) getPercent((int) heal, max_heal)) / 10;
         StringBuilder s = new StringBuilder("§c");
         int x = 0;
         for (int i = 0; i < percentage; i++) {
@@ -50,7 +50,7 @@ public class HealthCommand implements CommandExecutor, Listener {
         TextComponent msg = new TextComponent(PREFIX + " §4» Blut §7: ");
         double blood = Health.getBloodAmount(Script.getNRPID(p));
         int max_heal = 6;
-        int percentage = ((int) Script.getPercent((int) blood, max_heal)) / 10;
+        int percentage = ((int) getPercent((int) blood, max_heal)) / 10;
         StringBuilder s = new StringBuilder("§4");
         int x = 0;
         for (int i = 0; i < percentage; i++) {
@@ -75,7 +75,7 @@ public class HealthCommand implements CommandExecutor, Listener {
         double hunger = p.getFoodLevel();
         if (hunger > 20) hunger = 20D;
         int max_hunger = 20;
-        int percentage = ((int) Script.getPercent((int) hunger, max_hunger)) / 10;
+        int percentage = ((int) getPercent((int) hunger, max_hunger)) / 10;
         StringBuilder s = new StringBuilder("§a");
         int x = 0;
         for (int i = 0; i < percentage; i++) {
@@ -100,7 +100,7 @@ public class HealthCommand implements CommandExecutor, Listener {
         TextComponent msg = new TextComponent(PREFIX + " §b» Durst§7: ");
         float thirst = Health.THIRST.get(Script.getNRPID(p));
         float max_thirst = Health.THIRST.getMax();
-        int percentage = ((int) Script.getPercent((int) thirst, (int) max_thirst)) / 10;
+        int percentage = ((int) getPercent((int) thirst, (int) max_thirst)) / 10;
         StringBuilder s = new StringBuilder("§b");
         int x = 0;
         for (int i = 0; i < percentage; i++) {
@@ -124,7 +124,7 @@ public class HealthCommand implements CommandExecutor, Listener {
         TextComponent msg = new TextComponent(PREFIX + " §e» Fett§7: ");
         float fat = Health.FAT.get(Script.getNRPID(p));
         float max_fat = Health.FAT.getMax();
-        int percentage = ((int) Script.getPercent((int) fat, (int) max_fat)) / 10;
+        int percentage = ((int) getPercent((int) fat, (int) max_fat)) / 10;
         StringBuilder s = new StringBuilder("§e");
         int x = 0;
         for (int i = 0; i < percentage; i++) {
@@ -148,7 +148,7 @@ public class HealthCommand implements CommandExecutor, Listener {
         TextComponent msg = new TextComponent(PREFIX + " §2» Muskeln§7: ");
         float m = Health.MUSCLES.get(Script.getNRPID(p));
         float max_m = Health.MUSCLES.getMax();
-        int percentage = ((int) Script.getPercent((int) m, (int) max_m)) / 10;
+        int percentage = ((int) getPercent((int) m, (int) max_m)) / 10;
         StringBuilder s = new StringBuilder("§2");
         int x = 0;
         for (int i = 0; i < percentage; i++) {
@@ -199,5 +199,10 @@ public class HealthCommand implements CommandExecutor, Listener {
         } else {
             p.setWalkSpeed(.2F);
         }
+    }
+
+    public static double getPercent(int percent, int total) {
+        if (total == 0) return 0;
+        return (percent * 100D) / total;
     }
 }

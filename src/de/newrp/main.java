@@ -13,9 +13,7 @@ import de.newrp.Forum.ForumCommand;
 import de.newrp.Fraktion.Tazer;
 import de.newrp.Government.*;
 import de.newrp.House.*;
-import de.newrp.Medic.Gips;
-import de.newrp.Medic.ReviveCommand;
-import de.newrp.Medic.Verband;
+import de.newrp.Medic.*;
 import de.newrp.News.NewsCommand;
 import de.newrp.News.Zeitung;
 import de.newrp.Player.*;
@@ -24,10 +22,7 @@ import de.newrp.Runnable.*;
 import de.newrp.Shop.*;
 import de.newrp.TeamSpeak.*;
 import de.newrp.Ticket.*;
-import de.newrp.Waffen.GetAmmo;
-import de.newrp.Waffen.GetGun;
-import de.newrp.Waffen.Waffen;
-import de.newrp.Waffen.WaffenDamage;
+import de.newrp.Waffen.*;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
@@ -267,6 +262,9 @@ public class main extends JavaPlugin {
         getCommand("ramm").setExecutor(new Ramm());
         getCommand("transferticket").setExecutor(new TransferTicket());
         getCommand("health").setExecutor(new HealthCommand());
+        getCommand("notrufe").setExecutor(new Notrufe());
+        getCommand("dropgun").setExecutor(new DropGuns());
+        getCommand("rezept").setExecutor(new Rezept());
 
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new SDuty(), this);
@@ -327,7 +325,12 @@ public class main extends JavaPlugin {
         pm.registerEvents(new Zeitung(), this);
         pm.registerEvents(new Verband(), this);
         pm.registerEvents(new Gips(), this);
+        pm.registerEvents(new HealthCommand(), this);
+        pm.registerEvents(new EatEvent(), this);
+        pm.registerEvents(new UseMedikamente(), this);
 
+
+        new AsyncHealth().runTaskTimerAsynchronously(this, 120 * 20L, 120 * 20L);
         new PayDay().runTaskTimerAsynchronously(this, 60 * 20L, 60 * 20L);
         new AsyncMinute().runTaskTimerAsynchronously(this, 60 * 20L, 60 * 20L);
         new AsyncHour().runTaskTimerAsynchronously(this, 60 * 60 * 20L, 60 * 60 * 20L);

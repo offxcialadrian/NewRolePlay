@@ -16,6 +16,11 @@ public class JailList implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         Player p = (Player) cs;
+        if(!Beruf.hasBeruf(p)) {
+            p.sendMessage(Messages.NO_PERMISSION);
+            return true;
+        }
+
         if (!Beruf.getBeruf(p).equals(Beruf.Berufe.POLICE)) {
             p.sendMessage(Messages.ERROR + "Du bist kein Polizist.");
             return true;

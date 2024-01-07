@@ -24,7 +24,7 @@ public class GoTo implements CommandExecutor, TabCompleter {
 
         STADTHALLE(1, "Stadthalle", new String[]{"SH", "Regierung"},new Location(Script.WORLD, 588, 69, 991, -270.83252f, -2.236781f)),
         POLIZEIREVIER(2, "Polizeirevier", new String[]{"PR", "Polizeirevier", "Police", "Cop", "Cops", "police"}, new Location(Script.WORLD, 405, 71, 852, 177.84886f, 5.210484f)),
-        KRANKENHAUS  (3, "Krankenhaus", new String[]{"Krankenhaus", "KH", "Hospital"}, new Location(Script.WORLD, 333, 77, 1132)),
+        KRANKENHAUS  (3, "Krankenhaus", new String[]{"Krankenhaus", "KH", "Hospitalm", "Medic"}, new Location(Script.WORLD, 320, 75, 1232, 90.95497f, -1.2530943f)),
         MALL (4, "Mall", new String[]{"Einkaufszentrum"}, new Location(Script.WORLD, 827, 74, 935)),
         NEWS (5, "News", new String[]{"News", "Nachrichten", "Redaktion"}, new Location(Script.WORLD, 326, 67, 763)),
         X3 (6, "X3", new String[]{"X3-Tower"}, new Location(Script.WORLD, 679, 160, 991, -272.33267f, 4.513469f)),
@@ -38,7 +38,8 @@ public class GoTo implements CommandExecutor, TabCompleter {
         ARCADE (14, "Arcade", new String[]{"Arcadehalle"}, new Location(Script.WORLD, 451, 66, 753)),
         FREIZEITPARK (15, "Freizeitpark", new String[]{"Park"}, new Location(Script.WORLD, 817, 66, 723)),
         MOTEL (16, "Motel", new String[]{"Hotel"}, new Location(Script.WORLD, 795, 64, 1222)),
-        KNAST (17, "Gefängnis", new String[]{"Knast, Jail, JVA"}, new Location(Script.WORLD, 1018, 68, 549, 180.84424f, -9.02183f));
+        KNAST (17, "Gefängnis", new String[]{"Knast, Jail, JVA"}, new Location(Script.WORLD, 1018, 68, 549, 180.84424f, -9.02183f)),
+        CASINO (18, "Casino", new String[]{"Spielhalle"}, new Location(Script.WORLD, 780, 109, 856, 0.22738647f, 5.2779894f));
 
         int id;
         String name;

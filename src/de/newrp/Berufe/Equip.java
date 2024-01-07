@@ -38,8 +38,8 @@ public class Equip implements CommandExecutor, Listener {
         FLASHBANG("Flashbang", Script.flashbang(), 100, 0, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE),
         FALLSCHIRM("Fallschirm", Script.fallschirm(), 100, 0, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE),
         ZEITUNG("Zeitung", Script.setName(new ItemStack(Material.WRITABLE_BOOK), "§7Zeitung"), 100, 0, Abteilung.Abteilungen.NEWS_3, Beruf.Berufe.NEWS),
-        VERBAND("Verband", Script.setName(new ItemStack(Material.PAPER), "§cVerband"), 5, 0, null, Beruf.Berufe.RETTUNGSDIENST),
-        GIPS("Gips", Script.setName(new ItemStack(Material.PAPER), "§fGips"), 5, 0, null, Beruf.Berufe.RETTUNGSDIENST);
+        VERBAND("Verband", Script.setName(new ItemStack(Material.PAPER), "§7Verband"), 5, 0, null, Beruf.Berufe.RETTUNGSDIENST),
+        GIPS("Gips", Script.setName(new ItemStack(Material.PAPER), "§7Gips"), 50, 0, null, Beruf.Berufe.RETTUNGSDIENST);
 
         private String name;
         private ItemStack item;
@@ -163,7 +163,7 @@ public class Equip implements CommandExecutor, Listener {
         if (e.getCurrentItem().getType() == Material.AIR) return;
         if (e.getView().getTitle().equalsIgnoreCase("§8» §7Equip")) {
             e.setCancelled(true);
-            Stuff stuff = Stuff.getStuff(e.getCurrentItem().getItemMeta().getDisplayName().replace("§7", ""));
+            Stuff stuff = Stuff.getStuff(e.getCurrentItem().getItemMeta().getDisplayName().replace("§7", "").replace("§8", "").replace("§9", "").replace("§e", "").replace("§6", "").replace("§c", "").replace("§a", "").replace("§b", "").replace("§d", "").replace("§f", ""));
             if (stuff == null) return;
             if (Beruf.getBeruf(p) != stuff.getBeruf()) {
                 p.sendMessage(Messages.ERROR + "Du kannst dir nur Items von deinem Beruf ausrüsten.");

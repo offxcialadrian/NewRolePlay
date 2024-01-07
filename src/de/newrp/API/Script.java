@@ -684,6 +684,10 @@ public class Script {
         }
     }
 
+    public static boolean isKrankenversichert(Player p) {
+        return getInt(p, "krankenversicherung", "versichert") == 1;
+    }
+
     public static void sendPaymentTypeGUI(Player p, int price) {
         Inventory inv = Bukkit.createInventory(null, InventoryType.HOPPER, "§8[§aZahlungsmethode§8]");
         ItemStack cash = new ItemBuilder(Material.CHEST).setName("§aBar").setLore("§8» §c" + price + "€").build();
@@ -1502,6 +1506,15 @@ public class Script {
     public static double getPercent(double percent, int total) {
         if (total == 0) return 0;
         return ((double) total / 100) * percent;
+    }
+
+    public static boolean hasWeapons(Player p) {
+        Inventory inv = p.getInventory();
+        boolean b = false;
+        for (Weapon w : Weapon.values()) {
+            if (!b && inv.contains(w.getWeapon().getType())) b = true;
+        }
+        return b;
     }
 
     public static int getPercentage(int amount, int total) {

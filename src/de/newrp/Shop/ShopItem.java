@@ -15,7 +15,7 @@ import java.sql.Statement;
 public enum ShopItem {
 
     BROT(0, "§fBrot", new ItemStack(Material.BREAD), 16, 1, 20, 2, 2400, true, true, new ShopType[] {ShopType.SUPERMARKET}),
-    KAFFEE(1, "§fKaffee", new ItemStack(Material.POTION, 1, (short) 16421), 1, 1, 20, 2, 3900, true, true, new ShopType[] {ShopType.SUPERMARKET}),
+    KAFFEE(1, "§fKaffee", new ItemStack(Material.POTION, 1), 1, 1, 20, 2, 3900, true, true, new ShopType[] {ShopType.SUPERMARKET}),
     LOTTOSCHEIN(2, "§7Lottoschein", new ItemStack(Material.PAPER), 1, 1, 20, 30, 1000, false, true, new ShopType[] {ShopType.SUPERMARKET}),
     HAUSKASSE(3, "§7Hauskasse", new ItemStack(Material.CHEST), 20, 1, 20, HouseAddon.HAUSKASSE.getPrice(), 34000, false, false, new ShopType[] {ShopType.HAUSADDON}),
     MIETERSLOT(4, "§7Mieterslot", new ItemStack(Material.CHEST), 20, 1, 20, HouseAddon.SLOT.getPrice(), 39500, false, false, new ShopType[] {ShopType.HAUSADDON}),
@@ -31,7 +31,8 @@ public enum ShopItem {
     LATTE_MACCHIATO(45, "§rLatte Macchiato", new ItemStack(Material.FLOWER_POT), 1, 2, 25, 2, 3000, true, true, new ShopType[] {ShopType.CAFE}),
     ESPRESSO(46, "§rEspresso", new ItemStack(Material.FLOWER_POT), 1, 2, 25, 2, 3000, true, true, new ShopType[] {ShopType.CAFE}),
     CRAPPUCHINO(47, "§rCrappuchino", new ItemStack(Material.FLOWER_POT), 1, 2, 25, 2, 3000, true, true, new ShopType[] {ShopType.CAFE}),
-    Zeitung(48, "§9Zeitung", de.newrp.News.Zeitung.zeitung, 1, 2, 25, 2, 3000, true, true, new ShopType[] {ShopType.CAFE, ShopType.SUPERMARKET});
+    Zeitung(48, "§9Zeitung", de.newrp.News.Zeitung.zeitung, 1, 2, 25, 2, 3000, true, true, new ShopType[] {ShopType.CAFE, ShopType.SUPERMARKET}),
+    SCHMERZMITTEL(49, "§fSchmerzmittel", new ItemStack(Material.PAPER), 1, 2, 25, 2, 3000, true, true, new ShopType[] {ShopType.APOTHEKE, ShopType.SUPERMARKET});
 
     private final int id;
     private final String name;

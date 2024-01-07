@@ -5,6 +5,7 @@ import de.newrp.API.Messages;
 import de.newrp.API.Rank;
 import de.newrp.API.Script;
 import de.newrp.Berufe.Beruf;
+import de.newrp.Forum.Forum;
 import de.newrp.Government.Arbeitslosengeld;
 import de.newrp.TeamSpeak.TeamSpeak;
 import org.bukkit.Bukkit;
@@ -69,6 +70,7 @@ public class JoinBeruf implements CommandExecutor, Listener {
                 p.sendMessage(Messages.INFO + "Dein Arbeitslosengeld wurde automatisch gekündigt.");
             Arbeitslosengeld.deleteArbeitslosengeld(p);
             TeamSpeak.sync(Script.getNRPID(p));
+            Forum.syncPermission(p);
 
 
             p.closeInventory();

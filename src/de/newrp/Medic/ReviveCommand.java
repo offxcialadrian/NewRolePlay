@@ -180,7 +180,7 @@ public class ReviveCommand implements CommandExecutor {
                     return;
                 }
             }
-            Script.addEXP(p, Script.getRandom(4, 12));
+            Script.addEXP(p, Script.getRandom(4, 8));
             exp_cooldowns.put(p.getName(), time1);
             Waffen.REVIVE_COOLDOWN.put(p.getName(), System.currentTimeMillis());
         }, 5 * 20L);

@@ -29,7 +29,8 @@ public class StatsCommand implements CommandExecutor {
         p.sendMessage("§7Team §8× §e" + (Team.getTeam(p) != null ? Team.getTeam(p).getName() : "Kein Team"));
         p.sendMessage("§7PlayTime §8× §e" + Script.getPlayTime(p, true) + ":§e" + String.format("%02d", Script.getPlayTime(p, false)) + " Stunden §8(§e" + Script.getActivePlayTime(p, true) + ":§e" + String.format("%02d", Script.getActivePlayTime(p, false)) + " Stunden§8)");
         p.sendMessage("§7PayDay §8× §e" + PayDay.getPayDayTime(p) + "/60 Minuten");
-        p.sendMessage("§7Exp §8× §e" + Script.getExp(p) + "/" + Script.getLevelCost(p) + " Exp");
+        p.sendMessage("§7Level §8× §e" + Script.getLevel(p));
+        p.sendMessage("§7Exp §8× §e" + Script.getExp(p) + "/" + Script.getLevelCost(p) + " Exp (" + Script.getPercentage(Script.getExp(p), Script.getLevelCost(p)) + "%)");
         p.sendMessage("§7Beruf §8× §e" + (Beruf.hasBeruf(p) ? Beruf.getBeruf(p).getName() : "Kein Beruf") + (Beruf.isLeader(p) ? " §8(§eLeader§8)" : ""));
         p.sendMessage("§7Warns §8× §e" + Punish.getWarns(p) + "/3");
         if(!Punish.getWarnsMap(p).isEmpty()) {

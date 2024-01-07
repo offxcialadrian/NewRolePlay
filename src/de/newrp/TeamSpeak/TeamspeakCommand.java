@@ -38,7 +38,7 @@ public class TeamspeakCommand implements CommandExecutor {
                 p.sendMessage(TeamSpeak.PREFIX + "§4Die Verbindung konnte nicht neu verbunden werden.");
             }
             Bukkit.getScheduler().runTaskAsynchronously(main.getInstance(), TeamSpeak::connect);
-            Script.sendTeamMessage(TeamSpeak.PREFIX + "§c" + p.getName() + " hat den Teamspeak neu verbunden.");
+            Script.sendTeamMessage(TeamSpeak.PREFIX + "§c" + Script.getName(p) + " hat den Teamspeak neu verbunden.");
             return true;
         }
 

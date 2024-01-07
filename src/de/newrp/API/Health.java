@@ -1,5 +1,6 @@
 package de.newrp.API;
 
+import de.newrp.Administrator.BuildMode;
 import de.newrp.Administrator.SDuty;
 import de.newrp.Player.AFK;
 import de.newrp.Police.Jail;
@@ -18,7 +19,7 @@ public enum Health {
     THIRST(1, "thirst", "Durst", 20, 20),
     FAT(2, "fat", "Fett", 20, 0),
     BLOOD(3, "bloodamount", "Blut", 6, 6),
-    MUSCLES(4, "muscles", "Muskeln", 9, 0);
+    MUSCLES(4, "muscles", "Muskeln", 10, 0);
 
     public static final HashMap<String, Float> BLEEDING = new HashMap<>();
     private final int id;
@@ -52,7 +53,7 @@ public enum Health {
                 float amount = Script.getRandomFloat(.2F, .3F);
                 Health.BLOOD.add(Script.getNRPID(p), amount);
             }
-            if (!AFK.isAFK(p) && !Jail.isInJail(p) && !Friedhof.isDead(p) && !SDuty.isSDuty(p)) {
+            if (!AFK.isAFK(p) && !Jail.isInJail(p) && !Friedhof.isDead(p) && !SDuty.isSDuty(p) && !BuildMode.isInBuildMode(p)) {
                 Health.THIRST.remove(Script.getNRPID(p), Script.getRandomFloat(.09F, .12F));
             }
         }
@@ -62,7 +63,7 @@ public enum Health {
         try (Statement stmt = main.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT id FROM health WHERE id=" + id)) {
             if (!rs.next()) {
-                Script.executeAsyncUpdate("INSERT INTO health (id) VALUES (" + id + ");");
+                Script.executeAsyncUpdate("INSERT INTO health (id, bloodamount, thirst, fat, muscles) VALUES (" + id + ", 6, 20, 0, 0);");
             }
         } catch (SQLException e) {
             e.printStackTrace();

@@ -22,7 +22,7 @@ public class DaylightCycle {
     static {
         String json;
         try {
-            json = IOUtils.toString(new URL("http://api.sunrise-sunset.org/json?lat=52.520008&lng=13.404954&formatted=0")); //location of Berlin, Germany
+            json = IOUtils.toString(new URL("http://api.sunrise-sunset.org/json?lat=52.520008&lng=13.404954&formatted=0"));
         } catch (IOException e) {
             e.printStackTrace();
             throw new IllegalStateException(e);

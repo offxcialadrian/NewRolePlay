@@ -288,7 +288,7 @@ public class Shop implements CommandExecutor, Listener {
             for(ShopItem si : ShopItem.values()) {
                 ItemStack is = si.getItemStack();
                 if(is == null && si == ShopItem.Zeitung) {
-                    is = Script.setNameAndLore(Material.WRITTEN_BOOK, "Zeitung", "§8» §6Lizensierungsgebühr: §6" + si.getLicensePrice() + "€", "§8» §6Einkaufspreis: §6" + si.getBuyPrice() + "€");
+                    is = Script.setNameAndLore(Material.WRITTEN_BOOK, "§9Zeitung", "§8» §6Lizensierungsgebühr: §6" + si.getLicensePrice() + "€", "§8» §6Einkaufspreis: §6" + si.getBuyPrice() + "€");
                 }
                 if(!containsType(si, shop)) continue;
                 if(shop.getItems().get(si.getID()) == null) {
@@ -330,7 +330,7 @@ public class Shop implements CommandExecutor, Listener {
             }
 
             if(s == null) return;
-            ShopItem si = null;
+            ShopItem si;
             ItemStack is = e.getCurrentItem();
             si = ShopItem.getShopItem(is);
 
