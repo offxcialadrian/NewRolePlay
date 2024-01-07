@@ -69,7 +69,7 @@ public class Forum {
         Beruf.Berufe f = Beruf.getBeruf(p);
         addUserToGroup(forumid, ForumGroup.ZIVILIST);
         addUserToGroup(forumid, ForumGroup.VERIFIED);
-        if (f != null) addUserToGroup(forumid, f.getForumGroup(f.isLeader(Script.getNRPID(p))));
+        if (f != null) addUserToGroup(forumid, f.getForumGroup(f.isLeader(Script.getNRPID(p), true)));
 
         if(Script.hasRank(p, Rank.OWNER, false)) {
             addUserToGroup(forumid, ForumGroup.ADMINISTRATOR);
@@ -98,7 +98,7 @@ public class Forum {
         Beruf.Berufe f = Beruf.getBeruf(p);
         addUserToGroup(forumid, ForumGroup.ZIVILIST);
         addUserToGroup(forumid, ForumGroup.VERIFIED);
-        if (f != null) addUserToGroup(forumid, f.getForumGroup(f.isLeader(p)));
+        if (f != null) addUserToGroup(forumid, f.getForumGroup(f.isLeader(p, true)));
 
         if(Script.hasRank(p, Rank.OWNER, false)) {
             addUserToGroup(forumid, ForumGroup.ADMINISTRATOR);

@@ -157,7 +157,7 @@ public class Erstattung implements CommandExecutor {
         }
 
         if (Beruf.getBeruf(p) == Beruf.Berufe.GOVERNMENT) {
-            if (Beruf.getAbteilung(p) != Abteilung.Abteilungen.FINANZAMT && !Beruf.isLeader(p)) {
+            if (Beruf.getAbteilung(p) != Abteilung.Abteilungen.FINANZAMT && !Beruf.isLeader(p, true)) {
                 p.sendMessage(Messages.ERROR + "Nur das Finanzamt kann Erstattungen bearbeiten.");
                 return true;
             }
@@ -194,7 +194,7 @@ public class Erstattung implements CommandExecutor {
                 return true;
 
             } else if(args.length == 2) {
-                if(!Beruf.isLeader(p)) {
+                if(!Beruf.isLeader(p, true)) {
                     p.sendMessage(Messages.ERROR + "Nur das Staatsoberhaupt kann Erstattungen bearbeiten.");
                     return true;
                 }

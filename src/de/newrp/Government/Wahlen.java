@@ -220,7 +220,7 @@ public class Wahlen implements CommandExecutor, Listener {
                     Script.sendTeamMessage(PREFIX + "Die News hat es nicht rechtzeitig geschafft das Ergebnis der Wahlen zu verkünden.");
                 }
 
-                if(Beruf.getBeruf(winner) != Beruf.Berufe.GOVERNMENT || !Beruf.isLeader(winner)) {
+                if(Beruf.getBeruf(winner) != Beruf.Berufe.GOVERNMENT || !Beruf.isLeader(winner, false)) {
                     for(Player all : Beruf.Berufe.GOVERNMENT.getMembers()) {
                         all.sendMessage(PREFIX + "Die Legislaturperiode der aktuellen Regierung ist abgelaufen. Du bist nun nicht mehr in der Regierung.");
                     }
@@ -232,7 +232,7 @@ public class Wahlen implements CommandExecutor, Listener {
                 NewsCommand.wahlenNewsActive = false;
                 if(Beruf.hasBeruf(winner) && Beruf.getBeruf(winner) != Beruf.Berufe.GOVERNMENT)  Beruf.getBeruf(winner).removeMember(winner);
                 if(Beruf.getBeruf(winner) != Beruf.Berufe.GOVERNMENT) Beruf.Berufe.GOVERNMENT.addMember(winner);
-                Beruf.setLeader(winner);
+                Beruf.setLeader(winner, true);
                 Achievement.WAHL_GEWONNEN.grant(winner);
                 if(Script.getPlayer(winner.getName()) != null)
                     Script.getPlayer(winner.getName()).sendMessage(Messages.INFO + "Herzlichen Glückwunsch! Du hast die Wahlen gewonnen! Du hast hiermit deine Rechte erhalten. Solltest du Hilfe benötigen, steht das Server-Team dir jederzeit zur Verfügung.");

@@ -42,7 +42,7 @@ public class RemoveLeaderrechte implements CommandExecutor {
             return true;
         }
 
-        if (!Beruf.isLeader(tg)) {
+        if (!Beruf.isLeader(tg, true)) {
             p.sendMessage(Messages.ERROR + " Dieser Spieler ist kein Leader.");
             return true;
         }

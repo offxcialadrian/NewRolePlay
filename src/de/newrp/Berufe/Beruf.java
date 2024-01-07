@@ -130,13 +130,21 @@ public class Beruf {
         }
 
 
-        public boolean isLeader(Player p) {
-            return Script.getInt(p, "berufe", "leader") == 1;
+        public boolean isLeader(Player p, boolean coleader) {
+            if(Script.getInt(p, "berufe", "leader") == 1) return true;
+            if(coleader) {
+                return Script.getInt(p, "berufe", "coleader") == 1;
+            }
+            return false;
         }
 
-        public boolean isLeader(int id) {
-            Player p = Script.getPlayer(id);
-            return Script.getInt(p, "berufe", "leader") == 1;
+        public boolean isLeader(int id, boolean coleader) {
+            OfflinePlayer p = Script.getOfflinePlayer(id);
+            if(Script.getInt(p, "berufe", "leader") == 1) return true;
+            if(coleader) {
+                return Script.getInt(p, "berufe", "coleader") == 1;
+            }
+            return false;
         }
 
         public void sendMessage(String message) {
@@ -179,15 +187,17 @@ public class Beruf {
         public List<Player> getLeaders() {
             List<Player> list = new ArrayList<>();
             for (Player all : Bukkit.getOnlinePlayers()) {
-                if (hasBeruf(all, this) && isLeader(all)) {
-                    list.add(all);
+                if (hasBeruf(all, this)) {
+                    if (isLeader(all, true)) {
+                        list.add(all);
+                    }
                 }
             }
             return list;
         }
 
         public void addMember(Player p, Player leader) {
-            Script.executeUpdate("INSERT INTO berufe (nrp_id, berufID, salary, abteilung, leader) VALUES ('" + Script.getNRPID(p) + "', '" + getID() + "', '0', '0', '0')");
+            Script.executeUpdate("INSERT INTO berufe (nrp_id, berufID, salary, abteilung, leader, coleader) VALUES ('" + Script.getNRPID(p) + "', '" + getID() + "', '0', '0', '0')");
             for (Player members : getPlayersFromBeruf(this)) {
                 members.sendMessage("§8[§e" + getName() + "§8] §e" + p.getName() + " §eist dem Beruf beigetreten.");
             }
@@ -199,7 +209,7 @@ public class Beruf {
         }
 
         public void addMember(OfflinePlayer p) {
-            Script.executeUpdate("INSERT INTO berufe (nrp_id, berufID, salary, abteilung, leader) VALUES ('" + Script.getNRPID(p) + "', '" + getID() + "', '0', '0', '0')");
+            Script.executeUpdate("INSERT INTO berufe (nrp_id, berufID, salary, abteilung, leader, coleader) VALUES ('" + Script.getNRPID(p) + "', '" + getID() + "', '0', '0', '0')");
             for (Player members : getPlayersFromBeruf(this)) {
                 members.sendMessage("§8[§e" + getName() + "§8] §e" + p.getName() + " §eist dem Beruf beigetreten.");
             }
@@ -268,6 +278,10 @@ public class Beruf {
         return Script.getInt(p, "berufe", "berufID") == beruf.getID();
     }
 
+    public static boolean isCoLeader(Player p) {
+        return Script.getInt(p, "berufe", "coleader") == 1;
+    }
+
     public static int getSalary(OfflinePlayer p) {
         return Script.getInt(p, "berufe", "salary");
     }
@@ -276,12 +290,14 @@ public class Beruf {
         return Script.getInt(p, "berufe", "salary");
     }
 
-    public static void setLeader(OfflinePlayer p) {
-        Script.setInt(p, "berufe", "leader", 1);
+    public static void setLeader(OfflinePlayer p, boolean main) {
+        Script.setInt(p, "berufe", "leader", main ? 1 : 0);
+        Script.setInt(p, "berufe", "coleader", main ? 0 : 1);
     }
 
     public static void removeLeader(OfflinePlayer p) {
         Script.setInt(p, "berufe", "leader", 0);
+        Script.setInt(p, "berufe", "coleader", 0);
     }
 
     public static Abteilung.Abteilungen getAbteilung(Player p) {
@@ -292,13 +308,22 @@ public class Beruf {
         return Abteilung.Abteilungen.getAbteilung(Script.getInt(p, "berufe", "abteilung"), getBeruf(p));
     }
 
-    public static boolean isLeader(Player p) {
-        return Script.getInt(p, "berufe", "leader") == 1;
+    public static boolean isLeader(Player p, boolean coleader) {
+        if(Script.getInt(p, "berufe", "leader") == 1) return true;
+        if(coleader) {
+            return Script.getInt(p, "berufe", "coleader") == 1;
+        }
+        return false;
     }
 
-    public static boolean isLeader(OfflinePlayer p) {
-        return Script.getInt(p, "berufe", "leader") == 1;
+    public static boolean isLeader(OfflinePlayer p, boolean coleader) {
+        if(Script.getInt(p, "berufe", "leader") == 1) return true;
+        if(coleader) {
+            return Script.getInt(p, "berufe", "coleader") == 1;
+        }
+        return false;
     }
+
 
     public static List<Player> getPlayersFromBeruf(Berufe beruf) {
         List<Player> list = new ArrayList<>();

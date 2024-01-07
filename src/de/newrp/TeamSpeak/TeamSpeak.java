@@ -123,7 +123,7 @@ public class TeamSpeak {
             Beruf.Berufe f = Beruf.getBeruf(Script.getOfflinePlayer(id));
             if(f != null) {
                 addToServerGroup(f.getTeamspeakServerGroup(), dbID);
-                addToChannelGroup(f.getChannelID(), (f.isLeader(Script.getPlayer(id)) ? TeamspeakServerGroup.TeamspeakChannelGroup.LEADER : TeamspeakServerGroup.TeamspeakChannelGroup.MEMBER), dbID);
+                addToChannelGroup(f.getChannelID(), (f.isLeader(id, true) ? TeamspeakServerGroup.TeamspeakChannelGroup.LEADER : TeamspeakServerGroup.TeamspeakChannelGroup.MEMBER), dbID);
             }
 
             Rank rank = Script.getRank(Script.getPlayer(id));
@@ -191,7 +191,7 @@ public class TeamSpeak {
             Beruf.Berufe f = Beruf.getBeruf(Script.getOfflinePlayer(id));
             if (f != null) {
                 addToServerGroup(f.getTeamspeakServerGroup(), dbID);
-                addToChannelGroup(f.getChannelID(), (f.isLeader(Script.getPlayer(id)) ? TeamspeakServerGroup.TeamspeakChannelGroup.LEADER : TeamspeakServerGroup.TeamspeakChannelGroup.MEMBER), dbID);
+                addToChannelGroup(f.getChannelID(), (f.isLeader(id, true) ? TeamspeakServerGroup.TeamspeakChannelGroup.LEADER : TeamspeakServerGroup.TeamspeakChannelGroup.MEMBER), dbID);
             }
 
             Rank rank = Script.getRank(Script.getPlayer(id));
@@ -242,7 +242,7 @@ public class TeamSpeak {
         Client c = getClient(uid);
         int dbID = c.getDatabaseId();
         addToServerGroup(f.getTeamspeakServerGroup(), dbID);
-        addToChannelGroup(f.getChannelID(), (f.isLeader(id) ? TeamspeakServerGroup.TeamspeakChannelGroup.LEADER : TeamspeakServerGroup.TeamspeakChannelGroup.MEMBER), dbID);
+        addToChannelGroup(f.getChannelID(), (f.isLeader(id, true) ? TeamspeakServerGroup.TeamspeakChannelGroup.LEADER : TeamspeakServerGroup.TeamspeakChannelGroup.MEMBER), dbID);
     }
 
     public static void removeFrakGroups(int id, Beruf.Berufe f) {
@@ -251,7 +251,7 @@ public class TeamSpeak {
         Client c = getClient(uid);
         int dbID = c.getDatabaseId();
         addToServerGroup(f.getTeamspeakServerGroup(), dbID);
-        addToChannelGroup(f.getChannelID(), (f.isLeader(id) ? TeamspeakServerGroup.TeamspeakChannelGroup.LEADER : TeamspeakServerGroup.TeamspeakChannelGroup.MEMBER), dbID);
+        addToChannelGroup(f.getChannelID(), (f.isLeader(id, true) ? TeamspeakServerGroup.TeamspeakChannelGroup.LEADER : TeamspeakServerGroup.TeamspeakChannelGroup.MEMBER), dbID);
     }
 
     public static void disconnect() {

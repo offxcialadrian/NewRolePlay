@@ -26,7 +26,7 @@ public class InviteCommand implements CommandExecutor {
             return true;
         }
 
-        if (!Beruf.isLeader(p)) {
+        if (!Beruf.isLeader(p, true)) {
             p.sendMessage(Messages.ERROR + "Du bist kein Leader.");
             return true;
         }

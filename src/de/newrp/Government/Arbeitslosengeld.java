@@ -107,7 +107,7 @@ public class Arbeitslosengeld implements CommandExecutor {
                 }
 
                 if (args[0].equals("set")) {
-                    if (!Beruf.isLeader(p)) {
+                    if (!Beruf.isLeader(p, true)) {
                         p.sendMessage(Messages.ERROR + "Nur das Staatsoberhaupt kann die Höhe des Arbeitslosengeldes ändern.");
                         return true;
                     }

@@ -62,7 +62,7 @@ public class Annehmen implements CommandExecutor {
                 return true;
             }
 
-            if (!Beruf.isLeader(leader)) {
+            if (!Beruf.isLeader(leader, true)) {
                 p.sendMessage(Messages.ERROR + "Der Leader ist kein Leader mehr.");
                 return true;
             }

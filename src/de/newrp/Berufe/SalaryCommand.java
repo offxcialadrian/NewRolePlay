@@ -30,7 +30,7 @@ public class SalaryCommand implements CommandExecutor {
             return true;
         }
 
-        if (!Beruf.isLeader(p)) {
+        if (!Beruf.isLeader(p, true)) {
             p.sendMessage(Messages.ERROR + "Du bist kein Leader.");
             return true;
         }
@@ -74,7 +74,7 @@ public class SalaryCommand implements CommandExecutor {
                     p.sendMessage("§8» §6" + all.getName() + " §8[§6" + Beruf.getAbteilung(all).getName() + "§8]: §6" + Beruf.getSalary(all) + "€");
                 }
                 return true;
-            } else if(Beruf.isLeader(p)){
+            } else if(Beruf.isLeader(p, true)){
                 p.sendMessage(Messages.ERROR + "/salary [Spieler] [Gehalt]");
                 return true;
             }

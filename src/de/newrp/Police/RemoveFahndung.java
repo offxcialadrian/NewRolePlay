@@ -26,7 +26,7 @@ public class RemoveFahndung implements CommandExecutor {
             return true;
         }
 
-        if(Beruf.getAbteilung(p) != Abteilung.Abteilungen.JUSTIZMINISTERIUM && Beruf.getAbteilung(p) != Abteilung.Abteilungen.STREIFENDIENST && !Beruf.isLeader(p)) {
+        if(Beruf.getAbteilung(p) != Abteilung.Abteilungen.JUSTIZMINISTERIUM && Beruf.getAbteilung(p) != Abteilung.Abteilungen.KRIPO && !Beruf.isLeader(p, true)) {
             p.sendMessage(Messages.NO_PERMISSION);
             return true;
         }

@@ -124,7 +124,7 @@ public class Steuern implements CommandExecutor, TabCompleter {
                 return true;
             }
 
-            if (!Beruf.isLeader(p)) {
+            if (!Beruf.isLeader(p, false)) {
                 p.sendMessage(Messages.ERROR + "Nur das Staatsoberhaupt kann die Steuern ändern.");
                 return true;
             }

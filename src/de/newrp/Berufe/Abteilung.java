@@ -131,7 +131,7 @@ public class Abteilung implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        if (!Beruf.isLeader(p)) {
+        if (!Beruf.isLeader(p, true)) {
             p.sendMessage(Messages.ERROR + "Du bist kein Leader.");
             return true;
         }
@@ -174,7 +174,7 @@ public class Abteilung implements CommandExecutor, TabCompleter {
                     p.sendMessage("§8» §6" + all.getName() + "§8: §6" + Beruf.getAbteilung(all).getName());
                 }
                 return true;
-            } else if(Beruf.isLeader(p)){
+            } else if(Beruf.isLeader(p, true)){
                 p.sendMessage(Messages.ERROR + "/abteilung [Spieler] [Abteilung]");
                 return true;
             }
@@ -215,7 +215,7 @@ public class Abteilung implements CommandExecutor, TabCompleter {
     public List<String> onTabComplete(CommandSender cs, Command cmd, String alias, String[] args) {
         Player p = (Player) cs;
         if (cmd.getName().equalsIgnoreCase("abteilung")) {
-            if(!Beruf.isLeader(p) && !SDuty.isSDuty(p)) return Collections.EMPTY_LIST;
+            if(!Beruf.isLeader(p, true) && !SDuty.isSDuty(p)) return Collections.EMPTY_LIST;
             final List<String> oneArgList = new ArrayList<>();
             final List<String> completions = new ArrayList<>();
             for (Abteilungen abteilung : Abteilungen.getAbteilungen(Beruf.getBeruf(p))) {

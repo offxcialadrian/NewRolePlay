@@ -15,7 +15,7 @@ import org.bukkit.entity.Player;
 
 public class GiveLeaderrechte implements CommandExecutor {
 
-    private static final String PREFIX = "§8[§cLeaderrechte§8] §7";
+    private static final String PREFIX = "§8[§cLeaderrechte§8] §c" + Messages.ARROW + " §7";
 
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
@@ -31,8 +31,8 @@ public class GiveLeaderrechte implements CommandExecutor {
             return true;
         }
 
-        if(args.length != 1) {
-            p.sendMessage(Messages.ERROR + "/giveleaderrechte [Spieler]");
+        if(args.length != 2) {
+            p.sendMessage(Messages.ERROR + "/giveleaderrechte [Spieler] [Main/Co]");
             return true;
         }
 
@@ -42,20 +42,22 @@ public class GiveLeaderrechte implements CommandExecutor {
             return true;
         }
 
-        if(Beruf.isLeader(tg)) {
+        if(Beruf.isLeader(tg, true)) {
             p.sendMessage(Messages.ERROR + " Dieser Spieler ist bereits Leader.");
             return true;
         }
 
-        Beruf.setLeader(tg);
-        p.sendMessage(PREFIX + " Du hast " + tg.getName() + " Leaderrechte gegeben.");
-        Script.sendTeamMessage(p, ChatColor.RED, "hat " + tg.getName() + " Leaderrechte gegeben.", true);
+        boolean main = args[1].equalsIgnoreCase("main");
+
+        Beruf.setLeader(tg, main);
+        p.sendMessage(PREFIX + "Du hast " + tg.getName() + " " + (main?"Main-":"Co-") + "Leaderrechte gegeben.");
+        Script.sendTeamMessage(p, ChatColor.RED, "hat " + tg.getName() + " " + (main?"Main-":"Co-") + "Leaderrechte gegeben.", true);
         if(tg.isOnline()) {
-            tg.getPlayer().sendMessage(PREFIX + " Du hast nun Leaderrechte.");
+            tg.getPlayer().sendMessage(PREFIX + "Du hast " + (main?"Main-":"Co-") + "Leaderrechte bekommen.");
         }
         Script.addEXP(Script.getNRPID(tg), Script.getRandom(10, 20));
-        Log.HIGH.write(p, "hat " + tg.getName() + " Leaderrechte gegeben.");
-        Log.HIGH.write(tg, "hat Leaderrechte bekommen.");
+        Log.HIGH.write(p, "hat " + tg.getName() + " " + (main?"Main-":"Co-") + "Leaderrechte gegeben.");
+        Log.HIGH.write(tg, "hat " + (main?"Main-":"Co-") + "Leaderrechte bekommen.");
         TeamSpeak.sync(Script.getNRPID(tg));
 
         return false;

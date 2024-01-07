@@ -66,7 +66,7 @@ public class CheckPlayerCommand implements CommandExecutor {
             p.sendMessage("§7Team §8× §e" + (Team.getTeam(offtg) != null ? Team.getTeam(offtg).getName()  + (Team.isTeamLeader(p)? " (TL)":""): "Kein Team"));
             p.sendMessage("§7PlayTime §8× §e" + Script.getPlayTime(offtg, true) + ":§e" + String.format("%02d", Script.getPlayTime(offtg, false)) + " Stunden" + " §8(§e" + Script.getActivePlayTime(offtg, true) + ":§e" + String.format("%02d", Script.getActivePlayTime(offtg, false)) + " Stunden§8)");
             p.sendMessage("§7Level §8× §e" + Script.getLevel(offtg));
-            p.sendMessage("§7Beruf §8× §e" + (Beruf.hasBeruf(offtg) ? Beruf.getBeruf(offtg).getName() : "Kein Beruf") + (Beruf.isLeader(offtg) ? " §8(§eLeader§8)" : ""));
+            p.sendMessage("§7Beruf §8× §e" + (Beruf.hasBeruf(offtg) ? Beruf.getBeruf(offtg).getName() : "Kein Beruf") + (Beruf.isLeader(offtg, true) ? " §8(§eLeader§8)" : ""));
             StringBuilder houses = new StringBuilder();
             for(House house : House.getHouses(Script.getNRPID(offtg))) {
                 if(House.getHouses(Script.getNRPID(offtg)).size() == 1) {
@@ -105,7 +105,7 @@ public class CheckPlayerCommand implements CommandExecutor {
         p.sendMessage("§7Level §8× §e" + Script.getLevel(tg));
         p.sendMessage("§7Exp §8× §e" + Script.getExp(tg) + "/" + Script.getLevelCost(tg) + " Exp");
         p.sendMessage("§7Health §8× §e" + df.format(tg.getHealth()/2) + "/" + df.format(tg.getMaxHealth()/2) + " HP");
-        p.sendMessage("§7Beruf §8× §e" + (Beruf.hasBeruf(tg) ? Beruf.getBeruf(tg).getName() : "Kein Beruf") + (Beruf.isLeader(tg) ? " §8(§eLeader§8)" : ""));
+        p.sendMessage("§7Beruf §8× §e" + (Beruf.hasBeruf(tg) ? Beruf.getBeruf(tg).getName() : "Kein Beruf") + (Beruf.isLeader(tg, true) ? " §8(§eLeader§8)" : ""));
         StringBuilder houses = new StringBuilder();
         for(House house : House.getHouses(Script.getNRPID(tg))) {
             if(House.getHouses(Script.getNRPID(tg)).size() == 1) {

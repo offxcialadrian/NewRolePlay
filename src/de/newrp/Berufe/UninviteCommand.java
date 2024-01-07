@@ -1,7 +1,9 @@
 package de.newrp.Berufe;
 
 import de.newrp.API.Messages;
+import de.newrp.API.Rank;
 import de.newrp.API.Script;
+import de.newrp.Administrator.SDuty;
 import de.newrp.Forum.Forum;
 import de.newrp.TeamSpeak.TeamSpeak;
 import org.bukkit.OfflinePlayer;
@@ -28,7 +30,7 @@ public class UninviteCommand implements CommandExecutor {
             return true;
         }
 
-        if (!Beruf.isLeader(p)) {
+        if (!Beruf.isLeader(p, true)) {
             p.sendMessage(Messages.ERROR + "Du bist kein Leader.");
             return true;
         }
@@ -45,7 +47,10 @@ public class UninviteCommand implements CommandExecutor {
         }
 
         Beruf.Berufe beruf = Beruf.getBeruf(p);
-
+        if(Beruf.isLeader(tg, false) && tg != p) {
+            p.sendMessage(Messages.ERROR + "Du kannst den Leader nicht entlassen.");
+            return true;
+        }
         p.sendMessage(PREFIX + "Du hast " + tg.getName() + " aus der " + Beruf.getBeruf(p).getName() + " entlassen.");
 
         if(tg.isOnline() && tg.getPlayer() != null) {
