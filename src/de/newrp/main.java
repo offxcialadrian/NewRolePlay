@@ -269,6 +269,10 @@ public class main extends JavaPlugin {
         getCommand("removeselfstorage").setExecutor(new RemoveSelfstorage());
         getCommand("checkselfstorage").setExecutor(new CheckSelfstorage());
         getCommand("removecheckpoints").setExecutor(new RemoveCheckpoints());
+        getCommand("vertrag").setExecutor(new Vertrag());
+        getCommand("vertraglist").setExecutor(new Vertraege());
+        getCommand("showvertrag").setExecutor(new ShowVertrag());
+        getCommand("erstattung").setExecutor(new Erstattung());
 
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new SDuty(), this);
@@ -335,6 +339,7 @@ public class main extends JavaPlugin {
         pm.registerEvents(new Selfstorage(), this);
         pm.registerEvents(new Baseballschlaeger(), this);
         pm.registerEvents(new Checkpoints(), this);
+        pm.registerEvents(new Vertraege(), this);
 
 
         new AsyncHealth().runTaskTimerAsynchronously(this, 120 * 20L, 120 * 20L);
@@ -350,8 +355,6 @@ public class main extends JavaPlugin {
         ATM.restore();
         House.loadHouses();
 
-
-        Bukkit.getConsoleSender().sendMessage("§cNRP §8× §aloading complete..");
         Bukkit.getConsoleSender().sendMessage("§cNRP §8× §astarting complete..");
         Bukkit.getConsoleSender().sendMessage("§cNRP §8× §aViel Erfolg heute..");
     }

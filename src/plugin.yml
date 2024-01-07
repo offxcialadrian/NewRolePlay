@@ -404,3 +404,12 @@ commands:
     description: check the selfstorage
   removeselfstorage:
     description: remove the selfstorage
+  removecheckpoints:
+    description: remove all checkpoints
+  vertrag:
+    description: create a vertrag
+  vertraglist:
+    description: view the vertraege
+    aliases: [ contracts, verträge ]
+  erstattung:
+    description: erstattung

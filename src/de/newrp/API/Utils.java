@@ -46,7 +46,7 @@ public class Utils implements Listener {
 
     private static final Material[] DROP_BLACKLIST = new Material[]{ Material.WOODEN_HOE, Material.LEAD };
     private static final String[] BLOCKED_COMMANDS = new String[]{
-            "/minecraft", "/spi", "/pl", "/protocol", "/rl", "/restart", "/bukkit", "/time", "/ver", "/icanhasbukkit", "/xp", "/tell",
+            "/minecraft", "/spi", "/pl", "/protocol", "/rl", "/restart", "/bukkit", "/time", "/version", "/icanhasbukkit", "/xp", "/tell",
             "/toggledownfall", "/testfor", "/recipe", "/give", "/effect", "/enchant", "/deop", "/defaultgamemode", "/ban-ip",
             "/banlist", "/advancement", "/?", "/gamemode", "/gamerule", "/give", "/kill", "/list", "/about",
             "/ability", "/advancement", "/alwaysday", "/attribute", "/ban-ip", "/banlist", "/bossbar", "/camera", "/camerashake",
@@ -84,7 +84,7 @@ public class Utils implements Listener {
     public void onInteractEvent(PlayerInteractEvent e) {
         if(e.getAction() == Action.RIGHT_CLICK_BLOCK) {
             if(e.getClickedBlock() == null) return;
-            if(e.getClickedBlock().getState() instanceof TrapDoor && e.getClickedBlock().getType() != Material.OAK_TRAPDOOR) {
+            if(e.getClickedBlock().getType() == Material.ACACIA_TRAPDOOR || e.getClickedBlock().getType() == Material.BIRCH_TRAPDOOR || e.getClickedBlock().getType() == Material.DARK_OAK_TRAPDOOR || e.getClickedBlock().getType() == Material.JUNGLE_TRAPDOOR || e.getClickedBlock().getType() == Material.SPRUCE_TRAPDOOR) {
                 boolean block = !SDuty.isSDuty(e.getPlayer()) && !BuildMode.isInBuildMode(e.getPlayer());
                 e.setCancelled(block);
             }
@@ -94,9 +94,9 @@ public class Utils implements Listener {
     @EventHandler
     public void onPing(ServerListPingEvent e) {
         if(Script.isInTestMode()) {
-            e.setMotd( "§5§lNew RolePlay §8┃ §5Reallife §8× §5RolePlay §8┃ §c1.16.5\n§8» §7" + main.getInstance().getDescription().getVersion() + " §8- §eWartungsarbeiten!");
+            e.setMotd("§5§lNew RolePlay §8┃ §5Reallife §8× §5RolePlay §8┃ §c1.16.5\n§8» §7" + main.getInstance().getDescription().getVersion() + " §8- §eWartungsarbeiten!");
         } else {
-            e.setMotd( "§5§lNew RolePlay §8┃ §5Reallife §8× §5RolePlay §8┃ §c1.16.5\n§8» §7" + main.getInstance().getDescription().getVersion() + " §8- §eWerde Teil einer neuen Ära!");
+            e.setMotd("§5§lNew RolePlay §8┃ §5Reallife §8× §5RolePlay §8┃ §c1.16.5\n§8» §7" + main.getInstance().getDescription().getVersion() + " §8- §eWerde Teil einer neuen Ära!");
         }
     }
 

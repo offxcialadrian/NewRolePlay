@@ -71,7 +71,6 @@ public class BuyClick implements Listener {
         }
 
         if (si == null) {
-            p.sendMessage("§cDieses Item ist nicht im Shop verfügbar.");
             return;
         }
 

@@ -2,6 +2,7 @@ package de.newrp.Administrator;
 
 import de.newrp.API.*;
 import de.newrp.Forum.Forum;
+import de.newrp.Player.Passwort;
 import de.newrp.TeamSpeak.TeamSpeak;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -35,6 +36,11 @@ public class SetSupport implements CommandExecutor {
 
         if (tg == null) {
             p.sendMessage(Messages.PLAYER_NOT_FOUND);
+            return true;
+        }
+
+        if(!Passwort.hasPasswort(tg)) {
+            p.sendMessage(Messages.ERROR + "Der Spieler hat kein Passwort!");
             return true;
         }
 

@@ -78,6 +78,27 @@ public class Annehmen implements CommandExecutor {
             TeamSpeak.sync(Script.getNRPID(p));
             Forum.syncPermission(p);
 
+        } else if(offer.containsKey(p.getName() + ".vertrag.from")) {
+            Player tg = Script.getPlayer(offer.get(p.getName() + ".vertrag.from"));
+            if(tg == null) {
+                p.sendMessage(Messages.ERROR + "Der Spieler ist nicht mehr online.");
+                return true;
+            }
+
+            if(!Annehmen.offer.containsKey(p.getName() + ".vertrag.condition")) {
+                p.sendMessage(Messages.ERROR + "Dir wird nichts angeboten.");
+                return true;
+            }
+
+            String condition = Annehmen.offer.get(p.getName() + ".vertrag.condition");
+            Vertrag.saveVertrag(tg, p, condition, true);
+            p.sendMessage(ACCEPTED + "Du hast den Vertrag angenommen.");
+            tg.sendMessage(PREFIX + Script.getName(p) + " hat den Vertrag angenommen.");
+            Log.NORMAL.write(p, "hat den Vertrag von " + Script.getName(tg) + " angenommen. (" + condition + ")");
+            Log.NORMAL.write(tg, "hat den Vertrag von " + Script.getName(p) + " angenommen. (" + condition + ")");
+            offer.remove(p.getName() + ".vertrag.from");
+            offer.remove(p.getName() + ".vertrag.condition");
+
         } else if (offer.containsKey(p.getName() + ".shop.sell")) {
             Player sell = Script.getPlayer(offer.get(p.getName() + ".shop.sell.seller"));
             int price = Integer.parseInt(offer.get(p.getName() + ".shop.sell.price"));
