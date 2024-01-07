@@ -58,11 +58,6 @@ public class Buy implements CommandExecutor {
             return true;
         }
 
-        if(s.getType().equals(ShopType.GUNSHOP) && !Licenses.WAFFENSCHEIN.hasLicense(Script.getNRPID(p))) {
-            p.sendMessage(Messages.ERROR + "Du benötigst einen Waffenschein um in einem Waffenladen einkaufen zu können.");
-            return true;
-        }
-
         inv.setItem(((size / 9) <= 2 ? 13 : 22), Script.setName(Material.BARRIER, "§cSchließen"));
         p.openInventory(inv);
 

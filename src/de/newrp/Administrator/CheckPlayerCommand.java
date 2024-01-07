@@ -49,6 +49,9 @@ public class CheckPlayerCommand implements CommandExecutor {
             p.sendMessage("§7ID §8× §e" + Script.getNRPID(offtg));
             if (Punish.getBanUntil(offtg) > System.currentTimeMillis() || Punish.getBanUntil(offtg) == 0)
                 p.sendMessage("§cGebannt §8× §c" + (Punish.getBanUntil(offtg) != 0 ? "bis " + Script.dateFormat.format(Punish.getBanUntil(offtg)) + " Uhr" : "Lebenslang")  + " §8(§c" + Punish.getBanReason(offtg) + "§8)");
+            if(Checkpoints.hasCheckpoints(offtg)) {
+                p.sendMessage("§7Checkpoints §8× §e" + Checkpoints.getCheckpoints(offtg));
+            }
             p.sendMessage("§7Premium §8× §e" + (Premium.hasPremium(offtg) ? "Ja" : "Nein"));
             p.sendMessage("§7Warns §8× §e" + Punish.getWarns(offtg) + "/3");
             if(!Punish.getWarnsMap(offtg).isEmpty()) {
@@ -86,6 +89,9 @@ public class CheckPlayerCommand implements CommandExecutor {
             for(Map.Entry<Long, String> entry : Punish.getWarnsMap(tg).entrySet()) {
                 p.sendMessage("  §7» §e" + Script.dateFormat2.format(entry.getKey()) + " §8× §e" + entry.getValue());
             }
+        }
+        if(Checkpoints.hasCheckpoints(tg)) {
+            p.sendMessage("§7Checkpoints §8× §e" + Checkpoints.getCheckpoints(tg));
         }
         p.sendMessage("§7Rang §8× §e" + Script.getRank(tg).getName(tg));
         p.sendMessage("§7Premium §8× §e" + (Premium.hasPremium(tg) ? "Ja" : "Nein"));

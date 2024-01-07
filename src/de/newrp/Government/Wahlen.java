@@ -36,29 +36,8 @@ public class Wahlen implements CommandExecutor, Listener {
         Player p = (Player) cs;
 
         if (args.length == 1) {
-            if (args[0].equalsIgnoreCase("aufstellen") || args[0].equalsIgnoreCase("apply")) {
 
-                if (Script.getLevel(p) < 5) {
-                    p.sendMessage(Messages.ERROR + "Du musst mindestens Level 5 sein, um dich aufstellen zu können.");
-                    return true;
-                }
-
-                if (getWahlApplications() >= 54) {
-                    p.sendMessage(PREFIX + "Es können maximal 54 Spieler aufgestellt werden.");
-                    return true;
-                }
-
-                if (hasApplied(p)) {
-                    p.sendMessage(PREFIX + "Du hast dich bereits aufgestellt.");
-                    return true;
-                }
-
-                addToWahlen(p);
-                p.sendMessage(PREFIX + "Du hast dich erfolgreich aufgestellt.");
-                Script.sendTeamMessage(PREFIX + "Der Spieler " + Script.getName(p) + " hat sich aufgestellt.");
-                return true;
-
-            } else if (args[0].equalsIgnoreCase("rücktritt") || args[0].equalsIgnoreCase("zurücktreten")) {
+            if (args[0].equalsIgnoreCase("rücktritt") || args[0].equalsIgnoreCase("zurücktreten")) {
 
                 if (!hasApplied(p)) {
                     p.sendMessage(PREFIX + "Du hast dich nicht aufgestellt.");
@@ -149,6 +128,12 @@ public class Wahlen implements CommandExecutor, Listener {
 
                 if(hasApplied(tg)) {
                     p.sendMessage(PREFIX + "Der Spieler hat sich bereits aufgestellt.");
+                    return true;
+                }
+
+
+                if (getWahlApplications() >= 54) {
+                    p.sendMessage(PREFIX + "Es können maximal 54 Spieler aufgestellt werden.");
                     return true;
                 }
 

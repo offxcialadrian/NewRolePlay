@@ -151,7 +151,8 @@ public class Chat implements Listener {
         String message = e.getMessage();
         Set<String> foundNames = getMentionedNames(message);
         String speakWord = "sagt";
-        Notications.sendMessage(Notications.NotificationType.CHAT, "§8[§c" + p.getLevel() + "§8] §7" + Script.getName(p) + " sagt: §7" + message);
+        Notications.sendMessage(Notications.NotificationType.CHAT, "§8[§c" + Script.getLevel(p) + "§8] §7" + Script.getName(p) + " sagt: §7" + message);
+        Script.updateExpBar(p);
         for (Player online : Bukkit.getOnlinePlayers()) {
             double distance = p.getLocation().distance(online.getLocation());
             if (distance > 30.0D) {

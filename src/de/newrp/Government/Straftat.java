@@ -57,10 +57,6 @@ public class Straftat implements CommandExecutor {
         }
 
         int wantedPunkte = Integer.parseInt(args[0]);
-        if(wantedPunkte < 1) {
-            p.sendMessage(Messages.ERROR + "Die WantedPunkte müssen mindestens 1 sein.");
-            return true;
-        }
 
         String grund = "";
         for(int i = 1; i < args.length; i++) {

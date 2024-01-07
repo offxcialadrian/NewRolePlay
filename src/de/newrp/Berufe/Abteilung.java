@@ -37,10 +37,10 @@ public class Abteilung implements CommandExecutor, TabCompleter {
         KRIPO(3, POLICE, "Kriminalpolizei"),
         BESCHAFFUNG(4, POLICE, "Beschaffung"),
         ZIVILPOLICE(5, POLICE, "Zivilpolizei"),
-        NEWS_0(0, NEWS, "Volontäre"),
-        NEWS_1(1, NEWS, "Journalismus"),
-        NEWS_2(2, NEWS, "TV-Moderaion"),
-        NEWS_3(3, NEWS, "Chefredaktion");
+        VOLONTAER(0, NEWS, "Volontäre"),
+        JOURNALIST(1, NEWS, "Journalismus"),
+        TV(2, NEWS, "TV-Moderation"),
+        CHEFREDAKTION(3, NEWS, "Chefredaktion");
 
         private final int id;
         private final Beruf.Berufe beruf;

@@ -268,6 +268,7 @@ public class main extends JavaPlugin {
         getCommand("selfstorage").setExecutor(new Selfstorage());
         getCommand("removeselfstorage").setExecutor(new RemoveSelfstorage());
         getCommand("checkselfstorage").setExecutor(new CheckSelfstorage());
+        getCommand("removecheckpoints").setExecutor(new RemoveCheckpoints());
 
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new SDuty(), this);
@@ -332,6 +333,8 @@ public class main extends JavaPlugin {
         pm.registerEvents(new EatEvent(), this);
         pm.registerEvents(new UseMedikamente(), this);
         pm.registerEvents(new Selfstorage(), this);
+        pm.registerEvents(new Baseballschlaeger(), this);
+        pm.registerEvents(new Checkpoints(), this);
 
 
         new AsyncHealth().runTaskTimerAsynchronously(this, 120 * 20L, 120 * 20L);

@@ -3,6 +3,7 @@ package de.newrp.Runnable;
 import de.newrp.API.Krankheit;
 import de.newrp.API.Script;
 import de.newrp.API.Weather;
+import de.newrp.Administrator.SDuty;
 import de.newrp.Berufe.Abteilung;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Government.Stadtkasse;
@@ -39,7 +40,8 @@ public class AsyncHour extends BukkitRunnable {
         for(Player all : Bukkit.getOnlinePlayers()) {
             if(!Script.WORLD.hasStorm()) return;
             if(AFK.isAFK(all)) continue;
-            if(Script.getRandom(1, 100) > 5) continue;
+            if(SDuty.isSDuty(all)) continue;
+            if(Script.getRandom(1, 100) > 3) continue;
             if(Script.WORLD.getHighestBlockYAt(all.getLocation()) < all.getLocation().getY()) {
                 Krankheit.HUSTEN.add(Script.getNRPID(all));
             }

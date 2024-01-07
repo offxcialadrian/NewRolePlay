@@ -152,6 +152,7 @@ public class Utils implements Listener {
         Player p = e.getPlayer();
         e.setJoinMessage(null);
         Script.sendOfflineMessages(p);
+        Script.updateExpBar(p);
         if (Script.getNRPID(p) != 0) {
             e.getPlayer().sendMessage(Script.PREFIX + "Willkommen zurück auf §eNewRP§7!");
             if(Script.hasRank(p, Rank.MODERATOR, false)) e.getPlayer().sendMessage(Messages.INFO + "Aufgrund deines Status als " + Script.getRank(p).getName(p) + " hast du automatisch einen Premium-Account.");
@@ -273,6 +274,15 @@ public class Utils implements Listener {
     }
 
     @EventHandler
+    public void blockExpBottle(PlayerInteractEvent e) {
+        Player p = e.getPlayer();
+        if(p.getItemInHand().getType().equals(Material.EXPERIENCE_BOTTLE)) {
+            p.getInventory().remove(Material.EXPERIENCE_BOTTLE);
+            e.setCancelled(true);
+        }
+    }
+
+    @EventHandler
     public void onInteract(PlayerInteractEvent e) {
         if (e.getClickedBlock() == null) return;
         if (e.getAction() == Action.RIGHT_CLICK_BLOCK) {
@@ -383,6 +393,23 @@ public class Utils implements Listener {
                 SDuty.updateScoreboard();
             }
         }.runTaskLater(main.getInstance(), 20L);
+    }
+
+    @EventHandler
+    public void onDamage(EntityDamageByEntityEvent e) {
+        if (e.getEntityType() != EntityType.PLAYER) return;
+
+        Entity damager = e.getDamager();
+        Player p = (Player) e.getEntity();
+
+        if (Script.getLevel(p) != 1) return;
+
+        if (damager.getType() == EntityType.PLAYER) {
+            damager.sendMessage(Messages.ERROR + "Der Spieler ist im Neulingsschutz.");
+        } else if (damager.getType() == EntityType.ARROW) {
+            Arrow a = (Arrow) damager;
+            ((Player) a.getShooter()).sendMessage(Messages.ERROR + "Der Spieler ist im Neulingsschutz.");
+        }
     }
 
     @EventHandler
