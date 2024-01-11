@@ -2,6 +2,8 @@ package de.newrp.Shop;
 
 import de.newrp.API.*;
 import de.newrp.Administrator.SDuty;
+import de.newrp.Berufe.Beruf;
+import de.newrp.Berufe.Berufkasse;
 import de.newrp.Government.Stadtkasse;
 import de.newrp.Government.Steuern;
 import de.newrp.House.House;
@@ -96,6 +98,9 @@ public class PayShop implements Listener {
                     return;
                 }
                 Weapon.PISTOLE.addMunition(Script.getNRPID(p), si.getAmount(s));
+                break;
+            case Zeitung:
+                Beruf.Berufe.NEWS.addKasse(20);
                 break;
             case SCHMERZMITTEL:
                 Medikamente m = Medikamente.getMedikamentByShopItem(si);

@@ -29,6 +29,14 @@ public class ButcherCommand implements CommandExecutor {
             return true;
         }
 
+        if(args.length == 1 && args[0].equalsIgnoreCase("remove")) {
+            for(Entity e : p.getWorld().getEntities()) {
+                if(e.getLocation().distance(p.getLocation()) <10)
+                    e.remove();
+            }
+            return true;
+        }
+
         if(args.length != 0) {
             p.sendMessage(Messages.ERROR + "/removeentities");
             return true;

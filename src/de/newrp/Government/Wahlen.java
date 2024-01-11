@@ -131,7 +131,6 @@ public class Wahlen implements CommandExecutor, Listener {
                     return true;
                 }
 
-
                 if (getWahlApplications() >= 54) {
                     p.sendMessage(PREFIX + "Es können maximal 54 Spieler aufgestellt werden.");
                     return true;
@@ -142,6 +141,8 @@ public class Wahlen implements CommandExecutor, Listener {
                 Script.sendTeamMessage(p, ChatColor.GOLD, "hat " + tg.getName() + " zur Wahl aufgestellt.", true);
                 if(tg.isOnline()) {
                     tg.getPlayer().sendMessage(PREFIX + "Du wurdest von " + Messages.RANK_PREFIX(p) + " zur Wahl aufgestellt.");
+                } else {
+                    Script.addOfflineMessage(tg, PREFIX + "Du wurdest von " + Messages.RANK_PREFIX(p) + " zur Wahl aufgestellt.");
                 }
                 return true;
 
@@ -372,11 +373,23 @@ public class Wahlen implements CommandExecutor, Listener {
     }
 
     public static boolean hasApplied(Player p) {
-        return Script.getInt(p, "wahlen", "quartal") == getCurrentQuartal() && Script.getInt(p, "wahlen", "year") == Calendar.getInstance().get(Calendar.YEAR);
+        try(Statement stmt = main.getConnection().createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM wahlen WHERE nrp_id = '" + Script.getNRPID(p) + "' AND quartal = '" + getCurrentQuartal() + "' AND year = '" + Calendar.getInstance().get(Calendar.YEAR) + "'")) {
+            return rs.next();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     public static boolean hasApplied(OfflinePlayer p) {
-        return Script.getInt(p, "wahlen", "quartal") == getCurrentQuartal() && Script.getInt(p, "wahlen", "year") == Calendar.getInstance().get(Calendar.YEAR);
+        try(Statement stmt = main.getConnection().createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM wahlen WHERE nrp_id = '" + Script.getNRPID(p) + "' AND quartal = '" + getCurrentQuartal() + "' AND year = '" + Calendar.getInstance().get(Calendar.YEAR) + "'")) {
+            return rs.next();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     public static int getWahlApplications() {

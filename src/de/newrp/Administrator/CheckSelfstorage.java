@@ -41,11 +41,6 @@ public class CheckSelfstorage implements CommandExecutor {
             return true;
         }
 
-        if(!Selfstorage.hasSelfstorage(tg)) {
-            p.sendMessage(Messages.ERROR + "Der Spieler hat keinen Selfstorage-Room.");
-            return true;
-        }
-
         p.openInventory(tg.getEnderChest());
         p.sendMessage(PREFIX + "Du checkst den Selfstorage-Room von §6" + Script.getName(tg) + "§7.");
         Script.sendTeamMessage(p, ChatColor.RED, "checkt den Selfstorage-Room von " + Script.getName(tg) + ".", true);

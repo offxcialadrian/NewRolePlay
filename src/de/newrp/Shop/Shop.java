@@ -287,11 +287,13 @@ public class Shop implements CommandExecutor, Listener {
             Inventory inv = Bukkit.createInventory(null, 9*3, "§7Sortiment " + shop.getPublicName());
             for(ShopItem si : ShopItem.values()) {
                 ItemStack is = si.getItemStack();
-                if(is == null && si == ShopItem.Zeitung) {
+                if(is == null && si == ShopItem.Zeitung && !shop.isInShop(ShopItem.Zeitung)) {
                     is = Script.setNameAndLore(Material.WRITTEN_BOOK, "§9Zeitung", "§8» §6Lizensierungsgebühr: §6" + si.getLicensePrice() + "€", "§8» §6Einkaufspreis: §6" + si.getBuyPrice() + "€");
+                } else if(is == null && si == ShopItem.Zeitung && shop.isInShop(ShopItem.Zeitung)) {
+                    is = Script.setNameAndLore(Material.WRITTEN_BOOK, "§9Zeitung", "§8» §cKlicke um aus Shop zu entfernen (es erfolgt keine Gutschrift der Lizensierungsgebühr)");
                 }
                 if(!containsType(si, shop)) continue;
-                if(shop.getItems().get(si.getID()) == null) {
+                if(!shop.isInShop(si)) {
                     is = Script.setNameAndLore(is, si.getName(), "§8» §6Lizensierungsgebühr: §6" + si.getLicensePrice() + "€", "§8» §6Einkaufspreis: §6" + si.getBuyPrice() + "€");
                 } else {
                     is = Script.setNameAndLore(is, si.getName(), "§8» §cKlicke um aus Shop zu entfernen (es erfolgt keine Gutschrift der Lizensierungsgebühr)");
@@ -332,10 +334,11 @@ public class Shop implements CommandExecutor, Listener {
             if(s == null) return;
             ShopItem si;
             ItemStack is = e.getCurrentItem();
-            si = ShopItem.getShopItem(is);
 
             if(is.getType() == Material.WRITTEN_BOOK) {
                 si = ShopItem.Zeitung;
+            } else {
+                si = ShopItem.getShopItem(is);
             }
 
             if(si == null) {
@@ -380,9 +383,10 @@ public class Shop implements CommandExecutor, Listener {
 
             if(is.getType() == Material.WRITTEN_BOOK) {
                 si = ShopItem.Zeitung;
+            } else {
+                si = ShopItem.getShopItem(is);
             }
 
-            si = ShopItem.getShopItem(is);
 
 
             if(si == null) {
@@ -391,7 +395,7 @@ public class Shop implements CommandExecutor, Listener {
                 return;
             }
 
-            if(s.getItems().get(si.getID()) == null) {
+            if(!s.isInShop(si)) {
                 if(s.getKasse() < si.getLicensePrice()) {
                     p.sendMessage(Messages.ERROR + "Dein Shop hat nicht genug Geld.");
                     p.closeInventory();

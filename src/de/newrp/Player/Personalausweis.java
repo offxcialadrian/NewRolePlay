@@ -200,6 +200,10 @@ public class Personalausweis implements CommandExecutor, Listener {
 
                     Period period = Period.between(birthday, today);
                     int age = period.getYears();
+                    if(age < 14) {
+                        p.sendMessage(Messages.ERROR + "Du kannst kein nicht strafmündiger Bürger sein.");
+                        return;
+                    }
 
                     if (!Licenses.PERSONALAUSWEIS.hasLicense(id)) {
                         save_close.add(p.getName());

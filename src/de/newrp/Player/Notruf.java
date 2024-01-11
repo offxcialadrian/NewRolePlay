@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 
 import static java.util.Map.Entry.comparingByValue;
 
-public class Notruf implements CommandExecutor, Listener {
+public class Notruf implements Listener {
 
     public static final String PREFIX = "§8[§4Notruf§8] §c" + Messages.ARROW + "§7 ";
     public static HashMap<Player, Questions> questions = new HashMap<>();
@@ -47,26 +47,6 @@ public class Notruf implements CommandExecutor, Listener {
         p.openInventory(inv);
     }
 
-    @Override
-    public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
-        Player p = (Player) cs;
-
-        if(call2.containsKey(p)) {
-            p.sendMessage(PREFIX + "Du hast bereits einen Notruf abgesetzt.");
-            return true;
-        }
-
-        if (questions.containsKey(p)) {
-            openGUI(p, questions.get(p));
-            return true;
-        }
-
-        questions.put(p, Questions.FRAGE1);
-        openGUI(p, Questions.FRAGE1);
-        Me.sendMessage(p, "wählt den Notruf auf seinem Handy.");
-
-        return false;
-    }
 
     @EventHandler
     public void onClick(InventoryClickEvent e) {

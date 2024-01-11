@@ -2,7 +2,6 @@ package de.newrp.Administrator;
 
 import de.newrp.API.*;
 import de.newrp.Berufe.Beruf;
-import de.newrp.Government.Straftat;
 import de.newrp.House.House;
 import de.newrp.Player.Banken;
 import de.newrp.Police.Fahndung;
@@ -52,7 +51,7 @@ public class CheckPlayerCommand implements CommandExecutor {
             if(Checkpoints.hasCheckpoints(offtg)) {
                 p.sendMessage("§7Checkpoints §8× §e" + Checkpoints.getCheckpoints(offtg));
             }
-            p.sendMessage("§7Premium §8× §e" + (Premium.hasPremium(offtg) ? "Ja" : "Nein"));
+            p.sendMessage("§7Premium §8× §e" + (Premium.hasPremium(offtg) ? "Ja §8(§e" + Script.dateFormat2.format(Premium.getPremiumTime(offtg)) + "§8)": "Nein"));
             p.sendMessage("§7Warns §8× §e" + Punish.getWarns(offtg) + "/3");
             if(!Punish.getWarnsMap(offtg).isEmpty()) {
                 for(Map.Entry<Long, String> entry : Punish.getWarnsMap(offtg).entrySet()) {
@@ -63,7 +62,7 @@ public class CheckPlayerCommand implements CommandExecutor {
             p.sendMessage("§7Geld §8× §e" + Script.getMoney(offtg, PaymentType.CASH) + "€ | " + Script.getMoney(offtg, PaymentType.BANK) + "€" + (Banken.hasBank(offtg)? " §8(§e" + Banken.getBankByPlayer(offtg).getName() + "§8)" : " §8(§c" + "Keine Bank" + "§8)"));
             p.sendMessage("§7Fahndung §8× §e" + (Fahndung.isFahnded(offtg) ? Fahndung.getWanteds(offtg) + " WantedPunkte" : "Nein"));
             p.sendMessage("§7Geschlecht §8× §e" + Script.getGender(offtg).getName());
-            p.sendMessage("§7Team §8× §e" + (Team.getTeam(offtg) != null ? Team.getTeam(offtg).getName()  + (Team.isTeamLeader(p)? " (TL)":""): "Kein Team"));
+            p.sendMessage("§7Team §8× §e" + (Team.getTeam(offtg) != null ? Team.getTeam(offtg).getName()  + (Team.isTeamLeader(p)? " §8(§eTL§8)":""): "Kein Team"));
             p.sendMessage("§7PlayTime §8× §e" + Script.getPlayTime(offtg, true) + ":§e" + String.format("%02d", Script.getPlayTime(offtg, false)) + " Stunden" + " §8(§e" + Script.getActivePlayTime(offtg, true) + ":§e" + String.format("%02d", Script.getActivePlayTime(offtg, false)) + " Stunden§8)");
             p.sendMessage("§7Level §8× §e" + Script.getLevel(offtg));
             p.sendMessage("§7Beruf §8× §e" + (Beruf.hasBeruf(offtg) ? Beruf.getBeruf(offtg).getName() : "Kein Beruf") + (Beruf.isLeader(offtg, true) ? " §8(§eLeader§8)" : ""));
@@ -91,10 +90,10 @@ public class CheckPlayerCommand implements CommandExecutor {
             }
         }
         if(Checkpoints.hasCheckpoints(tg)) {
-            p.sendMessage("§7Checkpoints §8× §e" + Checkpoints.getCheckpoints(tg));
+            p.sendMessage("§7Checkpoints §8× §e" + Checkpoints.getCheckpoints(tg) + " §8(§e" + (int) Checkpoints.getLocation(tg).getX() + "§8/§e" + (int) Checkpoints.getLocation(tg).getY() + "§8/§e" + (int) Checkpoints.getLocation(tg).getZ() + "§8)");
         }
         p.sendMessage("§7Rang §8× §e" + Script.getRank(tg).getName(tg));
-        p.sendMessage("§7Premium §8× §e" + (Premium.hasPremium(tg) ? "Ja" : "Nein"));
+        p.sendMessage("§7Premium §8× §e" + (Premium.hasPremium(tg) ? "Ja §8(§e" + Script.dateFormat2.format(Premium.getPremiumTime(tg)) + "§8)": "Nein"));
         p.sendMessage("§7Geld §8× §e" + Script.getMoney(tg, PaymentType.CASH) + "€ | " + Script.getMoney(tg, PaymentType.BANK) + "€" + (Banken.hasBank(tg)? " §8(§e" + Banken.getBankByPlayer(tg).getName()+ "§8)" : " §8(§c" + "Keine Bank" + "§8)"));
         p.sendMessage("§7Fahndung §8× §e" + (Fahndung.isFahnded(tg) ? Fahndung.getWanteds(tg) + " WantedPunkte" : "Nein"));
         p.sendMessage("§7UUID §8× §e" + tg.getUniqueId());
@@ -103,7 +102,7 @@ public class CheckPlayerCommand implements CommandExecutor {
         p.sendMessage("§7PlayTime §8× §e" + Script.getPlayTime(tg, true) + ":§e" + String.format("%02d", Script.getPlayTime(tg, false)) + " Stunden" + " §8(§e" + Script.getActivePlayTime(tg, true) + ":§e" + String.format("%02d", Script.getActivePlayTime(tg, false)) + " Stunden§8)");
         p.sendMessage("§7PayDay §8× §e" + PayDay.getPayDayTime(tg) + "/60 Minuten");
         p.sendMessage("§7Level §8× §e" + Script.getLevel(tg));
-        p.sendMessage("§7Exp §8× §e" + Script.getExp(tg) + "/" + Script.getLevelCost(tg) + " Exp");
+        p.sendMessage("§7Exp §8× §e" + Script.getExp(tg) + "/" + Script.getLevelCost(tg) + " Exp §8(§e" + Script.getPercentage(Script.getExp(tg), Script.getLevelCost(tg)) + "%§8)");
         p.sendMessage("§7Health §8× §e" + df.format(tg.getHealth()/2) + "/" + df.format(tg.getMaxHealth()/2) + " HP");
         p.sendMessage("§7Beruf §8× §e" + (Beruf.hasBeruf(tg) ? Beruf.getBeruf(tg).getName() : "Kein Beruf") + (Beruf.isLeader(tg, true) ? " §8(§eLeader§8)" : ""));
         StringBuilder houses = new StringBuilder();

@@ -35,86 +35,87 @@ public class Checkpoints implements Listener {
     public static final HashMap<String, Integer> CHECKPOINTS = new HashMap<>();
 
     public static String PREFIX = "§8[§cCheckpoints§8] §c" + Messages.ARROW + " §7";
+
+    private static Location[] locs = new Location[] {
+            new Location(Script.WORLD, 490, 11, 535),
+            new Location(Script.WORLD, 495, 7, 543),
+            new Location(Script.WORLD, 506, 10, 543),
+            new Location(Script.WORLD, 508, 16, 533),
+            new Location(Script.WORLD, 502, 22, 537),
+            new Location(Script.WORLD, 503, 21, 542),
+            new Location(Script.WORLD, 505, 16, 545),
+            new Location(Script.WORLD, 502, 19, 548),
+            new Location(Script.WORLD, 510, 18, 555),
+            new Location(Script.WORLD, 505, 17, 560),
+            new Location(Script.WORLD, 508, 19, 567),
+            new Location(Script.WORLD, 503, 22, 565),
+            new Location(Script.WORLD, 498, 18, 564),
+            new Location(Script.WORLD, 493, 11, 573),
+            new Location(Script.WORLD, 472, 11, 580),
+            new Location(Script.WORLD, 472, 9, 585),
+            new Location(Script.WORLD, 484, 8, 585),
+            new Location(Script.WORLD, 487, 7, 593),
+            new Location(Script.WORLD, 493, 9, 585),
+            new Location(Script.WORLD, 499, 11, 581),
+            new Location(Script.WORLD, 504, 12, 578),
+            new Location(Script.WORLD, 501, 12, 570),
+            new Location(Script.WORLD, 499, 10, 567),
+            new Location(Script.WORLD, 495, 13, 552),
+            new Location(Script.WORLD, 485, 14, 546),
+            new Location(Script.WORLD, 479, 14, 544),
+            new Location(Script.WORLD, 477, 10, 540),
+            new Location(Script.WORLD, 474, 13, 542),
+            new Location(Script.WORLD, 469, 9, 541),
+            new Location(Script.WORLD, 467, 13, 542),
+            new Location(Script.WORLD, 460, 8, 544),
+            new Location(Script.WORLD, 461, 12, 547),
+            new Location(Script.WORLD, 457, 11, 552),
+            new Location(Script.WORLD, 456, 11, 562),
+            new Location(Script.WORLD, 464, 10, 572),
+            new Location(Script.WORLD, 463, 12, 578),
+            new Location(Script.WORLD, 470, 15, 579),
+            new Location(Script.WORLD, 477, 16, 586),
+            new Location(Script.WORLD, 465, 18, 590),
+            new Location(Script.WORLD, 462, 16, 593),
+            new Location(Script.WORLD, 460, 23, 590),
+            new Location(Script.WORLD, 459, 24, 583),
+            new Location(Script.WORLD, 464, 22, 568),
+            new Location(Script.WORLD, 467, 22, 561),
+            new Location(Script.WORLD, 469, 17, 564),
+            new Location(Script.WORLD, 470, 15, 571),
+            new Location(Script.WORLD, 461, 25, 574),
+            new Location(Script.WORLD, 469, 24, 591),
+            new Location(Script.WORLD, 477, 26, 594),
+            new Location(Script.WORLD, 487, 24, 589),
+            new Location(Script.WORLD, 493, 20, 577),
+            new Location(Script.WORLD, 487, 20, 581),
+            new Location(Script.WORLD, 485, 15, 576),
+            new Location(Script.WORLD, 499, 8, 554),
+            new Location(Script.WORLD, 498, 12, 547),
+            new Location(Script.WORLD, 471, 13, 534),
+            new Location(Script.WORLD, 461, 11, 556),
+            new Location(Script.WORLD, 470, 14, 558),
+            new Location(Script.WORLD, 478, 15, 548),
+            new Location(Script.WORLD, 480, 13, 535),
+    };
     public static void place(Player p) {
         Block cp;
 
         World w = p.getWorld();
 
         while (true) {
-            int i = Script.getRandom(1, 3);
-            if (i == 1) {
-                int max_x = 657;
-                int min_x = 621;
-
-                int x = Script.getRandom(min_x, max_x);
-
-                int y = 9;
-
-                int max_z = 161;
-                int min_z = 125;
-
-                int z = Script.getRandom(min_z, max_z);
-
-                cp = new Location(w, -x, y, z).getBlock();
-                if (cp.getType().equals(Material.AIR) && !cp.getRelative(BlockFace.DOWN).getType().equals(Material.AIR)) {
-                    if (!CHECKPOINT_LOCATION.containsKey(cp.getLocation())) {
-                        placeCheckpoint(p, cp.getLocation());
-                        break;
-                    }
-                }
-            } else if (i == 2) {
-                int max_x = 657;
-                int min_x = 621;
-
-                int x = Script.getRandom(min_x, max_x);
-
-                int y = 16;
-
-                int max_z = 161;
-                int min_z = 125;
-
-                int z = Script.getRandom(min_z, max_z);
-
-                cp = new Location(w, -x, y, z).getBlock();
-                if (cp.getType().equals(Material.AIR) && !cp.getRelative(BlockFace.DOWN).getType().equals(Material.AIR)) {
-                    if (!CHECKPOINT_LOCATION.containsKey(cp.getLocation())) {
-                        placeCheckpoint(p, cp.getLocation());
-                        break;
-                    }
-                }
-            } else if (i == 3) {
-                int max_x = 663;
-                int min_x = 615;
-
-                int x = Script.getRandom(min_x, max_x);
-
-                int y = 23;
-
-                int max_z = 167;
-                int min_z = 119;
-
-                int z = Script.getRandom(min_z, max_z);
-
-                cp = new Location(w, -x, y, z).getBlock();
-                if (cp.getType().equals(Material.AIR) && !cp.getRelative(BlockFace.DOWN).getType().equals(Material.AIR)) {
-                    if (!CHECKPOINT_LOCATION.containsKey(cp.getLocation())) {
-                        placeCheckpoint(p, cp.getLocation());
-                        break;
-                    }
-                }
-            } else {
-                break;
-            }
+            Location loc = locs[Script.getRandom(0, locs.length - 1)];
+            if(CHECKPOINT_LOCATION.containsKey(loc)) continue;
+            if(loc.getBlock().getType() != Material.AIR) continue;
+            if(loc.getBlock().getRelative(BlockFace.DOWN).getType() == Material.AIR) continue;
+            placeCheckpoint(p, loc);
+            break;
         }
     }
 
     public static void placeCheckpoint(Player p, Location loc) {
         loc.getChunk().load();
-        loc.getBlock().setType(Material.PLAYER_HEAD);
-        Skull head = loc.getBlock().getState() instanceof Skull ? (Skull) loc.getBlock().getState() : null;
-        head.setOwningPlayer(Bukkit.getOfflinePlayer(UUID.fromString("7e9a87d4-8caf-40ed-b8b3-98644e8af867")));
-        head.update();
-
+        loc.getBlock().setType(Material.REDSTONE_BLOCK);
         CHECKPOINT_LOCATION.put(loc, p.getName());
     }
 
@@ -126,7 +127,7 @@ public class Checkpoints implements Listener {
 
         if (Jail.isInJail(p)) Jail.unarrest(p);
 
-        Location loc = new Location(p.getWorld(), -639, 9, 143);
+        Location loc = new Location(Script.WORLD, 484, 8, 561, 87.723145f, 7.387953f);
         loc.getChunk().load();
         p.teleport(loc);
 
@@ -144,7 +145,9 @@ public class Checkpoints implements Listener {
         obj.setDisplayName(ChatColor.BLUE + "" + ChatColor.BOLD + "§cNRP × Checkpoints");
         Score score1 = obj.getScore(ChatColor.GRAY + "§bCheckpoints§8:");
         Score score2 = obj.getScore(ChatColor.DARK_AQUA + " §8» §a" + checkpoints);
+        Score blank = obj.getScore(" ");
 
+        blank.setScore(2);
         score1.setScore(1);
         score2.setScore(0);
         p.setScoreboard(board);
@@ -234,6 +237,7 @@ public class Checkpoints implements Listener {
 
     public static void clear(OfflinePlayer p) {
         Script.executeAsyncUpdate("DELETE FROM checkpoints WHERE id = " + Script.getNRPID(p));
+        clearCheckpoints(p);
         CHECKPOINTS.remove(p.getName());
     }
 
@@ -250,9 +254,24 @@ public class Checkpoints implements Listener {
         }
     }
 
+    public static void clearCheckpoints(OfflinePlayer p) {
+        if (!hasCheckpoints(p)) return;
+
+        Iterator<Map.Entry<Location, String>> it = CHECKPOINT_LOCATION.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry<Location, String> ent = it.next();
+            if (ent.getValue().equals(p.getName())) {
+                ent.getKey().getBlock().setType(Material.AIR);
+                it.remove();
+            }
+        }
+    }
+
     public static void checkCheckpoints(Player p) {
         if (hasCheckpoints(p)) {
             p.sendMessage(PREFIX + "Du hast noch " + getCheckpoints(p) + " Checkpoints.");
+            place(p);
+            CHECKPOINTS.put(p.getName(), getCheckpoints(p));
             setScoreboard(p, getCheckpoints(p));
         }
     }
@@ -284,14 +303,32 @@ public class Checkpoints implements Listener {
                 }
             } else {
                 if (Script.getPlayer(name) == null) b.setType(Material.AIR);
-                p.sendMessage(Messages.ERROR + "Das ist kein Checkpoint von dir.");
+                p.sendMessage(PREFIX + "Dieser Checkpoint gehört §c" + name + "§c.");
             }
         }
     }
 
+    public static Player getOwner(Location loc) {
+        for(Map.Entry<Location, String> entry : CHECKPOINT_LOCATION.entrySet()) {
+            if(entry.getKey().equals(loc)) {
+                return Script.getPlayer(entry.getValue());
+            }
+        }
+        return null;
+    }
+
+    public static Location getLocation(Player p) {
+        for(Map.Entry<Location, String> entry : CHECKPOINT_LOCATION.entrySet()) {
+            if(entry.getValue().equals(p.getName())) {
+                return entry.getKey();
+            }
+        }
+        return null;
+    }
+
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
-        Bukkit.getScheduler().runTaskAsynchronously(main.getInstance(), () -> Checkpoints.checkCheckpoints(e.getPlayer()));
+        Bukkit.getScheduler().runTask(main.getInstance(), () -> Checkpoints.checkCheckpoints(e.getPlayer()));
     }
 
     @EventHandler

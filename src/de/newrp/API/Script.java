@@ -53,6 +53,7 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.TimeUnit;
 
 import static de.newrp.API.Rank.PLAYER;
 import static de.newrp.API.Rank.SUPPORTER;
@@ -354,10 +355,6 @@ public class Script {
     }
 
     public static Boolean hasRank(Player p, Rank rank, Boolean allowDesc) {
-        if (!Passwort.hasPasswort(p)) {
-            p.sendMessage(PREFIX + "Du kannst Team-Befehle nur nutzen, wenn du ein Passwort hast.");
-            return false;
-        }
         if (allowDesc) {
             if (getActiveAmountByRank(rank) == 0) {
                 return getRank(p).getWeight() - 50 == rank.getWeight();
@@ -686,7 +683,7 @@ public class Script {
     }
 
     public static void sendBugReport(Player p, String msg) {
-        sendTeamMessage(p, ChatColor.RED, "§lARC: " + getName(p) + ": " + msg, false);
+        sendTeamMessage("§c§lARC: §c" + getName(p) + ": " + msg);
     }
 
     public static boolean isInt(String i) {
@@ -1097,26 +1094,60 @@ public class Script {
         executeUpdate("INSERT INTO level (nrp_id, level, exp) VALUES (" + getNRPID(p) + ", 1, 0)");
         executeUpdate("INSERT INTO playtime (id, nrp_id, hours, minutes, a_minutes, a_hours) VALUES (NULL, " + getNRPID(p) + ", 0, 1, 0, 0)");
         executeUpdate("INSERT INTO payday (id, nrp_id, time, money) VALUES (NULL, " + getNRPID(p) + ", 1, 0)");
-        executeUpdate("INSERT INTO licenses (id, personalausweis, fuehrerschein, waffenschein, angelschein, jagdlizenz) VALUES (" + getNRPID(p) + ", FALSE, FALSE, FALSE, FALSE, FALSE)");
+        executeUpdate("INSERT INTO licenses (id, personalausweis, fuehrerschein, waffenschein, angelschein) VALUES (" + getNRPID(p) + ", FALSE, FALSE, FALSE, FALSE)");
 
+        Premium.addPremium(p, TimeUnit.DAYS.toMillis(7));
         p.setLevel(1);
         setMoney(p, PaymentType.CASH, 1500);
         p.sendMessage(Messages.INFO + "Du hast dich erfolgreich registriert.");
+        p.sendMessage(Messages.INFO + "Du hast automatisch einen Premium Account für 7 Tage erhalten.");
     }
 
     public static void registerPlayer(OfflinePlayer p) {
-        executeUpdate("INSERT INTO nrp_id (id, uuid, name, first_join) VALUES (NULL, '" + p.getUniqueId() + "', '" + p.getName() + "', NOW())");
+        executeUpdate("INSERT INTO nrp_id (id, uuid, name, first_join) VALUES (NULL, '" + p.getUniqueId() + "', '" + p.getName() + "', " + System.currentTimeMillis() + ")");
         executeUpdate("INSERT INTO money (nrp_id, cash, bank) VALUES (" + getNRPID(p) + ", 0, NULL)");
         executeUpdate("INSERT INTO level (nrp_id, level, exp) VALUES (" + getNRPID(p) + ", 1, 0)");
         executeUpdate("INSERT INTO playtime (id, nrp_id, hours, minutes, a_minutes, a_hours) VALUES (NULL, " + getNRPID(p) + ", 0, 1, 0, 0)");
         executeUpdate("INSERT INTO payday (id, nrp_id, time, money) VALUES (NULL, " + getNRPID(p) + ", 1, 0)");
+        executeUpdate("INSERT INTO licenses (id, personalausweis, fuehrerschein, waffenschein, angelschein) VALUES (" + getNRPID(p) + ", FALSE, FALSE, FALSE, FALSE)");
 
 
+        Premium.addPremium(p, TimeUnit.DAYS.toMillis(7));
         setMoney(p, PaymentType.CASH, 1500);
         if (p.isOnline()) {
             Player pl = p.getPlayer();
             pl.setLevel(1);
             pl.sendMessage(Messages.INFO + "Du hast dich erfolgreich registriert.");
+        }
+    }
+
+    public static void registerPlayer(String name, UUID uuid) {
+        executeUpdate("INSERT INTO nrp_id (id, uuid, name, first_join) VALUES (NULL, '" + uuid.toString() + "', '" + name + "', " + System.currentTimeMillis() + ")");
+        executeUpdate("INSERT INTO money (nrp_id, cash, bank) VALUES (" + getNRPID(name) + ", 0, NULL)");
+        executeUpdate("INSERT INTO level (nrp_id, level, exp) VALUES (" + getNRPID(name) + ", 1, 0)");
+        executeUpdate("INSERT INTO playtime (id, nrp_id, hours, minutes, a_minutes, a_hours) VALUES (NULL, " + getNRPID(name) + ", 0, 1, 0, 0)");
+        executeUpdate("INSERT INTO payday (id, nrp_id, time, money) VALUES (NULL, " + getNRPID(name) + ", 1, 0)");
+        executeUpdate("INSERT INTO licenses (id, personalausweis, fuehrerschein, waffenschein, angelschein) VALUES (" + getNRPID(name) + ", FALSE, FALSE, FALSE, FALSE)");
+    }
+
+    public static void registerPlayer(UUID uuid) {
+        executeUpdate("INSERT INTO nrp_id (id, uuid, name, first_join) VALUES (NULL, '" + uuid + "', '" + Bukkit.getOfflinePlayer(uuid).getName() + "', " + System.currentTimeMillis() + ")");
+        executeUpdate("INSERT INTO money (nrp_id, cash, bank) VALUES (" + getNRPID(Bukkit.getOfflinePlayer(uuid)) + ", 0, NULL)");
+        executeUpdate("INSERT INTO level (nrp_id, level, exp) VALUES (" + getNRPID(Bukkit.getOfflinePlayer(uuid)) + ", 1, 0)");
+        executeUpdate("INSERT INTO playtime (id, nrp_id, hours, minutes, a_minutes, a_hours) VALUES (NULL, " + getNRPID(Bukkit.getOfflinePlayer(uuid)) + ", 0, 1, 0, 0)");
+        executeUpdate("INSERT INTO payday (id, nrp_id, time, money) VALUES (NULL, " + getNRPID(Bukkit.getOfflinePlayer(uuid)) + ", 1, 0)");
+        executeUpdate("INSERT INTO licenses (id, personalausweis, fuehrerschein, waffenschein, angelschein) VALUES (" + getNRPID(Bukkit.getOfflinePlayer(uuid)) + ", FALSE, FALSE, FALSE, FALSE)");
+
+        Premium.addPremium(Bukkit.getOfflinePlayer(uuid), TimeUnit.DAYS.toMillis(7));
+        setMoney(Bukkit.getOfflinePlayer(uuid), PaymentType.CASH, 1500);
+    }
+
+    public static boolean isUUID(String uuid) {
+        try {
+            UUID.fromString(uuid);
+            return true;
+        } catch (Exception ex) {
+            return false;
         }
     }
 

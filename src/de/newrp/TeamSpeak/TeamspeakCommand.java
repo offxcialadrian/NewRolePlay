@@ -55,6 +55,10 @@ public class TeamspeakCommand implements CommandExecutor {
                     p.sendMessage(Messages.PLAYER_NOT_FOUND);
                     return true;
                 }
+                if(!TeamSpeak.isVerified(Script.getNRPID(target))) {
+                    p.sendMessage(TeamSpeak.PREFIX + "§cDer Spieler hat sich noch nicht verifiziert.");
+                    return true;
+                }
                 Bukkit.getScheduler().runTaskAsynchronously(main.getInstance(), () -> {
                     TeamSpeak.sync(Script.getNRPID(target), getClient(Script.getNRPID(target)));
                     target.sendMessage(PREFIX + Messages.RANK_PREFIX(p) + " hat deinen Teamspeak Account neu synchronisiert.");

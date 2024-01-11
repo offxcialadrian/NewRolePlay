@@ -333,9 +333,6 @@ commands:
     aliases: [ ts ]
   takeshop:
     description: take a shop
-  notruf:
-    description: call emergency
-    aliases: [ callpolice, callmedic ]
   acceptnotruf:
     description: accept a notruf
     aliases: [ acceptcall ]
@@ -415,3 +412,21 @@ commands:
     description: erstattung
   showvertrag:
     description: show a vertrag
+  reinforcement:
+    description: call reinforcement
+    aliases: [ backup, reinf, verstärkung ]
+  premium:
+    description: check your premium
+  call:
+    description: call a player
+    aliases: [ anrufen ]
+  pickup:
+    description: pickup a call
+    aliases: [ p ]
+  hangup:
+    description: hangup a call
+    aliases: [ h ]
+  registerplayer:
+    description: register a player
+  getshulker:
+    description: get a shulker

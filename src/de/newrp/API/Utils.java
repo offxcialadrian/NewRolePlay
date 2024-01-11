@@ -153,6 +153,7 @@ public class Utils implements Listener {
         e.setJoinMessage(null);
         Script.sendOfflineMessages(p);
         Script.updateExpBar(p);
+        NPCUtil.reloadNPC(p);
         if (Script.getNRPID(p) != 0) {
             e.getPlayer().sendMessage(Script.PREFIX + "Willkommen zurück auf §eNewRP§7!");
             if(Script.hasRank(p, Rank.MODERATOR, false)) e.getPlayer().sendMessage(Messages.INFO + "Aufgrund deines Status als " + Script.getRank(p).getName(p) + " hast du automatisch einen Premium-Account.");
@@ -262,7 +263,7 @@ public class Utils implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler (priority = EventPriority.HIGHEST)
     public void onJoinEvent(PlayerJoinEvent e) {
         if (Script.isInTestMode() && !Script.isNRPTeam(e.getPlayer()) && !e.getPlayer().isWhitelisted()) {
             e.getPlayer().kickPlayer("§eDer Server ist momentan im Wartungsmodus.");

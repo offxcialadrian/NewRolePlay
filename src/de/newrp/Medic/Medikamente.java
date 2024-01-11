@@ -109,9 +109,9 @@ public enum Medikamente {
         return null;
     }
 
-    public static Medikamente getMedikamentByItemStack(ItemStack is) {
+    public static Medikamente getMedikamentByItemStack(ItemStack item) {
         for (Medikamente m : Medikamente.values()) {
-            if (m.getItemStack().equals(is)) {
+            if (m.getItemStack().isSimilar(item)) {
                 return m;
             }
         }

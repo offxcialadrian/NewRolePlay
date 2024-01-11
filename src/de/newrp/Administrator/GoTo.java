@@ -1,5 +1,6 @@
 package de.newrp.Administrator;
 
+import de.newrp.API.Log;
 import de.newrp.API.Messages;
 import de.newrp.API.Rank;
 import de.newrp.API.Script;
@@ -40,7 +41,8 @@ public class GoTo implements CommandExecutor, TabCompleter {
         MOTEL (16, "Motel", new String[]{"Hotel"}, new Location(Script.WORLD, 795, 64, 1222)),
         KNAST (17, "Gefängnis", new String[]{"Knast, Jail, JVA"}, new Location(Script.WORLD, 1018, 68, 549, 180.84424f, -9.02183f)),
         CASINO (18, "Casino", new String[]{"Spielhalle"}, new Location(Script.WORLD, 780, 109, 856, 0.22738647f, 5.2779894f)),
-        SELFSTORAGE(19, "Selfstorage", new String[]{"Selfstorage, MyPlace, Lagerhalle"},new Location(Script.WORLD, 1001, 68, 1201, 274.2714f, 3.0181432f));
+        SELFSTORAGE(19, "Selfstorage", new String[]{"Selfstorage, MyPlace, Lagerhalle"},new Location(Script.WORLD, 1001, 68, 1201, 274.2714f, 3.0181432f)),
+        TODO(20, "TODO", new String[]{"TODO"}, new Location(Script.WORLD, 583, 122, 1023, -180.83813f, -6.3143415f));
 
         int id;
         String name;
@@ -87,13 +89,17 @@ public class GoTo implements CommandExecutor, TabCompleter {
         Points gp;
 
         if (!Script.hasRank(p, Rank.SUPPORTER, false)) {
-            p.sendMessage(Messages.NO_PERMISSION);
-            return true;
+            if(!Script.isInTestMode() || !BuildMode.isInBuildMode(p)) {
+                p.sendMessage(Messages.NO_PERMISSION);
+                return true;
+            }
         }
 
         if (!SDuty.isSDuty(p)) {
-            p.sendMessage(Messages.NO_SDUTY);
-            return true;
+            if(!Script.isInTestMode() || !BuildMode.isInBuildMode(p)) {
+                p.sendMessage(Messages.NO_SDUTY);
+                return true;
+            }
         }
 
         if (args.length != 1) {
@@ -112,6 +118,7 @@ public class GoTo implements CommandExecutor, TabCompleter {
         Script.sendTeamMessage(p, ChatColor.YELLOW, "hat sich zu " + gp.getName() + " teleportiert.", true);
         Teleport.back.put(p, p.getLocation());
         p.teleport(gp.getLocation());
+        Log.NORMAL.write(p, "teleportierte sich zu " + gp.getName() + ".");
 
         return false;
     }
@@ -120,7 +127,7 @@ public class GoTo implements CommandExecutor, TabCompleter {
     public List<String> onTabComplete(CommandSender cs, Command cmd, String alias, String[] args) {
         Player p = (Player) cs;
         if (cmd.getName().equalsIgnoreCase("goto")) {
-            if (!SDuty.isSDuty(p)) return Collections.EMPTY_LIST;
+            if (!SDuty.isSDuty(p) && !BuildMode.isInBuildMode(p)) return Collections.EMPTY_LIST;
             final List<String> oneArgList = new ArrayList<>();
             final List<String> completions = new ArrayList<>();
             for (Points point : Points.values()) {

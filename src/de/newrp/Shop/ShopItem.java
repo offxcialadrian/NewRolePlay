@@ -18,7 +18,7 @@ public enum ShopItem {
 
     BROT(0, "§fBrot", new ItemStack(Material.BREAD), 16, 1, 20, 2, 2400, true, true, false, new ShopType[] {ShopType.SUPERMARKET}),
     KAFFEE(1, "§fKaffee", new ItemStack(Material.POTION, 1), 1, 1, 20, 2, 3900, true, true, false, new ShopType[] {ShopType.SUPERMARKET}),
-    LOTTOSCHEIN(2, "§7Lottoschein", new ItemStack(Material.PAPER), 1, 1, 20, 30, 1000, false, true, false, new ShopType[] {ShopType.SUPERMARKET}),
+    LOTTOSCHEIN(2, "§7Lottoschein", new ItemStack(Material.PAPER), 1, 1, 20, 30, 1000, false, true, false, new ShopType[] {ShopType.SUPERMARKET, ShopType.ZEITUNGSLADEN}),
     HAUSKASSE(3, "§7Hauskasse", new ItemStack(Material.CHEST), 20, 1, 20, HouseAddon.HAUSKASSE.getPrice(), 34000, false, false, false, new ShopType[] {ShopType.HAUSADDON}),
     MIETERSLOT(4, "§7Mieterslot", new ItemStack(Material.CHEST), 20, 1, 20, HouseAddon.SLOT.getPrice(), 39500, false, false, false, new ShopType[] {ShopType.HAUSADDON}),
     WAFFENSCHRANK(5, "§7Waffenschrank", new ItemStack(Material.CHEST), 20, 1, 20, HouseAddon.WAFFENSCHRANK.getPrice(), 39500, false, false, false, new ShopType[] {ShopType.HAUSADDON}),
@@ -33,10 +33,14 @@ public enum ShopItem {
     LATTE_MACCHIATO(45, "§rLatte Macchiato", new ItemStack(Material.FLOWER_POT), 1, 2, 25, 2, 3000, true, true, false, new ShopType[] {ShopType.CAFE}),
     ESPRESSO(46, "§rEspresso", new ItemStack(Material.FLOWER_POT), 1, 2, 25, 2, 3000, true, true, false, new ShopType[] {ShopType.CAFE}),
     CRAPPUCHINO(47, "§rCrappuchino", new ItemStack(Material.FLOWER_POT), 1, 2, 25, 2, 3000, true, true, false, new ShopType[] {ShopType.CAFE}),
-    Zeitung(48, "§9Zeitung", de.newrp.News.Zeitung.zeitung, 1, 2, 25, 2, 3000, true, true, false, new ShopType[] {ShopType.CAFE, ShopType.SUPERMARKET, ShopType.ZEITUNGSLADEN}),
+    Zeitung(48, "§9Zeitung", de.newrp.News.Zeitung.zeitung, 1, 2, 25, 30, 3000, true, true, false, new ShopType[] {ShopType.CAFE, ShopType.SUPERMARKET, ShopType.ZEITUNGSLADEN}),
     SCHMERZMITTEL(49, "§fSchmerzmittel", Medikamente.SCHMERZMITTEL.getItemStack(), 1, 2, 25, 2, 3000, true, true, false, new ShopType[] {ShopType.APOTHEKE, ShopType.SUPERMARKET}),
-    BASEBALLSCHLAEGER(50, "§7Baseballschläger", new ItemStack(Material.BONE), 1, 1, 1, 1, 1, false, false, false, new ShopType[] {ShopType.GUNSHOP}),
-    KEVLAR(51, "§7Schutzweste", Script.kevlar(1), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.GUNSHOP});
+    BASEBALLSCHLAEGER(50, "§7Baseballschläger", new ItemStack(Material.BONE), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.GUNSHOP}),
+    SAMSUNG_HANDY(52, "§cGalaxy S21", new ItemStack(Material.IRON_INGOT), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.ELEKTRONIK}),
+    HUAWEI_HANDY(53, "§cP60", new ItemStack(Material.IRON_INGOT), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.ELEKTRONIK}),
+    GOOGLE_HANDY(54, "§cPixel 10", new ItemStack(Material.IRON_INGOT), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.ELEKTRONIK}),
+    APPLE_HANDY(55, "§ciPhone 15", new ItemStack(Material.IRON_INGOT), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.ELEKTRONIK});
+    //KEVLAR(51, "§7Schutzweste", Script.kevlar(1), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.GUNSHOP});
 
     private final int id;
     private final String name;

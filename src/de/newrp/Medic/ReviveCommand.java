@@ -60,7 +60,8 @@ public class ReviveCommand implements CommandExecutor {
             Friedhof f = Friedhof.getDead(tg);
             p.sendMessage(PREFIX + "Du hast " + Script.getName(tg) + " wiederbelebt.");
             tg.sendMessage(PREFIX + "Du wurdest von " + Messages.RANK_PREFIX(p) + " wiederbelebt.");
-            Friedhof.revive(tg, null);
+            Friedhof.revive(tg, f.getDeathLocation());
+            if(NPCUtil.npcs.containsKey(p)) NPCUtil.removeNPC(p);
             if (f.getInventoryContent() != null) {
                 tg.getInventory().clear();
                 tg.getInventory().setContents(f.getInventoryContent());
@@ -94,7 +95,7 @@ public class ReviveCommand implements CommandExecutor {
         }
 
         Friedhof f_c;
-        f_c = Friedhof.getDeathByItem(item);
+        f_c = Friedhof.getDeathByLocation(p.getLocation());
         if (f_c == null) {
             f_c = Friedhof.getDeathByLocation(p.getLocation());
 
@@ -120,7 +121,6 @@ public class ReviveCommand implements CommandExecutor {
             return true;
         }
 
-        Item skullItem = f.getSkull();
 
         long time = System.currentTimeMillis();
         Long lastUsage = cooldowns.get(p.getName());
@@ -138,13 +138,6 @@ public class ReviveCommand implements CommandExecutor {
             }
         }
 
-        EntityDamageEvent.DamageCause damageCause = FriedhofListener.DEATH_REASON.get(tg.getName());
-        if (damageCause == EntityDamageEvent.DamageCause.DRAGON_BREATH || damageCause == EntityDamageEvent.DamageCause.BLOCK_EXPLOSION || damageCause == EntityDamageEvent.DamageCause.ENTITY_EXPLOSION
-                || (skullItem.getCustomName() != null && skullItem.getCustomName().startsWith("§8"))) {
-            p.sendMessage(Messages.ERROR + "Diese Person lässt sich nicht wiederbeleben.");
-            return true;
-        }
-
         p.sendMessage("§7Du beginnst mit der Wiederbelebung von " + Script.getName(tg) + "...");
         Me.sendMessage(p, "hat mit der Wiederbelebung von " + Script.getName(tg) + " begonnen.");
         Log.LOW.write(p, "hat mit der Wiederbelebung von " + Script.getName(tg) + " begonnen.");
@@ -154,12 +147,11 @@ public class ReviveCommand implements CommandExecutor {
         cooldowns.put(tg.getName(), time);
         final Location loc = p.getLocation();
         Bukkit.getScheduler().runTaskLater(main.getInstance(), () -> {
-            if (p.getLocation().distance(skullItem.getLocation()) > 3D && p.getLocation().distance(f.getDeathLocation()) > 3D) {
+            if (p.getLocation().distance(f.getDeathLocation()) > 3D) {
                 p.sendMessage(Messages.ERROR + "Du bist zuweit von der Leiche weg.");
                 return;
             }
-
-            skullItem.remove();
+            if(NPCUtil.npcs.containsKey(p)) NPCUtil.removeNPC(p);
             if (!Friedhof.isDead(tg)) {
                 p.sendMessage(Messages.ERROR + "Die Person lebt bereits.");
                 return;

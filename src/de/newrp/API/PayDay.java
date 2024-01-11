@@ -1,5 +1,6 @@
 package de.newrp.API;
 
+import de.newrp.Administrator.Checkpoints;
 import de.newrp.Administrator.SDuty;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Government.Arbeitslosengeld;
@@ -8,6 +9,7 @@ import de.newrp.Government.Steuern;
 import de.newrp.House.House;
 import de.newrp.Player.AFK;
 import de.newrp.Player.Banken;
+import de.newrp.Player.Mobile;
 import de.newrp.Player.Selfstorage;
 import de.newrp.Shop.Shops;
 import de.newrp.main;
@@ -23,6 +25,7 @@ public class PayDay extends BukkitRunnable {
         for (Player p : Bukkit.getOnlinePlayers()) {
             if (AFK.isAFK(p)) continue;
             if (SDuty.isSDuty(p)) continue;
+            if(Checkpoints.hasCheckpoints(p)) continue;
             if (getPayDayTime(p) < 59) {
                 addPayDayTime(p);
                 continue;
@@ -155,6 +158,12 @@ public class PayDay extends BukkitRunnable {
             if(Selfstorage.hasSelfstorage(p)) {
                 int price = 50;
                 p.sendMessage("§8" + Messages.ARROW + " §7Selfstorage-Room: §c-" + price + "€");
+                payday -= price;
+            }
+
+            if(Mobile.hasCloud(p)) {
+                int price = (Premium.hasPremium(p) ? 5 : 10);
+                p.sendMessage("§8" + Messages.ARROW + " §7Handy-Cloud: §c-" + price + "€");
                 payday -= price;
             }
 

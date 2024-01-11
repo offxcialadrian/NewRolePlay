@@ -46,7 +46,7 @@ public enum Licenses {
     public static Map<Licenses, Boolean> getLicenses(Integer id) {
         Map<Licenses, Boolean> cache = new HashMap<>();
         try (Statement stmt = main.getConnection().createStatement();
-             ResultSet rs = stmt.executeQuery("SELECT personalausweis, waffenschein, fuehrerschein, angelschein, jagdlizenz FROM licenses WHERE id=" + id)) {
+             ResultSet rs = stmt.executeQuery("SELECT personalausweis, waffenschein, fuehrerschein, angelschein FROM licenses WHERE id=" + id)) {
             if (rs.next()) {
                 cache.put(Licenses.PERSONALAUSWEIS, rs.getBoolean("personalausweis"));
                 cache.put(Licenses.FUEHRERSCHEIN, rs.getBoolean("fuehrerschein"));

@@ -1,6 +1,7 @@
 package de.newrp.Berufe;
 
 import de.newrp.API.Messages;
+import de.newrp.Player.Mobile;
 import de.newrp.Player.Notruf;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -38,6 +39,11 @@ public class Notrufe implements CommandExecutor {
 
         if(Notruf.call.isEmpty()) {
             p.sendMessage(Notruf.PREFIX + "Es gibt keine Notrufe.");
+            return true;
+        }
+
+        if(!Mobile.hasPhone(p)) {
+            p.sendMessage(Messages.ERROR + "Du hast kein Handy.");
             return true;
         }
 

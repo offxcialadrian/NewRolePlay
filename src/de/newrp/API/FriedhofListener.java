@@ -6,6 +6,7 @@ import de.newrp.main;
 import org.bukkit.*;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
+import org.bukkit.entity.NPC;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -51,7 +52,7 @@ public class FriedhofListener implements Listener {
         meta.setOwningPlayer(p);
         meta.setDisplayName("§6" + p.getName());
         head.setItemMeta(meta);
-        Item item = w.dropItemNaturally(deathLocation, head);
+        /*Item item = w.dropItemNaturally(deathLocation, head);
         if (deathtime > 480 || explosion) {
             item.setCustomName("§8✟" + p.getName());
         } else {
@@ -59,7 +60,8 @@ public class FriedhofListener implements Listener {
         }
         item.setCustomNameVisible(true);
         item.setVelocity(item.getVelocity().zero());
-        item.setPickupDelay(Integer.MAX_VALUE);
+        item.setPickupDelay(Integer.MAX_VALUE);*/
+        NPCUtil.spawnNPC(p);
         int cash = Script.getMoney(p, PaymentType.CASH);
         Script.setMoney(p, PaymentType.CASH, 0);
 
@@ -70,7 +72,7 @@ public class FriedhofListener implements Listener {
 
         Player killer = p.getKiller();
         Notications.sendMessage(Notications.NotificationType.DEAD, Script.getName(p) + " ist gestorben " + (killer!=null ? Messages.ARROW + " " + Script.getName(killer):Messages.ARROW + " " + p.getLastDamageCause().getCause().name()));
-        Friedhof friedhof = new Friedhof(Script.getNRPID(p), p.getName(), deathLocation, System.currentTimeMillis(), deathtime, item, cash, inventoryContent);
+        Friedhof friedhof = new Friedhof(Script.getNRPID(p), p.getName(), deathLocation, System.currentTimeMillis(), deathtime, cash, inventoryContent);
         Friedhof.setDead(p, friedhof);
     }
 
@@ -89,7 +91,7 @@ public class FriedhofListener implements Listener {
                     Script.executeAsyncUpdate("INSERT INTO friedhof (id, time) VALUES (" + f.getUserID() + ", " + duration + ") ON DUPLICATE KEY UPDATE time = " + duration);
                 }
             }
-            if (f.getSkull() != null) f.getSkull().remove();
+            if(NPCUtil.npcs.containsKey(p)) NPCUtil.removeNPC(p);
             if (f.getTaskID() != 0) Bukkit.getScheduler().cancelTask(f.getTaskID());
             Friedhof.FRIEDHOF.remove(p.getName());
         }
@@ -102,7 +104,7 @@ public class FriedhofListener implements Listener {
             int id = Script.getNRPID(p);
             int i = Friedhof.getDeathtimeDatabase(p);
             if (i > 0) {
-                Friedhof.setDead(p, new Friedhof(id, p.getName(), null, System.currentTimeMillis(), i, null, 0, null));
+                Friedhof.setDead(p, new Friedhof(id, p.getName(), null, System.currentTimeMillis(), i,  0, null));
             }
         });
     }

@@ -141,12 +141,12 @@ public class Equip implements CommandExecutor, Listener {
         }
 
         if(Beruf.getBeruf(p) == Beruf.Berufe.RETTUNGSDIENST && p.getLocation().distance(new Location(Script.WORLD,267,75,1253)) > 5) {
-            p.sendMessage(Messages.ERROR + "Du musst dich in der Nähe des Duty-Punktes befinden.");
+            p.sendMessage(Messages.ERROR + "Du musst dich in der Nähe des Equip-Punktes befinden.");
             return true;
         }
 
         if(Beruf.getBeruf(p) == Beruf.Berufe.NEWS && p.getLocation().distance(new Location(Script.WORLD,289, 67, 788)) > 5) {
-            p.sendMessage(Messages.ERROR + "Du musst dich in der Nähe des Duty-Punktes befinden.");
+            p.sendMessage(Messages.ERROR + "Du musst dich in der Nähe des Equip-Punktes befinden.");
             return true;
         }
 

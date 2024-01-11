@@ -3,6 +3,9 @@ package de.newrp;
 import de.newrp.API.*;
 import de.newrp.Administrator.*;
 import de.newrp.Berufe.*;
+import de.newrp.Call.CallCommand;
+import de.newrp.Call.HangupCommand;
+import de.newrp.Call.PickupCommand;
 import de.newrp.Chat.*;
 import de.newrp.Commands.DiscordCommand;
 import de.newrp.Commands.Test;
@@ -241,7 +244,6 @@ public class main extends JavaPlugin {
         getCommand("teamspeak").setExecutor(new TeamspeakCommand());
         getCommand("channel").setExecutor(new PremiumChannel());
         getCommand("takeshop").setExecutor(new TakeShop());
-        getCommand("notruf").setExecutor(new Notruf());
         getCommand("acceptnotruf").setExecutor(new AcceptNotruf());
         getCommand("donenotruf").setExecutor(new DoneNotruf());
         getCommand("cancelnotruf").setExecutor(new CancelNotruf());
@@ -273,6 +275,13 @@ public class main extends JavaPlugin {
         getCommand("vertraglist").setExecutor(new Vertraege());
         getCommand("showvertrag").setExecutor(new ShowVertrag());
         getCommand("erstattung").setExecutor(new Erstattung());
+        getCommand("reinforcement").setExecutor(new Reinforcement());
+        getCommand("premium").setExecutor(new PremiumCommand());
+        getCommand("call").setExecutor(new CallCommand());
+        getCommand("hangup").setExecutor(new HangupCommand());
+        getCommand("pickup").setExecutor(new PickupCommand());
+        getCommand("registerplayer").setExecutor(new RegisterPlayer());
+        getCommand("getshulker").setExecutor(new GetShulker());
 
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new SDuty(), this);
@@ -340,6 +349,9 @@ public class main extends JavaPlugin {
         pm.registerEvents(new Baseballschlaeger(), this);
         pm.registerEvents(new Checkpoints(), this);
         pm.registerEvents(new Vertraege(), this);
+        pm.registerEvents(new GetShulker(), this);
+        pm.registerEvents(new CallCommand(), this);
+        pm.registerEvents(new Mobile(), this);
 
 
         new AsyncHealth().runTaskTimerAsynchronously(this, 120 * 20L, 120 * 20L);

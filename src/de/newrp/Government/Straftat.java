@@ -46,7 +46,7 @@ public class Straftat implements CommandExecutor {
         }
 
 
-        if(args.length <= 2) {
+        if(args.length < 2) {
             p.sendMessage(Messages.ERROR + "/straftat [WantedPunkte] [Grund]");
             return true;
         }
@@ -72,7 +72,7 @@ public class Straftat implements CommandExecutor {
         try (Statement stmt = main.getConnection().createStatement()) {
             stmt.executeUpdate("INSERT INTO wanted_reason (reason, amount) VALUES ('" + grund + "', " + wantedPunkte + ")");
             p.sendMessage(PREFIX + "Der Fahndungsgrund wurde erfolgreich hinzugefügt.");
-            Script.sendTeamMessage(PREFIX + p.getName() + " hat die Straftat §6" + grund + " §7mit §6" + wantedPunkte + " WantedPunkten §7hinzugefügt.");
+            Script.sendTeamMessage(PREFIX + Script.getName(p) + " hat die Straftat §6" + grund + " §7mit §6" + wantedPunkte + " WantedPunkten §7hinzugefügt.");
             Beruf.Berufe.POLICE.sendMessage(PREFIX + "Die Straftat §6" + grund + " §7mit §6" + wantedPunkte + " WantedPunkten §7wurde hinzugefügt.");
             Beruf.Berufe.NEWS.sendMessage(PREFIX + "Die Straftat §6" + grund + " §7mit §6" + wantedPunkte + " WantedPunkten §7wurde hinzugefügt.");
             return true;

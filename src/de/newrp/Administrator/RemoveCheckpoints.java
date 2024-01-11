@@ -1,9 +1,6 @@
 package de.newrp.Administrator;
 
-import de.newrp.API.Log;
-import de.newrp.API.Messages;
-import de.newrp.API.Rank;
-import de.newrp.API.Script;
+import de.newrp.API.*;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -11,13 +8,15 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import javax.security.auth.callback.CallbackHandler;
+
 public class RemoveCheckpoints implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
         Player p = (Player) cs;
 
-        if(Script.hasRank(p, Rank.MODERATOR, true)) {
+        if(!Script.hasRank(p, Rank.MODERATOR, true)) {
             p.sendMessage(Messages.NO_PERMISSION);
             return true;
         }
@@ -33,7 +32,7 @@ public class RemoveCheckpoints implements CommandExecutor {
         }
 
         OfflinePlayer tg = Script.getPlayer(args[0]);
-        if(Script.getNRPID(tg) != 0) {
+        if(Script.getNRPID(tg) == 0) {
             p.sendMessage(Messages.PLAYER_NOT_FOUND);
             return true;
         }
@@ -50,6 +49,7 @@ public class RemoveCheckpoints implements CommandExecutor {
         Script.sendTeamMessage(p, ChatColor.RED, "hat die Checkpoints von " + tg.getName() + " entfernt.", true);
         if(tg.isOnline()) {
             tg.getPlayer().sendMessage(Checkpoints.PREFIX + "Deine Checkpoints wurden von §6" + Messages.RANK_PREFIX(p) + " §7entfernt.");
+            Cache.loadScoreboard(tg.getPlayer());
         } else {
             Script.addOfflineMessage(tg, Checkpoints.PREFIX + "Deine Checkpoints wurden von §6" + Messages.RANK_PREFIX(p) + " §7entfernt.");
         }

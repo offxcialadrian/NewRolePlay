@@ -1,9 +1,11 @@
 package de.newrp.Shop;
 
+import de.newrp.API.ItemBuilder;
 import de.newrp.API.Script;
 import de.newrp.main;
 import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -19,7 +21,8 @@ public enum Shops {
     TEST(1, "Café am X3", "Café am X3", 50000, new Location(Script.WORLD, 754, 72, 924), 200, 600, true, ShopType.CAFE),
     IKEA(2, "AEKI", "AEKI", 50000, new Location(Script.WORLD, 681, 68, 902), 200, 600, true, ShopType.HAUSADDON),
     AEKI_CAFE(3, "Café am AEKI", "Café am AEKI", 50000, new Location(Script.WORLD, 688, 138, 908), 200, 600, true, ShopType.CAFE),
-    GUNSHOP(4, "Schmid und Schmiedt Waffenladen", "Schmid und Schmiedt Waffenladen", 50000, new Location(Script.WORLD, 453, 69, 929), 200, 600, true, ShopType.GUNSHOP);
+    GUNSHOP(4, "Schmid und Schmiedt Waffenladen", "Schmid und Schmiedt Waffenladen", 50000, new Location(Script.WORLD, 453, 69, 929), 200, 600, true, ShopType.GUNSHOP),
+    SATURN(5, "Saturn", "Saturn", 50000, new Location(Script.WORLD, 865, 74, 964), 200, 600, true, ShopType.ELEKTRONIK);
 
     private final int id;
     private final String name;
@@ -203,11 +206,32 @@ public enum Shops {
         for (Map.Entry<Integer, int[]> n : c.entrySet()) {
             ShopItem bi = ShopItem.getItem(n.getKey());
             ItemStack i = bi.getItemStack();
+            if(i == null) continue;
             int[] a = n.getValue();
             i.setAmount(a[0]);
-            l.put(bi.getID(), Script.setNameAndLore(i, bi.getName(), "§8× §6" + a[1] + "€"));
+            if(i.getItemMeta().hasDisplayName()) {
+                ItemMeta im = i.getItemMeta();
+                ArrayList<String> lore = new ArrayList<>();
+                lore.add("§8× §6" + a[1] + "€");
+                im.setLore(lore);
+                i.setItemMeta(im);
+                l.put(bi.getID(), i);
+            } else {
+                l.put(bi.getID(), Script.setNameAndLore(i, bi.getName(), "§8× §6" + a[1] + "€"));
+            }
         }
         return l;
+    }
+
+    public boolean isInShop(ShopItem si) {
+        try (
+                Statement stmt = main.getConnection().createStatement();
+                ResultSet rs = stmt.executeQuery("SELECT * FROM shopprice WHERE shopID=" + this.getID() + " AND itemID=" + si.getID())) {
+            return rs.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     public static Shops getShopyByID(int id) {

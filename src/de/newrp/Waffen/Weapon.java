@@ -12,7 +12,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public enum Weapon {
-    PISTOLE(1, Script.setName(Material.IRON_HORSE_ARMOR, "§7Pistole"), "Pistole", 0.45F, .850, 15, 8.5D, 1.8, 4.1, 600, Munition.AMMO_9MM),
+    PISTOLE(1, Script.setName(Material.IRON_HORSE_ARMOR, "§7Pistole"), "Pistole", 0.45F, .750, 15, 8.5D, 1.8, 4.1, 600, Munition.AMMO_9MM),
     AK47(2, Script.setName(Material.DIAMOND_HORSE_ARMOR, "§7AK-47"), "AK-47", 1.7F, .300, 30, 6D, 2.1, 6, 500, Munition.AMMO_7_62_39MM),
     MP7(3, Script.setName(Material.GOLDEN_HORSE_ARMOR, "§7MP7"), "MP7", 0.8F, .100, 40, 4D, 1.8, 3.5, 500, Munition.AMMO_46_30MM);
 

@@ -197,7 +197,7 @@ public class Beruf {
         }
 
         public void addMember(Player p, Player leader) {
-            Script.executeUpdate("INSERT INTO berufe (nrp_id, berufID, salary, abteilung, leader, coleader) VALUES ('" + Script.getNRPID(p) + "', '" + getID() + "', '0', '0', '0')");
+            Script.executeUpdate("INSERT INTO berufe (nrp_id, berufID, salary, abteilung, leader, coleader) VALUES ('" + Script.getNRPID(p) + "', '" + getID() + "', '0', '0', '0', '0')");
             for (Player members : getPlayersFromBeruf(this)) {
                 members.sendMessage("§8[§e" + getName() + "§8] §e" + p.getName() + " §eist dem Beruf beigetreten.");
             }
@@ -209,7 +209,7 @@ public class Beruf {
         }
 
         public void addMember(OfflinePlayer p) {
-            Script.executeUpdate("INSERT INTO berufe (nrp_id, berufID, salary, abteilung, leader, coleader) VALUES ('" + Script.getNRPID(p) + "', '" + getID() + "', '0', '0', '0')");
+            Script.executeUpdate("INSERT INTO berufe (nrp_id, berufID, salary, abteilung, leader, coleader) VALUES ('" + Script.getNRPID(p) + "', '" + getID() + "', '0', '0', '0', '0')");
             for (Player members : getPlayersFromBeruf(this)) {
                 members.sendMessage("§8[§e" + getName() + "§8] §e" + p.getName() + " §eist dem Beruf beigetreten.");
             }

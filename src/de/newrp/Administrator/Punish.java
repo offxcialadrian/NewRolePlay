@@ -1,5 +1,6 @@
 package de.newrp.Administrator;
 
+import com.mojang.datafixers.types.templates.Check;
 import de.newrp.API.*;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Forum.Forum;
@@ -67,8 +68,9 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
         Player tg = Script.getPlayer(args[0]);
         OfflinePlayer offtg = Script.getOfflinePlayer(Script.getNRPID(args[0]));
         if(Script.getNRPID(offtg) == 0) {
-            Script.registerPlayer(offtg);
-            p.sendMessage(Messages.INFO + "Der Spieler hat noch nie auf New RolePlay gespielt. Er wurde registriert.");
+            p.sendMessage(Messages.PLAYER_NOT_FOUND);
+            p.sendMessage(Messages.INFO + "Du kannst auch Spieler registrieren die noch nie auf NewRP waren.");
+            return true;
         }
 
         if (tg == null && offtg != null) {
@@ -81,7 +83,7 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
             return true;
         }
 
-        if (Script.hasRank(tg, Rank.SUPPORTER, false) && !Script.isInTestMode() && !Script.hasRank(p, Rank.ADMINISTRATOR, false)) {
+        if (Script.hasRank(tg, Rank.SUPPORTER, false) && !Script.hasRank(p, Rank.ADMINISTRATOR, false)) {
             p.sendMessage(Messages.ERROR + "Du kannst keine Teammitglieder bestrafen.");
             return true;
         }
@@ -117,27 +119,30 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
     }
 
     public enum Violation {
-        CHEATEN(1, Punishment.BAN, Punishment.WARN, TimeUnit.DAYS.toMillis(7), "Cheaten", "Wir konnten bei dir Cheats feststellen."),
-        BELEIDIGUNG(2, Punishment.BAN, null, TimeUnit.HOURS.toMillis(3), "Beleidigung", "Du hast einen Spieler beleidigt."),
-        FREMDWERBUNG(3, Punishment.MUTE, null, TimeUnit.HOURS.toMillis(1), "Fremdwerbung", "Du hast Fremdwerbung verbreitet."),
-        MOBBING_LEICHT(4, Punishment.BAN, null, TimeUnit.DAYS.toMillis(3), "Mobbing (Leicht)", "Du hast andere Spieler gemobbt."),
-        MOBBING_SCHWER(5, Punishment.BAN, Punishment.WARN, 0, "Mobbing (Schwer)", "Du hast andere Spieler gemobbt."),
-        RASSISMUS(6, Punishment.BAN, null, 0, "Rassismus", "Du hast rassistische Äußerungen getätigt."),
-        EXTREMISMUS(7, Punishment.BAN, null, 0, "Extremismus", "Du hast extremistische Äußerungen getätigt."),
-        DROHUNG(8, Punishment.BAN, null, TimeUnit.HOURS.toMillis(24), "Drohung", "Du hast anderen Spielern gedroht."),
-        BUGUSE(9, Punishment.BAN, null, TimeUnit.HOURS.toMillis(12), "Buguse", "Du hast Spielfehler ausgenutzt."),
-        SUPPORTABUSE(10, Punishment.BAN, null, TimeUnit.HOURS.toMillis(1), "Support Missbrauch", "Du hast das Ticket-System missbraucht."),
-        RECHTEMISSBRAUCH(11, Punishment.BAN, Punishment.WARN, TimeUnit.DAYS.toMillis(7), "Rechte Missbrauch", "Du hast deine Rechte missbraucht."),
-        SICHERHEITSBANN(12, Punishment.BAN, null, 0, "Sicherheitsbann", "Du wurdest zur Sicherheit gebannt. Sollte dir der Grund nicht bekannt sein, melde dich bei uns im Support."),
-        BAD_NEWS(13, Punishment.BAN, null, TimeUnit.DAYS.toMillis(1), "Bad /news", "Du hast den Befehl /news missbraucht."),
-        BAD_STAATSMELDUNG(14, Punishment.BAN, null, TimeUnit.DAYS.toMillis(1), "Bad /staatsmeldung", "Du hast den Befehl /staatsmeldung missbraucht."),
-        MISSBRAUCH_TRAGEN(15, Punishment.TRAGEN_SPERRE, null, 120, "Missbrauch von /tragen", "Du hast den Befehl /tragen missbraucht."),
-        REPEATING_MISSBRAUCH_TRAGEN(16, Punishment.BAN, null, TimeUnit.DAYS.toMillis(1), "Wiederholter Missbrauch von /tragen", "Du hast den Befehl /tragen wiederholt missbraucht."),
-        EXTREMER_MISSBRAUCH_TRAGEN(17, Punishment.BAN, Punishment.WARN, TimeUnit.DAYS.toMillis(14), "Extremer Missbrauch von /tragen", "Du hast den Befehl /tragen extrem missbraucht."),
-        SPAM(18, Punishment.KICK, null, 0, "Spam", "Du hast gespammt."),
-        WIEDERHOLTER_SPAM(19, Punishment.BAN, null, TimeUnit.MINUTES.toMillis(30), "Wiederholter Spam", "Du hast wiederholt gespammt."),
-        EXTREMER_SPAM(20, Punishment.BAN, null, TimeUnit.HOURS.toMillis(1), "Extremer Spam", "Du hast extrem gespammt."),
-        WIEDERHOLTE_FREMDWERBUNG(21, Punishment.BAN, Punishment.WARN, TimeUnit.DAYS.toMillis(7), "Wiederholte Fremdwerbung", "Du hast wiederholt Fremdwerbung verbreitet.");
+        CHEATEN(1, Punishment.BAN, Punishment.WARN, TimeUnit.DAYS.toMillis(7), 0,"Cheaten", "Wir konnten bei dir Cheats feststellen."),
+        BELEIDIGUNG(2, Punishment.BAN, null, TimeUnit.HOURS.toMillis(3), 0,"Beleidigung", "Du hast einen Spieler beleidigt."),
+        FREMDWERBUNG(3, Punishment.MUTE, null, TimeUnit.HOURS.toMillis(1), 0,"Fremdwerbung", "Du hast Fremdwerbung verbreitet."),
+        MOBBING_LEICHT(4, Punishment.BAN, null, TimeUnit.DAYS.toMillis(3), 0,"Mobbing (Leicht)", "Du hast andere Spieler gemobbt."),
+        MOBBING_SCHWER(5, Punishment.BAN, Punishment.WARN, 0, 0,"Mobbing (Schwer)", "Du hast andere Spieler gemobbt."),
+        RASSISMUS(6, Punishment.BAN, null, 0,0, "Rassismus", "Du hast rassistische Äußerungen getätigt."),
+        EXTREMISMUS(7, Punishment.BAN, null, 0, 0,"Extremismus", "Du hast extremistische Äußerungen getätigt."),
+        DROHUNG(8, Punishment.BAN, null, TimeUnit.HOURS.toMillis(24), 0,"Drohung", "Du hast anderen Spielern gedroht."),
+        BUGUSE(9, Punishment.BAN, null, TimeUnit.HOURS.toMillis(12), 0,"Buguse", "Du hast Spielfehler ausgenutzt."),
+        SUPPORTABUSE(10, Punishment.BAN, null, TimeUnit.HOURS.toMillis(1), 0,"Support Missbrauch", "Du hast das Ticket-System missbraucht."),
+        RECHTEMISSBRAUCH(11, Punishment.BAN, Punishment.WARN, TimeUnit.DAYS.toMillis(7), 0,"Rechte Missbrauch", "Du hast deine Rechte missbraucht."),
+        SICHERHEITSBANN(12, Punishment.BAN, null, 0, 0,"Sicherheitsbann", "Du wurdest zur Sicherheit gebannt. Sollte dir der Grund nicht bekannt sein, melde dich bei uns im Support."),
+        BAD_NEWS(13, Punishment.CHECKPOINTS, null, 0, 50, "Bad /news", "Du hast den Befehl /news missbraucht."),
+        BAD_NEWS_EXRTREM(13, Punishment.BAN, null, TimeUnit.DAYS.toMillis(1), 150,"Extremer Missbrauch von /news", "Du hast den Befehl /news extrem missbraucht."),
+        BAD_STAATSMELDUNG(14, Punishment.BAN, null, TimeUnit.DAYS.toMillis(1), 0,"Bad /staatsmeldung", "Du hast den Befehl /staatsmeldung missbraucht."),
+        MISSBRAUCH_TRAGEN(15, Punishment.TRAGEN_SPERRE, null, 120, 0,"Missbrauch von /tragen", "Du hast den Befehl /tragen missbraucht."),
+        REPEATING_MISSBRAUCH_TRAGEN(16, Punishment.CHECKPOINTS, null, 0, 100,"Wiederholter Missbrauch von /tragen", "Du hast den Befehl /tragen wiederholt missbraucht."),
+        EXTREMER_MISSBRAUCH_TRAGEN(17, Punishment.BAN, Punishment.WARN, TimeUnit.DAYS.toMillis(14), 0,"Extremer Missbrauch von /tragen", "Du hast den Befehl /tragen extrem missbraucht."),
+        SPAM(18, Punishment.KICK, null, 0, 0,"Spam", "Du hast gespammt."),
+        WIEDERHOLTER_SPAM(19, Punishment.BAN, null, TimeUnit.MINUTES.toMillis(30), 0,"Wiederholter Spam", "Du hast wiederholt gespammt."),
+        EXTREMER_SPAM(20, Punishment.BAN, null, TimeUnit.HOURS.toMillis(1),0, "Extremer Spam", "Du hast extrem gespammt."),
+        WIEDERHOLTE_FREMDWERBUNG(21, Punishment.BAN, Punishment.WARN, TimeUnit.DAYS.toMillis(7), 0,"Wiederholte Fremdwerbung", "Du hast wiederholt Fremdwerbung verbreitet."),
+        UNREALISTISCHES_SPIELVERHALTEN(22, Punishment.CHECKPOINTS, null, 0, 50,"Unrealistisches Spielverhalten", "Du hast unrealistisches Spielverhalten gezeigt."),
+        UNZUREICHENDE_EIGNUNG(23, Punishment.BAN, null, 0, 0,"Unzureichende Eignung", "Du hast unzureichende Eignung gezeigt.");
 
 
 
@@ -146,16 +151,18 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
         Punishment punishment;
         Punishment secondaryPunishment;
         Long duration;
+        int checkpoints;
 
         String description;
 
 
-        Violation(int id, Punishment punishment, Punishment secondaryPunishment, long duration, String name, String description) {
+        Violation(int id, Punishment punishment, Punishment secondaryPunishment, long duration, int checkpoints, String name, String description) {
             this.id = id;
             this.name = name;
             this.punishment = punishment;
             this.secondaryPunishment = secondaryPunishment;
             this.duration = duration;
+            this.checkpoints = checkpoints;
             this.description = description;
         }
 
@@ -185,6 +192,10 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
 
         public Long getDuration() {
             return duration;
+        }
+
+        public int getCheckpoints() {
+            return checkpoints;
         }
 
         public static Violation getViolationByID(int id) {
@@ -253,8 +264,7 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
                 Log.WARNING.write(tg, "wurde von " + Messages.RANK_PREFIX(p) + " für " + v.getName() + " gebannt.");
                 Log.HIGH.write(p, "hat " + Script.getName(tg) + " für " + v.getName() + " gebannt.");
                 Bukkit.broadcastMessage(Script.PREFIX + "§c" + Script.getName(tg) + " wurde von " + Messages.RANK_PREFIX(p) + " für §l" + v.getName() + "§c gebannt.");
-                if(Beruf.isLeader(p, false)) Script.setInt(p, "berufe", "leader", 0);
-                if(Beruf.isCoLeader(p)) Script.setInt(p, "berufe", "coleader", 0);
+                Beruf.getBeruf(tg).removeMember(tg);
             } else {
                 p.sendMessage(PREFIX + "Du hast " + Script.getName(tg) + " bis zum " + dateFormat.format(until) + " Uhr für " + v.getName() + " gebannt.");
                 tg.sendMessage(PREFIX + "Du wurdest von " + Script.getName(p) + " bis zum " + dateFormat.format(until) + " Uhr für " + v.getName() + " gebannt.");
@@ -326,7 +336,7 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
         }
 
         if(punishment == Punishment.CHECKPOINTS || secondaryPunishment == Punishment.CHECKPOINTS) {
-            int checkpoints = Math.toIntExact(v.getDuration());
+            int checkpoints = v.getCheckpoints();
             p.sendMessage(PREFIX + "Du hast " + Script.getName(tg) + " zu " + checkpoints + " Checkpoints eingesperrt.");
             tg.sendMessage(PREFIX + "Du wurdest von " + Script.getName(p) + " zu " + checkpoints + " Checkpoints eingesperrt.");
             tg.sendMessage(PREFIX + "Grund: " + v.getDescription());
@@ -334,6 +344,7 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
             Log.WARNING.write(p, "hat " + Script.getName(tg) + " zu " + checkpoints + " Checkpoints eingesperrt.");
             Log.HIGH.write(tg, "wurde von " + tg.getName() + " zu " + checkpoints + " Checkpoints eingesperrt.");
             Bukkit.broadcastMessage(Script.PREFIX + "§c" + Script.getName(tg) + " wurde wegen " + v.getName() + " von " + Messages.RANK_PREFIX(p) + " zu " + v.getDuration() + " Checkpoints eingesperrt.");
+            Checkpoints.start(tg, checkpoints);
         }
     }
 
@@ -350,8 +361,8 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
                 Log.WARNING.write(tg, "wurde von " + Script.getName(p) + " für " + v.getName() + " gebannt.");
                 Log.HIGH.write(p, "hat " + tg.getName() + " für " + v.getName() + " gebannt.");
                 Bukkit.broadcastMessage(Script.PREFIX + "§c" + tg.getName() + " wurde von " + Messages.RANK_PREFIX(p) + " für §l" + v.getName() + " §cgebannt.");
-                if(Beruf.isLeader(p, false)) Script.setInt(p, "berufe", "leader", 0);
-                if(Beruf.isCoLeader(p)) Script.setInt(p, "berufe", "coleader", 0);
+
+                Beruf.getBeruf(tg).removeMember(tg);
             } else {
                 p.sendMessage(PREFIX + "Du hast " + tg.getName() + " bis zum " + dateFormat.format(until) + " Uhr für " + v.getName() + " gebannt.");
                 Script.sendTeamMessage(p, ChatColor.RED, "hat " + tg.getName() + " bis zum " + dateFormat.format(until) + " Uhr für " + v.getName() + " gebannt.", true);
@@ -415,7 +426,7 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
 
 
         if(punishment == Punishment.CHECKPOINTS || secondaryPunishment == Punishment.CHECKPOINTS) {
-            int checkpoints = Math.toIntExact(v.getDuration());
+            int checkpoints = v.getCheckpoints();
             p.sendMessage(PREFIX + "Du hast " + tg.getName() + " zu " + checkpoints + " Checkpoints eingesperrt.");
             Script.addOfflineMessage(tg, PREFIX + "Du wurdest von " + Script.getName(p) + " zu " + checkpoints + " Checkpoints eingesperrt.");
             Script.addOfflineMessage(tg, PREFIX + "Grund: " + v.getDescription());

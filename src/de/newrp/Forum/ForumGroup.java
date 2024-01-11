@@ -16,7 +16,7 @@ public enum ForumGroup {
     GOVERNMENT_LEADER(14, "Regierung Leader"),
     NEWS(10, "News"),
     NEWS_LEADER(16, "News Leader"),
-    VERIFIED(50, "Verifiziert");
+    VERIFIED(17, "Verifiziert");
 
     private final int id;
     private final String name;

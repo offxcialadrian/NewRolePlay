@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 
 public class MemberCommand implements CommandExecutor {
 
-    private static final String PREFIX = "§8[§eMember§8] §e» ";
+    private static final String PREFIX = "§8[§6Member§8] §6» §7";
 
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
@@ -23,7 +23,7 @@ public class MemberCommand implements CommandExecutor {
             }
 
             Beruf.Berufe beruf = Beruf.getBeruf(p);
-            p.sendMessage(PREFIX + "Mitglieder der " + beruf.getName() + ":");
+            p.sendMessage(PREFIX + "Mitglieder von " + beruf.getName() + ":");
             for(OfflinePlayer player : beruf.getAllMembers()) {
                 p.sendMessage("§8" + Messages.ARROW + " §6" + player.getName() + " §8(§6" + Beruf.getAbteilung(player).getName() + "§8)");
             }
@@ -52,7 +52,7 @@ public class MemberCommand implements CommandExecutor {
                 return true;
             }
 
-            p.sendMessage(PREFIX + tg.getName() + " ist Mitglied der " + Beruf.getBeruf(tg).getName());
+            p.sendMessage(PREFIX + tg.getName() + " ist Mitglied von " + Beruf.getBeruf(tg).getName());
             return true;
         }
 

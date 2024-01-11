@@ -7,5 +7,6 @@ public enum ShopType {
     GUNSHOP(),
     APOTHEKE(),
     ZEITUNGSLADEN(),
+    ELEKTRONIK(),
     HAUSADDON();
 }

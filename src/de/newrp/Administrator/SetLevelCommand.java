@@ -35,7 +35,7 @@ public class SetLevelCommand implements CommandExecutor {
             return true;
         }
 
-        int level = 0;
+        int level;
         try {
             level = Integer.parseInt(args[1]);
         } catch (NumberFormatException e) {

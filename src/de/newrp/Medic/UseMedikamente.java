@@ -4,6 +4,7 @@ import de.newrp.API.Krankheit;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.Chat.Me;
+import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -24,10 +25,9 @@ public class UseMedikamente implements Listener {
     public void onConsume(PlayerInteractEvent e) {
         if (e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) {
             Player p = e.getPlayer();
-            if(p.getInventory().getItemInMainHand() == null) return;
+            if (p.getInventory().getItemInMainHand().getType() != Material.PAPER) return;
             Medikamente m = Medikamente.getMedikamentByItemStack(p.getInventory().getItemInMainHand());
             if(m == null) return;
-
 
             if(m == Medikamente.SCHMERZMITTEL) {
                 Me.sendMessage(p, "nimmt ein Schmerzmittel ein.");

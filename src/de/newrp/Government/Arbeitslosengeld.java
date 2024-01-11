@@ -1,9 +1,6 @@
 package de.newrp.Government;
 
-import de.newrp.API.Log;
-import de.newrp.API.Messages;
-import de.newrp.API.PaymentType;
-import de.newrp.API.Script;
+import de.newrp.API.*;
 import de.newrp.Berufe.Abteilung;
 import de.newrp.Berufe.Beruf;
 import de.newrp.main;
@@ -143,17 +140,22 @@ public class Arbeitslosengeld implements CommandExecutor {
         }
 
         if(p.getLocation().distance(new Location(Script.WORLD, 552, 70, 966, 266.23996f, 65.03321f)) > 5) {
-            p.sendMessage(PREFIX + "Du bist nicht am Arbeitsamt.");
+            p.sendMessage(Messages.ERROR + "Du bist nicht am Arbeitsamt.");
+            return true;
+        }
+
+        if(!Licenses.PERSONALAUSWEIS.hasLicense(Script.getNRPID(p))) {
+            p.sendMessage(Messages.ERROR + "Du benötigst einen Personalausweis.");
             return true;
         }
 
         if (Beruf.hasBeruf(p)) {
-            p.sendMessage(PREFIX + "Du hast einen Beruf.");
+            p.sendMessage(Messages.ERROR + "Du hast einen Beruf.");
             return true;
         }
 
         if (hasApplied(p)) {
-            p.sendMessage(PREFIX + "Du hast bereits Arbeitslosengeld beantragt. Bitte warte auf eine Antwort.");
+            p.sendMessage(Messages.ERROR + "Du hast bereits Arbeitslosengeld beantragt. Bitte warte auf eine Antwort.");
             return true;
         }
 

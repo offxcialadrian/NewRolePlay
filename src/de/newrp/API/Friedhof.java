@@ -1,5 +1,6 @@
 package de.newrp.API;
 
+import de.newrp.Administrator.Checkpoints;
 import de.newrp.Berufe.AcceptNotruf;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Player.Notruf;
@@ -31,7 +32,6 @@ public class Friedhof {
     private final String username;
     private final Location deathLocation;
     private final long deathTime;
-    private final Item skull;
     private final int cash;
     private final ItemStack[] inventory;
     private int duration; //In Seconds
@@ -39,13 +39,12 @@ public class Friedhof {
     private int skullTaskID;
     private int helpCounter;
 
-    public Friedhof(int userID, String username, Location deathLocation, long deathTime, int duration, Item skull, int cash, ItemStack[] inventory) {
+    public Friedhof(int userID, String username, Location deathLocation, long deathTime, int duration, int cash, ItemStack[] inventory) {
         this.userID = userID;
         this.username = username;
         this.deathLocation = deathLocation;
         this.deathTime = deathTime;
         this.duration = duration;
-        this.skull = skull;
         this.cash = cash;
         this.inventory = inventory;
     }
@@ -62,13 +61,6 @@ public class Friedhof {
         }, f.getDuration() * 20L);
         f.setTaskID(taskID);
 
-
-        final int taskID_skull = Bukkit.getScheduler().scheduleSyncDelayedTask(main.getInstance(), () -> {
-            Item item = f.getSkull();
-            if (item != null) item.remove();
-        }, 20 * 300L);
-
-        f.setSkullTaskID(taskID_skull);
 
         if(Beruf.getBeruf(p) == Beruf.Berufe.POLICE) {
             Script.setLastDeadOfficer(System.currentTimeMillis());
@@ -132,8 +124,7 @@ public class Friedhof {
     public static void revive(Player p, Location teleportLoc) {
         Friedhof f = getDead(p);
         if (f == null) return;
-
-        if (f.getSkull() != null) f.getSkull().remove();
+        if(NPCUtil.npcs.containsKey(p)) NPCUtil.removeNPC(p);
 
         Bukkit.getScheduler().cancelTask(f.getTaskID());
         FRIEDHOF.remove(p.getName());
@@ -159,7 +150,7 @@ public class Friedhof {
 
                 p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 12 * 20, 2, false, false));
                 p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 12 * 20, 2, false, false));
-                p.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 48 * 20, 2, false, false));
+                p.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 15 * 20, 2, false, false));
             } else {
                 Location loc = new Location(p.getWorld(), 333, 78, 1159);
                 loc.getChunk().load();
@@ -177,6 +168,9 @@ public class Friedhof {
                 p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 80, 2, false, false));
                 p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, 70, 1, false, false));
 
+            }
+            if(Checkpoints.hasCheckpoints(p)) {
+                p.teleport(new Location(Script.WORLD, 485, 9, 562, -269.20435f, 6.000005f));
             }
         }
 
@@ -220,15 +214,8 @@ public class Friedhof {
             if (p.isOnline()) revive(p, null);
         }, (left + seconds) * 20L);
 
-        if (skull.isValid()) {
-            skull.setTicksLived(1);
-        }
 
         int secondsOnGraveyard = (int) TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - deathTime);
-        int skullTime = 300 + helpCounter * 60 - secondsOnGraveyard;
-
-        Bukkit.getScheduler().cancelTask(skullTaskID);
-        skullTaskID = Bukkit.getScheduler().scheduleSyncDelayedTask(main.getInstance(), skull::remove, skullTime * 20L);
 
         duration += seconds;
     }
@@ -245,7 +232,7 @@ public class Friedhof {
         return 0;
     }
 
-    public static Friedhof getDeathByItem(Item i) {
+    /*public static Friedhof getDeathByItem(Item i) {
         if (i == null) return null;
         for (Friedhof f : FRIEDHOF.values()) {
             Item skull = f.getSkull();
@@ -263,7 +250,7 @@ public class Friedhof {
                 return f;
         }
         return null;
-    }
+    }*/
 
     public static Friedhof getDeathByLocation(Location loc) {
         for (Friedhof f : FRIEDHOF.values()) {
@@ -281,7 +268,6 @@ public class Friedhof {
                 ", username='" + username + '\'' +
                 ", deathLocation=" + deathLocation +
                 ", deathTime=" + deathTime +
-                ", skull=" + skull +
                 ", cash=" + cash +
                 ", inventory=" + Arrays.toString(inventory) +
                 ", duration=" + duration +
@@ -315,9 +301,6 @@ public class Friedhof {
         this.duration = seconds;
     }
 
-    public Item getSkull() {
-        return this.skull;
-    }
 
     public int getCash() {
         return this.cash;

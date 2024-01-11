@@ -40,7 +40,17 @@ public class Abteilung implements CommandExecutor, TabCompleter {
         VOLONTAER(0, NEWS, "Volontäre"),
         JOURNALIST(1, NEWS, "Journalismus"),
         TV(2, NEWS, "TV-Moderation"),
-        CHEFREDAKTION(3, NEWS, "Chefredaktion");
+        CHEFREDAKTION(3, NEWS, "Chefredaktion"),
+        MEDIZINSTUDENT(0, RETTUNGSDIENST, "Medizinstudent"),
+        ASSISTENZARZT(1, RETTUNGSDIENST, "Assistenzarzt"),
+        ORTHOPAEDIE(2, RETTUNGSDIENST, "Orthopädie"),
+        CHIRURGIE(3, RETTUNGSDIENST, "Chirurgie"),
+        NOTFALLMEDIZIN(4, RETTUNGSDIENST, "Notfallmedizin"),
+        ALLGEMEINMEDIZIN(5, RETTUNGSDIENST, "Allgemeinmedizin"),
+        OBERARZT(6, RETTUNGSDIENST, "Oberarzt"),
+        CHEFARZT(7, RETTUNGSDIENST, "Chefarzt"),
+        DIREKTOR(8, RETTUNGSDIENST, "Ärtliches Direktorium");
+
 
         private final int id;
         private final Beruf.Berufe beruf;
@@ -145,6 +155,14 @@ public class Abteilung implements CommandExecutor, TabCompleter {
         }
 
         if(args.length == 1) {
+
+            if(args[0].equalsIgnoreCase("list")) {
+                p.sendMessage(PREFIX + "Alle Abteilungen der " + Beruf.getBeruf(p).getName() + ":");
+                for(OfflinePlayer all : Beruf.getBeruf(p).getAllMembers()) {
+                    p.sendMessage("§8» §6" + all.getName() + "§8: §6" + Beruf.getAbteilung(all).getName());
+                }
+                return true;
+            }
 
             OfflinePlayer tg = Script.getOfflinePlayer(args[0]);
             if(Script.getNRPID(args[0]) != 0) {
