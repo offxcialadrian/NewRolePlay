@@ -8,6 +8,7 @@ import de.newrp.Administrator.Notications;
 import de.newrp.Administrator.SDuty;
 import de.newrp.Administrator.TippOfTheDay;
 import de.newrp.Government.Wahlen;
+import de.newrp.Player.Mobile;
 import de.newrp.TeamSpeak.TeamSpeak;
 import de.newrp.main;
 import org.bukkit.Bukkit;
@@ -187,6 +188,9 @@ public class Utils implements Listener {
             public void run() {
                 Script.resetHealth(p);
                 SDuty.updateScoreboard();
+                for(Player all : Bukkit.getOnlinePlayers()) {
+                    Script.sendTabTitle(all);
+                }
             }
         }.runTaskLater(main.getInstance(), 20L);
         p.setFlySpeed(0.1f);
@@ -284,6 +288,17 @@ public class Utils implements Listener {
     }
 
     @EventHandler
+    public void pickUpItem(EntityPickupItemEvent e) {
+        if(e.getEntity() instanceof Player) {
+            if(e.getItem().getItemStack().getType() == Material.IRON_INGOT) {
+                if(!Mobile.hasPhone((Player) e.getEntity())) return;
+                Script.sendActionBar((Player) e.getEntity(), Messages.ERROR + "Du kannst nicht mehrere Handy aufeinmal besitzen.");
+                e.setCancelled(true);
+            }
+        }
+    }
+
+    @EventHandler
     public void onInteract(PlayerInteractEvent e) {
         if (e.getClickedBlock() == null) return;
         if (e.getAction() == Action.RIGHT_CLICK_BLOCK) {
@@ -298,7 +313,13 @@ public class Utils implements Listener {
                 return;
             }
 
-            if((e.getClickedBlock().getType() == Material.CRAFTING_TABLE || e.getClickedBlock().getType() == Material.DAYLIGHT_DETECTOR || e.getClickedBlock().getType() == Material.LECTERN || e.getClickedBlock().getType() == Material.FURNACE || e.getClickedBlock().getType() == Material.LOOM)) {
+            if((e.getClickedBlock().getType() == Material.CRAFTING_TABLE || e.getClickedBlock().getType() == Material.DAYLIGHT_DETECTOR ||
+                    e.getClickedBlock().getType() == Material.LECTERN || e.getClickedBlock().getType() == Material.FURNACE ||
+                    e.getClickedBlock().getType() == Material.LOOM || e.getClickedBlock().getType() == Material.BIRCH_FENCE_GATE ||
+                    e.getClickedBlock().getType() == Material.ACACIA_FENCE_GATE || e.getClickedBlock().getType().equals(Material.DARK_OAK_FENCE_GATE) ||
+                    e.getClickedBlock().getType().equals(Material.JUNGLE_FENCE_GATE) || e.getClickedBlock().getType().equals(Material.SPRUCE_FENCE_GATE) ||
+                    e.getClickedBlock().getType().equals(Material.CRIMSON_FENCE_GATE) || e.getClickedBlock().getType() == Material.WARPED_FENCE_GATE) ||
+                    e.getClickedBlock().getType().equals(Material.OAK_FENCE_GATE)) {
                 e.setCancelled(!BuildMode.isInBuildMode(e.getPlayer()));
                 return;
             }
@@ -309,6 +330,7 @@ public class Utils implements Listener {
                     return;
                 }
             }
+
 
             if (e.getClickedBlock().getType() == Material.CHEST ||
                     e.getClickedBlock().getType() == Material.TRAPPED_CHEST ||
@@ -392,6 +414,9 @@ public class Utils implements Listener {
             @Override
             public void run() {
                 SDuty.updateScoreboard();
+                for(Player all : Bukkit.getOnlinePlayers()) {
+                    Script.sendTabTitle(all);
+                }
             }
         }.runTaskLater(main.getInstance(), 20L);
     }

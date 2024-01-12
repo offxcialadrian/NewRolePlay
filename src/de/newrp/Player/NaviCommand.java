@@ -34,17 +34,17 @@ public class NaviCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        if(!Mobile.hasPhone(p) && !p.getInventory().contains(Material.MAP) && Script.getLevel(p) >= 3) {
+        if(!Mobile.hasPhone(p) && !p.getInventory().contains(Material.MAP) && !p.getInventory().contains(Material.FILLED_MAP) && Script.getLevel(p) >= 3) {
             p.sendMessage(Messages.ERROR + "Du benötigst ein Handy oder eine Stadtkarte um das Navi zu benutzen.");
             return true;
         }
 
-        if(!Mobile.mobileIsOn(p) && !p.getInventory().contains(Material.MAP) && Script.getLevel(p) >= 3) {
+        if(!Mobile.mobileIsOn(p) && !p.getInventory().contains(Material.MAP) && !p.getInventory().contains(Material.FILLED_MAP) && Script.getLevel(p) >= 3) {
             p.sendMessage(Messages.ERROR + "Du musst dein Handy einschalten um das Navi zu benutzen.");
             return true;
         }
 
-        if(!Mobile.hasPhone(p) && !p.getInventory().contains(Material.MAP) && Script.getLevel(p) < 3) {
+        if(!Mobile.hasPhone(p) && !p.getInventory().contains(Material.MAP) && !p.getInventory().contains(Material.FILLED_MAP) && Script.getLevel(p) < 3) {
             p.sendMessage(Messages.INFO + "Bitte beachte, dass du ab Level 3 ein Handy oder eine Stadtkarte benötigst um das Navi zu benutzen.");
         }
 

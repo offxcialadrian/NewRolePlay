@@ -21,7 +21,7 @@ import java.util.HashMap;
 
 public class Elevator implements Listener {
 
-    private static final HashMap<String, Double> progress = new HashMap<>();
+    public static final HashMap<String, Double> progress = new HashMap<>();
 
     public enum ElevatorAPI {
         X3(0, "X3", new Location[]{

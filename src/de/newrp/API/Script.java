@@ -1345,6 +1345,14 @@ public class Script {
         return 0;
     }
 
+    public static ItemStack Pfandflasche() {
+        ItemStack is = new ItemStack(Material.GLASS_BOTTLE, 1);
+        ItemMeta meta = is.getItemMeta();
+        meta.setDisplayName("§7Pfandflasche");
+        is.setItemMeta(meta);
+        return is;
+    }
+
     public static void sendAcceptMessage(Player p) {
         TextComponent msg = new TextComponent("  §bInfo:§r Nimm es mit ");
 

@@ -31,7 +31,7 @@ public class HungerFix implements Listener {
             long time = System.currentTimeMillis();
             Long lastUsage = cooldowns.get(p.getName());
             if (cooldowns.containsKey(p.getName())) {
-                if (lastUsage + 1000 > time) {
+                if (lastUsage + 2000 > time) {
                     return;
                 }
             }

@@ -1,24 +1,29 @@
 package de.newrp.Runnable;
 
-import de.newrp.API.Debug;
 import de.newrp.API.Messages;
 import de.newrp.API.Premium;
 import de.newrp.API.Script;
-import de.newrp.Berufe.Beruf;
+import de.newrp.API.Title;
 import de.newrp.Entertainment.Lotto;
 import de.newrp.Government.Wahlen;
+import de.newrp.News.BreakingNews;
 import de.newrp.Player.AFK;
+import de.newrp.Player.Mobile;
+import de.newrp.Player.SMSCommand;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.block.Sign;
+import org.bukkit.Sound;
 import org.bukkit.entity.*;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.concurrent.TimeUnit;
+import java.util.HashMap;
 
 public class AsyncMinute extends BukkitRunnable {
+
+    public static HashMap<String, Integer> battery = new HashMap<>();
 
     private static String[] advertises = new String[] {
             "§8[§cWerbung§8] §c" + Messages.ARROW + " §7Nutze bei deinem LabyMod-Einkauf den Code §cNEWRP §7und erhalte 10% Rabatt!",
@@ -39,6 +44,37 @@ public class AsyncMinute extends BukkitRunnable {
             }
         }
 
+        for(Player p : Bukkit.getOnlinePlayers()) {
+            if(Mobile.hasPhone(p) && Mobile.mobileIsOn(p) && !AFK.isAFK(p)) {
+                Mobile.getPhone(p).removeAkku(p, 1);
+                if(Mobile.getPhone(p).getAkku(p) <= 0) {
+                    p.sendMessage(Mobile.PREFIX + "Dein Handy ist ausgeschaltet, da der Akku leer ist.");
+                    Mobile.setPhone(p, Mobile.getPhone(p));
+                    continue;
+                }
+                if(Script.getPercentage(Mobile.getPhone(p).getAkku(p), Mobile.getPhone(p).getMaxAkku()) <= 10 && !battery.containsKey(p.getName()) && !battery.get(p.getName()).equals(10)) {
+                    p.sendMessage(Mobile.PREFIX + "Dein Handy hat nur noch " + Mobile.getPhone(p).getAkku(p) + "% Akku.");
+                    battery.put(p.getName(), 10);
+                    continue;
+                }
+                if(Script.getPercentage(Mobile.getPhone(p).getAkku(p), Mobile.getPhone(p).getMaxAkku()) <= 10 && !battery.containsKey(p.getName()) && !battery.get(p.getName()).equals(20)) {
+                    p.sendMessage(Mobile.PREFIX + "Dein Handy hat nur noch " + Mobile.getPhone(p).getAkku(p) + "% Akku.");
+                    battery.put(p.getName(), 20);
+                    continue;
+                }
+            }
+            if(SMSCommand.waitingForMessage.contains(p.getName()) && Mobile.mobileIsOn(p) && Mobile.hasConnection(p)) {
+                p.sendMessage(SMSCommand.PREFIX + "Du hast eine neue Nachricht erhalten.");
+                p.sendMessage(Messages.INFO + "Schaue in deiner Nachrichten App nach.");
+                if(!Mobile.getPhone(p).getLautlos(p)) p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
+                SMSCommand.waitingForMessage.remove(p.getName());
+            } else if(BreakingNews.waitingForMessage.contains(p.getName()) && Mobile.mobileIsOn(p) && Mobile.hasConnection(p)) {
+                p.sendMessage(BreakingNews.NEWS + "Es gibt eine neue Breaking News.");
+                p.sendMessage(Messages.INFO + "Schaue in deiner Nachrichten App nach.");
+                if(!Mobile.getPhone(p).getLautlos(p)) p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
+                BreakingNews.waitingForMessage.remove(p.getName());
+            }
+        }
 
         if (Calendar.getInstance().get(Calendar.MONTH) == Calendar.JANUARY && Calendar.getInstance().get(Calendar.DAY_OF_MONTH) == 15 && Calendar.getInstance().get(Calendar.HOUR_OF_DAY) == 18 && Calendar.getInstance().get(Calendar.MINUTE) == 0) {
             Wahlen.getWahlResult();
@@ -65,7 +101,10 @@ public class AsyncMinute extends BukkitRunnable {
         if(Calendar.getInstance().get(Calendar.MINUTE) == 0 || Calendar.getInstance().get(Calendar.MINUTE) == 20 || Calendar.getInstance().get(Calendar.MINUTE) == 40) {
             for(Player p : Bukkit.getOnlinePlayers()) {
                 if(Premium.hasPremium(p)) continue;
-                p.sendMessage(advertises[Script.getRandom(0, advertises.length-1)]);
+                String advert = advertises[Script.getRandom(0, advertises.length-1)];
+                p.sendMessage(advert);
+                Title.sendTitle(p, 20, 100, 20, advert);
+                Script.sendActionBar(p, "§8[§cWerbung§8] §c" + Messages.ARROW + " §7Mit Premium erhältst du keine Werbung.");
             }
         }
 
@@ -87,7 +126,6 @@ public class AsyncMinute extends BukkitRunnable {
             if (!AFK.isAFK(p)) AFK.updateAFK(p);
             if (!AFK.isAFK(p)) Script.increaseActivePlayTime(p);
             Script.increasePlayTime(p);
-            Script.sendTabTitle(p);
         }
     }
 }

@@ -1,5 +1,6 @@
 package de.newrp.Berufe;
 
+import de.newrp.API.Log;
 import de.newrp.API.Messages;
 import de.newrp.API.Rank;
 import de.newrp.API.Script;
@@ -109,6 +110,7 @@ public class SalaryCommand implements CommandExecutor {
             return true;
         }
 
+        Log.WARNING.write(p, "hat das Gehalt von " + Script.getName(tg) + " auf " + salary + "€ gesetzt.");
         Script.setInt(tg, "berufe", "salary", salary);
         p.sendMessage(PREFIX + "Du hast das Gehalt von " + Script.getName(tg) + " auf " + salary + "€ gesetzt.");
         if(p!=tg) tg.sendMessage(PREFIX + "Dein Gehalt wurde von " + Script.getName(p) + " auf " + salary + "€ gesetzt.");

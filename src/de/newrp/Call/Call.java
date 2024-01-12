@@ -77,13 +77,13 @@ public class Call {
                 return i;
             }
         }
-        //Script.sendBugReport(p, "COULDN'T FIND CALL_ID at getCallIDByPlayer");
         return -1;
     }
 
     public static void sendMessage(Player chatter, String msg) {
         for (Player p : ON_CALL.get(getCallIDByPlayer(chatter))) {
             if (!p.equals(chatter)) {
+                Mobile.getPhone(p).removeAkku(p, 1);
                 if(!Mobile.hasConnection(chatter))
                     msg = distortMessage(msg);
                 p.sendMessage(PREFIX + Script.getName(chatter) + " sagt: " + msg);
@@ -137,7 +137,7 @@ public class Call {
     }
 
     public static void call(Player caller, Player tg) {
-        tg.playSound(tg.getLocation(), Sound.ENTITY_CAT_AMBIENT, 1, 1);
+        if(!Mobile.getPhone(tg).getLautlos(tg)) tg.playSound(tg.getLocation(), Sound.ENTITY_CAT_AMBIENT, 1, 1);
         tg.sendMessage(PREFIX + "Dein Handy klingelt! Ein Anruf von " + Script.getName(caller));
         Script.sendActionBar(tg, "§7Dein Handy klingelt!");
         tg.sendMessage(PREFIX + Messages.INFO + "Benutze /p zum Annehmen oder /h zum ablehnen");

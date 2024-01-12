@@ -167,6 +167,12 @@ public class PayDay extends BukkitRunnable {
                 payday -= price;
             }
 
+            if(Mobile.hasPhone(p)) {
+                int price = 15;
+                p.sendMessage("§8" + Messages.ARROW + " §7Handy-Vertrag: §c-" + price + "€");
+                payday -= price;
+            }
+
             if (payday > 0) {
                 p.sendMessage("§8" + Messages.ARROW + " §7Einkommenssteuer (" + einkommenssteuer + "%): §c-" + (int) Script.getPercent(einkommenssteuer, payday) + "€");
                 Stadtkasse.addStadtkasse((int) Script.getPercent(einkommenssteuer, payday));
@@ -177,7 +183,7 @@ public class PayDay extends BukkitRunnable {
             p.sendMessage("§8" + Messages.ARROW + " §7Bilanz: " + (payday >= 0 ? "§a+" : "§c") + payday + "€");
             p.sendMessage("§8" + Messages.ARROW + " §7Neuer Kontostand: " + (Script.getMoney(p, PaymentType.BANK) + payday >= 0 ? "§a" : "§c") + (Script.getMoney(p, PaymentType.BANK) + payday) + "€");
             p.sendMessage("§9================");
-            Script.addEXP(p, Script.getRandom(1, 20));
+            Script.addEXP(p, Script.getRandom(1, 5));
             if (payday >= 0) Script.addMoney(p, PaymentType.BANK, payday);
             else Script.removeMoney(p, PaymentType.BANK, payday);
             setPayDayTime(p, 0);

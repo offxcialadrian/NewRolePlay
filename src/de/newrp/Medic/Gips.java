@@ -5,6 +5,7 @@ import de.newrp.main;
 import de.newrp.Administrator.BuildMode;
 import de.newrp.Administrator.SDuty;
 import de.newrp.Chat.Me;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -109,7 +110,7 @@ public class Gips implements Listener {
         int bar_length = 10;
         for (int i = 0; i < bar_length; i++) {
             if (i < bar_length * progress_percentage) {
-                sb.append("§a▉");
+                sb.append("§c▉");
             } else {
                 sb.append("§8▉");
             }
@@ -123,7 +124,7 @@ public class Gips implements Listener {
         if (!(e.getEntity() instanceof Player)) return;
         if (e.getCause() != EntityDamageEvent.DamageCause.FALL) return;
         Player p = (Player) e.getEntity();
-        if (e.getDamage() > 20 && Script.getRandom(1, 20) == 2) {
+        if (e.getDamage() > 15) {
             Krankheit.GEBROCHENES_BEIN.add(Script.getNRPID(p));
             Me.sendMessage(p, (Script.getGender(p) == Gender.MALE ? "sein" : "ihr") + " Bein hat geknackt.");
             p.setWalkSpeed(0.1F);
@@ -231,10 +232,37 @@ public class Gips implements Listener {
 
         for (Krankheit krankheit : Krankheit.getAllKrankheiten(Script.getNRPID(p))) {
             if(krankheit.isFoodIntolerance()) {
-                p.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 30, 1, false, false));
-                p.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 30, 1, false, false));
-                p.sendMessage("§7Dir gehts nicht so gut...");
+                p.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 10 * 30, 1, false, false));
+                p.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 10 * 30, 1, false, false));
+                p.addPotionEffect(new PotionEffect(PotionEffectType.HUNGER, 48 * 30, 1, false, false));
+                p.sendMessage(Health.PREFIX  + "§7Dir gehts nicht so gut...");
+                Me.sendMessage(p, "hat sich übergeben.");
+                break;
             }
         }
     }
+
+    @EventHandler
+    public void onDrink(PlayerItemConsumeEvent e) {
+        Player p = e.getPlayer();
+        if (e.getItem().getType().equals(Material.POTION)) {
+            p.getInventory().setItemInMainHand(Script.Pfandflasche());
+            Health.THIRST.add(Script.getNRPID(p), Script.getRandomFloat(2.5F, 3F));
+            p.removePotionEffect(PotionEffectType.WITHER);
+            boolean b = false;
+            if (e.getItem().hasItemMeta() && e.getItem().getItemMeta().getDisplayName() != null) {
+                for (Drink d : Drink.values()) {
+                    if (ChatColor.stripColor(e.getItem().getItemMeta().getDisplayName()).equalsIgnoreCase(d.getName())) {
+                        b = true;
+                        break;
+                    }
+                }
+            }
+            if (!b) {
+                Krankheit.CHOLERA.add(Script.getNRPID(p));
+                p.sendMessage(Messages.INFO + "Du hast zuviel verunreinigtes Wasser getrunken.");
+            }
+        }
+    }
+
 }

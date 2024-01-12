@@ -40,7 +40,8 @@ public class Equip implements CommandExecutor, Listener {
         ZEITUNG("Zeitung", Script.setName(new ItemStack(Material.WRITABLE_BOOK), "§7Zeitung"), 100, 0, Abteilung.Abteilungen.CHEFREDAKTION, Beruf.Berufe.NEWS),
         VERBAND("Verband", Script.setName(new ItemStack(Material.PAPER), "§7Verband"), 5, 0, null, Beruf.Berufe.RETTUNGSDIENST),
         GIPS("Gips", Script.setName(new ItemStack(Material.PAPER), "§7Gips"), 50, 0, null, Beruf.Berufe.RETTUNGSDIENST),
-        SCHWERE_SCHUTZWESTE("Schwere Schutzweste", Script.kevlar(2), 1000, 0, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE);
+        SCHWERE_SCHUTZWESTE("Schwere Schutzweste", Script.kevlar(2), 1000, 0, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE),
+        SPRITZE("Spritze", Script.setName(new ItemStack(Material.PAPER), "§7Spritze"), 10, 0, null, Beruf.Berufe.RETTUNGSDIENST);
 
         private String name;
         private ItemStack item;

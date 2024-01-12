@@ -2,6 +2,7 @@ package de.newrp.API;
 
 import de.newrp.Administrator.BuildMode;
 import de.newrp.Administrator.SDuty;
+import de.newrp.Chat.Me;
 import de.newrp.Player.AFK;
 import de.newrp.Police.Handschellen;
 import de.newrp.Waffen.Waffen;
@@ -13,6 +14,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.HashMap;
 
@@ -48,6 +51,7 @@ public class Baseballschlaeger implements Listener {
                     damager.sendMessage(Messages.ERROR + "§7Du bist gefesselt.");
                 } else if (Sperre.WAFFENSPERRE.isActive(Script.getNRPID(damager))) {
                     damager.sendMessage(Messages.ERROR + "Du hast eine Waffensperre.");
+                    damager.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
                 } else {
                     ItemStack is = damager.getInventory().getItemInMainHand();
                     int ammo = Waffen.getAmmo(is);
@@ -57,6 +61,14 @@ public class Baseballschlaeger implements Listener {
                         victim.damage(3D);
                         if (Script.getRandom(1, 150) == 2) {
                             Health.setBleeding(victim);
+                        }
+                        if(Script.getRandom(1, 100) <= 15) {
+                            if(!Krankheit.GEBROCHENER_ARM.isInfected(Script.getNRPID(victim))) {
+                                Me.sendMessage(victim, (Script.getGender(victim) == Gender.MALE ? "sein" : "ihr") + " Arm hat geknackt.");
+                                Krankheit.GEBROCHENER_ARM.add(Script.getNRPID(victim));
+                                victim.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 160, 1, false, false));
+                                victim.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 80, 1, false, false));
+                            }
                         }
                         damager.getInventory().setItemInMainHand(Waffen.setAmmo(is, ammo - 1, 800));
                     } else {

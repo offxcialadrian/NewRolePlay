@@ -17,6 +17,7 @@ import de.newrp.Fraktion.Tazer;
 import de.newrp.Government.*;
 import de.newrp.House.*;
 import de.newrp.Medic.*;
+import de.newrp.News.BreakingNews;
 import de.newrp.News.NewsCommand;
 import de.newrp.News.Zeitung;
 import de.newrp.Player.*;
@@ -282,6 +283,9 @@ public class main extends JavaPlugin {
         getCommand("pickup").setExecutor(new PickupCommand());
         getCommand("registerplayer").setExecutor(new RegisterPlayer());
         getCommand("getshulker").setExecutor(new GetShulker());
+        getCommand("sms").setExecutor(new SMSCommand());
+        getCommand("breakingnews").setExecutor(new BreakingNews());
+        getCommand("akku").setExecutor(new AkkuCommand());
 
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new SDuty(), this);
@@ -352,6 +356,7 @@ public class main extends JavaPlugin {
         pm.registerEvents(new GetShulker(), this);
         pm.registerEvents(new CallCommand(), this);
         pm.registerEvents(new Mobile(), this);
+        pm.registerEvents(new Krankheitstest(), this);
 
 
         new AsyncHealth().runTaskTimerAsynchronously(this, 120 * 20L, 120 * 20L);

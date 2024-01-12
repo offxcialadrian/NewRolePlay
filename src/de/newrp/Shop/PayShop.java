@@ -10,6 +10,7 @@ import de.newrp.House.House;
 import de.newrp.House.HouseAddon;
 import de.newrp.Medic.Medikamente;
 import de.newrp.Medic.Rezept;
+import de.newrp.Player.Mobile;
 import de.newrp.Waffen.Waffen;
 import de.newrp.Waffen.Weapon;
 import org.bukkit.Bukkit;
@@ -119,7 +120,17 @@ public class PayShop implements Listener {
                 break;
         }
 
+        if(Mobile.isPhone(i) && Mobile.hasPhone(p)) {
+            p.sendMessage(Messages.ERROR + "Du hast bereits ein Handy.");
+            return;
+        }
 
+        if(Mobile.isPhone(i) && !Mobile.hasCloud(p)) {
+            p.sendMessage(Messages.ERROR + "Du hast deine Daten nicht in der Cloud gespeichert.");
+            Script.executeAsyncUpdate("DELETE FROM handy_settings WHERE nrp_id = " + Script.getNRPID(p));
+            Script.executeAsyncUpdate("DELETE FROM call_history WHERE nrp_id = " + Script.getNRPID(p));
+            Script.executeAsyncUpdate("DELETE FROM messages WHERE nrp_id = " + Script.getNRPID(p) + " OR sender = " + Script.getNRPID(p));
+        }
         if(si.addToInventory()) p.getInventory().addItem(i);
 
         if(type == PaymentType.BANK) {
@@ -132,11 +143,18 @@ public class PayShop implements Listener {
         double mwst = Steuern.Steuer.MEHRWERTSTEUER.getPercentage();
         Stadtkasse.addStadtkasse((int) Script.getPercent(mwst, price));
         int add = price - (int) Script.getPercent(mwst, price) + (type == PaymentType.BANK ? - (int) Script.getPercent(2, price):0);
-        s.addKasse(add);
-        s.removeKasse(si.getBuyPrice());
-        Log.NORMAL.write(p, "hat " + si.getName() + " für " + price + "€ gekauft.");
-        if(Script.getOfflinePlayer(s.getOwner()).isOnline())
-            Script.sendActionBar(Script.getPlayer(s.getOwner()), Shop.PREFIX + "Dein Shop §6" + s.getPublicName() + " §7hat §6" + (add-si.getBuyPrice()) + "€ §7Gewinn gemacht aus dem Verkauf von §6" + si.getName() + " §7(§6" + price + "€§7)");
+        if(s.getOwner() > 0) {
+            s.addKasse(add);
+            s.removeKasse(si.getBuyPrice());
+            Log.NORMAL.write(p, "hat " + si.getName() + " für " + price + "€ gekauft.");
+            if (Script.getOfflinePlayer(s.getOwner()).isOnline())
+                Script.sendActionBar(Script.getPlayer(s.getOwner()), Shop.PREFIX + "Dein Shop §6" + s.getPublicName() + " §7hat §6" + (add - si.getBuyPrice()) + "€ §7Gewinn gemacht aus dem Verkauf von §6" + si.getName() + " §7(§6" + price + "€§7)");
+        } else {
+            Stadtkasse.addStadtkasse(add);
+            Stadtkasse.removeStadtkasse(si.getBuyPrice());
+            Log.NORMAL.write(p, "hat " + si.getName() + " für " + price + "€ gekauft.");
+        }
+
 
 
 

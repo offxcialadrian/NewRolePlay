@@ -7,11 +7,14 @@ import de.newrp.API.Script;
 import de.newrp.Berufe.Abteilung;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Shop.Shop;
+import de.newrp.Shop.ShopItem;
 import de.newrp.Shop.Shops;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import java.util.Arrays;
 
 public class TakeShop implements CommandExecutor {
 
@@ -64,6 +67,12 @@ public class TakeShop implements CommandExecutor {
         Log.WARNING.write(p, "hat den Shop " + shop.getPublicName() + " von " + Script.getOfflinePlayer(shop.getOwner()).getName() + " für " + (shop.getPrice()/2) + "€ abgekauft (TAKESHOP).");
         shop.setOwner(0);
         Script.addMoney(shop.getOwner(), PaymentType.BANK, shop.getPrice()/2);
+        Script.executeAsyncUpdate("DELETE FROM shopprice WHERE shopID=" + shop.getID());
+        for(ShopItem si : ShopItem.values()) {
+            if(Arrays.asList(si.getShopTypes()).contains(shop.getType())) {
+                Script.executeAsyncUpdate("INSERT INTO shopprice (amount, price, itemID, shopID) VALUES (" + si.getSize() + ", " + si.getBuyPrice() + ", " + si.getID() + ", " + shop.getID() + ")");
+            }
+        }
 
 
         return false;

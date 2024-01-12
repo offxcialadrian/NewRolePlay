@@ -1,9 +1,13 @@
 package de.newrp.Player;
 
 import de.newrp.API.*;
+import de.newrp.Berufe.Beruf;
 import de.newrp.Chat.Me;
+import de.newrp.Government.Stadtkasse;
+import de.newrp.News.BreakingNews;
 import de.newrp.main;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -19,6 +23,7 @@ import org.bukkit.inventory.PlayerInventory;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -31,13 +36,14 @@ public class Mobile implements Listener {
     private static final Map<String, Integer> LEVEL = new HashMap<>();
 
     public static String PREFIX = "§8[§6Handy§8] §6" + Messages.ARROW + " §7";
+    public static ArrayList<String> checkedBreakingNews = new ArrayList<>();
 
     public enum Phones {
 
-        APPLE(1, "iPhone 15", 100, new ItemBuilder(Material.IRON_INGOT).setName("iPhone 15").build(), 20),
-        SAMSUNG(2, "Galaxy S21", 100, new ItemBuilder(Material.IRON_INGOT).setName("Galaxy S21").build(), 10),
-        HUAWEI(3, "P60", 100, new ItemBuilder(Material.IRON_INGOT).setName("P60").build(), 8),
-        GOOGLE(4, "Pixel 10", 100, new ItemBuilder(Material.IRON_INGOT).setName("Pixel 10").build(), 5);
+        APPLE(1, "iPhone 15", 1800, new ItemBuilder(Material.IRON_INGOT).setName("iPhone 15").build(), 20),
+        SAMSUNG(2, "Galaxy S21", 1600, new ItemBuilder(Material.IRON_INGOT).setName("Galaxy S21").build(), 10),
+        HUAWEI(3, "P60", 1400, new ItemBuilder(Material.IRON_INGOT).setName("P60").build(), 8),
+        GOOGLE(4, "Pixel 10", 1200, new ItemBuilder(Material.IRON_INGOT).setName("Pixel 10").build(), 5);
 
         int id;
         String name;
@@ -108,7 +114,7 @@ public class Mobile implements Listener {
                 if(rs.next()) {
                     return rs.getInt("akku");
                 } else {
-                    Script.executeAsyncUpdate("INSERT INTO phone (nrp_id, phone_id, akku) VALUES (" + Script.getNRPID(p) + ", " + getID() + ", " + getMaxAkku() + ")");
+                    Script.executeAsyncUpdate("INSERT INTO phone (nrp_id, akku) VALUES (" + Script.getNRPID(p) + ", " + getMaxAkku() + ")");
                     return 100;
                 }
             } catch (SQLException e) {
@@ -118,17 +124,17 @@ public class Mobile implements Listener {
         }
 
         public void setAkku(Player p, int akku) {
-            Script.executeAsyncUpdate("UPDATE phone SET akku = " + akku + " WHERE nrp_id = " + Script.getNRPID(p) + " AND phone_id = " + getID());
+            Script.executeAsyncUpdate("UPDATE phone SET akku = " + akku + " WHERE nrp_id = " + Script.getNRPID(p));
         }
 
         public void addAkku(Player p, int akku) {
             akku = getAkku(p) + akku;
-            Script.executeAsyncUpdate("UPDATE phone SET akku = " + akku + " WHERE nrp_id = " + Script.getNRPID(p) + " AND phone_id = " + getID());
+            Script.executeAsyncUpdate("UPDATE phone SET akku = " + akku + " WHERE nrp_id = " + Script.getNRPID(p));
         }
 
         public void removeAkku(Player p, int akku) {
             akku = getAkku(p) - akku;
-            Script.executeAsyncUpdate("UPDATE phone SET akku = " + akku + " WHERE nrp_id = " + Script.getNRPID(p) + " AND phone_id = " + getID());
+            Script.executeAsyncUpdate("UPDATE phone SET akku = " + akku + " WHERE nrp_id = " + Script.getNRPID(p));
         }
 
         public boolean hasCloud(Player p) {
@@ -149,6 +155,15 @@ public class Mobile implements Listener {
 
         public void setCloud(Player p, boolean cloud) {
             Script.executeAsyncUpdate("UPDATE handy_settings SET cloud = " + cloud + " WHERE nrp_id = " + Script.getNRPID(p));
+        }
+
+        public void setOff(Player p) {
+            //check there phone is in players inventory
+            if(!Mobile.hasPhone(p)) return;
+            //remove phone from inventory
+            Mobile.removePhone(p);
+            //set phone to off
+            p.getInventory().addItem(new ItemBuilder(Material.IRON_INGOT).setName("§c" + getName()).build());
         }
 
         public boolean getLautlos(Player p) {
@@ -197,7 +212,7 @@ public class Mobile implements Listener {
         for(ItemStack is : p.getInventory().getContents()) {
             if(is == null) continue;
             for(Phones phones : Phones.values()) {
-                if(Objects.requireNonNull(is.getItemMeta()).getDisplayName().replace("§7", "").replace("§c","").startsWith(phones.getName())) {
+                if(Objects.requireNonNull(ChatColor.stripColor(is.getItemMeta().getDisplayName())).startsWith(phones.getName())) {
                     return phones;
                 }
             }
@@ -206,9 +221,9 @@ public class Mobile implements Listener {
     }
 
     public static boolean isPhone(ItemStack is) {
-        if(is == null) return false;
+        if(is == null || is.getType() == Material.AIR) return false;
         for(Phones phones : Phones.values()) {
-            if(Objects.requireNonNull(is.getItemMeta()).getDisplayName().replace("§7", "").replace("§c","").startsWith(phones.getName())) {
+            if(Objects.requireNonNull(ChatColor.stripColor(is.getItemMeta().getDisplayName())).startsWith(phones.getName())) {
                 return true;
             }
         }
@@ -252,19 +267,36 @@ public class Mobile implements Listener {
     }
 
     public static void sendCallHistory(Player p) {
-        try(PreparedStatement stmt = main.getConnection().prepareStatement("SELECT * FROM call_history WHERE nrp_id = ?")) {
+        try(PreparedStatement stmt = main.getConnection().prepareStatement("SELECT * FROM call_history WHERE nrp_id = ? LIMIT 10")) {
             stmt.setInt(1, Script.getNRPID(p));
             ResultSet rs = stmt.executeQuery();
-            p.sendMessage("§8» §7Anrufverlauf:");
+            p.sendMessage(PREFIX + "§8» §7Anrufverlauf:");
             while (rs.next()) {
-                p.sendMessage("§8» §7" + rs.getString("participants") + " §8× §7" + Script.dateFormat.format(rs.getLong("time")) + " Uhr");
+                p.sendMessage(PREFIX + "§8» §7" + rs.getString("participants") + " §8× §7" + Script.dateFormat.format(rs.getLong("time")) + " Uhr");
             }
             if(!rs.next()) {
-                p.sendMessage("§8» §7Du hast noch keine Anrufe getätigt.");
+                p.sendMessage(PREFIX + "§8» §7Du hast noch keine Anrufe getätigt.");
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        };
+        }
+    }
+
+    public static void sendMessageHistory(Player p) {
+        try(PreparedStatement stmt = main.getConnection().prepareStatement("SELECT * FROM messages WHERE nrp_id = ? OR sender= ? AND seen = false")) {
+            stmt.setInt(1, Script.getNRPID(p));
+            stmt.setInt(2, Script.getNRPID(p));
+            ResultSet rs = stmt.executeQuery();
+            p.sendMessage(PREFIX + "§8» §7Nachrichten:");
+            while (rs.next()) {
+                p.sendMessage(PREFIX + "§8» §6" + Script.getOfflinePlayer(rs.getInt("sender")).getName() + " §7» " + "§6" + Script.getOfflinePlayer(rs.getInt("nrp_id")).getName() + "§8: §6" + rs.getString("message"));
+            }
+            if(!rs.next()) {
+                p.sendMessage(PREFIX + "§8» §7Du hast noch keine neuen Nachrichten.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @EventHandler
@@ -273,6 +305,10 @@ public class Mobile implements Listener {
         if(e.getAction() != Action.RIGHT_CLICK_AIR && e.getAction() != Action.RIGHT_CLICK_BLOCK) return;
         if(!isPhone(p.getInventory().getItemInMainHand())) return;
         if(!mobileIsOn(p)) {
+            if(Elevator.progress.containsKey(p.getName())) {
+                p.sendMessage(PREFIX + "Du kannst dein Handy nicht während einer Fahrstuhl-Fahrt benutzen.");
+                return;
+            }
             long time = System.currentTimeMillis();
 
             Long lastUsage = TOOGLE_COOLDOWN.get(p.getName());
@@ -295,14 +331,11 @@ public class Mobile implements Listener {
             LEVEL.replace(p.getName(), level + 1);
             progressBar(11,  p);
 
+
             if (level >= 10) {
                 PlayerInventory inv = p.getInventory();
                 ItemStack is = inv.getItemInMainHand();
-                if (is.getAmount() > 1) {
-                    is.setAmount(is.getAmount() - 1);
-                } else {
-                    inv.setItemInMainHand(new ItemStack(Material.AIR));
-                }
+                p.getInventory().setItemInHand(new ItemBuilder(Material.IRON_INGOT).setName("§7" + getPhone(p).getName()).build());
 
                 if (Health.BLEEDING.containsKey(p.getName())) {
                     float amount = Health.BLEEDING.get(p.getName());
@@ -312,7 +345,6 @@ public class Mobile implements Listener {
                 }
 
                 Me.sendMessage(p, "schaltet " + (Script.getGender(p)==Gender.MALE?"sein":"ihr") + " Handy ein.");
-                p.getInventory().setItemInHand(new ItemBuilder(Material.IRON_INGOT).setName("§7" + getPhone(p).getName()).build());
 
                 TOOGLE_COOLDOWN.put(p.getName(), time);
                 LAST_CLICK.remove(p.getName());
@@ -328,15 +360,17 @@ public class Mobile implements Listener {
     public static void openGUI(Player p) {
         Mobile.Phones phone = Mobile.getPhone(p);
         assert phone != null;
-        Inventory inv = Bukkit.createInventory(null, 9, "§8» §aHandy");
-        inv.setItem(0, new ItemBuilder(Material.CHEST).setName("§8» §cAusschalten").build());
-        inv.setItem(1, new ItemBuilder(Material.CHEST).setName("§8» §cNachrichten").build());
+        Inventory inv = Bukkit.createInventory(null, (Premium.hasPremium(p)?18:9), "§8» §aHandy");
+        inv.setItem(0, new ItemBuilder(Material.RED_STAINED_GLASS_PANE).setName("§8» §cAusschalten").build());
+        inv.setItem(1, new ItemBuilder(Material.CHEST).setName("§8» §cBreaking News").build());
         inv.setItem(2, new ItemBuilder(Material.CHEST).setName("§8» §cTelefon").build());
-        inv.setItem(3, new ItemBuilder(Material.CHEST).setName("§8» §cEinstellungen").build());
-        inv.setItem(4, new ItemBuilder(Material.CHEST).setName("§8» §cNotruf").build());
-        inv.setItem(5, new ItemBuilder(Material.CHEST).setName("§8» §cNavigation").build());
-        inv.setItem(6, new ItemBuilder(Material.CHEST).setName("§8» §cAkku").setLore("§8 × §6" + Script.getPercentage(phone.getAkku(p), phone.getMaxAkku()) + "%").build());
-        inv.setItem(7, new ItemBuilder(Material.CHEST).setName("§8» §cSMS").build());
+        inv.setItem(3, new ItemBuilder(Material.CHEST).setName("§8» §cMessenger").build());
+        inv.setItem(4, new ItemBuilder(Material.CHEST).setName("§8» §cEinstellungen").build());
+        inv.setItem(5, new ItemBuilder(Material.CHEST).setName("§8» §cNotruf").build());
+        inv.setItem(6, new ItemBuilder(Material.CHEST).setName("§8» §cNavigation").build());
+        inv.setItem(7, new ItemBuilder(Material.CHEST).setName("§8» §cAkku").setLore("§8 × §6" + Script.getPercentage(phone.getAkku(p), phone.getMaxAkku()) + "%").build());
+        inv.setItem(8, new ItemBuilder(Material.CHEST).setName("§8» §cVerbindung").setLore("§8 × §6" + (hasConnection(p)?"§aJa":"§cNein")).build());
+        if(Premium.hasPremium(p)) inv.setItem(9, new ItemBuilder(Material.CHEST).setName("§8» §cOnline-Banking").build());
         p.openInventory(inv);
     }
 
@@ -363,9 +397,23 @@ public class Mobile implements Listener {
             p.closeInventory();
             return;
         }
-        if(e.getCurrentItem().getItemMeta().getDisplayName().equals("§8» §cNachrichten")) {
+        if(e.getCurrentItem().getItemMeta().getDisplayName().equals("§8» §cBreaking News")) {
             p.closeInventory();
-            p.sendMessage(Messages.ERROR + "Dieser Bereich ist noch nicht verfügbar.");
+            if(!hasConnection(p)) {
+                p.sendMessage(PREFIX + "Du hast keinen Empfang.");
+                return;
+            }
+            if(BreakingNews.BREAKING_NEWS == null) {
+                p.sendMessage(PREFIX + "Es gibt keine Breaking News.");
+                return;
+            }
+
+            p.sendMessage(BreakingNews.BREAKING_NEWS);
+            if(!checkedBreakingNews.contains(p.getName())) {
+                Stadtkasse.removeStadtkasse(10);
+                Beruf.Berufe.NEWS.addKasse(10);
+                checkedBreakingNews.add(p.getName());
+            }
             return;
         }
         if(e.getCurrentItem().getItemMeta().getDisplayName().equals("§8» §cTelefon")) {
@@ -394,16 +442,28 @@ public class Mobile implements Listener {
             p.sendMessage(PREFIX + "Dein Akku ist zu " + Script.getPercentage(getPhone(p).getAkku(p), getPhone(p).getMaxAkku()) + "% geladen.");
             return;
         }
-        if(e.getCurrentItem().getItemMeta().getDisplayName().equals("§8» §cSMS")) {
+        if(e.getCurrentItem().getItemMeta().getDisplayName().equals("§8» §cMessenger")) {
             p.closeInventory();
-            p.sendMessage(Messages.ERROR + "Dieser Bereich ist noch nicht verfügbar.");
+            sendMessageHistory(p);
             return;
         }
         if(e.getCurrentItem().getItemMeta().getDisplayName().equals("§8» §cWerkseinstellungen")) {
             p.closeInventory();
             Script.executeAsyncUpdate("DELETE FROM handy_settings WHERE nrp_id = " + Script.getNRPID(p));
+            Script.executeAsyncUpdate("DELETE FROM call_history WHERE nrp_id = " + Script.getNRPID(p));
+            Script.executeAsyncUpdate("DELETE FROM messages WHERE nrp_id = " + Script.getNRPID(p) + " OR sender = " + Script.getNRPID(p));
             p.sendMessage(PREFIX + "Du hast die Werkseinstellungen wiederhergestellt.");
             return;
+        }
+        if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§8» §Verbindung")) {
+            p.closeInventory();
+            if(hasConnection(p)) {
+                p.sendMessage(PREFIX + "Du hast Empfang.");
+                return;
+            } else {
+                p.sendMessage(PREFIX + "Du hast keinen Empfang.");
+                return;
+            }
         }
         if(e.getCurrentItem().getItemMeta().getDisplayName().equals("§8» §cCloud")) {
             p.closeInventory();
@@ -429,6 +489,24 @@ public class Mobile implements Listener {
                 return;
             }
         }
+        if(e.getCurrentItem().getItemMeta().getDisplayName().equals("§8» §cOnline-Banking")) {
+            p.closeInventory();
+            if(!Premium.hasPremium(p)) {
+                p.sendMessage(PREFIX + "Du benötigst Premium um Online-Banking zu nutzen.");
+                return;
+            }
+            if(!hasConnection(p)) {
+                p.sendMessage(PREFIX + "Du hast keinen Empfang.");
+                return;
+            }
+            if(!Banken.hasBank(p)) {
+                p.sendMessage(PREFIX + "Du hast keine Bank.");
+                return;
+            }
+            p.sendMessage(PREFIX + "§8=== §6" + Banken.getBankByPlayer(p).getName() + " §8===");
+            p.sendMessage(PREFIX + "Kontostand: " + Script.getMoney(p, PaymentType.BANK) + "€");
+            p.sendMessage(PREFIX + "§8=========");
+        }
 
     }
 
@@ -444,7 +522,7 @@ public class Mobile implements Listener {
                 sb.append("§8▉");
             }
         }
-        Script.sendActionBar(p, "§cVerband anlegen.. §8» §a" + sb.toString());
+        Script.sendActionBar(p, "§cHandy anschalten.. §8» §a" + sb.toString());
     }
 
 

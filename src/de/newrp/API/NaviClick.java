@@ -22,7 +22,7 @@ public class NaviClick implements Listener {
                 switch (c.getItemMeta().getDisplayName()) {
                     case "§6Allgemein": {
                         Inventory inv = p.getServer().createInventory(null, 3 * 9, "§e§lNavi");
-                        inv.setItem(0, Script.setName(Material.FISHING_ROD, "§6" + Navi.ANGELSCHEIN.getName()));
+                        inv.setItem(0, Script.setName(Material.FISHING_ROD, "§6" + Navi.STADTHALLE.getName()));
                         inv.setItem(22, Script.setName(Material.REDSTONE, "§cZurück"));
                         p.openInventory(inv);
                         break;

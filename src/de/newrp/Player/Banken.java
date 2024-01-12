@@ -26,9 +26,9 @@ public class Banken implements CommandExecutor, Listener {
     private static final Location LOCATION = new Location(Script.WORLD, 949, 77, 934);
 
     public enum Bank {
-        BANK1(1, "Spaßkasse", 1000, 1000, 1000, 25, 0.0006),
-        BANK2(2, "Bank2", 1000, 1000, 1000, 50, 0.0005),
-        BANK3(3, "Bank3", 1000, 1000, 1000, 30, 0.0003);
+        BANK1(1, "Spaßkasse", 1000, 1000, 1000, 25, 0.00006),
+        BANK2(2, "Bank2", 1000, 1000, 1000, 50, 0.00005),
+        BANK3(3, "Bank3", 1000, 1000, 1000, 30, 0.00003);
 
         private final int id;
         private final String name;

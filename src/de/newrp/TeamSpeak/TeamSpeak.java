@@ -119,6 +119,7 @@ public class TeamSpeak {
             String name = Script.getPlayer(id).getName();
             boolean admin = Script.isNRPTeam(Script.getPlayer(id));
             setDescription(c.getId(), (admin ? "NRP × " + name : name));
+            if(Script.isNRPTeam(Script.getPlayer(id))) setName(c.getId(), "NRP × " + Script.getPlayer(id).getName());
             addToServerGroup(TeamspeakServerGroup.VERIFIED, dbID);
             Beruf.Berufe f = Beruf.getBeruf(Script.getOfflinePlayer(id));
             if(f != null) {
@@ -187,6 +188,7 @@ public class TeamSpeak {
             String name = Script.getPlayer(id).getName();
             boolean admin = Script.isNRPTeam(Script.getPlayer(id));
             setDescription(c.getId(), (admin ? "NRP × " + name : name));
+            if(Script.isNRPTeam(Script.getPlayer(id))) setName(c.getId(), "NRP × " + Script.getPlayer(id).getName());
             addToServerGroup(TeamspeakServerGroup.VERIFIED, dbID);
             Beruf.Berufe f = Beruf.getBeruf(Script.getOfflinePlayer(id));
             if (f != null) {
@@ -318,6 +320,12 @@ public class TeamSpeak {
     public static void setDescription(int clientID, String description) {
         Map<ClientProperty, String> properties = new HashMap<>();
         properties.put(ClientProperty.CLIENT_DESCRIPTION, description);
+        tsApiAsync.editClient(clientID, properties);
+    }
+
+    public static void setName(int clientID, String name) {
+        Map<ClientProperty, String> properties = new HashMap<>();
+        properties.put(ClientProperty.CLIENT_NICKNAME, name);
         tsApiAsync.editClient(clientID, properties);
     }
 

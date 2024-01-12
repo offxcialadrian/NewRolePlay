@@ -3,8 +3,8 @@ package de.newrp.API;
 import org.bukkit.Location;
 
 public enum Navi {
-    ALTSTADT("Altstadt", new Location(Script.WORLD, 255, 69, 592)),
-    ANGELSCHEIN("Angelschein", new Location(Script.WORLD, -343, 63, 60));
+    STADTHALLE("Stadthalle", new Location(Script.WORLD, 555, 70, 991, 88.77539f, 2.5500057f));
+
 
     private final String name;
     private final Location loc;
@@ -17,7 +17,7 @@ public enum Navi {
     public static String PREFIX = "§8[§6Navi§8]§6 " + Messages.ARROW + " ";
 
     public static Navi getNextNaviLocation(Location loc) {
-        Navi n = Navi.ALTSTADT;
+        Navi n = Navi.STADTHALLE;
         double distance = 1000000D;
         if (loc != null) {
             for (Navi navi : values()) {
