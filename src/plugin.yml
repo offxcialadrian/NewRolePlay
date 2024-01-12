@@ -438,3 +438,5 @@ commands:
   akku:
     description: view your akku
     aliases: [ aufladen ]
+  removestadtkasse:
+    description: remove from stadtkasse

@@ -62,7 +62,7 @@ public class TeamspeakCommand implements CommandExecutor {
                 Bukkit.getScheduler().runTaskAsynchronously(main.getInstance(), () -> {
                     TeamSpeak.sync(Script.getNRPID(target), getClient(Script.getNRPID(target)));
                     target.sendMessage(PREFIX + Messages.RANK_PREFIX(p) + " hat deinen Teamspeak Account neu synchronisiert.");
-                    Script.sendTeamMessage(p, ChatColor.YELLOW, "hat den TeamSpeak Account von " + Script.getName(target) + " neu synchronisiert.", false);
+                    Script.sendTeamMessage(p, ChatColor.YELLOW, "hat den TeamSpeak Account von " + Script.getName(target) + " neu synchronisiert.", true);
                     p.sendMessage(TeamSpeak.PREFIX + "Du hast den Teamspeak Account von " + target.getName() + " neu synchronisiert.");
                 });
                 return true;

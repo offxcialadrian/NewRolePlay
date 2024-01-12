@@ -9,11 +9,17 @@ import de.newrp.Berufe.Beruf;
 import de.newrp.Government.Stadtkasse;
 import de.newrp.Player.AFK;
 import de.newrp.Shop.Shop;
+import de.newrp.Shop.ShopItem;
 import de.newrp.Shop.Shops;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class AsyncHour extends BukkitRunnable {
 
@@ -21,7 +27,16 @@ public class AsyncHour extends BukkitRunnable {
     public void run() {
         for(Shops shop : Shops.values()) {
             if (shop.getOwner() == 0) return;
-            int totalcost = shop.getRunningCost() + shop.getRent();
+            int runningcost = 0;
+            HashMap<Integer, ItemStack> c = shop.getItems();
+            for (Map.Entry<Integer, ItemStack> n : c.entrySet()) {
+                ItemStack is = n.getValue();
+                if (is == null) {
+                    continue;
+                }
+                runningcost += 10;
+            }
+            int totalcost = runningcost + shop.getRent();
             if(shop.getKasse() >= totalcost) {
                 shop.removeKasse(shop.getRunningCost());
                 shop.removeKasse(shop.getRent());

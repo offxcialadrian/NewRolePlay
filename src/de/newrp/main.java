@@ -286,6 +286,7 @@ public class main extends JavaPlugin {
         getCommand("sms").setExecutor(new SMSCommand());
         getCommand("breakingnews").setExecutor(new BreakingNews());
         getCommand("akku").setExecutor(new AkkuCommand());
+        getCommand("removestadtkasse").setExecutor(new RemoveStadtkasse());
 
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new SDuty(), this);

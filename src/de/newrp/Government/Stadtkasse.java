@@ -17,7 +17,7 @@ import java.sql.Statement;
 
 public class Stadtkasse implements CommandExecutor {
 
-    private static final String PREFIX = "§8[§eStadtkasse§8] §e» ";
+    public static final String PREFIX = "§8[§eStadtkasse§8] §e» ";
 
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {

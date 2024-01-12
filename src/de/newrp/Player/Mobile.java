@@ -434,7 +434,7 @@ public class Mobile implements Listener {
         }
         if(e.getCurrentItem().getItemMeta().getDisplayName().equals("§8» §cNavigation")) {
             p.closeInventory();
-            p.sendMessage(PREFIX + "Du befindest dich in der Nähe von " + Navi.getNextNaviLocation(p.getLocation()).getName());
+            p.sendMessage(PREFIX + "Du befindest dich in der Nähe von " + Navi.getNextNaviLocation(p.getLocation()).getName() + ".");
             return;
         }
         if(e.getCurrentItem().getItemMeta().getDisplayName().equals("§8» §cAkku")) {

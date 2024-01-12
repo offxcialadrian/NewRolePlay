@@ -5,6 +5,7 @@ import de.newrp.API.PaymentType;
 import de.newrp.API.Script;
 import de.newrp.API.SlotLimit;
 import de.newrp.Administrator.Notications;
+import de.newrp.Berufe.Beruf;
 import de.newrp.Government.Stadtkasse;
 import de.newrp.Government.Steuern;
 import de.newrp.Player.Annehmen;
@@ -21,6 +22,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -119,6 +121,20 @@ public class Shop implements CommandExecutor, Listener {
 
         if(args.length == 3 && args[0].equalsIgnoreCase("sell")) {
             Player buyer = Script.getPlayer(args[1]);
+
+            if(args[1].equalsIgnoreCase("stadt")) {
+                p.sendMessage(PREFIX + "Du hast deinen Shop an die Stadt abgegeben und kein Geld erhalten.");
+                Beruf.Berufe.GOVERNMENT.sendMessage(PREFIX + "Der Shop " + shop.getPublicName() + " gehört nun der Stadt.");
+                shop.setOwner(0);
+                Script.executeAsyncUpdate("DELETE FROM shopprice WHERE shopID=" + shop.getID());
+                for(ShopItem si : ShopItem.values()) {
+                    if(Arrays.asList(si.getShopTypes()).contains(shop.getType())) {
+                        Script.executeAsyncUpdate("INSERT INTO shopprice (amount, price, itemID, shopID) VALUES (" + si.getSize() + ", " + (si.getBuyPrice()+(int) Script.getPercent(30, si.getBuyPrice())) + ", " + si.getID() + ", " + shop.getID() + ")");
+                    }
+                }
+                return true;
+            }
+
             if(buyer == null) {
                 p.sendMessage(Messages.PLAYER_NOT_FOUND);
                 return true;
@@ -406,7 +422,7 @@ public class Shop implements CommandExecutor, Listener {
                 Stadtkasse.addStadtkasse((int) Script.getPercent(Steuern.Steuer.MEHRWERTSTEUER.getPercentage(), si.getLicensePrice()));
                 p.sendMessage(PREFIX + "Du hast " + si.getName() + " §7in dein Shop-Sortiment aufgenommen.");
                 Notications.sendMessage(Notications.NotificationType.SHOP, Script.getName(p) + " hat " + si.getName() + " §ain sein Shop-Sortiment aufgenommen. [Shop: " + s.getPublicName() + "]");
-                Script.executeAsyncUpdate("INSERT INTO shopprice (amount, price, itemID, shopID) VALUES (" + si.getSize() + ", " + si.getBuyPrice() + ", " + si.getID() + ", " + s.getID() + ")");
+                Script.executeAsyncUpdate("INSERT INTO shopprice (amount, price, itemID, shopID) VALUES (" + si.getSize() + ", " + (si.getBuyPrice()+(int) Script.getPercent(30, si.getBuyPrice())) + ", " + si.getID() + ", " + s.getID() + ")");
                 p.closeInventory();
                 return;
             }

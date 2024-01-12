@@ -79,7 +79,12 @@ public class Notruf implements Listener {
 
 
                         boolean straftat = answers.get(p.getName() + Questions.FRAGE3.getID()).equals("Ja");
-
+                        if(!straftat && verletzte == -1) {
+                            p.sendMessage(PREFIX + "§cDu hast keine Angaben gemacht. Der Notruf wurde abgebrochen.");
+                            questions.remove(p);
+                            answers.remove(p.getName() + questionID);
+                            return;
+                        }
                         ArrayList<Beruf.Berufe> berufe = new ArrayList<>();
                         if (verletzte != 0 && straftat) {
                             Beruf.Berufe.POLICE.sendMessage(sb.toString());
@@ -94,7 +99,7 @@ public class Notruf implements Listener {
                             }
                             berufe.add(Beruf.Berufe.POLICE);
                             berufe.add(Beruf.Berufe.RETTUNGSDIENST);
-                        } else if (verletzte > 0 || verletzte == -1) {
+                        } else if (verletzte > 0) {
                             Beruf.Berufe.RETTUNGSDIENST.sendMessage(sb.toString());
                             Beruf.Berufe.RETTUNGSDIENST.sendMessage(getNearestPlayersString(Beruf.Berufe.RETTUNGSDIENST, p.getLocation()));
                             for (Player police : Beruf.Berufe.RETTUNGSDIENST.getMembers()) {

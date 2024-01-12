@@ -110,7 +110,7 @@ public class Krankheitstest implements Listener {
                         p.sendMessage(PREFIX + "§7" + k.getName() + ": " + (k.isInfected(Script.getNRPID(rightClicked)) ? "§aJa" : "§cNein"));
                     }
                 }
-            }.runTaskLater(main.getInstance(), 20L*60L*5L);
+            }.runTaskLater(main.getInstance(), 20L*60L*2L);
 
             SPRITZE_COOLDOWN.put(rightClicked.getName(), time);
             LAST_CLICK.remove(p.getName());
