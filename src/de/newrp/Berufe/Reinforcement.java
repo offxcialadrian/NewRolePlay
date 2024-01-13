@@ -124,7 +124,7 @@ public class Reinforcement implements CommandExecutor {
             new_reinforcement.put(p.getName(), p.getLocation());
             reinf_type.put(p.getName(), type);
             for (Player member : beruf.getMembers()) {
-                member.sendMessage("§c§l" + type.getName() + " §3" + Beruf.getAbteilung(p).getName() + " " + Script.getName(p) + " benötigt Unterstützung! §8➥ §7" + Navi.getNextNaviLocation(p.getLocation()) + " §7(" + member.getLocation().distance(p.getLocation()) + "m)");
+                member.sendMessage("§c§l" + type.getName() + " §3" + Beruf.getAbteilung(p).getName() + " " + Script.getName(p) + " benötigt Unterstützung! §8➥ §7" + Navi.getNextNaviLocation(p.getLocation()) + " §7(" + (int) member.getLocation().distance(p.getLocation()) + "m)");
                 OnMyWayLink(member, p);
             }
             return true;

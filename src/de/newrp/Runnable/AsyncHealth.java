@@ -24,6 +24,7 @@ public class AsyncHealth extends BukkitRunnable {
                 final float f = amount;
                 Bukkit.getScheduler().runTask(main.getInstance(), () -> p.damage(f < 1F ? .5D : 1D));
                 if (amount < 1F) {
+                    if(Script.getRandom(0, 1) == 0)
                     p.sendMessage(Health.PREFIX + "Du blutest leicht...");
                 } else {
                     p.sendMessage(Health.PREFIX + "Du blutest stark...");

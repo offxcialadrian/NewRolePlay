@@ -136,7 +136,7 @@ public class Gips implements Listener {
     @EventHandler (priority = EventPriority.HIGH)
     public void onJoin(PlayerJoinEvent e) {
         Player p = e.getPlayer();
-        if (Krankheit.GEBROCHENES_BEIN.isInfected(Script.getNRPID(p))) {
+        if (Krankheit.GEBROCHENES_BEIN.isInfected(Script.getNRPID(p)) && !p.hasPotionEffect(PotionEffectType.HEAL)) {
             p.setWalkSpeed(0.1F);
             p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 280, 1, false, false));
             p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20, 1, false, false));

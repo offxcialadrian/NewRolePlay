@@ -1,5 +1,6 @@
 package de.newrp.Runnable;
 
+import de.newrp.API.Aktie;
 import de.newrp.API.Krankheit;
 import de.newrp.API.Script;
 import de.newrp.API.Weather;
@@ -52,6 +53,8 @@ public class AsyncHour extends BukkitRunnable {
                 }
             }
         }
+
+        Aktie.update();
 
         for(Player all : Bukkit.getOnlinePlayers()) {
             if(!Script.WORLD.hasStorm()) return;

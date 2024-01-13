@@ -1,0 +1,315 @@
+package de.newrp.Berufe;
+
+import de.newrp.API.Messages;
+import de.newrp.API.Script;
+import de.newrp.main;
+import org.bukkit.Bukkit;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
+import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
+import org.bukkit.util.StringUtil;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+
+public class Houseban implements CommandExecutor, Listener, TabCompleter {
+
+    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+    private static String PREFIX = "§8[§6Hausverbot§8] §7»§7 ";
+
+    enum Reasons {
+        LEICHENBEWACHUNG(1, "Leichenbewachung", new String[]{"leichenbewachung", "leichen", "leiche", "lb"}, 14),
+        GEWALTANWENDUNG(2, "Gewaltanwendung", new String[]{"gewaltanwendung", "gewalt", "ga"}, 14);
+
+        private final int id;
+        private final String name;
+        private final String[] alt_names;
+        private final int duration;
+
+        Reasons(int id, String name, String[] alt_names, int duration) {
+            this.id = id;
+            this.name = name;
+            this.alt_names = alt_names;
+            this.duration = duration;
+        }
+
+        public int getID() {
+            return id;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public String[] getAltNames() {
+            return alt_names;
+        }
+
+        public int getDuration() {
+            return duration;
+        }
+
+        public static Reasons getReason(String s) {
+            for (Reasons r : Reasons.values()) {
+                if (r.getName().equalsIgnoreCase(s)) return r;
+                for (String s1 : r.getAltNames()) {
+                    if (s1.equalsIgnoreCase(s)) return r;
+                }
+            }
+            return null;
+        }
+
+        public static Reasons getReasonByID(int id) {
+            for (Reasons r : Reasons.values()) {
+                if (r.getID() == id) return r;
+            }
+            return null;
+        }
+    }
+
+    @Override
+    public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
+        Player p = (Player) cs;
+
+        if(!Beruf.hasBeruf(p)) {
+            p.sendMessage(Messages.ERROR + "Du hast keinen Beruf.");
+            return true;
+        }
+
+        Beruf.Berufe b = Beruf.getBeruf(p);
+
+        if (args.length == 0) {
+            p.sendMessage("§8===§6 Hausverbote §8===");
+            StringBuilder sb = new StringBuilder();
+            for (Player all : Bukkit.getOnlinePlayers()) {
+                if (!isHousebanned(all, b)) continue;
+                sb.append("\n  §7»§6 ").append(all.getName()).append(" ➲ ").append(getReason(all, b)).append(" ➲ ").append(DATE_FORMAT.format(new Date(getTime(all, b))));
+            }
+            p.sendMessage(sb.toString());
+            return true;
+        }
+
+        if (args.length == 1 && args[0].equalsIgnoreCase("all")) {
+            StringBuilder sb = new StringBuilder();
+            p.sendMessage("§8===§6 Hausverbote §8===");
+            for (int unicacid : getHousebannedNRPIDs(b)) {
+                Player banned = Script.getPlayer(unicacid);
+                if (banned == null) {
+                    sb.append("\n  §7»§c ").append(banned.getName()).append(" ➲ ").append(getReason(banned, b)).append(" ➲ ").append(DATE_FORMAT.format(new Date(getTime(banned, b))));
+                } else {
+                    sb.append("\n  §7»§a ").append(banned.getName()).append(" ➲ ").append(getReason(banned, b)).append(" ➲ ").append(DATE_FORMAT.format(new Date(getTime(banned, b))));
+                }
+                p.sendMessage(sb.toString());
+            }
+            return true;
+        }
+
+        if (args.length == 3 && args[0].equalsIgnoreCase("add")) {
+            Player tg = Bukkit.getPlayer(args[1]);
+            Reasons reason = Reasons.getReason(args[2]);
+            if (tg == null) {
+                p.sendMessage(Messages.ERROR + "Spieler nicht gefunden.");
+                return true;
+            }
+
+            if (reason == null) {
+                p.sendMessage(Messages.ERROR + "Grund nicht gefunden.");
+                return true;
+            }
+
+            if (isHousebanned(tg, b)) {
+                p.sendMessage(Messages.ERROR + "Der Spieler hat bereits Hausverbot.");
+                return true;
+            }
+
+            int id = Script.getNRPID(tg);
+            long time = System.currentTimeMillis() + ((long) reason.getDuration() * 24 * 60 * 60 * 1000);
+            try (PreparedStatement statement = main.getConnection().prepareStatement(
+                    "INSERT INTO housebans(userID, reason, beruf, time) VALUES(?, ?, ?, ?)")) {
+                statement.setInt(1, id);
+                statement.setInt(2, reason.getID());
+                statement.setInt(3, b.getID());
+                statement.setLong(4, time);
+                statement.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+            b.sendMessage(PREFIX + Script.getName(p) + " hat " + Script.getName(tg) + " Hausverbot gegeben. §7»§6 " + reason.getName() + " §7»§6 " + DATE_FORMAT.format(new Date(time)));
+            tg.sendMessage(PREFIX + " Du hast Hausverbot bei " + b.getName() + " bekommen. §7»§6 " + reason.getName() + " §7»§6 " + DATE_FORMAT.format(new Date(time)));
+
+        } else if (args.length == 2 && args[0].equalsIgnoreCase("remove")) {
+            Player tg = Bukkit.getPlayer(args[1]);
+            if (tg == null) {
+                p.sendMessage(Messages.ERROR + "Spieler nicht gefunden.");
+                return true;
+            }
+
+            if (!isHousebanned(tg, b)) {
+                p.sendMessage(Messages.ERROR + "Der Spieler hat kein Hausverbot.");
+                return true;
+            }
+
+            int id = Script.getNRPID(tg);
+            try (PreparedStatement statement = main.getConnection().prepareStatement(
+                    "DELETE FROM housebans WHERE userID = ? AND beruf = ?")) {
+                statement.setInt(1, id);
+                statement.setInt(2, b.getID());
+                statement.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+            b.sendMessage(PREFIX + Script.getName(p) + " hat " + Script.getName(tg) + "s Hausverbot aufgehoben.");
+            tg.sendMessage(PREFIX + " Dein Hausverbot wurde aufgehoben.");
+        } else if (args.length == 3 && args[0].equalsIgnoreCase("edit")) {
+
+            Player tg = Bukkit.getPlayer(args[1]);
+            if (tg == null) {
+                p.sendMessage(Messages.ERROR + "Spieler nicht gefunden.");
+                return true;
+            }
+
+            if (!isHousebanned(tg, b)) {
+                p.sendMessage(Messages.ERROR + "Der Spieler hat kein Hausverbot.");
+                return true;
+            }
+
+            Reasons reason = Reasons.getReason(args[2]);
+            if (reason == null) {
+                p.sendMessage(Messages.ERROR + "Grund nicht gefunden.");
+                return true;
+            }
+
+            int id = Script.getNRPID(tg);
+            long time = System.currentTimeMillis() + ((long) reason.getDuration() * 24 * 60 * 60 * 1000);
+            try (PreparedStatement statement = main.getConnection().prepareStatement(
+                    "DELETE FROM housebans WHERE userID = ?")) {
+                statement.setInt(1, id);
+                statement.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+            try (PreparedStatement statement = main.getConnection().prepareStatement(
+                    "INSERT INTO housebans(userID, reason, time) VALUES(?, ?, ?)")) {
+                statement.setInt(1, id);
+                statement.setInt(2, reason.getID());
+                statement.setLong(3, time);
+                statement.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+            b.sendMessage(PREFIX + Script.getName(p) + " hat " + Script.getName(tg) + "s Hausverbot bearbeitet. §7»§6 " + reason.getName() + " §7»§6 " + DATE_FORMAT.format(new Date(time)));
+            tg.sendMessage(PREFIX + " Dein Hausverbot wurde bearbeitet. §7»§6 " + reason.getName() + " §7»§6 " + DATE_FORMAT.format(new Date(time)));
+        } else {
+            p.sendMessage(Messages.ERROR + "/houseban {add/remove/edit} {Spieler} {Grund}");
+            return true;
+
+        }
+
+        return false;
+    }
+
+
+    private static boolean isHousebanned(Player p, Beruf.Berufe b) {
+        int id = Script.getNRPID(p);
+        try (PreparedStatement statement = main.getConnection().prepareStatement(
+                "SELECT * FROM housebans WHERE userID = ? AND beruf = ?")) {
+            statement.setInt(1, id);
+            statement.setInt(2, b.getID());
+            try (ResultSet rs = statement.executeQuery()) {
+                if (rs.next()) {
+                    if (rs.getLong("time") > System.currentTimeMillis())
+                        return true;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    private static long getTime(Player p, Beruf.Berufe b) {
+        int id = Script.getNRPID(p);
+        try (PreparedStatement statement = main.getConnection().prepareStatement(
+                "SELECT time FROM housebans WHERE userID = ? AND beruf = ?")) {
+            statement.setInt(1, id);
+            statement.setInt(2, b.getID());
+            try (ResultSet rs = statement.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getLong("time");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+
+    private static List<Integer> getHousebannedNRPIDs(Beruf.Berufe b) {
+        List<Integer> list = new ArrayList<>();
+        try (PreparedStatement statement = main.getConnection().prepareStatement(
+                "SELECT userID FROM housebans WHERE beruf = ? AND time > ?")) {
+            statement.setInt(1, b.getID());
+            statement.setLong(2, System.currentTimeMillis());
+            try (ResultSet rs = statement.executeQuery()) {
+                while (rs.next()) {
+                    list.add(rs.getInt("userID"));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    private static Reasons getReason(Player p, Beruf.Berufe b) {
+        int id = Script.getNRPID(p);
+        try (PreparedStatement statement = main.getConnection().prepareStatement(
+                "SELECT reason FROM housebans WHERE userID = ? AND beruf = ?")) {
+            statement.setInt(1, id);
+            try (ResultSet rs = statement.executeQuery()) {
+                if (rs.next()) {
+                    return Reasons.getReasonByID(rs.getInt("reason"));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender cs, Command cmd, String alias, String[] args) {
+        Player p = (Player) cs;
+        if (cmd.getName().equalsIgnoreCase("houseban") || cmd.getName().equalsIgnoreCase("hv") || cmd.getName().equalsIgnoreCase("hausverbot")) {
+            if (!Beruf.hasBeruf(p)) return Collections.EMPTY_LIST;
+            final List<String> oneArgList = new ArrayList<>();
+            final List<String> completions = new ArrayList<>();
+
+            for (Reasons reason : Reasons.values()) {
+                oneArgList.add(reason.getName());
+            }
+
+            if (args.length == 3) {
+                StringUtil.copyPartialMatches(args[2], oneArgList, completions);
+            }
+
+            Collections.sort(completions);
+            return completions;
+        }
+        return Collections.EMPTY_LIST;
+    }
+}

@@ -72,17 +72,19 @@ public class FriedhofListener implements Listener {
         if (p.getItemOnCursor() != null) p.getItemOnCursor().setType(Material.AIR);
 
 
-        if(Call.isWaitingForCall(p)) {
-            Call.deny(p);
-            return;
-        }
+        if(Call.isOnCall(p)) {
+            if (Call.isWaitingForCall(p)) {
+                Call.deny(p);
+                return;
+            }
 
-        if(Call.getParticipants(Call.getCallIDByPlayer(p)).size() == 1) {
-            Call.abort(p);
-            return;
-        }
+            if (Call.getParticipants(Call.getCallIDByPlayer(p)).size() == 1) {
+                Call.abort(p);
+                return;
+            }
 
-        Call.hangup(p);
+            Call.hangup(p);
+        }
 
         Player killer = p.getKiller();
         Notications.sendMessage(Notications.NotificationType.DEAD, Script.getName(p) + " ist gestorben " + (killer!=null ? Messages.ARROW + " " + Script.getName(killer):Messages.ARROW + " " + p.getLastDamageCause().getCause().name()));

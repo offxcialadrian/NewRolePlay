@@ -10,24 +10,24 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public enum Krankheit {
-    HUSTEN(0, "Husten", true, true),
-    AIDS(1, "AIDS", true, true),
-    TRIPPER(2, "Tripper", true, true),
-    CHOLERA(3, "Cholera", true, false),
-    HERPES(4, "Herpes", false, true),
-    GEBROCHENES_BEIN(5, "Gebrochenes Bein", false, false),
-    GEBROCHENER_ARM(6, "Gebrochener Arm", false, false);
+    HUSTEN(0, "Husten", true, true, true),
+    CHOLERA(3, "Cholera", true, false, false),
+    GEBROCHENES_BEIN(5, "Gebrochenes Bein", false, false, false),
+    GEBROCHENER_ARM(6, "Gebrochener Arm", false, false, false),
+    ENTZUENDUNG(7, "Entzündung", false, false, false);
 
     private final int id;
     private final String name;
     private final boolean foodIntolerance;
     private final boolean transmittable;
+    private final boolean isImpfable;
 
-    Krankheit(int id, String name, boolean foodIntolerance, boolean transmittable) {
+    Krankheit(int id, String name, boolean foodIntolerance, boolean transmittable, boolean isImpfable) {
         this.id = id;
         this.name = name;
         this.foodIntolerance = foodIntolerance;
         this.transmittable = transmittable;
+        this.isImpfable = isImpfable;
     }
 
     public static Krankheit getKrankheitByName(String name) {
@@ -93,6 +93,29 @@ public enum Krankheit {
 
     public void remove(int id) {
         Script.executeAsyncUpdate("DELETE FROM krankheit WHERE userID = " + id + " AND krankheitID = " + this.getID());
+    }
+
+    public boolean isImpfed(int id) {
+        try(Statement stmt = main.getConnection().createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM impfung WHERE nrp_id = " + id + " AND krankheitID = " + this.getID())) {
+            if(rs.next()) {
+                return rs.getLong("until") > System.currentTimeMillis();
+            } else {
+                return false;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean isImpfable() {
+        return this.isImpfable;
+    }
+
+    public void setImpfed(int id, long until) {
+        Script.executeAsyncUpdate("DELETE FROM impfung WHERE nrp_id = " + id + " AND krankheitID = " + this.getID());
+        Script.executeAsyncUpdate("INSERT INTO impfung (nrp_id, krankheitID, until) VALUES (" + id + ", " + this.getID() + ", " + until + ")");
     }
 
     public boolean isInfected(int id) {

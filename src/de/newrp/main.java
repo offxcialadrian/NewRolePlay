@@ -287,6 +287,8 @@ public class main extends JavaPlugin {
         getCommand("breakingnews").setExecutor(new BreakingNews());
         getCommand("akku").setExecutor(new AkkuCommand());
         getCommand("removestadtkasse").setExecutor(new RemoveStadtkasse());
+        getCommand("houseban").setExecutor(new Houseban());
+        getCommand("aktien").setExecutor(new AktienMarkt());
 
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new SDuty(), this);
@@ -358,6 +360,8 @@ public class main extends JavaPlugin {
         pm.registerEvents(new CallCommand(), this);
         pm.registerEvents(new Mobile(), this);
         pm.registerEvents(new Krankheitstest(), this);
+        pm.registerEvents(new Impfen(), this);
+        pm.registerEvents(new AktienMarkt(), this);
 
 
         new AsyncHealth().runTaskTimerAsynchronously(this, 120 * 20L, 120 * 20L);

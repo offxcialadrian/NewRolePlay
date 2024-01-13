@@ -1,9 +1,7 @@
 package de.newrp.Runnable;
 
-import de.newrp.API.Messages;
-import de.newrp.API.Premium;
-import de.newrp.API.Script;
-import de.newrp.API.Title;
+import de.newrp.API.*;
+import de.newrp.Chat.Me;
 import de.newrp.Entertainment.Lotto;
 import de.newrp.Government.Wahlen;
 import de.newrp.News.BreakingNews;
@@ -126,6 +124,17 @@ public class AsyncMinute extends BukkitRunnable {
             if (!AFK.isAFK(p)) AFK.updateAFK(p);
             if (!AFK.isAFK(p)) Script.increaseActivePlayTime(p);
             Script.increasePlayTime(p);
+            if(Script.getRandom(1, 10) == 1) {
+                if(Krankheit.HUSTEN.isInfected(Script.getNRPID(p))) {
+                    Me.sendMessage(p, "hustet.");
+                    for(Player p2 : Bukkit.getOnlinePlayers()) {
+                        if(p2.getLocation().distance(p.getLocation()) <= 5) {
+                            if(!Krankheit.HUSTEN.isInfected(Script.getNRPID(p2)) && !Krankheit.HUSTEN.isImpfed(Script.getNRPID(p2)))
+                                Krankheit.HUSTEN.add(Script.getNRPID(p2));
+                        }
+                    }
+                }
+            }
         }
     }
 }

@@ -192,7 +192,7 @@ public enum Health {
             }
             Player p = Script.getPlayer(id);
             if (p != null) {
-                Bukkit.getScheduler().runTask(main.getInstance(), () -> p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 3 * 20, 1, false, false)));
+                Bukkit.getScheduler().runTask(main.getInstance(), () -> p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 6 * 20, 1, false, false)));
             }
         }
         if (this.id == 1) {

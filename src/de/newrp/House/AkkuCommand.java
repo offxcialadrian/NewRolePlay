@@ -29,11 +29,6 @@ public class AkkuCommand implements CommandExecutor {
             return true;
         }
 
-        if(!Mobile.isPhone(p.getInventory().getItemInMainHand())) {
-            p.sendMessage(Messages.ERROR + "Du hast kein Handy in der Hand.");
-            return true;
-        }
-
         if(!House.isInHouse(p)) {
             p.sendMessage(Messages.ERROR + "Du bist in keinem Haus.");
             return true;
@@ -54,7 +49,7 @@ public class AkkuCommand implements CommandExecutor {
         new BukkitRunnable() {
             @Override
             public void run() {
-                if(!Mobile.isPhone(p.getInventory().getItemInMainHand())) {
+                if(!Mobile.hasPhone(p)) {
                     p.sendMessage(AKKU + "Du hast aufgehört, dein Handy aufzuladen.");
                     cancel();
                     return;

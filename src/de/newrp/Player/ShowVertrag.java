@@ -16,7 +16,7 @@ public class ShowVertrag implements CommandExecutor {
         Player p = (Player) cs;
 
         if(args.length != 2) {
-            p.sendMessage("§c/vertrag [Spieler] [Vertrag-ID]");
+            p.sendMessage(Messages.ERROR + "/vertrag [Spieler] [Vertrag-ID]");
             return true;
         }
 

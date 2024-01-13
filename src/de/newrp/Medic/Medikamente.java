@@ -12,8 +12,11 @@ import java.util.List;
 
 public enum Medikamente {
 
-    HUSTENSAFT(1, "Hustensaft", null, new ItemBuilder(Material.PAPER).setName("§fHustensaft").build(), new ItemBuilder(Material.PAPER).setName("Rezept für Hustensaft").build() ,Krankheit.HUSTEN, 10, false, true),
-    SCHMERZMITTEL(2, "Schmerzmittel", ShopItem.SCHMERZMITTEL, new ItemBuilder(Material.PAPER).setName("§fSchmerzmittel").build(), new ItemBuilder(Material.PAPER).setName("Rezept für Schmerzmittel").build(), null, 10, false, false);
+    HUSTENSAFT(1, "Hustensaft", ShopItem.HUSTENSAFT, new ItemBuilder(Material.PAPER).setName("§fHustensaft").build(), new ItemBuilder(Material.PAPER).setName("Rezept für Hustensaft").build() ,Krankheit.HUSTEN, 10, false, true),
+    SCHMERZMITTEL(2, "Schmerzmittel", ShopItem.SCHMERZMITTEL, new ItemBuilder(Material.PAPER).setName("§fSchmerzmittel").build(), new ItemBuilder(Material.PAPER).setName("Rezept für Schmerzmittel").build(), null, 10, false, false),
+    SCHMERZMITTEL_HIGH(3, "Schmerzmittel (High)", ShopItem.SCHMERZMITTEL_HIGH, new ItemBuilder(Material.PAPER).setName("§fSchmerzmittel (High)").build(), new ItemBuilder(Material.PAPER).setName("Rezept für Schmerzmittel (High)").build(), null, 10, true, true),
+    ANTIBIOTIKA(4, "Antibiotika", ShopItem.ANTIBIOTIKA, new ItemBuilder(Material.PAPER).setName("§fAntibiotika").build(), new ItemBuilder(Material.PAPER).setName("Rezept für Antibiotika").build(), Krankheit.CHOLERA, 10, true, true),
+    ENTZUENDUNGSHEMMENDE_SALBE(5, "Entzündungshemmende Salbe", ShopItem.ENTZUENDUNGSHEMMENDE_SALBE, new ItemBuilder(Material.PAPER).setName("§fEntzündungshemmende Salbe").build(), new ItemBuilder(Material.PAPER).setName("Rezept für Entzündungshemmende Salbe").build(), null, 10, true, true);
 
     int id;
     String name;

@@ -17,7 +17,7 @@ public class Housekasse implements CommandExecutor {
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
         Player p = (Player) cs;
 
-        House h = House.getNearHouse(p.getLocation(), 5);
+        House h = House.getInsideHouse(p);
         if(h == null) {
             p.sendMessage(Messages.ERROR + "Du befindest dich nicht in der Nähe eines Hauses.");
             return true;
@@ -45,9 +45,9 @@ public class Housekasse implements CommandExecutor {
         }
 
         if(args.length == 0) {
-            p.sendMessage("§6=== Hauskasse ===");
-            p.sendMessage("§8» §6Guthaben: §7" + h.getKasse() + "€");
-            p.sendMessage("§8» §6Mieter: §7" + h.getMieter().size());
+            p.sendMessage(PREFIX + "§6=== Hauskasse ===");
+            p.sendMessage(PREFIX + "§8» §6Guthaben: §7" + h.getKasse() + "€");
+            p.sendMessage(PREFIX + "§8» §6Mieter: §7" + h.getMieter().size());
             return true;
         }
 

@@ -1,17 +1,10 @@
 package de.newrp.Medic;
 
-import de.newrp.API.Health;
 import de.newrp.API.Krankheit;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
-import de.newrp.Berufe.Beruf;
-import de.newrp.Berufe.Duty;
 import de.newrp.Chat.Me;
-import de.newrp.Government.Stadtkasse;
-import de.newrp.main;
 import org.bukkit.Material;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -19,17 +12,12 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-public class Krankheitstest implements Listener {
-
-    public static String PREFIX = "§8[§cKrankheitstest§8] §c" + Messages.ARROW + " §7";
-
-    private static final Map<String, Long> SPRITZE_COOLDOWN = new HashMap<>();
+public class Impfen implements Listener {
     private static final Map<String, Long> LAST_CLICK = new HashMap<>();
     private static final Map<String, Integer> LEVEL = new HashMap<>();
 
@@ -42,28 +30,11 @@ public class Krankheitstest implements Listener {
         Player p = e.getPlayer();
         if (!interact(p)) return;
 
-        if(!Beruf.hasBeruf(p)) {
-            p.sendMessage(Messages.ERROR + "Du musst einen Beruf haben um das zu tun.");
-            return;
-        }
-
-        if(Beruf.getBeruf(p) != Beruf.Berufe.RETTUNGSDIENST) {
-            p.sendMessage(Messages.ERROR + "Du musst im Rettungsdienst sein um das zu tun.");
-            return;
-        }
-
-        if(!Duty.isInDuty(p)) {
-            p.sendMessage(Messages.ERROR + "Du musst im Dienst sein um das zu tun.");
-            return;
-        }
-
         long time = System.currentTimeMillis();
         Player rightClicked = (Player) e.getRightClicked();
 
-        Long lastUsage = SPRITZE_COOLDOWN.get(rightClicked.getName());
-        if (lastUsage != null && lastUsage + TimeUnit.MINUTES.toMillis(4) > time) {
-            long cooldown = TimeUnit.MILLISECONDS.toSeconds(lastUsage + TimeUnit.MINUTES.toMillis(4) - time);
-            p.sendMessage(Messages.ERROR + "Dem Spieler wurde bereits Blut abgenommen. (" + cooldown + " Sekunden verbleibend)");
+        if (Krankheit.HUSTEN.isImpfed(Script.getNRPID(rightClicked))) {
+            p.sendMessage(Messages.ERROR + "Der Spieler ist bereits geimpft.");
             return;
         }
 
@@ -91,24 +62,9 @@ public class Krankheitstest implements Listener {
                 inv.setItemInMainHand(new ItemStack(Material.AIR));
             }
 
-            float amount = Script.getRandomFloat(.2F, .3F);
-            Health.BLOOD.remove(Script.getNRPID(rightClicked), amount);
+            Me.sendMessage(p, "impft " + Script.getName(rightClicked));
+            Krankheit.HUSTEN.setImpfed(Script.getNRPID(rightClicked), TimeUnit.DAYS.toMillis(14));
 
-            Me.sendMessage(p, "nimmt " + Script.getName(rightClicked) + " Blut ab.");
-            p.sendMessage(Messages.INFO + "Bitte warte nun 2 Minuten..");
-            rightClicked.damage(2D);
-            Stadtkasse.removeStadtkasse(50);
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    p.sendMessage(PREFIX + "Ergebnis des Krankheitstests von " + Script.getName(rightClicked) + ":");
-                    for(Krankheit k : Krankheit.values()) {
-                        p.sendMessage(PREFIX + "§7" + k.getName() + ": " + (k.isInfected(Script.getNRPID(rightClicked)) ? "§aJa" : "§cNein"));
-                    }
-                }
-            }.runTaskLater(main.getInstance(), 20L*60L*2L);
-
-            SPRITZE_COOLDOWN.put(rightClicked.getName(), time);
             LAST_CLICK.remove(p.getName());
             LEVEL.remove(p.getName());
         }
@@ -118,7 +74,7 @@ public class Krankheitstest implements Listener {
         if (p.getInventory().getItemInMainHand() == null) return false;
 
         ItemStack is = p.getInventory().getItemInMainHand();
-        return is.hasItemMeta() && is.getItemMeta().getDisplayName() != null && is.getItemMeta().getDisplayName().equals("§7Spritze");
+        return is.hasItemMeta() && is.getItemMeta().getDisplayName() != null && is.getItemMeta().getDisplayName().equals("§7Husten Impfung");
     }
 
     private static void progressBar(double required_progress, Player p) {
@@ -133,6 +89,6 @@ public class Krankheitstest implements Listener {
                 sb.append("§8▉");
             }
         }
-        Script.sendActionBar(p, "§cBlut abnehmen.. §8» §a" + sb.toString());
+        Script.sendActionBar(p, "§cImpfen.. §8» §a" + sb.toString());
     }
 }

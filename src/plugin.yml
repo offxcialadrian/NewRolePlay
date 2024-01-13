@@ -440,3 +440,9 @@ commands:
     aliases: [ aufladen ]
   removestadtkasse:
     description: remove from stadtkasse
+  houseban:
+    description: ban a player from a house
+    aliases: [ hv, hausverbot ]
+  aktien:
+    description: view your aktien
+    aliases: [ aktie, aktienmarkt ]

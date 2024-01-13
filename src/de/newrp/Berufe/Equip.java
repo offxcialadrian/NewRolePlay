@@ -41,7 +41,10 @@ public class Equip implements CommandExecutor, Listener {
         VERBAND("Verband", Script.setName(new ItemStack(Material.PAPER), "§7Verband"), 5, 0, null, Beruf.Berufe.RETTUNGSDIENST),
         GIPS("Gips", Script.setName(new ItemStack(Material.PAPER), "§7Gips"), 50, 0, null, Beruf.Berufe.RETTUNGSDIENST),
         SCHWERE_SCHUTZWESTE("Schwere Schutzweste", Script.kevlar(2), 1000, 0, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE),
-        SPRITZE("Spritze", Script.setName(new ItemStack(Material.PAPER), "§7Spritze"), 10, 0, null, Beruf.Berufe.RETTUNGSDIENST);
+        SPRITZE("Spritze", Script.setName(new ItemStack(Material.END_ROD), "§7Spritze"), 10, 0, null, Beruf.Berufe.RETTUNGSDIENST),
+        HUSTEN_IMPFUNG("Husten Impfung", Script.setName(new ItemStack(Material.END_ROD), "§7Husten Impfung"), 50, 0, null, Beruf.Berufe.RETTUNGSDIENST),
+        KAFFEE("Kaffee", Script.setName(new ItemStack(Material.POTION), "§7Kaffee"), 10, 0, null, Beruf.Berufe.NEWS),
+        KEKSE("Kekse", Script.setName(new ItemStack(Material.COOKIE), "§7Kekse"), 10, 0, null, Beruf.Berufe.NEWS);
 
         private String name;
         private ItemStack item;
