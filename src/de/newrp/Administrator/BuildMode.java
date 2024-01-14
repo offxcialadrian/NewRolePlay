@@ -22,6 +22,7 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.permissions.PermissionAttachment;
 
 import java.util.ArrayList;
 
@@ -164,7 +165,9 @@ public class BuildMode implements CommandExecutor, Listener {
     }
 
     public static void setBuildMode(Player p) {
-        if(Script.isInTestMode()) p.setOp(true);
+        if(Script.isInTestMode()) {
+            p.setOp(true);
+        }
         Cache.saveInventory(p);
         p.getInventory().clear();
         if(!wasBuildMode.contains(p.getName())) wasBuildMode.add(p.getName());

@@ -2,8 +2,6 @@ package de.newrp.Shop;
 
 import de.newrp.API.Script;
 import de.newrp.House.HouseAddon;
-import de.newrp.Medic.Medikamente;
-import de.newrp.News.Zeitung;
 import de.newrp.Waffen.Weapon;
 import de.newrp.main;
 import org.bukkit.Material;
@@ -18,13 +16,13 @@ public enum ShopItem {
 
     BROT(0, "§fBrot", new ItemStack(Material.BREAD), 16, 1, 20, 2, 2400, true, true, false, new ShopType[] {ShopType.SUPERMARKET}),
     KAFFEE(1, "§fKaffee", new ItemStack(Material.POTION, 1), 1, 1, 20, 2, 3900, true, true, false, new ShopType[] {ShopType.SUPERMARKET}),
-    LOTTOSCHEIN(2, "§7Lottoschein", new ItemStack(Material.PAPER), 1, 1, 20, 30, 1000, false, true, false, new ShopType[] {ShopType.SUPERMARKET, ShopType.ZEITUNGSLADEN}),
-    HAUSKASSE(3, "§7Hauskasse", new ItemStack(Material.CHEST), 20, 1, 20, HouseAddon.HAUSKASSE.getPrice(), 34000, false, false, false, new ShopType[] {ShopType.HAUSADDON}),
-    MIETERSLOT(4, "§7Mieterslot", new ItemStack(Material.CHEST), 20, 1, 20, HouseAddon.SLOT.getPrice(), 39500, false, false, false, new ShopType[] {ShopType.HAUSADDON}),
-    WAFFENSCHRANK(5, "§7Waffenschrank", new ItemStack(Material.CHEST), 20, 1, 20, HouseAddon.WAFFENSCHRANK.getPrice(), 39500, false, false, false, new ShopType[] {ShopType.HAUSADDON}),
-    ALARMANLAGE(7, "§7Alarmanlage", new ItemStack(Material.REDSTONE), 20, 1, 20, HouseAddon.ALARM.getPrice(), 39500, false, false, false, new ShopType[] {ShopType.HAUSADDON}),
-    DROGENLAGER(8, "§7Drogenlager", new ItemStack(Material.CHEST), 20, 1, 20, HouseAddon.DROGENLAGER.getPrice(), 39500, false, false, false, new ShopType[] {ShopType.HAUSADDON}),
-    KUEHLSCHRANK(9, "§7Kühlschrank", new ItemStack(Material.CHEST), 20, 1, 20, HouseAddon.KUEHLSCHRANK.getPrice(), 39500, false, false, false, new ShopType[] {ShopType.HAUSADDON}),
+    LOTTOSCHEIN(2, "§7Lottoschein", new ItemStack(Material.PAPER), 1, 1, 20, 30, 1000, false, true, false, new ShopType[] {ShopType.SUPERMARKET, ShopType.NEWS}),
+    HAUSKASSE(3, "§7Hauskasse", new ItemStack(Material.CHEST), 20, 1, 20, HouseAddon.HAUSKASSE.getPrice(), 34000, false, false, false, new ShopType[] {ShopType.HOUSEADDON}),
+    MIETERSLOT(4, "§7Mieterslot", new ItemStack(Material.CHEST), 20, 1, 20, HouseAddon.SLOT.getPrice(), 39500, false, false, false, new ShopType[] {ShopType.HOUSEADDON}),
+    WAFFENSCHRANK(5, "§7Waffenschrank", new ItemStack(Material.CHEST), 20, 1, 20, HouseAddon.WAFFENSCHRANK.getPrice(), 39500, false, false, false, new ShopType[] {ShopType.HOUSEADDON}),
+    ALARMANLAGE(7, "§7Alarmanlage", new ItemStack(Material.REDSTONE), 20, 1, 20, HouseAddon.ALARM.getPrice(), 39500, false, false, false, new ShopType[] {ShopType.HOUSEADDON}),
+    DROGENLAGER(8, "§7Drogenlager", new ItemStack(Material.CHEST), 20, 1, 20, HouseAddon.DROGENLAGER.getPrice(), 39500, false, false, false, new ShopType[] {ShopType.HOUSEADDON}),
+    KUEHLSCHRANK(9, "§7Kühlschrank", new ItemStack(Material.CHEST), 20, 1, 20, HouseAddon.KUEHLSCHRANK.getPrice(), 39500, false, false, false, new ShopType[] {ShopType.HOUSEADDON}),
     PISTOLE(10, "§7Pistole", new ItemStack(Material.IRON_HORSE_ARMOR), 1, 1, 1, 1, 1, false, false, false, new ShopType[] {ShopType.GUNSHOP}),
     AMMO_9MM(11, "§89mm Munition", new ItemStack(Material.ARROW), Weapon.PISTOLE.getMagazineSize(), 1, 1, 1, 1, false, false, false, new ShopType[] {ShopType.GUNSHOP}),
     AK47(12, "§7AK-47", new ItemStack(Material.DIAMOND_HORSE_ARMOR), 1, 1, 1, 1, 1, false, false, false, new ShopType[] {ShopType.GUNSHOP}),
@@ -33,22 +31,23 @@ public enum ShopItem {
     LATTE_MACCHIATO(45, "§rLatte Macchiato", new ItemStack(Material.FLOWER_POT), 1, 2, 25, 2, 3000, true, true, false, new ShopType[] {ShopType.CAFE}),
     ESPRESSO(46, "§rEspresso", new ItemStack(Material.FLOWER_POT), 1, 2, 25, 2, 3000, true, true, false, new ShopType[] {ShopType.CAFE}),
     CRAPPUCHINO(47, "§rCrappuchino", new ItemStack(Material.FLOWER_POT), 1, 2, 25, 2, 3000, true, true, false, new ShopType[] {ShopType.CAFE}),
-    Zeitung(48, "§9Zeitung", de.newrp.News.Zeitung.zeitung, 1, 2, 25, 30, 3000, true, true, false, new ShopType[] {ShopType.CAFE, ShopType.SUPERMARKET, ShopType.ZEITUNGSLADEN}),
-    SCHMERZMITTEL(49, "§fSchmerzmittel", new ItemStack(Material.PAPER), 5, 2, 25, 2, 3000, true, true, false, new ShopType[] {ShopType.APOTHEKE, ShopType.SUPERMARKET}),
+    Zeitung(48, "§9Zeitung", de.newrp.News.Zeitung.zeitung, 1, 2, 25, 30, 3000, true, true, false, new ShopType[] {ShopType.CAFE, ShopType.SUPERMARKET, ShopType.NEWS}),
+    SCHMERZMITTEL(49, "§fSchmerzmittel", new ItemStack(Material.PAPER), 5, 2, 25, 2, 3000, true, true, false, new ShopType[] {ShopType.PHARMACY, ShopType.SUPERMARKET}),
     BASEBALLSCHLAEGER(50, "§7Baseballschläger", new ItemStack(Material.BONE), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.GUNSHOP}),
-    SAMSUNG_HANDY(52, "§cGalaxy S21", new ItemStack(Material.IRON_INGOT), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.ELEKTRONIK}),
-    HUAWEI_HANDY(53, "§cP60", new ItemStack(Material.IRON_INGOT), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.ELEKTRONIK}),
-    GOOGLE_HANDY(54, "§cPixel 10", new ItemStack(Material.IRON_INGOT), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.ELEKTRONIK}),
-    APPLE_HANDY(55, "§ciPhone 15", new ItemStack(Material.IRON_INGOT), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.ELEKTRONIK}),
-    MAP(56, "§7Karte", new ItemStack(Material.MAP), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.SUPERMARKET, ShopType.ZEITUNGSLADEN}),
-    VERBAND(57, "§7Verband", new ItemStack(Material.PAPER), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.APOTHEKE}),
-    TRINKWASSER(58, "§7Trinkwasser", new ItemStack(Material.POTION), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.SUPERMARKET, ShopType.CAFE, ShopType.ZEITUNGSLADEN}),
+    SAMSUNG_HANDY(52, "§cGalaxy S21", new ItemStack(Material.IRON_INGOT), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.ELECTRONIC}),
+    HUAWEI_HANDY(53, "§cP60", new ItemStack(Material.IRON_INGOT), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.ELECTRONIC}),
+    GOOGLE_HANDY(54, "§cPixel 10", new ItemStack(Material.IRON_INGOT), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.ELECTRONIC}),
+    APPLE_HANDY(55, "§ciPhone 15", new ItemStack(Material.IRON_INGOT), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.ELECTRONIC}),
+    MAP(56, "§7Karte", new ItemStack(Material.MAP), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.SUPERMARKET, ShopType.NEWS}),
+    VERBAND(57, "§7Verband", new ItemStack(Material.PAPER), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.PHARMACY}),
+    TRINKWASSER(58, "§7Trinkwasser", new ItemStack(Material.POTION), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.SUPERMARKET, ShopType.CAFE, ShopType.NEWS}),
     AMMO_762MM(59, "§7.762mm Munition", new ItemStack(Material.ARROW), Weapon.AK47.getMagazineSize(), 1, 1, 1, 1, false, false, false, new ShopType[] {ShopType.GUNSHOP}),
     KEVLAR(51, "§7Schutzweste", Script.kevlar(1), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.GUNSHOP}),
-    SCHMERZMITTEL_HIGH(60, "§fSchmerzmittel (High)", new ItemStack(Material.PAPER), 10, 2, 25, 2, 3000, true, true, false, new ShopType[] {ShopType.APOTHEKE}),
-    ANTIBIOTIKA(61, "§fAntibiotika", new ItemStack(Material.PAPER), 5, 2, 25, 2, 3000, true, true, false, new ShopType[] {ShopType.APOTHEKE}),
-    HUSTENSAFT(62, "§fHustensaft", new ItemStack(Material.PAPER), 5, 2, 25, 2, 3000, true, true, false, new ShopType[] {ShopType.APOTHEKE}),
-    ENTZUENDUNGSHEMMENDE_SALBE(63, "§fEntzündungshemmende Salbe", new ItemStack(Material.PAPER), 5, 2, 25, 2, 3000, true, true, false, new ShopType[] {ShopType.APOTHEKE});
+    SCHMERZMITTEL_HIGH(60, "§fSchmerzmittel (High)", new ItemStack(Material.PAPER), 10, 2, 25, 2, 3000, true, true, false, new ShopType[] {ShopType.PHARMACY}),
+    ANTIBIOTIKA(61, "§fAntibiotika", new ItemStack(Material.PAPER), 5, 2, 25, 2, 3000, true, true, false, new ShopType[] {ShopType.PHARMACY}),
+    HUSTENSAFT(62, "§fHustensaft", new ItemStack(Material.PAPER), 5, 2, 25, 2, 3000, true, true, false, new ShopType[] {ShopType.PHARMACY}),
+    ENTZUENDUNGSHEMMENDE_SALBE(63, "§fEntzündungshemmende Salbe", new ItemStack(Material.PAPER), 5, 2, 25, 2, 3000, true, true, false, new ShopType[] {ShopType.PHARMACY}),
+    WINGSUIT(64, "§7Wingsuit", new ItemStack(Material.ELYTRA), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.GUNSHOP});
 
     private final int id;
     private final String name;

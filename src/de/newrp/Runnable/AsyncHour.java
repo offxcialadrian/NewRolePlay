@@ -37,6 +37,7 @@ public class AsyncHour extends BukkitRunnable {
                 }
                 runningcost += 10;
             }
+            if(shop.acceptCard()) runningcost += 20;
             int totalcost = runningcost + shop.getRent();
             if(shop.getKasse() >= totalcost) {
                 shop.removeKasse(shop.getRunningCost());

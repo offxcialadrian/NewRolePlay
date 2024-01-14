@@ -1,6 +1,5 @@
 package de.newrp.Shop;
 
-import de.newrp.API.ItemBuilder;
 import de.newrp.API.Script;
 import de.newrp.main;
 import org.bukkit.Location;
@@ -19,10 +18,10 @@ public enum Shops {
 
     SH_CAFE(0, "Cafe", "Café Stadthalle", 25000, new Location(Script.WORLD, 626, 68, 1030), 200, 600, true, ShopType.CAFE),
     TEST(1, "Café am X3", "Café am X3", 50000, new Location(Script.WORLD, 754, 72, 924), 200, 600, true, ShopType.CAFE),
-    IKEA(2, "AEKI", "AEKI", 50000, new Location(Script.WORLD, 681, 68, 902), 200, 600, true, ShopType.HAUSADDON),
+    IKEA(2, "AEKI", "AEKI", 50000, new Location(Script.WORLD, 681, 68, 902), 200, 600, true, ShopType.HOUSEADDON),
     AEKI_CAFE(3, "Café am AEKI", "Café am AEKI", 50000, new Location(Script.WORLD, 688, 138, 908), 200, 600, true, ShopType.CAFE),
     GUNSHOP(4, "Schmid und Schmiedt Waffenladen", "Schmid und Schmiedt Waffenladen", 50000, new Location(Script.WORLD, 453, 69, 929), 200, 600, true, ShopType.GUNSHOP),
-    SATURN(5, "Saturn", "Saturn", 50000, new Location(Script.WORLD, 865, 74, 964), 200, 600, true, ShopType.ELEKTRONIK),
+    SATURN(5, "Saturn", "Saturn", 50000, new Location(Script.WORLD, 865, 74, 964), 200, 600, true, ShopType.ELECTRONIC),
     SUPERMARKT(6, "Supermarkt", "Supermarkt", 50000, new Location(Script.WORLD, 640, 68, 861), 200, 600, true, ShopType.SUPERMARKET);
 
     private final int id;

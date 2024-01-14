@@ -1,4 +1,4 @@
-package de.newrp.Fraktion;
+package de.newrp.Berufe;
 
 import de.newrp.API.Achievement;
 import de.newrp.API.Particle;

@@ -58,9 +58,9 @@ public class Krankheitstest implements Listener {
         }
 
         long time = System.currentTimeMillis();
-        Player rightClicked = (Player) e.getRightClicked();
+        Player tg = (Player) e.getRightClicked();
 
-        Long lastUsage = SPRITZE_COOLDOWN.get(rightClicked.getName());
+        Long lastUsage = SPRITZE_COOLDOWN.get(tg.getName());
         if (lastUsage != null && lastUsage + TimeUnit.MINUTES.toMillis(4) > time) {
             long cooldown = TimeUnit.MILLISECONDS.toSeconds(lastUsage + TimeUnit.MINUTES.toMillis(4) - time);
             p.sendMessage(Messages.ERROR + "Dem Spieler wurde bereits Blut abgenommen. (" + cooldown + " Sekunden verbleibend)");
@@ -92,23 +92,23 @@ public class Krankheitstest implements Listener {
             }
 
             float amount = Script.getRandomFloat(.2F, .3F);
-            Health.BLOOD.remove(Script.getNRPID(rightClicked), amount);
+            Health.BLOOD.remove(Script.getNRPID(tg), amount);
 
-            Me.sendMessage(p, "nimmt " + Script.getName(rightClicked) + " Blut ab.");
+            Me.sendMessage(p, "nimmt " + Script.getName(tg) + " Blut ab.");
             p.sendMessage(Messages.INFO + "Bitte warte nun 2 Minuten..");
-            rightClicked.damage(2D);
+            tg.damage(2D);
             Stadtkasse.removeStadtkasse(50);
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    p.sendMessage(PREFIX + "Ergebnis des Krankheitstests von " + Script.getName(rightClicked) + ":");
+                    p.sendMessage(PREFIX + "Ergebnis des Krankheitstests von " + Script.getName(tg) + ":");
                     for(Krankheit k : Krankheit.values()) {
-                        p.sendMessage(PREFIX + "§7" + k.getName() + ": " + (k.isInfected(Script.getNRPID(rightClicked)) ? "§aJa" : "§cNein"));
+                        p.sendMessage(PREFIX + "§7" + k.getName() + ": " + (k.isInfected(Script.getNRPID(tg)) ? "§aJa" : "§cNein"));
                     }
                 }
             }.runTaskLater(main.getInstance(), 20L*60L*2L);
 
-            SPRITZE_COOLDOWN.put(rightClicked.getName(), time);
+            SPRITZE_COOLDOWN.put(tg.getName(), time);
             LAST_CLICK.remove(p.getName());
             LEVEL.remove(p.getName());
         }

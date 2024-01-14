@@ -26,25 +26,25 @@ public class Equip implements CommandExecutor, Listener {
     private static final String PREFIX = "§8[§eEquip§8] §e» ";
 
     public enum Stuff {
-        PISTOLE("Pistole", new ItemBuilder(Material.IRON_HORSE_ARMOR).setName("§7Pistole").build(), 1000, 75, null, Beruf.Berufe.POLICE),
-        SCHUTZWESTE("Schutzweste", Script.kevlar(1), 500, 0, null, Beruf.Berufe.POLICE),
-        HANDSCHELLEN("Handschellen", Script.setName(new ItemStack(Material.LEAD, 2), "§7Handschellen"), 100, 0, null, Beruf.Berufe.POLICE),
-        TAZER("Tazer", Script.setName(new ItemStack(Material.WOODEN_HOE, 1), "§7Tazer"), 100, 0, null, Beruf.Berufe.POLICE),
-        DONUT("Donut", Script.setName(new ItemStack(Material.COOKIE, 1), "§7Donut"), 1, 0, null, Beruf.Berufe.POLICE),
-        MP7("MP7", new ItemBuilder(Material.GOLDEN_HORSE_ARMOR).setName("§7MP7").build(), 2900, 400, null, Beruf.Berufe.POLICE),
-        EINSATZSCHILD("Einsatzschild", Script.einsatzschild(1), 1000, 0, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE),
-        EINSAZTZSCHILD_2("Einsatzschild", Script.einsatzschild(2), 1500, 0, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE),
-        RAUCHGRANATE("Rauchgranate", Script.rauchgranate(), 100, 0, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE),
-        FLASHBANG("Flashbang", Script.flashbang(), 100, 0, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE),
-        FALLSCHIRM("Fallschirm", Script.fallschirm(), 100, 0, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE),
-        ZEITUNG("Zeitung", Script.setName(new ItemStack(Material.WRITABLE_BOOK), "§7Zeitung"), 100, 0, Abteilung.Abteilungen.CHEFREDAKTION, Beruf.Berufe.NEWS),
-        VERBAND("Verband", Script.setName(new ItemStack(Material.PAPER), "§7Verband"), 5, 0, null, Beruf.Berufe.RETTUNGSDIENST),
-        GIPS("Gips", Script.setName(new ItemStack(Material.PAPER), "§7Gips"), 50, 0, null, Beruf.Berufe.RETTUNGSDIENST),
-        SCHWERE_SCHUTZWESTE("Schwere Schutzweste", Script.kevlar(2), 1000, 0, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE),
-        SPRITZE("Spritze", Script.setName(new ItemStack(Material.END_ROD), "§7Spritze"), 10, 0, null, Beruf.Berufe.RETTUNGSDIENST),
-        HUSTEN_IMPFUNG("Husten Impfung", Script.setName(new ItemStack(Material.END_ROD), "§7Husten Impfung"), 50, 0, null, Beruf.Berufe.RETTUNGSDIENST),
-        KAFFEE("Kaffee", Script.setName(new ItemStack(Material.POTION), "§7Kaffee"), 10, 0, null, Beruf.Berufe.NEWS),
-        KEKSE("Kekse", Script.setName(new ItemStack(Material.COOKIE), "§7Kekse"), 10, 0, null, Beruf.Berufe.NEWS);
+        PISTOLE("Pistole", new ItemBuilder(Material.IRON_HORSE_ARMOR).setName("§7Pistole").build(), 1000, 75, null, Beruf.Berufe.POLICE, false),
+        SCHUTZWESTE("Schutzweste", Script.kevlar(1), 500, 0, null, Beruf.Berufe.POLICE, false),
+        HANDSCHELLEN("Handschellen", Script.setName(new ItemStack(Material.LEAD, 2), "§7Handschellen"), 100, 0, null, Beruf.Berufe.POLICE, true),
+        TAZER("Tazer", Script.setName(new ItemStack(Material.WOODEN_HOE, 1), "§7Tazer"), 100, 0, null, Beruf.Berufe.POLICE, true),
+        DONUT("Donut", Script.setName(new ItemStack(Material.COOKIE, 1), "§7Donut"), 1, 0, null, Beruf.Berufe.POLICE, false),
+        MP7("MP7", new ItemBuilder(Material.GOLDEN_HORSE_ARMOR).setName("§7MP7").build(), 2900, 400, null, Beruf.Berufe.POLICE, false),
+        EINSATZSCHILD("Einsatzschild", Script.einsatzschild(1), 1000, 0, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE, true),
+        EINSAZTZSCHILD_2("Einsatzschild", Script.einsatzschild(2), 1500, 0, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE, true),
+        RAUCHGRANATE("Rauchgranate", Script.rauchgranate(), 100, 0, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE, true),
+        FLASHBANG("Flashbang", Script.flashbang(), 100, 0, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE, true),
+        FALLSCHIRM("Fallschirm", Script.fallschirm(), 100, 0, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE, true),
+        ZEITUNG("Zeitung", Script.setName(new ItemStack(Material.WRITABLE_BOOK), "§7Zeitung"), 100, 0, Abteilung.Abteilungen.CHEFREDAKTION, Beruf.Berufe.NEWS, true),
+        VERBAND("Verband", Script.setName(new ItemStack(Material.PAPER), "§7Verband"), 5, 0, null, Beruf.Berufe.RETTUNGSDIENST, false),
+        GIPS("Gips", Script.setName(new ItemStack(Material.PAPER), "§7Gips"), 50, 0, null, Beruf.Berufe.RETTUNGSDIENST, true),
+        SCHWERE_SCHUTZWESTE("Schwere Schutzweste", Script.kevlar(2), 1000, 0, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE, true),
+        SPRITZE("Spritze", Script.setName(new ItemStack(Material.END_ROD), "§7Spritze"), 10, 0, null, Beruf.Berufe.RETTUNGSDIENST, true),
+        HUSTEN_IMPFUNG("Husten Impfung", Script.setName(new ItemStack(Material.END_ROD), "§7Husten Impfung"), 50, 0, null, Beruf.Berufe.RETTUNGSDIENST, true),
+        KAFFEE("Kaffee", Script.setName(new ItemStack(Material.POTION), "§7Kaffee"), 10, 0, null, Beruf.Berufe.NEWS, false),
+        KEKSE("Kekse", Script.setName(new ItemStack(Material.COOKIE), "§7Kekse"), 10, 0, null, Beruf.Berufe.NEWS, false);
 
         private String name;
         private ItemStack item;
@@ -52,15 +52,17 @@ public class Equip implements CommandExecutor, Listener {
         private int ammo;
         private Abteilung.Abteilungen abteilung;
         private Beruf.Berufe beruf;
+        private boolean remove;
 
 
-        Stuff(String name, ItemStack item, int cost, int ammo, Abteilung.Abteilungen abteilung, Beruf.Berufe beruf) {
+        Stuff(String name, ItemStack item, int cost, int ammo, Abteilung.Abteilungen abteilung, Beruf.Berufe beruf, boolean remove) {
             this.name = name;
             this.item = item;
             this.cost = cost;
             this.ammo = ammo;
             this.abteilung = abteilung;
             this.beruf = beruf;
+            this.remove = remove;
         }
 
         public String getName() {
@@ -85,6 +87,10 @@ public class Equip implements CommandExecutor, Listener {
 
         public int getAmmo() {
             return ammo;
+        }
+
+        public boolean removeOnUninvite() {
+            return remove;
         }
 
         public static Stuff getStuff(String name) {
@@ -238,6 +244,16 @@ public class Equip implements CommandExecutor, Listener {
             Log.LOW.write(p, "hat sich mit " + stuff.getName() + " ausgerüstet.");
             p.closeInventory();
 
+        }
+    }
+
+    public static void removeEquip(Player p) {
+        for (Stuff stuff : Stuff.values()) {
+            if (stuff.getBeruf() == Beruf.getBeruf(p)) {
+               if(stuff.removeOnUninvite()) {
+                   p.getInventory().remove(stuff.getItem());
+               }
+            }
         }
     }
 

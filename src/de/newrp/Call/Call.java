@@ -109,6 +109,7 @@ public class Call {
     }
 
     public static List<Player> getParticipants(int i) {
+        if(ON_CALL.isEmpty()) return new ArrayList<>();
         return ON_CALL.get(i);
     }
 

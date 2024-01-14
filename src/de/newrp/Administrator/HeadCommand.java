@@ -28,7 +28,7 @@ public class HeadCommand implements CommandExecutor {
 
         ItemStack is = new ItemStack(Material.PLAYER_HEAD);
         SkullMeta sm = (SkullMeta) is.getItemMeta();
-        sm.setOwningPlayer(Bukkit.getPlayer(args[0]));
+        sm.setOwningPlayer(Bukkit.getOfflinePlayer(args[0]));
         sm.setDisplayName(args[0]);
         is.setItemMeta(sm);
         p.getInventory().addItem(is);

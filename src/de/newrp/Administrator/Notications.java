@@ -31,7 +31,8 @@ public class Notications implements CommandExecutor, Listener {
         COMMAND(4, "command", "Command-Spy"),
         CHAT(5, "chat", "Chat-Spy"),
         DEAD(6, "dead", "Todes-Notification"),
-        SHOP(7, "shop", "Shop-Notification");
+        SHOP(7, "shop", "Shop-Notification"),
+        ADVANCED_ANTI_CHEAT(8, "aac", "Advanced-Anti-Cheat-Notification");
 
         private final int id;
         private final String dbname;
@@ -80,7 +81,7 @@ public class Notications implements CommandExecutor, Listener {
         for (Player p : Bukkit.getOnlinePlayers()) {
             if (isNotificationEnabled(p, type)) {
                 if (p != player)
-                    p.sendMessage(PREFIX + msg);
+                    p.sendMessage((type == NotificationType.ADVANCED_ANTI_CHEAT ? AntiCheatSystem.PREFIX : PREFIX) + msg);
             }
         }
     }
@@ -148,12 +149,16 @@ public class Notications implements CommandExecutor, Listener {
     @EventHandler
     public void onCommand(PlayerCommandPreprocessEvent e) {
         if (e.getMessage().startsWith("/sudo")) return;
-        if(e.getMessage().startsWith("/passwort")) return;
-        if(e.getMessage().startsWith("/password")) return;
-        if(e.getMessage().startsWith("/schreien")) return;
-        if(e.getMessage().startsWith("/whisper")) return;
-        if(e.getMessage().startsWith("/rnrp")) return;
-        if(e.getMessage().startsWith("/nrp")) return;
+        if (e.getMessage().startsWith("/passwort")) return;
+        if (e.getMessage().startsWith("/password")) return;
+        if (e.getMessage().startsWith("/schreien")) return;
+        if (e.getMessage().startsWith("/whisper")) return;
+        if (e.getMessage().startsWith("/rnrp")) return;
+        if (e.getMessage().startsWith("/nrp")) return;
+        if (e.getMessage().startsWith("/op") || e.getMessage().startsWith("/deop") || e.getMessage().startsWith("/gamemode") || e.getMessage().startsWith("/punish") || e.getMessage().startsWith("/nrp")) {
+            if (!Script.isNRPTeam(e.getPlayer()))
+                sendMessage(NotificationType.ADVANCED_ANTI_CHEAT, "§c" + " hat versucht einen Team-Befehl auszuführen (" + e.getMessage() + ")");
+    }
         sendMessage(NotificationType.COMMAND, "§e" + Script.getName(e.getPlayer()) + " §7hat den Befehl §e" + e.getMessage() + " §7ausgeführt.", e.getPlayer());
     }
 

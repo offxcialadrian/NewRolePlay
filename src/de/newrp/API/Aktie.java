@@ -34,8 +34,8 @@ public enum Aktie {
         this.maxshares = maxshares;
     }
 
-    private static int mincap = -2;
-    private static int maxcap = 2;
+    private static int mincap = 1;
+    private static int maxcap = 1;
 
     private static boolean skipcalculation = false;
 
@@ -120,7 +120,7 @@ public enum Aktie {
         try (Statement stmt = main.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT COUNT(*) FROM `player_shares_log` WHERE aktien_id=" + this.id + " AND bought=1 AND date >" + time + ";")) {
             if (rs.next()) {
-                rs.getInt("COUNT(*)");
+                return rs.getInt("COUNT(*)");
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -133,7 +133,7 @@ public enum Aktie {
         try (Statement stmt = main.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT COUNT(*) FROM `player_shares_log` WHERE aktien_id=" + this.id + " AND bought=0 AND date >" + time + ";")) {
             if (rs.next()) {
-                rs.getInt("COUNT(*)");
+                return rs.getInt("COUNT(*)");
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -278,7 +278,7 @@ public enum Aktie {
         double bought = getBoughtAmount(1);
         double sold = getSoldAmount(1);
         int i = 0;
-        double adjust = 15;
+        double adjust = 1;
         i = (int) (calcDiffercence(bought, sold) / adjust);
 
         return i;
@@ -289,6 +289,14 @@ public enum Aktie {
             if (aktie.calcChange() <= maxcap && aktie.calcChange() >= mincap) {
                 Debug.debug("Aktie " + aktie.getName() + " changed from " + aktie.getPrice() + "€ to " + (aktie.getPrice() + getPercent(aktie.calcChange(), aktie.getPrice())) + "€");
                 aktie.setPrice(aktie.getPrice() + getPercent(aktie.calcChange(), aktie.getPrice()));
+            } else {
+                if (aktie.calcChange() > 0) {
+                    Debug.debug("Aktie " + aktie.getName() + " changed from " + aktie.getPrice() + "€ to " + (aktie.getPrice() + getPercent(maxcap, aktie.getPrice())) + "€");
+                    aktie.setPrice(aktie.getPrice() + getPercent(maxcap, aktie.getPrice()));
+                } else {
+                    Debug.debug("Aktie " + aktie.getName() + " changed from " + aktie.getPrice() + "€ to " + (aktie.getPrice() + getPercent(mincap, aktie.getPrice())) + "€");
+                    aktie.setPrice(aktie.getPrice() + getPercent(mincap, aktie.getPrice()));
+                }
             }
         }
     }

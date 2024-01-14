@@ -13,7 +13,7 @@ import de.newrp.Entertainment.BlackJack;
 import de.newrp.Entertainment.Laufband;
 import de.newrp.Entertainment.Lotto;
 import de.newrp.Forum.ForumCommand;
-import de.newrp.Fraktion.Tazer;
+import de.newrp.Berufe.Tazer;
 import de.newrp.Government.*;
 import de.newrp.House.*;
 import de.newrp.Medic.*;
@@ -289,6 +289,9 @@ public class main extends JavaPlugin {
         getCommand("removestadtkasse").setExecutor(new RemoveStadtkasse());
         getCommand("houseban").setExecutor(new Houseban());
         getCommand("aktien").setExecutor(new AktienMarkt());
+        getCommand("forceaktien").setExecutor(new ForceAktien());
+        getCommand("backupcode").setExecutor(new BackupCode());
+        getCommand("transferaccount").setExecutor(new TransferAccount());
 
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new SDuty(), this);

@@ -268,7 +268,7 @@ public class Shop implements CommandExecutor, Listener {
         if(args.length == 1 && args[0].equalsIgnoreCase("karte")) {
             if(shop.acceptCard()) {
                 p.sendMessage(PREFIX + "Dein Shop akzeptiert bereits Kartenzahlung.");
-                p.sendMessage(Messages.INFO + "Du zahlst auf jede Kartenzahlung eine Gebühr von 2%");
+                p.sendMessage(Messages.INFO + "Du zahlst auf jede Kartenzahlung eine Gebühr von 2% und Betriebskosten von 20€/Stunde.");
             }
             int price = 21000;
             p.sendMessage(PREFIX + "Du kannst Kartenzahlung für " + price + "€ anbieten.");
@@ -277,8 +277,19 @@ public class Shop implements CommandExecutor, Listener {
         }
 
         if(args.length == 2 && args[0].equalsIgnoreCase("karte")) {
-            if(!args[1].equalsIgnoreCase("confirm")) {
-                p.sendMessage(Messages.ERROR + "Verwendung: /shop karte confirm");
+            if(!args[1].equalsIgnoreCase("confirm") && !args[1].equalsIgnoreCase("remove")) {
+                p.sendMessage(Messages.ERROR + "Verwendung: /shop karte confirm/remove");
+                return true;
+            }
+
+            if(args[1].equalsIgnoreCase("remove")) {
+                if(!shop.acceptCard()) {
+                    p.sendMessage(PREFIX + "Dein Shop bietet keine Kartenzahlung an.");
+                    return true;
+                }
+                Script.executeAsyncUpdate("UPDATE shops SET card = 0 WHERE shopID = " + shop.getID());
+                p.sendMessage(PREFIX + "Du bietest nun keine Kartenzahlung mehr an.");
+                Notications.sendMessage(Notications.NotificationType.SHOP,  Script.getName(p) + " bietet nun keine Kartenzahlung mehr im Shop an. [Shop: " + shop.getPublicName() + "]");
                 return true;
             }
 

@@ -1,5 +1,6 @@
 package de.newrp.Waffen;
 
+import de.newrp.API.Debug;
 import de.newrp.API.Health;
 import de.newrp.API.Script;
 import de.newrp.Player.AFK;
@@ -47,6 +48,7 @@ public class WaffenDamage implements Listener {
     }
 
     public boolean isHeadshot(Arrow a, Player p) {
+        if(a.getLocation().getY() - p.getLocation().getY() > 1.35D) Debug.debug("Headshot");
         return a.getLocation().getY() - p.getLocation().getY() > 1.35D;
     }
 }

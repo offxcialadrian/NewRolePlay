@@ -446,3 +446,11 @@ commands:
   aktien:
     description: view your aktien
     aliases: [ aktie, aktienmarkt ]
+  forceaktien:
+    description: force the aktien
+  backupcode:
+    description: view your backupcode
+    aliases: [ backupc, securitytoken ]
+  transferaccount:
+    description: transfer your account
+    aliases: [ transferacc ]

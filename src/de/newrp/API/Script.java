@@ -7,6 +7,7 @@ import de.newrp.Administrator.SDuty;
 import de.newrp.Berufe.Abteilung;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Berufe.Duty;
+import de.newrp.Berufe.Equip;
 import de.newrp.Forum.Forum;
 import de.newrp.House.House;
 import de.newrp.Player.AFK;
@@ -779,6 +780,18 @@ public class Script {
         return null;
     }
 
+    public static String getString(OfflinePlayer p, String dbName, String s) {
+        try (Statement stmt = main.getConnection().createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT * FROM " + dbName + " WHERE nrp_id='" + getNRPID(p) + "'")) {
+            if (rs.next()) {
+                return rs.getString(s);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public static int getInt(Player p, String dbName, String s) {
         try (Statement stmt = main.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM " + dbName + " WHERE nrp_id='" + getNRPID(p) + "'")) {
@@ -846,6 +859,8 @@ public class Script {
             if (rs.next()) {
                 p.sendMessage(PREFIX + "Du hast Nachrichten erhalten während du Offline warst:");
                 do {
+                    if(rs.getString("msg").equalsIgnoreCase("§8[§eBeruf§8] §e" + Messages.ARROW + " Du wurdest aus deinem Beruf geworfen."))
+                        Equip.removeEquip(p);
                     p.sendMessage(rs.getString("msg"));
                 } while (rs.next());
                 executeAsyncUpdate("DELETE FROM offline_msg WHERE nrp_id='" + getNRPID(p) + "'");
@@ -1149,6 +1164,14 @@ public class Script {
         } catch (Exception ex) {
             return false;
         }
+    }
+
+    public static String getBackUpCode(Player p) {
+        return getString(p, "backupcodes" , "code");
+    }
+
+    public static String getBackUpCode(OfflinePlayer p) {
+        return getString(p, "backupcodes" , "code");
     }
 
     public static void increasePlayTime(Player p) {

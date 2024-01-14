@@ -97,7 +97,7 @@ public class AkkuCommand implements CommandExecutor {
                 Script.sendActionBar(p, "§eAufladen... §8» §a" + sb);
 
             }
-        }. runTaskTimerAsynchronously(main.getInstance(), 10L, 10L);
+        }. runTaskTimerAsynchronously(main.getInstance(), 5L, 5L);
 
 
         return false;

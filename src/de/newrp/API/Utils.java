@@ -165,6 +165,8 @@ public class Utils implements Listener {
                 p.sendMessage(Messages.INFO + "Als Geschenk erhhältst du 500 Exp!");
                 Script.addEXP(p, 500);
             }
+            if(Script.getBackUpCode(p) == null)
+                p.sendMessage(Messages.INFO + "Du hast noch keinen BackupCode. Er ist wichtig, um deinen Account wiederherzustellen, falls du ihn verlierst. Nutze §8/§6backupcode §r, um einen BackupCode zu erhalten.");
 
         } else {
             if (!Script.getCountry(p).contains("Germany") && !Script.getCountry(p).contains("Austria") && !Script.getCountry(p).contains("Switzerland") && !Script.isWhitelistedIP(p.getAddress().getAddress().getHostAddress())) {

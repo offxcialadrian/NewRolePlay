@@ -1,6 +1,7 @@
 package de.newrp.Berufe;
 
 import de.newrp.API.Messages;
+import de.newrp.API.Premium;
 import de.newrp.API.Script;
 import de.newrp.Forum.ForumGroup;
 import de.newrp.Government.Arbeitslosengeld;
@@ -172,7 +173,7 @@ public class Beruf {
         public List<OfflinePlayer> getAllMembers() {
             List<OfflinePlayer> list = new ArrayList<>();
             try (Statement stmt = main.getConnection().createStatement();
-                 ResultSet rs = stmt.executeQuery("SELECT * FROM berufe WHERE berufID='" + this.id + "' ORDER BY abteilung DESC")) {
+                 ResultSet rs = stmt.executeQuery("SELECT * FROM berufe WHERE berufID='" + this.id + "' ORDER BY abteilung ASC")) {
                 if (rs.next()) {
                     do {
                         list.add(Script.getOfflinePlayer(rs.getInt("nrp_id")));
@@ -219,6 +220,7 @@ public class Beruf {
 
         public void removeMember(Player p, Player leader) {
             if(Duty.isInDuty(p)) Duty.removeDuty(p);
+            Equip.removeEquip(p);
             Script.executeUpdate("DELETE FROM berufe WHERE nrp_id = '" + Script.getNRPID(p) + "'");
             for (Player members : getPlayersFromBeruf(this)) {
                 members.sendMessage("§8[§e" + getName() + "§8] §e" + p.getName() + " §ehat den Beruf verlassen.");
@@ -228,12 +230,17 @@ public class Beruf {
         }
 
         public void removeMember(OfflinePlayer p, Player leader) {
+            if(p.getPlayer() != null) {
+                if(Duty.isInDuty(p.getPlayer())) Duty.removeDuty(p.getPlayer());
+                Equip.removeEquip(p.getPlayer());
+            }
             Script.executeUpdate("DELETE FROM berufe WHERE nrp_id = '" + Script.getNRPID(p) + "'");
             for (Player members : getPlayersFromBeruf(this)) {
                 members.sendMessage("§8[§e" + getName() + "§8] §e" + p.getName() + " §ehat den Beruf verlassen.");
             }
             sendLeaderMessage("§8[§e" + getName() + "§8] §e" + Script.getName(leader) + " §ehat " + p.getName() + " aus dem Beruf geworfen.");
             Script.sendTeamMessage("§8[§eBerufeControl§8] §e" + Script.getName(leader) + " §ehat " + p.getName() + " aus dem Beruf " + getName() + " geworfen.");
+            Script.addOfflineMessage(p, "§8[§eBeruf§8] §e" + Messages.ARROW + " Du wurdest aus deinem Beruf geworfen.");
         }
 
         public void removeMember(OfflinePlayer p) {
