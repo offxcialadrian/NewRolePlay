@@ -41,23 +41,20 @@ public class Baulog implements CommandExecutor {
             return true;
         }
 
-        if (args.length == 1) {
-            OfflinePlayer builder = Script.getOfflinePlayer(args[0]);
+        OfflinePlayer builder = Script.getOfflinePlayer(args[0]);
 
-            if(Script.getNRPID(builder) == 0) {
-                p.sendMessage(Messages.ERROR + "Dieser Spieler existiert nicht.");
-                return true;
-            }
-
-            if(Team.getTeam(builder) != Team.Teams.BAU) {
-                p.sendMessage(Messages.ERROR + "Dieser Spieler ist kein Mitglied des Bau-Teams.");
-                return true;
-            }
-
-            p.sendMessage(PREFIX + builder.getName() + " §8× §6" + Script.getBuiltBlocks(builder));
+        if(Script.getNRPID(builder) == 0) {
+            p.sendMessage(Messages.ERROR + "Dieser Spieler existiert nicht.");
             return true;
         }
-        
-        return false;
+
+        if(Team.getTeam(builder) != Team.Teams.BAU) {
+            p.sendMessage(Messages.ERROR + "Dieser Spieler ist kein Mitglied des Bau-Teams.");
+            return true;
+        }
+
+        p.sendMessage(PREFIX + builder.getName() + " §8× §6" + Script.getBuiltBlocks(builder));
+        return true;
+
     }
 }

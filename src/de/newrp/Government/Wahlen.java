@@ -309,6 +309,34 @@ public class Wahlen implements CommandExecutor, Listener {
         return Script.getInt(p, "votes", "quartal") == getCurrentQuartal() && Script.getInt(p, "votes", "year") == Calendar.getInstance().get(Calendar.YEAR);
     }
 
+    public static boolean hasVoted(OfflinePlayer p) {
+        return Script.getInt(p, "votes", "quartal") == getCurrentQuartal() && Script.getInt(p, "votes", "year") == Calendar.getInstance().get(Calendar.YEAR);
+    }
+
+    public static int getVote(Player p) {
+        try(Statement stmt = main.getConnection().createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM votes WHERE quartal = " + getCurrentQuartal() + " AND year = " + Calendar.getInstance().get(Calendar.YEAR) + " AND nrp_id = " + Script.getNRPID(p))) {
+            if(rs.next()) {
+                return rs.getInt("president");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public static int getVote(OfflinePlayer p) {
+        try(Statement stmt = main.getConnection().createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM votes WHERE quartal = " + getCurrentQuartal() + " AND year = " + Calendar.getInstance().get(Calendar.YEAR) + " AND nrp_id = " + Script.getNRPID(p))) {
+            if(rs.next()) {
+                return rs.getInt("president");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
     public static int getWinner() {
         try (Statement stmt = main.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM wahlen WHERE quartal = '" + getCurrentQuartal() + "' AND year = '" + Calendar.getInstance().get(Calendar.YEAR) + "' ORDER BY votings DESC")) {

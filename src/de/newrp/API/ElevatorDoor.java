@@ -344,7 +344,22 @@ public class ElevatorDoor implements Listener {
                         new Location(Script.WORLD, 547, 79, 991),
                         new Location(Script.WORLD, 547, 78, 991),
                         new Location(Script.WORLD, 547, 80, 991)
-                }, Elevator.ElevatorAPI.STADTHALLE, 1);
+                }, Elevator.ElevatorAPI.STADTHALLE, 1),
+        KRANKENHAUS_ETAGE_RECHTER_AUFZUG_0(12, new Location(Script.WORLD, 267, 76, 1230)/*fahrknopf*/,
+        new Location[]{
+
+        },
+        new Location[]{
+            new Location(Script.WORLD, 270, 77, 1230),
+                    new Location(Script.WORLD, 270, 77, 1231),
+                    new Location(Script.WORLD, 270, 77, 1232),
+                    new Location(Script.WORLD, 270, 76, 1230),
+                    new Location(Script.WORLD, 270, 76, 1231),
+                    new Location(Script.WORLD, 270, 76, 1232),
+                    new Location(Script.WORLD, 270, 75, 1230),
+                    new Location(Script.WORLD, 270, 75, 1231),
+                    new Location(Script.WORLD, 270, 75, 1232),
+        }, Elevator.ElevatorAPI.X3, 12);
 
 
         int id;

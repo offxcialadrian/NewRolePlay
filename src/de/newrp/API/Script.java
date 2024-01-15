@@ -1540,7 +1540,7 @@ public class Script {
 
     public static int getBuiltOnlyPlacedBlocks(OfflinePlayer p) {
         try (Statement stmt = main.getConnection().createStatement();
-             ResultSet rs = stmt.executeQuery("SELECT COUNT(id) AS total FROM baulog WHERE nrp_id=" + getNRPID(p) + " AND removed=0")) {
+             ResultSet rs = stmt.executeQuery("SELECT COUNT(id) AS total FROM baulog WHERE nrp_id=" + getNRPID(p) + " AND removed=1")) {
             if (rs.next()) {
                 return rs.getInt("total");
             }

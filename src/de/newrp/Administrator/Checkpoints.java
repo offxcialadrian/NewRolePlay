@@ -273,6 +273,9 @@ public class Checkpoints implements Listener {
             place(p);
             CHECKPOINTS.put(p.getName(), getCheckpoints(p));
             setScoreboard(p, getCheckpoints(p));
+            Location loc = new Location(Script.WORLD, 484, 8, 561, 87.723145f, 7.387953f);
+            loc.getChunk().load();
+            p.teleport(loc);
         }
     }
 

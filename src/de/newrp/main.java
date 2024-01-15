@@ -365,6 +365,7 @@ public class main extends JavaPlugin {
         pm.registerEvents(new Krankheitstest(), this);
         pm.registerEvents(new Impfen(), this);
         pm.registerEvents(new AktienMarkt(), this);
+        pm.registerEvents(new Tragen(), this);
 
 
         new AsyncHealth().runTaskTimerAsynchronously(this, 120 * 20L, 120 * 20L);

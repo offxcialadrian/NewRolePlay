@@ -69,7 +69,7 @@ public class Utils implements Listener {
     public static final int WORLD_BORDER_MIN_X = 180;
     public static final int WORLD_BORDER_MAX_X = 1055;
     public static final int WORLD_BORDER_MIN_Z = 500;
-    public static final int WORLD_BORDER_MAX_Z = 1300;
+    public static final int WORLD_BORDER_MAX_Z = 1310;
 
 
     @EventHandler
@@ -321,7 +321,7 @@ public class Utils implements Listener {
                     e.getClickedBlock().getType() == Material.ACACIA_FENCE_GATE || e.getClickedBlock().getType().equals(Material.DARK_OAK_FENCE_GATE) ||
                     e.getClickedBlock().getType().equals(Material.JUNGLE_FENCE_GATE) || e.getClickedBlock().getType().equals(Material.SPRUCE_FENCE_GATE) ||
                     e.getClickedBlock().getType().equals(Material.CRIMSON_FENCE_GATE) || e.getClickedBlock().getType() == Material.WARPED_FENCE_GATE) ||
-                    e.getClickedBlock().getType().equals(Material.OAK_FENCE_GATE)) {
+                    e.getClickedBlock().getType().equals(Material.OAK_FENCE_GATE) || e.getClickedBlock().getType() == Material.COMPOSTER) {
                 e.setCancelled(!BuildMode.isInBuildMode(e.getPlayer()));
                 return;
             }

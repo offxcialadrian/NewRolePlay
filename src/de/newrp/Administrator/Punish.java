@@ -132,7 +132,7 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
         RECHTEMISSBRAUCH(11, Punishment.BAN, Punishment.WARN, TimeUnit.DAYS.toMillis(7), 0,"Rechte Missbrauch", "Du hast deine Rechte missbraucht."),
         SICHERHEITSBANN(12, Punishment.BAN, null, 0, 0,"Sicherheitsbann", "Du wurdest zur Sicherheit gebannt. Sollte dir der Grund nicht bekannt sein, melde dich bei uns im Support."),
         BAD_NEWS(13, Punishment.CHECKPOINTS, null, 0, 50, "Bad /news", "Du hast den Befehl /news missbraucht."),
-        BAD_NEWS_EXRTREM(13, Punishment.BAN, null, TimeUnit.DAYS.toMillis(1), 150,"Extremer Missbrauch von /news", "Du hast den Befehl /news extrem missbraucht."),
+        BAD_NEWS_EXRTREM(13, Punishment.BAN, Punishment.CHECKPOINTS, TimeUnit.DAYS.toMillis(1), 150,"Extremer Missbrauch von /news", "Du hast den Befehl /news extrem missbraucht."),
         BAD_STAATSMELDUNG(14, Punishment.BAN, null, TimeUnit.DAYS.toMillis(1), 0,"Bad /staatsmeldung", "Du hast den Befehl /staatsmeldung missbraucht."),
         MISSBRAUCH_TRAGEN(15, Punishment.TRAGEN_SPERRE, null, 120, 0,"Missbrauch von /tragen", "Du hast den Befehl /tragen missbraucht."),
         REPEATING_MISSBRAUCH_TRAGEN(16, Punishment.CHECKPOINTS, null, 0, 100,"Wiederholter Missbrauch von /tragen", "Du hast den Befehl /tragen wiederholt missbraucht."),

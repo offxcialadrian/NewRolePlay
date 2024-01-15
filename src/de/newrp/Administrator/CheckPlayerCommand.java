@@ -2,6 +2,7 @@ package de.newrp.Administrator;
 
 import de.newrp.API.*;
 import de.newrp.Berufe.Beruf;
+import de.newrp.Government.Wahlen;
 import de.newrp.House.House;
 import de.newrp.Player.Banken;
 import de.newrp.Police.Fahndung;
@@ -54,6 +55,9 @@ public class CheckPlayerCommand implements CommandExecutor {
             if(Checkpoints.hasCheckpoints(offtg)) {
                 p.sendMessage("§7Checkpoints §8× §e" + Checkpoints.getCheckpoints(offtg));
             }
+            if(Wahlen.wahlenActive()) {
+                p.sendMessage("§7Wahlen §8× §e" + (Wahlen.hasVoted(offtg) ? (Script.hasRank(p, Rank.ADMINISTRATOR, false)?Script.getOfflinePlayer(Wahlen.getVote(offtg)).getName():"Ja") : "Nein"));
+            }
             p.sendMessage("§7Premium §8× §e" + (Premium.hasPremium(offtg) ? "Ja §8(§e" + Script.dateFormat2.format(Premium.getPremiumTime(offtg)) + "§8)": "Nein"));
             p.sendMessage("§7Warns §8× §e" + Punish.getWarns(offtg) + "/3");
             if(!Punish.getWarnsMap(offtg).isEmpty()) {
@@ -89,6 +93,9 @@ public class CheckPlayerCommand implements CommandExecutor {
             p.sendMessage("§7IP §8× §e" + tg.getAddress().getAddress().getHostAddress());
         }
         p.sendMessage("§7Warns §8× §e" + Punish.getWarns(tg) + "/3");
+        if(Wahlen.wahlenActive()) {
+            p.sendMessage("§7Gewählt §8× §e" + (Wahlen.hasVoted(tg) ? (Script.hasRank(p, Rank.ADMINISTRATOR, false)?Script.getOfflinePlayer(Wahlen.getVote(tg)).getName():"Ja") : "Nein"));
+        }
         if(!Punish.getWarnsMap(tg).isEmpty()) {
             for(Map.Entry<Long, String> entry : Punish.getWarnsMap(tg).entrySet()) {
                 p.sendMessage("  §7» §e" + Script.dateFormat2.format(entry.getKey()) + " §8× §e" + entry.getValue());

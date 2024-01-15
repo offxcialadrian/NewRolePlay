@@ -57,6 +57,7 @@ public class RemoveSupport implements CommandExecutor {
         Script.executeUpdate("DELETE FROM ranks WHERE nrp_id=" + Script.getNRPID(tg));
         Script.executeAsyncUpdate("DELETE FROM ticket_greeting WHERE nrp_id=" + Script.getNRPID(tg));
         Script.executeAsyncUpdate("DELETE FROM ticket_farewell WHERE nrp_id=" + Script.getNRPID(tg));
+        Script.executeAsyncUpdate("DELETE from notifications WHERE nrp_id=" + Script.getNRPID(tg));
 
         Forum.syncPermission(tg);
         TeamSpeak.sync(Script.getNRPID(tg));

@@ -22,7 +22,8 @@ public enum HologramList {
     SELFSTORAGE(16, "§8/§6selfstorage",new Location(Script.WORLD, 1012, 67, 1202)),
     BUY_ELEKTRO(17, "§8/§6buy", new Location(Script.WORLD, 865, 73, 964)),
     BUY_SUPERMARKT(18, "§8/§6buy", new Location(Script.WORLD, 640, 67, 861)),
-    AKTIENMARKT(19, "§8/§6aktienmarkt", new Location(Script.WORLD, 943, 76, 941));
+    AKTIENMARKT(19, "§8/§6aktienmarkt", new Location(Script.WORLD, 943, 76, 941)),
+    WAHLEN(20, "§8/§6wahlen", new Location(Script.WORLD, 545, 69, 1014));
 
     private final int id;
     private final String name;

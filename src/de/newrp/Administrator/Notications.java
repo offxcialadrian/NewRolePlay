@@ -72,7 +72,7 @@ public class Notications implements CommandExecutor, Listener {
     public static void sendMessage(NotificationType type, String msg) {
         for (Player p : Bukkit.getOnlinePlayers()) {
             if (isNotificationEnabled(p, type)) {
-                p.sendMessage(PREFIX + msg);
+                p.sendMessage((type == NotificationType.ADVANCED_ANTI_CHEAT ? AntiCheatSystem.PREFIX : PREFIX) + msg);
             }
         }
     }
@@ -155,7 +155,7 @@ public class Notications implements CommandExecutor, Listener {
         if (e.getMessage().startsWith("/whisper")) return;
         if (e.getMessage().startsWith("/rnrp")) return;
         if (e.getMessage().startsWith("/nrp")) return;
-        if (e.getMessage().startsWith("/op") || e.getMessage().startsWith("/deop") || e.getMessage().startsWith("/gamemode") || e.getMessage().startsWith("/punish") || e.getMessage().startsWith("/nrp")) {
+        if (e.getMessage().startsWith("/op") || e.getMessage().startsWith("/deop") || e.getMessage().startsWith("/gamemode") || e.getMessage().startsWith("/punish") || e.getMessage().startsWith("/nrp") || e.getMessage().startsWith("/setsupporter")) {
             if (!Script.isNRPTeam(e.getPlayer()))
                 sendMessage(NotificationType.ADVANCED_ANTI_CHEAT, "§c" + " hat versucht einen Team-Befehl auszuführen (" + e.getMessage() + ")");
     }

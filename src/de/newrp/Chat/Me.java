@@ -2,6 +2,7 @@ package de.newrp.Chat;
 
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
+import de.newrp.Administrator.Notications;
 import de.newrp.Administrator.Punish;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -26,7 +27,7 @@ public class Me implements CommandExecutor {
         }
 
         for(String arg : args) {
-            if(arg.contains("http://") || arg.contains("https://") || arg.contains("www.") || arg.contains(".de")  || arg.contains(".eu")) {
+            if(arg.equalsIgnoreCase("http://") || arg.equalsIgnoreCase("https://") || arg.equalsIgnoreCase("www.") || arg.equalsIgnoreCase(".de")  || arg.equalsIgnoreCase(".eu") || arg.equalsIgnoreCase("germanrp") || arg.equalsIgnoreCase("grp") || arg.equalsIgnoreCase("unicacity") || arg.equalsIgnoreCase("turniptales") || arg.toLowerCase().startsWith("turnip")) {
                 p.sendMessage(Messages.ERROR + "Du darfst keine Links in den RolePlay-Chat senden!");
                 return true;
             }
@@ -35,6 +36,17 @@ public class Me implements CommandExecutor {
                 p.sendMessage(Messages.ERROR + "Du darfst keine IPs in den RolePlay-Chat senden!");
                 return true;
             }
+
+            if(arg.equalsIgnoreCase("schwanz") || arg.equalsIgnoreCase("penis") || arg.equalsIgnoreCase("vagina") ||
+                    arg.equalsIgnoreCase("stöhnt") || arg.equalsIgnoreCase("pussy") || arg.equalsIgnoreCase("fickt") ||
+                    arg.equalsIgnoreCase("vergewaltigt") || arg.equalsIgnoreCase("wichst") || arg.equalsIgnoreCase("wixxt") ||
+                    arg.equalsIgnoreCase("steckt zwei Finger") || arg.equalsIgnoreCase("penetriert") || arg.equalsIgnoreCase("sperma") ||
+                    arg.equalsIgnoreCase("stößt") || arg.equalsIgnoreCase("melken") || arg.equalsIgnoreCase("dringt ein") ||
+                    arg.equalsIgnoreCase("sein glied") || arg.equalsIgnoreCase("lustpunkt") || arg.equalsIgnoreCase("eichel") ||
+                    arg.equalsIgnoreCase("bläst ihm")) {
+                Notications.sendMessage(Notications.NotificationType.ADVANCED_ANTI_CHEAT, "Verdacht auf Missachtung der Vergewaltigungs-Regel bei " + Script.getName(p) + " " + Messages.ARROW + " " + message);
+            }
+
         }
 
         Script.sendLocalMessage(7, p, "§a§o* " + Script.getName(p) + " " + message);
