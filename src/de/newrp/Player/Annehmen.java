@@ -9,6 +9,7 @@ import de.newrp.Government.Steuern;
 import de.newrp.House.House;
 import de.newrp.Medic.Medikamente;
 import de.newrp.Medic.Rezept;
+import de.newrp.Organisationen.Organisation;
 import de.newrp.Shop.Shops;
 import de.newrp.TeamSpeak.TeamSpeak;
 import org.bukkit.Bukkit;
@@ -80,12 +81,12 @@ public class Annehmen implements CommandExecutor {
 
         } else if(offer.containsKey(p.getName() + ".vertrag.from")) {
             Player tg = Script.getPlayer(offer.get(p.getName() + ".vertrag.from"));
-            if(tg == null) {
+            if (tg == null) {
                 p.sendMessage(Messages.ERROR + "Der Spieler ist nicht mehr online.");
                 return true;
             }
 
-            if(!Annehmen.offer.containsKey(p.getName() + ".vertrag.condition")) {
+            if (!Annehmen.offer.containsKey(p.getName() + ".vertrag.condition")) {
                 p.sendMessage(Messages.ERROR + "Dir wird nichts angeboten.");
                 return true;
             }
@@ -98,6 +99,28 @@ public class Annehmen implements CommandExecutor {
             Log.NORMAL.write(tg, "hat den Vertrag von " + Script.getName(p) + " angenommen. (" + condition + ")");
             offer.remove(p.getName() + ".vertrag.from");
             offer.remove(p.getName() + ".vertrag.condition");
+
+        } else if(offer.containsKey(p.getName() + ".joinorganisation")) {
+            Player leader = Bukkit.getPlayer(offer.get(p.getName() + ".joinorganisation"));
+            if (leader == null) {
+                p.sendMessage(Messages.ERROR + "Der Leader ist nicht mehr online.");
+                return true;
+            }
+
+            if (!Beruf.isLeader(leader, true)) {
+                p.sendMessage(Messages.ERROR + "Der Leader ist kein Leader mehr.");
+                return true;
+            }
+
+            Organisation organisation = Organisation.getOrganisation(leader);
+            p.sendMessage(ACCEPTED + "Du bist der Organisation " + organisation.getName() + " beigetreten.");
+            leader.sendMessage(PREFIX + Script.getName(p) + " ist der Organisation beigetreten.");
+            leader.sendMessage(Messages.INFO + "Nutze /salary [Spieler] [Gehalt], um " + Script.getName(p) + " ein Gehalt zu geben.");
+            organisation.addMember(p, leader);
+            offer.remove(p.getName() + ".joinorganisation");
+            Achievement.BERUF_JOIN.grant(p);
+            TeamSpeak.sync(Script.getNRPID(p));
+            Forum.syncPermission(p);
 
         } else if (offer.containsKey(p.getName() + ".shop.sell")) {
             Player sell = Script.getPlayer(offer.get(p.getName() + ".shop.sell.seller"));

@@ -39,6 +39,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
+import org.json.simple.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -84,7 +85,7 @@ public class Script {
         if (Duty.isInDuty(p) && Beruf.getAbteilung(p) != Abteilung.Abteilungen.ZIVILPOLICE)
             p.setPlayerListName((Beruf.getBeruf(p) == Beruf.Berufe.POLICE ? "§9" : "§4") + p.getPlayerListName());
         if (BuildMode.isInBuildMode(p)) p.setPlayerListName("§eB §8× §r" + p.getPlayerListName());
-        if (TicketCommand.isInTicket(p)) p.setPlayerListName("§8[§b§lT§8] §r" + p.getPlayerListName());
+        if (TicketCommand.isInTicket(p)) p.setPlayerListName("§bT §8× §r" + p.getPlayerListName());
     }
 
     public static ItemStack setName(ItemStack is, String s) {
@@ -1053,6 +1054,9 @@ public class Script {
         }
         return null;
     }
+
+
+
 
     public static OfflinePlayer getOfflinePlayer(String name) {
         if (name == null) return null;

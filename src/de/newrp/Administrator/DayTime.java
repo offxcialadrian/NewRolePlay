@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 
 public class DayTime implements CommandExecutor {
 
-    private static final String PREFIX = "§8[§eDayTime§8] §4" + Messages.ARROW + " ";
+    private static final String PREFIX = "§8[§eDayTime§8] §e" + Messages.ARROW + " §7";
 
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {

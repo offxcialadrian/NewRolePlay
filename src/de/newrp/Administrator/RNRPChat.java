@@ -23,7 +23,7 @@ public class RNRPChat implements CommandExecutor {
         }
 
         if (args.length == 0) {
-            p.sendMessage(Messages.ERROR + "/nrp [Nachricht]");
+            p.sendMessage(Messages.ERROR + "/rnrp [Nachricht]");
             return true;
         }
 

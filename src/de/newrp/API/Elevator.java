@@ -52,6 +52,16 @@ public class Elevator implements Listener {
         STADTHALLE(2, "Stadthalle", new Location[]{
                 new Location(Script.WORLD, 545, 70, 991, -90.51386f, -3.9811409f),
                 new Location(Script.WORLD, 545, 78, 992, -90.06347f, 1.4188595f)
+        }),
+        KRANKENHAUS(12, "Krankenhaus", new Location[]{ // Linker Eingang
+                new Location(Script.WORLD, 268, 75, 1235, 270.25488f, -1.0502267f),
+                new Location(Script.WORLD, 268, 83, 1235, 270.33887f, -1.650025f),
+                new Location(Script.WORLD, 268, 91, 1235, 270.25684f, -0.3001627f),
+        }),
+        KRANKENHAUS_2(12, "Krankenhaus", new Location[]{ // Rechter Eingang
+                new Location(Script.WORLD, 268, 75, 1231, 270.25684f, -1.6501942f),
+                new Location(Script.WORLD, 268, 83, 1231, 270.39258f, -0.15001848f),
+                new Location(Script.WORLD, 268, 91, 1231, 270.53516f, 1.1999671f),
         });
 
         int id;

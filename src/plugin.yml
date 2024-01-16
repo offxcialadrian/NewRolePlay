@@ -24,7 +24,7 @@ commands:
     description: spiele blackjack
   buildmode:
     description: geh in den buildmode
-    aliases: [ bm ]
+    aliases: [ bm, baumodus ]
   goto:
     description: teleports you to a point
   weather:
@@ -454,3 +454,12 @@ commands:
   transferaccount:
     description: transfer your account
     aliases: [ transferacc ]
+  blacklist:
+    description: view the blacklist
+    aliases: [ blacklists, bl ]
+  o:
+    description: send a message to the organisations chat
+    aliases: [ orgchat, org ]
+  joinorganisation:
+    description: join an organisation
+    aliases: [ joinorg ]

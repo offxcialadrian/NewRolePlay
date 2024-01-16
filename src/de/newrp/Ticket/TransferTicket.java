@@ -4,6 +4,7 @@ import de.newrp.API.Messages;
 import de.newrp.API.Rank;
 import de.newrp.API.Script;
 import de.newrp.Administrator.SDuty;
+import de.newrp.Player.AFK;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -44,6 +45,11 @@ public class TransferTicket implements CommandExecutor {
 
         if(!Script.hasRank(tg, Rank.SUPPORTER, false)) {
             p.sendMessage(Messages.ERROR + "Der Spieler ist kein Supporter.");
+            return true;
+        }
+
+        if(AFK.isAFK(tg)) {
+
             return true;
         }
 

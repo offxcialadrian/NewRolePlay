@@ -345,21 +345,95 @@ public class ElevatorDoor implements Listener {
                         new Location(Script.WORLD, 547, 78, 991),
                         new Location(Script.WORLD, 547, 80, 991)
                 }, Elevator.ElevatorAPI.STADTHALLE, 1),
-        KRANKENHAUS_ETAGE_RECHTER_AUFZUG_0(12, new Location(Script.WORLD, 267, 76, 1230)/*fahrknopf*/,
-        new Location[]{
+        KRANKENHAUS_ETAGE_RECHTER_AUFZUG_0(12, new Location(Script.WORLD, 267, 76, 1230),
+                new Location[]{
+                        new Location(Script.WORLD, 271, 76, 1229)},
+                new Location[]{
+                        new Location(Script.WORLD, 270, 77, 1230),
+                        new Location(Script.WORLD, 270, 77, 1231),
+                        new Location(Script.WORLD, 270, 77, 1232),
+                        new Location(Script.WORLD, 270, 76, 1230),
+                        new Location(Script.WORLD, 270, 76, 1231),
+                        new Location(Script.WORLD, 270, 76, 1232),
+                        new Location(Script.WORLD, 270, 75, 1230),
+                        new Location(Script.WORLD, 270, 75, 1231),
+                        new Location(Script.WORLD, 270, 75, 1232),
+                }, Elevator.ElevatorAPI.KRANKENHAUS_2, 0),
 
-        },
-        new Location[]{
-            new Location(Script.WORLD, 270, 77, 1230),
-                    new Location(Script.WORLD, 270, 77, 1231),
-                    new Location(Script.WORLD, 270, 77, 1232),
-                    new Location(Script.WORLD, 270, 76, 1230),
-                    new Location(Script.WORLD, 270, 76, 1231),
-                    new Location(Script.WORLD, 270, 76, 1232),
-                    new Location(Script.WORLD, 270, 75, 1230),
-                    new Location(Script.WORLD, 270, 75, 1231),
-                    new Location(Script.WORLD, 270, 75, 1232),
-        }, Elevator.ElevatorAPI.X3, 12);
+        KRANKENHAUS_ETAGE_LINKER_AUFZUG_0(12,new Location(Script.WORLD, 267, 76, 1236),
+                new Location[]{
+                        new Location(Script.WORLD, 271, 76, 1237)},
+                new Location[]{
+                        new Location(Script.WORLD, 270, 77, 1234),
+                        new Location(Script.WORLD, 270, 77, 1235),
+                        new Location(Script.WORLD, 270, 77, 1236),
+                        new Location(Script.WORLD, 270, 76, 1234),
+                        new Location(Script.WORLD, 270, 76, 1235),
+                        new Location(Script.WORLD, 270, 76, 1236),
+                        new Location(Script.WORLD, 270, 75, 1234),
+                        new Location(Script.WORLD, 270, 75, 1235),
+                        new Location(Script.WORLD, 270, 75, 1236),
+                }, Elevator.ElevatorAPI.KRANKENHAUS, 0),
+
+        KRANKENHAUS_ETAGE_1_RECHTER_AUFZUG_0(12, new Location(Script.WORLD, 267, 84, 1230),
+                new Location[]{
+                        new Location(Script.WORLD, 271, 84, 1229)},
+                new Location[]{
+                        new Location(Script.WORLD, 270, 85, 1230),
+                        new Location(Script.WORLD, 270, 85, 1231),
+                        new Location(Script.WORLD, 270, 85, 1232),
+                        new Location(Script.WORLD, 270, 84, 1230),
+                        new Location(Script.WORLD, 270, 84, 1231),
+                        new Location(Script.WORLD, 270, 84, 1232),
+                        new Location(Script.WORLD, 270, 83, 1230),
+                        new Location(Script.WORLD, 270, 83, 1231),
+                        new Location(Script.WORLD, 270, 83, 1232),
+                }, Elevator.ElevatorAPI.KRANKENHAUS_2, 1),
+
+        KRANKENHAUS_ETAGE_1_LINKER_AUFZUG_0(12, new Location(Script.WORLD, 267, 84, 1236),
+          new Location[]{
+            new Location(Script.WORLD, 271, 84, 1237)},
+                new Location[]{
+            new Location(Script.WORLD, 270, 85, 1234),
+                    new Location(Script.WORLD, 270, 85, 1235),
+                    new Location(Script.WORLD, 270, 85, 1236),
+                    new Location(Script.WORLD, 270, 84, 1234),
+                    new Location(Script.WORLD, 270, 84, 1235),
+                    new Location(Script.WORLD, 270, 84, 1236),
+                    new Location(Script.WORLD, 270, 83, 1234),
+                    new Location(Script.WORLD, 270, 83, 1235),
+                    new Location(Script.WORLD, 270, 83, 1236),
+        }, Elevator.ElevatorAPI.KRANKENHAUS, 1),
+
+        KRANKENHAUS_ETAGE_2_RECHTER_AUFZUG_0(12, new Location(Script.WORLD, 267, 92, 1230),
+          new Location[]{
+            new Location(Script.WORLD, 271, 92, 1229)},
+                new Location[]{
+            new Location(Script.WORLD, 270, 93, 1230),
+                    new Location(Script.WORLD, 270, 93, 1231),
+                    new Location(Script.WORLD, 270, 93, 1232),
+                    new Location(Script.WORLD, 270, 92, 1230),
+                    new Location(Script.WORLD, 270, 92, 1231),
+                    new Location(Script.WORLD, 270, 92, 1232),
+                    new Location(Script.WORLD, 270, 91, 1230),
+                    new Location(Script.WORLD, 270, 91, 1231),
+                    new Location(Script.WORLD, 270, 91, 1232),
+        }, Elevator.ElevatorAPI.KRANKENHAUS_2, 2),
+
+        KRANKENHAUS_ETAGE_2_LINKER_AUFZUG_0(12, new Location(Script.WORLD, 267, 92, 1236),
+                new Location[]{
+                        new Location(Script.WORLD, 271, 92, 1237)},
+                new Location[]{
+                        new Location(Script.WORLD, 270, 93, 1234),
+                        new Location(Script.WORLD, 270, 93, 1235),
+                        new Location(Script.WORLD, 270, 93, 1236),
+                        new Location(Script.WORLD, 270, 92, 1234),
+                        new Location(Script.WORLD, 270, 92, 1235),
+                        new Location(Script.WORLD, 270, 92, 1236),
+                        new Location(Script.WORLD, 270, 91, 1235),
+                        new Location(Script.WORLD, 270, 91, 1236),
+                        new Location(Script.WORLD, 270, 91, 1234),
+                }, Elevator.ElevatorAPI.KRANKENHAUS, 2);
 
 
         int id;

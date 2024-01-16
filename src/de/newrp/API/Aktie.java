@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit;
 public enum Aktie {
 
     AEKI(0, "AEKI", 1000),
-    CAFE_AM_X3(1, "Cafe am X3", 1000),
+    CAFE_AM_X3(1, "wCafe am X3", 1000),
     CAFE_STADTHALLE(2, "Cafe Stadthalle", 1000),
     SUPERMARKT_STADTHALLE(3, "Supermarkt Stadthalle", 1000),
     AUTOHAENDLER_STADTHALLE(4, "Autohändler Stadthalle", 1000),

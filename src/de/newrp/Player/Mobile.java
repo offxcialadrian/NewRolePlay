@@ -311,10 +311,6 @@ public class Mobile implements Listener {
             }
             long time = System.currentTimeMillis();
 
-            Long lastUsage = TOOGLE_COOLDOWN.get(p.getName());
-            if (lastUsage != null && lastUsage + TimeUnit.MINUTES.toMillis(4) > time) {
-                return;
-            }
 
             Long lastClick = LAST_CLICK.get(p.getName());
             if (lastClick == null) {
@@ -394,6 +390,7 @@ public class Mobile implements Listener {
         Player p = (Player) e.getWhoClicked();
         if(e.getCurrentItem().getItemMeta().getDisplayName().equals("§8» §cAusschalten")) {
             p.getInventory().setItemInHand(new ItemBuilder(Material.IRON_INGOT).setName("§c" + getPhone(p).getName()).build());
+            Me.sendMessage(p, "schaltet " + (Script.getGender(p)==Gender.MALE?"sein":"ihr") + " Handy ein.");
             p.closeInventory();
             return;
         }

@@ -5,6 +5,7 @@ import de.newrp.Administrator.Punish;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Government.Straftat;
 import de.newrp.House.House;
+import de.newrp.Organisationen.Organisation;
 import de.newrp.Police.Fahndung;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -32,6 +33,7 @@ public class StatsCommand implements CommandExecutor {
         p.sendMessage("§7Level §8× §e" + Script.getLevel(p));
         p.sendMessage("§7Exp §8× §e" + Script.getExp(p) + "/" + Script.getLevelCost(p) + " Exp §8(§e" + Script.getPercentage(Script.getExp(p), Script.getLevelCost(p)) + "%§8)");
         p.sendMessage("§7Beruf §8× §e" + (Beruf.hasBeruf(p) ? Beruf.getBeruf(p).getName() : "Kein Beruf") + (Beruf.isLeader(p, true) ? " §8(§eLeader§8)" : ""));
+        p.sendMessage("§7Organisation §8× §e" + (Organisation.hasOrganisation(p) ? Organisation.getOrganisation(p).getName() : "Keine Organisation") + (Organisation.isLeader(p, true) ? " §8(§eLeader§8)" : ""));
         p.sendMessage("§7Warns §8× §e" + Punish.getWarns(p) + "/3");
         if(!Punish.getWarnsMap(p).isEmpty()) {
             for(Map.Entry<Long, String> entry : Punish.getWarnsMap(p).entrySet()) {

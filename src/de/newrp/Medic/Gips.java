@@ -87,6 +87,7 @@ public class Gips implements Listener {
                 public void run() {
                     Krankheit.GEBROCHENER_ARM.remove(Script.getNRPID(rightClicked));
                     Krankheit.GEBROCHENES_BEIN.remove(Script.getNRPID(rightClicked));
+                    p.setWalkSpeed(0.2F);
                 }
             }. runTaskLater(main.getInstance(), 20L * 10);
 
@@ -151,7 +152,7 @@ public class Gips implements Listener {
         if (e.getFrom().getY() < e.getTo().getY()) {
             if (Krankheit.GEBROCHENES_BEIN.isInfected(Script.getNRPID(p))) {
                 p.damage(1D);
-                p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20, 1, false, false));
+                //p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20, 1, false, false));
             }
         }
     }

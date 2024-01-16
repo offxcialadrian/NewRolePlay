@@ -2,6 +2,7 @@ package de.newrp.Berufe;
 
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
+import de.newrp.Organisationen.Organisation;
 import de.newrp.Player.Annehmen;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -16,8 +17,8 @@ public class InviteCommand implements CommandExecutor {
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
         Player p = (Player) cs;
 
-        if (!Beruf.hasBeruf(p)) {
-            p.sendMessage(Messages.ERROR + "Du hast keinen Beruf.");
+        if (!Beruf.hasBeruf(p) && !Organisation.hasOrganisation(p)) {
+            p.sendMessage(Messages.NO_PERMISSION);
             return true;
         }
 
@@ -26,7 +27,7 @@ public class InviteCommand implements CommandExecutor {
             return true;
         }
 
-        if (!Beruf.isLeader(p, true)) {
+        if (!Beruf.isLeader(p, true) && !Organisation.isLeader(p, true)) {
             p.sendMessage(Messages.ERROR + "Du bist kein Leader.");
             return true;
         }
@@ -47,14 +48,14 @@ public class InviteCommand implements CommandExecutor {
             return true;
         }
 
-        if (Beruf.hasBeruf(tg)) {
-            p.sendMessage(Messages.ERROR + "Der Spieler hat bereits einen Beruf.");
+        if (Beruf.hasBeruf(tg) || Organisation.hasOrganisation(tg)) {
+            p.sendMessage(Messages.ERROR + "Der Spieler hat bereits einen Beruf oder ist bereits in einer Organisation.");
             return true;
         }
 
-        Annehmen.offer.put(tg.getName() + ".joinberuf", p.getName());
-        p.sendMessage(PREFIX + "Du hast " + Script.getName(tg) + " in die " + Beruf.getBeruf(p).getName() + " eingeladen.");
-        tg.sendMessage(PREFIX + "Du wurdest von " + Script.getName(p) + " in die " + Beruf.getBeruf(p).getName() + " eingeladen.");
+        Annehmen.offer.put(tg.getName() + ".joinorganisation", p.getName());
+        p.sendMessage(PREFIX + "Du hast " + Script.getName(tg) + " in deine Organisation " + Organisation.getOrganisation(p).getName() + " eingeladen.");
+        tg.sendMessage(PREFIX + "Du wurdest von " + Script.getName(p) + " in deine Organisation " + Organisation.getOrganisation(p).getName() + " eingeladen.");
         Script.sendAcceptMessage(tg);
 
 

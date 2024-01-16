@@ -17,7 +17,7 @@ public class Bank implements CommandExecutor {
         Player p = (Player) cs;
         ATM atm = ATM.getNearATM(p);
 
-        if(atm == null && (!(args[0].equalsIgnoreCase("überweisen"))&&Premium.hasPremium(p))) {
+        if(atm == null && (!(args.length == 2 && args[0].equalsIgnoreCase("überweisen")&&Premium.hasPremium(p)))) {
             p.sendMessage(Messages.ERROR + "Du bist nicht in der Nähe eines Bankautomats.");
             return true;
         }

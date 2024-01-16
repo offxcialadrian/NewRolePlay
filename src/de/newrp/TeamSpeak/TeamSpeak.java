@@ -10,6 +10,7 @@ import com.github.theholywaffle.teamspeak3.api.reconnect.ReconnectStrategy;
 import com.github.theholywaffle.teamspeak3.api.wrapper.Client;
 import de.newrp.API.*;
 import de.newrp.Berufe.Beruf;
+import de.newrp.Organisationen.Organisation;
 import de.newrp.main;
 import org.bukkit.Bukkit;
 
@@ -126,6 +127,11 @@ public class TeamSpeak {
                 addToServerGroup(f.getTeamspeakServerGroup(), dbID);
                 addToChannelGroup(f.getChannelID(), (f.isLeader(id, true) ? TeamspeakServerGroup.TeamspeakChannelGroup.LEADER : TeamspeakServerGroup.TeamspeakChannelGroup.MEMBER), dbID);
             }
+            Organisation o = Organisation.getOrganisation(Script.getOfflinePlayer(id));
+            if(o != null && o.getTeamspeakServerGroup() != null) {
+                addToServerGroup(o.getTeamspeakServerGroup(), dbID);
+                addToChannelGroup(o.getChannelID(), (o.isLeader(id, true) ? TeamspeakServerGroup.TeamspeakChannelGroup.LEADER : TeamspeakServerGroup.TeamspeakChannelGroup.MEMBER), dbID);
+            }
 
             Rank rank = Script.getRank(Script.getPlayer(id));
             switch (rank) {
@@ -220,6 +226,12 @@ public class TeamSpeak {
                         removeFromChannelGroup(cID, dbID);
                     }
                 }
+            }
+
+            Organisation o = Organisation.getOrganisation(Script.getOfflinePlayer(id));
+            if(o != null && o.getTeamspeakServerGroup() != null) {
+                addToServerGroup(o.getTeamspeakServerGroup(), dbID);
+                addToChannelGroup(o.getChannelID(), (o.isLeader(id, true) ? TeamspeakServerGroup.TeamspeakChannelGroup.LEADER : TeamspeakServerGroup.TeamspeakChannelGroup.MEMBER), dbID);
             }
 
             if (!admin) {

@@ -47,7 +47,18 @@ public enum ShopItem {
     ANTIBIOTIKA(61, "§fAntibiotika", new ItemStack(Material.PAPER), 5, 2, 25, 2, 3000, true, true, false, new ShopType[] {ShopType.PHARMACY}),
     HUSTENSAFT(62, "§fHustensaft", new ItemStack(Material.PAPER), 5, 2, 25, 2, 3000, true, true, false, new ShopType[] {ShopType.PHARMACY}),
     ENTZUENDUNGSHEMMENDE_SALBE(63, "§fEntzündungshemmende Salbe", new ItemStack(Material.PAPER), 5, 2, 25, 2, 3000, true, true, false, new ShopType[] {ShopType.PHARMACY}),
-    WINGSUIT(64, "§7Wingsuit", new ItemStack(Material.ELYTRA), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.GUNSHOP});
+    WINGSUIT(64, "§7Wingsuit", new ItemStack(Material.ELYTRA), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.GUNSHOP}),
+    CD_1(65, "§6Gold", new ItemStack(Material.MUSIC_DISC_11), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.MUSIC}),
+    CD_2(66, "§6Green", new ItemStack(Material.MUSIC_DISC_13), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.MUSIC}),
+    CD_3(67, "§6Blocks", new ItemStack(Material.MUSIC_DISC_BLOCKS), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.MUSIC}),
+    CD_4(68, "§6Chirp", new ItemStack(Material.MUSIC_DISC_CHIRP), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.MUSIC}),
+    CD_5(69, "§6Far", new ItemStack(Material.MUSIC_DISC_FAR), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.MUSIC}),
+    CD_6(70, "§6Mall", new ItemStack(Material.MUSIC_DISC_MALL), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.MUSIC}),
+    CD_7(71, "§6Mellohi", new ItemStack(Material.MUSIC_DISC_MELLOHI), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.MUSIC}),
+    CD_8(72, "§6Stal", new ItemStack(Material.MUSIC_DISC_STAL), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.MUSIC}),
+    CD_9(73, "§6Strad", new ItemStack(Material.MUSIC_DISC_STRAD),   1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.MUSIC}),
+    CD_10(74, "§6Ward", new ItemStack(Material.MUSIC_DISC_WARD), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.MUSIC}),
+    CD_11(75, "§6Wait", new ItemStack(Material.MUSIC_DISC_WAIT), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.MUSIC});
 
     private final int id;
     private final String name;

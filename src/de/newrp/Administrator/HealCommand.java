@@ -1,9 +1,6 @@
 package de.newrp.Administrator;
 
-import de.newrp.API.Log;
-import de.newrp.API.Messages;
-import de.newrp.API.Rank;
-import de.newrp.API.Script;
+import de.newrp.API.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -45,12 +42,18 @@ public class HealCommand implements CommandExecutor {
             for (PotionEffect e : p.getActivePotionEffects()) {
                 p.removePotionEffect(e.getType());
             }
+            Krankheit.GEBROCHENER_ARM.remove(Script.getNRPID(p));
+            Krankheit.GEBROCHENES_BEIN.remove(Script.getNRPID(p));
+            p.setWalkSpeed(0.2F);
             return true;
         }
 
         Player tg = Bukkit.getPlayer(args[0]);
-        if (tg == null)
+        if (tg == null) {
+            p.sendMessage(Messages.PLAYER_NOT_FOUND);
             return true;
+        }
+        
         p.sendMessage(PREFIX + "Du hast " + Script.getName(tg) + " geheilt.");
         tg.sendMessage(PREFIX + Script.getRank(p).getName(p) + " " + Script.getName(p) + " hat dich geheilt.");
         Script.sendTeamMessage(p, ChatColor.RED, "hat " + Script.getName(tg) + " geheilt", true);
@@ -59,6 +62,9 @@ public class HealCommand implements CommandExecutor {
         tg.setHealth(tg.getMaxHealth());
         tg.setFoodLevel(20);
         tg.setFireTicks(0);
+        Krankheit.GEBROCHENER_ARM.remove(Script.getNRPID(tg));
+        Krankheit.GEBROCHENES_BEIN.remove(Script.getNRPID(tg));
+        p.setWalkSpeed(0.2F);
         for (PotionEffect e : p.getActivePotionEffects()) {
             tg.removePotionEffect(e.getType());
         }

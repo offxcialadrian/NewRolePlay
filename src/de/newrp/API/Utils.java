@@ -3,10 +3,7 @@ package de.newrp.API;
 import com.google.common.base.Function;
 import com.google.common.base.Functions;
 import com.google.common.collect.ImmutableMap;
-import de.newrp.Administrator.BuildMode;
-import de.newrp.Administrator.Notications;
-import de.newrp.Administrator.SDuty;
-import de.newrp.Administrator.TippOfTheDay;
+import de.newrp.Administrator.*;
 import de.newrp.Government.Wahlen;
 import de.newrp.Player.Mobile;
 import de.newrp.TeamSpeak.TeamSpeak;
@@ -171,6 +168,7 @@ public class Utils implements Listener {
         } else {
             if (!Script.getCountry(p).contains("Germany") && !Script.getCountry(p).contains("Austria") && !Script.getCountry(p).contains("Switzerland") && !Script.isWhitelistedIP(p.getAddress().getAddress().getHostAddress())) {
                 p.kickPlayer("§8» §cNRP × New RolePlay §8┃ §cAccess denied §8« \n\n§8§m------------------------------\n\n§7We are sorry to inform you that only players inside DE, AT & CH can join the server.\n\n§7If you think this is a mistake, please contact our support.\n\n§8§m------------------------------");
+                Script.sendTeamMessage(AntiCheatSystem.PREFIX + Script.getName(p) + " wurde der Zugriff auf den Server verweigert, da er nicht aus Deutschland, Österreich oder der Schweiz kommt.");
                 return;
             }
             Script.registerPlayer(e.getPlayer());

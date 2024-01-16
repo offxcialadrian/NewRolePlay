@@ -20,6 +20,9 @@ import de.newrp.Medic.*;
 import de.newrp.News.BreakingNews;
 import de.newrp.News.NewsCommand;
 import de.newrp.News.Zeitung;
+import de.newrp.Organisationen.BlackListCommand;
+import de.newrp.Organisationen.Blacklist;
+import de.newrp.Organisationen.OrganisationsChat;
 import de.newrp.Player.*;
 import de.newrp.Police.*;
 import de.newrp.Runnable.*;
@@ -292,6 +295,9 @@ public class main extends JavaPlugin {
         getCommand("forceaktien").setExecutor(new ForceAktien());
         getCommand("backupcode").setExecutor(new BackupCode());
         getCommand("transferaccount").setExecutor(new TransferAccount());
+        getCommand("blacklist").setExecutor(new BlackListCommand());
+        getCommand("o").setExecutor(new OrganisationsChat());
+        getCommand("joinorganisation").setExecutor(new JoinOrganisation());
 
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new SDuty(), this);
@@ -366,6 +372,8 @@ public class main extends JavaPlugin {
         pm.registerEvents(new Impfen(), this);
         pm.registerEvents(new AktienMarkt(), this);
         pm.registerEvents(new Tragen(), this);
+        pm.registerEvents(new BlackListCommand(), this);
+        pm.registerEvents(new JoinOrganisation(), this);
 
 
         new AsyncHealth().runTaskTimerAsynchronously(this, 120 * 20L, 120 * 20L);
@@ -380,6 +388,7 @@ public class main extends JavaPlugin {
         Hologram.reload();
         ATM.restore();
         House.loadHouses();
+        Blacklist.load();
 
         Bukkit.getConsoleSender().sendMessage("§cNRP §8× §astarting complete..");
         Bukkit.getConsoleSender().sendMessage("§cNRP §8× §aViel Erfolg heute..");
