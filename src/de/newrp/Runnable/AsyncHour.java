@@ -5,6 +5,7 @@ import de.newrp.Administrator.SDuty;
 import de.newrp.Berufe.Abteilung;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Government.Stadtkasse;
+import de.newrp.Organisationen.Organisation;
 import de.newrp.Player.AFK;
 import de.newrp.Shop.Shop;
 import de.newrp.Shop.ShopItem;
@@ -52,6 +53,17 @@ public class AsyncHour extends BukkitRunnable {
                     Script.getPlayer(shop.getOwner()).sendMessage(Shop.PREFIX + "Beachte bitte, dass es eine Schließung deines Shops und eine Strafanzeige zur Folge haben kann.");
                 }
             }
+        }
+
+        for(Organisation o : Organisation.values()) {
+            int i = 0;
+            for(Player all : o.getMembers()) {
+                if(!AFK.isAFK(all)) {
+                    i += 10;
+                }
+            }
+            if(i == 0) continue;
+            o.addExp(i);
         }
 
         Aktie.update();

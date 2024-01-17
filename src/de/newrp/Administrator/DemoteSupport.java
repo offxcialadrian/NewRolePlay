@@ -41,6 +41,11 @@ public class DemoteSupport implements CommandExecutor {
             return true;
         }
 
+        if(Script.getRank(tg) == Rank.SUPPORTER) {
+            p.sendMessage(Messages.ERROR + "Der Spieler ist bereits Supporter.");
+            return true;
+        }
+
         demote(p, tg);
 
         return false;

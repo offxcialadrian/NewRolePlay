@@ -98,7 +98,7 @@ public enum Organisation {
 
     public int getLevelCost() {
         int level_cost;
-        level_cost = 692 + ((getLevel() * 2) * 1628);
+        level_cost = 692 + ((getLevel() * 2) * 3628);
         if (getLevel() % 2 == 0) {
             level_cost += 173;
         }
@@ -358,18 +358,18 @@ public enum Organisation {
     public void addMember(Player p, Player leader) {
         Script.executeUpdate("INSERT INTO organisation (nrp_id, organisationID, salary, rank, leader, coleader) VALUES ('" + Script.getNRPID(p) + "', '" + getID() + "', '0', '0', '0', '0')");
         for (Player members : getPlayersFromOrganisation(this)) {
-            members.sendMessage("§8[§e" + getName() + "§8] §e" + p.getName() + " §eist dem Organisation beigetreten.");
+            members.sendMessage(PREFIX + Script.getName(p) + "  ist der Organisation beigetreten.");
         }
-        sendLeaderMessage("§8[§e" + getName() + "§8] §e" + Script.getName(leader) + " §ehat " + Script.getName(p) + " in den Organisation eingeladen.");
-        Script.sendTeamMessage("§8[§eOrganisationControl§8] §e" + Script.getName(leader) + " §ehat " + Script.getName(p) + " in die Organisation " + getName() + " eingeladen.");
+        sendLeaderMessage(PREFIX + Script.getName(leader) + " hat " + Script.getName(p) + " in die Organisation eingeladen.");
+        Script.sendTeamMessage("§8[§6OC§8] §6" + Messages.ARROW + " §7" + Script.getName(leader) + " §7hat " + Script.getName(p) + " in die Organisation " + getName() + " eingeladen.");
     }
 
     public void addMember(OfflinePlayer p) {
         Script.executeUpdate("INSERT INTO organisation (nrp_id, OrganisationID, salary, rank, leader, coleader) VALUES ('" + Script.getNRPID(p) + "', '" + getID() + "', '0', '0', '0', '0')");
         for (Player members : getPlayersFromOrganisation(this)) {
-            members.sendMessage("§8[§e" + getName() + "§8] §e" + p.getName() + " §eist dem Organisation beigetreten.");
+            members.sendMessage(PREFIX + p.getName() + " ist der Organisation beigetreten.");
         }
-        sendLeaderMessage("§8[§e" + getName() + "§8] §e" + p.getName() + " ist nun Teil des Organisations.");
+        sendLeaderMessage(PREFIX + p.getName() + " ist nun Teil der Organisation.");
     }
 
     public void removeMember(Player p, Player leader) {
@@ -377,10 +377,10 @@ public enum Organisation {
         Equip.removeEquip(p);
         Script.executeUpdate("DELETE FROM organisation WHERE nrp_id = '" + Script.getNRPID(p) + "'");
         for (Player members : getPlayersFromOrganisation(this)) {
-            members.sendMessage("§8[§e" + getName() + "§8] §e" + p.getName() + " §ehat die Organisation verlassen.");
+            members.sendMessage(PREFIX + Script.getName(p) + " §7hat die Organisation verlassen.");
         }
-        sendLeaderMessage("§8[§e" + getName() + "§8] §e" + Script.getName(leader) + " §ehat " + Script.getName(p) + " aus der Organisation geworfen.");
-        Script.sendTeamMessage("§8[§eOrganisationsControl§8] §e" + Script.getName(leader) + " §ehat " + Script.getName(p) + " aus der Organisation " + getName() + " geworfen.");
+        sendLeaderMessage(PREFIX + Script.getName(leader) + " §7hat " + Script.getName(p) + " aus der Organisation geworfen.");
+        Script.sendTeamMessage("§8[§6OC§8] §6" + Messages.ARROW + " §7" + Script.getName(leader) + " §7hat " + Script.getName(p) + " aus der Organisation " + getName() + " geworfen.");
     }
 
     public void removeMember(OfflinePlayer p, Player leader) {
@@ -390,17 +390,17 @@ public enum Organisation {
         }
         Script.executeUpdate("DELETE FROM organisation WHERE nrp_id = '" + Script.getNRPID(p) + "'");
         for (Player members : getPlayersFromOrganisation(this)) {
-            members.sendMessage("§8[§e" + getName() + "§8] §e" + p.getName() + " §ehat die Organisation verlassen.");
+            members.sendMessage(PREFIX + p.getName() + " §7hat die Organisation verlassen.");
         }
-        sendLeaderMessage("§8[§e" + getName() + "§8] §e" + Script.getName(leader) + " §ehat " + p.getName() + " aus die Organisation geworfen.");
-        Script.sendTeamMessage("§8[§eOrganisationsControl§8] §e" + Script.getName(leader) + " §ehat " + p.getName() + " aus die Organisation " + getName() + " geworfen.");
-        Script.addOfflineMessage(p, "§8[§eOrganisation§8] §e" + Messages.ARROW + " Du wurdest aus deiner Organisation geworfen.");
+        sendLeaderMessage(PREFIX + Script.getName(leader) + " §7hat " + p.getName() + " aus die Organisation geworfen.");
+        Script.sendTeamMessage("§8[§6OC§8] §6" + Messages.ARROW + " §7" + Script.getName(leader) + " §7hat " + p.getName() + " aus der Organisation " + getName() + " geworfen.");
+        Script.addOfflineMessage(p, "§8[§6OC§8] §6" + Messages.ARROW + " §7Du wurdest aus deiner Organisation geworfen.");
     }
 
     public void removeMember(OfflinePlayer p) {
         Script.executeUpdate("DELETE FROM organisation WHERE nrp_id = '" + Script.getNRPID(p) + "'");
         for (Player members : getPlayersFromOrganisation(this)) {
-            members.sendMessage("§8[§e" + getName() + "§8] §e" + p.getName() + " §ehat die Organisation verlassen.");
+            members.sendMessage(PREFIX + p.getName() + " §7hat die Organisation verlassen.");
         }
     }
 

@@ -64,6 +64,7 @@ public class JoinOrganisation implements CommandExecutor, Listener {
             if (Beruf.getBeruf(p) != null) Beruf.getBeruf(p).removeMember(p, p);
             if (Organisation.getOrganisation(p) != null) Organisation.getOrganisation(p).removeMember(p, p);
             beruf.addMember(p, p);
+            Organisation.setLeader(p, true);
             p.sendMessage(PREFIX + "Du bist nun Teil der " + beruf.getName() + ".");
             Script.sendTeamMessage(p, ChatColor.YELLOW, "ist nun Teil der " + beruf.getName() + ".", true);
             p.sendMessage(Messages.INFO + "Du hast automatisch die Leaderrechte erhalten.");

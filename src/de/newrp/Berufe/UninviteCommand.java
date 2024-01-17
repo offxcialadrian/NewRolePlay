@@ -31,7 +31,7 @@ public class UninviteCommand implements CommandExecutor {
             return true;
         }
 
-        if (!Beruf.isLeader(p, true)) {
+        if (!Beruf.isLeader(p, true) && !Organisation.isLeader(p, true)) {
             p.sendMessage(Messages.ERROR + "Du bist kein Leader.");
             return true;
         }

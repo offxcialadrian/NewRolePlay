@@ -10,9 +10,12 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
+
 public class HealAddiction implements CommandExecutor {
 
     public static String PREFIX = "§8[§c§lRettungsdienst§8] §7" + Messages.ARROW + "§7";
+    public static ArrayList<String> cooldown = new ArrayList<>();
 
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
@@ -44,6 +47,12 @@ public class HealAddiction implements CommandExecutor {
             return true;
         }
 
+        if(cooldown.contains(tg.getName())) {
+            p.sendMessage(Messages.ERROR + "Der Spieler wurde bereits behandelt.");
+            return true;
+        }
+
+        cooldown.add(tg.getName());
         Drogen.healAddiction(p);
         p.sendMessage(PREFIX + "Du hast " + Script.getName(tg) + " wegen seiner Abhängigkeit behandelt (" + Drogen.getAddictionHeal(tg) + "/3).");
         tg.sendMessage(PREFIX + "Du wurdest von " + Script.getName(p) + " wegen deiner Abhängigkeit behandelt (" + Drogen.getAddictionHeal(tg) + "/3).");

@@ -53,6 +53,29 @@ public class InviteCommand implements CommandExecutor {
             return true;
         }
 
+        if(Beruf.hasBeruf(p)) {
+            if (Beruf.getBeruf(p) != Beruf.getBeruf(tg)) {
+                p.sendMessage(Messages.ERROR + "Der Spieler ist nicht in deinem Beruf.");
+                return true;
+            }
+
+            Annehmen.offer.put(tg.getName() + ".joinberuf", p.getName());
+            p.sendMessage(PREFIX + "Du hast " + Script.getName(tg) + " in " + Organisation.getOrganisation(p).getName() + " eingeladen.");
+            tg.sendMessage(PREFIX + "Du wurdest von " + Script.getName(p) + " in " + Organisation.getOrganisation(p).getName() + " eingeladen.");
+            Script.sendAcceptMessage(tg);
+        }
+
+            if(Organisation.getOrganisation(p) != Organisation.getOrganisation(tg)) {
+                p.sendMessage(Messages.ERROR + "Der Spieler ist nicht in deiner Organisation.");
+                return true;
+            }
+
+            if(Organisation.getOrganisation(p).getAllMembers().size() >= Organisation.getOrganisation(p).getLevel()*3) {
+                p.sendMessage(Messages.ERROR + "Deine Organisation ist voll.");
+                return true;
+            }
+
+
         Annehmen.offer.put(tg.getName() + ".joinorganisation", p.getName());
         p.sendMessage(PREFIX + "Du hast " + Script.getName(tg) + " in deine Organisation " + Organisation.getOrganisation(p).getName() + " eingeladen.");
         tg.sendMessage(PREFIX + "Du wurdest von " + Script.getName(p) + " in deine Organisation " + Organisation.getOrganisation(p).getName() + " eingeladen.");

@@ -43,6 +43,7 @@ public class CheckOrganisation implements CommandExecutor {
         p.sendMessage(PREFIX + "§8=== §6" + o.getName() + " §8===");
         p.sendMessage(PREFIX + "§8» §7Name: §e" + o.getName());
         p.sendMessage(PREFIX + "§8» §7Level: §e" + o.getLevel());
+        p.sendMessage(PREFIX + "§8» §7Exp: §e" + o.getExp() + " / " + o.getLevelCost() + " (" + Script.getPercentage(o.getExp(), o.getLevelCost()) + "%)");
         p.sendMessage(PREFIX + "§8» §7Kontostand: §e" + o.getKasse() + "€");
         p.sendMessage(PREFIX + "§8» §7Blacklist: §e" + (o.hasBlacklist() ? "Ja" : "Nein"));
         p.sendMessage(PREFIX + "§8» §7Mitglieder: §e" + o.getAllMembers().size());
