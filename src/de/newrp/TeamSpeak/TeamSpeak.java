@@ -117,10 +117,10 @@ public class TeamSpeak {
                 if(t.getTeamspeakServerGroup() == null) continue;
                 removeFromChannelGroup(t.getChannelID(), dbID);
             }
-            String name = Script.getPlayer(id).getName();
-            boolean admin = Script.isNRPTeam(Script.getPlayer(id));
+            String name = Script.getOfflinePlayer(id).getName();
+            boolean admin = Script.isNRPTeam(Script.getOfflinePlayer(id));
             setDescription(c.getId(), (admin ? "NRP × " + name : name));
-            if(Script.isNRPTeam(Script.getPlayer(id))) setName(c.getId(), "NRP × " + Script.getPlayer(id).getName());
+            if(Script.isNRPTeam(Script.getOfflinePlayer(id))) setName(c.getId(), "NRP × " + Script.getOfflinePlayer(id).getName());
             addToServerGroup(TeamspeakServerGroup.VERIFIED, dbID);
             Beruf.Berufe f = Beruf.getBeruf(Script.getOfflinePlayer(id));
             if(f != null) {
@@ -133,7 +133,7 @@ public class TeamSpeak {
                 addToChannelGroup(o.getChannelID(), (o.isLeader(id, true) ? TeamspeakServerGroup.TeamspeakChannelGroup.LEADER : TeamspeakServerGroup.TeamspeakChannelGroup.MEMBER), dbID);
             }
 
-            Rank rank = Script.getRank(Script.getPlayer(id));
+            Rank rank = Script.getRank(Script.getOfflinePlayer(id));
             switch (rank) {
                 case OWNER:
                 case ADMINISTRATOR:
@@ -151,7 +151,7 @@ public class TeamSpeak {
             }
 
             if (!admin) {
-                if(Premium.hasPremium(Script.getPlayer(id))) {
+                if(Premium.hasPremium(Script.getOfflinePlayer(id))) {
                     addToServerGroup(TeamspeakServerGroup.PREMIUM, dbID);
                 }
             }
@@ -160,7 +160,7 @@ public class TeamSpeak {
 
             for (Team.Teams t : Team.Teams.values()) {
                 if (t.getTeamspeakServerGroup() == null) continue;
-                if (Team.getTeam(Script.getPlayer(id)) == t) {
+                if (Team.getTeam(Script.getOfflinePlayer(id)) == t) {
                     addToServerGroup(t.getTeamspeakServerGroup(), dbID);
                     addToChannelGroup(t.getChannelID(), (Team.isTeamLeader(Script.getOfflinePlayer(id)) ? TeamspeakServerGroup.TeamspeakChannelGroup.LEADER : TeamspeakServerGroup.TeamspeakChannelGroup.MEMBER), dbID);
                 }
@@ -191,10 +191,10 @@ public class TeamSpeak {
                 removeFromChannelGroup(t.getChannelID(), dbID);
             }
             addToServerGroup(TeamspeakServerGroup.VERIFIED, dbID);
-            String name = Script.getPlayer(id).getName();
-            boolean admin = Script.isNRPTeam(Script.getPlayer(id));
+            String name = Script.getOfflinePlayer(id).getName();
+            boolean admin = Script.isNRPTeam(Script.getOfflinePlayer(id));
             setDescription(c.getId(), (admin ? "NRP × " + name : name));
-            if(Script.isNRPTeam(Script.getPlayer(id))) setName(c.getId(), "NRP × " + Script.getPlayer(id).getName());
+            if(Script.isNRPTeam(Script.getOfflinePlayer(id))) setName(c.getId(), "NRP × " + Script.getOfflinePlayer(id).getName());
             addToServerGroup(TeamspeakServerGroup.VERIFIED, dbID);
             Beruf.Berufe f = Beruf.getBeruf(Script.getOfflinePlayer(id));
             if (f != null) {
@@ -202,7 +202,7 @@ public class TeamSpeak {
                 addToChannelGroup(f.getChannelID(), (f.isLeader(id, true) ? TeamspeakServerGroup.TeamspeakChannelGroup.LEADER : TeamspeakServerGroup.TeamspeakChannelGroup.MEMBER), dbID);
             }
 
-            Rank rank = Script.getRank(Script.getPlayer(id));
+            Rank rank = Script.getRank(Script.getOfflinePlayer(id));
             switch (rank) {
                 case OWNER:
                 case ADMINISTRATOR:
@@ -235,14 +235,14 @@ public class TeamSpeak {
             }
 
             if (!admin) {
-                if(Premium.hasPremium(Script.getPlayer(id))) {
+                if(Premium.hasPremium(Script.getOfflinePlayer(id))) {
                     addToServerGroup(TeamspeakServerGroup.PREMIUM, dbID);
                 }
             }
 
             for (Team.Teams t : Team.Teams.values()) {
                 if (t.getTeamspeakServerGroup() == null) continue;
-                if (Team.getTeam(Script.getPlayer(id)) == t) {
+                if (Team.getTeam(Script.getOfflinePlayer(id)) == t) {
                     addToServerGroup(t.getTeamspeakServerGroup(), dbID);
                     addToChannelGroup(t.getChannelID(), (Team.isTeamLeader(Script.getOfflinePlayer(id)) ? TeamspeakServerGroup.TeamspeakChannelGroup.LEADER : TeamspeakServerGroup.TeamspeakChannelGroup.MEMBER), dbID);
                 }

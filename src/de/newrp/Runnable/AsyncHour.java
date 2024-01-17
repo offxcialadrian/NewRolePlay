@@ -1,9 +1,6 @@
 package de.newrp.Runnable;
 
-import de.newrp.API.Aktie;
-import de.newrp.API.Krankheit;
-import de.newrp.API.Script;
-import de.newrp.API.Weather;
+import de.newrp.API.*;
 import de.newrp.Administrator.SDuty;
 import de.newrp.Berufe.Abteilung;
 import de.newrp.Berufe.Beruf;
@@ -17,6 +14,8 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
@@ -56,11 +55,18 @@ public class AsyncHour extends BukkitRunnable {
         }
 
         Aktie.update();
+        Schwarzmarkt.spawnRandom();
 
         for(Player all : Bukkit.getOnlinePlayers()) {
             if(!Script.WORLD.hasStorm()) return;
             if(AFK.isAFK(all)) continue;
             if(SDuty.isSDuty(all)) continue;
+            if(Krankheit.ABHAENGIGKEIT.isInfected(Script.getNRPID(all))) {
+                all.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 20 * 5, 1));
+                all.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 20 * 5, 1));
+                all.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20 * 5, 1));
+                all.sendMessage(Messages.INFO + "Du hast Entzugserscheinungen. Lasse dich von einem Arzt behandeln.");
+            }
             if(Script.getRandom(1, 100) > 3) continue;
             if(Script.WORLD.getHighestBlockYAt(all.getLocation()) < all.getLocation().getY()) {
                 Krankheit.HUSTEN.add(Script.getNRPID(all));

@@ -4,6 +4,7 @@ import de.newrp.API.Krankheit;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.Chat.Me;
+import de.newrp.Organisationen.Drogen;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -34,6 +35,7 @@ public class UseMedikamente implements Listener {
                 Script.playLocalSound(p.getLocation(), Sound.ENTITY_PLAYER_BURP, 5);
                 p.getInventory().getItemInMainHand().setAmount(p.getInventory().getItemInMainHand().getAmount() - 1);
                 p.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 20 * 10, 1));
+                Drogen.addToAdiction(p);
                 return;
             }
 

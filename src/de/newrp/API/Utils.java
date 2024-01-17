@@ -44,7 +44,7 @@ public class Utils implements Listener {
 
     private static final Material[] DROP_BLACKLIST = new Material[]{ Material.WOODEN_HOE, Material.LEAD };
     private static final String[] BLOCKED_COMMANDS = new String[]{
-            "/minecraft", "/spi", "/pl", "/protocol", "/rl", "/restart", "/bukkit", "/time", "/version", "/icanhasbukkit", "/xp", "/tell",
+            "/minecraft", "/spi", "/protocol", "/rl", "/restart", "/bukkit", "/time", "/version", "/icanhasbukkit", "/xp", "/tell",
             "/toggledownfall", "/testfor", "/recipe", "/give", "/effect", "/enchant", "/deop", "/defaultgamemode", "/ban-ip",
             "/banlist", "/advancement", "/?", "/gamemode", "/gamerule", "/give", "/kill", "/list", "/about",
             "/ability", "/advancement", "/alwaysday", "/attribute", "/ban-ip", "/banlist", "/bossbar", "/camera", "/camerashake",
@@ -59,6 +59,10 @@ public class Utils implements Listener {
             "/teammsg", "/tell", "/tellraw", "/testfor", "/testforblock", "/testforblocks", "/tickingarea", "/time", "/title",
             "/titleraw", "/tm", "/toggledownfall", "/trigger", "/volumearea", "/wb", "/whitelist", "/worldborder",
             "/worldbuilder", "/wsserver", "/xp"
+    };
+
+    private static final String[] BLOCKED_COMMANDS_SPECIFIC = new String[]{
+            "/pl", "/plugins"
     };
 
 
@@ -474,6 +478,18 @@ public class Utils implements Listener {
                 }
             }
         }
+        for (String s : BLOCKED_COMMANDS_SPECIFIC) {
+            if (e.getMessage().toLowerCase().equalsIgnoreCase(s)) {
+                if (!Script.hasRank(e.getPlayer(), Rank.OWNER, false)) {
+                    e.setCancelled(true);
+                    Script.sendActionBar(e.getPlayer(), Messages.ERROR + "Der Befehl wurde nicht gefunden.");
+                    return;
+                } else {
+                    e.getPlayer().sendMessage(Messages.INFO + "Du konntest diesen Befehl nur ausführen, da du Server-Owner bist.");
+                    return;
+                }
+            }
+        }
 
     }
 
@@ -497,6 +513,12 @@ public class Utils implements Listener {
         List<String> chache = new ArrayList<>();
         for (String nc : NEW_COMPLETEION) {
             for (String s : BLOCKED_COMMANDS) {
+                if (nc.startsWith(s)) {
+                    chache.add(nc);
+                }
+            }
+
+            for (String s : BLOCKED_COMMANDS_SPECIFIC) {
                 if (nc.startsWith(s)) {
                     chache.add(nc);
                 }

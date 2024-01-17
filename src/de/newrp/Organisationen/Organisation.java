@@ -1,5 +1,6 @@
 package de.newrp.Organisationen;
 
+import de.newrp.API.Gender;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.Berufe.Duty;
@@ -21,11 +22,10 @@ import java.util.List;
 
 public enum Organisation {
 
-    GOVERNMENT(1, "Bloods", 2, false, false, false, 0, null, null);
+    BLOODS(1, "Bloods",  false, false, false, 0, null, null);
 
     private final String name;
     int id;
-    int level;
     boolean kasse;
     boolean duty;
     boolean equip;
@@ -33,10 +33,9 @@ public enum Organisation {
     TeamspeakServerGroup serverGroup;
     ForumGroup[] forumGroup;
 
-    Organisation(int id, String name, int level, boolean kasse, boolean duty, boolean equip, int channelid, TeamspeakServerGroup serverGroup, ForumGroup[] forumGroup) {
+    Organisation(int id, String name, boolean kasse, boolean duty, boolean equip, int channelid, TeamspeakServerGroup serverGroup, ForumGroup[] forumGroup) {
         this.id = id;
         this.name = name;
-        this.level = level;
         this.kasse = kasse;
         this.duty = duty;
         this.equip = equip;
@@ -45,9 +44,77 @@ public enum Organisation {
         this.forumGroup = forumGroup;
     }
 
+    public static String PREFIX = "§8[§eOrganisation§8] §e" + Messages.ARROW + " §7";
+
     public int getLevel() {
-        return level;
+        try(Statement stmt = main.getConnection().createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM organisation_level WHERE organisationID='" + this.id + "'")) {
+            if(rs.next()) {
+                return rs.getInt("level");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
+
+    public void setLevel(int level) {
+        Script.executeUpdate("UPDATE organisation_level SET level='" + level + "' WHERE organisationID='" + this.id + "'");
+    }
+
+    public void addLevel(int amount) {
+        Script.executeUpdate("UPDATE organisation_level SET level='" + (getLevel() + amount) + "' WHERE organisationID='" + this.id + "'");
+    }
+
+    public void removeLevel(int amount) {
+        Script.executeUpdate("UPDATE organisation_level SET level='" + (getLevel() - amount) + "' WHERE organisationID='" + this.id + "'");
+    }
+
+    public void setRank(Player p, int rank) {
+        Script.executeUpdate("UPDATE organisation SET rank='" + rank + "' WHERE nrp_id='" + Script.getNRPID(p) + "'");
+    }
+
+    public int getExp() {
+        try(Statement stmt = main.getConnection().createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM organisation_level WHERE organisationID='" + this.id + "'")) {
+            if(rs.next()) {
+                return rs.getInt("exp");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public void addExp(int amount) {
+        if(getExp() + amount >= getLevelCost()) {
+            sendMessage(PREFIX + "Deine Organisation hat Level " + (getLevel() + 1) + " erreicht.");
+            Script.executeUpdate("UPDATE organisation_level SET level='" + (getLevel() + 1) + "', exp='" + 0 + "' WHERE organisationID='" + this.id + "'");
+        } else {
+            sendMessage(PREFIX + "Deine Organisation hat " + amount + " Erfahrungspunkte erhalten §8(§e" + getExp() + "§7/§e" + getLevelCost() + "§8)§7.");
+            Script.executeUpdate("UPDATE organisation_level SET exp='" + (getExp() + amount) + "' WHERE organisationID='" + this.id + "'");
+        }
+    }
+
+    public int getLevelCost() {
+        int level_cost;
+        level_cost = 692 + ((getLevel() * 2) * 1628);
+        if (getLevel() % 2 == 0) {
+            level_cost += 173;
+        }
+        return level_cost;
+    }
+
+    public void removeExp(int amount) {
+        if(getExp() - amount < 0) {
+            sendMessage(PREFIX + "Deine Organisation hat Level " + (getLevel() - 1) + " erreicht.");
+            Script.executeUpdate("UPDATE organisation_level SET level='" + (getLevel() - 1) + "', exp='" + (getLevelCost()-amount) + "' WHERE organisationID='" + this.id + "'");
+        } else {
+            sendMessage(PREFIX + "Deine Organisation hat " + amount + " Erfahrungspunkte verloren §8(§e" + getExp() + "§7/§e" + getLevelCost() + "§8)§7.");
+            Script.executeUpdate("UPDATE organisation_level SET exp='" + (getExp() - amount) + "' WHERE organisationID='" + this.id + "'");
+        }
+    }
+
 
     public static Organisation getOrganisation(String name) {
         for (Organisation organisation : Organisation.values()) {
@@ -283,6 +350,11 @@ public enum Organisation {
         return Script.getInt(p, "organisation", "rank");
     }
 
+    public static int getRank(OfflinePlayer p) {
+        return Script.getInt(p, "organisation", "rank");
+    }
+
+
     public void addMember(Player p, Player leader) {
         Script.executeUpdate("INSERT INTO organisation (nrp_id, organisationID, salary, rank, leader, coleader) VALUES ('" + Script.getNRPID(p) + "', '" + getID() + "', '0', '0', '0', '0')");
         for (Player members : getPlayersFromOrganisation(this)) {
@@ -330,5 +402,49 @@ public enum Organisation {
         for (Player members : getPlayersFromOrganisation(this)) {
             members.sendMessage("§8[§e" + getName() + "§8] §e" + p.getName() + " §ehat die Organisation verlassen.");
         }
+    }
+
+    public static String getRankName(Player p) {
+        try(Statement stmt = main.getConnection().createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM organisation_rankname WHERE organisationID='" + Organisation.getOrganisation(p).getID() + "' AND rank='" + Organisation.getRank(p) + "' AND gender='" + Script.getGender(p).getName().charAt(0)+"'")) {
+            if(rs.next()) {
+                return rs.getString("name");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "Kein Rangname vorhanden";
+    }
+
+    public static String getRankName(OfflinePlayer p) {
+        try(Statement stmt = main.getConnection().createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM organisation_rankname WHERE organisationID='" + Organisation.getOrganisation(p).getID() + "' AND rank='" + Organisation.getRank(p) + "' AND gender='" + Script.getGender(p).getName().charAt(0) + "'")) {
+            if(rs.next()) {
+                return rs.getString("name");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "Kein Rangname vorhanden";
+    }
+
+    public String getRankName(int rank, Gender g) {
+        try(Statement stmt = main.getConnection().createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM organisation_rankname WHERE organisationID='" + this.id + "' AND rank='" + rank + "' AND gender='" + g.getName().charAt(0) + "'")) {
+            if(rs.next()) {
+                return rs.getString("name");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "Kein Rangname vorhanden";
+    }
+
+    public void setRankName(int rank, Gender gender, String arg) {
+        if(getRankName(rank, gender).equalsIgnoreCase("Kein Rangname vorhanden")) {
+            Script.executeAsyncUpdate("INSERT INTO organisation_rankname (organisationID, rank, gender, name) VALUES (" + this.id + ", '" + rank + "', '" + gender.getName().charAt(0) + "', '" + arg + "')");
+            return;
+        }
+        Script.executeAsyncUpdate("UPDATE organisation_rankname SET name = " + arg + " WHERE organisationID = " + this.id + " AND rank = " + rank + " AND gender = " + gender.getName().charAt(0));
     }
 }

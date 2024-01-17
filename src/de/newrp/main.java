@@ -20,9 +20,7 @@ import de.newrp.Medic.*;
 import de.newrp.News.BreakingNews;
 import de.newrp.News.NewsCommand;
 import de.newrp.News.Zeitung;
-import de.newrp.Organisationen.BlackListCommand;
-import de.newrp.Organisationen.Blacklist;
-import de.newrp.Organisationen.OrganisationsChat;
+import de.newrp.Organisationen.*;
 import de.newrp.Player.*;
 import de.newrp.Police.*;
 import de.newrp.Runnable.*;
@@ -298,6 +296,14 @@ public class main extends JavaPlugin {
         getCommand("blacklist").setExecutor(new BlackListCommand());
         getCommand("o").setExecutor(new OrganisationsChat());
         getCommand("joinorganisation").setExecutor(new JoinOrganisation());
+        getCommand("setrank").setExecutor(new SetRank());
+        getCommand("rankname").setExecutor(new Rankname());
+        getCommand("checkorganisation").setExecutor(new CheckOrganisation());
+        getCommand("plantage").setExecutor(new PlantageCommand());
+        getCommand("burnplant").setExecutor(new BurnPlant());
+        getCommand("healaddiction").setExecutor(new HealAddiction());
+        getCommand("organisationkasse").setExecutor(new OrganisationKasse());
+        getCommand("schwarzmarktlocation").setExecutor(new SchwarzmarktLocation());
 
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new SDuty(), this);
@@ -374,6 +380,9 @@ public class main extends JavaPlugin {
         pm.registerEvents(new Tragen(), this);
         pm.registerEvents(new BlackListCommand(), this);
         pm.registerEvents(new JoinOrganisation(), this);
+        pm.registerEvents(new PlantageCommand(), this);
+        pm.registerEvents(new UseDrogen(), this);
+        pm.registerEvents(new BreakIn(), this);
 
 
         new AsyncHealth().runTaskTimerAsynchronously(this, 120 * 20L, 120 * 20L);
@@ -389,6 +398,8 @@ public class main extends JavaPlugin {
         ATM.restore();
         House.loadHouses();
         Blacklist.load();
+        Plantage.loadAll();
+        Schwarzmarkt.spawnRandom();
 
         Bukkit.getConsoleSender().sendMessage("§cNRP §8× §astarting complete..");
         Bukkit.getConsoleSender().sendMessage("§cNRP §8× §aViel Erfolg heute..");

@@ -33,9 +33,8 @@ public class OrganisationsChat implements CommandExecutor {
         }
 
         String nachricht = sb.toString();
-        String prefix = "§9" + Beruf.getBeruf(p).getName() + " " + Messages.ARROW + " ";
         for (Player all : Organisation.getPlayersFromOrganisation(Organisation.getOrganisation(p))) {
-            all.sendMessage(prefix + Script.getName(p) + "§8: §9" + nachricht);
+            all.sendMessage("§b" + Organisation.getRankName(p) + " " + Script.getName(p) + "§8: §9" + nachricht);
         }
 
         return false;

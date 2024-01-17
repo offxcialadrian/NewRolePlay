@@ -871,6 +871,13 @@ public class Script {
         }
     }
 
+    public static ItemStack brechstange() {
+        ItemStack brechstange = new ItemStack(Material.BLAZE_ROD);
+        ItemMeta meta1 = brechstange.getItemMeta();
+        meta1.setDisplayName("§7Brechstange");
+        brechstange.setItemMeta(meta1);
+        return brechstange;
+    }
     public static long getLastDisconnect(OfflinePlayer p) {
         try (Statement stmt = main.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM last_disconnect WHERE nrp_id='" + getNRPID(p) + "' ORDER BY id DESC LIMIT 1")) {

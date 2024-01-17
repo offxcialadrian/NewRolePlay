@@ -1,0 +1,136 @@
+package de.newrp.Organisationen;
+
+import de.newrp.API.Messages;
+import de.newrp.API.PaymentType;
+import de.newrp.API.Script;
+import de.newrp.Berufe.Beruf;
+import de.newrp.House.House;
+import de.newrp.House.HouseAddon;
+import de.newrp.Player.Notruf;
+import de.newrp.Police.Handschellen;
+import de.newrp.main;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitRunnable;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class BreakIn implements Listener {
+    private static final String PREFIX = "§8[§cEinbruch§8]§6 ";
+    private static final Map<String, Long> COOLDOWNS = new HashMap<>();
+    private static final Map<String, Long> TOTAL_COOLDOWN = new HashMap<>();
+    private static final Map<String, House> HOUSES = new HashMap<>();
+    private static final HashMap<String, Double> progress = new HashMap<>();
+
+    @EventHandler
+    public void onInteract(PlayerInteractEvent e) {
+        Player p = (Player) e.getPlayer();
+
+        long time = System.currentTimeMillis();
+        Long lastUsage = TOTAL_COOLDOWN.get(p.getName());
+        if (TOTAL_COOLDOWN.containsKey(p.getName()) && lastUsage + 10800 * 1000 > time) {
+            p.sendMessage(Messages.ERROR + "Du kannst nur alle 3 Stunden in ein Haus einbrechen.");
+            return;
+        }
+
+        lastUsage = COOLDOWNS.get(p.getName());
+        if (COOLDOWNS.containsKey(p.getName())) {
+            if (lastUsage + 90 * 1000 > time) {
+                int left = (int) ((lastUsage + (90 * 1000)) - System.currentTimeMillis());
+                p.sendMessage(PREFIX + "Du hast die Beute in " + (left / 1000) + " Sekunden...");
+            } else {
+                House house = HOUSES.get(p.getName());
+                int geld = (house.getKasse() / 3);
+                p.sendMessage(PREFIX + "Du hast alles. Verschwinde nun bevor die Polizei eintrifft!");
+                Script.addMoney(p, PaymentType.CASH, (int) (geld * 0.8));
+                house.setKasse(house.getKasse() - (int) (geld * 0.8));
+                COOLDOWNS.remove(p.getName());
+                HOUSES.remove(p.getName());
+                TOTAL_COOLDOWN.put(p.getName(), System.currentTimeMillis());
+            }
+            return;
+        }
+
+        ItemStack brechstange = Script.setName(Material.BLAZE_ROD, "§7Brechstange");
+        if (!p.getInventory().getItemInMainHand().equals(brechstange))  return;
+
+        House house = House.getNearHouse(p.getLocation(), 3);
+        if (house == null) {
+            p.sendMessage(PREFIX + "Du kannst hier nicht einbrechen.");
+            return;
+        }
+
+        if (house.hasAddon(HouseAddon.ALARM)) {
+            Bukkit.getScheduler().runTaskLater(main.getInstance(), () -> Beruf.Berufe.POLICE.sendMessage(Notruf.PREFIX + "Es wurde ein Einbruch bei Haus " + house.getID() + " gemeldet."), 10 * 20L);
+        }
+
+
+        COOLDOWNS.put(p.getName(), System.currentTimeMillis());
+        HOUSES.put(p.getName(), house);
+        p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 90 * 20, 2));
+        p.sendMessage(PREFIX + "Du hast begonnen in das Haus " + house.getID() + " einzubrechen.");
+        p.getInventory().getItemInMainHand().setAmount(p.getInventory().getItemInMainHand().getAmount() - 1);
+        progress.put(p.getName(), 0.0);
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                if(p.getLocation().distance(house.getSignLocation()) > 3) {
+                    p.sendMessage(PREFIX + "Du hast den Einbruch abgebrochen.");
+                    progress.remove(p.getName());
+                    this.cancel();
+                    return;
+                }
+
+                if(!p.getInventory().getItemInMainHand().equals(brechstange)) {
+                    p.sendMessage(PREFIX + "Du hast den Einbruch abgebrochen.");
+                    progress.remove(p.getName());
+                    this.cancel();
+                    return;
+                }
+
+                if(Handschellen.isCuffed(p)) {
+                    p.sendMessage(PREFIX + "Du hast den Einbruch abgebrochen.");
+                    progress.remove(p.getName());
+                    this.cancel();
+                    return;
+                }
+
+                if(!COOLDOWNS.containsKey(p.getName())) {
+                    p.sendMessage(PREFIX + "Du hast den Einbruch abgebrochen.");
+                    progress.remove(p.getName());
+                    this.cancel();
+                    return;
+                }
+
+
+                House house = HOUSES.get(p.getName());
+                int geld = (house.getKasse() / 3);
+                p.sendMessage(PREFIX + "Du hast alles. Verschwinde nun bevor die Polizei eintrifft!");
+                Script.addMoney(p, PaymentType.CASH, (int) (geld * 0.8));
+                house.setKasse(house.getKasse() - (int) (geld * 0.8));
+                COOLDOWNS.remove(p.getName());
+                HOUSES.remove(p.getName());
+                TOTAL_COOLDOWN.put(p.getName(), System.currentTimeMillis());
+                progress.remove(p.getName());
+                if(Organisation.hasOrganisation(p)) {
+                    Organisation.getOrganisation(p).addExp(Script.getRandom(1, 10));
+                }
+                this.cancel();
+                return;
+
+            }
+        }.runTaskTimer(main.getInstance(), 20L, 20L);
+        return;
+
+    }
+}

@@ -9,6 +9,7 @@ import de.newrp.Administrator.SDuty;
 import de.newrp.main;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -50,7 +51,7 @@ public class TeamspeakCommand implements CommandExecutor {
                     p.sendMessage(TeamSpeak.PREFIX + "/teamspeak forcesync [Spieler]");
                     return true;
                 }
-                Player target = Script.getPlayer(args[1]);
+                OfflinePlayer target = Script.getOfflinePlayer(args[1]);
                 if (target == null) {
                     p.sendMessage(Messages.PLAYER_NOT_FOUND);
                     return true;
@@ -61,8 +62,8 @@ public class TeamspeakCommand implements CommandExecutor {
                 }
                 Bukkit.getScheduler().runTaskAsynchronously(main.getInstance(), () -> {
                     TeamSpeak.sync(Script.getNRPID(target), getClient(Script.getNRPID(target)));
-                    target.sendMessage(PREFIX + Messages.RANK_PREFIX(p) + " hat deinen Teamspeak Account neu synchronisiert.");
-                    Script.sendTeamMessage(p, ChatColor.YELLOW, "hat den TeamSpeak Account von " + Script.getName(target) + " neu synchronisiert.", true);
+                    if(target.isOnline()) target.getPlayer().sendMessage(PREFIX + Messages.RANK_PREFIX(p) + " hat deinen Teamspeak Account neu synchronisiert.");
+                    Script.sendTeamMessage(p, ChatColor.YELLOW, "hat den TeamSpeak Account von " + target.getName() + " neu synchronisiert.", true);
                     p.sendMessage(TeamSpeak.PREFIX + "Du hast den Teamspeak Account von " + target.getName() + " neu synchronisiert.");
                 });
                 return true;

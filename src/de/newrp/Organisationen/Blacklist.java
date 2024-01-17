@@ -91,6 +91,7 @@ public class Blacklist {
 
     public static void add(Player p, Organisation f, String reason, int kills, int price) {
         Blacklist bl = new Blacklist(Script.getNRPID(p), p.getName(), f, reason, System.currentTimeMillis(), kills, price);
+        f.addExp(Script.getRandom(3, 6));
         BLACKLIST.get(f).add(bl);
         Bukkit.getScheduler().runTaskAsynchronously(main.getInstance(), () -> {
             try (PreparedStatement statement = main.getConnection().prepareStatement("INSERT INTO blacklist (userID, organisationID, reason, time, kills, price) VALUES (?, ?, ?, ?, ?, ?);")) {

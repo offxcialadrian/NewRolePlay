@@ -130,11 +130,19 @@ public class BlackListCommand implements CommandExecutor, Listener {
                 p.sendMessage(Blacklist.PREFIX + "Bitte gebe eine Zahl an.");
                 return true;
             }
+            if(kills > (o.getLevel() * 10)) {
+                p.sendMessage(Blacklist.PREFIX + "Du kannst maximal " + (o.getLevel() * 10) + " Kills vergeben.");
+                return true;
+            }
             int price;
             try {
                 price = Integer.parseInt(args[3]);
             } catch (NumberFormatException e) {
                 p.sendMessage(Blacklist.PREFIX + "Bitte gebe eine Zahl an.");
+                return true;
+            }
+            if(price > (o.getLevel() * 100)) {
+                p.sendMessage(Blacklist.PREFIX + "Du kannst maximal " + (o.getLevel() * 100) + "€ vergeben.");
                 return true;
             }
             StringBuilder sb = new StringBuilder();
@@ -188,6 +196,7 @@ public class BlackListCommand implements CommandExecutor, Listener {
         Blacklist bl = Blacklist.getBlacklistObject(Script.getNRPID(killed), f);
         int kills = bl.getKills();
         Script.addEXP(killer, Script.getRandom(3, 7));
+        f.addExp(Script.getRandom(5, 15));
         if (kills == 1) {
             f.sendMessage(Blacklist.PREFIX + Script.getName(killed) + " wurde automatisch von der Blacklist entfernt.");
             killed.sendMessage(Blacklist.PREFIX + "Du wurdest automatisch von der Blacklist der " + f.getName() + " entfernt.");

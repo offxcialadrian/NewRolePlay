@@ -74,6 +74,7 @@ public class UninviteCommand implements CommandExecutor {
         }
 
         Organisation beruf = Organisation.getOrganisation(p);
+        beruf.removeExp(Script.getRandom(20, 30));
         if(Organisation.isCoLeader(p) && tg != p && Beruf.isLeader(tg, false)) {
             p.sendMessage(Messages.ERROR + "Du kannst den Leader nicht entlassen.");
             return true;

@@ -192,7 +192,7 @@ commands:
     aliases: [ vermieten ]
   berufskasse:
     description: view the berufskasse
-    aliases: [ berufskassen, berufkasse ]
+    aliases: [ berufskassen, berufkasse, bkasse ]
   member:
     description: view the members of your beruf
     aliases: [ members, memberinfo ]
@@ -463,3 +463,25 @@ commands:
   joinorganisation:
     description: join an organisation
     aliases: [ joinorg ]
+  setrank:
+    description: set a players rank
+  rankname:
+    description: set a ranks name
+    aliases: [ rangname ]
+  checkorganisation:
+    description: check an organisation
+    aliases: [ checkorg, checkorganisations, checkorganisationen ]
+  plantage:
+    description: view the plantage
+    aliases: [ plantagen, plant ]
+  burnplant:
+    description: burn a plant
+    aliases: [ burnplants ]
+  healaddiction:
+    description: heal an addiction
+  organisationkasse:
+    description: view the organisationkasse
+    aliases: [ organisationkassen, organisationkasse, okasse ]
+  schwarzmarktlocation:
+    description: view the schwarzmarktlocation
+    aliases: [ schwarzmarktlocations, schwarzmarktlocationen, smarktloc ]
