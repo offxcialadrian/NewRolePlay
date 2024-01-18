@@ -494,3 +494,8 @@ commands:
   takedrugs:
     description: take drugs
     aliases: [ takedrogen ]
+  lagerarbeiter:
+    description: view the lagerarbeiter
+  schule:
+    description: view the schule
+    aliases: [ berufsschule ]

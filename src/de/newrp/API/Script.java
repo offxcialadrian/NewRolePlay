@@ -960,6 +960,7 @@ public class Script {
     }
 
     public static void addMoney(Player p, PaymentType paymentType, int amount) {
+        if(paymentType == PaymentType.CASH) p.sendMessage(Messages.INFO + "Du hast " + amount + "€ Bargeld erhalten.");
         amount = Math.abs(amount);
         executeUpdate("UPDATE money SET " + paymentType.getName() + "=" + (getMoney(p, paymentType) + amount) + " WHERE nrp_id=" + getNRPID(p));
         if(Script.getLevel(p) == 1 && getMoney(p, paymentType) >= 100000) Script.sendTeamMessage(AntiCheatSystem.PREFIX + "Verdächtige Geldmenge: " + Script.getName(p) + " (" + getMoney(p, paymentType) + "€)");
@@ -979,6 +980,7 @@ public class Script {
     }
 
     public static void removeMoney(Player p, PaymentType paymentType, int amount) {
+        if(paymentType == PaymentType.CASH) p.sendMessage(Messages.INFO + "Du hast " + amount + "€ Bargeld bezahlt.");
         amount = Math.abs(amount);
         executeUpdate("UPDATE money SET " + paymentType.getName() + "=" + (getMoney(p, paymentType) - amount) + " WHERE nrp_id=" + getNRPID(p));
     }

@@ -1,0 +1,110 @@
+package de.newrp.GFB;
+
+import de.newrp.API.Script;
+import de.newrp.main;
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+public enum GFB {
+
+    LAGERARBEITER(1, "Lagerarbeiter", new Location(Script.WORLD, 1, 70, 1));
+
+
+    private int id;
+    private String name;
+    private Location location;
+
+    GFB(int id, String name, Location loc) {
+        this.id = id;
+        this.name = name;
+        this.location = loc;
+    }
+
+    public int getID() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public static GFB getGFBByID(int id) {
+        for (GFB gfb : GFB.values()) {
+            if (gfb.getID() == id) return gfb;
+        }
+        return null;
+    }
+
+    public static String PREFIX = "§8[§6GFB§8] §6» §7 ";
+
+    public static GFB getGFBByName(String name) {
+        for (GFB gfb : GFB.values()) {
+            if (gfb.getName().equalsIgnoreCase(name)) return gfb;
+        }
+        return null;
+    }
+
+    public int getExp(Player p) {
+        try (Statement stmt = main.getConnection().createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT * FROM gfb_level WHERE nrp_id='" + Script.getNRPID(p) + "' AND gfb_id=" + this.id)) {
+            if (rs.next()) {
+                return rs.getInt("exp");
+            } else {
+                Script.executeAsyncUpdate("INSERT INTO gfb_level (nrp_id, gfb_id, level, exp) VALUES ('" + Script.getNRPID(p) + "', " + this.id + ", 1, 0)");
+                return 0;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public void addExp(Player p, int exp) {
+        if(getExp(p) + exp >= getLevelCost(getLevel(p))) {
+            Script.executeAsyncUpdate("UPDATE gfb_level SET level=" + (getLevel(p) + 1) + " WHERE nrp_id='" + Script.getNRPID(p) + "' AND gfb_id=" + this.id);
+            Script.executeAsyncUpdate("UPDATE gfb_level SET exp=0 WHERE nrp_id='" + Script.getNRPID(p) + "' AND gfb_id=" + this.id);
+            p.sendMessage(PREFIX + "Du bist beim GFB " + this.getName() + " nun Level " + (getLevel(p)) + "!");
+            return;
+        }
+        try (Statement stmt = main.getConnection().createStatement()) {
+            stmt.executeUpdate("UPDATE gfb_level SET exp=" + (getExp(p) + exp) + " WHERE nrp_id='" + Script.getNRPID(p) + "' AND gfb_id=" + this.id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        p.sendMessage(PREFIX + "Du hast " + exp + " Exp erhalten (" + getExp(p) + " / " + getLevelCost(getLevel(p)) + ")");
+    }
+
+    public int getLevel(Player p) {
+        try (Statement stmt = main.getConnection().createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT * FROM gfb_level WHERE nrp_id='" + Script.getNRPID(p) + "' AND gfb_id=" + this.id)) {
+            if (rs.next()) {
+                return rs.getInt("level");
+            } else {
+                Script.executeAsyncUpdate("INSERT INTO gfb_level (nrp_id, gfb_id, level, exp) VALUES ('" + Script.getNRPID(p) + "', " + this.id + ", 1, 0)");
+                return 1;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+
+    public static int getLevelCost(int level) {
+        int level_cost;
+        level_cost = 692 + ((level * 2) * 600);
+        if (level % 2 == 0) {
+            level_cost += 173;
+        }
+        return level_cost;
+    }
+
+}

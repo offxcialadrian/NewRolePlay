@@ -5,6 +5,7 @@ import de.newrp.API.Log;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.Administrator.SDuty;
+import de.newrp.GFB.Schule;
 import de.newrp.main;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -54,6 +55,11 @@ public class AFK implements CommandExecutor, Listener {
             p.setCanPickupItems(false);
             if (p.isFlying()) p.setFlying(false);
             Bukkit.getScoreboardManager().getMainScoreboard().getTeam("nopush").addEntry(p.getName());
+            if(Schule.STUDIYING.containsKey(p)) {
+                p.sendMessage(Schule.PREFIX + "Du hast den Kurs nicht bestanden.");
+                Schule.STUDIYING.remove(p);
+                Schule.STARTED.remove(p);
+            }
         } else {
             afk.remove(p.getName());
             p.setCollidable(true);

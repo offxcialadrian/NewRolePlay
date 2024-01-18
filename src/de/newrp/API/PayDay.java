@@ -3,6 +3,7 @@ package de.newrp.API;
 import de.newrp.Administrator.Checkpoints;
 import de.newrp.Administrator.SDuty;
 import de.newrp.Berufe.Beruf;
+import de.newrp.GFB.GFB;
 import de.newrp.Government.Arbeitslosengeld;
 import de.newrp.Government.Stadtkasse;
 import de.newrp.Government.Steuern;
@@ -211,6 +212,11 @@ public class PayDay extends BukkitRunnable {
 
     public static void addPayDayTime(Player p) {
         setPayDayTime(p, getPayDayTime(p) + 1);
+    }
+
+    public static void addPayDay(Player p, int money) {
+        Script.setInt(p, "payday", "money", getPayDayPay(p) + money);
+        p.sendMessage(GFB.PREFIX + "Du erhältst dein Gehalt von " + money + "€ am PayDay.");
     }
 
 
