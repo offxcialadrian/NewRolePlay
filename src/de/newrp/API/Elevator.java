@@ -63,11 +63,13 @@ public class Elevator implements Listener {
                 new Location(Script.WORLD, 268, 83, 1231, 270.39258f, -0.15001848f),
                 new Location(Script.WORLD, 268, 91, 1231, 270.53516f, 1.1999671f),
         }),
+
         CASINO(13, "Casino", new Location[]{
                 new Location(Script.WORLD, 780, 77, 851, 0.05621338f, 0.90009636f),
                 new Location(Script.WORLD, 781, 85, 851, 0.37005615f, -0.29973233f),
                 new Location(Script.WORLD, 781, 93, 851, 359.4635f, 6.528944E-5f),
                 new Location(Script.WORLD, 780, 101, 851, 359.1611f, 2.3997068f),
+                new Location(Script.WORLD, 781, 109, 851, -358.28638f, 0.7494683f),
         });
 
         int id;

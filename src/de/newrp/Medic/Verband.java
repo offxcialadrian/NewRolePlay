@@ -25,10 +25,63 @@ public class Verband implements Listener {
 
     @EventHandler
     public void onInteract(PlayerInteractEntityEvent e) {
+        Player p = e.getPlayer();
         if (e.getHand() == EquipmentSlot.OFF_HAND) return;
+
+        if(p.isSneaking()) {
+            long time = System.currentTimeMillis();
+
+            Long lastUsage = BANDAGE_COOLDOWN.get(p.getName());
+            if (lastUsage != null && lastUsage + TimeUnit.MINUTES.toMillis(4) > time) {
+                long cooldown = TimeUnit.MILLISECONDS.toSeconds(lastUsage + TimeUnit.MINUTES.toMillis(4) - time);
+                p.sendMessage(Messages.ERROR + "Du bist bereits bandagiert. (" + cooldown + " Sekunden verbleibend)");
+                return;
+            }
+
+            Long lastClick = LAST_CLICK.get(p.getName());
+            if (lastClick == null) {
+                LAST_CLICK.put(p.getName(), time);
+                return;
+            }
+
+            long difference = time - lastClick;
+            if (difference >= 800) LEVEL.remove(p.getName());
+
+            int level = LEVEL.computeIfAbsent(p.getName(), k -> 0);
+
+            LAST_CLICK.put(p.getName(), time);
+            LEVEL.replace(p.getName(), level + 1);
+            progressBar(11,  p);
+
+            if (level >= 10) {
+                PlayerInventory inv = p.getInventory();
+                ItemStack is = inv.getItemInMainHand();
+                if (is.getAmount() > 1) {
+                    is.setAmount(is.getAmount() - 1);
+                } else {
+                    inv.setItemInMainHand(new ItemStack(Material.AIR));
+                }
+
+                if (Health.BLEEDING.containsKey(p.getName())) {
+                    float amount = Health.BLEEDING.get(p.getName());
+                    if (amount < 1F) {
+                        Health.BLEEDING.remove(p.getName());
+                    }
+                }
+
+                Me.sendMessage(p, "legt sich einen Verband an.");
+                p.addPotionEffect(new PotionEffect(PotionEffectType.HEAL, 20 * 60 * 5, 1));
+
+                BANDAGE_COOLDOWN.put(p.getName(), time);
+                LAST_CLICK.remove(p.getName());
+                LEVEL.remove(p.getName());
+                return;
+            }
+            return;
+        }
+
         if (!(e.getRightClicked() instanceof Player)) return;
 
-        Player p = e.getPlayer();
         if (!interact(p)) return;
 
         long time = System.currentTimeMillis();
@@ -73,6 +126,7 @@ public class Verband implements Listener {
             }
 
             Me.sendMessage(p, "legt " + Script.getName(rightClicked) + " einen Verband an.");
+            rightClicked.addPotionEffect(new PotionEffect(PotionEffectType.HEAL, 20 * 60 * 5, 1));
 
             BANDAGE_COOLDOWN.put(rightClicked.getName(), time);
             LAST_CLICK.remove(p.getName());

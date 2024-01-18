@@ -9,5 +9,6 @@ public enum ShopType {
     NEWS(),
     ELECTRONIC(),
     MUSIC(),
+    FLOWER(),
     HOUSEADDON();
 }

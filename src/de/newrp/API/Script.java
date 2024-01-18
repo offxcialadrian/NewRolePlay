@@ -10,6 +10,7 @@ import de.newrp.Berufe.Duty;
 import de.newrp.Berufe.Equip;
 import de.newrp.Forum.Forum;
 import de.newrp.House.House;
+import de.newrp.Organisationen.Drogen;
 import de.newrp.Player.AFK;
 import de.newrp.Player.Passwort;
 import de.newrp.TeamSpeak.TeamSpeak;
@@ -878,6 +879,15 @@ public class Script {
         brechstange.setItemMeta(meta1);
         return brechstange;
     }
+
+    public static boolean hasDrugs(Player p) {
+        return (p.getInventory().contains(Material.SUGAR));
+    }
+
+    public static void removeDrugs(Player p) {
+        p.getInventory().remove(Material.SUGAR);
+    }
+
     public static long getLastDisconnect(OfflinePlayer p) {
         try (Statement stmt = main.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM last_disconnect WHERE nrp_id='" + getNRPID(p) + "' ORDER BY id DESC LIMIT 1")) {

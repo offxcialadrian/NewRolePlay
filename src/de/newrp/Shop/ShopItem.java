@@ -58,7 +58,15 @@ public enum ShopItem {
     CD_8(72, "§6Stal", new ItemStack(Material.MUSIC_DISC_STAL), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.MUSIC}),
     CD_9(73, "§6Strad", new ItemStack(Material.MUSIC_DISC_STRAD),   1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.MUSIC}),
     CD_10(74, "§6Ward", new ItemStack(Material.MUSIC_DISC_WARD), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.MUSIC}),
-    CD_11(75, "§6Wait", new ItemStack(Material.MUSIC_DISC_WAIT), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.MUSIC});
+    CD_11(75, "§6Wait", new ItemStack(Material.MUSIC_DISC_WAIT), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.MUSIC}),
+    ROSE(76, "§7Rose", new ItemStack(Material.WITHER_ROSE), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.FLOWER}),
+    TULPE(77, "§7Tulpe", new ItemStack(Material.RED_TULIP), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.FLOWER}),
+    MARGARITE(78, "§7Margarite", new ItemStack(Material.OXEYE_DAISY), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.FLOWER}),
+    GERBERA(79, "§7Gerbera", new ItemStack(Material.ORANGE_TULIP), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.FLOWER}),
+    LILIEN(80, "§7Lilien", new ItemStack(Material.WHITE_TULIP), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.FLOWER}),
+    MARGARITE_PINK(81, "§7Pink Margarite", new ItemStack(Material.PINK_TULIP), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.FLOWER}),
+    WATER_BUCKET(82, "§7Wasser", Script.setNameAndLore(new ItemStack(Material.WATER_BUCKET), "§9Wasser", "§65/5"), 1, 1, 1, 1, 1, false, false, false, new ShopType[] {ShopType.FLOWER}),
+    DUENGER(83, "§7Dünger", new ItemStack(Material.INK_SAC), 1, 1, 1, 1, 1, false, false, false, new ShopType[] {ShopType.FLOWER});
 
     private final int id;
     private final String name;

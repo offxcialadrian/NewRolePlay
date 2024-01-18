@@ -304,6 +304,9 @@ public class main extends JavaPlugin {
         getCommand("healaddiction").setExecutor(new HealAddiction());
         getCommand("organisationkasse").setExecutor(new OrganisationKasse());
         getCommand("schwarzmarktlocation").setExecutor(new SchwarzmarktLocation());
+        getCommand("frisk").setExecutor(new Frisk());
+        getCommand("takeguns").setExecutor(new TakeGuns());
+        getCommand("takedrugs").setExecutor(new TakeDrugs());
 
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new SDuty(), this);
@@ -383,6 +386,8 @@ public class main extends JavaPlugin {
         pm.registerEvents(new PlantageCommand(), this);
         pm.registerEvents(new UseDrogen(), this);
         pm.registerEvents(new BreakIn(), this);
+        pm.registerEvents(new SchwarzmarktListener(), this);
+        pm.registerEvents(new Frisk(), this);
 
 
         new AsyncHealth().runTaskTimerAsynchronously(this, 120 * 20L, 120 * 20L);
@@ -392,6 +397,7 @@ public class main extends JavaPlugin {
         new SyncHour().runTaskTimer(this, 60 * 60 * 20L, 60 * 60 * 20L);
         new AsyncDaylightCycle().runTaskTimer(this, 20L, 600L);
         new SyncMinute().runTaskTimer(this, 60 * 20L, 60 * 20L);
+        new AsyncPlantation().runTaskTimerAsynchronously(this, 60 * 20L, 60 * 20L);
 
         ScoreboardManager.initMainScoreboard();
         Hologram.reload();

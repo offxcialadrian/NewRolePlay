@@ -14,6 +14,7 @@ import de.newrp.Player.Mobile;
 import de.newrp.Waffen.Waffen;
 import de.newrp.Waffen.Weapon;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -117,6 +118,12 @@ public class PayShop implements Listener {
                     Script.addMoney(p, PaymentType.BANK, price);
                     Stadtkasse.removeStadtkasse(price);
                 }
+                break;
+            case WATER_BUCKET:
+                p.getInventory().addItem(Script.setNameAndLore(new ItemStack(Material.WATER_BUCKET), "§9Wasser", "§65/5"));
+                break;
+            case DUENGER:
+                p.getInventory().addItem(Script.setNameAndLore(new ItemStack(Material.INK_SAC, 1, (short) 15), "§7Dünger", "§65/5"));
                 break;
         }
 

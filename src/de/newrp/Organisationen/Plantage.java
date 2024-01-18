@@ -305,7 +305,7 @@ public class Plantage {
         }
 
         for(int i = 0; i < getErtrag(); i++) {
-            p.getInventory().addItem(new ItemBuilder(getType().getMaterial()).setName(getType().name()).setLore("§7Reinheitsgrad: " + purity.getText()).build());
+            p.getInventory().addItem(new ItemBuilder(Material.SUGAR).setName(getType().name()).setLore("§7Reinheitsgrad: " + purity.getText()).build());
         }
         getLocation().getBlock().setType(Material.AIR);
         getLocation().getBlock().getRelative(BlockFace.DOWN).setType(Material.DIRT);
@@ -327,8 +327,8 @@ public class Plantage {
     }
 
     public enum PlantageType {
-        KRÄUTER(0, Drogen.KRÄUTER, 230, Material.GRASS, (byte) 2),
-        PULVER(1, Drogen.PULVER, 260, Material.GRASS, (byte) 2);
+        KRÄUTER(0, Drogen.KRÄUTER, 120, Material.LARGE_FERN, (byte) 2),
+        PULVER(1, Drogen.PULVER, 160, Material.LARGE_FERN, (byte) 2);
 
         private final int id;
         private final Drogen item;

@@ -58,7 +58,7 @@ public class Utils implements Listener {
             "/setworldspawn", "/spawnpoint", "/spreadplayers", "/stop", "/stopsound", "/structure", "/summon", "/tag",
             "/teammsg", "/tell", "/tellraw", "/testfor", "/testforblock", "/testforblocks", "/tickingarea", "/time", "/title",
             "/titleraw", "/tm", "/toggledownfall", "/trigger", "/volumearea", "/wb", "/whitelist", "/worldborder",
-            "/worldbuilder", "/wsserver", "/xp"
+            "/worldbuilder", "/wsserver", "/xp",
     };
 
     private static final String[] BLOCKED_COMMANDS_SPECIFIC = new String[]{
@@ -90,6 +90,14 @@ public class Utils implements Listener {
                 boolean block = !SDuty.isSDuty(e.getPlayer()) && !BuildMode.isInBuildMode(e.getPlayer());
                 e.setCancelled(block);
             }
+        }
+    }
+
+    @EventHandler
+    public void onLogin(PlayerLoginEvent e) {
+        if (e.getResult() == PlayerLoginEvent.Result.KICK_WHITELIST) {
+            e.getPlayer().kickPlayer("§8» §cNRP × New RolePlay §8┃ §cKick §8« \n\n§8§m------------------------------\n\n§7Du wurdest vom Server gekickt§8.\n\n§7Grund §8× §e" + "Wartungsarbeiten");
+            Debug.debug(Script.PREFIX + "Der Spieler " + e.getPlayer().getName() + " wurde gekickt, da der Server im Wartungsmodus ist.");
         }
     }
 
@@ -218,6 +226,12 @@ public class Utils implements Listener {
     public void onDrink(PlayerInteractEvent e) {
         if (e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) {
             Player p = e.getPlayer();
+            ItemStack is = p.getInventory().getItemInMainHand();
+            if (is.getType().equals(Material.WATER_BUCKET) ||
+                    is.getType().equals(Material.LAVA_BUCKET) ||
+                    is.getType().equals(Material.INK_SAC)) {
+                e.setCancelled(true);
+            }
             if (p.getInventory().getItemInMainHand().getType().equals(Material.FLOWER_POT)) {
                 if (!BuildMode.isInBuildMode(p)) {
                     if (e.getHand().equals(EquipmentSlot.OFF_HAND)) {

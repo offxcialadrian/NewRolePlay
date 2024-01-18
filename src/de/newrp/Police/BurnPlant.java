@@ -33,6 +33,7 @@ public class BurnPlant implements CommandExecutor {
             p.sendMessage(Messages.ERROR + "Du bist nicht im Dienst.");
             return true;
         }
+
         List<Player> nearbyCops = p.getNearbyEntities(5, 5, 5)
                 .stream()
                 .filter(ent -> ent instanceof Player)

@@ -64,7 +64,7 @@ public class HealCommand implements CommandExecutor {
         tg.setFireTicks(0);
         Krankheit.GEBROCHENER_ARM.remove(Script.getNRPID(tg));
         Krankheit.GEBROCHENES_BEIN.remove(Script.getNRPID(tg));
-        p.setWalkSpeed(0.2F);
+        tg.setWalkSpeed(0.2F);
         for (PotionEffect e : p.getActivePotionEffects()) {
             tg.removePotionEffect(e.getType());
         }

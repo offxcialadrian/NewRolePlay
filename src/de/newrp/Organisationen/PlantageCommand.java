@@ -1,5 +1,6 @@
 package de.newrp.Organisationen;
 
+import de.newrp.API.Messages;
 import de.newrp.API.Particle;
 import de.newrp.API.Script;
 import de.newrp.main;
@@ -65,6 +66,10 @@ public class PlantageCommand implements CommandExecutor, Listener {
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         Player p = (Player) cs;
         Organisation f = Organisation.getOrganisation(p);
+        if(f == null) {
+            p.sendMessage(Messages.ERROR + "Du bist in keiner Organisation.");
+            return true;
+        }
             if (args.length == 0) {
                 Plantage plant = Plantage.getNextPlantage(p, f);
                 if (plant != null) {
@@ -78,19 +83,7 @@ public class PlantageCommand implements CommandExecutor, Listener {
                     if (b.getType().equals(Material.AIR) || b.getType().equals(Material.GRASS)) {
                         if (b.getRelative(BlockFace.DOWN).getType().equals(Material.GRASS) || b.getRelative(BlockFace.DOWN).getType().equals(Material.DIRT) || b.getRelative(BlockFace.DOWN).getType().equals(Material.GRASS_BLOCK)) {
 
-                            Plantage.PlantageType type = null;
-                            ItemStack hand = p.getInventory().getItemInMainHand();
-                            if (hand != null) {
-                                if (hand.getType().equals(Material.BEETROOT_SEEDS)) {
-                                    if (hand.hasItemMeta()) {
-                                        if (hand.getItemMeta().getDisplayName().equals("§aKräuter Samen")) {
-                                            type = Plantage.PlantageType.KRÄUTER;
-                                        } else if (hand.getItemMeta().getDisplayName().equals("§7Pulver Samen")) {
-                                            type = Plantage.PlantageType.PULVER;
-                                        }
-                                    }
-                                }
-                            }
+                            Plantage.PlantageType type = getPlantageType(p);
                             if (type != null) {
                                 int count = Plantage.getPlantageCount(f);
                                 if (count == Organisation.getOrganisation(p).getLevel()) {
@@ -157,6 +150,21 @@ public class PlantageCommand implements CommandExecutor, Listener {
         return true;
     }
 
+    private static Plantage.PlantageType getPlantageType(Player p) {
+        Plantage.PlantageType type = null;
+        ItemStack hand = p.getInventory().getItemInMainHand();
+        //if (hand.getType().equals(Material.BEETROOT_SEEDS)) {
+            if (hand.hasItemMeta()) {
+                if (hand.getItemMeta().getDisplayName().equals("§aKräuter Samen")) {
+                    type = Plantage.PlantageType.KRÄUTER;
+                } else if (hand.getItemMeta().getDisplayName().equals("§7Pulver Samen")) {
+                    type = Plantage.PlantageType.PULVER;
+                }
+            }
+        //}
+        return type;
+    }
+
     @EventHandler
     public void onClick(InventoryClickEvent e) {
         if (e.getView().getTitle().equals("§aPlantage")) {
@@ -212,7 +220,7 @@ public class PlantageCommand implements CommandExecutor, Listener {
                                 sb.append("§l").append(hour).append(" Stunden und ").append(minutes).append(" Minuten§r§2 reif zur Ernte.");
                             } else {
                                 sb.append("Die Plantage ist in ");
-                                sb.append("§l").append(minutes).append(" Minuten §r§2 reif zur Ernte.");
+                                sb.append("§l").append(minutes).append(" Minuten §r§7 reif zur Ernte.");
                             }
                             p.sendMessage(sb.toString());
                             e.getView().close();
@@ -300,7 +308,7 @@ public class PlantageCommand implements CommandExecutor, Listener {
                                         plant.setFertilize(true);
                                         plant.setLastFertilize(System.currentTimeMillis());
                                         plant.getOrganisation().sendMessage(Plantage.PREFIX + "Eine " + plant.getType().getItem().getName() + "-Plantage wurde von " + Script.getName(p) + " gedüngt.");
-                                        Script.addEXP(p, Script.getRandom(7, 16));
+                                        Script.addEXP(p, Script.getRandom(2, 5));
                                         new Particle(org.bukkit.Particle.CRIT, plant.getLocation().clone().add(0, .5, 0), false, 0.01F, 0.01F, 0.01F, 0.01F, Script.getRandom(4, 9)).sendAll();
                                         new BukkitRunnable() {
                                             private int runs;
@@ -374,7 +382,7 @@ public class PlantageCommand implements CommandExecutor, Listener {
                                         plant.setWater(true);
                                         plant.setLastWater(System.currentTimeMillis());
                                         plant.getOrganisation().sendMessage(Plantage.PREFIX + "Eine " + plant.getType().getItem().getName() + "-Plantage wurde von " + Script.getName(p) + " gewässert.");
-                                        Script.addEXP(p, Script.getRandom(7, 16));
+                                        Script.addEXP(p, Script.getRandom(2, 5));
                                         new Particle(org.bukkit.Particle.WATER_DROP, plant.getLocation().clone().add(0, .8, 0), false, 0.01F, 0.01F, 0.01F, 0.01F, Script.getRandom(4, 9)).sendAll();
                                         new BukkitRunnable() {
                                             private int runs;

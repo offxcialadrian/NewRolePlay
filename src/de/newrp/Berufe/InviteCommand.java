@@ -65,10 +65,6 @@ public class InviteCommand implements CommandExecutor {
             Script.sendAcceptMessage(tg);
         }
 
-            if(Organisation.getOrganisation(p) != Organisation.getOrganisation(tg)) {
-                p.sendMessage(Messages.ERROR + "Der Spieler ist nicht in deiner Organisation.");
-                return true;
-            }
 
             if(Organisation.getOrganisation(p).getAllMembers().size() >= Organisation.getOrganisation(p).getLevel()*3) {
                 p.sendMessage(Messages.ERROR + "Deine Organisation ist voll.");

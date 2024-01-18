@@ -485,3 +485,12 @@ commands:
   schwarzmarktlocation:
     description: view the schwarzmarktlocation
     aliases: [ schwarzmarktlocations, schwarzmarktlocationen, smarktloc ]
+  frisk:
+    description: frisk a player
+    aliases: [ durchsuchen ]
+  takeguns:
+    description: take a gun
+    aliases: [ takegun ]
+  takedrugs:
+    description: take drugs
+    aliases: [ takedrogen ]

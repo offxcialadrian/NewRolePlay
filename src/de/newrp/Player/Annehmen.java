@@ -22,8 +22,8 @@ import java.util.HashMap;
 
 public class Annehmen implements CommandExecutor {
     public static final HashMap<String, String> offer = new HashMap<>();
-    public static String PREFIX = "§8[§eAnnehmen§8] §e" + Messages.ARROW + " ";
-    public static String ACCEPTED = "§8[§eAngenommen§8] §e" + Messages.ARROW + " ";
+    public static String PREFIX = "§8[§eAnnehmen§8] §e" + Messages.ARROW + " §7";
+    public static String ACCEPTED = "§8[§eAngenommen§8] §e" + Messages.ARROW + " §7";
 
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
@@ -107,7 +107,7 @@ public class Annehmen implements CommandExecutor {
                 return true;
             }
 
-            if (!Beruf.isLeader(leader, true)) {
+            if (!Organisation.isLeader(leader, true)) {
                 p.sendMessage(Messages.ERROR + "Der Leader ist kein Leader mehr.");
                 return true;
             }

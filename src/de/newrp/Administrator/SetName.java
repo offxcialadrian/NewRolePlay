@@ -20,7 +20,7 @@ public class SetName implements CommandExecutor {
             p.sendMessage(Messages.NO_PERMISSION);
         }
 
-        if (args.length != 1) {
+        if (args.length < 1) {
             p.sendMessage(Messages.ERROR + "/setname [Name]");
             return true;
         }

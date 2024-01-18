@@ -23,7 +23,9 @@ public enum Shops {
     GUNSHOP(4, "Schmid und Schmiedt Waffenladen", "Schmid und Schmiedt Waffenladen", 50000, new Location(Script.WORLD, 453, 69, 929), 200, 600, true, ShopType.GUNSHOP),
     SATURN(5, "Saturn", "Saturn", 50000, new Location(Script.WORLD, 865, 74, 964), 200, 600, true, ShopType.ELECTRONIC),
     SUPERMARKT(6, "Supermarkt", "Supermarkt", 50000, new Location(Script.WORLD, 640, 68, 861), 200, 600, true, ShopType.SUPERMARKET),
-    MUSIK(7, "Musikladen", "Musikladen", 50000, new Location(Script.WORLD, 864, 74, 905), 200, 600, true, ShopType.MUSIC);
+    MUSIK(7, "Musikladen", "Musikladen", 50000, new Location(Script.WORLD, 864, 74, 905), 200, 600, true, ShopType.MUSIC),
+    FLOWER(8, "Blumenladen", "Blumenladen", 50000, new Location(Script.WORLD, 866, 74, 950), 200, 600, true, ShopType.FLOWER),
+    APOTHEKE(9, "Apotheke", "Apotheke", 50000, new Location(Script.WORLD, 346, 76, 1079), 200, 600, true, ShopType.PHARMACY);
 
     private final int id;
     private final String name;
