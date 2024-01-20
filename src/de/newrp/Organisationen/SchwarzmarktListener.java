@@ -67,9 +67,8 @@ public class SchwarzmarktListener implements Listener {
         int i = 0;
         inv.setItem(i++, Script.setNameAndLore(new ItemStack(Material.BEETROOT_SEEDS, amount[0]), "§aKräuter Samen", "§c80€"));
         inv.setItem(i++, Script.setNameAndLore(new ItemStack(Material.BEETROOT_SEEDS, amount[1]), "§7Pulver Samen", "§c100€"));
-        if (amount[2] > 0) {
-            inv.setItem(i++, Script.setNameAndLore(new ItemStack(Material.INK_SAC, 1, (short) 15), "§bSpezial-Dünger", "§c150€"));
-        }
+        inv.setItem(i++, Script.setNameAndLore(new ItemStack(Material.INK_SAC, 1), "§bSpezial-Dünger", "§c150€"));
+
         inv.setItem(i++, Script.setNameAndLore(new ItemStack(Material.BLAZE_ROD, 1), "§7Brechstange", "§c600€"));
         p.openInventory(inv);
     }
@@ -122,6 +121,7 @@ public class SchwarzmarktListener implements Listener {
                     String name = is.getItemMeta().getDisplayName();
                     Organisation o = Organisation.getOrganisation(p);
                     boolean badFrak = o!=null;
+                    Schwarzmarkt.spawn(Schwarzmarkt.getSchwarzmarkt(), false);
                     switch (name) {
                         case "§aKräuter Samen":
                             if (badFrak) {

@@ -1,5 +1,6 @@
 package de.newrp.Organisationen;
 
+import de.newrp.API.Debug;
 import de.newrp.API.ItemBuilder;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
@@ -159,9 +160,11 @@ public class Plantage {
                         plant.setErtrag(plant.getErtrag() - Script.getRandom(1, 2));
                     }
                 } else {
-                    if (minutes >= 0 && Calendar.getInstance().get(Calendar.MINUTE) % 5 == 0) {
-                        plant.setErtrag(plant.getErtrag() + Script.getRandom(0, 2));
+                    if (minutes >= 0 && Calendar.getInstance().get(Calendar.MINUTE) % 2 == 0) {
                         plant.setPurity(plant.getCurrentPurity() + Script.getRandom(3, 4));
+                    }
+                    if(minutes >= 0 && Calendar.getInstance().get(Calendar.MINUTE) % 5 == 0) {
+                        plant.setErtrag(plant.getErtrag() + Script.getRandom(0, 2));
                     }
                 }
                 if (minutes >= 0 && plant.getLastFertilize() == 0 || (System.currentTimeMillis() - plant.getLastFertilize()) > TimeUnit.MINUTES.toMillis(Script.getRandom(60, 80))) {
@@ -170,6 +173,7 @@ public class Plantage {
                 if (minutes >= 0 && plant.getLastWater() == 0 || (System.currentTimeMillis() - plant.getLastWater()) > TimeUnit.MINUTES.toMillis(Script.getRandom(45, 60))) {
                     plant.setWater(false);
                 }
+                Debug.debug("current purity = " + plant.getCurrentPurity());
             }
             if (sendMessage) {
                 if (good == 1) {
@@ -294,18 +298,18 @@ public class Plantage {
         Drogen.DrugPurity purity;
         int purityCounter = getCurrentPurity();
 
-        if (purityCounter >= 160) {
+        if (purityCounter >= 180) {
             purity = Drogen.DrugPurity.HIGH;
-        } else if (purityCounter >= 143) {
+        } else if (purityCounter >= 160) {
             purity = Drogen.DrugPurity.GOOD;
-        } else if (purityCounter >= 130) {
+        } else if (purityCounter >= 110) {
             purity = Drogen.DrugPurity.MEDIUM;
         } else {
             purity = Drogen.DrugPurity.BAD;
         }
 
         for(int i = 0; i < getErtrag(); i++) {
-            p.getInventory().addItem(new ItemBuilder(Material.SUGAR).setName(getType().name()).setLore("§7Reinheitsgrad: " + purity.getText()).build());
+            p.getInventory().addItem(new ItemBuilder(Material.SUGAR).setName(getType().getName()).setLore("§7Reinheitsgrad: " + purity.getText()).build());
         }
         getLocation().getBlock().setType(Material.AIR);
         getLocation().getBlock().getRelative(BlockFace.DOWN).setType(Material.DIRT);
@@ -327,17 +331,19 @@ public class Plantage {
     }
 
     public enum PlantageType {
-        KRÄUTER(0, Drogen.KRÄUTER, 120, Material.LARGE_FERN, (byte) 2),
-        PULVER(1, Drogen.PULVER, 160, Material.LARGE_FERN, (byte) 2);
+        KRÄUTER(0, "Kräuter", Drogen.KRÄUTER, 120, Material.LARGE_FERN, (byte) 2),
+        PULVER(1, "Pulver", Drogen.PULVER, 160, Material.LARGE_FERN, (byte) 2);
 
         private final int id;
+        private final String name;
         private final Drogen item;
         private final int time;
         private final Material material;
         private final byte data;
 
-        PlantageType(int id, Drogen item, int time, Material material, byte data) {
+        PlantageType(int id, String name, Drogen item, int time, Material material, byte data) {
             this.id = id;
+            this.name = name;
             this.item = item;
             this.time = time;
             this.material = material;
@@ -364,6 +370,10 @@ public class Plantage {
 
         public Drogen getItem() {
             return this.item;
+        }
+
+        public String getName() {
+            return this.name;
         }
 
         public int getTime() {

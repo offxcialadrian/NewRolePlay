@@ -277,27 +277,29 @@ public class Wahlen implements CommandExecutor, Listener {
     }
 
     public static void sendWahlGUI(Player p) {
-        p.sendMessage(PREFIX + "Lade Wahl...");
-        p.sendMessage(Messages.INFO + "Niemand kann sehen, wen du wählst. Auch nicht die Administration.");
-        try (Statement stmt = main.getConnection().createStatement();
-             ResultSet rs = stmt.executeQuery("SELECT * FROM wahlen WHERE quartal = '" + getCurrentQuartal() + "' AND year = '" + Calendar.getInstance().get(Calendar.YEAR) + "'")) {
-            if (rs.next()) {
-                Inventory inv = Bukkit.createInventory(null, 54, "§8[§6Wahlen§8]");
-                do {
-                    ItemStack head = new ItemStack(Material.PLAYER_HEAD, 1, (short) 3);
-                    SkullMeta meta = (SkullMeta) head.getItemMeta();
-                    meta.setOwningPlayer(Script.getOfflinePlayer(rs.getInt("nrp_id")));
-                    meta.setDisplayName("§6" + Script.getOfflinePlayer(rs.getInt("nrp_id")).getName());
-                    head.setItemMeta(meta);
-                    inv.addItem(head);
-                } while (rs.next());
-                p.openInventory(inv);
-            } else {
-                p.sendMessage(PREFIX + "Es gibt derzeit keine Kandidaten.");
+        Bukkit.getScheduler().runTaskAsynchronously(main.getInstance(), () -> {
+            p.sendMessage(PREFIX + "Lade Wahl...");
+            p.sendMessage(Messages.INFO + "Niemand kann sehen, wen du wählst. Auch nicht die Administration.");
+            try (Statement stmt = main.getConnection().createStatement();
+                 ResultSet rs = stmt.executeQuery("SELECT * FROM wahlen WHERE quartal = '" + getCurrentQuartal() + "' AND year = '" + Calendar.getInstance().get(Calendar.YEAR) + "'")) {
+                if (rs.next()) {
+                    Inventory inv = Bukkit.createInventory(null, 54, "§8[§6Wahlen§8]");
+                    do {
+                        ItemStack head = new ItemStack(Material.PLAYER_HEAD, 1, (short) 3);
+                        SkullMeta meta = (SkullMeta) head.getItemMeta();
+                        meta.setOwningPlayer(Script.getOfflinePlayer(rs.getInt("nrp_id")));
+                        meta.setDisplayName("§6" + Script.getOfflinePlayer(rs.getInt("nrp_id")).getName());
+                        head.setItemMeta(meta);
+                        inv.addItem(head);
+                    } while (rs.next());
+                    p.openInventory(inv);
+                } else {
+                    p.sendMessage(PREFIX + "Es gibt derzeit keine Kandidaten.");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        });
     }
 
     public static void addVote(Player p, int id) {

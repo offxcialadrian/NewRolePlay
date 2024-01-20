@@ -16,7 +16,7 @@ public enum Schwarzmarkt {
     ARCADE(4, "Arcade", new Location(Script.WORLD, 424, 76, 735, 92.05975f, 2.5869339f)),
     ALTSTADT(5, "Altstadt", new Location(Script.WORLD, 291, 67, 1005, -262.5547f, 6.029933f)),
     WALD(6, "Wald", new Location(Script.WORLD, 477, 64, 1182, -0.783306f, 2.5498862f)),
-    UBAHN(7, "U-Bahn", new Location(Script.WORLD, 602, 57, 949, -60.532288f, 7.363153f)),
+    UBAHN(7, "U-Bahn", new Location(Script.WORLD, 603, 57, 950, -60.532288f, 7.363153f)),
     CASINO(8, "Casino", new Location(Script.WORLD, 802, 110, 849, -180.53113f, 3.600285f)),
     MOTEL(9, "Motel", new Location(Script.WORLD, 807, 64, 1227, -61.73477f, 7.3633313f));
 
@@ -35,7 +35,7 @@ public enum Schwarzmarkt {
         this.loc = loc;
     }
 
-    public static void spawn(Schwarzmarkt smarkt) {
+    public static void spawn(Schwarzmarkt smarkt, boolean clear) {
         CURRENT_LOCATION = smarkt;
 
         if (SCHWARZMARKT_VILLAGER != null) {
@@ -62,7 +62,7 @@ public enum Schwarzmarkt {
 
         CURRENT_LOCATION.amounts = new int[]{Script.getRandom(3, 7), Script.getRandom(3, 5), (Script.getRandom(1, 5) == 2 ? 1 : 0), 1, 1};
 
-        SchwarzmarktListener.VALID_PLAYER.clear();
+        if(clear) SchwarzmarktListener.VALID_PLAYER.clear();
     }
 
     public static void spawnRandom() {
@@ -71,7 +71,7 @@ public enum Schwarzmarkt {
         } else {
             SCHWARZMARKT_VILLAGER.remove();
         }
-        spawn(Schwarzmarkt.values()[Script.getRandom(0, Schwarzmarkt.values().length - 1)]);
+        spawn(Schwarzmarkt.values()[Script.getRandom(0, Schwarzmarkt.values().length - 1)], true);
     }
 
     public static void cleanUp() {

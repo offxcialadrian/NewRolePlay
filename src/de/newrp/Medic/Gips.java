@@ -124,6 +124,7 @@ public class Gips implements Listener {
     public void onFall(EntityDamageEvent e) {
         if (!(e.getEntity() instanceof Player)) return;
         if (e.getCause() != EntityDamageEvent.DamageCause.FALL) return;
+        if(e.isCancelled()) return;
         Player p = (Player) e.getEntity();
         if (e.getDamage() > 15) {
             Krankheit.GEBROCHENES_BEIN.add(Script.getNRPID(p));
@@ -235,9 +236,10 @@ public class Gips implements Listener {
             if(krankheit.isFoodIntolerance()) {
                 p.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 10 * 30, 1, false, false));
                 p.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 10 * 30, 1, false, false));
-                p.addPotionEffect(new PotionEffect(PotionEffectType.HUNGER, 48 * 30, 1, false, false));
+                p.addPotionEffect(new PotionEffect(PotionEffectType.HUNGER, 48 * 30, 2, false, false));
                 p.sendMessage(Health.PREFIX  + "§7Dir gehts nicht so gut...");
                 Me.sendMessage(p, "hat sich übergeben.");
+                new Particle(org.bukkit.Particle.SLIME, p.getLocation(), true,0.5F, 0.5F, 0.5F, 0.5F, 10).sendAll();
                 break;
             }
         }

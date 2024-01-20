@@ -43,7 +43,8 @@ public class Me implements CommandExecutor {
                     arg.equalsIgnoreCase("steckt zwei Finger") || arg.equalsIgnoreCase("penetriert") || arg.equalsIgnoreCase("sperma") ||
                     arg.equalsIgnoreCase("stößt") || arg.equalsIgnoreCase("melken") || arg.equalsIgnoreCase("dringt ein") ||
                     arg.equalsIgnoreCase("sein glied") || arg.equalsIgnoreCase("lustpunkt") || arg.equalsIgnoreCase("eichel") ||
-                    arg.equalsIgnoreCase("bläst ihm")) {
+                    arg.equalsIgnoreCase("bläst ihm") || arg.equalsIgnoreCase("steckt") || arg.equalsIgnoreCase("spritzt") ||
+                    arg.equalsIgnoreCase("sex") || arg.equalsIgnoreCase("futterluke")) {
                 Notications.sendMessage(Notications.NotificationType.ADVANCED_ANTI_CHEAT, "Verdacht auf Missachtung der Vergewaltigungs-Regel bei " + Script.getName(p) + " " + Messages.ARROW + " " + message);
             }
 

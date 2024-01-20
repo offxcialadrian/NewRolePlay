@@ -1,5 +1,6 @@
 package de.newrp.Organisationen;
 
+import de.newrp.API.Debug;
 import de.newrp.API.Krankheit;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
@@ -14,6 +15,7 @@ import org.bukkit.potion.PotionEffectType;
 
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.concurrent.TimeUnit;
 
 public enum Drogen {
 
@@ -96,9 +98,9 @@ public enum Drogen {
     public static int getAddiction(Player p) {
         int i = 0;
         try (Statement stmt = main.getConnection().createStatement();
-             ResultSet rs = stmt.executeQuery("SELECT * FROM drug_addiction WHERE nrp_id='" + Script.getNRPID(p) + "' AND healed = false")) {
+             ResultSet rs = stmt.executeQuery("SELECT * FROM drug_addiction WHERE nrp_id='" + Script.getNRPID(p) + "' AND heal = false")) {
             while (rs.next()) {
-                if (rs.getLong("time") + 604800000 > System.currentTimeMillis()) {
+                if (rs.getLong("time") + TimeUnit.DAYS.toMillis(5) > System.currentTimeMillis()) {
                     i++;
                 }
             }
@@ -111,9 +113,9 @@ public enum Drogen {
     public static int getAddictionHeal(Player p) {
         int i = 0;
         try (Statement stmt = main.getConnection().createStatement();
-             ResultSet rs = stmt.executeQuery("SELECT * FROM drug_addiction WHERE nrp_id='" + Script.getNRPID(p) + "' AND healed = true")) {
+             ResultSet rs = stmt.executeQuery("SELECT * FROM drug_addiction WHERE nrp_id='" + Script.getNRPID(p) + "' AND heal = true")) {
             while (rs.next()) {
-                if (rs.getLong("time") + 604800000 > System.currentTimeMillis()) {
+                if (rs.getLong("time") + TimeUnit.DAYS.toMillis(5) > System.currentTimeMillis()) {
                     i++;
                 }
             }
@@ -125,7 +127,7 @@ public enum Drogen {
 
     public static void addToAdiction(Player p) {
         Script.executeAsyncUpdate("INSERT INTO drug_addiction (nrp_id, time, heal) VALUES (" + Script.getNRPID(p) + ", " + System.currentTimeMillis() + ", false)");
-        if(getAddiction(p) == Script.getRandom(7, 20) && !Krankheit.ABHAENGIGKEIT.isInfected(Script.getNRPID(p))) {
+        if(getAddiction(p) >= Script.getRandom(20, 30) && !Krankheit.ABHAENGIGKEIT.isInfected(Script.getNRPID(p))) {
             Krankheit.ABHAENGIGKEIT.add(Script.getNRPID(p));
             p.sendMessage(Messages.INFO + "Du hast eine Abhängigkeit entwickelt. Lasse dich von einem Arzt behandeln.");
         }
@@ -149,6 +151,11 @@ public enum Drogen {
         if (isConsumable()) {
             Script.playLocalSound(p.getLocation(), Sound.ENTITY_PLAYER_BURP, 5);
             Me.sendMessage(p, "konsumiert " + this.getName() + ".");
+        }
+
+        if(Krankheit.ABHAENGIGKEIT.isInfected(id)) {
+            p.sendMessage(Messages.INFO + "Du hast eine Abhängigkeit entwickelt. Das Konsumieren hat keine Wirkung gezeigt.");
+            return;
         }
 
         Drogen.addToAdiction(p);

@@ -2,6 +2,7 @@ package de.newrp.Administrator;
 
 import de.newrp.API.*;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -43,12 +44,15 @@ public class RemoveCheckpoints implements CommandExecutor {
         }
 
         Checkpoints.clear(tg);
+
         p.sendMessage(Checkpoints.PREFIX + "Du hast die Checkpoints von §6" + tg.getName() + " §7erfolgreich entfernt.");
         Log.WARNING.write(p, "hat die Checkpoints von " + tg.getName() + " entfernt.");
         Log.HIGH.write(tg, "wurde von " + p.getName() + " die Checkpoints entfernt.");
         Script.sendTeamMessage(p, ChatColor.RED, "hat die Checkpoints von " + tg.getName() + " entfernt.", true);
         if(tg.isOnline()) {
             tg.getPlayer().sendMessage(Checkpoints.PREFIX + "Deine Checkpoints wurden von §6" + Messages.RANK_PREFIX(p) + " §7entfernt.");
+            Cache.loadScoreboard(tg.getPlayer());
+            tg.getPlayer().teleport(new Location(Script.WORLD, 587, 69, 991, -268.28235f, -3.7367816f));
             Cache.loadScoreboard(tg.getPlayer());
         } else {
             Script.addOfflineMessage(tg, Checkpoints.PREFIX + "Deine Checkpoints wurden von §6" + Messages.RANK_PREFIX(p) + " §7entfernt.");

@@ -445,6 +445,6 @@ public enum Organisation {
             Script.executeAsyncUpdate("INSERT INTO organisation_rankname (organisationID, rank, gender, name) VALUES (" + this.id + ", '" + rank + "', '" + gender.getName().charAt(0) + "', '" + arg + "')");
             return;
         }
-        Script.executeAsyncUpdate("UPDATE organisation_rankname SET name = " + arg + " WHERE organisationID = " + this.id + " AND rank = " + rank + " AND gender = " + gender.getName().charAt(0));
+        Script.executeAsyncUpdate("UPDATE organisation_rankname SET name = '" + arg + "' WHERE organisationID = " + this.id + " AND rank = " + rank + " AND gender = '" + gender.getName().charAt(0) + "'");
     }
 }

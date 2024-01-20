@@ -30,7 +30,6 @@ public class CheckOrganisation implements CommandExecutor {
             p.sendMessage(PREFIX + "§8» §7Name: §e" + o.getName());
             p.sendMessage(PREFIX + "§8» §7Level: §e" + o.getLevel());
             p.sendMessage(PREFIX + "§8» §7Exp: §e" + o.getExp() + " / " + o.getLevelCost() + " (" + Script.getPercentage(o.getExp(), o.getLevelCost()) + "%)");
-            p.sendMessage(PREFIX + "§8» §7Kontostand: §e" + o.getKasse() + "€");
             p.sendMessage(PREFIX + "§8» §7Blacklist: §e" + (o.hasBlacklist() ? "Ja" : "Nein"));
             p.sendMessage(PREFIX + "§8» §7Mitglieder: §e" + o.getAllMembers().size());
             StringBuilder leaders = new StringBuilder();
@@ -38,7 +37,7 @@ public class CheckOrganisation implements CommandExecutor {
                 if(leaders.length() > 0) {
                     leaders.append(", ");
                 }
-                leaders.append(all.getName());
+                leaders.append("§7").append(all.getName()).append(" §8[§e").append(Organisation.getRank(all)).append("§8]");
             }
             p.sendMessage(PREFIX + "§8» §7Leader: §e" + leaders.toString());
             StringBuilder members = new StringBuilder();
@@ -46,7 +45,7 @@ public class CheckOrganisation implements CommandExecutor {
                 if(members.length() > 0) {
                     members.append(", ");
                 }
-                members.append(all.getName() + " §8[§e" + Organisation.getRank(all) + "§8]");
+                members.append("§e").append(all.getName()).append(" §8[§e").append(Organisation.getRank(all)).append("§8]");
             }
             p.sendMessage(PREFIX + "§8» §7Mitglieder: §e" + members.toString());
             p.sendMessage(PREFIX + "§8» §7Rangnamen:");
@@ -96,7 +95,7 @@ public class CheckOrganisation implements CommandExecutor {
             if(members.length() > 0) {
                 members.append(", ");
             }
-            members.append(all.getName() + " §8[§e" + Organisation.getRank(all) + "§8]");
+            members.append("§e" + all.getName() + " §8[§e" + Organisation.getRank(all) + "§8]");
         }
         p.sendMessage(PREFIX + "§8» §7Mitglieder: §e" + members.toString());
         p.sendMessage(PREFIX + "§8» §7Rangnamen:");

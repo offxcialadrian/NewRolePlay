@@ -343,7 +343,7 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
             Checkpoints.setCheckpoints(tg, checkpoints, true);
             Log.WARNING.write(p, "hat " + Script.getName(tg) + " zu " + checkpoints + " Checkpoints eingesperrt.");
             Log.HIGH.write(tg, "wurde von " + tg.getName() + " zu " + checkpoints + " Checkpoints eingesperrt.");
-            Bukkit.broadcastMessage(Script.PREFIX + "§c" + Script.getName(tg) + " wurde wegen " + v.getName() + " von " + Messages.RANK_PREFIX(p) + " zu " + v.getDuration() + " Checkpoints eingesperrt.");
+            Bukkit.broadcastMessage(Script.PREFIX + "§c" + Script.getName(tg) + " wurde wegen " + v.getName() + " von " + Messages.RANK_PREFIX(p) + " zu " + v.getCheckpoints() + " Checkpoints eingesperrt.");
             Checkpoints.start(tg, checkpoints);
         }
     }

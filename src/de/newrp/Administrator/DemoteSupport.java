@@ -46,13 +46,18 @@ public class DemoteSupport implements CommandExecutor {
             return true;
         }
 
+        if(Script.getRank(tg) == Rank.OWNER) {
+            p.sendMessage(Messages.ERROR + "Der Spieler ist Owner.");
+            return true;
+        }
+
         demote(p, tg);
 
         return false;
     }
 
     private static void demote(Player p, OfflinePlayer tg) {
-        Rank rank = Rank.values()[Script.getRank(tg).ordinal() - 1];
+        Rank rank = Rank.getRankByID(Script.getRank(tg).getID()+1);
         p.sendMessage(PREFIX + "Du hast " + tg.getName() + " zu " + rank.getName() + " degradiert.");
         if(tg.isOnline())
             tg.getPlayer().sendMessage(PREFIX + "Du wurdest zu " + rank.getName() + " degradiert.");

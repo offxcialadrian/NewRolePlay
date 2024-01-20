@@ -54,8 +54,8 @@ public class HealAddiction implements CommandExecutor {
 
         cooldown.add(tg.getName());
         Drogen.healAddiction(p);
-        p.sendMessage(PREFIX + "Du hast " + Script.getName(tg) + " wegen seiner Abhängigkeit behandelt (" + Drogen.getAddictionHeal(tg) + "/3).");
-        tg.sendMessage(PREFIX + "Du wurdest von " + Script.getName(p) + " wegen deiner Abhängigkeit behandelt (" + Drogen.getAddictionHeal(tg) + "/3).");
+        p.sendMessage(PREFIX + "Du hast " + Script.getName(tg) + " wegen seiner Abhängigkeit behandelt (" + Drogen.getAddictionHeal(tg)+1 + "/3).");
+        tg.sendMessage(PREFIX + "Du wurdest von " + Script.getName(p) + " wegen deiner Abhängigkeit behandelt (" + Drogen.getAddictionHeal(tg)+1 + "/3).");
 
         return false;
     }

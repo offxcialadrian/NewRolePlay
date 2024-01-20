@@ -119,7 +119,6 @@ public class Annehmen implements CommandExecutor {
             leader.sendMessage(Messages.INFO + "Nutze /salary [Spieler] [Gehalt], um " + Script.getName(p) + " ein Gehalt zu geben.");
             organisation.addMember(p, leader);
             offer.remove(p.getName() + ".joinorganisation");
-            Achievement.BERUF_JOIN.grant(p);
             TeamSpeak.sync(Script.getNRPID(p));
             Forum.syncPermission(p);
 
@@ -182,10 +181,10 @@ public class Annehmen implements CommandExecutor {
             if (m == null) return true;
             p.sendMessage(ACCEPTED + "Du hast ein Rezept für " + m.getName() + " erhalten.");
             tg.sendMessage(ACCEPTED + Script.getName(p) + " hat das Rezept genommen.");
-            tg.getInventory().addItem(m.getRezept());
+            p.getInventory().addItem(m.getRezept());
             Log.NORMAL.write(p, "hat ein Rezept für " + m.getName() + " von " + Script.getName(tg) + " erhalten.");
             Log.NORMAL.write(tg, "hat ein Rezept für " + m.getName() + " an " + Script.getName(p) + " gegeben.");
-            Beruf.Berufe.RETTUNGSDIENST.sendMessage(Rezept.PREFIX + Script.getName(tg) + " hat " + Script.getName(tg) + " ein Rezept für " + m.getName() + " ausgestellt.");
+            Beruf.Berufe.RETTUNGSDIENST.sendMessage(Rezept.PREFIX + Script.getName(tg) + " hat " + Script.getName(p) + " ein Rezept für " + m.getName() + " ausgestellt.");
             offer.remove(p.getName() + ".rezept");
             offer.remove(p.getName() + ".medikament");
             Stadtkasse.removeStadtkasse(30);

@@ -27,7 +27,7 @@ public class Schule implements CommandExecutor, Listener {
 
     public static HashMap<Player, GFB> STUDIYING = new HashMap<>();
     public static HashMap<Player, Long> STARTED = new HashMap<>();
-    public static String PREFIX = "§8[§6Schule§8] §6» §7 ";
+    public static String PREFIX = "§8[§6Schule§8] §6» §7";
 
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
@@ -39,9 +39,11 @@ public class Schule implements CommandExecutor, Listener {
         }
 
         if(STARTED.containsKey(p)) {
-            long left = STARTED.get(p) + 20 * 60 * 15 - System.currentTimeMillis();
-            int mins = (int) (left / 1000 / 60);
-            int secs = (int) (left / 1000 % 60);
+            long time = System.currentTimeMillis();
+            long started = STARTED.get(p);
+            long diff = time - started;
+            long mins = (15 * 60 * 1000 - diff) / 1000 / 60;
+            long secs = (15 * 60 * 1000 - diff) / 1000 % 60;
             p.sendMessage(Messages.ERROR + "Du lernst bereits für den GFB-Job " + STUDIYING.get(p).getName() + ".");
             p.sendMessage(Messages.INFO + "Du musst noch " + mins + " Minuten und " + secs + " Sekunden lernen.");
             return true;
@@ -53,7 +55,7 @@ public class Schule implements CommandExecutor, Listener {
         }
 
         Inventory inv = Bukkit.createInventory(null, 9, "§8» §eSchule");
-        int i = -1;
+        int i = 0;
         for(GFB gfb : GFB.values()) {
             inv.setItem(i++, new ItemBuilder(Material.PAPER).setName("§8» §e" + gfb.getName()).setLore("§8» §7Preis: " + gfb.getLevel(p)*500 + "€").build());
         }
@@ -87,7 +89,7 @@ public class Schule implements CommandExecutor, Listener {
                 public void run() {
                     if(STUDIYING.containsKey(p)) {
                         p.sendMessage(PREFIX + "§aDu hast den Kurs bestanden.");
-                        gfb.addExp(p, Script.getRandom(400, 600));
+                        gfb.addExp(p, Script.getRandom(100, 200));
                         STUDIYING.remove(p);
                         STARTED.remove(p);
                     }

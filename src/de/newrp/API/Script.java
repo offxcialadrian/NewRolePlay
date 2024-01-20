@@ -12,6 +12,7 @@ import de.newrp.Forum.Forum;
 import de.newrp.House.House;
 import de.newrp.Organisationen.Drogen;
 import de.newrp.Player.AFK;
+import de.newrp.Player.Mobile;
 import de.newrp.Player.Passwort;
 import de.newrp.TeamSpeak.TeamSpeak;
 import de.newrp.Ticket.TicketCommand;
@@ -981,6 +982,13 @@ public class Script {
 
     public static void removeMoney(Player p, PaymentType paymentType, int amount) {
         if(paymentType == PaymentType.CASH) p.sendMessage(Messages.INFO + "Du hast " + amount + "€ Bargeld bezahlt.");
+        if(paymentType == PaymentType.BANK) {
+            if(Premium.hasPremium(p) && Mobile.hasPhone(p)) {
+                if(Mobile.mobileIsOn(p) && Mobile.hasConnection(p)) {
+                    p.sendMessage(Messages.INFO + "Du hast " + amount + "€ von deinem Konto bezahlt.");
+                }
+            }
+        }
         amount = Math.abs(amount);
         executeUpdate("UPDATE money SET " + paymentType.getName() + "=" + (getMoney(p, paymentType) - amount) + " WHERE nrp_id=" + getNRPID(p));
     }
@@ -1247,6 +1255,10 @@ public class Script {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        if(getPlayTime(p, true) % 50 == 0 && getPlayTime(p, false) == 0) {
+            p.sendMessage(Messages.INFO + "Du erhältst als Dankeschön deiner Treue 50 Exp");
+            addEXP(p, 50);
+        }
     }
 
     public static void setLevel(Player p, int level) {
@@ -1284,7 +1296,7 @@ public class Script {
         int lvl = getLevel(p) + 1;
         int id = getNRPID(p);
         setLevel(p, lvl);
-        p.sendMessage("§aDu bist nun Level §6" + lvl + "§a!");
+        p.sendMessage(Script.PREFIX + "§aDu bist nun Level §6" + lvl + "§a!");
         setExpbarPercentage(p, 0);
         resetHealth(p);
         updateExpBar(p);
@@ -1399,13 +1411,32 @@ public class Script {
         return is;
     }
 
+    public static String getRemainingTime(long time) {
+        long difference = time - System.currentTimeMillis();
+        if (difference <= 0) return "§cAbgelaufen";
+
+        long seconds = difference / 1000 % 60;
+        long minutes = difference / (1000 * 60) % 60;
+        long hours = difference / (1000 * 60 * 60) % 24;
+        long days = difference / (1000 * 60 * 60 * 24);
+
+        StringBuilder s = new StringBuilder();
+        if (days > 0) s.append(days).append(" Tage ");
+        if (hours > 0) s.append(hours).append(" Stunden ");
+        if (minutes > 0) s.append(minutes).append(" Minuten ");
+        if (seconds > 0) s.append(seconds).append(" Sekunden");
+
+        return s.toString();
+    }
+
+
     public static void sendAcceptMessage(Player p) {
         TextComponent msg = new TextComponent("  §bInfo:§r Nimm es mit ");
 
         TextComponent annehmen = new TextComponent("§7/§6annehmen");
         annehmen.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/annehmen"));
         annehmen.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("§6Annehmen").create()));
-        TextComponent msg1 = new TextComponent(" an oder mit ");
+        TextComponent msg1 = new TextComponent(" an oder lehne mit ");
 
         TextComponent ablehnen = new TextComponent("§7/§6ablehnen");
         ablehnen.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/ablehnen"));

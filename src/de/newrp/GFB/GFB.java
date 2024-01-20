@@ -43,7 +43,7 @@ public enum GFB {
         return null;
     }
 
-    public static String PREFIX = "§8[§6GFB§8] §6» §7 ";
+    public static String PREFIX = "§8[§6GFB§8] §6» §7";
 
     public static GFB getGFBByName(String name) {
         for (GFB gfb : GFB.values()) {
@@ -79,7 +79,7 @@ public enum GFB {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        p.sendMessage(PREFIX + "Du hast " + exp + " Exp erhalten (" + getExp(p) + " / " + getLevelCost(getLevel(p)) + ")");
+        p.sendMessage(PREFIX + "Du hast " + exp + " Exp für den Job " + this.name + " erhalten (" + getExp(p) + "/ " + getLevelCost(getLevel(p)) + ")");
     }
 
     public int getLevel(Player p) {

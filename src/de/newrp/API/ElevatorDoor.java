@@ -529,7 +529,7 @@ public class ElevatorDoor implements Listener {
                         new Location(Script.WORLD, 782, 112, 853),
                         new Location(Script.WORLD, 781, 112, 853),
                         new Location(Script.WORLD, 780, 112, 853),
-                        new Location(Script.WORLD, 782, 112, 853),
+                        new Location(Script.WORLD, 779, 112, 853),
                         new Location(Script.WORLD, 782, 111, 853),
                         new Location(Script.WORLD, 781, 111, 853),
                         new Location(Script.WORLD, 780, 111, 853),
@@ -542,7 +542,193 @@ public class ElevatorDoor implements Listener {
                         new Location(Script.WORLD, 781, 109, 853),
                         new Location(Script.WORLD, 780, 109, 853),
                         new Location(Script.WORLD, 779, 109, 853),
-                }, Elevator.ElevatorAPI.CASINO, 4);
+                }, Elevator.ElevatorAPI.CASINO, 4),
+        FPA_0(14, new Location(Script.WORLD, 724, 74, 812), //Fun Park Aussicht GUI
+                new Location[]{
+                        new Location(Script.WORLD, 724, 74, 814)}, // tür öffnen
+                new Location[]{
+                        new Location(Script.WORLD, 724, 75, 813),
+                        new Location(Script.WORLD, 723, 75, 813),
+                        new Location(Script.WORLD, 724, 74, 813),
+                        new Location(Script.WORLD, 723, 74, 813),
+                        new Location(Script.WORLD, 724, 73, 813),
+                        new Location(Script.WORLD, 723, 73, 813),
+
+                }, Elevator.ElevatorAPI.FPA, 0),
+
+        FPA_1(14, new Location(Script.WORLD, 724, 79, 812), //Fun Park Aussicht GUI
+                new Location[]{
+                        new Location(Script.WORLD, 724, 79, 814)},
+                new Location[]{
+                        new Location(Script.WORLD, 724, 80, 813),
+                        new Location(Script.WORLD, 723, 80, 813),
+                        new Location(Script.WORLD, 724, 79, 813),
+                        new Location(Script.WORLD, 723, 79, 813),
+                        new Location(Script.WORLD, 724, 78, 813),
+                        new Location(Script.WORLD, 723, 78, 813),
+
+                }, Elevator.ElevatorAPI.FPA, 1),
+
+        FPA_2(14, new Location(Script.WORLD, 724, 84, 812), //Fun Park Aussicht GUI
+                new Location[]{
+                        new Location(Script.WORLD, 724, 84, 814)},
+                new Location[]{
+                        new Location(Script.WORLD, 724, 85, 813),
+                        new Location(Script.WORLD, 723, 85, 813),
+                        new Location(Script.WORLD, 724, 84, 813),
+                        new Location(Script.WORLD, 723, 84, 813),
+                        new Location(Script.WORLD, 724, 83, 813),
+                        new Location(Script.WORLD, 723, 83, 813),
+                }, Elevator.ElevatorAPI.FPA, 2),
+
+        FPA_3(14, new Location(Script.WORLD, 724, 89, 812), //Fun Park Aussicht GUI
+                new Location[]{
+                        new Location(Script.WORLD, 724, 89, 814)}, // Tür öffen
+                new Location[]{
+                        new Location(Script.WORLD, 724, 90, 813),
+                        new Location(Script.WORLD, 723, 90, 813),
+                        new Location(Script.WORLD, 724, 89, 813),
+                        new Location(Script.WORLD, 723, 89, 813),
+                        new Location(Script.WORLD, 724, 88, 813),
+                        new Location(Script.WORLD, 723, 88, 813),
+                }, Elevator.ElevatorAPI.FPA, 3),
+
+        FPA_4(14, new Location(Script.WORLD, 724, 94, 812), //Fun Park Aussicht GUI
+                new Location[]{
+                        new Location(Script.WORLD, 724, 94, 814)}, // Tür öffen
+                new Location[]{
+                        new Location(Script.WORLD, 724, 95, 813),
+                        new Location(Script.WORLD, 723, 95, 813),
+                        new Location(Script.WORLD, 724, 94, 813),
+                        new Location(Script.WORLD, 723, 94, 813),
+                        new Location(Script.WORLD, 724, 93, 813),
+                        new Location(Script.WORLD, 723, 93, 813),
+                }, Elevator.ElevatorAPI.FPA, 4),
+
+        FPA_5(14, new Location(Script.WORLD, 724, 99, 812), //Fun Park Aussicht GUI
+                new Location[]{
+                        new Location(Script.WORLD, 724, 99, 814)}, // Tür öffen
+                new Location[]{
+                        new Location(Script.WORLD, 724, 100, 813),
+                        new Location(Script.WORLD, 723, 100, 813),
+                        new Location(Script.WORLD, 724, 99, 813),
+                        new Location(Script.WORLD, 723, 99, 813),
+                        new Location(Script.WORLD, 724, 98, 813),
+                        new Location(Script.WORLD, 723, 98, 813),
+                }, Elevator.ElevatorAPI.FPA, 5),
+
+        FPA_6(14, new Location(Script.WORLD, 724, 104, 812), //Fun Park Aussicht GUI
+                new Location[]{
+                        new Location(Script.WORLD, 724, 104, 814)}, // Tür öffen
+                new Location[]{
+                        new Location(Script.WORLD, 724, 105, 813),
+                        new Location(Script.WORLD, 723, 105, 813),
+                        new Location(Script.WORLD, 724, 104, 813),
+                        new Location(Script.WORLD, 723, 104, 813),
+                        new Location(Script.WORLD, 724, 103, 813),
+                        new Location(Script.WORLD, 723, 103, 813),
+                }, Elevator.ElevatorAPI.FPA, 6),
+
+        FPA_7(14, new Location(Script.WORLD, 724, 109, 812), //Fun Park Aussicht GUI
+                new Location[]{
+                        new Location(Script.WORLD, 724, 109, 814)}, // Tür öffen
+                new Location[]{
+                        new Location(Script.WORLD, 724, 110, 813),
+                        new Location(Script.WORLD, 723, 110, 813),
+                        new Location(Script.WORLD, 724, 109, 813),
+                        new Location(Script.WORLD, 723, 109, 813),
+                        new Location(Script.WORLD, 724, 108, 813),
+                        new Location(Script.WORLD, 723, 108, 813),
+                }, Elevator.ElevatorAPI.FPA, 7),
+
+        FPA_8(14, new Location(Script.WORLD, 724, 116, 812), //Fun Park Aussicht GUI
+                new Location[]{
+                        new Location(Script.WORLD, 724, 116, 814)}, // Tür öffen
+                new Location[]{
+                        new Location(Script.WORLD, 724, 117, 813),
+                        new Location(Script.WORLD, 723, 117, 813),
+                        new Location(Script.WORLD, 724, 116, 813),
+                        new Location(Script.WORLD, 723, 116, 813),
+                        new Location(Script.WORLD, 724, 115, 813),
+                        new Location(Script.WORLD, 723, 115, 813),
+                }, Elevator.ElevatorAPI.FPA, 8),
+        SelfS_0(15, new Location(Script.WORLD, 1017, 69, 1175), //Selfstorage Aussicht GUI
+                new Location[]{
+                        new Location(Script.WORLD, 1019, 69, 1179)}, // tür öffnen
+                new Location[]{
+                        new Location(Script.WORLD, 1018, 71, 1178),
+                        new Location(Script.WORLD, 1017, 71, 1178),
+                        new Location(Script.WORLD, 1016, 71, 1178),
+                        new Location(Script.WORLD, 1018, 70, 1178),
+                        new Location(Script.WORLD, 1017, 70, 1178),
+                        new Location(Script.WORLD, 1016, 70, 1178),
+                        new Location(Script.WORLD, 1018, 69, 1178),
+                        new Location(Script.WORLD, 1017, 69, 1178),
+                        new Location(Script.WORLD, 1016, 69, 1178),
+                        new Location(Script.WORLD, 1018, 68, 1178),
+                        new Location(Script.WORLD, 1017, 68, 1178),
+                        new Location(Script.WORLD, 1016, 68, 1178),
+
+                }, Elevator.ElevatorAPI.SelfS, 0),
+
+        SelfS_1(15, new Location(Script.WORLD, 1017, 61, 1175), //Self Storage GUI
+                new Location[]{
+                        new Location(Script.WORLD, 1019, 61, 1179)}, // tür öffnen
+                new Location[]{
+                        new Location(Script.WORLD, 1018, 63, 1178),
+                        new Location(Script.WORLD, 1017, 63, 1178),
+                        new Location(Script.WORLD, 1016, 63, 1178),
+                        new Location(Script.WORLD, 1018, 62, 1178),
+                        new Location(Script.WORLD, 1017, 62, 1178),
+                        new Location(Script.WORLD, 1016, 62, 1178),
+                        new Location(Script.WORLD, 1018, 61, 1178),
+                        new Location(Script.WORLD, 1017, 61, 1178),
+                        new Location(Script.WORLD, 1016, 61, 1178),
+                        new Location(Script.WORLD, 1018, 60, 1178),
+                        new Location(Script.WORLD, 1017, 60, 1178),
+                        new Location(Script.WORLD, 1016, 60, 1178),
+
+                }, Elevator.ElevatorAPI.SelfS, 1), // -1
+
+
+        SelfS_2(15, new Location(Script.WORLD, 1017, 52, 1175), //Selfstorage Aussicht GUI
+                new Location[]{
+                        new Location(Script.WORLD, 1019, 52, 1179)}, // Tür öffnen
+                new Location[]{
+                        new Location(Script.WORLD, 1018, 54, 1178),
+                        new Location(Script.WORLD, 1017, 54, 1178),
+                        new Location(Script.WORLD, 1016, 54, 1178),
+                        new Location(Script.WORLD, 1018, 53, 1178),
+                        new Location(Script.WORLD, 1017, 53, 1178),
+                        new Location(Script.WORLD, 1016, 53, 1178),
+                        new Location(Script.WORLD, 1018, 52, 1178),
+                        new Location(Script.WORLD, 1017, 52, 1178),
+                        new Location(Script.WORLD, 1016, 52, 1178),
+                        new Location(Script.WORLD, 1018, 51, 1178),
+                        new Location(Script.WORLD, 1017, 51, 1178),
+                        new Location(Script.WORLD, 1016, 51, 1178),
+
+                }, Elevator.ElevatorAPI.SelfS, 2), // -2
+
+
+        SelfS_3(15, new Location(Script.WORLD, 1017, 43, 1175), //Selfstorage Aussicht GUI
+                new Location[]{
+                        new Location(Script.WORLD, 1019, 43, 1179)}, // Tür öffnen
+                new Location[]{
+                        new Location(Script.WORLD, 1018, 45, 1178),
+                        new Location(Script.WORLD, 1017, 45, 1178),
+                        new Location(Script.WORLD, 1016, 45, 1178),
+                        new Location(Script.WORLD, 1018, 44, 1178),
+                        new Location(Script.WORLD, 1017, 44, 1178),
+                        new Location(Script.WORLD, 1016, 44, 1178),
+                        new Location(Script.WORLD, 1018, 43, 1178),
+                        new Location(Script.WORLD, 1017, 43, 1178),
+                        new Location(Script.WORLD, 1016, 43, 1178),
+                        new Location(Script.WORLD, 1018, 42, 1178),
+                        new Location(Script.WORLD, 1017, 42, 1178),
+                        new Location(Script.WORLD, 1016, 42, 1178),
+
+                }, Elevator.ElevatorAPI.SelfS, 3);
 
 
         int id;

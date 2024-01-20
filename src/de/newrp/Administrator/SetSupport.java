@@ -56,7 +56,7 @@ public class SetSupport implements CommandExecutor {
                 break;
             case ADMINISTRATOR:
                 p.sendMessage(Messages.ERROR + "Der Spieler ist bereits Administrator!");
-                break;
+                return true;
         }
 
         return false;

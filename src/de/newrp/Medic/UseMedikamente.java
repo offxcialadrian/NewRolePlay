@@ -1,5 +1,6 @@
 package de.newrp.Medic;
 
+import de.newrp.API.Debug;
 import de.newrp.API.Krankheit;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
@@ -28,9 +29,9 @@ public class UseMedikamente implements Listener {
             Player p = e.getPlayer();
             if (p.getInventory().getItemInMainHand().getType() != Material.PAPER) return;
             Medikamente m = Medikamente.getMedikamentByItemStack(p.getInventory().getItemInMainHand());
-            if(m == null) return;
+            if (m == null) return;
 
-            if(m == Medikamente.SCHMERZMITTEL) {
+            if (m == Medikamente.SCHMERZMITTEL) {
                 Me.sendMessage(p, "nimmt ein Schmerzmittel ein.");
                 Script.playLocalSound(p.getLocation(), Sound.ENTITY_PLAYER_BURP, 5);
                 p.getInventory().getItemInMainHand().setAmount(p.getInventory().getItemInMainHand().getAmount() - 1);
@@ -42,29 +43,32 @@ public class UseMedikamente implements Listener {
             Krankheit k = m.getKrankheit();
             if (k == null) return;
             if (use.containsKey(p.getName() + "." + m.getName())) {
-                int i = (!use.containsKey(p.getName() + "." + m.getName()) ? use.get(p.getName()) : 0);
-                if (i == m.getNeeded()) {
+                int i = use.get(p.getName() + "." + m.getName());
+                if (i >= m.getNeeded()) {
                     Me.sendMessage(p, "nimmt ein Medikament ein.");
                     Script.playLocalSound(p.getLocation(), Sound.ENTITY_PLAYER_BURP, 5);
                     p.getInventory().getItemInMainHand().setAmount(p.getInventory().getItemInMainHand().getAmount() - 1);
                     k.remove(Script.getNRPID(p));
+                    p.sendMessage(Messages.INFO + "Du bist nun wieder gesund.");
                     use.remove(p.getName());
-                    return;
+                } else {
+                    use.replace(p.getName() + "." + m.getName(), i + 1);
+                    Me.sendMessage(p, "nimmt ein Medikament ein.");
+                    Script.playLocalSound(p.getLocation(), Sound.ENTITY_PLAYER_BURP, 5);
+                    p.getInventory().getItemInMainHand().setAmount(p.getInventory().getItemInMainHand().getAmount() - 1);
                 }
-                if(!use.containsKey(p.getName() + "." + m.getName())) {
+                return;
+            }
+
+                if (!use.containsKey(p.getName() + "." + m.getName())) {
                     use.put(p.getName() + "." + m.getName(), 1);
                     Me.sendMessage(p, "nimmt ein Medikament ein.");
                     Script.playLocalSound(p.getLocation(), Sound.ENTITY_PLAYER_BURP, 5);
                     p.getInventory().getItemInMainHand().setAmount(p.getInventory().getItemInMainHand().getAmount() - 1);
                     return;
                 }
-                use.replace(p.getName() + "." + m.getName(), i + 1);
-                Me.sendMessage(p, "nimmt ein Medikament ein.");
-                Script.playLocalSound(p.getLocation(), Sound.ENTITY_PLAYER_BURP, 5);
-                p.getInventory().getItemInMainHand().setAmount(p.getInventory().getItemInMainHand().getAmount() - 1);
-                return;
+
             }
         }
-    }
 
-}
+    }

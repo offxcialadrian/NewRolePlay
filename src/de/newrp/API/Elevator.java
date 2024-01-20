@@ -70,6 +70,24 @@ public class Elevator implements Listener {
                 new Location(Script.WORLD, 781, 93, 851, 359.4635f, 6.528944E-5f),
                 new Location(Script.WORLD, 780, 101, 851, 359.1611f, 2.3997068f),
                 new Location(Script.WORLD, 781, 109, 851, -358.28638f, 0.7494683f),
+        }),
+        FPA(14, "FPA", new Location[]{
+                new Location(Script.WORLD, 723, 73, 811, -359.73596f, -1.6499771f), // 0
+                new Location(Script.WORLD, 723, 78, 812, -0.48876953f, 0.45008942f), // 1
+                new Location(Script.WORLD, 723, 83, 812, -0.48876953f, -0.45000762f), // 2
+                new Location(Script.WORLD, 723, 88, 812, -0.6398225f, 1.9499756f), // 3
+                new Location(Script.WORLD, 723, 93, 812, 359.5089f, 0.7498441f), // 4
+                new Location(Script.WORLD, 723, 98, 812, 359.057f, 0.7498243f), // 5
+                new Location(Script.WORLD, 724, 103, 811, 0.26940918f, 0.44987455f), // 6
+                new Location(Script.WORLD, 723, 108, 812, 359.229f, 0.44979924f), // 7
+                new Location(Script.WORLD, 723, 115, 812, 358.4734f, 0.9002828f) // 8
+
+        }),
+        SelfS(14, "SelfS", new Location[]{
+                new Location(Script.WORLD, 1017, 68, 1176, 0.3227539f, 0.45031723f), // 0
+                new Location(Script.WORLD, 1017, 60, 1175, 0.39379883f, -0.2999653f), // -1
+                new Location(Script.WORLD, 1017, 51, 1176, 0.2890625f, -7.0147216E-5f), // -2
+                new Location(Script.WORLD, 1017, 42, 1176, 0.30078125f, -0.45009407f) // - 3
         });
 
         int id;

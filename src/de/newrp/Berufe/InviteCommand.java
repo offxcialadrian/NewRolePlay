@@ -74,7 +74,7 @@ public class InviteCommand implements CommandExecutor {
 
         Annehmen.offer.put(tg.getName() + ".joinorganisation", p.getName());
         p.sendMessage(PREFIX + "Du hast " + Script.getName(tg) + " in deine Organisation " + Organisation.getOrganisation(p).getName() + " eingeladen.");
-        tg.sendMessage(PREFIX + "Du wurdest von " + Script.getName(p) + " in deine Organisation " + Organisation.getOrganisation(p).getName() + " eingeladen.");
+        tg.sendMessage(PREFIX + "Du wurdest von " + Script.getName(p) + " in die Organisation " + Organisation.getOrganisation(p).getName() + " eingeladen.");
         Script.sendAcceptMessage(tg);
 
 

@@ -55,6 +55,7 @@ public class Baseballschlaeger implements Listener {
                 } else {
                     ItemStack is = damager.getInventory().getItemInMainHand();
                     int ammo = Waffen.getAmmo(is);
+                    if(ammo == 0) ammo = 800;
                     if (ammo > 0) {
                         cooldown.put(damager.getName(), time);
                         if (Spawnschutz.isInSpawnschutz(victim) || victim.getLevel() < 3) return;

@@ -50,6 +50,14 @@ public class Ablehnen implements CommandExecutor {
             Annehmen.offer.remove(p.getName() + ".vertrag.from");
             Annehmen.offer.remove(p.getName() + ".vertrag.condition");
 
+        } else if(Annehmen.offer.containsKey(p.getName() + ".joinorganisation")) {
+
+            Player leader = Script.getPlayer(Annehmen.offer.get(p.getName() + ".joinorganisation"));
+            if (leader != null) {
+                leader.sendMessage(DENIED + Script.getName(p) + " hat es abgelehnt der Organisation " + Beruf.getBeruf(leader).getName() + " beizutreten.");
+            }
+            p.sendMessage(DENIED + "Du hast es Abgelehnt der Organisation " + Beruf.getBeruf(leader).getName() + " beizutreten.");
+            Annehmen.offer.remove(p.getName());
         } else if(Annehmen.offer.containsKey(p.getName() + ".shop.sell")) {
             Player sell = Script.getPlayer(Annehmen.offer.get(p.getName() + ".shop.sell.seller"));
             if (sell != null) {

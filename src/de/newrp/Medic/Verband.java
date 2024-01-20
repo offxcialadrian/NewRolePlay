@@ -27,6 +27,7 @@ public class Verband implements Listener {
     public void onInteract(PlayerInteractEntityEvent e) {
         Player p = e.getPlayer();
         if (e.getHand() == EquipmentSlot.OFF_HAND) return;
+        if (!interact(p)) return;
 
         if(p.isSneaking()) {
             long time = System.currentTimeMillis();
@@ -82,7 +83,6 @@ public class Verband implements Listener {
 
         if (!(e.getRightClicked() instanceof Player)) return;
 
-        if (!interact(p)) return;
 
         long time = System.currentTimeMillis();
         Player rightClicked = (Player) e.getRightClicked();

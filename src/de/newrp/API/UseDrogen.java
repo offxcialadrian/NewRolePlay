@@ -1,5 +1,6 @@
 package de.newrp.API;
 
+import de.newrp.Administrator.BuildMode;
 import de.newrp.Organisationen.Drogen;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -7,6 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -24,8 +26,12 @@ public class UseDrogen implements Listener {
 
 
     @EventHandler
-    public void onInteract(PlayerInteractEntityEvent e) {
+    public void onInteract(PlayerInteractEvent e) {
         if (e.getHand() == EquipmentSlot.OFF_HAND) return;
+        if(BuildMode.isInBuildMode(e.getPlayer())) return;
+        if(e.getAction() != org.bukkit.event.block.Action.RIGHT_CLICK_AIR && e.getAction() != org.bukkit.event.block.Action.RIGHT_CLICK_BLOCK) return;
+
+
 
         Player p = e.getPlayer();
         Drogen droge = Drogen.getItemByName(ChatColor.stripColor(p.getInventory().getItemInMainHand().getItemMeta().getDisplayName()));
@@ -56,6 +62,10 @@ public class UseDrogen implements Listener {
         progressBar(p);
 
         if (level >= 10) {
+            Drogen.DrugPurity purity = Drogen.DrugPurity.getPurityByName(p.getInventory().getItemInMainHand().getItemMeta().getLore().get(0).replace("§7Reinheitsgrad: ", ""));
+            Debug.debug(purity);
+            droge.consume(p, purity);
+
             PlayerInventory inv = p.getInventory();
             ItemStack is = inv.getItemInMainHand();
             if (is.getAmount() > 1) {
@@ -64,8 +74,6 @@ public class UseDrogen implements Listener {
                 inv.setItemInMainHand(new ItemStack(Material.AIR));
             }
 
-            Drogen.DrugPurity purity = Drogen.DrugPurity.getPurityByName(Objects.requireNonNull(Objects.requireNonNull(p.getInventory().getItemInMainHand().getItemMeta()).getLore()).get(0).replace("§7Reinheitsgrad: ", ""));
-            droge.consume(p, purity);
 
             DRUG_COOLDOWN.put(p.getName(), time);
             LAST_CLICK.remove(p.getName());

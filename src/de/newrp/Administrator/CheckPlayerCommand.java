@@ -49,7 +49,7 @@ public class CheckPlayerCommand implements CommandExecutor {
             p.sendMessage("§e§l=== §6" + offtg.getName() + " §8(§cOffline§8) §e§l===");
             p.sendMessage("§7ID §8× §e" + Script.getNRPID(offtg));
             if (Script.hasRank(p, Rank.ADMINISTRATOR, false)) {
-                p.sendMessage("§7BackUpCode §8× §e" + Script.getBackUpCode(offtg));
+                p.sendMessage("§7BackUpCode §8× §e" + (Script.getBackUpCode(offtg)==null?"Kein BackUpCode":Script.getBackUpCode(offtg)));
             }
             if (Punish.getBanUntil(offtg) > System.currentTimeMillis() || Punish.getBanUntil(offtg) == 0)
                 p.sendMessage("§cGebannt §8× §c" + (Punish.getBanUntil(offtg) != 0 ? "bis " + Script.dateFormat.format(Punish.getBanUntil(offtg)) + " Uhr" : "Lebenslang")  + " §8(§c" + Punish.getBanReason(offtg) + "§8)");
@@ -91,7 +91,7 @@ public class CheckPlayerCommand implements CommandExecutor {
         p.sendMessage("§e§l=== §6" + Script.getName(tg) + " §e§l===");
         p.sendMessage("§7ID §8× §e" + Script.getNRPID(tg));
         if (Script.hasRank(p, Rank.ADMINISTRATOR, false)) {
-            p.sendMessage("§7BackUpCode §8× §e" + Script.getBackUpCode(tg));
+            p.sendMessage("§7BackUpCode §8× §e" + (Script.getBackUpCode(tg)==null?"Kein BackUpCode":Script.getBackUpCode(tg)));
             p.sendMessage("§7IP §8× §e" + tg.getAddress().getAddress().getHostAddress());
         }
         p.sendMessage("§7Warns §8× §e" + Punish.getWarns(tg) + "/3");

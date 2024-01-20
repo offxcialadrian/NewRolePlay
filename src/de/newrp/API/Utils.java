@@ -58,7 +58,7 @@ public class Utils implements Listener {
             "/setworldspawn", "/spawnpoint", "/spreadplayers", "/stop", "/stopsound", "/structure", "/summon", "/tag",
             "/teammsg", "/tell", "/tellraw", "/testfor", "/testforblock", "/testforblocks", "/tickingarea", "/time", "/title",
             "/titleraw", "/tm", "/toggledownfall", "/trigger", "/volumearea", "/wb", "/whitelist", "/worldborder",
-            "/worldbuilder", "/wsserver", "/xp",
+            "/worldbuilder", "/wsserver", "/xp", "/ver"
     };
 
     private static final String[] BLOCKED_COMMANDS_SPECIFIC = new String[]{
@@ -370,6 +370,7 @@ public class Utils implements Listener {
                     e.getClickedBlock().getType() == Material.CRAFTING_TABLE ||
                     e.getClickedBlock().getType() == Material.LECTERN ||
                     e.getClickedBlock().getType() == Material.BEACON ||
+                    e.getClickedBlock().getType() == Material.STONECUTTER ||
                     e.getClickedBlock().getType() == Material.DAYLIGHT_DETECTOR ||
                     e.getClickedBlock().getType() == Material.GRINDSTONE ||
                     e.getClickedBlock().getType() == Material.LOOM) {
@@ -448,6 +449,7 @@ public class Utils implements Listener {
 
         if (Script.getLevel(p) != 1) return;
 
+        e.setCancelled(true);
         if (damager.getType() == EntityType.PLAYER) {
             damager.sendMessage(Messages.ERROR + "Der Spieler ist im Neulingsschutz.");
         } else if (damager.getType() == EntityType.ARROW) {
