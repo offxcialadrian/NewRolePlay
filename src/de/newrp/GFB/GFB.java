@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashMap;
 
 public enum GFB {
 
@@ -44,6 +45,7 @@ public enum GFB {
     }
 
     public static String PREFIX = "§8[§6GFB§8] §6» §7";
+    public static HashMap<String, GFB> CURRENT = new HashMap<>();
 
     public static GFB getGFBByName(String name) {
         for (GFB gfb : GFB.values()) {

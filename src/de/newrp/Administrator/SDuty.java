@@ -71,9 +71,9 @@ public class SDuty implements CommandExecutor, Listener {
             p.sendMessage(BuildMode.PREFIX + "Du hast den BuildMode verlassen.");
             Script.sendTeamMessage(p, ChatColor.YELLOW, "hat den BuildMode verlassen.", true);
         }
-        sduty.remove(p.getName());
         Script.sendTeamMessage(p, ChatColor.RED, "hat den Supporter-Dienst verlassen.", false);
         p.sendMessage(Messages.INFO + "Du darfst nun wieder am aktiven Spielgeschehen teilnehmen.");
+        sduty.remove(p.getName());
         Cache.loadScoreboard(p);
         p.setCollidable(true);
         p.setGameMode(GameMode.SURVIVAL);

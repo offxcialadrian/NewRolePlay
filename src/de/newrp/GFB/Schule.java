@@ -89,7 +89,7 @@ public class Schule implements CommandExecutor, Listener {
                 public void run() {
                     if(STUDIYING.containsKey(p)) {
                         p.sendMessage(PREFIX + "§aDu hast den Kurs bestanden.");
-                        gfb.addExp(p, Script.getRandom(100, 200));
+                        gfb.addExp(p, gfb.getLevel(p) * Script.getRandom(100, 200));
                         STUDIYING.remove(p);
                         STARTED.remove(p);
                     }

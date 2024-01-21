@@ -30,10 +30,9 @@ import java.util.Objects;
 
 public class Lagerarbeiter implements CommandExecutor, Listener {
 
-    private static Location LAGER = new Location(Script.WORLD, 1, 70, 1);
     private static String PREFIX = "§8[§6Lagerarbeiter§8] §8» §6";
-    private static HashMap<String, Waren> ON_JOB = new HashMap<>();
-    private static HashMap<String, Integer> SCORE = new HashMap<>();
+    public static HashMap<String, Waren> ON_JOB = new HashMap<>();
+    public static HashMap<String, Integer> SCORE = new HashMap<>();
     public static HashMap<String, Long> cooldown = new HashMap<>();
 
     public enum Type {
@@ -47,7 +46,6 @@ public class Lagerarbeiter implements CommandExecutor, Listener {
         FLOWERS("Blumen"),
         MOEBEL("Möbel"),
         TEPPICH("Teppich"),
-        EIER("Eier"),
         MUSIK("Musik"),
         WOLLE("Wolle");
 
@@ -85,7 +83,6 @@ public class Lagerarbeiter implements CommandExecutor, Listener {
         TEPPICH_GELB(20, "Teppich", new ItemBuilder(Material.YELLOW_CARPET).setName("§fTeppich").build(), Type.TEPPICH),
         TEPPICH_GRUEN(21, "Teppich", new ItemBuilder(Material.GREEN_CARPET).setName("§fTeppich").build(), Type.TEPPICH),
         TEPPICH_ORANGE(22, "Teppich", new ItemBuilder(Material.ORANGE_CARPET).setName("§fTeppich").build(), Type.TEPPICH),
-        EIER(23, "Eier", new ItemBuilder(Material.EGG).setName("§fEier").build(), Type.EIER),
         NOTENBLOCK(24, "Notenblock", new ItemBuilder(Material.NOTE_BLOCK).setName("§fNotenblock").build(), Type.MUSIK),
         JUKEBOX(25, "Jukebox", new ItemBuilder(Material.JUKEBOX).setName("§fJukebox").build(), Type.MUSIK),
         SCHALLPLATTE(26, "Schallplatte", new ItemBuilder(Material.MUSIC_DISC_11).setName("§fSchallplatte").build(), Type.MUSIK),
@@ -168,7 +165,17 @@ public class Lagerarbeiter implements CommandExecutor, Listener {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
         Player p = (Player) cs;
+        if(GFB.CURRENT.containsKey(p.getName())) {
+            p.sendMessage(Messages.ERROR + "Du hast bereits einen Job.");
+            return true;
+        }
+
         if(ON_JOB.containsKey(p.getName())) {
+            p.sendMessage(Messages.ERROR + "Du bist bereits im Job.");
+            return true;
+        }
+
+        if(SCORE.containsKey(p.getName())) {
             p.sendMessage(Messages.ERROR + "Du bist bereits im Job.");
             return true;
         }
@@ -190,6 +197,7 @@ public class Lagerarbeiter implements CommandExecutor, Listener {
             return true;
         }
 
+        GFB.CURRENT.put(p.getName(), GFB.LAGERARBEITER);
         p.sendMessage(PREFIX + "Gehe ins Lager, hole dir eine Palette und fang an deinen Job zu machen.");
         p.sendMessage(Messages.INFO + "Klicke Rechtsklick auf das Schild \"Einzusortieren\".");
         SCORE.put(p.getName(), (GFB.LAGERARBEITER.getLevel(p) * 10));
@@ -251,20 +259,7 @@ public class Lagerarbeiter implements CommandExecutor, Listener {
                 if (inv.getItem(i) == null)
                     return;
             }
-            ON_JOB.remove(p.getName());
             p.closeInventory();
-            p.getInventory().clear();
-            Cache.loadInventory(p);
-            int amount = SCORE.get(p.getName());
-            if (amount == 1) {
-                p.sendMessage(PREFIX + "§aFertig");
-                SCORE.remove(p.getName());
-                GFB.LAGERARBEITER.addExp(p, GFB.LAGERARBEITER.getLevel(p) * 10);
-                PayDay.addPayDay(p, GFB.LAGERARBEITER.getLevel(p) * 10);
-            } else {
-                SCORE.replace(p.getName(), amount - 1);
-                p.sendMessage(PREFIX + "§aRichtig! §6Hole nun das nächste Produkt aus \"Einzusortieren\" und Sortiere es ein (" + (11-amount) + "/" + (GFB.LAGERARBEITER.getLevel(p) * 10) + ")");
-            }
         }
     }
 
@@ -277,9 +272,10 @@ public class Lagerarbeiter implements CommandExecutor, Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler (priority = EventPriority.LOW)
     public void onInventoryClose(InventoryCloseEvent e) {
         Player p = (Player) e.getPlayer();
+        if(!SCORE.containsKey(p.getName())) return;
         if (e.getView().getTitle().equalsIgnoreCase("Produkt einsortieren")) {
             Inventory inv = e.getInventory();
             for (int i = 0; i < inv.getSize() - 1; i++) {
@@ -287,11 +283,11 @@ public class Lagerarbeiter implements CommandExecutor, Listener {
                     return;
             }
             ON_JOB.remove(p.getName());
-            p.closeInventory();
             p.getInventory().clear();
             Cache.loadInventory(p);
             int amount = SCORE.get(p.getName());
             if (amount == 1) {
+                GFB.CURRENT.remove(p.getName());
                 p.sendMessage(PREFIX + "§aFertig");
                 SCORE.remove(p.getName());
                 GFB.LAGERARBEITER.addExp(p, GFB.LAGERARBEITER.getLevel(p) * 10);
@@ -299,7 +295,7 @@ public class Lagerarbeiter implements CommandExecutor, Listener {
                 Script.addEXP(p, GFB.LAGERARBEITER.getLevel(p) * Script.getRandom(3, 7));
             } else {
                 SCORE.replace(p.getName(), amount - 1);
-                p.sendMessage(PREFIX + "§aRichtig! §6Hole nun das nächste Produkt aus \"Einzusortieren\" und Sortiere es ein (" + (11-amount) + "/" + (GFB.LAGERARBEITER.getLevel(p) * 10) + ")");
+                p.sendMessage(PREFIX + "§aRichtig! §6Hole nun das nächste Produkt aus \"Einzusortieren\" und Sortiere es ein (" + ((GFB.LAGERARBEITER.getLevel(p) * 10)+1-amount) + "/" + (GFB.LAGERARBEITER.getLevel(p) * 10) + ")");
             }
         }
     }
@@ -308,6 +304,8 @@ public class Lagerarbeiter implements CommandExecutor, Listener {
     public void onQuit(PlayerQuitEvent e) {
         Player p = e.getPlayer();
         ON_JOB.remove(p.getName());
+        SCORE.remove(p.getName());
+        GFB.CURRENT.remove(p.getName());
         Cache.loadInventory(p);
     }
 

@@ -499,3 +499,6 @@ commands:
   schule:
     description: view the schule
     aliases: [ berufsschule ]
+  quitjob:
+    description: quit your job
+    aliases: [ jobquit, leavejob, jobleave ]

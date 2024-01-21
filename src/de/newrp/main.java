@@ -15,6 +15,7 @@ import de.newrp.Entertainment.Lotto;
 import de.newrp.Forum.ForumCommand;
 import de.newrp.Berufe.Tazer;
 import de.newrp.GFB.Lagerarbeiter;
+import de.newrp.GFB.Quitjob;
 import de.newrp.GFB.Schule;
 import de.newrp.Government.*;
 import de.newrp.House.*;
@@ -311,6 +312,7 @@ public class main extends JavaPlugin {
         getCommand("takedrugs").setExecutor(new TakeDrugs());
         getCommand("lagerarbeiter").setExecutor(new Lagerarbeiter());
         getCommand("schule").setExecutor(new Schule());
+        getCommand("quitjob").setExecutor(new Quitjob());
 
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new SDuty(), this);
