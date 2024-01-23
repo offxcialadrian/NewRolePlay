@@ -1134,6 +1134,53 @@ public class Script {
         executeUpdate("UPDATE birthday SET geschenk=" + canopen + " WHERE id=" + getNRPID(p));
     }
 
+    public static org.bukkit.inventory.ItemStack addGlow(org.bukkit.inventory.ItemStack item) {
+        net.minecraft.server.v1_16_R3.ItemStack nmsStack = CraftItemStack.asNMSCopy(item);
+        NBTTagCompound tag = null;
+        if (!nmsStack.hasTag()) {
+            tag = new NBTTagCompound();
+            nmsStack.setTag(tag);
+        }
+        if (tag == null) {
+            tag = nmsStack.getTag();
+        }
+        NBTTagList ench = new NBTTagList();
+        tag.set("ench", ench);
+        nmsStack.setTag(tag);
+        return CraftItemStack.asCraftMirror(nmsStack);
+    }
+
+    public static void startEvent(Event e, boolean message) {
+        if (e == null) {
+            executeUpdate("UPDATE serversettings SET event='none'");
+            main.event = null;
+        } else {
+            main.event = e;
+            if (e.equals(Event.LASERTAG)) {
+                if (message) {
+                    Bukkit.broadcastMessage("§8[§6Event§8]§6 Es hat ein §lLasertag §r§6begonnen!");
+                    Bukkit.broadcastMessage("§8[§6Event§8]§6 Teleportiere dich kostenlos per /event dort hin.");
+                }
+                executeAsyncUpdate("UPDATE serversettings SET event='" + e.getName() + "'");
+            } else if (e.equals(Event.DOUBLE_XP)) {
+                if (message) Bukkit.broadcastMessage("§8[§6Event§8]§6 Es hat ein §lDouble XP-Event §r§6begonnen!");
+                executeAsyncUpdate("UPDATE serversettings SET event='" + e.getName() + "'");
+            } else if (e.equals(Event.VOTE)) {
+                if (message)
+                    Bukkit.broadcastMessage("§8[§6Event§8]§6 Es hat das Vote-Event §7(§lDouble XP§7)§6 §r§6begonnen!");
+                executeAsyncUpdate("UPDATE serversettings SET event='" + e.getName() + "'");
+                Vote.startVoteRamble();
+            } else if (e.equals(Event.DOUBLE_XP_WEEKEND)) {
+                if (message) Bukkit.broadcastMessage("§8[§6Event§8]§6 Es hat ein §lDouble XP-Event §r§6begonnen!");
+                executeAsyncUpdate("UPDATE serversettings SET event='" + e.getName() + "'");
+            } else if (e.equals(Event.FRIEND_WEEK)) {
+                if (message)
+                    Bukkit.broadcastMessage("§8[§6Event§8]§6 Es hat eine §lFriend-Week §r§6begonnen!");
+                executeAsyncUpdate("UPDATE serversettings SET event='" + e.getName() + "'");
+            }
+        }
+    }
+
     public static void registerPlayer(Player p) {
         executeUpdate("INSERT INTO nrp_id (id, uuid, name, first_join) VALUES (NULL, '" + p.getUniqueId() + "', '" + p.getName() + "', " + System.currentTimeMillis() + ")");
         executeUpdate("INSERT INTO money (nrp_id, cash, bank) VALUES (" + getNRPID(p) + ", 0, NULL)");

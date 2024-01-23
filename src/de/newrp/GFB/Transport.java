@@ -63,7 +63,18 @@ public class Transport implements CommandExecutor, Listener {
         p.sendMessage(GFB.PREFIX + "Du hast den Job §6Transport §7angenommen.");
         p.sendMessage(GFB.PREFIX + "Wähle nun ein Ziel aus.");
 
-        Inventory inv = Bukkit.createInventory(null, 9, "§8» §eTransport");
+        //calc inv size from shops
+        int invSize = 0;
+        for(Shops shop : Shops.values()) {
+            if(shop.getLager() >= shop.getLagerSize()) continue;
+            invSize++;
+        }
+        if(invSize == 0) {
+            p.sendMessage(GFB.PREFIX + "Es gibt keine Shops, die Ware benötigen.");
+            return true;
+        }
+        invSize = (int) Math.ceil(invSize / 9.0) * 9;
+        Inventory inv = Bukkit.createInventory(null, invSize, "§8» §eTransport");
         int i = 0;
         for(Shops shop : Shops.values()) {
             if(shop.getLager() >= shop.getLagerSize()) continue;
@@ -128,7 +139,7 @@ public class Transport implements CommandExecutor, Listener {
         if(!SCORE.containsKey(p.getName())) return;
         if(!STARTED.containsKey(p.getName())) return;
         if(SCORE.get(p.getName()) == 0) return;
-        if(p.getLocation().distance(SHOP.get(p.getName()).getLocation())>10) {
+        if(p.getLocation().distance(SHOP.get(p.getName()).getLocation())>20) {
             p.sendMessage(GFB.PREFIX + "Du bist nicht in der Nähe des Shops.");
             return;
         }

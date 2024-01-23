@@ -3,6 +3,7 @@ package de.newrp.Waffen;
 import de.newrp.API.*;
 import de.newrp.Administrator.AimBot;
 import de.newrp.Administrator.SDuty;
+import de.newrp.Police.Handschellen;
 import de.newrp.main;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -98,7 +99,11 @@ public class Waffen implements Listener {
             return;
         }
 
-
+        if(Handschellen.isCuffed(p)) {
+            Script.sendActionBar(p, Messages.ERROR + "Du kannst keine Waffen benutzen, wenn du gefesselt bist.");
+            e.setCancelled(true);
+            return;
+        }
 
         Long globalCooldown = REVIVE_COOLDOWN.get(p.getName());
         if (globalCooldown != null && globalCooldown > System.currentTimeMillis()) {

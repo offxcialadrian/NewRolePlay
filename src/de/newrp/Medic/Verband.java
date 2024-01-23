@@ -71,7 +71,7 @@ public class Verband implements Listener {
                 }
 
                 Me.sendMessage(p, "legt sich einen Verband an.");
-                p.addPotionEffect(new PotionEffect(PotionEffectType.HEAL, 20 * 60 * 5, 1));
+                p.addPotionEffect(new PotionEffect(PotionEffectType.HEALTH_BOOST, 20 * 60 * 5, 1));
 
                 BANDAGE_COOLDOWN.put(p.getName(), time);
                 LAST_CLICK.remove(p.getName());

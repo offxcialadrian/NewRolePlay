@@ -28,6 +28,10 @@ import de.newrp.Runnable.*;
 import de.newrp.Shop.*;
 import de.newrp.TeamSpeak.*;
 import de.newrp.Ticket.*;
+import de.newrp.Votifier.VoteCommand;
+import de.newrp.Votifier.VoteListener;
+import de.newrp.Votifier.VoteShop;
+import de.newrp.Votifier.VoteShopListener;
 import de.newrp.Waffen.*;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
@@ -39,6 +43,7 @@ import java.sql.Connection;
 public class main extends JavaPlugin {
 
     private static Plugin instance;
+    public static Event event = null;
     private static MySQL mysql;
     private static MySQL mysql2;
     private static Connection con;
@@ -313,6 +318,10 @@ public class main extends JavaPlugin {
         getCommand("quitjob").setExecutor(new Quitjob());
         getCommand("kellner").setExecutor(new Kellner());
         getCommand("transport").setExecutor(new Transport());
+        getCommand("resetschwarzmarkt").setExecutor(new ResetSchwarzmarkt());
+        getCommand("resetholoram").setExecutor(new ResetHologram());
+        getCommand("vote").setExecutor(new VoteCommand());
+        getCommand("voteshop").setExecutor(new VoteShop());
 
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new SDuty(), this);
@@ -398,6 +407,8 @@ public class main extends JavaPlugin {
         pm.registerEvents(new Schule(), this);
         pm.registerEvents(new Kellner(), this);
         pm.registerEvents(new Transport(), this);
+        pm.registerEvents(new VoteListener(), this);
+        pm.registerEvents(new VoteShopListener(), this);
 
 
         new AsyncHealth().runTaskTimerAsynchronously(this, 120 * 20L, 120 * 20L);

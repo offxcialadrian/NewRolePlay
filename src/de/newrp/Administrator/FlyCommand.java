@@ -37,12 +37,12 @@ public class FlyCommand implements CommandExecutor {
         if (args.length == 0) {
             if (isFly(p)) {
                 removeFly(p);
-                p.sendMessage("§cDu hast das Fliegen deaktiviert.");
+                p.sendMessage(PREFIX + "Du hast das Fliegen deaktiviert.");
                 Script.sendTeamMessage(p, ChatColor.RED, "hat den Fly-Modus deaktiviert", true);
                 Log.HIGH.write(p, "hat den Fly-Modus deaktiviert.");
             } else {
                 setFly(p);
-                p.sendMessage("§cDu hast das Fliegen aktiviert");
+                p.sendMessage(PREFIX + "Du hast das Fliegen aktiviert");
                 Script.sendTeamMessage(p, ChatColor.RED, "hat den Fly-Modus aktiviert", true);
                 Log.HIGH.write(p, "hat den Fly-Modus aktiviert.");
             }

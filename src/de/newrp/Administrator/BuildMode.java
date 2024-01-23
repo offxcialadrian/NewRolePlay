@@ -75,8 +75,8 @@ public class BuildMode implements CommandExecutor, Listener {
             return true;
         }
 
-        if(Team.getTeam(tg) != Team.Teams.BAU) {
-            p.sendMessage(Messages.ERROR + "Dieser Spieler ist kein Bau-Team Mitglied.");
+        if(Team.getTeam(tg) != Team.Teams.BAU && !Script.isNRPTeam(tg)) {
+            p.sendMessage(Messages.ERROR + "Dieser Spieler ist kein Bau-Team Mitglied und kein NRP.");
             return true;
         }
 

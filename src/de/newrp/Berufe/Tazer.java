@@ -14,6 +14,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -97,7 +98,6 @@ public class Tazer implements Listener {
         p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 8 * 20, 2));
 
         Achievement.TAZED.grant(p);
-        p.sendMessage("§8[§eTazer§8] §e" + Script.getName(cop) + " hat dich getazert.");
         Me.sendMessage(p, "wurde von " + Script.getName(cop) + " getazert.");
     }
 
@@ -115,5 +115,13 @@ public class Tazer implements Listener {
         }
         cooldowns.replace(p.getName(), cooldowns.get(p.getName()) + 1.0);
         Script.sendActionBar(p, "§eRecharge... §8» §a" + sb);
+    }
+
+    @EventHandler
+    public void onQuit(PlayerQuitEvent e) {
+        Player p = e.getPlayer();
+        if (cooldowns.containsKey(p.getName())) {
+            cooldowns.remove(p.getName());
+        }
     }
 }

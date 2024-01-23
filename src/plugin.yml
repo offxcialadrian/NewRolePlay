@@ -506,3 +506,12 @@ commands:
     description: view the kellner
   transport:
     description: transport something
+  resetschwarzmarkt:
+    description: reset the schwarzmarkt
+  resethologram:
+    description: reset the hologram
+    aliases: [ resetholo, resetholograms, resethologramm ]
+  vote:
+    description: vote for something
+  voteshop:
+    description: vote for a shop

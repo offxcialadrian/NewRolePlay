@@ -1,6 +1,7 @@
 package de.newrp.Administrator;
 
 import de.newrp.API.*;
+import de.newrp.Police.Handschellen;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -39,9 +40,15 @@ public class HealCommand implements CommandExecutor {
             p.setHealth(p.getMaxHealth());
             p.setFoodLevel(20);
             p.setFireTicks(0);
-            for (PotionEffect e : p.getActivePotionEffects()) {
-                p.removePotionEffect(e.getType());
+
+            if(!Handschellen.isCuffed(p)) {
+                for (PotionEffect e : p.getActivePotionEffects()) {
+                    p.removePotionEffect(e.getType());
+                }
+            } else {
+                p.sendMessage(PREFIX + "Die Effekte wurden nicht entfernt, da du Handschellen trägst.");
             }
+
             Krankheit.GEBROCHENER_ARM.remove(Script.getNRPID(p));
             Krankheit.GEBROCHENES_BEIN.remove(Script.getNRPID(p));
             p.setWalkSpeed(0.2F);
@@ -65,8 +72,12 @@ public class HealCommand implements CommandExecutor {
         Krankheit.GEBROCHENER_ARM.remove(Script.getNRPID(tg));
         Krankheit.GEBROCHENES_BEIN.remove(Script.getNRPID(tg));
         tg.setWalkSpeed(0.2F);
-        for (PotionEffect e : p.getActivePotionEffects()) {
-            tg.removePotionEffect(e.getType());
+        if(!Handschellen.isCuffed(tg)) {
+            for (PotionEffect e : p.getActivePotionEffects()) {
+                tg.removePotionEffect(e.getType());
+            }
+        } else {
+            p.sendMessage(PREFIX + "Die Effekte wurden nicht entfernt, da der Spieler Handschellen trägt.");
         }
         return false;
     }

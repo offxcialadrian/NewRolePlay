@@ -26,7 +26,8 @@ public enum Achievement {
     PERSONALAUSWEIS(14, "Personalausweis", "Du hast deinen Personalausweis beantragt!", 50),
     FORUM_VERIFIKATION(15, "Forum Verifikation", "Du hast dich mit dem Forum verbunden!", 50),
     REZEPT(16, "Rezept", "Du hast dein erstes Rezept erhalten!", 50),
-    BACKUPCODE(17, "Backupcode", "Du hast deinen Backupcode erhalten!", 50);
+    BACKUPCODE(17, "Backupcode", "Du hast deinen Backupcode erhalten!", 50),
+    VOTEN(18, "Voten", "Du hast zum ersten Mal gevotet!", 50);
 
     private final int id;
     private final String text;

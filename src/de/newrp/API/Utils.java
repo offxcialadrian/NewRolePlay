@@ -35,6 +35,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
+import javax.management.Notification;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.HashMap;
@@ -186,6 +187,7 @@ public class Utils implements Listener {
             Script.registerPlayer(e.getPlayer());
             Script.sendActionBar(e.getPlayer(), "§7Willkommen auf §eNewRP§7!");
             e.getPlayer().sendMessage("§eNew RolePlay" + "§rWillkommen auf §eNewRP§7!");
+            Notications.sendMessage(Notications.NotificationType.REGISTRATION, "§e" + Script.getName(e.getPlayer()) + " §7hat sich auf dem Server registriert §8[§e" + Script.getNRPID(e.getPlayer()) + "§8]");
 
             Title.sendTitle(p, 20, 50, 20, "§6Willkommen!", "§7auf §eNewRP§7!");
             Achievement.FIRST_JOIN.grant(p);

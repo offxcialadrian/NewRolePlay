@@ -32,7 +32,8 @@ public class Notications implements CommandExecutor, Listener {
         CHAT(5, "chat", "Chat-Spy"),
         DEAD(6, "dead", "Todes-Notification"),
         SHOP(7, "shop", "Shop-Notification"),
-        ADVANCED_ANTI_CHEAT(8, "aac", "Advanced-Anti-Cheat-Notification");
+        ADVANCED_ANTI_CHEAT(8, "aac", "Advanced-Anti-Cheat-Notification"),
+        REGISTRATION(9, "registration", "Registration-Notification");
 
         private final int id;
         private final String dbname;

@@ -192,9 +192,9 @@ public class ElevatorDoor implements Listener {
                         new Location(Script.WORLD, 684, 84, 912),
                 }, Elevator.ElevatorAPI.AEKI, 2),
 
-        AEKI_ETAGE_3(3, new Location(Script.WORLD, 682, 92, 914),
+        AEKI_3(1, new Location(Script.WORLD, 682, 92, 914), //AEKI GUI
                 new Location[]{
-                        new Location(Script.WORLD, 682, 92, 914)},
+                        new Location(Script.WORLD, 685, 92, 911)}, // Tür öffen
                 new Location[]{
                         new Location(Script.WORLD, 682, 93, 912),
                         new Location(Script.WORLD, 683, 93, 912),
@@ -203,8 +203,8 @@ public class ElevatorDoor implements Listener {
                         new Location(Script.WORLD, 683, 92, 912),
                         new Location(Script.WORLD, 684, 92, 912),
                         new Location(Script.WORLD, 682, 91, 912),
-                        new Location(Script.WORLD, 683, 91, 912),
-                        new Location(Script.WORLD, 684, 91, 912),
+                        new Location(Script.WORLD, 682, 91, 912),
+                        new Location(Script.WORLD, 682, 91, 912),
                 }, Elevator.ElevatorAPI.AEKI, 3),
 
         AEKI_ETAGE_4(4, new Location(Script.WORLD, 682, 99, 914),

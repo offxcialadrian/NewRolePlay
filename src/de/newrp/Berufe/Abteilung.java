@@ -158,8 +158,8 @@ public class Abteilung implements CommandExecutor, TabCompleter {
 
             if(args[0].equalsIgnoreCase("list")) {
                 p.sendMessage(PREFIX + "Alle Abteilungen der " + Beruf.getBeruf(p).getName() + ":");
-                for(OfflinePlayer all : Beruf.getBeruf(p).getAllMembers()) {
-                    p.sendMessage("§8» §6" + all.getName() + "§8: §6" + Beruf.getAbteilung(all).getName());
+                for(Abteilung.Abteilungen abteilung : Abteilung.Abteilungen.getAbteilungen(Beruf.getBeruf(p))) {
+                    p.sendMessage("§8» §6" + abteilung.getName());
                 }
                 return true;
             }
