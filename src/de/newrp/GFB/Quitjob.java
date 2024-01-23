@@ -33,6 +33,21 @@ public class Quitjob implements CommandExecutor {
                 Cache.loadInventory(p);
                 p.sendMessage(GFB.PREFIX + "Du hast den Job §6Lagerarbeiter §7verlassen.");
                 break;
+            case TRANSPORT:
+                Transport.SCORE.remove(p.getName());
+                Transport.STARTED.remove(p.getName());
+                Transport.cooldown.remove(p.getName());
+                Transport.SAFE_SCORE.remove(p.getName());
+                Transport.SHOP.remove(p.getName());
+                Transport.cooldown2.remove(p.getName());
+                p.sendMessage(GFB.PREFIX + "Du hast den Job §6Transport §7verlassen.");
+                break;
+            case KELLNER:
+                Kellner.SCORE.remove(p.getName());
+                Kellner.CURRENT.remove(p.getName());
+                Cache.loadInventory(p);
+                p.sendMessage(GFB.PREFIX + "Du hast den Job §6Kellner §7verlassen.");
+                break;
         }
 
         return false;

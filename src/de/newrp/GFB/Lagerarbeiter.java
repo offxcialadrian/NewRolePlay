@@ -199,7 +199,7 @@ public class Lagerarbeiter implements CommandExecutor, Listener {
 
         GFB.CURRENT.put(p.getName(), GFB.LAGERARBEITER);
         p.sendMessage(PREFIX + "Gehe ins Lager, hole dir eine Palette und fang an deinen Job zu machen.");
-        p.sendMessage(Messages.INFO + "Klicke Rechtsklick auf das Schild \"Einzusortieren\".");
+        p.sendMessage(Messages.INFO + "Klicke Rechtsklick auf das Schild \"Ware\".");
         SCORE.put(p.getName(), (GFB.LAGERARBEITER.getLevel(p) * 10));
         cooldown.put(p.getName(), System.currentTimeMillis() + 10 * 60 * 2000L);
 
@@ -212,7 +212,7 @@ public class Lagerarbeiter implements CommandExecutor, Listener {
             if (e.getAction() == Action.RIGHT_CLICK_BLOCK) {
                 if (e.getClickedBlock().getType() == Material.OAK_WALL_SIGN) {
                     Sign s = (Sign) e.getClickedBlock().getState();
-                    if(s.getLine(2).equalsIgnoreCase("§lEinzusortieren")) {
+                    if(s.getLine(2).equalsIgnoreCase("§lWare")) {
                         if(!SCORE.containsKey(p.getName())) {
                             p.sendMessage(PREFIX + "Nimm erstmal den Job an!");
                             return;
@@ -295,7 +295,7 @@ public class Lagerarbeiter implements CommandExecutor, Listener {
                 Script.addEXP(p, GFB.LAGERARBEITER.getLevel(p) * Script.getRandom(3, 7));
             } else {
                 SCORE.replace(p.getName(), amount - 1);
-                p.sendMessage(PREFIX + "§aRichtig! §6Hole nun das nächste Produkt aus \"Einzusortieren\" und Sortiere es ein (" + ((GFB.LAGERARBEITER.getLevel(p) * 10)+1-amount) + "/" + (GFB.LAGERARBEITER.getLevel(p) * 10) + ")");
+                p.sendMessage(PREFIX + "§aRichtig! §6Hole nun das nächste Produkt aus \"Ware\" und Sortiere es ein (" + ((GFB.LAGERARBEITER.getLevel(p) * 10)+1-amount) + "/" + (GFB.LAGERARBEITER.getLevel(p) * 10) + ")");
             }
         }
     }

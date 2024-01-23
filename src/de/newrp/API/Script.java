@@ -556,7 +556,7 @@ public class Script {
     }
 
     public static void setGender(Player p, Gender gender) {
-        Script.executeAsyncUpdate("INSERT INTO gender (nrp_id, gender) VALUES (" + Script.getNRPID(p) + ", " + gender.getName().charAt(0) + ")");
+        Script.executeAsyncUpdate("INSERT INTO gender (nrp_id, gender) VALUES (" + Script.getNRPID(p) + ", '" + (gender==Gender.MALE?"m":"f") + "')");
     }
 
     public static String getMonth(int i, boolean UFT8) {

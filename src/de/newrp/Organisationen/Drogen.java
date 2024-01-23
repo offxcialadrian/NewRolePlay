@@ -1,9 +1,6 @@
 package de.newrp.Organisationen;
 
-import de.newrp.API.Debug;
-import de.newrp.API.Krankheit;
-import de.newrp.API.Messages;
-import de.newrp.API.Script;
+import de.newrp.API.*;
 import de.newrp.Berufe.Equip;
 import de.newrp.Chat.Me;
 import de.newrp.Police.Handschellen;
@@ -134,7 +131,7 @@ public enum Drogen {
     }
 
     public static void healAddiction(Player p) {
-        if(getAddictionHeal(p) != 3) {
+        if(getAddictionHeal(p) != 3 || Premium.hasPremium(p)) {
             Script.executeAsyncUpdate("INSERT INTO drug_addiction (nrp_id, time, heal) VALUES (" + Script.getNRPID(p) + ", " + System.currentTimeMillis() + ", true)");
         } else {
             Script.executeAsyncUpdate("DELETE FROM drug_addiction WHERE nrp_id = " + Script.getNRPID(p));

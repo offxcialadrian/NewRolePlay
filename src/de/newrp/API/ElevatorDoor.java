@@ -728,7 +728,39 @@ public class ElevatorDoor implements Listener {
                         new Location(Script.WORLD, 1017, 42, 1178),
                         new Location(Script.WORLD, 1016, 42, 1178),
 
-                }, Elevator.ElevatorAPI.SelfS, 3);
+                }, Elevator.ElevatorAPI.SelfS, 3),
+        KRANKENHAUS_NOTAUFNAHME(17, new Location(Script.WORLD, 347, 77, 1270), // Haus ggü. Apotheke GUI
+                new Location[]{
+                        new Location(Script.WORLD, 350, 77, 1273)}, // Tür öffnen
+                new Location[]{
+                        new Location(Script.WORLD, 349, 78, 1270),
+                        new Location(Script.WORLD, 349, 78, 1271),
+                        new Location(Script.WORLD, 349, 78, 1272),
+                        new Location(Script.WORLD, 349, 77, 1270),
+                        new Location(Script.WORLD, 349, 77, 1271),
+                        new Location(Script.WORLD, 349, 77, 1272),
+                        new Location(Script.WORLD, 349, 76, 1270),
+                        new Location(Script.WORLD, 349, 76, 1271),
+                        new Location(Script.WORLD, 349, 76, 1272),
+
+                }, Elevator.ElevatorAPI.KHN, 0),
+
+
+        KRANKENHAUS_NOTAUFNAHME_1(17, new Location(Script.WORLD, 347, 84, 1270), // Haus ggü. Apotheke GUI
+                new Location[]{
+                        new Location(Script.WORLD, 350, 84, 1273)}, // Tür öffnen
+                new Location[]{
+                        new Location(Script.WORLD, 349, 85, 1270),
+                        new Location(Script.WORLD, 349, 85, 1271),
+                        new Location(Script.WORLD, 349, 85, 1272),
+                        new Location(Script.WORLD, 349, 84, 1270),
+                        new Location(Script.WORLD, 349, 84, 1271),
+                        new Location(Script.WORLD, 349, 84, 1272),
+                        new Location(Script.WORLD, 349, 83, 1270),
+                        new Location(Script.WORLD, 349, 83, 1271),
+                        new Location(Script.WORLD, 349, 83, 1272),
+
+                }, Elevator.ElevatorAPI.KHN, 1);
 
 
         int id;

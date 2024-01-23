@@ -102,6 +102,15 @@ public enum Shops {
         return null;
     }
 
+    public static Shops getShop(String name) {
+        for(Shops shop : Shops.values()) {
+            if(shop.getName().equalsIgnoreCase(name)) {
+                return shop;
+            }
+        }
+        return null;
+    }
+
     public void addKasse(int i) {
         int k = (getKasse() + i);
         Script.executeUpdate("UPDATE shops SET kasse=" + k + " WHERE shopID=" + this.id);

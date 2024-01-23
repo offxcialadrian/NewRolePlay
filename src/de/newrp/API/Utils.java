@@ -230,7 +230,7 @@ public class Utils implements Listener {
             if (is.getType().equals(Material.WATER_BUCKET) ||
                     is.getType().equals(Material.LAVA_BUCKET) ||
                     is.getType().equals(Material.INK_SAC)) {
-                e.setCancelled(true);
+                e.setCancelled(!BuildMode.isInBuildMode(p));
             }
             if (p.getInventory().getItemInMainHand().getType().equals(Material.FLOWER_POT)) {
                 if (!BuildMode.isInBuildMode(p)) {
@@ -337,6 +337,7 @@ public class Utils implements Listener {
                     e.getClickedBlock().getType() == Material.ACACIA_FENCE_GATE || e.getClickedBlock().getType().equals(Material.DARK_OAK_FENCE_GATE) ||
                     e.getClickedBlock().getType().equals(Material.JUNGLE_FENCE_GATE) || e.getClickedBlock().getType().equals(Material.SPRUCE_FENCE_GATE) ||
                     e.getClickedBlock().getType().equals(Material.CRIMSON_FENCE_GATE) || e.getClickedBlock().getType() == Material.WARPED_FENCE_GATE) ||
+                    e.getClickedBlock().getType().equals(Material.FLOWER_POT) ||
                     e.getClickedBlock().getType().equals(Material.OAK_FENCE_GATE) || e.getClickedBlock().getType() == Material.COMPOSTER) {
                 e.setCancelled(!BuildMode.isInBuildMode(e.getPlayer()));
                 return;

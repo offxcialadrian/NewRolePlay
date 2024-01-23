@@ -31,7 +31,7 @@ public class SyncMinute extends BukkitRunnable {
 
         if(Calendar.getInstance().get(Calendar.HOUR_OF_DAY) == 23 && Calendar.getInstance().get(Calendar.MINUTE) == 59) {
             Bukkit.broadcastMessage(Script.PREFIX + "§4§lACHTUNG: §cDer Server startet in einer Minute neu!");
-            TeamSpeak.getApi().sendServerMessage("ACHTUNG! DER SERVER STARTET IN EINER MINUTE NEU!");
+            try{ TeamSpeak.getApi().sendServerMessage("ACHTUNG! DER SERVER STARTET IN EINER MINUTE NEU!");} catch (Exception e) { Script.sendTeamMessage(Script.PREFIX + "Es erfolgte keine Nachricht auf dem TeamSpeak, da die Querry down ist."); }
             Bukkit.getScheduler().runTaskLater(main.getInstance(), () -> {
                 Bukkit.broadcastMessage(Script.PREFIX + "§4§lACHTUNG: §cDer Server startet in 30 Sekunden neu!");
                 Bukkit.getScheduler().runTaskLater(main.getInstance(), () -> {

@@ -88,7 +88,10 @@ public class Elevator implements Listener {
                 new Location(Script.WORLD, 1017, 60, 1175, 0.39379883f, -0.2999653f), // -1
                 new Location(Script.WORLD, 1017, 51, 1176, 0.2890625f, -7.0147216E-5f), // -2
                 new Location(Script.WORLD, 1017, 42, 1176, 0.30078125f, -0.45009407f) // - 3
-        });
+        }),
+        KHN(17, "KHN", new Location[]{
+                new Location(Script.WORLD, 347, 76, 1271, 271.12177f, 3.997005f), // 0
+                new Location(Script.WORLD, 347, 83, 1271, 271.41467f, 4.4470463f)});
 
         int id;
         String name;

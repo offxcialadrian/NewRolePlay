@@ -14,9 +14,7 @@ import de.newrp.Entertainment.Laufband;
 import de.newrp.Entertainment.Lotto;
 import de.newrp.Forum.ForumCommand;
 import de.newrp.Berufe.Tazer;
-import de.newrp.GFB.Lagerarbeiter;
-import de.newrp.GFB.Quitjob;
-import de.newrp.GFB.Schule;
+import de.newrp.GFB.*;
 import de.newrp.Government.*;
 import de.newrp.House.*;
 import de.newrp.Medic.*;
@@ -313,6 +311,8 @@ public class main extends JavaPlugin {
         getCommand("lagerarbeiter").setExecutor(new Lagerarbeiter());
         getCommand("schule").setExecutor(new Schule());
         getCommand("quitjob").setExecutor(new Quitjob());
+        getCommand("kellner").setExecutor(new Kellner());
+        getCommand("transport").setExecutor(new Transport());
 
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new SDuty(), this);
@@ -396,6 +396,8 @@ public class main extends JavaPlugin {
         pm.registerEvents(new Frisk(), this);
         pm.registerEvents(new Lagerarbeiter(), this);
         pm.registerEvents(new Schule(), this);
+        pm.registerEvents(new Kellner(), this);
+        pm.registerEvents(new Transport(), this);
 
 
         new AsyncHealth().runTaskTimerAsynchronously(this, 120 * 20L, 120 * 20L);

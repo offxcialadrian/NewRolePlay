@@ -12,7 +12,9 @@ import java.util.HashMap;
 
 public enum GFB {
 
-    LAGERARBEITER(1, "Lagerarbeiter", new Location(Script.WORLD, 1, 70, 1));
+    LAGERARBEITER(1, "Lagerarbeiter", new Location(Script.WORLD, 1, 70, 1)),
+    TRANSPORT(2, "Transport", new Location(Script.WORLD, 1, 70, 1)),
+    KELLNER(3, "Kellner", new Location(Script.WORLD, 1, 70, 1));
 
 
     private int id;

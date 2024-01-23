@@ -502,3 +502,7 @@ commands:
   quitjob:
     description: quit your job
     aliases: [ jobquit, leavejob, jobleave ]
+  kellner:
+    description: view the kellner
+  transport:
+    description: transport something

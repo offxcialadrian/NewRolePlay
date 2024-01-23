@@ -6,6 +6,7 @@ import de.newrp.API.Script;
 import de.newrp.Administrator.SDuty;
 import de.newrp.Player.AFK;
 import org.bukkit.ChatColor;
+import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -77,6 +78,7 @@ public class AcceptTicket implements CommandExecutor {
                     p.sendMessage("§b§lTICKET §8× §b" + Script.getName(p) + ": " + TicketCommand.getGreeting(p));
                     if(p != tg) tg.sendMessage("§b§lTICKET §8× §b" + Script.getName(p) + ": " + TicketCommand.getGreeting(p));
                 }
+                p.playSound(p.getLocation(), Sound.MUSIC_CREDITS, 1, 1);
 
                 TicketCommand.sendTicketTitle(tg);
                 TicketCommand.create(tg, p, q);
