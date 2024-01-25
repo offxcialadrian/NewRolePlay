@@ -23,7 +23,7 @@ public class HungerFix implements Listener {
         if(e.getFoodLevel() > ((Player) e.getEntity()).getFoodLevel()) {
             return;
         }
-        int i = Script.getRandom(1, 20);
+        int i = Script.getRandom(1, 40);
         Player p = (Player) e.getEntity();
         if (AFK.isAFK(p) || SDuty.isSDuty(p)) {
             e.setCancelled(true);

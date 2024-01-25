@@ -169,7 +169,6 @@ public class Kellner implements CommandExecutor, Listener {
             int left = SCORE.get(p.getName()) - 1;
             if(left == 0) {
                 p.sendMessage(PREFIX + "Du hast die Bestellung erfolgreich abgegeben.");
-                p.sendMessage(PREFIX + "Du hast " + GFB.KELLNER.getLevel(p) + " Exp erhalten.");
                 GFB.KELLNER.addExp(p, GFB.KELLNER.getLevel(p) * Script.getRandom(5, 7));
                 SCORE.remove(p.getName());
                 GFB.CURRENT.remove(p.getName());

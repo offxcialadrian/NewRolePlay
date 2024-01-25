@@ -84,7 +84,7 @@ public enum GFB {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        p.sendMessage(PREFIX + "Du hast " + exp + " Exp für den Job " + this.name + " erhalten (" + getExp(p) + "/ " + getLevelCost(getLevel(p)) + ")");
+        p.sendMessage(PREFIX + "Du hast " + exp + " Exp für den Job " + this.name + " erhalten (" + getExp(p) + "/" + getLevelCost(getLevel(p)) + ")");
     }
 
     public int getLevel(Player p) {

@@ -8,6 +8,7 @@ import de.newrp.Government.Arbeitslosengeld;
 import de.newrp.Government.Stadtkasse;
 import de.newrp.Government.Steuern;
 import de.newrp.House.House;
+import de.newrp.Organisationen.Organisation;
 import de.newrp.Player.AFK;
 import de.newrp.Player.Banken;
 import de.newrp.Player.Mobile;
@@ -121,7 +122,36 @@ public class PayDay extends BukkitRunnable {
                 payday -= (int) Script.getPercent(krankenversicherung, salary);
 
 
-            } else if (Arbeitslosengeld.hasArbeitslosengeld(p)) {
+            } else if(Organisation.hasOrganisation(p)) {
+                Organisation org = Organisation.getOrganisation(p);
+                int salary = Organisation.getSalary(p);
+                p.sendMessage("§8" + Messages.ARROW + " §7Lohn/Gehalt: §a+" + salary + "€");
+                payday += salary;
+                if(org.hasKasse()) {
+                    if(org.getKasse() >= salary) {
+                        org.removeKasse(salary);
+                    }else {
+                        org.sendMessage("§8[§eOrganisationskasse§8] §eDie " + org.getName() + " ist Insolvent. Alle Gehälter werden auf 0€ gesetzt");
+                        Beruf.Berufe.GOVERNMENT.sendMessage("§8[§eOrganisationskasse§8] §eDie " + org.getName() + " ist Insolvent. Alle Gehälter werden auf 0€ gesetzt");
+                        for(OfflinePlayer members : org.getAllMembers()) {
+                            Script.setInt(members, "organisation", "salary", 0);
+                            if(!members.isOnline()) {
+                                Script.addOfflineMessage(members, "§8[§eOrganisationskasse§8] §eDie " + org.getName() + " ist Insolvent. Alle Gehälter wurden auf 0€ gesetzt");
+                            }
+                        }
+                    }
+                }
+
+                p.sendMessage("§8" + Messages.ARROW + " §7Lohnsteuer (" + lohnsteuer + "%): §c-" + (int) Script.getPercent(lohnsteuer, salary) + "€");
+                Stadtkasse.addStadtkasse((int) Script.getPercent(lohnsteuer, salary));
+                payday -= (int) Script.getPercent(lohnsteuer, salary);
+
+                p.sendMessage("§8" + Messages.ARROW + " §7Arbeitslosenversicherung (" + arbeitslosenversicherung + "%): §c-" + (int) Script.getPercent(arbeitslosenversicherung, salary) + "€");
+                Stadtkasse.addStadtkasse((int) Script.getPercent(arbeitslosenversicherung, salary));
+                payday -= (int) Script.getPercent(arbeitslosenversicherung, salary);
+            }
+
+            if (Arbeitslosengeld.hasArbeitslosengeld(p)) {
                 p.sendMessage("§8" + Messages.ARROW + " §7Arbeitslosengeld: §a+" + Stadtkasse.getArbeitslosengeld() + "€");
                 Stadtkasse.removeStadtkasse(Stadtkasse.getArbeitslosengeld());
                 payday += Stadtkasse.getArbeitslosengeld();
