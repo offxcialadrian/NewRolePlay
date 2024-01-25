@@ -33,7 +33,10 @@ public class UseMedikamente implements Listener {
 
             if (m == Medikamente.SCHMERZMITTEL) {
                 if(Krankheit.ABHAENGIGKEIT.isInfected(Script.getNRPID(p))) {
-                    p.sendMessage(PREFIX + "Das konsumieren von Schmerzmitteln ist für dich nicht möglich.");
+                    p.sendMessage(PREFIX + "Das konsumieren von Schmerzmitteln hat bei dir keine Wirkung gezeigt.");
+                    Script.playLocalSound(p.getLocation(), Sound.ENTITY_PLAYER_BURP, 5);
+                    p.getInventory().getItemInMainHand().setAmount(p.getInventory().getItemInMainHand().getAmount() - 1);
+                    p.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 20 * 5, 0));
                     return;
                 }
                 Me.sendMessage(p, "nimmt ein Schmerzmittel ein.");

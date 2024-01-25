@@ -57,6 +57,7 @@ public class Tazer implements Listener {
                 new BukkitRunnable() {
                     @Override
                     public void run() {
+                        if(!cooldowns.containsKey(p.getName())) cancel();
                         if (cooldowns.get(p.getName()) < 20) {
                             if (p.getInventory().getItemInMainHand().getType().equals(Material.WOODEN_HOE)) {
                                 progressBar(20.0, p);
