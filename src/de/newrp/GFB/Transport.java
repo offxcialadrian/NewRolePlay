@@ -41,13 +41,34 @@ public class Transport implements CommandExecutor, Listener {
             return true;
         }
 
-        if(GFB.CURRENT.containsKey(p.getName())) {
-            p.sendMessage(GFB.PREFIX + "Du hast bereits einen Job.");
+        if(p.getLocation().distance(new Location(Script.WORLD, 935, 66, 1078, 190.34898f, 22.349966f)) > 5) {
+            p.sendMessage(GFB.PREFIX + "Du bist nicht in der Nähe des Hafens.");
             return true;
         }
 
-        if(p.getLocation().distance(new Location(Script.WORLD, 935, 66, 1078, 190.34898f, 22.349966f)) > 5) {
-            p.sendMessage(GFB.PREFIX + "Du bist nicht in der Nähe des Hafens.");
+        if(GFB.CURRENT.containsKey(p.getName()) && GFB.CURRENT.get(p.getName()) == GFB.TRANSPORT && !SCORE.containsKey(p.getName())) {int invSize = 0;
+            for(Shops shop : Shops.values()) {
+                if(shop.getLager() >= shop.getLagerSize()) continue;
+                invSize++;
+            }
+            if(invSize == 0) {
+                p.sendMessage(GFB.PREFIX + "Es gibt keine Shops, die Ware benötigen.");
+                return true;
+            }
+            invSize = (int) Math.ceil(invSize / 9.0) * 9;
+            Inventory inv = Bukkit.createInventory(null, invSize, "§8» §eTransport");
+            int i = 0;
+            for(Shops shop : Shops.values()) {
+                if(shop.getLager() >= shop.getLagerSize()) continue;
+                inv.setItem(i++, new ItemBuilder(Material.NETHER_STAR).setName("§8» §e" + shop.getName()).build());
+            }
+
+            if(i == 0) {
+                p.sendMessage(GFB.PREFIX + "Es gibt keine Shops, die Ware benötigen.");
+                return true;
+            }
+            p.openInventory(inv);
+
             return true;
         }
 
@@ -58,12 +79,16 @@ public class Transport implements CommandExecutor, Listener {
             }
         }
 
+        if(GFB.CURRENT.containsKey(p.getName())) {
+            p.sendMessage(GFB.PREFIX + "Du hast bereits einen Job.");
+            return true;
+        }
+
         cooldown.put(p.getName(), System.currentTimeMillis() + 10 * 60 * 2000L);
         GFB.CURRENT.put(p.getName(), GFB.TRANSPORT);
         p.sendMessage(GFB.PREFIX + "Du hast den Job §6Transport §7angenommen.");
         p.sendMessage(GFB.PREFIX + "Wähle nun ein Ziel aus.");
 
-        //calc inv size from shops
         int invSize = 0;
         for(Shops shop : Shops.values()) {
             if(shop.getLager() >= shop.getLagerSize()) continue;
@@ -159,13 +184,14 @@ public class Transport implements CommandExecutor, Listener {
                 return;
             }
         }
+        SHOP.get(p.getName()).addLager(1);
         p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
         SCORE.put(p.getName(), SCORE.get(p.getName()) - 1);
         p.sendMessage(GFB.PREFIX + "Du hast noch " + SCORE.get(p.getName()) + " Waren zu transportieren.");
         cooldown2.put(p.getName(), System.currentTimeMillis() + 1000L);
         if(SCORE.get(p.getName()) == 0) {
             p.sendMessage(GFB.PREFIX + "Du hast den Transport erfolgreich abgeschlossen.");
-            int add = SAFE_SCORE.get(p.getName()) * Script.getRandom(2,3);
+            int add = SAFE_SCORE.get(p.getName()) * Script.getRandom(1,2);
             GFB.TRANSPORT.addExp(p, add*2);
             PayDay.addPayDay(p, add);
             GFB.CURRENT.remove(p.getName());

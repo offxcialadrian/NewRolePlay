@@ -198,7 +198,7 @@ public class SalaryCommand implements CommandExecutor {
             }
 
             Log.WARNING.write(p, "hat das Gehalt von " + Script.getName(tg) + " auf " + salary + "€ gesetzt.");
-            Script.setInt(tg, "organisationen", "salary", salary);
+            Script.setInt(tg, "organisation", "salary", salary);
             p.sendMessage(PREFIX + "Du hast das Gehalt von " + Script.getName(tg) + " auf " + salary + "€ gesetzt.");
             if (p != tg)
                 tg.sendMessage(PREFIX + "Dein Gehalt wurde von " + Script.getName(p) + " auf " + salary + "€ gesetzt.");

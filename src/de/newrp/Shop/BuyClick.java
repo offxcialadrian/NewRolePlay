@@ -1,9 +1,6 @@
 package de.newrp.Shop;
 
-import de.newrp.API.Debug;
-import de.newrp.API.Messages;
-import de.newrp.API.PaymentType;
-import de.newrp.API.Script;
+import de.newrp.API.*;
 import de.newrp.Chat.Chat;
 import de.newrp.Entertainment.Lotto;
 import org.bukkit.Bukkit;
@@ -94,8 +91,15 @@ public class BuyClick implements Listener {
                 PayShop.pay(p, PaymentType.CASH, si, s);
                 return;
             }
-            Script.sendPaymentTypeGUI(p, si.getPrice(s));
             sendMessage(p, "Möchten Sie Bar oder mit Karte bezahlen?");
+            int price = si.getBuyPrice();
+            Inventory gui = p.getServer().createInventory(null, InventoryType.HOPPER, "§8[§aZahlungsmethode§8]");
+            ItemStack cash = new ItemBuilder(Material.CHEST).setName("§aBar").setLore("§8» §c" + price + "€").build();
+            ItemStack bank = new ItemBuilder(Material.CHEST).setName("§aKarte").setLore("§8» §c" + price + "€").build();
+            gui.setItem(1, cash);
+            gui.setItem(3, bank);
+            p.openInventory(gui);
+
 
         } else {
             String[] sorry = new String[]{"Verzeihung", "Tut mir Leid", "Tut uns Leid"};

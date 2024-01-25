@@ -142,6 +142,7 @@ public class Kellner implements CommandExecutor, Listener {
         if(!GFB.CURRENT.containsKey(p.getName())) return;
         if(e.getAction() != Action.RIGHT_CLICK_BLOCK) return;
         if(e.getClickedBlock() == null) return;
+        if(CURRENT.containsKey(p.getName())) return;
         if(!SCORE.containsKey(p.getName())) return;
         if(e.getClickedBlock().getType() != Material.OAK_SIGN && e.getClickedBlock().getType() != Material.OAK_WALL_SIGN) return;
         Sign sign = (Sign) e.getClickedBlock().getState();
@@ -151,6 +152,7 @@ public class Kellner implements CommandExecutor, Listener {
         Tables table = Tables.getRandomTable();
         CURRENT.put(p.getName(), table);
         p.sendMessage(GFB.PREFIX + "Bringe nun die Bestellung zu §6" + table.getName() + "§7.");
+        p.sendMessage(Messages.INFO + "Klicke auf den Tisch, um die Bestellung abzugeben.");
     }
 
     @EventHandler
@@ -168,7 +170,7 @@ public class Kellner implements CommandExecutor, Listener {
             if(left == 0) {
                 p.sendMessage(PREFIX + "Du hast die Bestellung erfolgreich abgegeben.");
                 p.sendMessage(PREFIX + "Du hast " + GFB.KELLNER.getLevel(p) + " Exp erhalten.");
-                GFB.KELLNER.addExp(p, GFB.KELLNER.getLevel(p));
+                GFB.KELLNER.addExp(p, GFB.KELLNER.getLevel(p) * Script.getRandom(5, 7));
                 SCORE.remove(p.getName());
                 GFB.CURRENT.remove(p.getName());
                 PayDay.addPayDay(p, GFB.KELLNER.getLevel(p) * Script.getRandom(2, 3));

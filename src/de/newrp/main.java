@@ -319,9 +319,10 @@ public class main extends JavaPlugin {
         getCommand("kellner").setExecutor(new Kellner());
         getCommand("transport").setExecutor(new Transport());
         getCommand("resetschwarzmarkt").setExecutor(new ResetSchwarzmarkt());
-        getCommand("resetholoram").setExecutor(new ResetHologram());
+        getCommand("resethologram").setExecutor(new ResetHologram());
         getCommand("vote").setExecutor(new VoteCommand());
         getCommand("voteshop").setExecutor(new VoteShop());
+        getCommand("eishalle").setExecutor(new Eishalle());
 
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new SDuty(), this);
@@ -409,6 +410,7 @@ public class main extends JavaPlugin {
         pm.registerEvents(new Transport(), this);
         pm.registerEvents(new VoteListener(), this);
         pm.registerEvents(new VoteShopListener(), this);
+        pm.registerEvents(new Eishalle(), this);
 
 
         new AsyncHealth().runTaskTimerAsynchronously(this, 120 * 20L, 120 * 20L);

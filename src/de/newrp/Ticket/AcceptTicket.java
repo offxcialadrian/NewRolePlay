@@ -78,7 +78,7 @@ public class AcceptTicket implements CommandExecutor {
                     p.sendMessage("§b§lTICKET §8× §b" + Script.getName(p) + ": " + TicketCommand.getGreeting(p));
                     if(p != tg) tg.sendMessage("§b§lTICKET §8× §b" + Script.getName(p) + ": " + TicketCommand.getGreeting(p));
                 }
-                p.playSound(p.getLocation(), Sound.MUSIC_CREDITS, 1, 1);
+                tg.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
 
                 TicketCommand.sendTicketTitle(tg);
                 TicketCommand.create(tg, p, q);

@@ -65,8 +65,7 @@ public class VoteShopListener implements Listener {
 
     @EventHandler
     public void onClickKiste(InventoryClickEvent e) {
-        Inventory inv = e.getInventory();
-        if (e.getView().getTitle().equals("§6Votekiste")) return;
+        if (!e.getView().getTitle().equals("§6Votekiste")) return;
 
         e.setCancelled(true);
 

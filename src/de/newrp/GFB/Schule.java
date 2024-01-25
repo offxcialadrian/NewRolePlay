@@ -57,7 +57,7 @@ public class Schule implements CommandExecutor, Listener {
         Inventory inv = Bukkit.createInventory(null, 9, "§8» §eSchule");
         int i = 0;
         for(GFB gfb : GFB.values()) {
-            inv.setItem(i++, new ItemBuilder(Material.PAPER).setName("§8» §e" + gfb.getName()).setLore("§8» §7Preis: " + gfb.getLevel(p)*500 + "€").build());
+            inv.setItem(i++, new ItemBuilder(Material.PAPER).setName("§8» §e" + gfb.getName()).setLore("§8» §7Preis: " + gfb.getLevel(p)*120 + "€").build());
         }
         p.openInventory(inv);
 
@@ -72,12 +72,12 @@ public class Schule implements CommandExecutor, Listener {
             if(e.getCurrentItem() == null || e.getCurrentItem().getType() == Material.AIR) return;
             GFB gfb = GFB.getGFBByName(e.getCurrentItem().getItemMeta().getDisplayName().replace("§8» §e", ""));
             if(gfb == null) return;
-            if(Script.getMoney(p, PaymentType.BANK) < gfb.getLevel(p)*500) {
+            if(Script.getMoney(p, PaymentType.BANK) < gfb.getLevel(p)*120) {
                 p.sendMessage(Messages.ERROR + "Du hast nicht genug Geld auf der Bank.");
                 return;
             }
 
-            Script.removeMoney(p, PaymentType.BANK, gfb.getLevel(p)*500);
+            Script.removeMoney(p, PaymentType.BANK, gfb.getLevel(p)*120);
             STUDIYING.put(p, gfb);
             STARTED.put(p, System.currentTimeMillis());
             p.sendMessage(PREFIX + "Du lernst nun für den GFB-Job " + gfb.getName() + ".");

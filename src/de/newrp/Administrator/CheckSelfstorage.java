@@ -4,12 +4,15 @@ import de.newrp.API.Messages;
 import de.newrp.API.Rank;
 import de.newrp.API.Script;
 import de.newrp.Player.Selfstorage;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 
 public class CheckSelfstorage implements CommandExecutor {
 
@@ -41,7 +44,11 @@ public class CheckSelfstorage implements CommandExecutor {
             return true;
         }
 
-        p.openInventory(tg.getEnderChest());
+        Inventory inv = Bukkit.createInventory(null, 27, "§cSelfstorage §7[§6" + Script.getName(tg) + "§7]");
+        Inventory ender = tg.getEnderChest();
+        ItemStack[] contents = ender.getContents();
+        inv.setContents(contents);
+        p.openInventory(inv);
         p.sendMessage(PREFIX + "Du checkst den Selfstorage-Room von §6" + Script.getName(tg) + "§7.");
         Script.sendTeamMessage(p, ChatColor.RED, "checkt den Selfstorage-Room von " + Script.getName(tg) + ".", true);
 

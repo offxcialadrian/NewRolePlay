@@ -700,13 +700,15 @@ public class Script {
 
 
     public static void sendPaymentTypeGUI(Player p, int price) {
+        Debug.debug("step 1");
         Inventory inv = Bukkit.createInventory(null, InventoryType.HOPPER, "§8[§aZahlungsmethode§8]");
         ItemStack cash = new ItemBuilder(Material.CHEST).setName("§aBar").setLore("§8» §c" + price + "€").build();
         ItemStack bank = new ItemBuilder(Material.CHEST).setName("§aKarte").setLore("§8» §c" + price + "€").build();
-
+        Debug.debug("step 2");
         inv.setItem(1, cash);
         inv.setItem(3, bank);
         p.openInventory(inv);
+        Debug.debug("step 3");
     }
 
     public static Class<?> getNMSClass(String name) {
@@ -1362,7 +1364,8 @@ public class Script {
 
     public static void addEXP(Player p, int exp) {
         int id = getNRPID(p);
-        p.sendMessage("  §a+" + exp + " Exp!");
+        if(main.event == Event.DOUBLE_XP_WEEKEND || main.event == Event.DOUBLE_XP) exp *= 2;
+        p.sendMessage("  §a+" + exp + " Exp!" + (main.event == Event.DOUBLE_XP_WEEKEND || main.event == Event.DOUBLE_XP? " §7(§6§lDOUBLE EXP§7)" : ""));
         sendActionBar(p, "§a+ " + exp + " Exp!");
         executeUpdate("UPDATE level SET exp=" + (getExp(p) + exp) + " WHERE id=" + id);
         p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1F, 1F);
@@ -1402,6 +1405,25 @@ public class Script {
 
     public static void addEXP(int id, int exp) {
         executeUpdate("UPDATE level SET exp=" + (getExp(id) + exp) + " WHERE nrp_id=" + id);
+    }
+
+    public static List<Block> getBlocksBetween(Location l1, Location l2) {
+        List<Block> blocks = new ArrayList<>();
+        int topBlockX = (Math.max(l1.getBlockX(), l2.getBlockX()));
+        int bottomBlockX = (Math.min(l1.getBlockX(), l2.getBlockX()));
+        int topBlockY = (Math.max(l1.getBlockY(), l2.getBlockY()));
+        int bottomBlockY = (Math.min(l1.getBlockY(), l2.getBlockY()));
+        int topBlockZ = (Math.max(l1.getBlockZ(), l2.getBlockZ()));
+        int bottomBlockZ = (Math.min(l1.getBlockZ(), l2.getBlockZ()));
+        for (int x = bottomBlockX; x <= topBlockX; x++) {
+            for (int y = bottomBlockY; y <= topBlockY; y++) {
+                for (int z = bottomBlockZ; z <= topBlockZ; z++) {
+                    Block block = l1.getWorld().getBlockAt(x, y, z);
+                    blocks.add(block);
+                }
+            }
+        }
+        return blocks;
     }
 
     public static void removeEXP(String p, int exp) {

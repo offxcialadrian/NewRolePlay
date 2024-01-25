@@ -173,7 +173,6 @@ public class Plantage {
                 if (minutes >= 0 && plant.getLastWater() == 0 || (System.currentTimeMillis() - plant.getLastWater()) > TimeUnit.MINUTES.toMillis(Script.getRandom(45, 60))) {
                     plant.setWater(false);
                 }
-                Debug.debug("current purity = " + plant.getCurrentPurity());
             }
             if (sendMessage) {
                 if (good == 1) {
@@ -298,11 +297,11 @@ public class Plantage {
         Drogen.DrugPurity purity;
         int purityCounter = getCurrentPurity();
 
-        if (purityCounter >= 180) {
+        if (purityCounter >= 190) {
             purity = Drogen.DrugPurity.HIGH;
-        } else if (purityCounter >= 160) {
+        } else if (purityCounter >= 175) {
             purity = Drogen.DrugPurity.GOOD;
-        } else if (purityCounter >= 110) {
+        } else if (purityCounter >= 160) {
             purity = Drogen.DrugPurity.MEDIUM;
         } else {
             purity = Drogen.DrugPurity.BAD;

@@ -2,6 +2,10 @@ package de.newrp.GFB;
 
 import de.newrp.API.Cache;
 import de.newrp.API.Messages;
+import de.newrp.API.Script;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -47,6 +51,13 @@ public class Quitjob implements CommandExecutor {
                 Kellner.CURRENT.remove(p.getName());
                 Cache.loadInventory(p);
                 p.sendMessage(GFB.PREFIX + "Du hast den Job §6Kellner §7verlassen.");
+                break;
+            case EISHALLE:
+                Eishalle.CURRENT = null;
+                for(Block block : Script.getBlocksBetween(new Location(Script.WORLD, 385, 66, 764), new Location(Script.WORLD, 370, 66, 741))) {
+                    block.setType(Material.ICE);
+                }
+                p.sendMessage(GFB.PREFIX + "Du hast den Job §6Eishalle §7verlassen.");
                 break;
         }
 

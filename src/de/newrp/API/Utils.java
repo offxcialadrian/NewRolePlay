@@ -97,7 +97,7 @@ public class Utils implements Listener {
     @EventHandler
     public void onLogin(PlayerLoginEvent e) {
         if (e.getResult() == PlayerLoginEvent.Result.KICK_WHITELIST) {
-            e.getPlayer().kickPlayer("§8» §cNRP × New RolePlay §8┃ §cKick §8« \n\n§8§m------------------------------\n\n§7Du wurdest vom Server gekickt§8.\n\n§7Grund §8× §e" + "Wartungsarbeiten");
+            e.disallow(PlayerLoginEvent.Result.KICK_WHITELIST, "§8» §cNRP × New RolePlay §8┃ §cKick §8« \n\n§8§m------------------------------\n\n§7Du wurdest vom Server gekickt§8.\n\n§7Grund §8× §e" + "Wartungsarbeiten");
             Debug.debug(Script.PREFIX + "Der Spieler " + e.getPlayer().getName() + " wurde gekickt, da der Server im Wartungsmodus ist.");
         }
     }
@@ -171,9 +171,12 @@ public class Utils implements Listener {
             Script.sendActionBar(e.getPlayer(), "§7Willkommen zurück auf §eNewRP§7!");
             p.sendMessage(TippOfTheDay.PREFIX + TippOfTheDay.getRandomTipp());
             if(Script.haveBirthDay(p)) {
-                p.sendMessage(Messages.INFO + "§lDas Team von New RolePlay wünscht dir alles Gute zum Geburtstag!");
-                p.sendMessage(Messages.INFO + "Als Geschenk erhhältst du 500 Exp!");
-                Script.addEXP(p, 500);
+                if(Script.getInt(p, "birthday", "geschenk") != 1) {
+                    p.sendMessage(Messages.INFO + "§lDas Team von New RolePlay wünscht dir alles Gute zum Geburtstag!");
+                    p.sendMessage(Messages.INFO + "Als Geschenk erhältst du 500 Exp!");
+                    Script.executeAsyncUpdate("UPDATE birthday SET geschenk = 1 WHERE id = " + Script.getNRPID(p));
+                    Script.addEXP(p, 500);
+                }
             }
             if(Script.getBackUpCode(p) == null)
                 p.sendMessage(Messages.INFO + "Du hast noch keinen BackupCode. Er ist wichtig, um deinen Account wiederherzustellen, falls du ihn verlierst. Nutze §8/§6backupcode §r, um einen BackupCode zu erhalten.");
@@ -285,6 +288,12 @@ public class Utils implements Listener {
                 e.setCancelled(true);
             }
         }
+    }
+
+    @EventHandler
+    public void onCraft(CraftItemEvent e) {
+        if(BuildMode.isInBuildMode((Player) e.getWhoClicked())) return;
+        e.setCancelled(true);
     }
 
     @EventHandler (priority = EventPriority.HIGHEST)

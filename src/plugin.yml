@@ -515,3 +515,6 @@ commands:
     description: vote for something
   voteshop:
     description: vote for a shop
+  eishalle:
+    description: view the eishalle
+    aliases: [ eishallen ]
