@@ -135,6 +135,11 @@ public class Chat implements Listener {
         }
 
         for(String arg : e.getMessage().split(" ")) {
+            if(arg.equalsIgnoreCase("ChatCraft")) {
+                p.kickPlayer("§8» §cNRP × New RolePlay §8┃ §cKICK §8« \n\n§8§m------------------------------\n\n§7Du wurdest vom Server gekickt§8.\n\n§7Grund §8× §eVerbindung mit ChatCraft\n\n§8§m------------------------------");
+                Script.sendTeamMessage(AntiCheatSystem.PREFIX + Script.getName(p) + " wurde vom Server gekickt (Verbindung mit ChatCraft).");
+                return;
+            }
             if(arg.equalsIgnoreCase("http://") || arg.equalsIgnoreCase("https://") || arg.equalsIgnoreCase("www.") || arg.equalsIgnoreCase(".de")  || arg.equalsIgnoreCase(".eu") || arg.equalsIgnoreCase("germanrp") || arg.equalsIgnoreCase("grp") || arg.equalsIgnoreCase("unicacity") || arg.equalsIgnoreCase("turniptales") || arg.toLowerCase().startsWith("turnip")) {
                 Script.sendTeamMessage(AntiCheatSystem.PREFIX + "Verdacht auf Fremdwerbung bei " + Script.getName(p) + " (Level " + p.getLevel() + ") §8» §c" + e.getMessage());
                 p.sendMessage(AntiCheatSystem.PREFIX + "Es liegt ein Verdacht auf Fremdwerbung vor. Die Nachricht wurde nicht gesendet. Wenn du denkst, dass es sich um einen Fehler handelt, melde ihn bitte im Forum.");

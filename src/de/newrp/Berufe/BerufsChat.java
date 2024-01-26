@@ -32,7 +32,7 @@ public class BerufsChat implements CommandExecutor {
         }
 
         String nachricht = sb.toString();
-        String prefix = "§9" + Beruf.getBeruf(p).getName() + " " + Messages.ARROW + " ";
+        String prefix = "§9" + Beruf.getAbteilung(p).getName() + " " + Messages.ARROW + " ";
         for (Player all : Beruf.getPlayersFromBeruf(Beruf.getBeruf(p))) {
             all.sendMessage(prefix + Script.getName(p) + "§8: §9" + nachricht);
         }

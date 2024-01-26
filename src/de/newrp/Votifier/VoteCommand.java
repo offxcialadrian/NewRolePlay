@@ -39,7 +39,7 @@ public class VoteCommand implements CommandExecutor {
         vote2.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("§7Klicke hier um zu §6Minecraft-Serverlist.net §7zu gelangen!").create()));
         vote2.setClickEvent(new net.md_5.bungee.api.chat.ClickEvent(net.md_5.bungee.api.chat.ClickEvent.Action.OPEN_URL, "https://minecraft-server.eu/vote/index/22E2E/" + p.getName()));
         p.spigot().sendMessage(vote2);
-        p.sendMessage("§l______________________________________");
+        p.sendMessage("§l§8______________________________________");
         int dayOfTheWeek = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
         boolean weekend = dayOfTheWeek == Calendar.FRIDAY || dayOfTheWeek == Calendar.SATURDAY || dayOfTheWeek == Calendar.SUNDAY;
         int votes = VoteListener.getTotalVotesToday();

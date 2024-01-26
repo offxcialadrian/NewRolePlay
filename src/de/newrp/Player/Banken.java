@@ -202,7 +202,6 @@ public class Banken implements CommandExecutor, Listener {
             e.getView().close();
             Bank bank = Bank.getBankByName(ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName()));
             if (bank == null) return;
-            if (Bank.getBankByPlayer(p) != null) return;
             if (Bank.getBankByPlayer(p) == bank) return;
 
             if (Script.getMoney(p, PaymentType.CASH) < bank.getEinrichtigungsKosten()) {
@@ -218,7 +217,6 @@ public class Banken implements CommandExecutor, Listener {
             p.sendMessage(PREFIX + "Du hast die " + bank.getName() + " als deine Bank ausgewählt.");
             p.sendMessage(Messages.INFO + "Um deine Bank zu wechseln, nutze /bank change");
             Script.removeMoney(p, PaymentType.CASH, bank.getEinrichtigungsKosten());
-            Script.executeAsyncUpdate("UPDATE money SET bank=0 WHERE nrp_id=" + Script.getNRPID(p));
         }
     }
 }

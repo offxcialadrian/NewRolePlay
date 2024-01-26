@@ -37,7 +37,9 @@ public class BroadcastCommand implements CommandExecutor {
 
         String msg = sb.toString().trim();
         Bukkit.broadcastMessage(" ");
-        Bukkit.broadcastMessage("§8[§4New RolePlay§8] §4" + Script.getName(p) + " §8» §c" + msg);
+        Bukkit.broadcastMessage(" §7&m--------- §8[§cANKÜNDIGUNG§8] §7&m---------");
+        Bukkit.broadcastMessage("§c" + Script.getName(p) + " §8» §c" + msg);
+        Bukkit.broadcastMessage(" §7&m---------------------------------");
         Bukkit.broadcastMessage(" ");
         Log.HIGH.write(p, "hat einen Broadcast gesendet (" + msg + ")");
 

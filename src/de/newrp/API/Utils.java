@@ -47,7 +47,7 @@ public class Utils implements Listener {
     private static final String[] BLOCKED_COMMANDS = new String[]{
             "/minecraft", "/spi", "/protocol", "/rl", "/restart", "/bukkit", "/time", "/version", "/icanhasbukkit", "/xp", "/tell",
             "/toggledownfall", "/testfor", "/recipe", "/give", "/effect", "/enchant", "/deop", "/defaultgamemode", "/ban-ip",
-            "/banlist", "/advancement", "/?", "/gamemode", "/gamerule", "/give", "/kill", "/list", "/about",
+            "/banlist", "/advancement", "/?", "/gamemode", "/gamerule", "/kill", "/list", "/about",
             "/ability", "/advancement", "/alwaysday", "/attribute", "/ban-ip", "/banlist", "/bossbar", "/camera", "/camerashake",
             "/changesetting", "/clear", "/clearspawnpoint", "/clone", "/connect", "/damage", "/data", "/datapack", "/daylock",
             "/dedicatedwsserver", "/defaultgamemode", "/deop", "/dialogue", "/difficulty", "/effect", "/enchant", "/event", "/execute",
@@ -58,12 +58,12 @@ public class Utils implements Listener {
             "/say", "/schedule", "/scoreboard", "/script", "/scriptevent", "/seed", "/setblock", "/setidletimeout", "/setmaxplayers",
             "/setworldspawn", "/spawnpoint", "/spreadplayers", "/stop", "/stopsound", "/structure", "/summon", "/tag",
             "/teammsg", "/tell", "/tellraw", "/testfor", "/testforblock", "/testforblocks", "/tickingarea", "/time", "/title",
-            "/titleraw", "/tm", "/toggledownfall", "/trigger", "/volumearea", "/wb", "/whitelist", "/worldborder",
+            "/titleraw", "/tm", "/toggledownfall", "/trigger", "/volumearea", "/wb", "/worldborder",
             "/worldbuilder", "/wsserver", "/xp", "/ver"
     };
 
     private static final String[] BLOCKED_COMMANDS_SPECIFIC = new String[]{
-            "/pl", "/plugins"
+            "/pl", "/plugins", "/give", "/whitelist"
     };
 
 
@@ -98,7 +98,7 @@ public class Utils implements Listener {
     public void onLogin(PlayerLoginEvent e) {
         if (e.getResult() == PlayerLoginEvent.Result.KICK_WHITELIST) {
             e.disallow(PlayerLoginEvent.Result.KICK_WHITELIST, "§8» §cNRP × New RolePlay §8┃ §cKick §8« \n\n§8§m------------------------------\n\n§7Du wurdest vom Server gekickt§8.\n\n§7Grund §8× §e" + "Wartungsarbeiten");
-            Debug.debug(Script.PREFIX + "Der Spieler " + e.getPlayer().getName() + " wurde gekickt, da der Server im Wartungsmodus ist.");
+            Debug.debug(Script.PREFIX + "Dem Spieler " + e.getPlayer().getName() + " wurde der Zutritt verweigert, da der Server im Wartungsmodus ist.");
         }
     }
 
@@ -166,7 +166,7 @@ public class Utils implements Listener {
         Script.updateExpBar(p);
         NPCUtil.reloadNPC(p);
         if (Script.getNRPID(p) != 0) {
-            e.getPlayer().sendMessage(Script.PREFIX + "Willkommen zurück auf §eNewRP§7!");
+            e.getPlayer().sendMessage(Script.PREFIX + "§7Willkommen zurück auf §eNewRP§7!");
             if(Script.hasRank(p, Rank.MODERATOR, false)) e.getPlayer().sendMessage(Messages.INFO + "Aufgrund deines Status als " + Script.getRank(p).getName(p) + " hast du automatisch einen Premium-Account.");
             Script.sendActionBar(e.getPlayer(), "§7Willkommen zurück auf §eNewRP§7!");
             p.sendMessage(TippOfTheDay.PREFIX + TippOfTheDay.getRandomTipp());
@@ -176,6 +176,15 @@ public class Utils implements Listener {
                     p.sendMessage(Messages.INFO + "Als Geschenk erhältst du 500 Exp!");
                     Script.executeAsyncUpdate("UPDATE birthday SET geschenk = 1 WHERE id = " + Script.getNRPID(p));
                     Script.addEXP(p, 500);
+                }
+            }
+
+            for (Player online : Bukkit.getOnlinePlayers()) {
+                if (!Script.hasRank(online, Rank.SUPPORTER, false)) {
+                    if (Team.getTeam(online) != Team.Teams.BAU) {
+                        Debug.debug("hiding " + p.getName() + " from " + online.getName());
+                        online.hidePlayer(main.getInstance(), p);
+                    }
                 }
             }
             if(Script.getBackUpCode(p) == null)
@@ -300,7 +309,7 @@ public class Utils implements Listener {
     public void onJoinEvent(PlayerJoinEvent e) {
         if (Script.isInTestMode() && !Script.isNRPTeam(e.getPlayer()) && !e.getPlayer().isWhitelisted()) {
             e.getPlayer().kickPlayer("§eDer Server ist momentan im Wartungsmodus.");
-            Debug.debug("Der Spieler " + e.getPlayer().getName() + " wurde gekickt, da der Server im Wartungsmodus ist.");
+            Debug.debug("De, Spieler " + e.getPlayer().getName() + " wurde gekickt, da der Server im Wartungsmodus ist.");
         } else if(Script.isInTestMode()) {
             e.getPlayer().sendMessage(Messages.INFO + "Der Server ist momentan im Wartungsmodus.");
             Achievement.BETA_TESTER.grant(e.getPlayer());

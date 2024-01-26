@@ -2,6 +2,7 @@ package de.newrp.Police;
 
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
+import de.newrp.Administrator.SDuty;
 import de.newrp.Berufe.Abteilung;
 import de.newrp.Berufe.Beruf;
 import org.bukkit.command.Command;
@@ -21,12 +22,12 @@ public class RemoveFahndung implements CommandExecutor {
             return true;
         }
 
-        if(!Beruf.getBeruf(p).equals(Beruf.Berufe.GOVERNMENT) && !Beruf.getBeruf(p).equals(Beruf.Berufe.POLICE)) {
+        if(!Beruf.getBeruf(p).equals(Beruf.Berufe.GOVERNMENT) && !Beruf.getBeruf(p).equals(Beruf.Berufe.POLICE) && !SDuty.isSDuty(p)) {
             p.sendMessage(Messages.NO_PERMISSION);
             return true;
         }
 
-        if(Beruf.getAbteilung(p) != Abteilung.Abteilungen.JUSTIZMINISTERIUM && Beruf.getAbteilung(p) != Abteilung.Abteilungen.KRIPO && !Beruf.isLeader(p, true)) {
+        if(Beruf.getAbteilung(p) != Abteilung.Abteilungen.JUSTIZMINISTERIUM && Beruf.getAbteilung(p) != Abteilung.Abteilungen.KRIPO && !Beruf.isLeader(p, true) && !SDuty.isSDuty(p)) {
             p.sendMessage(Messages.NO_PERMISSION);
             return true;
         }

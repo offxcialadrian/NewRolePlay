@@ -92,7 +92,7 @@ public class BuyClick implements Listener {
                 return;
             }
             sendMessage(p, "Möchten Sie Bar oder mit Karte bezahlen?");
-            int price = si.getBuyPrice();
+            int price = si.getPrice(s);
             Inventory gui = p.getServer().createInventory(null, InventoryType.HOPPER, "§8[§aZahlungsmethode§8]");
             ItemStack cash = new ItemBuilder(Material.CHEST).setName("§aBar").setLore("§8» §c" + price + "€").build();
             ItemStack bank = new ItemBuilder(Material.CHEST).setName("§aKarte").setLore("§8» §c" + price + "€").build();

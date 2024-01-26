@@ -49,7 +49,7 @@ public class Abteilung implements CommandExecutor, TabCompleter {
         ALLGEMEINMEDIZIN(5, RETTUNGSDIENST, "Allgemeinmedizin"),
         OBERARZT(6, RETTUNGSDIENST, "Oberarzt"),
         CHEFARZT(7, RETTUNGSDIENST, "Chefarzt"),
-        DIREKTOR(8, RETTUNGSDIENST, "Ärtliches Direktorium");
+        DIREKTOR(8, RETTUNGSDIENST, "Ärtliches-Direktorium");
 
 
         private final int id;
