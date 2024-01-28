@@ -323,6 +323,9 @@ public class main extends JavaPlugin {
         getCommand("vote").setExecutor(new VoteCommand());
         getCommand("voteshop").setExecutor(new VoteShop());
         getCommand("eishalle").setExecutor(new Eishalle());
+        getCommand("pizzalieferant").setExecutor(new Pizza());
+        getCommand("dishwasher").setExecutor(new Dishwasher());
+        getCommand("burgerbrater").setExecutor(new BurgerFryer());
 
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new SDuty(), this);
@@ -411,6 +414,9 @@ public class main extends JavaPlugin {
         pm.registerEvents(new VoteListener(), this);
         pm.registerEvents(new VoteShopListener(), this);
         pm.registerEvents(new Eishalle(), this);
+        pm.registerEvents(new Pizza(), this);
+        pm.registerEvents(new Dishwasher(), this);
+        pm.registerEvents(new BurgerFryer(), this);
 
 
         new AsyncHealth().runTaskTimerAsynchronously(this, 120 * 20L, 120 * 20L);
@@ -429,6 +435,8 @@ public class main extends JavaPlugin {
         Blacklist.load();
         Plantage.loadAll();
         Schwarzmarkt.spawnRandom();
+
+        Script.executeUpdate("UPDATE birthday SET geschenk = 0");
 
         Bukkit.getConsoleSender().sendMessage("§cNRP §8× §astarting complete..");
         Bukkit.getConsoleSender().sendMessage("§cNRP §8× §aViel Erfolg heute..");

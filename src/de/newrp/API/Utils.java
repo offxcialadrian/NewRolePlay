@@ -36,10 +36,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import javax.management.Notification;
-import java.util.ArrayList;
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 public class Utils implements Listener {
 
@@ -173,17 +171,18 @@ public class Utils implements Listener {
             if(Script.haveBirthDay(p)) {
                 if(Script.getInt(p, "birthday", "geschenk") != 1) {
                     p.sendMessage(Messages.INFO + "§lDas Team von New RolePlay wünscht dir alles Gute zum Geburtstag!");
-                    p.sendMessage(Messages.INFO + "Als Geschenk erhältst du 500 Exp!");
+                    p.sendMessage(Messages.INFO + "Als Geschenk erhältst du 500 Exp und 7 Premium!");
                     Script.executeAsyncUpdate("UPDATE birthday SET geschenk = 1 WHERE id = " + Script.getNRPID(p));
                     Script.addEXP(p, 500);
+                    Premium.addPremium(p, TimeUnit.DAYS.toMillis(7));
                 }
             }
 
             for (Player online : Bukkit.getOnlinePlayers()) {
-                if (!Script.hasRank(online, Rank.SUPPORTER, false)) {
-                    if (Team.getTeam(online) != Team.Teams.BAU) {
-                        Debug.debug("hiding " + p.getName() + " from " + online.getName());
-                        online.hidePlayer(main.getInstance(), p);
+                if (BuildMode.isInBuildMode(online)) {
+                    if (Team.getTeam(p) != Team.Teams.BAU && !Script.hasRank(p, Rank.SUPPORTER, false)) {
+                        Debug.debug("hiding " + online.getName() + " from " + p.getName());
+                        p.hidePlayer(main.getInstance(), online);
                     }
                 }
             }
@@ -263,6 +262,7 @@ public class Utils implements Listener {
     @EventHandler
     public void onHeal(EntityRegainHealthEvent e) {
         if(!(e.getEntity() instanceof Player)) return;
+        if(((Player) e.getEntity()).hasPotionEffect(PotionEffectType.REGENERATION)) return;
         if(e.getRegainReason() == EntityRegainHealthEvent.RegainReason.EATING || e.getRegainReason() == EntityRegainHealthEvent.RegainReason.SATIATED && ((Player) e.getEntity()).getHealth() >= 19)
             e.setCancelled(true);
     }

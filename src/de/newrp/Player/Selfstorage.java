@@ -121,7 +121,7 @@ public class Selfstorage implements CommandExecutor, Listener {
             return true;
         }
 
-        if(p.getLocation().distance(new Location(Script.WORLD, 1012, 68, 1201)) < 5) {
+        if(p.getLocation().distance(new Location(Script.WORLD, 1012, 68, 1201)) < 3) {
             if(args.length == 1 && args[0].equalsIgnoreCase("remove")) {
                 if(!hasSelfstorage(p)) {
                     p.sendMessage(Messages.ERROR + "Du hast keinen Selfstorage-Room.");

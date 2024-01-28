@@ -228,7 +228,11 @@ public class House {
     }
 
     public static House getRandomHouse() {
-        return HOUSES.get(Script.getRandom(0, HOUSES.size() - 1));
+        List<House> houses = new ArrayList<>();
+        for (House h : HOUSES) {
+            if (h.getOwner() != 0) houses.add(h);
+        }
+        return houses.get(Script.getRandom(0, houses.size() - 1));
     }
 
     public String toString() {

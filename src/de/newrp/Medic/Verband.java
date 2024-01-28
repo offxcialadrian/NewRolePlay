@@ -2,6 +2,7 @@ package de.newrp.Medic;
 
 import de.newrp.API.*;
 import de.newrp.Chat.Me;
+import de.newrp.Police.Handschellen;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -28,6 +29,7 @@ public class Verband implements Listener {
         Player p = e.getPlayer();
         if (e.getHand() == EquipmentSlot.OFF_HAND) return;
         if (!interact(p)) return;
+        if(Handschellen.isCuffed(p)) return;
 
         if(p.isSneaking()) {
             long time = System.currentTimeMillis();
@@ -71,7 +73,7 @@ public class Verband implements Listener {
                 }
 
                 Me.sendMessage(p, "legt sich einen Verband an.");
-                p.addPotionEffect(new PotionEffect(PotionEffectType.HEALTH_BOOST, 20 * 60 * 5, 1));
+                p.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 20 * 20, 1));
 
                 BANDAGE_COOLDOWN.put(p.getName(), time);
                 LAST_CLICK.remove(p.getName());
@@ -126,7 +128,7 @@ public class Verband implements Listener {
             }
 
             Me.sendMessage(p, "legt " + Script.getName(rightClicked) + " einen Verband an.");
-            rightClicked.addPotionEffect(new PotionEffect(PotionEffectType.HEAL, 20 * 60 * 5, 1));
+            rightClicked.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 20 * 20, 1));
 
             BANDAGE_COOLDOWN.put(rightClicked.getName(), time);
             LAST_CLICK.remove(p.getName());

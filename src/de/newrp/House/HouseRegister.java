@@ -359,7 +359,7 @@ public class HouseRegister implements CommandExecutor, Listener {
                 if (reg.getOwnerID() != 0) {
                     s.setLine(1, "== " + reg.getHouseID() + " ==");
                     if (reg.getOwnerName() != null) {
-                        s.setLine(2, reg.getOwnerName());
+                        s.setLine(2, Script.getOfflinePlayer(reg.getOwnerID()).getName());
                     } else {
                         s.setLine(2, "Frei");
                         s.setLine(3, reg.getPrice() + "€");

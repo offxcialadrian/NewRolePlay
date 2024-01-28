@@ -59,7 +59,7 @@ public class JailTime implements CommandExecutor, Listener {
         if (e instanceof Player && d instanceof Player) {
             Player p = (Player) e;
             Player damager = (Player) d;
-            if (Jail.isInJail(p) && Jail.isInJail(damager)) {
+            if (Jail.isInJail(p) || Jail.isInJail(damager)) {
                 event.setCancelled(true);
             }
         }

@@ -46,7 +46,7 @@ public class GMX implements CommandExecutor {
         }
 
 
-        Bukkit.broadcastMessage(Script.PREFIX + "§4§lACHTUNG: §cDer Server startet in einer Minute neu! (erwartete Dauer: 45 Sekunden)");
+        Bukkit.broadcastMessage(Script.PREFIX + "§4§lACHTUNG: §cDer Server startet in einer Minute neu! (erwartete Restart-Dauer: " + Script.getRandom(40, 60) + " Sekunden)");
         Bukkit.broadcastMessage(Script.PREFIX + "§4Grund §8× §c" + msg);
         Bukkit.getScheduler().runTaskLater(main.getInstance(), () -> {
             Bukkit.broadcastMessage(Script.PREFIX + "§4§lACHTUNG: §cDer Server startet in 30 Sekunden neu!");

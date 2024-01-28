@@ -18,6 +18,7 @@ import de.newrp.TeamSpeak.TeamSpeak;
 import de.newrp.Ticket.TicketCommand;
 import de.newrp.Waffen.Weapon;
 import de.newrp.main;
+import me.arcaniax.hdb.api.HeadDatabaseAPI;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
@@ -1405,6 +1406,23 @@ public class Script {
 
     public static void addEXP(int id, int exp) {
         executeUpdate("UPDATE level SET exp=" + (getExp(id) + exp) + " WHERE nrp_id=" + id);
+    }
+
+    public static ArrayList<Integer> getRandomNumbers(int min, int max, int amount) {
+        ArrayList<Integer> numbers = new ArrayList<>();
+        for(int i = 0; i < amount; i++) {
+            int number = Script.getRandom(min, max);
+            while(numbers.contains(number)) {
+                number = Script.getRandom(min, max);
+            }
+            numbers.add(number);
+        }
+        return numbers;
+    }
+
+    public static ItemStack getHead(int id) {
+        HeadDatabaseAPI api = new HeadDatabaseAPI();
+        return api.getItemHead(id + "");
     }
 
     public static List<Block> getBlocksBetween(Location l1, Location l2) {

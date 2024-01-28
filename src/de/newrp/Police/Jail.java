@@ -126,7 +126,7 @@ public class Jail {
         if (p.getVehicle() != null) p.leaveVehicle();
         if (Friedhof.isDead(p)) {
             World w = p.getWorld();
-            Location[] locs = locs = new Location[]{Script.setDirection(new Location(w, 221, 76, 673), Direction.WEST)};
+            Location[] locs = locs = new Location[]{new Location(Script.WORLD, 1018, 68, 548, 358.74432f, -1.3718445f)};
             Location loc = locs[Script.getRandom(0, locs.length - 1)];
             loc.getChunk().load();
 

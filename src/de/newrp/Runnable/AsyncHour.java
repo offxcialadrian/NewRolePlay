@@ -26,6 +26,8 @@ public class AsyncHour extends BukkitRunnable {
 
     @Override
     public void run() {
+
+        Hologram.reload();
         for(Shops shop : Shops.values()) {
             if (shop.getOwner() == 0) return;
             int runningcost = 0;

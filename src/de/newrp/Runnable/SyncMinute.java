@@ -2,6 +2,8 @@ package de.newrp.Runnable;
 
 import de.newrp.API.Debug;
 import de.newrp.API.Script;
+import de.newrp.GFB.GFB;
+import de.newrp.GFB.Schule;
 import de.newrp.TeamSpeak.TeamSpeak;
 import org.bukkit.Bukkit;
 import org.bukkit.block.Sign;
@@ -30,7 +32,16 @@ public class SyncMinute extends BukkitRunnable {
         sign.update();
 
         if(Calendar.getInstance().get(Calendar.HOUR_OF_DAY) == 23 && Calendar.getInstance().get(Calendar.MINUTE) == 59) {
-            Bukkit.broadcastMessage(Script.PREFIX + "§4§lACHTUNG: §cDer Server startet in einer Minute neu! (erwartete Dauer: 45 Sekunden)");
+            for(Player all : Bukkit.getOnlinePlayers()) {
+                if(Schule.STUDIYING.containsKey(all)) {
+                    all.sendMessage(Schule.PREFIX + "Du hast die Schule automatisch bestanden, da der Server in 60 Sekunden neu startet.");
+                    GFB gfb = Schule.STUDIYING.get(all);
+                    gfb.addExp(all, gfb.getLevel(all) * Script.getRandom(100, 200));
+                    Schule.STUDIYING.remove(all);
+                    Schule.STARTED.remove(all);
+                }
+            }
+            Bukkit.broadcastMessage(Script.PREFIX + "§4§lACHTUNG: §cDer Server startet in einer Minute neu! (erwartete Restart-Dauer: " + Script.getRandom(40, 60) + " Sekunden)");
             try{ TeamSpeak.getApi().sendServerMessage("ACHTUNG! DER SERVER STARTET IN EINER MINUTE NEU!");} catch (Exception e) { Script.sendTeamMessage(Script.PREFIX + "Es erfolgte keine Nachricht auf dem TeamSpeak, da die Querry down ist."); }
             Bukkit.getScheduler().runTaskLater(main.getInstance(), () -> {
                 Bukkit.broadcastMessage(Script.PREFIX + "§4§lACHTUNG: §cDer Server startet in 30 Sekunden neu!");

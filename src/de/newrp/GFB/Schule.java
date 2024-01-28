@@ -21,6 +21,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.Calendar;
 import java.util.HashMap;
 
 public class Schule implements CommandExecutor, Listener {
@@ -51,6 +52,11 @@ public class Schule implements CommandExecutor, Listener {
 
         if(args.length != 0) {
             p.sendMessage(Messages.ERROR + "/schule");
+            return true;
+        }
+
+        if(Calendar.getInstance().get(Calendar.HOUR_OF_DAY) == 23 && Calendar.getInstance().get(Calendar.MINUTE) == 59) {
+            p.sendMessage(Messages.ERROR + "Du kannst die Schule nicht mehr betreten, da der Server in 60 Sekunden neu startet.");
             return true;
         }
 

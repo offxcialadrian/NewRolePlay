@@ -17,7 +17,7 @@ public class RemoveFahndung implements CommandExecutor {
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
         Player p = (Player) cs;
 
-        if(!Beruf.hasBeruf(p)) {
+        if(!Beruf.hasBeruf(p) && !SDuty.isSDuty(p)) {
             p.sendMessage(Messages.NO_PERMISSION);
             return true;
         }

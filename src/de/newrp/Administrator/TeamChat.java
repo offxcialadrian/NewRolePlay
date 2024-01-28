@@ -24,6 +24,11 @@ public class TeamChat implements CommandExecutor {
             return true;
         }
 
+        if(Punish.isMuted(p)) {
+            p.sendMessage(Messages.ERROR + "Du bist gemuted.");
+            return true;
+        }
+
         String msg = String.join(" ", args);
         for (Player all : Bukkit.getOnlinePlayers()) {
             if(Team.getTeam(all) == null) continue;

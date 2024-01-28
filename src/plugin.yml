@@ -518,3 +518,12 @@ commands:
   eishalle:
     description: view the eishalle
     aliases: [ eishallen ]
+  pizzalieferant:
+    description: view the pizzalieferant
+    aliases: [ pizzaol ]
+  dishwasher:
+    description: view the dishwasher
+    aliases: [ tellerwäscher ]
+  burgerbrater:
+    description: view the burgerbrater
+    aliases: [ burgerfryer ]

@@ -117,8 +117,8 @@ public enum Schwarzmarkt {
     }
 
     public enum TradeItem {
-        LOTTOSCHEIN(0, new ItemStack(Material.PAPER), "Lottoschein", 3),
-        BASEBALLSCHLAEGER(2, Baseballschlaeger.getItem(), "Baseballschläger", 1);
+        LOTTOSCHEIN(0, new ItemStack(Material.IRON_HORSE_ARMOR), "Pistole", 1),
+        BASEBALLSCHLAEGER(2, new ItemStack(Material.DIAMOND_HORSE_ARMOR), "AK-49", 1);
 
         private final int id;
         private final ItemStack item;

@@ -125,6 +125,8 @@ public class Call {
 
     public static void hangup(Player p) {
         List<Player> playerList = ON_CALL.get(getCallIDByPlayer(p));
+        if(playerList == null) return;
+        if(playerList.isEmpty()) return;
         if (playerList.size() == 2) {
             sendSystemMessage(p, "§7Der Anruf wurde beendet.", false);
             ON_CALL.remove(getCallIDByPlayer(p));

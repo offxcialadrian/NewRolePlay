@@ -2,6 +2,7 @@ package de.newrp.GFB;
 
 import de.newrp.API.Cache;
 import de.newrp.API.Messages;
+import de.newrp.API.Route;
 import de.newrp.API.Script;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -40,7 +41,6 @@ public class Quitjob implements CommandExecutor {
             case TRANSPORT:
                 Transport.SCORE.remove(p.getName());
                 Transport.STARTED.remove(p.getName());
-                Transport.cooldown.remove(p.getName());
                 Transport.SAFE_SCORE.remove(p.getName());
                 Transport.SHOP.remove(p.getName());
                 Transport.cooldown2.remove(p.getName());
@@ -58,6 +58,27 @@ public class Quitjob implements CommandExecutor {
                     block.setType(Material.ICE);
                 }
                 p.sendMessage(GFB.PREFIX + "Du hast den Job §6Eishalle §7verlassen.");
+                break;
+            case PIZZALIEFERANT:
+                Pizza.pizza.remove(p.getName());
+                Pizza.house.remove(p.getName());
+                Pizza.TOTAL_SCORE.remove(p.getName());
+                Pizza.timer.remove(p.getName());
+                p.sendMessage(GFB.PREFIX + "Du hast den Job §6Pizzalieferant §7verlassen.");
+                Route.invalidate(p);
+                break;
+            case DISHWASHER:
+                Dishwasher.dishes.remove(p.getName());
+                Dishwasher.TOTAL_SCORE.remove(p.getName());
+                Dishwasher.ON_JOB.remove(p.getName());
+                p.sendMessage(GFB.PREFIX + "Du hast den Job §6Tellerwäscher §7verlassen.");
+                break;
+            case BURGERFRYER:
+                BurgerFryer.BURGER.remove(p.getName());
+                BurgerFryer.TOTAL_SCORE.remove(p.getName());
+                BurgerFryer.NEEDED.remove(p.getName());
+                BurgerFryer.SCORE.remove(p.getName());
+                p.sendMessage(GFB.PREFIX + "Du hast den Job §6Burgerbrater §7verlassen.");
                 break;
         }
 
