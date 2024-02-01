@@ -4,14 +4,17 @@ import de.newrp.API.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -190,6 +193,7 @@ public class BurgerFryer implements CommandExecutor, Listener {
     public void onInteract(PlayerInteractEvent e) {
         Player p = e.getPlayer();
         if(e.getAction() != Action.RIGHT_CLICK_BLOCK) return;
+        if(p.getOpenInventory().getTitle().startsWith("§8[§6Burger§8] §6» §7")) return;
         if(!BURGER.containsKey(p.getName())) return;
         if(!(e.getClickedBlock().getLocation().equals(new Location(Script.WORLD, 454, 68, 766)))) return;
 
@@ -199,6 +203,7 @@ public class BurgerFryer implements CommandExecutor, Listener {
             inv.setItem(count++, i.getItem());
         }
         inv.setItem(17, new ItemBuilder(Material.GREEN_WOOL).setName("§aFertig").build());
+        Script.fillInv(inv);
         Cache.saveInventory(p);
         p.getInventory().clear();
         p.openInventory(inv);
@@ -227,29 +232,29 @@ public class BurgerFryer implements CommandExecutor, Listener {
                     Collections.addAll(ingredients, burger.getIngredients());
                     NEEDED.put(p.getName(), ingredients);
                     SCORE.replace(p.getName(), SCORE.get(p.getName()) - 1);
-                    Cache.loadInventory(p);
                     if(GFB.BURGERFRYER.getLevel(p) == 1) {
                         p.sendMessage(Messages.INFO + "Du brauchst dafür folgende Zutaten:");
                         for (Ingredients i : burger.getIngredients()) {
                             p.sendMessage(Messages.INFO + "§8× §7" + i.getName());
                         }
                     }
-                    return;
+                } else {
+                    p.sendMessage(Messages.ERROR + "Du hast noch nicht alle Zutaten hinzugefügt.");
                 }
+                return;
             } else {
                 if(NEEDED.get(p.getName()).isEmpty()) {
                     p.sendMessage(PREFIX + "Du hast nun alle Burger zubereitet.");
                     GFB.BURGERFRYER.addExp(p, GFB.BURGERFRYER.getLevel(p) * Script.getRandom(5, 7));
-                    PayDay.addPayDay(p, GFB.BURGERFRYER.getLevel(p) * TOTAL_SCORE.get(p.getName()));
+                    PayDay.addPayDay(p, GFB.BURGERFRYER.getLevel(p) + (TOTAL_SCORE.get(p.getName())/2));
                     BURGER.remove(p.getName());
                     SCORE.remove(p.getName());
                     TOTAL_SCORE.remove(p.getName());
                     NEEDED.remove(p.getName());
                     GFB.CURRENT.remove(p.getName());
-                    Cache.loadInventory(p);
-                    Script.addEXP(p, GFB.BURGERFRYER.getLevel(p) * TOTAL_SCORE.get(p.getName()));
+                    Script.addEXP(p, TOTAL_SCORE.get(p.getName()));
                 } else {
-                    p.sendMessage(Messages.ERROR + "Du hast noch nicht alle Burger zubereitet.");
+                    p.sendMessage(Messages.ERROR + "Du hast noch nicht alle Zutaten hinzugefügt.");
                 }
                 return;
             }
@@ -260,6 +265,7 @@ public class BurgerFryer implements CommandExecutor, Listener {
         if(NEEDED.get(p.getName()).contains(ingredient)) {
             NEEDED.get(p.getName()).remove(ingredient);
             p.sendMessage(PREFIX + "Du hast die Zutat §6" + ingredient.getName() + " §7hinzugefügt.");
+            p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
         } else {
             p.sendMessage(Messages.ERROR + "Du brauchst diese Zutat nicht.");
             if(GFB.BURGERFRYER.getLevel(p)>1) {
@@ -270,7 +276,6 @@ public class BurgerFryer implements CommandExecutor, Listener {
                 BURGER.replace(p.getName(), burger);
                 NEEDED.remove(p.getName());
                 SCORE.replace(p.getName(), SCORE.get(p.getName()) - 1);
-                Cache.loadInventory(p);
                 if(GFB.BURGERFRYER.getLevel(p) == 1) {
                     p.sendMessage(Messages.INFO + "Du brauchst dafür folgende Zutaten:");
                     for (Ingredients i : burger.getIngredients()) {
@@ -278,6 +283,14 @@ public class BurgerFryer implements CommandExecutor, Listener {
                     }
                 }
             }
+        }
+    }
+
+    @EventHandler (priority = EventPriority.LOW)
+    public void onClose(InventoryCloseEvent e) {
+        Player p = (Player) e.getPlayer();
+        if(e.getView().getTitle().startsWith("§8[§6Burger§8] §6» §7")) {
+            Cache.loadInventory(p);
         }
     }
 

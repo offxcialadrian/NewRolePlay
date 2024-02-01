@@ -43,12 +43,20 @@ public class Cache {
     }
 
     public static void loadInventory(Player p) {
-        if (getInventory(p) != null)
+        if (inventar.containsKey(p.getName())) {
+            p.getInventory().clear();
             p.getInventory().setContents(inventar.get(p.getName()));
+            inventar.remove(p.getName());
+        }
     }
 
     public static void saveInventory(Player p) {
-        inventar.put(p.getName(), p.getInventory().getContents());
+        if (p.getInventory().isEmpty()) return;
+        if(inventar.containsKey(p.getName())) {
+            inventar.replace(p.getName(), p.getInventory().getContents());
+        } else {
+            inventar.put(p.getName(), p.getInventory().getContents());
+        }
     }
 
     public static void resetInventory(Player p) {

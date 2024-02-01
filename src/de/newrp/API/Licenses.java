@@ -9,17 +9,19 @@ import java.util.Map;
 
 public enum Licenses {
 
-    PERSONALAUSWEIS(0, "personalausweis"),
-    FUEHRERSCHEIN(1, "fuehrerschein"),
-    WAFFENSCHEIN(2, "waffenschein"),
-    ANGELSCHEIN(3, "angelschein");
+    PERSONALAUSWEIS(0, "personalausweis", "Personalausweis"),
+    FUEHRERSCHEIN(1, "fuehrerschein", "Führerschein"),
+    WAFFENSCHEIN(2, "waffenschein", "Waffenschein"),
+    ANGELSCHEIN(3, "angelschein", "Angelschein");
 
     private final int id;
     private final String dbName;
+    private final String name;
 
-    Licenses(int id, String dbName) {
+    Licenses(int id, String dbName, String name) {
         this.id = id;
         this.dbName = dbName;
+        this.name = name;
     }
 
     public int getID() {
@@ -28,6 +30,10 @@ public enum Licenses {
 
     public String getDBName() {
         return this.dbName;
+    }
+
+    public String getName() {
+        return this.name;
     }
 
     public boolean hasLicense(int id) {

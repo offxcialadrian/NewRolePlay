@@ -231,7 +231,6 @@ public class main extends JavaPlugin {
         getCommand("forcelotto").setExecutor(new ForceLotto());
         getCommand("whitelistip").setExecutor(new WhitelistIP());
         getCommand("equip").setExecutor(new Equip());
-        getCommand("uncuff").setExecutor(new Uncuff());
         getCommand("spenden").setExecutor(new SpendenCommand());
         getCommand("staatsmeldung").setExecutor(new Staatsmeldung());
         getCommand("addhousedoor").setExecutor(new AddHouseDoor());
@@ -257,9 +256,6 @@ public class main extends JavaPlugin {
         getCommand("cancelnotruf").setExecutor(new CancelNotruf());
         getCommand("sharenotruf").setExecutor(new ShareNotruf());
         getCommand("personalausweis").setExecutor(new Personalausweis());
-        getCommand("showperso").setExecutor(new ShowPerso());
-        getCommand("showfinances").setExecutor(new ShowFinances());
-        getCommand("showlicenses").setExecutor(new ShowLicenses());
         getCommand("policecomputer").setExecutor(new Policecomputer());
         getCommand("dangerlevel").setExecutor(new DangerLevel());
         getCommand("gmx").setExecutor(new GMX());
@@ -307,10 +303,8 @@ public class main extends JavaPlugin {
         getCommand("checkorganisation").setExecutor(new CheckOrganisation());
         getCommand("plantage").setExecutor(new PlantageCommand());
         getCommand("burnplant").setExecutor(new BurnPlant());
-        getCommand("healaddiction").setExecutor(new HealAddiction());
         getCommand("organisationkasse").setExecutor(new OrganisationKasse());
         getCommand("schwarzmarktlocation").setExecutor(new SchwarzmarktLocation());
-        getCommand("frisk").setExecutor(new Frisk());
         getCommand("takeguns").setExecutor(new TakeGuns());
         getCommand("takedrugs").setExecutor(new TakeDrugs());
         getCommand("lagerarbeiter").setExecutor(new Lagerarbeiter());
@@ -326,6 +320,8 @@ public class main extends JavaPlugin {
         getCommand("pizzalieferant").setExecutor(new Pizza());
         getCommand("dishwasher").setExecutor(new Dishwasher());
         getCommand("burgerbrater").setExecutor(new BurgerFryer());
+        getCommand("strassenwartung").setExecutor(new Strassenwartung());
+        getCommand("imker").setExecutor(new Imker());
 
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new SDuty(), this);
@@ -406,7 +402,6 @@ public class main extends JavaPlugin {
         pm.registerEvents(new UseDrogen(), this);
         pm.registerEvents(new BreakIn(), this);
         pm.registerEvents(new SchwarzmarktListener(), this);
-        pm.registerEvents(new Frisk(), this);
         pm.registerEvents(new Lagerarbeiter(), this);
         pm.registerEvents(new Schule(), this);
         pm.registerEvents(new Kellner(), this);
@@ -417,6 +412,10 @@ public class main extends JavaPlugin {
         pm.registerEvents(new Pizza(), this);
         pm.registerEvents(new Dishwasher(), this);
         pm.registerEvents(new BurgerFryer(), this);
+        pm.registerEvents(new InteractMenu(), this);
+        pm.registerEvents(new InteractMenu(), this);
+        pm.registerEvents(new Strassenwartung(), this);
+        pm.registerEvents(new Imker(), this);
 
 
         new AsyncHealth().runTaskTimerAsynchronously(this, 120 * 20L, 120 * 20L);

@@ -18,7 +18,9 @@ public enum GFB {
     EISHALLE(4, "Eishalle", new Location(Script.WORLD, 1, 70, 1)),
     PIZZALIEFERANT(5, "Pizzalieferant", new Location(Script.WORLD, 1, 70, 1)),
     DISHWASHER(6, "Tellerwäscher", new Location(Script.WORLD, 1, 70, 1)),
-    BURGERFRYER(7, "Burgerbrater", new Location(Script.WORLD, 1, 70, 1));
+    BURGERFRYER(7, "Burgerbrater", new Location(Script.WORLD, 1, 70, 1)),
+    STRASSENWARTUNG(8, "Straßenwartung", new Location(Script.WORLD, 1, 70, 1)),
+    IMKER(9, "Imker", new Location(Script.WORLD, 1, 70, 1));
 
 
     private int id;

@@ -12,6 +12,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.spigotmc.event.entity.EntityDismountEvent;
 
@@ -30,6 +33,15 @@ public class Tragen implements CommandExecutor, Listener {
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
         Player p = (Player) cs;
 
+        if(tragen.containsKey(p) && p.getPassenger() != null) {
+            tragen.remove(p);
+            Player tg = tragen.get(p);
+            p.sendMessage(PREFIX + "Du hast " + Script.getName(tg) + " abgesetzt.");
+            tg.sendMessage(PREFIX + "Du wurdest von " + Script.getName(p) + " abgesetzt.");
+            Me.sendMessage(p, "hat " + Script.getName(tg) + " abgesetzt.");
+            return true;
+        }
+
         if(args.length != 1) {
             p.sendMessage(Messages.ERROR  + "/tragen [Spieler]");
             return true;
@@ -46,7 +58,7 @@ public class Tragen implements CommandExecutor, Listener {
             return true;
         }
 
-        if(tragen.containsKey(p) && p.getPassenger() == null) {
+        if(tragen.containsKey(p) && p.getPassenger() != null) {
             tragen.remove(p);
             p.sendMessage(PREFIX + "Du hast " + Script.getName(tg) + " abgesetzt.");
             tg.sendMessage(PREFIX + "Du wurdest von " + Script.getName(p) + " abgesetzt.");
@@ -129,7 +141,7 @@ public class Tragen implements CommandExecutor, Listener {
         return false;
     }
 
-    @EventHandler
+    /*@EventHandler
     public void onSneak(EntityDismountEvent e) {
         if(!(e.getEntity() instanceof Player)) return;
         Player p = (Player) e.getEntity();
@@ -141,6 +153,65 @@ public class Tragen implements CommandExecutor, Listener {
             public void run() {
                 if(!Tragen.tragen.containsKey(tg)) cancel();
                 tg.setPassenger(p);
+            }
+        }.runTaskLater(de.newrp.main.getInstance(), 5L);
+    }*/
+
+    @EventHandler
+    public void onHit(EntityDamageEvent e) {
+        if(!(e.getEntity() instanceof Player)) return;
+        Player p = (Player) e.getEntity();
+        if(!Tragen.tragen.containsKey(p)) return;
+        Player tg = Tragen.tragen.get(p);
+        Tragen.tragen.remove(p);
+        Tragen.tragen.remove(tg);
+        p.sendMessage(PREFIX + "Du hast " + Script.getName(tg) + " abgesetzt.");
+        tg.sendMessage(PREFIX + "Du wurdest von " + Script.getName(p) + " abgesetzt.");
+        Me.sendMessage(p, "hat " + Script.getName(tg) + " abgesetzt.");
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                if(p.getPassenger() == null) cancel();
+                p.eject();
+            }
+        }.runTaskLater(de.newrp.main.getInstance(), 5L);
+    }
+
+    @EventHandler
+    public void onQuit(PlayerQuitEvent e) {
+        Player p = e.getPlayer();
+        if(!Tragen.tragen.containsKey(p)) return;
+        Player tg = Tragen.tragen.get(p);
+        Tragen.tragen.remove(p);
+        Tragen.tragen.remove(tg);
+        p.sendMessage(PREFIX + "Du hast " + Script.getName(tg) + " abgesetzt.");
+        tg.sendMessage(PREFIX + "Du wurdest von " + Script.getName(p) + " abgesetzt.");
+        Me.sendMessage(p, "hat " + Script.getName(tg) + " abgesetzt.");
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                if(p.getPassenger() == null) cancel();
+                p.eject();
+            }
+        }.runTaskLater(de.newrp.main.getInstance(), 5L);
+    }
+
+    @EventHandler
+    public void onDamageByEntity(EntityDamageByEntityEvent e) {
+        if(!(e.getEntity() instanceof Player)) return;
+        Player p = (Player) e.getEntity();
+        if(!Tragen.tragen.containsKey(p)) return;
+        Player tg = Tragen.tragen.get(p);
+        Tragen.tragen.remove(p);
+        Tragen.tragen.remove(tg);
+        p.sendMessage(PREFIX + "Du hast " + Script.getName(tg) + " abgesetzt.");
+        tg.sendMessage(PREFIX + "Du wurdest von " + Script.getName(p) + " abgesetzt.");
+        Me.sendMessage(p, "hat " + Script.getName(tg) + " abgesetzt.");
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                if(p.getPassenger() == null) cancel();
+                p.eject();
             }
         }.runTaskLater(de.newrp.main.getInstance(), 5L);
     }

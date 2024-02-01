@@ -69,7 +69,7 @@ public class Utils implements Listener {
     public static final int WORLD_BORDER_MIN_X = 180;
     public static final int WORLD_BORDER_MAX_X = 1055;
     public static final int WORLD_BORDER_MIN_Z = 500;
-    public static final int WORLD_BORDER_MAX_Z = 1310;
+    public static final int WORLD_BORDER_MAX_Z = 1362;
 
 
     @EventHandler

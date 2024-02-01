@@ -80,6 +80,24 @@ public class Quitjob implements CommandExecutor {
                 BurgerFryer.SCORE.remove(p.getName());
                 p.sendMessage(GFB.PREFIX + "Du hast den Job §6Burgerbrater §7verlassen.");
                 break;
+            case STRASSENWARTUNG:
+                Strassenwartung.construction.remove(p.getName());
+                for (Location loc : Strassenwartung.construction.get(p.getName()).getLocations()) {
+                    loc.getBlock().setType(Material.ANDESITE_SLAB);
+                }
+                Strassenwartung.CONSTRUCTION.remove(Strassenwartung.construction.get(p.getName()));
+                Strassenwartung.SCORE.remove(p.getName());
+                Strassenwartung.TOTAL_SCORE.remove(p.getName());
+                Cache.loadInventory(p);
+                p.sendMessage(GFB.PREFIX + "Du hast den Job §6Straßenwartung §7verlassen.");
+                break;
+            case IMKER:
+                Imker.honeys.remove(p.getName());
+                Imker.TOTAL_SCORE.remove(p.getName());
+                Imker.ON_JOB.remove(p.getName());
+                p.sendMessage(GFB.PREFIX + "Du hast den Job §6Imker §7verlassen.");
+                break;
+
         }
 
         return false;

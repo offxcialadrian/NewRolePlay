@@ -91,6 +91,18 @@ public class Script {
         if (TicketCommand.isInTicket(p)) p.setPlayerListName("§bT §8× §r" + p.getPlayerListName());
     }
 
+    public static Inventory fillInv(Inventory inv) {
+        for (int i = 0; i < inv.getSize(); i++) {
+            if(inv.getItem(i) == null || inv.getItem(i).getType() == Material.AIR)
+                inv.setItem(i, setName(Material.WHITE_STAINED_GLASS_PANE, " "));
+        }
+        return inv;
+    }
+
+    public static int calcInvSize(int entries) {
+        return (int) Math.ceil(entries / 9.0) * 9;
+    }
+
     public static ItemStack setName(ItemStack is, String s) {
         ItemMeta meta = is.getItemMeta();
         meta.setDisplayName(s);

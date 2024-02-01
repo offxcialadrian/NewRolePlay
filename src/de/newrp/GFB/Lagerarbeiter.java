@@ -2,10 +2,7 @@ package de.newrp.GFB;
 
 import de.newrp.API.*;
 import de.newrp.Administrator.BuildMode;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.block.Sign;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -34,6 +31,7 @@ public class Lagerarbeiter implements CommandExecutor, Listener {
     public static HashMap<String, Waren> ON_JOB = new HashMap<>();
     public static HashMap<String, Integer> SCORE = new HashMap<>();
     public static HashMap<String, Long> cooldown = new HashMap<>();
+    public static HashMap<String, Integer> TOTAL_SCORE = new HashMap<>();
 
     public enum Type {
         OBST("Obst"),
@@ -200,7 +198,9 @@ public class Lagerarbeiter implements CommandExecutor, Listener {
         GFB.CURRENT.put(p.getName(), GFB.LAGERARBEITER);
         p.sendMessage(PREFIX + "Gehe ins Lager, hole dir eine Palette und fang an deinen Job zu machen.");
         p.sendMessage(Messages.INFO + "Klicke Rechtsklick auf das Schild \"Ware\".");
-        SCORE.put(p.getName(), (GFB.LAGERARBEITER.getLevel(p) * 10));
+        int totalscore = GFB.LAGERARBEITER.getLevel(p) * Script.getRandom(7, 12);
+        SCORE.put(p.getName(), totalscore);
+        TOTAL_SCORE.put(p.getName(), totalscore);
         cooldown.put(p.getName(), System.currentTimeMillis() + 10 * 60 * 2000L);
 
         return false;
@@ -282,6 +282,7 @@ public class Lagerarbeiter implements CommandExecutor, Listener {
                 if (inv.getItem(i) == null)
                     return;
             }
+            p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
             ON_JOB.remove(p.getName());
             p.getInventory().clear();
             Cache.loadInventory(p);
@@ -291,11 +292,11 @@ public class Lagerarbeiter implements CommandExecutor, Listener {
                 p.sendMessage(PREFIX + "§aFertig");
                 SCORE.remove(p.getName());
                 GFB.LAGERARBEITER.addExp(p, GFB.LAGERARBEITER.getLevel(p) * 10);
-                PayDay.addPayDay(p, GFB.LAGERARBEITER.getLevel(p) * 10);
+                PayDay.addPayDay(p, GFB.LAGERARBEITER.getLevel(p) + TOTAL_SCORE.get(p.getName()));
                 Script.addEXP(p, GFB.LAGERARBEITER.getLevel(p) * Script.getRandom(3, 7));
             } else {
                 SCORE.replace(p.getName(), amount - 1);
-                p.sendMessage(PREFIX + "§aRichtig! §6Hole nun das nächste Produkt aus \"Ware\" und Sortiere es ein (" + ((GFB.LAGERARBEITER.getLevel(p) * 10)+1-amount) + "/" + (GFB.LAGERARBEITER.getLevel(p) * 10) + ")");
+                p.sendMessage(PREFIX + "§aRichtig! §6Hole nun das nächste Produkt aus \"Ware\" und Sortiere es ein (" + (TOTAL_SCORE.get(p.getName())+1-amount) + "/" + (TOTAL_SCORE.get(p.getName())) + ")");
             }
         }
     }
@@ -303,6 +304,7 @@ public class Lagerarbeiter implements CommandExecutor, Listener {
     @EventHandler
     public void onQuit(PlayerQuitEvent e) {
         Player p = e.getPlayer();
+        if(!SCORE.containsKey(p.getName())) return;
         ON_JOB.remove(p.getName());
         SCORE.remove(p.getName());
         GFB.CURRENT.remove(p.getName());

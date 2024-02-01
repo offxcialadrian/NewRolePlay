@@ -49,6 +49,13 @@ public class Ablehnen implements CommandExecutor {
             p.sendMessage(DENIED + "Du hast es Abgelehnt den Vertrag anzunehmen.");
             Annehmen.offer.remove(p.getName() + ".vertrag.from");
             Annehmen.offer.remove(p.getName() + ".vertrag.condition");
+        } else if(Annehmen.offer.containsKey(p.getName() + ".tasche")) {
+            Player tg = Script.getPlayer(Annehmen.offer.get(p.getName() + ".tasche"));
+            if (tg != null) {
+                tg.sendMessage(DENIED + Script.getName(p) + " hat es Abgelehnt deine Tasche zu sehen.");
+            }
+            p.sendMessage(DENIED + "Du hast es Abgelehnt die Tasche zu sehen.");
+            Annehmen.offer.remove(p.getName() + ".tasche");
 
         } else if(Annehmen.offer.containsKey(p.getName() + ".joinorganisation")) {
 

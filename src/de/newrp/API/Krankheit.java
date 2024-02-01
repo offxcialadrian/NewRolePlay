@@ -12,6 +12,7 @@ import java.util.HashMap;
 public enum Krankheit {
     HUSTEN(0, "Husten", true, true, true),
     ABHAENGIGKEIT(1, "Abhängigkeit", false, false, false),
+    HERPES(2, "Herpes", true, true, false),
     CHOLERA(3, "Cholera", true, false, false),
     GEBROCHENES_BEIN(5, "Gebrochenes Bein", false, false, false),
     GEBROCHENER_ARM(6, "Gebrochener Arm", false, false, false),

@@ -53,7 +53,7 @@ public class BreakingNews implements CommandExecutor {
             if(Mobile.hasPhone(p) && Mobile.hasConnection(p)) {
                 all.sendMessage(NEWS + "NachrichtenApp: Es gibt eine Breaking News!");
                 if(!Mobile.getPhone(p).getLautlos(p)) {
-                    all.playSound(all.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
+                    all.playSound(all.getLocation(), Sound.ENTITY_SHEEP_AMBIENT, 1, 1);
                 }
             }
         }

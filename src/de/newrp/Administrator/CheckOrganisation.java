@@ -37,7 +37,7 @@ public class CheckOrganisation implements CommandExecutor {
                 if(leaders.length() > 0) {
                     leaders.append(", ");
                 }
-                leaders.append("§7").append(all.getName()).append(" §8[§e").append(Organisation.getRank(all)).append("§8]");
+                leaders.append("§e").append(all.getName()).append(" §8[§e").append(Organisation.getRank(all)).append("§8]");
             }
             p.sendMessage(PREFIX + "§8» §7Leader: §e" + leaders.toString());
             StringBuilder members = new StringBuilder();
@@ -52,6 +52,7 @@ public class CheckOrganisation implements CommandExecutor {
             for(int i = 0; i <= o.getLevel(); i++) {
                 p.sendMessage(PREFIX + "§8» §7Rang " + i + ": §e" + o.getRankName(i, Gender.MALE) + " §8| §e" + o.getRankName(i, Gender.FEMALE));
             }
+            return true;
         }
 
         if(!Script.hasRank(p, Rank.SUPPORTER, false)) {

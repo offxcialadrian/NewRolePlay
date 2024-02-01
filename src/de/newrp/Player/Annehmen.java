@@ -17,6 +17,8 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
 
@@ -99,6 +101,27 @@ public class Annehmen implements CommandExecutor {
             Log.NORMAL.write(tg, "hat den Vertrag von " + Script.getName(p) + " angenommen. (" + condition + ")");
             offer.remove(p.getName() + ".vertrag.from");
             offer.remove(p.getName() + ".vertrag.condition");
+
+        } else if(offer.containsKey(p.getName() + ".tasche")) {
+            Player tasche = Script.getPlayer(offer.get(p.getName() + ".tasche"));
+            if(tasche == null) {
+                p.sendMessage(Messages.PLAYER_NOT_FOUND);
+                return true;
+            }
+
+            if(tasche.getLocation().distance(p.getLocation()) > 5) {
+                p.sendMessage(Messages.ERROR + "Der Spieler ist zu weit entfernt.");
+                return true;
+            }
+
+
+            Inventory inv = Bukkit.createInventory(null, 36, "§8[§9Tasche§8] §e» §9" + tasche.getName());
+            for(ItemStack is : p.getInventory().getContents()) {
+                if(is == null) continue;
+                inv.addItem(is);
+            }
+            p.openInventory(inv);
+            offer.remove(p.getName() + ".tasche");
 
         } else if(offer.containsKey(p.getName() + ".joinorganisation")) {
             Player leader = Bukkit.getPlayer(offer.get(p.getName() + ".joinorganisation"));

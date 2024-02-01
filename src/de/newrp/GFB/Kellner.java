@@ -101,6 +101,7 @@ public class Kellner implements CommandExecutor, Listener {
     public static HashMap<String, Integer> SCORE = new HashMap<>();
     public static HashMap<String, Long> cooldown = new HashMap<>();
     public static HashMap<String, Tables> CURRENT = new HashMap<>();
+    public static HashMap<String, Integer> TOTAL_SCORE = new HashMap<>();
 
     @Override
     public boolean onCommand(@NotNull CommandSender cs, @NotNull Command cmd, @NotNull String s, @NotNull String[] args) {
@@ -130,7 +131,9 @@ public class Kellner implements CommandExecutor, Listener {
 
         cooldown.put(p.getName(), System.currentTimeMillis() + 10 * 60 * 2000L);
         GFB.CURRENT.put(p.getName(), GFB.KELLNER);
-        SCORE.put(p.getName(), GFB.KELLNER.getLevel(p) * Script.getRandom(8, 12));
+        int totalscore = GFB.KELLNER.getLevel(p) * Script.getRandom(8, 12);
+        SCORE.put(p.getName(), totalscore);
+        TOTAL_SCORE.put(p.getName(), totalscore);
         p.sendMessage(PREFIX + "Du hast den Job §6Kellner §7angenommen.");
         p.sendMessage(Messages.INFO + "Klicke nun in der Küche auf das Schild \"Fertige Bestellungen\".");
         return false;
@@ -163,16 +166,16 @@ public class Kellner implements CommandExecutor, Listener {
         if(e.getClickedBlock() == null) return;
         if(!CURRENT.containsKey(p.getName()));
         if(e.getClickedBlock().getLocation().equals(CURRENT.get(p.getName()).getLocation())) {
-            p.sendMessage(GFB.PREFIX + "Du hast die Bestellung erfolgreich abgegeben.");
+            p.sendMessage(PREFIX + "Du hast die Bestellung erfolgreich abgegeben.");
+            p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
             CURRENT.remove(p.getName());
             p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
             int left = SCORE.get(p.getName()) - 1;
             if(left == 0) {
-                p.sendMessage(PREFIX + "Du hast die Bestellung erfolgreich abgegeben.");
                 GFB.KELLNER.addExp(p, GFB.KELLNER.getLevel(p) * Script.getRandom(5, 7));
                 SCORE.remove(p.getName());
                 GFB.CURRENT.remove(p.getName());
-                PayDay.addPayDay(p, GFB.KELLNER.getLevel(p) * Script.getRandom(2, 3));
+                PayDay.addPayDay(p, GFB.KELLNER.getLevel(p) * TOTAL_SCORE.get(p.getName())/2);
                 return;
             }
             SCORE.put(p.getName(), left);

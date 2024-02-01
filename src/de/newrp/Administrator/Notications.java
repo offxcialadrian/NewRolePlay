@@ -156,9 +156,10 @@ public class Notications implements CommandExecutor, Listener {
         if (e.getMessage().startsWith("/whisper")) return;
         if (e.getMessage().startsWith("/rnrp")) return;
         if (e.getMessage().startsWith("/nrp")) return;
-        if (e.getMessage().startsWith("/op") || e.getMessage().startsWith("/deop") || e.getMessage().startsWith("/gamemode") || e.getMessage().startsWith("/punish") || e.getMessage().startsWith("/nrp") || e.getMessage().startsWith("/setsupporter")) {
+        if (e.getMessage().startsWith("/op") || e.getMessage().startsWith("/deop") || e.getMessage().startsWith("/gamemode") || e.getMessage().startsWith("/punish") || e.getMessage().startsWith("/nrp") || e.getMessage().startsWith("/setsupporter") ||
+            e.getMessage().startsWith("/rnrp") || e.getMessage().startsWith("/tp")) {
             if (!Script.isNRPTeam(e.getPlayer()))
-                sendMessage(NotificationType.ADVANCED_ANTI_CHEAT, "§c" + " hat versucht einen Team-Befehl auszuführen (" + e.getMessage() + ")");
+                sendMessage(NotificationType.ADVANCED_ANTI_CHEAT, "§c" + Script.getName(e.getPlayer()) +  " hat versucht einen Team-Befehl auszuführen (" + e.getMessage() + ")");
     }
         sendMessage(NotificationType.COMMAND, "§e" + Script.getName(e.getPlayer()) + " §7hat den Befehl §e" + e.getMessage() + " §7ausgeführt.", e.getPlayer());
     }

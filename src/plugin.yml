@@ -272,9 +272,6 @@ commands:
     aliases: [ ipwhitelist ]
   equip:
     description: equip something
-  uncuff:
-    description: uncuff a player
-    aliases: [ removecuffs ]
   spenden:
     description: spende geld
     aliases: [ spend ]
@@ -348,15 +345,6 @@ commands:
   personalausweis:
     description: view your personalausweis
     aliases: [ ausweis, perso ]
-  showperso:
-    description: show your personalausweis
-    aliases: [ showausweis ]
-  showfinances:
-    description: show your finances
-    aliases: [ showfinanzen ]
-  showlicenses:
-    description: show your licenses
-    aliases: [ showlizenzen, licenses ]
   policecomputer:
     description: view the policecomputer
     aliases: [ polizeicomputer, pc ]
@@ -477,17 +465,12 @@ commands:
   burnplant:
     description: burn a plant
     aliases: [ burnplants ]
-  healaddiction:
-    description: heal an addiction
   organisationkasse:
     description: view the organisationkasse
     aliases: [ organisationkassen, organisationkasse, okasse ]
   schwarzmarktlocation:
     description: view the schwarzmarktlocation
     aliases: [ schwarzmarktlocations, schwarzmarktlocationen, smarktloc ]
-  frisk:
-    description: frisk a player
-    aliases: [ durchsuchen ]
   takeguns:
     description: take a gun
     aliases: [ takegun ]
@@ -527,3 +510,9 @@ commands:
   burgerbrater:
     description: view the burgerbrater
     aliases: [ burgerfryer ]
+  strassenwartung:
+    description: view the strassenwartung
+    aliases: [ straßenwartung ]
+  imker:
+    description: view the imker
+    aliases: [ imkerei ]

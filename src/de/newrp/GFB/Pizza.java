@@ -4,6 +4,7 @@ import de.newrp.API.*;
 import de.newrp.House.House;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.block.Furnace;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -123,6 +124,7 @@ public class Pizza implements CommandExecutor, Listener {
             p.sendMessage(Messages.INFO + "Gehe nun in die Küche und nehme die nächste Pizza aus dem Ofen (Rechtsklick).");
             p.sendMessage(PREFIX + "Du hast noch " + pizza.get(p.getName()) + " Pizzen zu liefern.");
             p.sendMessage(Messages.INFO + "Gehe nun in die Küche und nehme die nächste Pizza aus dem Ofen (Rechtsklick).");
+            p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
             house.remove(p.getName());
             pizza.replace(p.getName(), pizza.get(p.getName()) - 1);
             TOTAL_SCORE.replace(p.getName(), TOTAL_SCORE.get(p.getName()) - 1);

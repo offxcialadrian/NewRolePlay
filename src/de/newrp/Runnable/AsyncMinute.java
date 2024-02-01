@@ -25,13 +25,14 @@ public class AsyncMinute extends BukkitRunnable {
 
     private static String[] advertises = new String[] {
             "§8[§cWerbung§8] §c" + Messages.ARROW + " §7Nutze bei deinem LabyMod-Einkauf den Code §cNEWRP §7und erhalte 10% Rabatt!",
-        "§8[§cWerbung§8] §c" + Messages.ARROW + " §7Schau mal auf unseren §9Discord §7vorbei: §9https://discord.gg/newroleplay",
-        "§8[§cWerbung§8] §c" + Messages.ARROW + " §7Schau mal auf unseren §fTeamspeak §7vorbei: §fnewrp.de",
-        "§8[§cWerbung§8] §c" + Messages.ARROW + " §7Keine Lust mehr auf Werbung? Kaufe dir §bPremium §7und erhalte viele Vorteile!",
-        "§8[§cWerbung§8] §c" + Messages.ARROW + " §7Schau mal in unserem Forum vorbei: §9https://forum.newrp.de/",
+            "§8[§cWerbung§8] §c" + Messages.ARROW + " §7Schau mal auf unseren §9Discord §7vorbei: §9https://discord.gg/newroleplay",
+            "§8[§cWerbung§8] §c" + Messages.ARROW + " §7Schau mal auf unseren §fTeamspeak §7vorbei: §fnewrp.de",
+            "§8[§cWerbung§8] §c" + Messages.ARROW + " §7Keine Lust mehr auf Werbung? Kaufe dir §bPremium §7und erhalte viele Vorteile!",
+            "§8[§cWerbung§8] §c" + Messages.ARROW + " §7Schau mal in unserem Forum vorbei: §9https://forum.newrp.de/",
             "§8[§cWerbung§8] §c" + Messages.ARROW + " §7Schau mal auf unserer Webseite vorbei: §9https://newrp.de/",
             "§8[§cWerbung§8] §c" + Messages.ARROW + " §7Schau mal in unserem Shop vorbei: §9https://shop.newrp.de/",
             "§8[§cWerbung§8] §c" + Messages.ARROW + " §7Vote für uns und erhalte tolle Belohnungen: §8/§6vote",
+            "§8[§cWerbung§8] §c" + Messages.ARROW + " §7Der Beste 10er im Monat! Kaufe dir §bPremium §7und erhalte viele Vorteile!",
             "§8[§cWerbung§8] §c" + Messages.ARROW + " §7Kennst du schon unseren TikTok Account?: §chttps://www.tiktok.com/@newroleplay/"};
 
     int i = 0;
@@ -66,12 +67,12 @@ public class AsyncMinute extends BukkitRunnable {
             if(SMSCommand.waitingForMessage.contains(p.getName()) && Mobile.mobileIsOn(p) && Mobile.hasConnection(p)) {
                 p.sendMessage(SMSCommand.PREFIX + "Du hast eine neue Nachricht erhalten.");
                 p.sendMessage(Messages.INFO + "Schaue in deiner Nachrichten App nach.");
-                if(!Mobile.getPhone(p).getLautlos(p)) p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
+                if(!Mobile.getPhone(p).getLautlos(p)) p.playSound(p.getLocation(), Sound.ENTITY_SHEEP_AMBIENT, 1, 1);
                 SMSCommand.waitingForMessage.remove(p.getName());
             } else if(BreakingNews.waitingForMessage.contains(p.getName()) && Mobile.mobileIsOn(p) && Mobile.hasConnection(p)) {
                 p.sendMessage(BreakingNews.NEWS + "Es gibt eine neue Breaking News.");
                 p.sendMessage(Messages.INFO + "Schaue in deiner Nachrichten App nach.");
-                if(!Mobile.getPhone(p).getLautlos(p)) p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
+                if(!Mobile.getPhone(p).getLautlos(p)) p.playSound(p.getLocation(), Sound.ENTITY_SHEEP_AMBIENT, 1, 1);
                 BreakingNews.waitingForMessage.remove(p.getName());
             }
         }
