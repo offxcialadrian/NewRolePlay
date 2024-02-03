@@ -22,7 +22,7 @@ import java.util.List;
 
 public enum Organisation {
 
-    BLOODS(1, "Bloods",  false, false, false, 0, null, null);
+    BLOODS(1, "Bloods",  true, false, false, 0, null, null);
 
     private final String name;
     int id;

@@ -14,11 +14,13 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class GetLocation implements CommandExecutor, Listener {
 
     private static final String PREFIX = "§8[§eGetLocation§8] §7";
     private static ArrayList<Player> location = new ArrayList<>();
+    private static HashMap<String, Long> cooldown = new HashMap<>();
 
 
     @Override
@@ -66,6 +68,8 @@ public class GetLocation implements CommandExecutor, Listener {
         if(!location.contains(p)) return;
         if(e.getAction() != Action.RIGHT_CLICK_BLOCK) return;
         if(e.getClickedBlock() == null) return;
+        if(cooldown.containsKey(p.getName()) && cooldown.get(p.getName()) > System.currentTimeMillis()) return;
+        cooldown.put(p.getName(), System.currentTimeMillis() + 10);
         p.sendMessage(PREFIX + "Die Position lautet: " + e.getClickedBlock().getLocation().getBlockX() + "/" + e.getClickedBlock().getLocation().getBlockY() + "/" + e.getClickedBlock().getLocation().getBlockZ());
         if(Script.hasRank(p, Rank.ADMINISTRATOR, false))
             Script.sendCopyMessage(p, Messages.INFO + "Klicke hier um die Location zu kopieren.", "new Location(Script.WORLD, " + e.getClickedBlock().getLocation().getBlockX() + ", " + e.getClickedBlock().getLocation().getBlockY() + ", " + e.getClickedBlock().getLocation().getBlockZ() + ")", "§aKlicke um die Location zu kopieren.");

@@ -2,12 +2,15 @@ package de.newrp.Runnable;
 
 import de.newrp.API.*;
 import de.newrp.Chat.Me;
+import de.newrp.Commands.Test;
 import de.newrp.Entertainment.Lotto;
 import de.newrp.Government.Wahlen;
 import de.newrp.News.BreakingNews;
 import de.newrp.Player.AFK;
 import de.newrp.Player.Mobile;
 import de.newrp.Player.SMSCommand;
+import net.citizensnpcs.api.CitizensAPI;
+import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -117,6 +120,8 @@ public class AsyncMinute extends BukkitRunnable {
                 if(e instanceof ItemFrame) continue;
                 if(e instanceof ArmorStand) continue;
                 if(e instanceof Painting) continue;
+                if(e instanceof Villager) continue;
+                if(e.getEntityId() == CitizensAPI.getNPCRegistry().getById(Schwarzmarkt.SCHWARZMARKT_ID).getEntity().getEntityId()) continue;
                 e.remove();
             }
         } else

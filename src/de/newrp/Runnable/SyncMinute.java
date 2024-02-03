@@ -2,9 +2,12 @@ package de.newrp.Runnable;
 
 import de.newrp.API.Debug;
 import de.newrp.API.Script;
+import de.newrp.Commands.Test;
 import de.newrp.GFB.GFB;
 import de.newrp.GFB.Schule;
 import de.newrp.TeamSpeak.TeamSpeak;
+import net.citizensnpcs.api.CitizensAPI;
+import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.Bukkit;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
@@ -41,6 +44,13 @@ public class SyncMinute extends BukkitRunnable {
                     Schule.STARTED.remove(all);
                 }
             }
+
+            if(Test.smarktID != 0) {
+                NPC npc = CitizensAPI.getNPCRegistry().getById(Test.smarktID);
+                npc.despawn();
+                npc.destroy();
+            }
+
             Bukkit.broadcastMessage(Script.PREFIX + "§4§lACHTUNG: §cDer Server startet in einer Minute neu! (erwartete Restart-Dauer: " + Script.getRandom(40, 60) + " Sekunden)");
             try{ TeamSpeak.getApi().sendServerMessage("ACHTUNG! DER SERVER STARTET IN EINER MINUTE NEU!");} catch (Exception e) { Script.sendTeamMessage(Script.PREFIX + "Es erfolgte keine Nachricht auf dem TeamSpeak, da die Querry down ist."); }
             Bukkit.getScheduler().runTaskLater(main.getInstance(), () -> {

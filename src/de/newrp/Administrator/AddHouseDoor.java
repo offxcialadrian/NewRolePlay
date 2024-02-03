@@ -14,13 +14,14 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 
 import java.util.HashMap;
 
-public class AddHouseDoor implements CommandExecutor {
+public class AddHouseDoor implements CommandExecutor, Listener {
 
     private static final String PREFIX = "§8[§eHaustür§8] §e» ";
     private static HashMap<String, House> changing = new HashMap<>();
@@ -58,6 +59,7 @@ public class AddHouseDoor implements CommandExecutor {
         if(changing.containsKey(p.getName())) {
             p.sendMessage(PREFIX + "Du hörst nun auf, Türen für Haus " + changing.get(p.getName()).getID() + " hinzuzufügen.");
             changing.remove(p.getName());
+            return true;
         }
 
         changing.put(p.getName(), house);

@@ -3,7 +3,10 @@ package de.newrp.Administrator;
 import de.newrp.API.Messages;
 import de.newrp.API.Rank;
 import de.newrp.API.Script;
+import de.newrp.Commands.Test;
 import de.newrp.main;
+import net.citizensnpcs.api.CitizensAPI;
+import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -34,6 +37,12 @@ public class GMX implements CommandExecutor {
         StringBuilder msg = new StringBuilder();
         for(int i = 0; i < args.length; i++) {
             msg.append(args[i]).append(" ");
+        }
+
+        if(Test.smarktID != 0) {
+            NPC npc = CitizensAPI.getNPCRegistry().getById(Test.smarktID);
+            npc.despawn();
+            npc.destroy();
         }
 
         if(args[0].equals("instant")) {

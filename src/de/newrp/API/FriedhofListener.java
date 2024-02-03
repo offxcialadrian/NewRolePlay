@@ -7,7 +7,6 @@ import de.newrp.main;
 import org.bukkit.*;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
-import org.bukkit.entity.NPC;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -15,7 +14,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.ItemDespawnEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -62,7 +60,7 @@ public class FriedhofListener implements Listener {
         item.setCustomNameVisible(true);
         item.setVelocity(item.getVelocity().zero());
         item.setPickupDelay(Integer.MAX_VALUE);*/
-        NPCUtil.spawnNPC(p);
+        Corpse.spawnNPC(p);
         int cash = Script.getMoney(p, PaymentType.CASH);
         Script.setMoney(p, PaymentType.CASH, 0);
 
@@ -107,7 +105,7 @@ public class FriedhofListener implements Listener {
                     Script.executeAsyncUpdate("INSERT INTO friedhof (id, time) VALUES (" + f.getUserID() + ", " + duration + ") ON DUPLICATE KEY UPDATE time = " + duration);
                 }
             }
-            if(NPCUtil.npcs.containsKey(p)) NPCUtil.removeNPC(p);
+            if(Corpse.npcMap.containsKey(p)) Corpse.removeNPC(p);
             if (f.getTaskID() != 0) Bukkit.getScheduler().cancelTask(f.getTaskID());
             Friedhof.FRIEDHOF.remove(p.getName());
         }

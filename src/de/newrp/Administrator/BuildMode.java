@@ -106,7 +106,7 @@ public class BuildMode implements CommandExecutor, Listener {
         if(!e.isCancelled()) Script.addToBauLog(e.getPlayer(), e.getBlock().getType() , e.getBlock().getLocation(), false);
     }
 
-    @EventHandler
+    @EventHandler (priority = EventPriority.HIGH)
     public void onBlockSet(BlockPlaceEvent e) {
         if (!isInBuildMode(e.getPlayer())) e.setCancelled(true);
         if(!e.isCancelled() && e.getBlock().getState() instanceof ItemFrame) e.getPlayer().sendMessage(Messages.INFO + "Bitte beachte, dass ItemFrames den Server zum laggen bringen können und daher ggf. später entfernt werden.");

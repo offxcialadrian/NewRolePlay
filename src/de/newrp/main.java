@@ -416,6 +416,7 @@ public class main extends JavaPlugin {
         pm.registerEvents(new InteractMenu(), this);
         pm.registerEvents(new Strassenwartung(), this);
         pm.registerEvents(new Imker(), this);
+        pm.registerEvents(new AddHouseDoor(), this);
 
 
         new AsyncHealth().runTaskTimerAsynchronously(this, 120 * 20L, 120 * 20L);

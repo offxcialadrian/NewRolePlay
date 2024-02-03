@@ -48,8 +48,18 @@ public class StatsCommand implements CommandExecutor {
             }
             houses.append(house.getID()).append(house.getID() == House.getHouses(Script.getNRPID(p)).get(House.getHouses(Script.getNRPID(p)).size() - 1).getID() ? "" : ", ");
         }
+        StringBuilder licenses = new StringBuilder();
+        for(Licenses license : Licenses.values()) {
+            if(license.hasLicense(Script.getNRPID(p))) {
+                if(licenses.length() > 0) {
+                    licenses.append(", ");
+                }
+                licenses.append(license.getName());
+            }
+        }
         if(houses.toString().equalsIgnoreCase("")) houses = new StringBuilder("Keine Häuser");
         p.sendMessage("§7Häuser §8× §e" + houses.toString());
+        p.sendMessage("§7Lizenzen §8× §e" + licenses.toString());
 
         return false;
     }

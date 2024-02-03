@@ -1,11 +1,12 @@
 package de.newrp.API;
 
 import de.newrp.Organisationen.SchwarzmarktListener;
+import net.citizensnpcs.api.CitizensAPI;
+import net.citizensnpcs.api.npc.NPC;
+import net.citizensnpcs.trait.SkinTrait;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Villager;
 import org.bukkit.inventory.ItemStack;
 
 public enum Schwarzmarkt {
@@ -22,7 +23,7 @@ public enum Schwarzmarkt {
 
     public static final String PREFIX = "§8[§cSchwarzmarkt§8]§c " + Messages.ARROW + " §7";
     public static Schwarzmarkt CURRENT_LOCATION = null;
-    public static Villager SCHWARZMARKT_VILLAGER = null;
+    public static int SCHWARZMARKT_ID;
     private final int id;
     private final String name;
     private final Location loc;
@@ -35,50 +36,37 @@ public enum Schwarzmarkt {
         this.loc = loc;
     }
 
-    public static void spawn(Schwarzmarkt smarkt, boolean clear) {
+    public static void spawn(Schwarzmarkt smarkt) {
         CURRENT_LOCATION = smarkt;
 
-        if (SCHWARZMARKT_VILLAGER != null) {
-            SCHWARZMARKT_VILLAGER.getLocation().getChunk().load();
-            SCHWARZMARKT_VILLAGER.remove();
+        if (SCHWARZMARKT_ID != 0) {
+            NPC npc = CitizensAPI.getNPCRegistry().getById(SCHWARZMARKT_ID);
+            npc.despawn();
+            npc.destroy();
+            SCHWARZMARKT_ID = 0;
         }
-        smarkt.getLocation().getChunk().load();
 
-        Villager v = (Villager) Script.WORLD.spawnEntity(smarkt.getLocation(), EntityType.VILLAGER);
-        v.setAdult();
-        v.setAI(false);
-        v.setCanPickupItems(false);
-        v.setCollidable(false);
-        v.setProfession(Villager.Profession.TOOLSMITH);
-        v.setCustomName("Schwarzmarkt");
-        v.setCustomNameVisible(false);
-        v.setRemoveWhenFarAway(false);
-        v.setGravity(true);
-        v.setInvulnerable(true);
-        v.teleport(smarkt.getLocation());
+        net.citizensnpcs.api.npc.NPC npc = net.citizensnpcs.api.CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, "§eSchwarzmarkt");
+        npc.getOrAddTrait(SkinTrait.class).setSkinName("JesusIsMyLife");
+        npc.spawn(smarkt.getLocation());
 
-        SCHWARZMARKT_VILLAGER = v;
+        SCHWARZMARKT_ID = npc.getId();
         CURRENT_LOCATION.setTradeItem(Schwarzmarkt.TradeItem.values()[Script.getRandom(1, Schwarzmarkt.TradeItem.values().length - 1)].setAmount(Script.getRandom(3, 20)));
 
         CURRENT_LOCATION.amounts = new int[]{Script.getRandom(3, 7), Script.getRandom(3, 5), (Script.getRandom(1, 5) == 2 ? 1 : 0), 1, 1};
 
-        if(clear) SchwarzmarktListener.VALID_PLAYER.clear();
+        SchwarzmarktListener.VALID_PLAYER.clear();
     }
+
 
     public static void spawnRandom() {
-        if (SCHWARZMARKT_VILLAGER == null) {
-            cleanUp();
-        } else {
-            SCHWARZMARKT_VILLAGER.remove();
+        if (SCHWARZMARKT_ID != 0) {
+            NPC npc = CitizensAPI.getNPCRegistry().getById(SCHWARZMARKT_ID);
+            npc.despawn();
+            npc.destroy();
+            SCHWARZMARKT_ID = 0;
         }
-        spawn(Schwarzmarkt.values()[Script.getRandom(0, Schwarzmarkt.values().length - 1)], true);
-    }
-
-    public static void cleanUp() {
-        for (Entity ent : Script.WORLD.getEntitiesByClass(Villager.class)) {
-            ent.getLocation().getChunk().load();
-            ent.remove();
-        }
+        spawn(Schwarzmarkt.values()[Script.getRandom(0, Schwarzmarkt.values().length - 1)]);
     }
 
     public static Schwarzmarkt getSchwarzmarkt() {
@@ -118,7 +106,7 @@ public enum Schwarzmarkt {
 
     public enum TradeItem {
         LOTTOSCHEIN(0, new ItemStack(Material.IRON_HORSE_ARMOR), "Pistole", 1),
-        BASEBALLSCHLAEGER(2, new ItemStack(Material.DIAMOND_HORSE_ARMOR), "AK-49", 1);
+        BASEBALLSCHLAEGER(2, new ItemStack(Material.DIAMOND_HORSE_ARMOR), "AK-47", 1);
 
         private final int id;
         private final ItemStack item;

@@ -35,6 +35,7 @@ public class Quitjob implements CommandExecutor {
             case LAGERARBEITER:
                 Lagerarbeiter.SCORE.remove(p.getName());
                 Lagerarbeiter.ON_JOB.remove(p.getName());
+                Lagerarbeiter.TOTAL_SCORE.remove(p.getName());
                 Cache.loadInventory(p);
                 p.sendMessage(GFB.PREFIX + "Du hast den Job §6Lagerarbeiter §7verlassen.");
                 break;
@@ -49,6 +50,7 @@ public class Quitjob implements CommandExecutor {
             case KELLNER:
                 Kellner.SCORE.remove(p.getName());
                 Kellner.CURRENT.remove(p.getName());
+                Kellner.TOTAL_SCORE.remove(p.getName());
                 Cache.loadInventory(p);
                 p.sendMessage(GFB.PREFIX + "Du hast den Job §6Kellner §7verlassen.");
                 break;
@@ -81,10 +83,10 @@ public class Quitjob implements CommandExecutor {
                 p.sendMessage(GFB.PREFIX + "Du hast den Job §6Burgerbrater §7verlassen.");
                 break;
             case STRASSENWARTUNG:
-                Strassenwartung.construction.remove(p.getName());
                 for (Location loc : Strassenwartung.construction.get(p.getName()).getLocations()) {
                     loc.getBlock().setType(Material.ANDESITE_SLAB);
                 }
+                Strassenwartung.construction.remove(p.getName());
                 Strassenwartung.CONSTRUCTION.remove(Strassenwartung.construction.get(p.getName()));
                 Strassenwartung.SCORE.remove(p.getName());
                 Strassenwartung.TOTAL_SCORE.remove(p.getName());

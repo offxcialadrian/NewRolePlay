@@ -2,7 +2,9 @@ package de.newrp.Administrator;
 
 import de.newrp.API.Messages;
 import de.newrp.API.Rank;
+import de.newrp.API.Schwarzmarkt;
 import de.newrp.API.Script;
+import net.citizensnpcs.api.CitizensAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -48,6 +50,8 @@ public class ButcherCommand implements CommandExecutor {
             if(e instanceof ItemFrame) continue;
             if(e instanceof ArmorStand) continue;
             if(e instanceof Painting) continue;
+            if(e instanceof Villager) continue;
+            if(e.getEntityId() == CitizensAPI.getNPCRegistry().getById(Schwarzmarkt.SCHWARZMARKT_ID).getEntity().getEntityId()) continue;
             e.remove();
         }
 

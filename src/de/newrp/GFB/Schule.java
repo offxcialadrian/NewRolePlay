@@ -62,7 +62,7 @@ public class Schule implements CommandExecutor, Listener {
         for(GFB gfb : GFB.values()) {
             inv.setItem(i++, new ItemBuilder(Material.PAPER).setName("§8» §e" + gfb.getName()).setLore("§8» §7Preis: " + gfb.getLevel(p)*120 + "€").build());
         }
-        inv.setItem(i++, new ItemBuilder(Material.NETHER_STAR).setName("§8» §eFür Alle Jobs lernen").setLore("§8» §7Preis: " + (i*100)).build());
+        inv.setItem(i++, new ItemBuilder(Material.NETHER_STAR).setName("§8» §eFür Alle Jobs lernen").setLore("§8» §7Preis: " + (i*100) + "€").build());
         Script.fillInv(inv);
         p.openInventory(inv);
 

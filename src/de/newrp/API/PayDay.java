@@ -130,9 +130,8 @@ public class PayDay extends BukkitRunnable {
                 if(org.hasKasse()) {
                     if(org.getKasse() >= salary) {
                         org.removeKasse(salary);
-                    }else {
+                    } else {
                         org.sendMessage("§8[§eOrganisationskasse§8] §eDie " + org.getName() + " ist Insolvent. Alle Gehälter werden auf 0€ gesetzt");
-                        Beruf.Berufe.GOVERNMENT.sendMessage("§8[§eOrganisationskasse§8] §eDie " + org.getName() + " ist Insolvent. Alle Gehälter werden auf 0€ gesetzt");
                         for(OfflinePlayer members : org.getAllMembers()) {
                             Script.setInt(members, "organisation", "salary", 0);
                             if(!members.isOnline()) {

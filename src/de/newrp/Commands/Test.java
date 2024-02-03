@@ -2,29 +2,29 @@ package de.newrp.Commands;
 
 import de.newrp.API.*;
 import de.newrp.Administrator.SDuty;
-import de.newrp.Player.Tragen;
-import nl.sbdeveloper.vehiclesplus.VehiclesPlus;
-import nl.sbdeveloper.vehiclesplus.api.garages.Garage;
-import nl.sbdeveloper.vehiclesplus.api.vehicles.VehicleModel;
-import nl.sbdeveloper.vehiclesplus.api.vehicles.impl.SpawnedVehicle;
-import nl.sbdeveloper.vehiclesplus.api.vehicles.impl.StorageVehicle;
+import net.citizensnpcs.api.CitizensAPI;
+import net.citizensnpcs.api.event.NPCRightClickEvent;
+import net.citizensnpcs.api.npc.NPC;
+import net.citizensnpcs.trait.SkinTrait;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Vehicle;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerToggleSneakEvent;
+import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.spigotmc.event.entity.EntityDismountEvent;
+
+import java.util.UUID;
 
 public class Test implements CommandExecutor, Listener {
 
     private static final boolean block = true;
+    public static int smarktID;
 
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
@@ -59,4 +59,7 @@ public class Test implements CommandExecutor, Listener {
 
         return false;
     }
+
+
+
 }

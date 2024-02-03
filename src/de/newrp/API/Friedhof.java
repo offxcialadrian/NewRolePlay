@@ -7,11 +7,8 @@ import de.newrp.Player.Notruf;
 import de.newrp.main;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
-import org.bukkit.block.Sign;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -124,7 +121,7 @@ public class Friedhof {
     public static void revive(Player p, Location teleportLoc) {
         Friedhof f = getDead(p);
         if (f == null) return;
-        if(NPCUtil.npcs.containsKey(p)) NPCUtil.removeNPC(p);
+        if(Corpse.npcMap.containsKey(p)) Corpse.removeNPC(p);
 
         Bukkit.getScheduler().cancelTask(f.getTaskID());
         FRIEDHOF.remove(p.getName());

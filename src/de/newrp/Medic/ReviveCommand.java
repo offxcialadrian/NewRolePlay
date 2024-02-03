@@ -7,7 +7,6 @@ import de.newrp.Berufe.Duty;
 import de.newrp.Chat.Me;
 import de.newrp.Waffen.Waffen;
 import de.newrp.main;
-import org.apache.logging.log4j.core.jmx.AppenderAdmin;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -18,7 +17,6 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
-import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -61,7 +59,7 @@ public class ReviveCommand implements CommandExecutor {
             p.sendMessage(PREFIX + "Du hast " + Script.getName(tg) + " wiederbelebt.");
             tg.sendMessage(PREFIX + "Du wurdest von " + Messages.RANK_PREFIX(p) + " wiederbelebt.");
             Friedhof.revive(tg, f.getDeathLocation());
-            if(NPCUtil.npcs.containsKey(p)) NPCUtil.removeNPC(p);
+            if(Corpse.npcMap.containsKey(p)) Corpse.removeNPC(p);
             if (f.getInventoryContent() != null) {
                 tg.getInventory().clear();
                 tg.getInventory().setContents(f.getInventoryContent());
@@ -151,7 +149,7 @@ public class ReviveCommand implements CommandExecutor {
                 p.sendMessage(Messages.ERROR + "Du bist zuweit von der Leiche weg.");
                 return;
             }
-            if(NPCUtil.npcs.containsKey(p)) NPCUtil.removeNPC(p);
+            if(Corpse.npcMap.containsKey(p)) Corpse.removeNPC(p);
             if (!Friedhof.isDead(tg)) {
                 p.sendMessage(Messages.ERROR + "Die Person lebt bereits.");
                 return;
