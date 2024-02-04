@@ -30,6 +30,9 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -157,29 +160,30 @@ public class Utils implements Listener {
         Script.sendOfflineMessages(p);
         Script.updateExpBar(p);
         Corpse.reloadNPC(p);
+        for (Player online : Bukkit.getOnlinePlayers()) {
+            if (BuildMode.isInBuildMode(online)) {
+                if (Team.getTeam(p) != Team.Teams.BAU && !Script.hasRank(p, Rank.SUPPORTER, false)) {
+                    Debug.debug("hiding " + online.getName() + " from " + p.getName());
+                    p.hidePlayer(main.getInstance(), online);
+                }
+            }
+        }
         if (Script.getNRPID(p) != 0) {
             e.getPlayer().sendMessage(Script.PREFIX + "§7Willkommen zurück auf §eNewRP§7!");
             if(Script.hasRank(p, Rank.MODERATOR, false)) e.getPlayer().sendMessage(Messages.INFO + "Aufgrund deines Status als " + Script.getRank(p).getName(p) + " hast du automatisch einen Premium-Account.");
             Script.sendActionBar(e.getPlayer(), "§7Willkommen zurück auf §eNewRP§7!");
             p.sendMessage(TippOfTheDay.PREFIX + TippOfTheDay.getRandomTipp());
             if(Script.haveBirthDay(p)) {
-                if(Script.getInt(p, "birthday", "geschenk") != 1) {
+                if(!hasOpenPresent(p)) {
                     p.sendMessage(Messages.INFO + "§lDas Team von New RolePlay wünscht dir alles Gute zum Geburtstag!");
-                    p.sendMessage(Messages.INFO + "Als Geschenk erhältst du 500 Exp und 7 Premium!");
+                    p.sendMessage(Messages.INFO + "Als Geschenk erhältst du 500 Exp und 7 Tage Premium!");
                     Script.executeAsyncUpdate("UPDATE birthday SET geschenk = 1 WHERE id = " + Script.getNRPID(p));
                     Script.addEXP(p, 500);
                     Premium.addPremium(p, TimeUnit.DAYS.toMillis(7));
                 }
             }
 
-            for (Player online : Bukkit.getOnlinePlayers()) {
-                if (BuildMode.isInBuildMode(online)) {
-                    if (Team.getTeam(p) != Team.Teams.BAU && !Script.hasRank(p, Rank.SUPPORTER, false)) {
-                        Debug.debug("hiding " + online.getName() + " from " + p.getName());
-                        p.hidePlayer(main.getInstance(), online);
-                    }
-                }
-            }
+
             if(Script.getBackUpCode(p) == null)
                 p.sendMessage(Messages.INFO + "Du hast noch keinen BackupCode. Er ist wichtig, um deinen Account wiederherzustellen, falls du ihn verlierst. Nutze §8/§6backupcode §r, um einen BackupCode zu erhalten.");
 
@@ -510,14 +514,16 @@ public class Utils implements Listener {
             }
         }
         for (String s : BLOCKED_COMMANDS_SPECIFIC) {
-            if (e.getMessage().toLowerCase().equalsIgnoreCase(s)) {
-                if (!Script.hasRank(e.getPlayer(), Rank.OWNER, false)) {
-                    e.setCancelled(true);
-                    Script.sendActionBar(e.getPlayer(), Messages.ERROR + "Der Befehl wurde nicht gefunden.");
-                    return;
-                } else {
-                    e.getPlayer().sendMessage(Messages.INFO + "Du konntest diesen Befehl nur ausführen, da du Server-Owner bist.");
-                    return;
+            for (String cmd : e.getMessage().split(" ")) {
+                if (cmd.toLowerCase().startsWith(s)) {
+                    if (!Script.hasRank(e.getPlayer(), Rank.OWNER, false)) {
+                        e.setCancelled(true);
+                        Script.sendActionBar(e.getPlayer(), Messages.ERROR + "Der Befehl wurde nicht gefunden.");
+                        return;
+                    } else {
+                        e.getPlayer().sendMessage(Messages.INFO + "Du konntest diesen Befehl nur ausführen, da du Server-Owner bist.");
+                        return;
+                    }
                 }
             }
         }
@@ -561,6 +567,18 @@ public class Utils implements Listener {
 
         e.setCompletions(NEW_COMPLETEION);
 
+    }
+
+    public static boolean hasOpenPresent(Player p) {
+        try (Statement stmt = main.getConnection().createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT * FROM playtime WHERE id=" + Script.getNRPID(p))) {
+            if (rs.next()) {
+                return rs.getInt("present")==1;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
 

@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 
 public class MSG implements CommandExecutor {
 
-    private static final String PREFIX = "§8[§eMSG§8] §7";
+    private static final String PREFIX = "§8[§eMSG§8] §e" + Messages.ARROW + " §7";
 
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {

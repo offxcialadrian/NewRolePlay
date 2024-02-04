@@ -22,7 +22,7 @@ import java.sql.SQLException;
 public class Banken implements CommandExecutor, Listener {
 
 
-    private static final String PREFIX = "§8[§bBank§8] §7";
+    private static final String PREFIX = "§8[§bBank§8] §b» §7";
     private static final Location LOCATION = new Location(Script.WORLD, 949, 77, 934);
 
     public enum Bank {
@@ -209,10 +209,12 @@ public class Banken implements CommandExecutor, Listener {
                 return;
             }
 
-            if (hasBank(p))
+            if (hasBank(p)) {
                 Script.executeUpdate("UPDATE banks SET bank_id=" + bank.getID() + " WHERE nrp_id=" + Script.getNRPID(p));
-            else
+            } else {
                 Script.executeUpdate("INSERT INTO banks (nrp_id, bank_id) VALUES (" + Script.getNRPID(p) + ", " + bank.getID() + ")");
+                Script.executeUpdate("UPDATE money SET bank = 0 WHERE nrp_id=" + Script.getNRPID(p));
+            }
 
             p.sendMessage(PREFIX + "Du hast die " + bank.getName() + " als deine Bank ausgewählt.");
             p.sendMessage(Messages.INFO + "Um deine Bank zu wechseln, nutze /bank change");

@@ -6,6 +6,7 @@ import de.newrp.Player.AFK;
 import de.newrp.main;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -85,6 +86,7 @@ public class TicketCommand implements CommandExecutor {
         int i = queue.size();
 
         for (Player team : Script.getNRPTeam()) {
+            team.playSound(team.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
             Script.sendClickableMessage(team, PREFIX + "Es liegt ein neues Ticket §8[§6#" + i + "§8]§b von §6" + sender.getName() + " §bvor! Thema: §6" + topic.getName(), "/acceptticket " + i, "§6Ticket annehmen.");
         }
     }

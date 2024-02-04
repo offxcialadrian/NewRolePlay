@@ -32,7 +32,7 @@ public class OOC implements CommandExecutor {
         }
 
         for(String arg : args) {
-            if(arg.equalsIgnoreCase("http://") || arg.equalsIgnoreCase("https://") || arg.equalsIgnoreCase("www.") || arg.equalsIgnoreCase(".de")  || arg.equalsIgnoreCase(".eu") || arg.equalsIgnoreCase("germanrp") || arg.equalsIgnoreCase("grp") || arg.equalsIgnoreCase("unicacity") || arg.equalsIgnoreCase("turniptales") || arg.toLowerCase().startsWith("turnip")) {
+            if(arg.startsWith("http://") || arg.startsWith("https://") || arg.startsWith("www.") || arg.startsWith(".de")  || arg.startsWith(".eu") || arg.startsWith("germanrp") || arg.startsWith("grp") || arg.startsWith("unicacity") || arg.startsWith("turniptales") || arg.toLowerCase().startsWith("turnip")) {
                 Script.sendTeamMessage(AntiCheatSystem.PREFIX + "Verdacht auf Fremdwerbung bei " + Script.getName(p) + " (Level " + p.getLevel() + ") §8» §c" + msg);
                 p.sendMessage(AntiCheatSystem.PREFIX + "Es liegt ein Verdacht auf Fremdwerbung vor. Die Nachricht wurde nicht gesendet. Wenn du denkst, dass es sich um einen Fehler handelt, melde ihn bitte im Forum.");
                 return true;

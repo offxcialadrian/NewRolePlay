@@ -57,7 +57,7 @@ public class Strassenwartung implements CommandExecutor, Listener {
 
         cooldown.put(p.getName(), System.currentTimeMillis() + 10 * 60 * 2000L);
         GFB.CURRENT.put(p.getName(), GFB.STRASSENWARTUNG);
-        int count = GFB.STRASSENWARTUNG.getLevel(p) * Script.getRandom(2, 3);
+        int count = GFB.STRASSENWARTUNG.getLevel(p) * Script.getRandom(4, 5);
         SCORE.put(p.getName(), count);
         TOTAL_SCORE.put(p.getName(), count);
         construction.put(p.getName(), Construction.getRandomConstruction());
@@ -67,6 +67,7 @@ public class Strassenwartung implements CommandExecutor, Listener {
         }
         p.sendMessage(PREFIX + "Du hast den Job der Straßenwartung angenommen.");
         p.sendMessage(PREFIX + "Du musst " + count + " Straßen reparieren.");
+        p.sendMessage(PREFIX + "Nächste Baustelle: " + construction.get(p.getName()).getName());
         p.sendMessage(Messages.INFO + "Begebe dich zur Baustelle die auf deinem Navi markiert ist und repariere die Straße.");
         p.sendMessage(Messages.INFO + "Du hast insgesamt " + 10 * GFB.STRASSENWARTUNG.getLevel(p) + " Minuten Zeit.");
         Cache.saveInventory(p);
@@ -90,7 +91,9 @@ public class Strassenwartung implements CommandExecutor, Listener {
                     }
                     p.sendMessage(PREFIX + "Du hast zu lange gebraucht.");
                     p.sendMessage(PREFIX + "Du hast " + repaired_total + " Straßen repariert.");
-                    Script.addMoney(p, PaymentType.BANK, GFB.STRASSENWARTUNG.getLevel(p) * Script.getRandom(1, 2) * repaired_total);
+                    PayDay.addPayDay(p, GFB.STRASSENWARTUNG.getLevel(p) * Script.getRandom(1, 2) * repaired_total);
+                    GFB.STRASSENWARTUNG.addExp(p, GFB.STRASSENWARTUNG.getLevel(p) * Script.getRandom(3, 4) * repaired_total);
+                    Script.addEXP(p, GFB.STRASSENWARTUNG.getLevel(p) * Script.getRandom(1, 2) * repaired_total);
                     Cache.loadInventory(p);
                     GFB.CURRENT.remove(p.getName());
                     construction.remove(p.getName());
@@ -109,7 +112,13 @@ public class Strassenwartung implements CommandExecutor, Listener {
         Player p = e.getPlayer();
         if (!construction.containsKey(p.getName())) return;
         if (e.getBlock().getType() != Material.ANDESITE_SLAB) return;
-        if(p.getTargetBlock(null, 100).getType() == Material.ANDESITE_SLAB) return;
+        if(e.getBlock().getLocation().getBlock().getType() == Material.ANDESITE_SLAB) {
+            Slab slab = (Slab) e.getBlock().getBlockData();
+            if(slab.getType() == Slab.Type.DOUBLE) {
+                e.setCancelled(true);
+                return;
+            }
+        }
         boolean part = false;
         for (Location loc : construction.get(p.getName()).getLocations()) {
             if (e.getBlock().getLocation().equals(loc)) {
@@ -135,8 +144,7 @@ public class Strassenwartung implements CommandExecutor, Listener {
             p.sendMessage(PREFIX + "Du hast alle Straßen repariert.");
             PayDay.addPayDay(p, GFB.STRASSENWARTUNG.getLevel(p) * Script.getRandom(2, 3) * repaired_total);
             Script.addEXP(p, GFB.STRASSENWARTUNG.getLevel(p) * Script.getRandom(2, 3) * repaired_total);
-            GFB.STRASSENWARTUNG.addExp(p, GFB.STRASSENWARTUNG.getLevel(p) * Script.getRandom(2, 3) * repaired_total);
-            p.getInventory().clear();
+            GFB.STRASSENWARTUNG.addExp(p, GFB.STRASSENWARTUNG.getLevel(p) * Script.getRandom(3, 4) * repaired_total);
             Cache.loadInventory(p);
             GFB.CURRENT.remove(p.getName());
             construction.remove(p.getName());
@@ -148,13 +156,14 @@ public class Strassenwartung implements CommandExecutor, Listener {
 
         SCORE.put(p.getName(), SCORE.get(p.getName()) - 1);
         p.sendMessage(PREFIX + "Du hast noch " + SCORE.get(p.getName()) + " Straßen zu reparieren.");
-        p.sendMessage(Messages.INFO + "Begebe dich zur nächsten Baustelle. Du hast wieder 10 Minuten Zeit.");
+        p.sendMessage(PREFIX + "Nächste Baustelle: " + construction.get(p.getName()).getName());
+        p.sendMessage(Messages.INFO + "Begebe dich zur nächsten Baustelle.");
         construction.put(p.getName(), Construction.getRandomConstruction());
         CONSTRUCTION.put(construction.get(p.getName()), p.getName());
         for (Location locs : construction.get(p.getName()).getLocations()) {
             if (locs.getBlock().getType() == Material.ANDESITE) {
                 locs.getBlock().setType(Material.ANDESITE_SLAB);
-                Slab block = (Slab) locs.getBlock();
+                Slab block = (Slab) locs.getBlock().getBlockData();
                 block.setType(Slab.Type.BOTTOM);
                 continue;
             }
@@ -252,6 +261,104 @@ public class Strassenwartung implements CommandExecutor, Listener {
                 new Location(Script.WORLD, 979, 65, 1158),
                 new Location(Script.WORLD, 983, 65, 1158),
                 new Location(Script.WORLD, 979, 65, 1160)
+        }),
+        LOC4(4, "Nähe Stop&Go", new Location[] {
+                new Location(Script.WORLD, 808, 66, 1353),
+                new Location(Script.WORLD, 808, 66, 1354),
+                new Location(Script.WORLD, 808, 66, 1355),
+                new Location(Script.WORLD, 808, 66, 1356),
+                new Location(Script.WORLD, 805, 66, 1356),
+                new Location(Script.WORLD, 803, 66, 1355),
+                new Location(Script.WORLD, 802, 66, 1356),
+                new Location(Script.WORLD, 802, 66, 1354),
+                new Location(Script.WORLD, 804, 66, 1354),
+                new Location(Script.WORLD, 806, 66, 1353),
+                new Location(Script.WORLD, 806, 66, 1355),
+                new Location(Script.WORLD, 804, 66, 1356),
+                new Location(Script.WORLD, 805, 66, 1354),
+                new Location(Script.WORLD, 803, 66, 1357),
+                new Location(Script.WORLD, 805, 66, 1357),
+                new Location(Script.WORLD, 807, 66, 1355),
+                new Location(Script.WORLD, 806, 66, 1356),
+                new Location(Script.WORLD, 803, 66, 1353),
+                new Location(Script.WORLD, 801, 66, 1353),
+                new Location(Script.WORLD, 801, 66, 1355),
+                new Location(Script.WORLD, 801, 66, 1357),
+        }),
+
+        LOC5(5, "Nähe Tierheim", new Location[]{
+                new Location(Script.WORLD, 579, 68, 1106),
+                new Location(Script.WORLD, 577, 68, 1107),
+                new Location(Script.WORLD, 578, 68, 1108),
+                new Location(Script.WORLD, 574, 68, 1108),
+                new Location(Script.WORLD, 572, 68, 1108),
+                new Location(Script.WORLD, 573, 68, 1107),
+                new Location(Script.WORLD, 574, 68, 1106),
+                new Location(Script.WORLD, 572, 68, 1106),
+                new Location(Script.WORLD, 576, 68, 1106),
+                new Location(Script.WORLD, 575, 68, 1107),
+                new Location(Script.WORLD, 577, 68, 1109),
+                new Location(Script.WORLD, 576, 68, 1110),
+                new Location(Script.WORLD, 575, 68, 1109),
+                new Location(Script.WORLD, 572, 68, 1110),
+                new Location(Script.WORLD, 573, 68, 1109),
+                new Location(Script.WORLD, 571, 68, 1109),
+                new Location(Script.WORLD, 575, 68, 1111),
+                new Location(Script.WORLD, 573, 68, 1112),
+                new Location(Script.WORLD, 571, 68, 1112),
+                new Location(Script.WORLD, 572, 68, 1111),
+        }),
+
+        LOC6(6, "Hankys", new Location[]{
+                new Location(Script.WORLD, 572, 64, 1251),
+                new Location(Script.WORLD, 572, 64, 1253),
+                new Location(Script.WORLD, 572, 64, 1255),
+                new Location(Script.WORLD, 574, 64, 1255),
+                /*new Location(Script.WORLD, 574, 64, 1253),
+                new Location(Script.WORLD, 573, 64, 1254),
+                new Location(Script.WORLD, 573, 64, 1256),
+                new Location(Script.WORLD, 575, 64, 1256),
+                new Location(Script.WORLD, 576, 64, 1258),
+                new Location(Script.WORLD, 576, 64, 1256),
+                new Location(Script.WORLD, 574, 64, 1258),
+                new Location(Script.WORLD, 572, 64, 1257),
+                new Location(Script.WORLD, 574, 64, 1251),
+                new Location(Script.WORLD, 575, 64, 1257),
+                new Location(Script.WORLD, 574, 64, 1257),
+                new Location(Script.WORLD, 571, 64, 1109),
+                new Location(Script.WORLD, 577, 64, 1252),
+                new Location(Script.WORLD, 577, 64, 1254),
+                new Location(Script.WORLD, 577, 64, 1256),
+                new Location(Script.WORLD, 577, 64, 1258),
+                new Location(Script.WORLD, 577, 64, 1257),*/
+        }),
+
+
+        LOC7(7, "Nähe Barbershop", new Location[]{
+                new Location(Script.WORLD, 616, 64, 1293),
+                new Location(Script.WORLD, 614, 64, 1294),
+                new Location(Script.WORLD, 614, 64, 1296),
+                new Location(Script.WORLD, 615, 64, 1298),
+                new Location(Script.WORLD, 616, 64, 1295),
+                new Location(Script.WORLD, 616, 64, 1297),
+                new Location(Script.WORLD, 615, 64, 1299),
+                new Location(Script.WORLD, 613, 64, 1299),
+                new Location(Script.WORLD, 612, 64, 1298),
+                new Location(Script.WORLD, 614, 64, 1297),
+                new Location(Script.WORLD, 615, 64, 1296),
+                new Location(Script.WORLD, 616, 64, 1299),
+                new Location(Script.WORLD, 614, 64, 1298),
+                new Location(Script.WORLD, 614, 64, 1295),
+                new Location(Script.WORLD, 615, 64, 1298),
+                new Location(Script.WORLD, 613, 64, 1294),
+                new Location(Script.WORLD, 613, 64, 1297),
+                new Location(Script.WORLD, 615, 64, 1294),
+                new Location(Script.WORLD, 612, 64, 1295),
+                new Location(Script.WORLD, 612, 64, 1293),
+                new Location(Script.WORLD, 614, 64, 1293),
+                new Location(Script.WORLD, 613, 64, 1300),
+                new Location(Script.WORLD, 612, 64, 1300),
+                new Location(Script.WORLD, 614, 64, 1300),
         });
 
         private final int id;

@@ -47,11 +47,13 @@ public class Cache {
             p.getInventory().clear();
             p.getInventory().setContents(inventar.get(p.getName()));
             inventar.remove(p.getName());
+            Debug.debug("inventory loaded for " + Script.getName(p));
+        } else {
+            Debug.debug("no inventory found for " + Script.getName(p));
         }
     }
 
     public static void saveInventory(Player p) {
-        if (p.getInventory().isEmpty()) return;
         if(inventar.containsKey(p.getName())) {
             inventar.replace(p.getName(), p.getInventory().getContents());
         } else {

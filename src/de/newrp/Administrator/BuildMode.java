@@ -61,6 +61,10 @@ public class BuildMode implements CommandExecutor, Listener {
                 p.sendMessage(PREFIX + "Du hast den BuildMode verlassen.");
                 Script.sendTeamMessage(p, ChatColor.YELLOW, "hat den BuildMode verlassen.", true);
             } else {
+                if(Cache.getInventory(p) != null) {
+                    p.sendMessage(Messages.ERROR + "Du kannst gerade nicht in den BuildMode wechseln, da du bereits ein Inventar gespeichert hast.");
+                    return true;
+                }
                 setBuildMode(p);
                 p.sendMessage(PREFIX + "Du hast den BuildMode betreten.");
                 Script.sendTeamMessage(p, ChatColor.YELLOW, "hat den BuildMode betreten.", true);
@@ -88,6 +92,10 @@ public class BuildMode implements CommandExecutor, Listener {
             Log.HIGH.write(p, "hat " + Script.getName(tg) + " den BuildMode entfernt.");
             Log.HIGH.write(tg, "wurde von " + Script.getName(p) + " den BuildMode entfernt.");
         } else {
+            if(Cache.getInventory(tg) != null) {
+                p.sendMessage(Messages.ERROR + "Dieser Spieler kann gerade nicht in den BuildMode wechseln, da er bereits ein Inventar gespeichert hat.");
+                return true;
+            }
             setBuildMode(tg);
             p.sendMessage(PREFIX + "Du hast " + Script.getName(tg) + " in den BuildMode gesetzt.");
             tg.sendMessage(PREFIX + Messages.RANK_PREFIX(p) + " hat dich in den BuildMode gesetzt.");

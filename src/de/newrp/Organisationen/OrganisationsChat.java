@@ -2,6 +2,7 @@ package de.newrp.Organisationen;
 
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
+import de.newrp.Administrator.Punish;
 import de.newrp.Berufe.Beruf;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -24,6 +25,11 @@ public class OrganisationsChat implements CommandExecutor {
             return true;
         }
 
+        if (Punish.isMuted(p)) {
+            p.sendMessage(Messages.ERROR + "Du bist gemutet!");
+            return true;
+        }
+
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < args.length; i++) {
             if (i > 0) {
@@ -34,7 +40,7 @@ public class OrganisationsChat implements CommandExecutor {
 
         String nachricht = sb.toString();
         for (Player all : Organisation.getPlayersFromOrganisation(Organisation.getOrganisation(p))) {
-            all.sendMessage("§b" + Organisation.getRankName(p) + " " + Script.getName(p) + "§8: §9" + nachricht);
+            all.sendMessage("§b" + Organisation.getRankName(p) + " " + Script.getName(p) + "§8: §3" + nachricht);
         }
 
         return false;

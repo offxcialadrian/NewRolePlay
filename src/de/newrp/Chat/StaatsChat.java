@@ -2,6 +2,7 @@ package de.newrp.Chat;
 
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
+import de.newrp.Administrator.Punish;
 import de.newrp.Berufe.Beruf;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -29,6 +30,11 @@ public class StaatsChat implements CommandExecutor {
             return true;
         }
 
+        if (Punish.isMuted(p)) {
+            p.sendMessage(Messages.ERROR + "Du bist gemutet!");
+            return true;
+        }
+
         StringBuilder sb = new StringBuilder();
         for (String arg : args) {
             sb.append(arg).append(" ");
@@ -37,15 +43,15 @@ public class StaatsChat implements CommandExecutor {
         String msg = sb.toString().trim();
 
         for(Player all : Beruf.getPlayersFromBeruf(Beruf.Berufe.POLICE)) {
-            all.sendMessage("§c" + Beruf.getAbteilung(p).getName() + " " + Script.getName(p) + "§8: §c" + msg);
+            all.sendMessage("§c" + Beruf.getBeruf(p).getName() + " " + Script.getName(p) + "§8: §c" + msg);
         }
 
         for(Player all : Beruf.getPlayersFromBeruf(Beruf.Berufe.RETTUNGSDIENST)) {
-            all.sendMessage("§c" + Beruf.getAbteilung(p).getName() + " " + Script.getName(p) + "§8: §c" + msg);
+            all.sendMessage("§c" + Beruf.getBeruf(p).getName() + " " + Script.getName(p) + "§8: §c" + msg);
         }
 
         for(Player all : Beruf.getPlayersFromBeruf(Beruf.Berufe.GOVERNMENT)) {
-            all.sendMessage("§c" + Beruf.getAbteilung(p).getName() + " " + Script.getName(p) + "§8: §c" + msg);
+            all.sendMessage("§c" + Beruf.getBeruf(p).getName() + " " + Script.getName(p) + "§8: §c" + msg);
         }
 
         return false;

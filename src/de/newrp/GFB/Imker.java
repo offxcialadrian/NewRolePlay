@@ -128,8 +128,6 @@ public class Imker implements CommandExecutor, Listener {
             p.sendMessage(PREFIX + "Du hast ausreichend Honig entnommen.");
             GFB.CURRENT.remove(p.getName());
             honeys.remove(p.getName());
-            p.getInventory().clear();
-            Cache.loadInventory(p);
             GFB.IMKER.addExp(p, TOTAL_SCORE.get(p.getName())*Script.getRandom(2,3));
             Script.addEXP(p, GFB.IMKER.getLevel(p) * TOTAL_SCORE.get(p.getName())*Script.getRandom(1, 2));
             PayDay.addPayDay(p, GFB.IMKER.getLevel(p) + TOTAL_SCORE.get(p.getName()));
@@ -146,7 +144,6 @@ public class Imker implements CommandExecutor, Listener {
         if(!honeys.containsKey(p.getName())) return;
         if(!e.getView().getTitle().equals("§eImker")) return;
         ON_JOB.remove(p.getName());
-        p.getInventory().clear();
         Cache.loadInventory(p);
     }
 
@@ -159,7 +156,6 @@ public class Imker implements CommandExecutor, Listener {
         TOTAL_SCORE.remove(p.getName());
         honeys.remove(p.getName());
         ON_JOB.remove(p.getName());
-        p.getInventory().clear();
         Cache.loadInventory(p);
     }
 

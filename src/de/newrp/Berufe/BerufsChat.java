@@ -2,6 +2,7 @@ package de.newrp.Berufe;
 
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
+import de.newrp.Administrator.Punish;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -23,6 +24,11 @@ public class BerufsChat implements CommandExecutor {
             return true;
         }
 
+        if (Punish.isMuted(p)) {
+            p.sendMessage(Messages.ERROR + "Du bist gemutet!");
+            return true;
+        }
+
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < args.length; i++) {
             if (i > 0) {
@@ -32,9 +38,9 @@ public class BerufsChat implements CommandExecutor {
         }
 
         String nachricht = sb.toString();
-        String prefix = "§9" + Beruf.getAbteilung(p).getName() + " " + Messages.ARROW + " ";
+        String prefix = "§3" + Beruf.getAbteilung(p).getName().replace("-"," ") + " ";
         for (Player all : Beruf.getPlayersFromBeruf(Beruf.getBeruf(p))) {
-            all.sendMessage(prefix + Script.getName(p) + "§8: §9" + nachricht);
+            all.sendMessage(prefix + Script.getName(p) + "§8: §b" + nachricht);
         }
 
         return false;
