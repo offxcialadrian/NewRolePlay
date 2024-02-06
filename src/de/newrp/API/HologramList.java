@@ -36,7 +36,9 @@ public enum HologramList {
     TELLERWAESCHER(30, "§8/§6tellerwäscher", new Location(Script.WORLD, 587, 66, 746, -70.366f, 13.379983f)),
     BURGERBRATER(31, "§8/§6burgerbrater", new Location(Script.WORLD, 459, 66, 765, -11.671753f, 10.054159f)),
     STRASSENWARTUNG(32, "§8/§6strassenwartung", new Location(Script.WORLD, 475, 65, 1316, -36.769684f, 17.13762f)),
-    IMKEREI(33, "§8/§6imker", new Location(Script.WORLD, 222, 66, 771, 174.1878f, 10.542069f));
+    IMKEREI(33, "§8/§6imker", new Location(Script.WORLD, 222, 66, 771, 174.1878f, 10.542069f)),
+    BUY_HOTELCALIFORNIA(34, "§8/§6buy", new Location(Script.WORLD, 275, 65, 971, -90.44937f, 4.9502726f)),
+    BUY_MOTEL99(35, "§8/§6buy", new Location(Script.WORLD, 809, 63, 1221, -89.25004f, -1.3500005f));
 
     private final int id;
     private final String name;

@@ -1,5 +1,6 @@
 package de.newrp.Shop;
 
+import de.newrp.API.ItemBuilder;
 import de.newrp.API.Script;
 import de.newrp.House.HouseAddon;
 import de.newrp.Waffen.Weapon;
@@ -66,7 +67,17 @@ public enum ShopItem {
     LILIEN(80, "§7Lilien", new ItemStack(Material.WHITE_TULIP), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.FLOWER}),
     MARGARITE_PINK(81, "§7Pink Margarite", new ItemStack(Material.PINK_TULIP), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.FLOWER}),
     WATER_BUCKET(82, "§7Wasser", Script.setNameAndLore(new ItemStack(Material.WATER_BUCKET), "§9Wasser", "§65/5"), 1, 1, 1, 1, 1, false, false, false, new ShopType[] {ShopType.FLOWER}),
-    DUENGER(83, "§7Dünger", new ItemStack(Material.INK_SAC), 1, 1, 1, 1, 1, false, false, false, new ShopType[] {ShopType.FLOWER});
+    DUENGER(83, "§7Dünger", new ItemStack(Material.INK_SAC), 1, 1, 1, 1, 1, false, false, false, new ShopType[] {ShopType.FLOWER}),
+    EINZELZIMMER(84, "§7Einzelzimmer", new ItemStack(Material.OAK_DOOR), 1, 1, 1, 1, 1, false, false, false, new ShopType[] {ShopType.HOTEL}),
+    DOPPELZIMMER(85, "§7Doppelzimmer", new ItemStack(Material.OAK_DOOR), 1, 1, 1, 1, 1, false, false, false, new ShopType[] {ShopType.HOTEL}),
+    MEHRBETTZIMMER(86, "§7Mehrbettzimmer", new ItemStack(Material.OAK_DOOR), 1, 1, 1, 1, 1, false, false, false, new ShopType[] {ShopType.HOTEL}),
+    SUITE(87, "§7Suite", new ItemStack(Material.OAK_DOOR), 1, 1, 1, 1, 1, false, false, false, new ShopType[] {ShopType.HOTEL}),
+    EXECUTIVE_SUITE(88, "§7Executive Suite", new ItemStack(Material.OAK_DOOR), 1, 1, 1, 1, 1, false, false, false, new ShopType[] {ShopType.HOTEL}),
+    DELUXE_ZIMMER(89, "§7Deluxe Zimmer", new ItemStack(Material.OAK_DOOR), 1, 1, 1, 1, 1, false, false, false, new ShopType[] {ShopType.HOTEL}),
+    PRAESIDENTEN_SUITE(90, "§7Präsidenten Suite", new ItemStack(Material.OAK_DOOR), 1, 1, 1, 1, 1, false, false, false, new ShopType[] {ShopType.HOTEL}),
+    EINZELFAHRASUSWEIS(91, "§6UBahn-Ticket", new ItemBuilder(Material.PAPER).setName("§6UBahn-Ticket [Einzelfahrausweis]").setLore("Verbleibende Fahrten: 1").build(), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.NEWS}),
+    WOCHENFAHRASUSWEIS(92, "§6UBahn-Ticket", new ItemBuilder(Material.PAPER).setName("§6UBahn-Ticket [7 Fahrten]").setLore("Verbleibende Fahrten: 7").build(), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.NEWS}),
+    MONATSFAHRASUSWEIS(93, "§6UBahn-Ticket", new ItemBuilder(Material.PAPER).setName("§6UBahn-Ticket [30 Fahrten]").setLore("Verbleibende Fahrten: 30").build(), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.NEWS});
 
     private final int id;
     private final String name;

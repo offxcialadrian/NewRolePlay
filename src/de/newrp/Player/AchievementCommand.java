@@ -2,6 +2,7 @@ package de.newrp.Player;
 
 import de.newrp.API.Achievement;
 import de.newrp.API.Script;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -64,6 +65,11 @@ public class AchievementCommand implements CommandExecutor, Listener {
         if (e.getView().getTitle().equals("§6Achievements")) {
             e.setCancelled(true);
             e.getView().close();
+            Achievement achievement = Achievement.getAchievementByName(ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName()));
+            if(achievement.justExplained()) {
+                achievement.grant((Player) e.getWhoClicked());
+                return;
+            }
             if (e.getCurrentItem() != null && !e.getCurrentItem().getType().equals(Material.AIR) && e.getCurrentItem().hasItemMeta()) {
                 Player p = (Player) e.getWhoClicked();
                 if (e.getCurrentItem().getItemMeta().getDisplayName().equals("§7» §6§lNächste Seite")) {

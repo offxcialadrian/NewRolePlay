@@ -22,7 +22,7 @@ public class Berufkasse implements CommandExecutor {
             return true;
         }
 
-        if(!Beruf.isLeader(p, true)) {
+        if(!Beruf.isLeader(p, true) &&  !args[0].equalsIgnoreCase("einzahlen")) {
             p.sendMessage(Messages.ERROR + "Du bist kein Leader.");
             return true;
         }

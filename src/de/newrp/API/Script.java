@@ -1456,6 +1456,16 @@ public class Script {
         return blocks;
     }
 
+    public static boolean isInArea(Player p, Location loc1, Location loc2) {
+        int topBlockX = (Math.max(loc1.getBlockX(), loc2.getBlockX()));
+        int bottomBlockX = (Math.min(loc1.getBlockX(), loc2.getBlockX()));
+        int topBlockY = (Math.max(loc1.getBlockY(), loc2.getBlockY()));
+        int bottomBlockY = (Math.min(loc1.getBlockY(), loc2.getBlockY()));
+        int topBlockZ = (Math.max(loc1.getBlockZ(), loc2.getBlockZ()));
+        int bottomBlockZ = (Math.min(loc1.getBlockZ(), loc2.getBlockZ()));
+        return (p.getLocation().getBlockX() <= topBlockX && p.getLocation().getBlockX() >= bottomBlockX) && (p.getLocation().getBlockY() <= topBlockY && p.getLocation().getBlockY() >= bottomBlockY) && (p.getLocation().getBlockZ() <= topBlockZ && p.getLocation().getBlockZ() >= bottomBlockZ);
+    }
+
     public static void removeEXP(String p, int exp) {
         if (getPlayer(p) != null) {
             getPlayer(p).sendMessage("  §c-" + exp + " Exp!");

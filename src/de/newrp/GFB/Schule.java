@@ -36,6 +36,8 @@ public class Schule implements CommandExecutor, Listener {
             return true;
         }
 
+        Achievement.SCHULE.grant(p);
+
         if(STARTED.containsKey(p)) {
             long time = System.currentTimeMillis();
             long started = STARTED.get(p);

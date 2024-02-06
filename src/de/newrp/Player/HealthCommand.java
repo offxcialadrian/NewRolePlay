@@ -1,5 +1,6 @@
 package de.newrp.Player;
 
+import de.newrp.API.Achievement;
 import de.newrp.API.Health;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
@@ -178,6 +179,7 @@ public class HealthCommand implements CommandExecutor, Listener {
         p.spigot().sendMessage(thirst(p));
         p.spigot().sendMessage(fat(p));
         p.spigot().sendMessage(muscle(p));
+        Achievement.HEALTH.grant(p);
         return true;
     }
 

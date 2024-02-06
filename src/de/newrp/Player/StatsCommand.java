@@ -61,6 +61,8 @@ public class StatsCommand implements CommandExecutor {
         p.sendMessage("§7Häuser §8× §e" + houses.toString());
         p.sendMessage("§7Lizenzen §8× §e" + licenses.toString());
 
+        Achievement.STATS.grant(p);
+
         return false;
     }
 }

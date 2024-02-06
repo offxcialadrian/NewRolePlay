@@ -3,7 +3,9 @@ package de.newrp.Shop;
 import de.newrp.API.*;
 import de.newrp.Chat.Chat;
 import de.newrp.Entertainment.Lotto;
+import de.newrp.Player.Hotel;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -68,6 +70,23 @@ public class BuyClick implements Listener {
         }
 
         if (si == null) {
+            return;
+        }
+
+        if(s.getType() == ShopType.HOTEL) {
+            Hotel.RoomType rt = Hotel.RoomType.getRoomByName(ChatColor.stripColor(si.getName()));
+            Hotel.Hotels hotel = Hotel.Hotels.getHotelByName(ChatColor.stripColor(e.getView().getTitle()));
+            if(hotel == null) return;
+            if(rt == null) return;
+            Hotel.Rooms room = hotel.getFreeRoom(rt);
+            if(room == null) {
+                sendMessage(p, "Es tut uns leid, aber wir haben keine freien Zimmer mehr.");
+                return;
+            }
+            Achievement.HOTEL.grant(p);
+            p.sendMessage(Hotel.PREFIX + "Willkommen im " + Hotel.Hotels.getHotelByName(e.getView().getTitle()).getName() + "!");
+            Script.executeAsyncUpdate("INSERT INTO hotel (nrp_id, room) VALUES (" + Script.getNRPID(p) + ", " + room.getID() + ")");
+            p.sendMessage(Hotel.PREFIX + "Du hast das Zimmer " + room.getName() + " für " + room.getPrice() + "€ gebucht.");
             return;
         }
 

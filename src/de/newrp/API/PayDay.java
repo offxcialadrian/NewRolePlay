@@ -2,6 +2,7 @@ package de.newrp.API;
 
 import de.newrp.Administrator.Checkpoints;
 import de.newrp.Administrator.SDuty;
+import de.newrp.Berufe.Abteilung;
 import de.newrp.Berufe.Beruf;
 import de.newrp.GFB.GFB;
 import de.newrp.Government.Arbeitslosengeld;
@@ -9,10 +10,8 @@ import de.newrp.Government.Stadtkasse;
 import de.newrp.Government.Steuern;
 import de.newrp.House.House;
 import de.newrp.Organisationen.Organisation;
-import de.newrp.Player.AFK;
-import de.newrp.Player.Banken;
-import de.newrp.Player.Mobile;
-import de.newrp.Player.Selfstorage;
+import de.newrp.Player.*;
+import de.newrp.Shop.Shop;
 import de.newrp.Shop.Shops;
 import de.newrp.main;
 import org.bukkit.Bukkit;
@@ -186,9 +185,20 @@ public class PayDay extends BukkitRunnable {
             }
 
             if(Selfstorage.hasSelfstorage(p)) {
-                int price = 50;
+                int price = 10;
                 p.sendMessage("§8" + Messages.ARROW + " §7Selfstorage-Room: §c-" + price + "€");
                 payday -= price;
+            }
+
+            if(Hotel.hasHotelRoom(p)) {
+                int price = Hotel.getHotelRoom(p).getPrice();
+                p.sendMessage("§8" + Messages.ARROW + " §7Hotelzimmer: §c-" + price + "€");
+                payday -= price;
+                Hotel.Hotels hotel = Hotel.getHotelRoom(p).getHotel();
+                int mehrwertsteur = (int) Steuern.Steuer.MEHRWERTSTEUER.getPercentage();
+                Stadtkasse.addStadtkasse((int) Script.getPercent(mehrwertsteur, price));
+                Shops shop = hotel.getShop();
+                shop.addKasse((int) (price-Script.getPercent(mehrwertsteur, price)));
             }
 
             if(Mobile.hasCloud(p)) {
@@ -218,6 +228,21 @@ public class PayDay extends BukkitRunnable {
             else Script.removeMoney(p, PaymentType.BANK, payday);
             setPayDayTime(p, 0);
             Script.executeAsyncUpdate("UPDATE payday SET money = 0 WHERE nrp_id = '" + Script.getNRPID(p) + "'");
+            if(Script.getMoney(p, PaymentType.BANK) < 0) {
+                p.sendMessage("§8[§cBank§8] §c" + Messages.ARROW + " §7Dein Konto ist überzogen. Du musst den Betrag innerhalb von 7 Tagen ausgleichen.");
+                if(Hotel.hasHotelRoom(p)) {
+                    p.sendMessage("§8[§cBank§8] §c" + Messages.ARROW + " §7Dein Hotelzimmer wurde automatisch gekündigt.");
+                    Script.executeAsyncUpdate("DELETE FROM hotel WHERE nrp_id = " + Script.getNRPID(p));
+                }
+                if(Mobile.hasCloud(p)) {
+                    p.sendMessage("§8[§cBank§8] §c" + Messages.ARROW + " §7Deine Handy-Cloud wurde automatisch gekündigt.");
+                    Mobile.getPhone(p).setCloud(p, false);
+                }
+                if(Selfstorage.hasSelfstorage(p)) {
+                    p.sendMessage("§8[§cBank§8] §c" + Messages.ARROW + " §7Dein Selfstorage-Room wurde automatisch gekündigt.");
+                    Selfstorage.removeSelfstorage(p, false);
+                }
+            }
             new BukkitRunnable() {
                 @Override
                 public void run() {

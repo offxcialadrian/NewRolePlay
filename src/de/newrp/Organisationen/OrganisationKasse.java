@@ -23,7 +23,7 @@ public class OrganisationKasse implements CommandExecutor {
             return true;
         }
 
-        if (!Organisation.isLeader(p, true)) {
+        if (!Organisation.isLeader(p, true) && !args[0].equalsIgnoreCase("einzahlen")) {
             p.sendMessage(Messages.ERROR + "Du bist kein Leader.");
             return true;
         }

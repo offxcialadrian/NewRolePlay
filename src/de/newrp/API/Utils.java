@@ -54,7 +54,7 @@ public class Utils implements Listener {
             "/setworldspawn", "/spawnpoint", "/spreadplayers", "/stop", "/stopsound", "/structure", "/summon", "/tag",
             "/teammsg", "/tell", "/tellraw", "/testfor", "/testforblock", "/testforblocks", "/tickingarea", "/time", "/title",
             "/titleraw", "/tm", "/toggledownfall", "/trigger", "/volumearea", "/wb", "/worldborder",
-            "/worldbuilder", "/wsserver", "/xp", "/ver", "/citizens"
+            "/worldborder", "/wsserver", "/xp", "/ver", "/citizens", "/npc"
     };
 
     private static final String[] BLOCKED_COMMANDS_SPECIFIC = new String[]{
@@ -197,9 +197,16 @@ public class Utils implements Listener {
             Script.sendActionBar(e.getPlayer(), "§7Willkommen auf §eNewRP§7!");
             e.getPlayer().sendMessage("§eNew RolePlay" + "§rWillkommen auf §eNewRP§7!");
             Notications.sendMessage(Notications.NotificationType.REGISTRATION, "§e" + Script.getName(e.getPlayer()) + " §7hat sich auf dem Server registriert §8[§e" + Script.getNRPID(e.getPlayer()) + "§8]");
-
             Title.sendTitle(p, 20, 50, 20, "§6Willkommen!", "§7auf §eNewRP§7!");
             Achievement.FIRST_JOIN.grant(p);
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    p.sendMessage(Script.PREFIX + "Du hast die vollständige Kontrolle über das \"Tutorial\". Nute einfach unser Achievement-System um den Server zu erkunden.");
+                    p.sendMessage(Messages.INFO + "Nutze §8/§6achievement");
+                    p.sendMessage(Messages.INFO + "Beachte bitte, dass wir nicht alles erklären können. Einige Dinge musst du selbst herausfinden. Wir sind aber immer unter §8/§6support §rzu erreichen.");
+                }
+            }.runTaskLaterAsynchronously(main.getInstance(), 20L);
         }
         e.getPlayer().setPlayerListName(Script.getName(e.getPlayer()));
         Script.checkPlayerName(p);

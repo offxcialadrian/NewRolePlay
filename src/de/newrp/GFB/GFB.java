@@ -1,5 +1,6 @@
 package de.newrp.GFB;
 
+import de.newrp.API.Achievement;
 import de.newrp.API.Script;
 import de.newrp.main;
 import org.bukkit.Location;
@@ -78,6 +79,7 @@ public enum GFB {
     }
 
     public void addExp(Player p, int exp) {
+        Achievement.GFB_JOBS.grant(p);
         if(getExp(p) + exp >= getLevelCost(getLevel(p))) {
             Script.executeAsyncUpdate("UPDATE gfb_level SET level=" + (getLevel(p) + 1) + " WHERE nrp_id='" + Script.getNRPID(p) + "' AND gfb_id=" + this.id);
             Script.executeAsyncUpdate("UPDATE gfb_level SET exp=0 WHERE nrp_id='" + Script.getNRPID(p) + "' AND gfb_id=" + this.id);

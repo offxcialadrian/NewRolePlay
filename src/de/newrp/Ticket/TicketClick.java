@@ -35,7 +35,7 @@ public class TicketClick implements Listener {
                         topic = TicketTopic.ACCOUNT;
                         break;
                     case BOOK:
-                        topic = TicketTopic.BAUFEHLER;
+                        topic = TicketTopic.SONSTIGES;
                         break;
                     default:
                         Debug.debug("Item is null");

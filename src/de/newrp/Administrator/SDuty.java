@@ -112,7 +112,7 @@ public class SDuty implements CommandExecutor, Listener {
         Score score5 = o.getScore(ChatColor.DARK_AQUA + " §8» §eFrage: " + amount.get(TicketTopic.FRAGE));
         Score score6 = o.getScore(ChatColor.DARK_AQUA + " §8» §eSpieler: " + amount.get(TicketTopic.SPIELER));
         Score score7 = o.getScore(ChatColor.DARK_AQUA + " §8» §eAccount: " + amount.get(TicketTopic.ACCOUNT));
-        Score score8 = o.getScore(ChatColor.DARK_AQUA + " §8» §eBaufehler: " + amount.get(TicketTopic.BAUFEHLER));
+        Score score8 = o.getScore(ChatColor.DARK_AQUA + " §8» §eSonstiges: " + amount.get(TicketTopic.SONSTIGES));
         Score score9 = o.getScore(ChatColor.GRAY + "");
         Score score10 = o.getScore(ChatColor.GRAY + "§bStadtkasse§8:");
         Score score11 = o.getScore(ChatColor.DARK_AQUA + " §8» §e" + df.format(stadtkasse) + "€");
@@ -159,7 +159,7 @@ public class SDuty implements CommandExecutor, Listener {
                 Score score5 = o.getScore(ChatColor.DARK_AQUA + " §8» §eFrage: " + amount.get(TicketTopic.FRAGE));
                 Score score6 = o.getScore(ChatColor.DARK_AQUA + " §8» §eSpieler: " + amount.get(TicketTopic.SPIELER));
                 Score score7 = o.getScore(ChatColor.DARK_AQUA + " §8» §eAccount: " + amount.get(TicketTopic.ACCOUNT));
-                Score score8 = o.getScore(ChatColor.DARK_AQUA + " §8» §eBaufehler: " + amount.get(TicketTopic.BAUFEHLER));
+                Score score8 = o.getScore(ChatColor.DARK_AQUA + " §8» §eSonstiges: " + amount.get(TicketTopic.SONSTIGES));
                 Score score9 = o.getScore(ChatColor.GRAY + "");
                 Score score10 = o.getScore(ChatColor.GRAY + "§bStadtkasse§8:");
                 Score score11 = o.getScore(ChatColor.DARK_AQUA + " §8» §e" + df.format(stadtkasse) + "€");

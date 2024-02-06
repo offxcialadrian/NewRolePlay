@@ -20,6 +20,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -244,24 +245,14 @@ public class Wahlen implements CommandExecutor, Listener {
     }
 
     public static String getNextElection() {
-        if (Calendar.getInstance().get(Calendar.MONTH) == Calendar.JANUARY && Calendar.getInstance().get(Calendar.DAY_OF_MONTH) > 15) {
-            return "15.04.";
-        } else if (Calendar.getInstance().get(Calendar.MONTH) == Calendar.APRIL && Calendar.getInstance().get(Calendar.DAY_OF_MONTH) > 15) {
-            return "15.07.";
-        } else if (Calendar.getInstance().get(Calendar.MONTH) == Calendar.JULY && Calendar.getInstance().get(Calendar.DAY_OF_MONTH) > 15) {
-            return "15.10.";
-        } else if (Calendar.getInstance().get(Calendar.MONTH) == Calendar.OCTOBER && Calendar.getInstance().get(Calendar.DAY_OF_MONTH) > 15) {
-            return "15.01.";
-        } else if (Calendar.getInstance().get(Calendar.MONTH) == Calendar.JANUARY && Calendar.getInstance().get(Calendar.DAY_OF_MONTH) <= 15) {
-            return "15.01.";
-        } else if (Calendar.getInstance().get(Calendar.MONTH) == Calendar.APRIL && Calendar.getInstance().get(Calendar.DAY_OF_MONTH) <= 15) {
-            return "15.04.";
-        } else if (Calendar.getInstance().get(Calendar.MONTH) == Calendar.JULY && Calendar.getInstance().get(Calendar.DAY_OF_MONTH) <= 15) {
-            return "15.07.";
-        } else if (Calendar.getInstance().get(Calendar.MONTH) == Calendar.OCTOBER && Calendar.getInstance().get(Calendar.DAY_OF_MONTH) <= 15) {
-            return "15.10.";
-        }
-        return "15.01.";
+        Calendar nextElectionDate = Calendar.getInstance();
+
+        int nextQuartal = getNextQuartal();
+        nextElectionDate.set(Calendar.MONTH, (nextQuartal - 1) * 3); // Months are 0-based in Calendar
+        nextElectionDate.set(Calendar.DAY_OF_MONTH, 15);
+
+        // Format the date
+        return new SimpleDateFormat("dd.MM.yyyy").format(nextElectionDate.getTime());
     }
 
     public static int getTotalVotes() {

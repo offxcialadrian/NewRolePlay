@@ -1,5 +1,6 @@
 package de.newrp.Government;
 
+import de.newrp.API.Achievement;
 import de.newrp.API.Messages;
 import de.newrp.Berufe.Beruf;
 import org.bukkit.OfflinePlayer;
@@ -20,6 +21,7 @@ public class RegierungCommand implements CommandExecutor {
         for(OfflinePlayer player : Beruf.Berufe.GOVERNMENT.getAllMembers()) {
             p.sendMessage("§8" + Messages.ARROW + " §6" + player.getName() + " §8(§6" + Beruf.getAbteilung(player).getName() + "§8)");
         }
+        Achievement.WAHLEN.grant(p);
         return false;
     }
 }

@@ -4,10 +4,12 @@ import de.newrp.API.*;
 import de.newrp.Administrator.BuildMode;
 import de.newrp.House.House;
 import de.newrp.House.HouseAddon;
+import de.newrp.Player.Hotel;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -48,8 +50,8 @@ public class GetGun implements CommandExecutor, Listener {
         }
 
         House h = House.getInsideHouse(p);
-        if (h != null) {
-            if (h.hasAddon(HouseAddon.WAFFENSCHRANK)) {
+        if (h != null || (Hotel.isInHotelRoom(p) && Hotel.getHotelRoom(p).getType() == Hotel.RoomType.PRAESIDENTEN_SUITE)) {
+            if (h.hasAddon(HouseAddon.WAFFENSCHRANK) || (Hotel.isInHotelRoom(p) && Hotel.getHotelRoom(p).getType() == Hotel.RoomType.PRAESIDENTEN_SUITE)) {
                 if(hasWeaponInInventory(p) && Krankheit.GEBROCHENER_ARM.isInfected(id)) {
                     p.sendMessage(Messages.ERROR + "Du kannst nicht mehrere Waffen aus dem Waffenschrank nehmen wenn du einen gebrochenen Arm hast.");
                     return true;
@@ -67,6 +69,7 @@ public class GetGun implements CommandExecutor, Listener {
                 }
 
                 Inventory inv = p.getPlayer().getServer().createInventory(null, 9, "§l§6Waffen Menü");
+
 
                 int i = 0;
                 for (WeaponData data : weapon_data.values()) {

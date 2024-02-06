@@ -323,7 +323,7 @@ public class Houseban implements CommandExecutor, Listener, TabCompleter {
             final List<String> completions = new ArrayList<>();
 
             for (Reasons reason : Reasons.values()) {
-                oneArgList.add(reason.getName());
+                oneArgList.add(reason.getName().replace(" ", "-"));
             }
 
             if(args.length == 1) {

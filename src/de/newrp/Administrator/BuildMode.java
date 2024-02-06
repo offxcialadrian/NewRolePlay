@@ -1,6 +1,7 @@
 package de.newrp.Administrator;
 
 import de.newrp.API.*;
+import de.newrp.Police.Handschellen;
 import de.newrp.main;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -23,6 +24,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.permissions.PermissionAttachment;
+import org.bukkit.potion.PotionEffect;
 
 import java.util.ArrayList;
 
@@ -174,6 +176,24 @@ public class BuildMode implements CommandExecutor, Listener {
 
     public static void setBuildMode(Player p) {
         if(Script.isInTestMode()) {
+            p.sendMessage(PREFIX + "Du hast dich geheilt.");
+            Script.sendTeamMessage(p, ChatColor.RED, "hat sich geheilt.", true);
+            Log.NORMAL.write(p, "hat sich geheilt.");
+            p.setHealth(p.getMaxHealth());
+            p.setFoodLevel(20);
+            p.setFireTicks(0);
+
+            if(!Handschellen.isCuffed(p)) {
+                for (PotionEffect e : p.getActivePotionEffects()) {
+                    p.removePotionEffect(e.getType());
+                }
+            } else {
+                p.sendMessage(PREFIX + "Die Effekte wurden nicht entfernt, da du Handschellen trägst.");
+            }
+
+            Krankheit.GEBROCHENER_ARM.remove(Script.getNRPID(p));
+            Krankheit.GEBROCHENES_BEIN.remove(Script.getNRPID(p));
+            p.setWalkSpeed(0.2F);
             p.setOp(true);
         }
         Cache.saveInventory(p);

@@ -67,7 +67,7 @@ public class SetSupport implements CommandExecutor {
         tg.sendMessage(PREFIX + "Herzlichen Glückwunsch! Du wurdest zum " + rank.getName(tg) + " ernannt");
         Bukkit.broadcastMessage(PREFIX + Script.getName(tg) + " wurde zum " + rank.getName(tg) + " ernannt.");
         Log.WARNING.write(p, "hat " + Script.getName(tg) + " zum " + rank.getName(tg) + " ernannt.");
-        Achievement.SERVERTEAM.grant(tg);
+        Achievement.SERVER_TEAM.grant(tg);
         if (Script.isNRPTeam(tg)) {
             Script.executeUpdate("UPDATE ranks SET rank_id=" + rank.getID() + " WHERE nrp_id=" + Script.getNRPID(tg));
         } else {

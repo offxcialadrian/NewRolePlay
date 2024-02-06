@@ -257,7 +257,7 @@ public enum Aktie {
             lore.add("§8» §6Im Besitz: " + aktie.getAmountByPlayer(p) + " Aktien");
             lore.add("§8» §6Verfügbar: " + aktie.freeShares() + " Aktien");
             lore.add("§8» §6Letzte 7 Tage: " + ((aktie.calcHistoryDays(7) > 0) ? "§a" : "§c") + aktie.calcHistoryDays(7) + "%");
-            lore.add("§8» §6Letzte Stunde: " + ((aktie.calcHistoryHours(1) > 0) ? "§a" : "§c") + aktie.calcHistoryDays(1) + "%");
+            lore.add("§8» §6Letzte Stunde: " + ((aktie.calcHistoryHours(1) > 0) ? "§a" : "§c") + aktie.calcHistoryHours(1) + "%");
             if (playerHasShare(aktie, p))
                 lore.add("§8» §6Letzter Kauf: " + (aktie.getPrice() >= aktie.getLastBuyPrice(p) ? "§a" : "§c") + aktie.getLastBuyPrice(p) + "€");
             if (sharesAvailable(aktie))
@@ -275,26 +275,23 @@ public enum Aktie {
     private int calcChange() {
         if (skipcalculation)
             return 0;
-        double bought = getBoughtAmount(1);
-        double sold = getSoldAmount(1);
+        int bought = getBoughtAmount(1);
+        int sold = getSoldAmount(1);
         int i = 0;
-        double adjust = 1;
-        i = (int) (calcDiffercence(bought, sold) / adjust);
+        i = (calcDiffercence(bought, sold));
 
         return i;
     }
 
     public static void update() {
         for (Aktie aktie : Aktie.values()) {
+            Debug.debug("Aktie " + aktie.getName() + " changed from " + aktie.getPrice() + "€ to " + (aktie.getPrice() + getPercent(aktie.calcChange(), aktie.getPrice())) + "€ (+" + aktie.calcChange() + "% | Diff. " + calcDiffercence(aktie.getBoughtAmount(1),aktie.getSoldAmount(1)));
             if (aktie.calcChange() <= maxcap && aktie.calcChange() >= mincap) {
-                Debug.debug("Aktie " + aktie.getName() + " changed from " + aktie.getPrice() + "€ to " + (aktie.getPrice() + getPercent(aktie.calcChange(), aktie.getPrice())) + "€");
                 aktie.setPrice(aktie.getPrice() + getPercent(aktie.calcChange(), aktie.getPrice()));
             } else {
                 if (aktie.calcChange() > 0) {
-                    Debug.debug("Aktie " + aktie.getName() + " changed from " + aktie.getPrice() + "€ to " + (aktie.getPrice() + getPercent(maxcap, aktie.getPrice())) + "€");
                     aktie.setPrice(aktie.getPrice() + getPercent(maxcap, aktie.getPrice()));
                 } else {
-                    Debug.debug("Aktie " + aktie.getName() + " changed from " + aktie.getPrice() + "€ to " + (aktie.getPrice() + getPercent(mincap, aktie.getPrice())) + "€");
                     aktie.setPrice(aktie.getPrice() + getPercent(mincap, aktie.getPrice()));
                 }
             }
@@ -303,10 +300,7 @@ public enum Aktie {
 
     private static int calcDiffercence(double oldint, double newint) {
         double result;
-
-        result = newint / oldint;
-        result = result * 100;
-        result = result - 100;
+        result = ((newint - oldint) / oldint) * 100;
         return (int) result;
 
     }

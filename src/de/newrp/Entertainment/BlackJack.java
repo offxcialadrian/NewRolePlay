@@ -31,11 +31,22 @@ public class BlackJack implements CommandExecutor, Listener {
     private static final HashMap<String, Integer> cashier = new HashMap<>();
     private static final HashMap<String, Integer> player = new HashMap<>();
     private static final ArrayList<String> game = new ArrayList<>();
-    private static final String PREFIX = "§8[§6BlackJack§8] §7";
+    private static final HashMap<String, Integer> win = new HashMap<>();
+    private static final String PREFIX = "§8[§6BlackJack§8] §6" + Messages.ARROW + " §7";
 
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
         Player p = (Player) cs;
+        if(Script.getAge(Script.getNRPID(p)) < 18) {
+            p.sendMessage(Messages.ERROR + "Diese Funktion ist für dich aktuell nicht verfügbar.");
+            return true;
+        }
+
+        if(win.containsKey(p.getName()) && win.get(p.getName()) >= 2000) {
+            p.sendMessage(Messages.ERROR + "Du hast heute schon zu viel gewonnen. Versuche es morgen erneut.");
+            return true;
+        }
+
         if (p.getLocation().distance(new Location(Script.WORLD, 790, 109, 858)) < 5) {
             if (!bet.containsKey(p.getName())) {
                 if (args.length == 1) {
@@ -46,10 +57,12 @@ public class BlackJack implements CommandExecutor, Listener {
                                 p.sendMessage(Messages.ERROR + "Du kannst nicht unter 1€ setzen.");
                                 return true;
                             }
-                            if (i > 3000) {
-                                p.sendMessage(Messages.ERROR + "Du kannst nicht mehr als 3000€ setzen.");
+                            if (i > 1000) {
+                                p.sendMessage(Messages.ERROR + "Du kannst nicht mehr als 1000€ setzen.");
                                 return true;
                             }
+                            p.sendMessage(Messages.INFO + "Glücksspiel kann süchtig machen. Spiele verantwortungsbewusst.");
+                            p.sendMessage(Messages.INFO + "Solltest du Hilfe benötigen wende dich an: §6https://www.bzga.de/");
                             bet.put(p.getName(), i);
                             Script.removeMoney(p, PaymentType.CASH, i);
                             cashier.put(p.getName(), Cards.getRandomCard().getValue());
@@ -238,6 +251,7 @@ public class BlackJack implements CommandExecutor, Listener {
         p.sendMessage(PREFIX + "  §8» §6Du§7: §6" + player.get(p.getName()));
         p.sendMessage(PREFIX + "  §8» §6Croupier§7: §6" + cashier.get(p.getName()));
         Script.addMoney(p, PaymentType.CASH, bet.get(p.getName()) * 2);
+        win.put(p.getName(), bet.get(p.getName()) * 2);
         bet.remove(p.getName());
         player.remove(p.getName());
         cashier.remove(p.getName());

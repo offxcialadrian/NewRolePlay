@@ -141,7 +141,7 @@ public class Tragen implements CommandExecutor, Listener {
         return false;
     }
 
-    /*@EventHandler
+    @EventHandler
     public void onSneak(EntityDismountEvent e) {
         if(!(e.getEntity() instanceof Player)) return;
         Player p = (Player) e.getEntity();
@@ -151,11 +151,10 @@ public class Tragen implements CommandExecutor, Listener {
         new BukkitRunnable() {
             @Override
             public void run() {
-                if(!Tragen.tragen.containsKey(tg)) cancel();
                 tg.setPassenger(p);
             }
         }.runTaskLater(de.newrp.main.getInstance(), 5L);
-    }*/
+    }
 
     @EventHandler
     public void onHit(EntityDamageEvent e) {
@@ -171,7 +170,6 @@ public class Tragen implements CommandExecutor, Listener {
         new BukkitRunnable() {
             @Override
             public void run() {
-                if(p.getPassenger() == null) cancel();
                 p.eject();
             }
         }.runTaskLater(de.newrp.main.getInstance(), 5L);
@@ -190,7 +188,6 @@ public class Tragen implements CommandExecutor, Listener {
         new BukkitRunnable() {
             @Override
             public void run() {
-                if(p.getPassenger() == null) cancel();
                 p.eject();
             }
         }.runTaskLater(de.newrp.main.getInstance(), 5L);
@@ -210,7 +207,6 @@ public class Tragen implements CommandExecutor, Listener {
         new BukkitRunnable() {
             @Override
             public void run() {
-                if(p.getPassenger() == null) cancel();
                 p.eject();
             }
         }.runTaskLater(de.newrp.main.getInstance(), 5L);

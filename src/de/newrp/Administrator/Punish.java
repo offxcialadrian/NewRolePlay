@@ -4,6 +4,7 @@ import com.mojang.datafixers.types.templates.Check;
 import de.newrp.API.*;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Forum.Forum;
+import de.newrp.Organisationen.Organisation;
 import de.newrp.TeamSpeak.TeamSpeak;
 import de.newrp.main;
 import org.bukkit.Bukkit;
@@ -85,6 +86,13 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
 
         if (Script.hasRank(tg, Rank.SUPPORTER, false) && !Script.hasRank(p, Rank.ADMINISTRATOR, false)) {
             p.sendMessage(Messages.ERROR + "Du kannst keine Teammitglieder bestrafen.");
+
+            for(Player team : Script.getNRPTeam()) {
+                if(Script.hasRank(team, Rank.ADMINISTRATOR, false)) {
+                    team.sendMessage(AntiCheatSystem.PREFIX + "§c" + Script.getNRPID(p) + " §chat versucht ein Teammitglied zu bestrafen.");
+                }
+            }
+
             return true;
         }
 
@@ -264,7 +272,8 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
                 Log.WARNING.write(tg, "wurde von " + Messages.RANK_PREFIX(p) + " für " + v.getName() + " gebannt.");
                 Log.HIGH.write(p, "hat " + Script.getName(tg) + " für " + v.getName() + " gebannt.");
                 Bukkit.broadcastMessage(Script.PREFIX + "§c" + Script.getName(tg) + " wurde von " + Messages.RANK_PREFIX(p) + " für §l" + v.getName() + "§c gebannt.");
-                Beruf.getBeruf(tg).removeMember(tg);
+                if(Beruf.hasBeruf(tg)) Beruf.getBeruf(tg).removeMember(tg);
+                if(Organisation.hasOrganisation(tg)) Organisation.getOrganisation(tg).removeMember(tg);
             } else {
                 p.sendMessage(PREFIX + "Du hast " + Script.getName(tg) + " bis zum " + dateFormat.format(until) + " Uhr für " + v.getName() + " gebannt.");
                 tg.sendMessage(PREFIX + "Du wurdest von " + Script.getName(p) + " bis zum " + dateFormat.format(until) + " Uhr für " + v.getName() + " gebannt.");
@@ -361,8 +370,8 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
                 Log.WARNING.write(tg, "wurde von " + Script.getName(p) + " für " + v.getName() + " gebannt.");
                 Log.HIGH.write(p, "hat " + tg.getName() + " für " + v.getName() + " gebannt.");
                 Bukkit.broadcastMessage(Script.PREFIX + "§c" + tg.getName() + " wurde von " + Messages.RANK_PREFIX(p) + " für §l" + v.getName() + " §cgebannt.");
-
-                Beruf.getBeruf(tg).removeMember(tg);
+                if(Beruf.hasBeruf(tg)) Beruf.getBeruf(tg).removeMember(tg);
+                if(Organisation.hasOrganisation(tg)) Organisation.getOrganisation(tg).removeMember(tg);
             } else {
                 p.sendMessage(PREFIX + "Du hast " + tg.getName() + " bis zum " + dateFormat.format(until) + " Uhr für " + v.getName() + " gebannt.");
                 Script.sendTeamMessage(p, ChatColor.RED, "hat " + tg.getName() + " bis zum " + dateFormat.format(until) + " Uhr für " + v.getName() + " gebannt.", true);

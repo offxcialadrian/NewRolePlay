@@ -1,6 +1,8 @@
 package de.newrp.Ticket;
 
 import de.newrp.API.*;
+import de.newrp.Administrator.AntiCheatSystem;
+import de.newrp.Administrator.Notications;
 import de.newrp.Administrator.SDuty;
 import de.newrp.Player.AFK;
 import de.newrp.main;
@@ -32,10 +34,10 @@ public class TicketCommand implements CommandExecutor {
     public static void openTicket(Player p) {
         Inventory inv = Bukkit.createInventory(null, InventoryType.HOPPER, "§b§lTicket");
         inv.setItem(0, Script.setNameAndLore(Material.BUCKET, "§6Bug", "§bFehler melden"));
-        inv.setItem(1, Script.setNameAndLore(Material.BOOK, "§6Baufehler", "§bMelde einen Baufehler"));
-        inv.setItem(2, Script.setNameAndLore(Material.ACACIA_SIGN, "§6Frage", "§bAllgemeine Frage"));
-        inv.setItem(3, Script.setNameAndLore(Material.SKELETON_SKULL, "§6Spieler", "§bEinen Spieler melden"));
-        inv.setItem(4, Script.setNameAndLore(Material.COMPASS, "§6Account", "§bProbleme mit deinem Account auf der Plattform"));
+        inv.setItem(1, Script.setNameAndLore(Material.ACACIA_SIGN, "§6Frage", "§bAllgemeine Frage"));
+        inv.setItem(2, Script.setNameAndLore(Material.SKELETON_SKULL, "§6Spieler", "§bEinen Spieler melden"));
+        inv.setItem(3, Script.setNameAndLore(Material.COMPASS, "§6Account", "§bProbleme mit deinem Account auf der Plattform"));
+        inv.setItem(4, Script.setNameAndLore(Material.BOOK, "§6Sonstiges", "§bMelde ein sonstiges Problem"));
         p.openInventory(inv);
     }
 
@@ -359,6 +361,11 @@ public class TicketCommand implements CommandExecutor {
 
         if(Script.isNRPTeam(p)) {
             p.sendMessage(Messages.ERROR + "Teammitglieder können keine Tickets schreiben.");
+            for(Player team : Script.getNRPTeam()) {
+                if(Script.hasRank(team, Rank.ADMINISTRATOR, false)) {
+                    team.sendMessage(AntiCheatSystem.PREFIX + "§c" + Script.getNRPID(p) + " §chat versucht ein Ticket zu schreiben.");
+                }
+            }
             return true;
         }
 

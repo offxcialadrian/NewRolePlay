@@ -49,6 +49,8 @@ public class NaviCommand implements CommandExecutor, TabCompleter {
             p.sendMessage(Messages.INFO + "Bitte beachte, dass du ab Level 3 ein Handy oder eine Stadtkarte benötigst um das Navi zu benutzen.");
         }
 
+        Achievement.NAVI.grant(p);
+
         if (args.length == 0) {
             openDefault(p);
             return true;

@@ -178,7 +178,7 @@ public class PayShop implements Listener {
             Log.NORMAL.write(p, "hat " + si.getName() + " für " + price + "€ gekauft.");
         }
 
-
+        Achievement.EINKAUFEN.grant(p);
 
 
         if(si.isReopen()) BuyClick.reopen(p);

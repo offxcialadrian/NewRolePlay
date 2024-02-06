@@ -98,7 +98,6 @@ public class Tazer implements Listener {
         p.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 10, 1));
         p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 8 * 20, 2));
 
-        Achievement.TAZED.grant(p);
         Me.sendMessage(p, "wurde von " + Script.getName(cop) + " getazert.");
     }
 

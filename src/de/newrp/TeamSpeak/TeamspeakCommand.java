@@ -98,10 +98,8 @@ public class TeamspeakCommand implements CommandExecutor {
                             p.sendMessage(Messages.INFO + "Sicher, dass du auf dem Teamspeak \"newrp.de\" verbunden bist?");
                     } else if (TeamSpeak.UidIsUsed(argument)) {
                         p.sendMessage(TeamSpeak.PREFIX + "§cDiese EindeutigeID ist bereits vergeben.");
-                        p.sendMessage(Messages.INFO + "Du kannst deine Verifikation mit \"/settings -> Teamspeak -> Löschen\" entfernen.");
                     } else if (getVerification(unicaID) != null) {
                         p.sendMessage(TeamSpeak.PREFIX + "§cDu hast dich bereits verifiziert.");
-                        p.sendMessage(Messages.INFO + "Du kannst deine Verifikation mit \"/settings -> Teamspeak -> Löschen\" entfernen.");
                     } else if (!client.getIp().equals(p.getAddress().getAddress().getHostAddress().split(":")[0])) {
                         p.sendMessage(TeamSpeak.PREFIX + "§cDu kannst dich nicht mit diesem Client verifizieren.");
                     } else {

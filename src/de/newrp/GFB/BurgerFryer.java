@@ -37,7 +37,7 @@ public class BurgerFryer implements CommandExecutor, Listener {
         SALAD("Salat", createItem(49122, "§6Salat")),
         ONION("Zwiebel", createItem(33323, "§6Zwiebel")),
         BEEF("Rindfleisch", new ItemBuilder(Material.COOKED_BEEF).setName("§6Rindfleisch").build()),
-        BACON("Bacon", createItem(56, "§6Bacon")),
+        BACON("Bacon", createItem(26, "§6Bacon")),
         FISH("Fisch", new ItemBuilder(Material.TROPICAL_FISH).setName("§6Fisch").build()),
         CUCUMBER("Gurke", createItem(20360, "§6Gurke")),
         BBQ_SAUCE("BBQ Sauce", createItem(4188, "§6BBQ Sauce")),

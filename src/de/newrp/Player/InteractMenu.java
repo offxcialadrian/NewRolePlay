@@ -231,6 +231,7 @@ public class InteractMenu implements Listener {
                 }
                 p.openInventory(inv2);
                 Me.sendMessage(p, "durchsucht " + Script.getName(tg) + ".");
+                p.sendMessage(Messages.INFO + "Du hast " + Script.getMoney(tg, PaymentType.CASH) + "€ Bargeld gefunden.");
                 break;
             case "Polizeicomputer":
                 Inventory inventory = Bukkit.createInventory(null, 9, "§8[§9Polizeicomputer§8] §9" + Script.getName(tg));

@@ -40,6 +40,7 @@ public class WeatherControl implements CommandExecutor, Listener {
 
         inv.setItem(3, sun);
         inv.setItem(5, rain);
+        Script.fillInv(inv);
         p.openInventory(inv);
 
         return false;

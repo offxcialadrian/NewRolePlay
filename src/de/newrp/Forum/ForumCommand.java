@@ -41,7 +41,7 @@ public class ForumCommand implements CommandExecutor {
                 Script.executeUpdate("INSERT INTO forum (id, forumID) VALUES (" + Script.getNRPID(p) + ", " + rs.getInt("userID") + ")");
                 p.sendMessage(Forum.prefix + "Dein Account ist nun mit dem Forum Account §c" + rs.getString("username") + "§6 verbunden.");
                 Forum.syncPermission(p);
-                Achievement.FORUM_VERIFIKATION.grant(p);
+                Achievement.FORUM.grant(p);
             } else {
                 p.sendMessage(Forum.prefix + "Es wurde kein Forum Account mit dem Namen §c" + Script.getName(p) + "§6 gefunden.");
                 p.sendMessage(Forum.prefix + "Du kannst dir unter https://forum.newrp.de/core/index.php?disclaimer/ einen Account erstellen!");

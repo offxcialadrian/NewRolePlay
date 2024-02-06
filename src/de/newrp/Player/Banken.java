@@ -1,9 +1,6 @@
 package de.newrp.Player;
 
-import de.newrp.API.ItemBuilder;
-import de.newrp.API.Messages;
-import de.newrp.API.PaymentType;
-import de.newrp.API.Script;
+import de.newrp.API.*;
 import de.newrp.main;
 import org.bukkit.*;
 import org.bukkit.command.Command;
@@ -216,6 +213,7 @@ public class Banken implements CommandExecutor, Listener {
                 Script.executeUpdate("UPDATE money SET bank = 0 WHERE nrp_id=" + Script.getNRPID(p));
             }
 
+            Achievement.BANKKONTO.grant(p);
             p.sendMessage(PREFIX + "Du hast die " + bank.getName() + " als deine Bank ausgewählt.");
             p.sendMessage(Messages.INFO + "Um deine Bank zu wechseln, nutze /bank change");
             Script.removeMoney(p, PaymentType.CASH, bank.getEinrichtigungsKosten());

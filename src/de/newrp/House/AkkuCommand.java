@@ -1,7 +1,9 @@
 package de.newrp.House;
 
 import de.newrp.API.Messages;
+import de.newrp.API.Premium;
 import de.newrp.API.Script;
+import de.newrp.Player.Hotel;
 import de.newrp.Player.Mobile;
 import de.newrp.main;
 import org.bukkit.command.Command;
@@ -29,18 +31,18 @@ public class AkkuCommand implements CommandExecutor {
             return true;
         }
 
-        if(!House.isInHouse(p)) {
+        if(!House.isInHouse(p) && !Hotel.isInHotelRoom(p)) {
             p.sendMessage(Messages.ERROR + "Du bist in keinem Haus.");
             return true;
         }
 
         House h = House.getInsideHouse(p);
-        if(h == null) {
+        if(h == null && !Hotel.isInHotelRoom(p)) {
             p.sendMessage(Messages.ERROR + "Du bist in keinem Haus.");
             return true;
         }
 
-        if(!h.isInside(p)) {
+        if(!Hotel.isInHotelRoom(p) && !h.isInside(p)) {
             p.sendMessage(Messages.ERROR + "Du bist nicht in diesem Haus.");
             return true;
         }
@@ -55,20 +57,20 @@ public class AkkuCommand implements CommandExecutor {
                     return;
                 }
 
-                if(!House.isInHouse(p)) {
+                if(!House.isInHouse(p) && !Hotel.isInHotelRoom(p)) {
                     p.sendMessage(AKKU + "Du hast aufgehört, dein Handy aufzuladen.");
                     cancel();
                     return;
                 }
 
                 House h = House.getInsideHouse(p);
-                if(h == null) {
+                if(h == null && !Hotel.isInHotelRoom(p)) {
                     p.sendMessage(AKKU + "Du hast aufgehört, dein Handy aufzuladen.");
                     cancel();
                     return;
                 }
 
-                if(!h.isInside(p)) {
+                if(!h.isInside(p) && !Hotel.isInHotelRoom(p)) {
                     p.sendMessage(AKKU + "Du hast aufgehört, dein Handy aufzuladen.");
                     cancel();
                     return;
@@ -76,8 +78,10 @@ public class AkkuCommand implements CommandExecutor {
 
                 if(Mobile.getPhone(p).getAkku(p) >= Mobile.getPhone(p).getMaxAkku()) {
                     p.sendMessage(AKKU + "Dein Handy ist vollständig aufgeladen.");
-                    House.Mieter m = h.getMieterByID(h.getOwner());
-                    m.setNebenkosten(h, m.getNebenkosten() + Script.getRandom(5, 10));
+                    if (h != null){
+                        House.Mieter m = h.getMieterByID(h.getOwner());
+                        m.setNebenkosten(h, m.getNebenkosten() + Script.getRandom(5, 10));
+                    }
                     cancel();
                     return;
                 }
@@ -97,7 +101,7 @@ public class AkkuCommand implements CommandExecutor {
                 Script.sendActionBar(p, "§eAufladen... §8» §a" + sb);
 
             }
-        }. runTaskTimerAsynchronously(main.getInstance(), 5L, 5L);
+        }. runTaskTimerAsynchronously(main.getInstance(), Premium.hasPremium(p) ? 3L : 5L, Premium.hasPremium(p) ? 3L : 5L);
 
 
         return false;

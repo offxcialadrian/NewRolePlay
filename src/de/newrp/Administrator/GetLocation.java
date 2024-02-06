@@ -3,6 +3,7 @@ package de.newrp.Administrator;
 import de.newrp.API.Messages;
 import de.newrp.API.Rank;
 import de.newrp.API.Script;
+import de.newrp.API.Team;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -27,12 +28,12 @@ public class GetLocation implements CommandExecutor, Listener {
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
         Player p = (Player) cs;
 
-        if(!Script.hasRank(p, Rank.SUPPORTER, false)) {
+        if(!Script.hasRank(p, Rank.SUPPORTER, false) && Team.getTeam(p) != Team.Teams.BAU) {
             p.sendMessage(Messages.NO_PERMISSION);
             return true;
         }
 
-        if(!SDuty.isSDuty(p)) {
+        if(!SDuty.isSDuty(p) && Team.getTeam(p) != Team.Teams.BAU) {
             p.sendMessage(Messages.NO_SDUTY);
             return true;
         }
@@ -56,7 +57,7 @@ public class GetLocation implements CommandExecutor, Listener {
 
 
         p.sendMessage(PREFIX + "Die Position lautet: " + p.getLocation().getBlockX() + "/" + p.getLocation().getBlockY() + "/" + p.getLocation().getBlockZ());
-        if(Script.hasRank(p, Rank.ADMINISTRATOR, false))
+        if(Script.hasRank(p, Rank.ADMINISTRATOR, false) || Script.isInTestMode())
             Script.sendCopyMessage(p, Messages.INFO + "Klicke hier um die Location zu kopieren.", "new Location(Script.WORLD, " + p.getLocation().getBlockX() + ", " + p.getLocation().getBlockY() + ", " + p.getLocation().getBlockZ() + ", " + p.getLocation().getYaw() + "f, " + p.getLocation().getPitch() + "f)", "§aKlicke um die Location zu kopieren.");
 
         return false;

@@ -115,7 +115,7 @@ commands:
     description: open the navi
   ticket:
     description: create a ticket
-    aliases: [ help, report ]
+    aliases: [ help, report, support ]
   acceptticket:
     description: accept a ticket
     aliases: [ at ]

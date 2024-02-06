@@ -265,6 +265,7 @@ public class Annehmen implements CommandExecutor {
             offer.remove(p.getName() + ".house.rent");
             offer.remove(p.getName() + ".house.rent.owner");
             offer.remove(p.getName() + ".house.rent.price");
+            Achievement.HAUS.grant(p);
             Achievement.HOUSE_RENT.grant(p);
         } else {
             p.sendMessage(Messages.ERROR + "Dir wird nichts angeboten.");

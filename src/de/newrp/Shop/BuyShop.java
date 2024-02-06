@@ -74,6 +74,7 @@ public class BuyShop implements CommandExecutor {
                 Stadtkasse.addStadtkasse(shop.getPrice());
                 shop.setOwner(Script.getNRPID(p));
                 p.sendMessage(PREFIX + "Du hast den Shop erfolgreich gekauft.");
+                Achievement.SHOP_OWNER.grant(p);
                 Log.HIGH.write(p.getName() + " hat den Shop " + shop.getPublicName() + " gekauft.");
                 Notications.sendMessage(Notications.NotificationType.SHOP, Script.getName(p) + " hat den Shop " + shop.getPublicName() + " gekauft.");
                 Script.executeAsyncUpdate("DELETE FROM shopprice WHERE shopID = " + shop.getID() + ";");

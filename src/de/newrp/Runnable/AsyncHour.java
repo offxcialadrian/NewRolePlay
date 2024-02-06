@@ -7,9 +7,12 @@ import de.newrp.Berufe.Beruf;
 import de.newrp.Government.Stadtkasse;
 import de.newrp.Organisationen.Organisation;
 import de.newrp.Player.AFK;
+import de.newrp.Player.Hotel;
 import de.newrp.Shop.Shop;
 import de.newrp.Shop.ShopItem;
+import de.newrp.Shop.ShopType;
 import de.newrp.Shop.Shops;
+import de.newrp.main;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -19,27 +22,39 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class AsyncHour extends BukkitRunnable {
 
     @Override
     public void run() {
-
+        Aktie.update();
+        Schwarzmarkt.spawnRandom();
         Hologram.reload();
         for(Shops shop : Shops.values()) {
             if (shop.getOwner() == 0) return;
             int runningcost = 0;
             HashMap<Integer, ItemStack> c = shop.getItems();
-            for (Map.Entry<Integer, ItemStack> n : c.entrySet()) {
-                ItemStack is = n.getValue();
-                if (is == null) {
-                    continue;
+            if(shop.getType() != ShopType.HOTEL) {
+                for (Map.Entry<Integer, ItemStack> n : c.entrySet()) {
+                    ItemStack is = n.getValue();
+                    if (is == null) {
+                        continue;
+                    }
+                    runningcost += 10;
                 }
-                runningcost += 10;
+                if (shop.acceptCard()) runningcost += 20;
+            } else {
+                Hotel.Hotels hotel = Hotel.Hotels.getHotelByShop(shop);
+                assert hotel != null;
+                for(Hotel.Rooms room : hotel.getRentedRooms()) {
+                    runningcost += room.getPrice()/2;
+                }
             }
-            if(shop.acceptCard()) runningcost += 20;
             int totalcost = runningcost + shop.getRent();
             if(shop.getKasse() >= totalcost) {
                 shop.removeKasse(shop.getRunningCost());
@@ -68,8 +83,6 @@ public class AsyncHour extends BukkitRunnable {
             o.addExp(i);
         }
 
-        Aktie.update();
-        Schwarzmarkt.spawnRandom();
 
         for(Player all : Bukkit.getOnlinePlayers()) {
             if(!Script.WORLD.hasStorm()) return;

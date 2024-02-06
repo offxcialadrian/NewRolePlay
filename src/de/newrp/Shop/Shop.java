@@ -266,6 +266,11 @@ public class Shop implements CommandExecutor, Listener {
         }
 
         if(args.length == 1 && args[0].equalsIgnoreCase("karte")) {
+            if(shop.getType() == ShopType.HOTEL) {
+                p.sendMessage(Messages.ERROR + "Hotels bieten automatisch Kartenzahlung an.");
+                return true;
+            }
+
             if(shop.acceptCard()) {
                 p.sendMessage(PREFIX + "Dein Shop akzeptiert bereits Kartenzahlung.");
                 p.sendMessage(Messages.INFO + "Du zahlst auf jede Kartenzahlung eine Gebühr von 2% und Betriebskosten von 20€/Stunde.");
@@ -311,6 +316,11 @@ public class Shop implements CommandExecutor, Listener {
         }
 
         if(args[0].equalsIgnoreCase("sortiment")) {
+            if(shop.getType() == ShopType.HOTEL) {
+                p.sendMessage(Messages.ERROR + "Hotels haben kein Sortiment.");
+                return true;
+            }
+
             Inventory inv = Bukkit.createInventory(null, 9*3, "§7Sortiment " + shop.getPublicName());
             for(ShopItem si : ShopItem.values()) {
                 ItemStack is = si.getItemStack();

@@ -25,7 +25,9 @@ public enum Shops {
     SUPERMARKT(6, "Supermarkt", "Supermarkt", 50000, new Location(Script.WORLD, 640, 68, 861), 200, 600, true, ShopType.SUPERMARKET),
     MUSIK(7, "Musikladen", "Musikladen", 50000, new Location(Script.WORLD, 864, 74, 905), 200, 600, true, ShopType.MUSIC),
     FLOWER(8, "Blumenladen", "Blumenladen", 50000, new Location(Script.WORLD, 866, 74, 950), 200, 600, true, ShopType.FLOWER),
-    APOTHEKE(9, "Apotheke", "Apotheke", 50000, new Location(Script.WORLD, 346, 76, 1079), 200, 600, true, ShopType.PHARMACY);
+    APOTHEKE(9, "Apotheke", "Apotheke", 50000, new Location(Script.WORLD, 346, 76, 1079), 200, 600, true, ShopType.PHARMACY),
+    MOTEL99(10, "Motel99", "Motel99", 50000, new Location(Script.WORLD, 809, 64, 1221, -89.25004f, -1.3500005f), 200, 600, true, ShopType.HOTEL),
+    HOTEL_CALIFORNIA(11, "Hotel California", "Hotel California", 50000, new Location(Script.WORLD, 275, 66, 971, -90.44937f, 4.9502726f), 200, 600, false, ShopType.HOTEL);
 
     private final int id;
     private final String name;

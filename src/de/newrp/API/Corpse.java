@@ -94,6 +94,8 @@ public class Corpse {
                 PlayerConnection p = ((CraftPlayer) on).getHandle().playerConnection;
                 p.sendPacket(destroyPacket);
             }
+
+            Cache.resetScoreboard(player);
         }
     }
 
