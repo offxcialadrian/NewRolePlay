@@ -222,7 +222,7 @@ public class Equip implements CommandExecutor, Listener {
                         return;
                     }
                 }
-                Stadtkasse.removeStadtkasse(stuff.getCost());
+                Stadtkasse.removeStadtkasse(stuff.getCost(), stuff.getName() + " für " + Script.getName(p) + " (" + Beruf.getBeruf(p).getName() + ")");
             } else {
                 stuff.getBeruf().removeKasse(stuff.getCost());
             }

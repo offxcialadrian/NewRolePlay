@@ -205,6 +205,13 @@ public class Utils implements Listener {
                     p.sendMessage(Script.PREFIX + "Du hast die vollständige Kontrolle über das \"Tutorial\". Nute einfach unser Achievement-System um den Server zu erkunden.");
                     p.sendMessage(Messages.INFO + "Nutze §8/§6achievement");
                     p.sendMessage(Messages.INFO + "Beachte bitte, dass wir nicht alles erklären können. Einige Dinge musst du selbst herausfinden. Wir sind aber immer unter §8/§6support §rzu erreichen.");
+                    new BukkitRunnable() {
+                        @Override
+                        public void run() {
+                            p.sendMessage(Messages.INFO + "Die wichtigesten Chatbefehle sind §8/§6s §r(Schreien) und §8/§6w §r(Flüstern).");
+                            p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1.0F, 1.0F);
+                        }
+                    }.runTaskLater(main.getInstance(), 60*20L);
                 }
             }.runTaskLaterAsynchronously(main.getInstance(), 20L);
         }

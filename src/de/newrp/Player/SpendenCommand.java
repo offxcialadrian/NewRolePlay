@@ -47,7 +47,7 @@ public class SpendenCommand implements CommandExecutor {
         }
 
         Script.removeMoney(p, PaymentType.BANK, amount);
-        Stadtkasse.addStadtkasse(amount);
+        Stadtkasse.addStadtkasse(amount, "Spende von " + Script.getName(p), null);
         p.sendMessage(PREFIX + "Du hast " + amount + "€ gespendet.");
         if(amount >= 1000) Beruf.Berufe.GOVERNMENT.sendMessage(PREFIX + Script.getName(p) + " hat der Stadtkasse " + amount + "€ gespendet.");
 

@@ -13,6 +13,9 @@ public class TeamspeakListener extends TS3EventAdapter {
     @Override
     public void onClientJoin(ClientJoinEvent e) {
         Bukkit.getScheduler().runTaskAsynchronously(main.getInstance(), () -> {
+            if(TeamSpeak.isVerified(Script.getNRPID(e.getClientDescription())) && Script.isNRPTeam(Script.getPlayer(e.getClientDescription()))) {
+                TeamSpeak.setName(e.getClientId(), e.getClientDescription());
+            }
             if (!e.getClientDescription().isEmpty()) return;
             TeamSpeak.sendClientMessage(e.getClientId(), "Willkommen " + e.getClientNickname() + ", auf dem Teamspeak von New RolePlay!",
                     "Um dich freizuschalten und den Teamspeak normal nutzen zu können, musst du dich erst einmal verifizieren.",

@@ -47,6 +47,8 @@ public class OOC implements CommandExecutor {
             }
         }
 
+        Chat.handleChatFilter(p, msg);
+
         for(Player all : p.getWorld().getPlayers()) {
             if(all.getLocation().distance(p.getLocation()) > 10) continue;
             all.sendMessage("§c((§lOOC §c" + Script.getName(p) + " §8» §c" + msg + "))");

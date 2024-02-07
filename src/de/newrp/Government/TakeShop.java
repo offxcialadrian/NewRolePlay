@@ -57,7 +57,7 @@ public class TakeShop implements CommandExecutor {
             return true;
         }
 
-        Stadtkasse.removeStadtkasse(shop.getPrice()/2);
+        Stadtkasse.removeStadtkasse(shop.getPrice()/2, "Abkauf des Shops " + shop.getPublicName() + " durch " + Script.getName(p));
         Beruf.Berufe.GOVERNMENT.sendMessage(Shop.PREFIX + "Der Shop " + shop.getPublicName() + " ist nun im Besitz der Stadt.");
         Beruf.Berufe.GOVERNMENT.sendMessage(Messages.INFO + "Das hat die Stadtkasse " + (shop.getPrice()/2) + "€ gekostet.");
         if(Script.getOfflinePlayer(shop.getOwner()).isOnline()) {

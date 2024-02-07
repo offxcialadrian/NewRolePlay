@@ -97,7 +97,7 @@ public class Krankheitstest implements Listener {
             Me.sendMessage(p, "nimmt " + Script.getName(tg) + " Blut ab.");
             p.sendMessage(Messages.INFO + "Bitte warte nun 2 Minuten..");
             tg.damage(2D);
-            Stadtkasse.removeStadtkasse(50);
+            Stadtkasse.removeStadtkasse(50, "Blutabnahme von " + Script.getName(tg) + " durch " + Script.getName(p));
             new BukkitRunnable() {
                 @Override
                 public void run() {

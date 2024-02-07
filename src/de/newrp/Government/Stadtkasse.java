@@ -51,8 +51,11 @@ public class Stadtkasse implements CommandExecutor {
     }
 
 
-    public static void removeStadtkasse(int betrag) {
+    public static void removeStadtkasse(int betrag, String reason) {
+        if(betrag == 0) return;
+        SteuerNotification.sendNotification(reason + " " + Messages.ARROW + " " + -betrag + "€");
         Script.executeAsyncUpdate("UPDATE city SET money = money - " + betrag);
+        Script.executeAsyncUpdate("INSERT INTO stadtkasse (betrag, grund, steuerID, steuerPercentage) VALUES (" + -betrag + ", '" + reason + "', NULL, NULL)");
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -65,8 +68,11 @@ public class Stadtkasse implements CommandExecutor {
         Script.executeAsyncUpdate("UPDATE city SET money = " + betrag);
     }
 
-    public static void addStadtkasse(int betrag) {
+    public static void addStadtkasse(int betrag, String grund, Steuern.Steuer steuer) {
+        if(betrag == 0) return;
+        SteuerNotification.sendNotification(grund + " " + Messages.ARROW + " " + betrag + "€" + (steuer != null ? " (" + steuer.getName() + ")" : ""));
         Script.executeAsyncUpdate("UPDATE city SET money = money + " + betrag);
+        Script.executeAsyncUpdate("INSERT INTO stadtkasse (betrag, grund, steuerID, steuerPercentage) VALUES (" + betrag + ", '" + grund + "', " + steuer.getID() + ", " + steuer.getPercentage() + ")");
         new BukkitRunnable() {
             @Override
             public void run() {

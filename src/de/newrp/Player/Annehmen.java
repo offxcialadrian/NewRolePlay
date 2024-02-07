@@ -184,7 +184,7 @@ public class Annehmen implements CommandExecutor {
 
             Script.removeMoney(p, PaymentType.BANK, price);
             double tax = Steuern.Steuer.SHOP_VERKAUFSSTEUER.getPercentage();
-            Stadtkasse.addStadtkasse((int) Script.getPercent(tax, price));
+            Stadtkasse.addStadtkasse((int) Script.getPercent(tax, price), "Shopverkauf von " + Script.getName(sell) + " an " + Script.getName(p) + " (Shop: " + shop.getPublicName() + ")", Steuern.Steuer.SHOP_VERKAUFSSTEUER);
             int add = price - (int) Script.getPercent(tax, price);
             Notications.sendMessage(Notications.NotificationType.SHOP, "§6" + Script.getName(sell) + "§7 hat §6" + Script.getName(p) + " §7" + (Script.getGender(p) == Gender.MALE ? "seinen" : "ihren") + " Shop §6" + shop.getPublicName() + "§7 für §6" + price + "€ §7verkauft.");
             Script.addMoney(sell, PaymentType.BANK, add);
@@ -210,7 +210,7 @@ public class Annehmen implements CommandExecutor {
             Beruf.Berufe.RETTUNGSDIENST.sendMessage(Rezept.PREFIX + Script.getName(tg) + " hat " + Script.getName(p) + " ein Rezept für " + m.getName() + " ausgestellt.");
             offer.remove(p.getName() + ".rezept");
             offer.remove(p.getName() + ".medikament");
-            Stadtkasse.removeStadtkasse(30);
+            Stadtkasse.removeStadtkasse(30, "Rezeptausstellung an " + Script.getName(p));
             Achievement.REZEPT.grant(p);
 
         } else if(offer.containsKey(p.getName() + ".house.rent")) {

@@ -57,14 +57,14 @@ public class PayDay extends BukkitRunnable {
                 payday += other_salary;
                 p.sendMessage("§8" + Messages.ARROW + " §7Lohnsteuer (GFB) (" + gfb_lohnsteuer + "%): §c-" + (int) Script.getPercent(gfb_lohnsteuer, other_salary) + "€");
                 payday -= (int) Script.getPercent(gfb_lohnsteuer, other_salary);
-                Stadtkasse.addStadtkasse((int) Script.getPercent(gfb_lohnsteuer, other_salary));
+                Stadtkasse.addStadtkasse((int) Script.getPercent(gfb_lohnsteuer, other_salary), "Lohnsteuer (GFB) von " + Script.getName(p) + " erhalten", Steuern.Steuer.GFB_LOHNSTEUER);
 
                 p.sendMessage("§8" + Messages.ARROW + " §7Arbeitslosenversicherung (GFB) (" + arbeitslosenversicherung + "%): §c-" + (int) Script.getPercent(arbeitslosenversicherung, other_salary) + "€");
-                Stadtkasse.addStadtkasse((int) Script.getPercent(arbeitslosenversicherung, other_salary));
+                Stadtkasse.addStadtkasse((int) Script.getPercent(arbeitslosenversicherung, other_salary), "Arbeitslosenversicherung (GFB) von " + Script.getName(p) + " erhalten", Steuern.Steuer.ARBEITSLOSENVERSICHERUNG);
                 payday -= (int) Script.getPercent(arbeitslosenversicherung, other_salary);
 
                 p.sendMessage("§8" + Messages.ARROW + " §7Krankenversicherung (GFB) (" + krankenversicherung + "%): §c-" + (int) Script.getPercent(krankenversicherung, other_salary) + "€");
-                Stadtkasse.addStadtkasse((int) Script.getPercent(krankenversicherung, other_salary));
+                Stadtkasse.addStadtkasse((int) Script.getPercent(krankenversicherung, other_salary), "Krankenversicherung (GFB) von " + Script.getName(p) + " erhalten", Steuern.Steuer.KRANKENVERSICHERUNG);
                 payday -= (int) Script.getPercent(krankenversicherung, other_salary);
             }
 
@@ -89,7 +89,7 @@ public class PayDay extends BukkitRunnable {
                             }
                         }
                     } else {
-                        Stadtkasse.removeStadtkasse(salary);
+                        Stadtkasse.removeStadtkasse(salary, "Gehaltszahlung an " + Script.getName(p) + " von " + Beruf.getBeruf(p).getName());
                     }
                 }
                 if(Beruf.getBeruf(p).hasKasse()) {
@@ -108,16 +108,16 @@ public class PayDay extends BukkitRunnable {
                 }
 
                 p.sendMessage("§8" + Messages.ARROW + " §7Lohnsteuer (" + lohnsteuer + "%): §c-" + (int) Script.getPercent(lohnsteuer, salary) + "€");
-                Stadtkasse.addStadtkasse((int) Script.getPercent(lohnsteuer, salary));
+                Stadtkasse.addStadtkasse((int) Script.getPercent(lohnsteuer, salary), "Lohnsteuer von " + Script.getName(p) + " erhalten", Steuern.Steuer.LOHNSTEUER);
                 payday -= (int) Script.getPercent(lohnsteuer, salary);
 
 
                 p.sendMessage("§8" + Messages.ARROW + " §7Arbeitslosenversicherung (" + arbeitslosenversicherung + "%): §c-" + (int) Script.getPercent(arbeitslosenversicherung, salary) + "€");
-                Stadtkasse.addStadtkasse((int) Script.getPercent(arbeitslosenversicherung, salary));
+                Stadtkasse.addStadtkasse((int) Script.getPercent(arbeitslosenversicherung, salary), "Arbeitslosenversicherung von " + Script.getName(p) + " erhalten", Steuern.Steuer.ARBEITSLOSENVERSICHERUNG);
                 payday -= (int) Script.getPercent(arbeitslosenversicherung, salary);
 
                 p.sendMessage("§8" + Messages.ARROW + " §7Krankenversicherung (" + krankenversicherung + "%): §c-" + (int) Script.getPercent(krankenversicherung, salary) + "€");
-                Stadtkasse.addStadtkasse((int) Script.getPercent(krankenversicherung, salary));
+                Stadtkasse.addStadtkasse((int) Script.getPercent(krankenversicherung, salary), "Krankenversicherung von " + Script.getName(p) + " erhalten", Steuern.Steuer.KRANKENVERSICHERUNG);
                 payday -= (int) Script.getPercent(krankenversicherung, salary);
 
 
@@ -141,17 +141,17 @@ public class PayDay extends BukkitRunnable {
                 }
 
                 p.sendMessage("§8" + Messages.ARROW + " §7Lohnsteuer (" + lohnsteuer + "%): §c-" + (int) Script.getPercent(lohnsteuer, salary) + "€");
-                Stadtkasse.addStadtkasse((int) Script.getPercent(lohnsteuer, salary));
+                Stadtkasse.addStadtkasse((int) Script.getPercent(lohnsteuer, salary), "Lohnsteuer von " + Script.getName(p) + " erhalten", Steuern.Steuer.LOHNSTEUER);
                 payday -= (int) Script.getPercent(lohnsteuer, salary);
 
                 p.sendMessage("§8" + Messages.ARROW + " §7Arbeitslosenversicherung (" + arbeitslosenversicherung + "%): §c-" + (int) Script.getPercent(arbeitslosenversicherung, salary) + "€");
-                Stadtkasse.addStadtkasse((int) Script.getPercent(arbeitslosenversicherung, salary));
+                Stadtkasse.addStadtkasse((int) Script.getPercent(arbeitslosenversicherung, salary), "Arbeitslosenversicherung von " + Script.getName(p) + " erhalten", Steuern.Steuer.ARBEITSLOSENVERSICHERUNG);
                 payday -= (int) Script.getPercent(arbeitslosenversicherung, salary);
             }
 
             if (Arbeitslosengeld.hasArbeitslosengeld(p)) {
                 p.sendMessage("§8" + Messages.ARROW + " §7Arbeitslosengeld: §a+" + Stadtkasse.getArbeitslosengeld() + "€");
-                Stadtkasse.removeStadtkasse(Stadtkasse.getArbeitslosengeld());
+                Stadtkasse.removeStadtkasse(Stadtkasse.getArbeitslosengeld(), "Arbeitslosengeldzahlung an " + Script.getName(p));
                 payday += Stadtkasse.getArbeitslosengeld();
             }
 
@@ -165,7 +165,7 @@ public class PayDay extends BukkitRunnable {
             if (shops > 0) {
                 int tax = (int) (Steuern.Steuer.GEWERBESTEUER.getPercentage())*shops;
                 p.sendMessage("§8" + Messages.ARROW + " §7Gewerbesteuer: §c-" + tax + "€");
-                Stadtkasse.addStadtkasse(tax);
+                Stadtkasse.addStadtkasse(tax, "Gewerbesteuer von " + Script.getName(p) + " erhalten", Steuern.Steuer.GEWERBESTEUER);
                 payday -= tax;
             }
 
@@ -181,7 +181,7 @@ public class PayDay extends BukkitRunnable {
                 int grundsteuer = (int) Steuern.Steuer.GRUNDSTEUER.getPercentage();
                 p.sendMessage("§8" + Messages.ARROW + " §7Grundsteuer für Haus " + house.getID() + ": §c-" + grundsteuer + "€");
                 payday -= grundsteuer;
-                Stadtkasse.addStadtkasse(grundsteuer);
+                Stadtkasse.addStadtkasse(grundsteuer, "Grundsteuer von " + Script.getName(p) + " erhalten", Steuern.Steuer.GRUNDSTEUER);
             }
 
             if(Selfstorage.hasSelfstorage(p)) {
@@ -196,7 +196,7 @@ public class PayDay extends BukkitRunnable {
                 payday -= price;
                 Hotel.Hotels hotel = Hotel.getHotelRoom(p).getHotel();
                 int mehrwertsteur = (int) Steuern.Steuer.MEHRWERTSTEUER.getPercentage();
-                Stadtkasse.addStadtkasse((int) Script.getPercent(mehrwertsteur, price));
+                Stadtkasse.addStadtkasse((int) Script.getPercent(mehrwertsteur, price), "Mehrwertsteuer von " + Script.getName(p) + " erhalten", Steuern.Steuer.MEHRWERTSTEUER);
                 Shops shop = hotel.getShop();
                 shop.addKasse((int) (price-Script.getPercent(mehrwertsteur, price)));
             }
@@ -215,7 +215,7 @@ public class PayDay extends BukkitRunnable {
 
             if (payday > 0) {
                 p.sendMessage("§8" + Messages.ARROW + " §7Einkommenssteuer (" + einkommenssteuer + "%): §c-" + (int) Script.getPercent(einkommenssteuer, payday) + "€");
-                Stadtkasse.addStadtkasse((int) Script.getPercent(einkommenssteuer, payday));
+                Stadtkasse.addStadtkasse((int) Script.getPercent(einkommenssteuer, payday), "Einkommenssteuer von " + Script.getName(p) + " erhalten", Steuern.Steuer.EINKOMMENSSTEUER);
                 payday -= (int) Script.getPercent(einkommenssteuer, payday);
             } else {
                 p.sendMessage("§8" + Messages.ARROW + " §7Einkommenssteuer (" + einkommenssteuer + "%): §c-" + 0 + "€");

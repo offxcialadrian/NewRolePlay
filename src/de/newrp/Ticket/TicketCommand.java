@@ -363,7 +363,7 @@ public class TicketCommand implements CommandExecutor {
             p.sendMessage(Messages.ERROR + "Teammitglieder können keine Tickets schreiben.");
             for(Player team : Script.getNRPTeam()) {
                 if(Script.hasRank(team, Rank.ADMINISTRATOR, false)) {
-                    team.sendMessage(AntiCheatSystem.PREFIX + "§c" + Script.getNRPID(p) + " §chat versucht ein Ticket zu schreiben.");
+                    team.sendMessage(AntiCheatSystem.PREFIX + "§c" + Script.getName(p) + " §chat versucht ein Ticket zu schreiben.");
                 }
             }
             return true;

@@ -65,6 +65,8 @@ public class Schreien implements CommandExecutor {
             Call.sendMessage(p, message);
         }
 
+        Chat.handleChatFilter(p, message);
+
         Notications.sendMessage(Notications.NotificationType.CHAT, "§8[§c" + p.getLevel() + "§8] §7" + Script.getName(p) + " schreit: §7" + message);
         for (Player online : Bukkit.getOnlinePlayers()) {
             double distance = pLoc.distance(online.getLocation());

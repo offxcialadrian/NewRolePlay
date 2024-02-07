@@ -95,7 +95,7 @@ public class Spectate implements CommandExecutor, Listener {
 
             for(Player team : Script.getNRPTeam()) {
                 if(Script.hasRank(team, Rank.ADMINISTRATOR, false)) {
-                    team.sendMessage(AntiCheatSystem.PREFIX + "§c" + Script.getNRPID(p) + " §chat versucht ein Teammitglied zu beobachten.");
+                    team.sendMessage(AntiCheatSystem.PREFIX + "§c" + Script.getName(p) + " §chat versucht ein Teammitglied zu beobachten.");
                 }
             }
 

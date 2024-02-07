@@ -46,6 +46,8 @@ public class Whisper implements CommandExecutor {
             }
         }
 
+        Chat.handleChatFilter(p, message);
+
         Set<String> foundNames = Chat.getMentionedNames(message);
         Location pLoc = p.getLocation();
         String speakWord = "flüstert";

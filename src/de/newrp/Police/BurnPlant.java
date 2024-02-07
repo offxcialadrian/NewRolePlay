@@ -34,6 +34,13 @@ public class BurnPlant implements CommandExecutor {
             return true;
         }
 
+        Plantage plant = Plantage.getNextPlantage(p, 3);
+
+        if (plant == null) {
+            p.sendMessage(Messages.ERROR + "Du bist bei keiner Plantage.");
+            return true;
+        }
+
         List<Player> nearbyCops = p.getNearbyEntities(5, 5, 5)
                 .stream()
                 .filter(ent -> ent instanceof Player)
@@ -49,23 +56,19 @@ public class BurnPlant implements CommandExecutor {
             return true;
         }
 
-        Plantage plant = Plantage.getNextPlantage(p, 3);
 
-        if (plant == null) {
-            p.sendMessage(Messages.ERROR + "Du bist bei keiner Plantage.");
-        } else {
-            plant.burn();
+        plant.burn();
 
-            String typeName = plant.getType().getItem().getName();
-            Beruf.Berufe.POLICE.sendMessage(Plantage.PREFIX + "Beamter " + Script.getName(p) + " hat erfolgreich eine " + typeName + " Plantage verbrannt.");
-            Beruf.Berufe.GOVERNMENT.sendMessage(Plantage.PREFIX + "Beamter " + Script.getName(p) + " hat erfolgreich eine " + typeName + " Plantage verbrannt.");
+        String typeName = plant.getType().getItem().getName();
+        Beruf.Berufe.POLICE.sendMessage(Plantage.PREFIX + "Beamter " + Script.getName(p) + " hat erfolgreich eine " + typeName + " Plantage verbrannt.");
+        Beruf.Berufe.GOVERNMENT.sendMessage(Plantage.PREFIX + "Beamter " + Script.getName(p) + " hat erfolgreich eine " + typeName + " Plantage verbrannt.");
 
-            int exp = Script.getRandom(10, 18);
-            for (Player nearbyCop : nearbyCops) {
-                nearbyCop.sendMessage(Plantage.PREFIX + "Du hast erfolgreich eine " + typeName + " Plant verbrannt.");
-                Script.addEXP(nearbyCop, Script.getRandom(8, 12));
-            }
+        int exp = Script.getRandom(10, 18);
+        for (Player nearbyCop : nearbyCops) {
+            nearbyCop.sendMessage(Plantage.PREFIX + "Du hast erfolgreich eine " + typeName + " Plantage verbrannt.");
+            Script.addEXP(nearbyCop, Script.getRandom(8, 12));
         }
+
 
         return true;
     }

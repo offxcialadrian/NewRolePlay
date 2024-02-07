@@ -516,3 +516,5 @@ commands:
   imker:
     description: view the imker
     aliases: [ imkerei ]
+  steuernotification:
+    description: set your steuernotification

@@ -407,7 +407,7 @@ public class Mobile implements Listener {
 
             p.sendMessage(BreakingNews.BREAKING_NEWS);
             if(!checkedBreakingNews.contains(p.getName())) {
-                Stadtkasse.removeStadtkasse(10);
+                Stadtkasse.removeStadtkasse(10, "Rundfunk");
                 Beruf.Berufe.NEWS.addKasse(10);
                 checkedBreakingNews.add(p.getName());
             }

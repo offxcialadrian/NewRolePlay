@@ -43,7 +43,7 @@ public class RemoveStadtkasse implements CommandExecutor {
             return true;
         }
 
-        Stadtkasse.removeStadtkasse(summe);
+        Stadtkasse.removeStadtkasse(summe, "Entnahme durch " + Messages.RANK_PREFIX(p));
         p.sendMessage(Stadtkasse.PREFIX + "Du hast §6" + summe + "€ §7aus der Stadtkasse entfernt.");
         Script.sendTeamMessage(p, ChatColor.RED, "hat §6" + summe + "€ §7aus der Stadtkasse entfernt.", true);
         Beruf.Berufe.GOVERNMENT.sendMessage(Stadtkasse.PREFIX + "§6" + Messages.RANK_PREFIX(p) + " §7hat §6" + summe + "€ §7aus der Stadtkasse entfernt.");

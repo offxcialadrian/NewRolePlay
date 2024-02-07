@@ -285,7 +285,7 @@ public enum Aktie {
 
     public static void update() {
         for (Aktie aktie : Aktie.values()) {
-            Debug.debug("Aktie " + aktie.getName() + " changed from " + aktie.getPrice() + "€ to " + (aktie.getPrice() + getPercent(aktie.calcChange(), aktie.getPrice())) + "€ (+" + aktie.calcChange() + "% | Diff. " + calcDiffercence(aktie.getBoughtAmount(1),aktie.getSoldAmount(1)));
+            Debug.debug("Aktie " + aktie.getName() + " changed from " + aktie.getPrice() + "€ to " + (aktie.getPrice() + getPercent(aktie.calcChange(), aktie.getPrice())) + "€ (+" + aktie.calcChange() + "% | Diff. " + calcDiffercence(aktie.getBoughtAmount(1),aktie.getSoldAmount(1)) + ")");
             if (aktie.calcChange() <= maxcap && aktie.calcChange() >= mincap) {
                 aktie.setPrice(aktie.getPrice() + getPercent(aktie.calcChange(), aktie.getPrice()));
             } else {

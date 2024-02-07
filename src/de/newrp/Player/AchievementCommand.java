@@ -32,14 +32,14 @@ public class AchievementCommand implements CommandExecutor, Listener {
                 if (ent.getValue()) {
                     inv.setItem(i++, Script.setNameAndLore(Material.DIAMOND, "§6" + ent.getKey().getName(), ent.getKey().getText()));
                 } else {
-                    inv.setItem(i++, Script.setNameAndLore(Material.CHEST, "§9" + ent.getKey().getName(), "§7Noch nicht freigeschaltet."));
+                    inv.setItem(i++, Script.setNameAndLore(Material.CHEST, "§9" + ent.getKey().getName(), ent.getKey().getText()));
                 }
             } else  if (page == 2) {
                 if (ent.getKey().getID() > 27) {
                     if (ent.getValue()) {
                         inv.setItem(i++, Script.setNameAndLore(Material.DIAMOND, "§6" + ent.getKey().getName(), ent.getKey().getText()));
                     } else {
-                        inv.setItem(i++, Script.setNameAndLore(Material.CHEST, "§9" + ent.getKey().getName(), "§7Noch nicht freigeschaltet."));
+                        inv.setItem(i++, Script.setNameAndLore(Material.CHEST, "§9" + ent.getKey().getName(), ent.getKey().getText()));
                     }
                 }
                 if (ent.getKey().getID() == 55) break;

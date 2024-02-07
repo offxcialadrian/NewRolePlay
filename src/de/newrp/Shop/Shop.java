@@ -261,7 +261,7 @@ public class Shop implements CommandExecutor, Listener {
             shop.addLager(100);
             p.sendMessage(PREFIX + "Du hast dein Lager um 100 Lagerplätze erweitert.");
             Notications.sendMessage(Notications.NotificationType.SHOP,  Script.getName(p) + " hat sein Lager um 100 Lagerplätze erweitert. [Shop: " + shop.getPublicName() + "]");
-            Stadtkasse.addStadtkasse((int) Script.getPercent(Steuern.Steuer.MEHRWERTSTEUER.getPercentage(), price));
+            Stadtkasse.addStadtkasse((int) Script.getPercent(Steuern.Steuer.MEHRWERTSTEUER.getPercentage(), price), "Mehrwertsteuer aus dem Verkauf von Lagererweiterung (Shop: " + shop.getPublicName() + ")", Steuern.Steuer.MEHRWERTSTEUER);
             return true;
         }
 
@@ -311,7 +311,7 @@ public class Shop implements CommandExecutor, Listener {
             p.sendMessage(PREFIX + "Du bietest nun Kartenzahlung in deinem Shop an.");
             p.sendMessage(Messages.INFO + "Du zahlst auf jede Kartenzahlung eine Gebühr von 2%");
             Notications.sendMessage(Notications.NotificationType.SHOP,  Script.getName(p) + " bietet nun Kartenzahlung im Shop an. [Shop: " + shop.getPublicName() + "]");
-            Stadtkasse.addStadtkasse((int) Script.getPercent(Steuern.Steuer.MEHRWERTSTEUER.getPercentage(), price));
+            Stadtkasse.addStadtkasse((int) Script.getPercent(Steuern.Steuer.MEHRWERTSTEUER.getPercentage(), price), "Mehrwertsteuer aus dem Verkauf von Kartenzahlung (Shop: " + shop.getPublicName() + ")", Steuern.Steuer.MEHRWERTSTEUER);
             return true;
         }
 
@@ -440,7 +440,7 @@ public class Shop implements CommandExecutor, Listener {
                 }
 
                 s.removeKasse(si.getLicensePrice());
-                Stadtkasse.addStadtkasse((int) Script.getPercent(Steuern.Steuer.MEHRWERTSTEUER.getPercentage(), si.getLicensePrice()));
+                Stadtkasse.addStadtkasse((int) Script.getPercent(Steuern.Steuer.MEHRWERTSTEUER.getPercentage(), si.getLicensePrice()), "Mehrwertsteuer aus dem Verkauf von Lizensierung von " + si.getName() + " (Shop: " + s.getPublicName() + ")", Steuern.Steuer.MEHRWERTSTEUER);
                 p.sendMessage(PREFIX + "Du hast " + si.getName() + " §7in dein Shop-Sortiment aufgenommen.");
                 Notications.sendMessage(Notications.NotificationType.SHOP, Script.getName(p) + " hat " + si.getName() + " §ain sein Shop-Sortiment aufgenommen. [Shop: " + s.getPublicName() + "]");
                 Script.executeAsyncUpdate("INSERT INTO shopprice (amount, price, itemID, shopID) VALUES (" + si.getSize() + ", " + (si.getBuyPrice()+(int) Script.getPercent(30, si.getBuyPrice())) + ", " + si.getID() + ", " + s.getID() + ")");

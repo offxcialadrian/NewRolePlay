@@ -25,6 +25,39 @@ import java.util.stream.Collectors;
 
 public class Chat implements Listener {
 
+    public static String[] Filter = new String[]{
+            "Reallife",
+            "reallife",
+            "Admin",
+            "admin",
+            "oos",
+            "Suppe",
+            "Huan",
+            "huan",
+            "Endsieg",
+            "endsieg",
+            "Hitler",
+            "hitler",
+            "Heil",
+            "heil",
+            "Jude",
+            "jude",
+            "Ritzen",
+            "ritzen",
+            "Akbar",
+            "akbar",
+            "vergasen",
+            "88",
+            "Nazi",
+            "nazi",
+            "Transe",
+            "transe",
+            "Schwuchtel",
+            "schwuchtel",
+            "nigga",
+            "nigger",
+            "niggah"
+    };
     public enum ChatDistance {
         NORMAL("§r", new double[]{10.0, -1.0, -1.0}),
         HIGH("§7", new double[]{20.0, 5.0, -1.0}),
@@ -152,6 +185,8 @@ public class Chat implements Listener {
             }
         }
 
+        handleChatFilter(p, e.getMessage());
+
         if(Call.isOnCall(p)) {
             Call.sendMessage(p, e.getMessage());
         }
@@ -184,5 +219,16 @@ public class Chat implements Listener {
             players.sendMessage("§b§lTICKET §8× §b" + Script.getName(p) + ": " + message);
         }
         Script.executeAsyncUpdate("INSERT INTO ticket_conv (ticketID, sender, message, time) VALUES(" + t.getID() + ", " + Script.getNRPID(p) + ", '" + message + "', " + System.currentTimeMillis() + ")");
+    }
+
+    public static void handleChatFilter(Player p, String msg) {
+        for(String arg : msg.split(" ")) {
+            for(String filter : Filter) {
+                if(arg.equalsIgnoreCase(filter) || arg.startsWith(filter) || arg.endsWith(filter) || arg.contains(filter)) {
+                    Notications.sendMessage(Notications.NotificationType.ADVANCED_ANTI_CHEAT, "Verdacht auf unangebrachtes Chatverhalten bei " + Script.getName(p) + " (Level " + p.getLevel() + ") §8» §c" + msg);
+                    return;
+                }
+            }
+        }
     }
 }

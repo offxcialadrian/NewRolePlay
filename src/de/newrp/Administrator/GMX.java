@@ -2,6 +2,7 @@ package de.newrp.Administrator;
 
 import de.newrp.API.Messages;
 import de.newrp.API.Rank;
+import de.newrp.API.Schwarzmarkt;
 import de.newrp.API.Script;
 import de.newrp.Commands.Test;
 import de.newrp.main;
@@ -39,8 +40,8 @@ public class GMX implements CommandExecutor {
             msg.append(args[i]).append(" ");
         }
 
-        if(Test.smarktID != 0) {
-            NPC npc = CitizensAPI.getNPCRegistry().getById(Test.smarktID);
+        if(Schwarzmarkt.SCHWARZMARKT_ID != 0) {
+            NPC npc = CitizensAPI.getNPCRegistry().getById(Schwarzmarkt.SCHWARZMARKT_ID);
             npc.despawn();
             npc.destroy();
         }

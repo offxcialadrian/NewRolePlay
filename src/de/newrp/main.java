@@ -322,6 +322,7 @@ public class main extends JavaPlugin {
         getCommand("burgerbrater").setExecutor(new BurgerFryer());
         getCommand("strassenwartung").setExecutor(new Strassenwartung());
         getCommand("imker").setExecutor(new Imker());
+        getCommand("steuernotification").setExecutor(new SteuerNotification());
 
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new SDuty(), this);
@@ -417,6 +418,7 @@ public class main extends JavaPlugin {
         pm.registerEvents(new Strassenwartung(), this);
         pm.registerEvents(new Imker(), this);
         pm.registerEvents(new AddHouseDoor(), this);
+        pm.registerEvents(new AchievementCommand(), this);
 
 
         new AsyncHealth().runTaskTimerAsynchronously(this, 120 * 20L, 120 * 20L);

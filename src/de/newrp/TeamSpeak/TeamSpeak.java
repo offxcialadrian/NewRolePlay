@@ -338,8 +338,10 @@ public class TeamSpeak {
     public static void setName(int clientID, String name) {
         Map<ClientProperty, String> properties = new HashMap<>();
         properties.put(ClientProperty.CLIENT_NICKNAME, name);
-        tsApiAsync.editClient(clientID, properties);
+        tsApi.editClient(clientID, properties);
+        Debug.debug("changed name of " + clientID + " to " + name);
     }
+
 
     public static Client getClient(int unicaID) {
         String uniqueID = getVerification(unicaID);

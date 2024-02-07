@@ -132,7 +132,7 @@ public class PayShop implements Listener {
                     Rezept.removeRezept(p, m);
                     p.sendMessage(Messages.INFO + "Deine Krankenversicherung hat die Kosten für das Medikament übernommen.");
                     Script.addMoney(p, PaymentType.BANK, price);
-                    Stadtkasse.removeStadtkasse(price);
+                    Stadtkasse.removeStadtkasse(price, "Kostenübernahme durch Krankenversicherung an " + Script.getName(p));
                 }
                 break;
             case WATER_BUCKET:
@@ -164,7 +164,7 @@ public class PayShop implements Listener {
         Script.removeMoney(p, type, price);
         s.removeLager(si.getSize());
         double mwst = Steuern.Steuer.MEHRWERTSTEUER.getPercentage();
-        Stadtkasse.addStadtkasse((int) Script.getPercent(mwst, price));
+        Stadtkasse.addStadtkasse((int) Script.getPercent(mwst, price), "Mehrwertsteuer aus dem Verkauf von " + si.getName() + " (Shop: " + s.getPublicName() + ")", Steuern.Steuer.MEHRWERTSTEUER);
         int add = price - (int) Script.getPercent(mwst, price) + (type == PaymentType.BANK ? - (int) Script.getPercent(2, price):0);
         if(s.getOwner() > 0) {
             s.addKasse(add);
@@ -173,8 +173,8 @@ public class PayShop implements Listener {
             if (Script.getOfflinePlayer(s.getOwner()).isOnline())
                 Script.sendActionBar(Script.getPlayer(s.getOwner()), Shop.PREFIX + "Dein Shop §6" + s.getPublicName() + " §7hat §6" + (add - si.getBuyPrice()) + "€ §7Gewinn gemacht aus dem Verkauf von §6" + si.getName() + " §7(§6" + price + "€§7)");
         } else {
-            Stadtkasse.addStadtkasse(add);
-            Stadtkasse.removeStadtkasse(si.getBuyPrice());
+            Stadtkasse.addStadtkasse(add, "Gewinn aus dem Verkauf von " + si.getName() + " (Shop: " + s.getPublicName() + ")", null);
+            Stadtkasse.removeStadtkasse(si.getBuyPrice(), "Einkauf von " + si.getName() + " (Shop: " + s.getPublicName() + ")");
             Log.NORMAL.write(p, "hat " + si.getName() + " für " + price + "€ gekauft.");
         }
 

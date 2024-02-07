@@ -1,6 +1,7 @@
 package de.newrp.Runnable;
 
 import de.newrp.API.Debug;
+import de.newrp.API.Schwarzmarkt;
 import de.newrp.API.Script;
 import de.newrp.Commands.Test;
 import de.newrp.GFB.GFB;
@@ -45,8 +46,9 @@ public class SyncMinute extends BukkitRunnable {
                 }
             }
 
-            if(Test.smarktID != 0) {
-                NPC npc = CitizensAPI.getNPCRegistry().getById(Test.smarktID);
+
+            if(Schwarzmarkt.SCHWARZMARKT_ID != 0) {
+                NPC npc = CitizensAPI.getNPCRegistry().getById(Schwarzmarkt.SCHWARZMARKT_ID);
                 npc.despawn();
                 npc.destroy();
             }

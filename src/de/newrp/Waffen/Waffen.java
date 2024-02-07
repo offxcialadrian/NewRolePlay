@@ -235,23 +235,13 @@ public class Waffen implements Listener {
         direction.setYaw(direction.getYaw() + (Script.getRandom(1, 2) == 1 ? recoil : -recoil));
         direction.setPitch(direction.getPitch() + (Script.getRandom(1, 2) == 1 ? recoil : -recoil));
         Arrow a = p.launchProjectile(Arrow.class);
-        if(!AimBot.aimbot.contains(p)) {
-            a.setCustomName(w.getName());
-            a.setGravity(false);
-            a.setBounce(false);
-            a.setInvulnerable(false);
-            a.setPickupStatus(AbstractArrow.PickupStatus.CREATIVE_ONLY);
-            a.setShooter(p);
-            a.setVelocity(direction.getDirection().multiply(4));
-        } else {
-            a.setCustomName(w.getName());
-            a.setGravity(false);
-            a.setBounce(false);
-            a.setInvulnerable(false);
-            a.setPickupStatus(AbstractArrow.PickupStatus.CREATIVE_ONLY);
-            a.setShooter(p);
-            a.setVelocity(p.getLocation().toVector().subtract(a.getLocation().toVector()).normalize().multiply(2.0));
-        }
+        a.setCustomName(w.getName());
+        a.setGravity(false);
+        a.setBounce(false);
+        a.setInvulnerable(false);
+        a.setPickupStatus(AbstractArrow.PickupStatus.CREATIVE_ONLY);
+        a.setShooter(p);
+        a.setVelocity(direction.getDirection().multiply(4));
     }
 
     public boolean canUseOtherWeapon(Player p, Weapon current) {

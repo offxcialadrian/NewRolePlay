@@ -214,7 +214,7 @@ public class Erstattung implements CommandExecutor {
                 if(args[1].equalsIgnoreCase("annehmen")) {
                     Script.executeAsyncUpdate("DELETE FROM erstattung WHERE aktenzeichen = '" + aktenzeichen + "'");
                     Beruf.Berufe.GOVERNMENT.sendMessage(Vertrag.PREFIX + "§6" + Script.getName(p) + " hat eine Erstattung in Höhe von " + getErstattungByAktenzeichen(aktenzeichen) + "€ an " + (Script.getOfflinePlayer(getErstattungForByAktenzeichen(aktenzeichen))).getName() + " genehmigt.");
-                    Stadtkasse.removeStadtkasse(getErstattungByAktenzeichen(aktenzeichen));
+                    Stadtkasse.removeStadtkasse(getErstattungByAktenzeichen(aktenzeichen), "Erstattung an " + (Script.getOfflinePlayer(getErstattungForByAktenzeichen(aktenzeichen))).getName() + " (Vertrag: " + v.getID() + ")");
                     Script.addMoney(getErstattungForByAktenzeichen(aktenzeichen), PaymentType.BANK, getErstattungByAktenzeichen(aktenzeichen));
                     if(Script.getOfflinePlayer(getErstattungForByAktenzeichen(aktenzeichen)) != null) {
                         Script.getPlayer(getErstattungForByAktenzeichen(aktenzeichen)).sendMessage(Vertrag.PREFIX + "Deine Erstattung wurde genehmigt.");
