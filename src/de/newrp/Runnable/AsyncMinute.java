@@ -10,6 +10,7 @@ import de.newrp.Player.AFK;
 import de.newrp.Player.Mobile;
 import de.newrp.Player.SMSCommand;
 import de.newrp.Player.UBahn;
+import de.newrp.Votifier.VoteShop;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.Bukkit;
@@ -39,7 +40,6 @@ public class AsyncMinute extends BukkitRunnable {
             "§8[§cWerbung§8] §c" + Messages.ARROW + " §7Der Beste 10er im Monat! Kaufe dir §bPremium §7und erhalte viele Vorteile!",
             "§8[§cWerbung§8] §c" + Messages.ARROW + " §7Kennst du schon unseren TikTok Account?: §chttps://www.tiktok.com/@newroleplay/"};
 
-    int i = 0;
 
     @Override
     public void run() {
@@ -114,7 +114,7 @@ public class AsyncMinute extends BukkitRunnable {
         }
 
 
-        if(i == 5) {
+        if(Calendar.getInstance().get(Calendar.MINUTE) % 5 == 0) {
             for(Entity e : Script.WORLD.getEntities()) {
                 if(e instanceof Player) continue;
                 if(e instanceof Item && ((Item) e).getItemStack().getType() == Material.PLAYER_HEAD) continue;
@@ -124,8 +124,15 @@ public class AsyncMinute extends BukkitRunnable {
                 if(e.getEntityId() == CitizensAPI.getNPCRegistry().getById(Schwarzmarkt.SCHWARZMARKT_ID).getEntity().getEntityId()) continue;
                 e.remove();
             }
-        } else
-            i++;
+        }
+
+        if(Calendar.getInstance().get(Calendar.MINUTE) % 10 == 0) {
+            for(Player p : Bukkit.getOnlinePlayers()) {
+                if(Vote.hasVotedToday(Script.getNRPID(p))) continue;
+                p.sendMessage("§8[§6VoteShop§8]§6 " + Messages.ARROW + " §7Vote für uns und erhalte tolle Belohnungen: §8/§6vote");
+                Script.sendActionBar(p, "§8[§6VoteShop§8]§6 " + Messages.ARROW + " §7Vote für uns und erhalte tolle Belohnungen: §8/§6vote");
+            }
+        }
 
 
         for (Player p : Bukkit.getOnlinePlayers()) {

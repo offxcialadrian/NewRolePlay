@@ -10,8 +10,8 @@
     <orderEntry type="library" name="spigot-1.16.5" level="project" />
     <orderEntry type="library" name="ProtocolLib (1)" level="project" />
     <orderEntry type="library" name="VehiclesPlus v3 PRE4" level="project" />
-    <orderEntry type="library" name="votifier-1.9" level="project" />
     <orderEntry type="library" name="HeadDatabase-4.18.3" level="project" />
     <orderEntry type="library" name="Citizens-2.0.33-b3314" level="project" />
+    <orderEntry type="library" name="nuvotifier" level="project" />
   </component>
 </module>

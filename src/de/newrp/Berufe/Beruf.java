@@ -173,7 +173,7 @@ public class Beruf {
         public List<OfflinePlayer> getAllMembers() {
             List<OfflinePlayer> list = new ArrayList<>();
             try (Statement stmt = main.getConnection().createStatement();
-                 ResultSet rs = stmt.executeQuery("SELECT * FROM berufe WHERE berufID='" + this.id + "' ORDER BY abteilung ASC")) {
+                 ResultSet rs = stmt.executeQuery("SELECT * FROM berufe WHERE berufID='" + this.id + "' ORDER BY abteilung DESC")) {
                 if (rs.next()) {
                     do {
                         list.add(Script.getOfflinePlayer(rs.getInt("nrp_id")));

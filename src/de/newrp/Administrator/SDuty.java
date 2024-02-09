@@ -17,6 +17,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scoreboard.ScoreboardManager;
 import org.bukkit.scoreboard.*;
 
@@ -54,6 +55,15 @@ public class SDuty implements CommandExecutor, Listener {
         }
 
         setSDuty(p);
+        long time = System.currentTimeMillis();
+        Long lastUsage = AFK.lastDmg.get(p.getName());
+        if (lastUsage != null && lastUsage + 15 * 1000 > time) {
+            for(Player team : Script.getNRPTeam()) {
+                if(Script.hasRank(team, Rank.ADMINISTRATOR, false)) {
+                    team.sendMessage(AntiCheatSystem.PREFIX + "§cVerdacht auf Supporter-Dienst Missbrauch bei " + Script.getName(p) + " (Supporter-Dienst nach Schaden)");
+                }
+            }
+        }
 
         return false;
     }

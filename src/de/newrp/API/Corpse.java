@@ -54,13 +54,11 @@ public class Corpse {
             Field poseField = Entity.class.getDeclaredField("POSE");
             poseField.setAccessible(true);
             DataWatcherObject<EntityPose> POSE = (DataWatcherObject<EntityPose>) poseField.get(null);
-            watcher.set(POSE, EntityPose.SLEEPING);
+            watcher.set(POSE, EntityPose.STANDING); // Change to STANDING pose
         } catch (Exception ignored) {
         }
         PacketPlayOutEntity.PacketPlayOutRelEntityMove move = new PacketPlayOutEntity.PacketPlayOutRelEntityMove(
-                entityPlayer.getId(), (byte) 0, (byte) ((player.getLocation()
-                .getY() - 1.7 - player.getLocation().getY()) * 32),
-                (byte) 0, false);
+                entityPlayer.getId(), (byte) 0, (byte) 0, (byte) 0, false); // Set motion to 0
 
         List<Pair<EnumItemSlot, ItemStack>> equipmentList = new ArrayList<>();
         equipmentList.add(new Pair<>(EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(player.getInventory().getHelmet())));
@@ -95,6 +93,11 @@ public class Corpse {
                 p.sendPacket(destroyPacket);
             }
 
+            // Clear the player's scoreboard entry
+            PlayerConnection playerConnection = ((CraftPlayer) player).getHandle().playerConnection;
+            playerConnection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, entityPlayer));
+
+            // Reset the player's scoreboard
             Cache.resetScoreboard(player);
         }
     }
@@ -110,8 +113,7 @@ public class Corpse {
             playerConnection.sendPacket(new PacketPlayOutEntityMetadata(entityPlayer.getId(), watcher, true));
 
             PacketPlayOutEntity.PacketPlayOutRelEntityMove movePacket = new PacketPlayOutEntity.PacketPlayOutRelEntityMove(
-                    entityPlayer.getId(), (byte) 0, (byte) ((newPlayer.getLocation().getY() - 1.7 - newPlayer.getLocation().getY()) * 32),
-                    (byte) 0, false);
+                    entityPlayer.getId(), (byte) 0, (byte) 0, (byte) 0, false);
             playerConnection.sendPacket(movePacket);
         }
     }

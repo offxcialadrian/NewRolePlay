@@ -56,7 +56,7 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
 
         v = Violation.getViolationByArg(args[1]);
 
-        if(v != Violation.SICHERHEITSBANN && v != Violation.SPAM && !Script.hasRank(p, Rank.MODERATOR, false)) {
+        if(v != Violation.SICHERHEITSBANN && v != Violation.SPAM && !Script.hasRank(p, Rank.MODERATOR, true)) {
             p.sendMessage(Messages.NO_PERMISSION);
             return true;
         }
@@ -352,7 +352,7 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
             Checkpoints.setCheckpoints(tg, checkpoints, true);
             Log.WARNING.write(p, "hat " + Script.getName(tg) + " zu " + checkpoints + " Checkpoints eingesperrt.");
             Log.HIGH.write(tg, "wurde von " + tg.getName() + " zu " + checkpoints + " Checkpoints eingesperrt.");
-            Bukkit.broadcastMessage(Script.PREFIX + "§c" + Script.getName(tg) + " wurde von " + Messages.RANK_PREFIX(p) +  " wegen " + v.getName() + " zu " + v.getCheckpoints() + " Checkpoints eingesperrt.");
+            Bukkit.broadcastMessage(Script.PREFIX + "§c" + Script.getName(tg) + " wurde von " + Messages.RANK_PREFIX(p) +  " wegen §l" + v.getName() + "§c zu " + v.getCheckpoints() + " Checkpoints eingesperrt.");
             Checkpoints.start(tg, checkpoints);
         }
     }
@@ -442,7 +442,7 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
             Script.executeAsyncUpdate("INSERT INTO checkpoints (id, checkpoints) VALUES (" + Script.getNRPID(tg) + ", " + checkpoints + ") ON DUPLICATE KEY UPDATE checkpoints = checkpoints + " + checkpoints + ";");
             Log.WARNING.write(p, "hat " + tg.getName() + " zu " + checkpoints + " Checkpoints eingesperrt.");
             Log.HIGH.write(tg, "wurde von " + Messages.RANK_PREFIX(p) + " zu " + checkpoints + " Checkpoints eingesperrt.");
-            Bukkit.broadcastMessage(Script.PREFIX + "§c" + tg.getName() + " wurde von " + Messages.RANK_PREFIX(p) +  " wegen " + v.getName() + " zu " + v.getCheckpoints() + " Checkpoints eingesperrt.");
+            Bukkit.broadcastMessage(Script.PREFIX + "§c" + tg.getName() + " wurde von " + Messages.RANK_PREFIX(p) +  " wegen §l" + v.getName() + "§c zu " + v.getCheckpoints() + " Checkpoints eingesperrt.");
         }
     }
 

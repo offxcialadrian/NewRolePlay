@@ -32,7 +32,7 @@ public class Tickets implements CommandExecutor {
             Ticket.Queue q = ent.getValue();
 
             String d = new SimpleDateFormat("dd.MM.yyy HH:mm:ss").format(q.getCreateTime());
-            p.sendMessage("§6§l#" + i + " §r§7|§6 " + q.getReporter().getName() + " §7|§6 Thema§7:§6 " + q.getTicketTopic().getName() + " §7|§6 " + d);
+            Script.sendClickableMessage(p, TicketCommand.PREFIX+ "§6§l#" + i + " §r§7|§6 " + q.getReporter().getName() + " §7|§6 Thema§7:§6 " + q.getTicketTopic().getName() + " §7|§6 " + d, "/acceptticket " + i, "§aKlicke um das Ticket anzunehmen.");
             i++;
         }
 

@@ -67,9 +67,9 @@ public class UBahn {
             return null;
         }
 
-        public static Stops getStopByLocation(Location location) {
+        public static Stops getStopByLocation(Player p) {
             for (Stops stop : values()) {
-                if (stop.getLocation().equals(location)) {
+                if (Script.isInArea(p, stop.getLocationmin(), stop.getLocationmax())) {
                     return stop;
                 }
             }
@@ -108,9 +108,13 @@ public class UBahn {
             }
         }
 
-        Stops currentStop = Stops.getStopByLocation(p.getLocation());
+        Debug.debug(p.getName() + " is in subway");
+
+        Stops currentStop = Stops.getStopByLocation(p);
         if(currentStop == null) return;
         Stops nextStop = currentStop.getNextStop();
+        Debug.debug("Current stop: " + currentStop.getName());
+        Debug.debug("Next stop: " + nextStop.getName());
         p.teleport(nextStop.getLocation());
         p.sendMessage("§8[§eUBahn§8] §e" + Messages.ARROW + " §7Du bist nun an der Haltestelle §6" + nextStop.getName() + "§7.");
         p.sendMessage("§8[§eUBahn§8] §e" + Messages.ARROW + " §7Die nächste Haltestelle ist §6" + nextStop.getNextStop().getName() + "§7.");

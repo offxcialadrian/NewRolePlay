@@ -2,6 +2,7 @@ package de.newrp.Berufe;
 
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
+import de.newrp.Organisationen.Organisation;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -17,6 +18,16 @@ public class MemberCommand implements CommandExecutor {
         Player p = (Player) cs;
 
         if(args.length == 0) {
+
+            if(Organisation.hasOrganisation(p)) {
+                Organisation org = Organisation.getOrganisation(p);
+                p.sendMessage(PREFIX + "Mitglieder von " + org.getName() + ":");
+                for(OfflinePlayer player : org.getAllMembers()) {
+                    p.sendMessage("§8" + Messages.ARROW + " §6" + player.getName() + " §8(§6" + Organisation.getRankName(player) + "§8)" + (player.isOnline()? " §8[§aOnline§8]" : ""));
+                }
+                return true;
+            }
+
             if(!Beruf.hasBeruf(p)) {
                 p.sendMessage(Messages.ERROR + "Du hast keinen Beruf.");
                 return true;
@@ -25,7 +36,7 @@ public class MemberCommand implements CommandExecutor {
             Beruf.Berufe beruf = Beruf.getBeruf(p);
             p.sendMessage(PREFIX + "Mitglieder von " + beruf.getName() + ":");
             for(OfflinePlayer player : beruf.getAllMembers()) {
-                p.sendMessage("§8" + Messages.ARROW + " §6" + player.getName() + " §8(§6" + Beruf.getAbteilung(player).getName() + "§8)");
+                p.sendMessage("§8" + Messages.ARROW + " §6" + player.getName() + " §8(§6" + Beruf.getAbteilung(player).getName() + "§8)" + (player.isOnline()? " §8[§aOnline§8]" : ""));
             }
 
             return true;

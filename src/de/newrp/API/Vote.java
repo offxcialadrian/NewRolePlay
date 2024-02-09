@@ -46,15 +46,15 @@ public class Vote {
             votedPlayers.add(p);
         }
         Player p = votedPlayers.get(ThreadLocalRandom.current().nextInt(votedPlayers.size()));
-        int r = Script.getRandom(1, 5);
+        int r = Script.getRandom(1, 2);
         switch (r) {
             case 1:
                 Bukkit.broadcastMessage("§8[§6Event§8]§6 " + Script.getName(p) + " hat 1 Tag Premium gewonnen!");
-                Premium.addPremium(p, TimeUnit.DAYS.toMillis(1));
+                Premium.addPremiumStorage(p, TimeUnit.DAYS.toMillis(1), true);
                 break;
             case 2:
                 Bukkit.broadcastMessage("§8[§6Event§8]§6 " + Script.getName(p) + " hat 3 Tage Premium gewonnen!");
-                Premium.addPremium(p, TimeUnit.DAYS.toMillis(3));
+                Premium.addPremiumStorage(p, TimeUnit.DAYS.toMillis(3), true);
                 break;
         }
     }

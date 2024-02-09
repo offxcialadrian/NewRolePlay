@@ -3,6 +3,7 @@ package de.newrp.Votifier;
 import com.vexsoftware.votifier.model.Vote;
 import com.vexsoftware.votifier.model.VotifierEvent;
 import de.newrp.API.Achievement;
+import de.newrp.API.Debug;
 import de.newrp.API.Event;
 import de.newrp.API.Script;
 import de.newrp.main;
@@ -16,13 +17,31 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Calendar;
+import java.util.HashMap;
 
 public class VoteListener implements Listener {
+
+    public static HashMap<Integer, Integer> max_votes = new HashMap<>();
     public static void addVote(Vote v) {
         String player = v.getUsername().toLowerCase();
         if (player.contains("votefor_")) {
             player = player.replace("votefor_", "");
         }
+        Debug.debug(player + " voted for nrp");
+
+
+        if(Script.getNRPID(player) == 0) {
+            Script.executeAsyncUpdate("INSERT INTO preReleaseVote (username, timestamp) VALUES ('" + player + "', " + System.currentTimeMillis() + ")");
+            return;
+        }
+
+        if(!max_votes.containsKey(Script.getNRPID(player))) {
+            max_votes.put(Script.getNRPID(player), 1);
+        } else {
+            max_votes.put(Script.getNRPID(player), max_votes.get(Script.getNRPID(player)) + 1);
+            if(max_votes.get(Script.getNRPID(player)) == 2) return;
+        }
+
         int dayOfTheWeek = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
         boolean weekend = dayOfTheWeek == Calendar.FRIDAY || dayOfTheWeek == Calendar.SATURDAY || dayOfTheWeek == Calendar.SUNDAY;
         int day = Calendar.getInstance().get(Calendar.DAY_OF_YEAR);

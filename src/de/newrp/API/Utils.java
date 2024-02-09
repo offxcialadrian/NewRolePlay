@@ -54,7 +54,7 @@ public class Utils implements Listener {
             "/setworldspawn", "/spawnpoint", "/spreadplayers", "/stop", "/stopsound", "/structure", "/summon", "/tag",
             "/teammsg", "/tell", "/tellraw", "/testfor", "/testforblock", "/testforblocks", "/tickingarea", "/time", "/title",
             "/titleraw", "/tm", "/toggledownfall", "/trigger", "/volumearea", "/wb", "/worldborder",
-            "/worldborder", "/wsserver", "/xp", "/ver", "/citizens", "/npc"
+            "/worldborder", "/wsserver", "/xp", "/ver", "/citizens", "/npc", "/vehicle", "/garage"
     };
 
     private static final String[] BLOCKED_COMMANDS_SPECIFIC = new String[]{
@@ -67,6 +67,8 @@ public class Utils implements Listener {
     public static final int WORLD_BORDER_MAX_X = 1055;
     public static final int WORLD_BORDER_MIN_Z = 500;
     public static final int WORLD_BORDER_MAX_Z = 1362;
+
+
 
 
     @EventHandler
@@ -142,9 +144,15 @@ public class Utils implements Listener {
         e.setCancelled(true);
     }
 
+
+
+    @EventHandler
+    public void onBedJoin(PlayerJoinEvent e) {
+        e.getPlayer().setSleepingIgnored(false);
+    }
+
     @EventHandler
     public void onBedEnter(PlayerBedEnterEvent e) {
-        e.getPlayer().setBedSpawnLocation(null);
         e.setCancelled(false);
     }
 
@@ -196,7 +204,7 @@ public class Utils implements Listener {
             Script.registerPlayer(e.getPlayer());
             Script.sendActionBar(e.getPlayer(), "§7Willkommen auf §eNewRP§7!");
             e.getPlayer().sendMessage("§eNew RolePlay" + "§rWillkommen auf §eNewRP§7!");
-            Notications.sendMessage(Notications.NotificationType.REGISTRATION, "§e" + Script.getName(e.getPlayer()) + " §7hat sich auf dem Server registriert §8[§e" + Script.getNRPID(e.getPlayer()) + "§8]");
+            Notications.sendMessage(Notications.NotificationType.REGISTRATION, "§e" + Script.getName(e.getPlayer()) + " §7hat sich auf dem Server registriert §8[§e#" + Script.getNRPID(e.getPlayer()) + "§8]");
             Title.sendTitle(p, 20, 50, 20, "§6Willkommen!", "§7auf §eNewRP§7!");
             Achievement.FIRST_JOIN.grant(p);
             new BukkitRunnable() {

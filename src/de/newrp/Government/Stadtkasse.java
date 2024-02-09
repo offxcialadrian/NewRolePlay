@@ -70,7 +70,7 @@ public class Stadtkasse implements CommandExecutor {
 
     public static void addStadtkasse(int betrag, String grund, Steuern.Steuer steuer) {
         if(betrag == 0) return;
-        SteuerNotification.sendNotification(grund + " " + Messages.ARROW + " " + betrag + "€" + (steuer != null ? " (" + steuer.getName() + ")" : ""));
+        SteuerNotification.sendNotification(grund + " " + Messages.ARROW + " " + betrag + "€" + (steuer != null && !grund.contains(steuer.getName()) ? " (" + steuer.getName() + ")" : ""));
         Script.executeAsyncUpdate("UPDATE city SET money = money + " + betrag);
         Script.executeAsyncUpdate("INSERT INTO stadtkasse (betrag, grund, steuerID, steuerPercentage) VALUES (" + betrag + ", '" + grund + "', " + steuer.getID() + ", " + steuer.getPercentage() + ")");
         new BukkitRunnable() {

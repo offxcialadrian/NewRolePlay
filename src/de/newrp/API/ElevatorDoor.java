@@ -760,7 +760,139 @@ public class ElevatorDoor implements Listener {
                         new Location(Script.WORLD, 349, 83, 1271),
                         new Location(Script.WORLD, 349, 83, 1272),
 
-                }, Elevator.ElevatorAPI.KHN, 1);
+                }, Elevator.ElevatorAPI.KHN, 1),
+        RANKENHAUS_VERWALTUNG_0(17, new Location(Script.WORLD, 353, 79, 1171), // GUI
+                new Location[]{
+                        new Location(Script.WORLD, 352, 79, 1168)}, // Tür öffnen
+                new Location[]{
+                        new Location(Script.WORLD, 353, 81, 1169),
+                        new Location(Script.WORLD, 354, 81, 1169),
+                        new Location(Script.WORLD, 355, 81, 1169),
+                        new Location(Script.WORLD, 356, 81, 1169),
+                        new Location(Script.WORLD, 353, 80, 1169),
+                        new Location(Script.WORLD, 354, 80, 1169),
+                        new Location(Script.WORLD, 355, 80, 1169),
+                        new Location(Script.WORLD, 356, 80, 1169),
+                        new Location(Script.WORLD, 353, 79, 1169),
+                        new Location(Script.WORLD, 354, 79, 1169),
+                        new Location(Script.WORLD, 355, 79, 1169),
+                        new Location(Script.WORLD, 356, 79, 1169),
+                        new Location(Script.WORLD, 353, 78, 1169),
+                        new Location(Script.WORLD, 354, 78, 1169),
+                        new Location(Script.WORLD, 355, 78, 1169),
+                        new Location(Script.WORLD, 356, 78, 1169),
+                }, Elevator.ElevatorAPI.KRANKENHAUS_VERWALTUNG, 0),
+
+
+        KRANKENHAUS_VERWALTUNG_LINKS_0(17, new Location(Script.WORLD, 353, 87, 1171), // GUI
+                new Location[]{
+                        new Location(Script.WORLD, 352, 87, 1168)}, // Tür öffnen
+                new Location[]{
+                        new Location(Script.WORLD, 353, 89, 1169),
+                        new Location(Script.WORLD, 354, 89, 1169),
+                        new Location(Script.WORLD, 355, 89, 1169),
+                        new Location(Script.WORLD, 356, 89, 1169),
+                        new Location(Script.WORLD, 353, 88, 1169),
+                        new Location(Script.WORLD, 354, 88, 1169),
+                        new Location(Script.WORLD, 355, 88, 1169),
+                        new Location(Script.WORLD, 356, 88, 1169),
+                        new Location(Script.WORLD, 353, 87, 1169),
+                        new Location(Script.WORLD, 354, 87, 1169),
+                        new Location(Script.WORLD, 355, 87, 1169),
+                        new Location(Script.WORLD, 356, 87, 1169),
+                        new Location(Script.WORLD, 353, 86, 1169),
+                        new Location(Script.WORLD, 354, 86, 1169),
+                        new Location(Script.WORLD, 355, 86, 1169),
+                        new Location(Script.WORLD, 356, 86, 1169),
+                }, Elevator.ElevatorAPI.KRANKENHAUS_VERWALTUNG, 1),
+
+        KRANKENHAUS_VERWALTUNG_LINKS_1(17, new Location(Script.WORLD, 353, 95, 1171), // GUI
+                new Location[]{
+                        new Location(Script.WORLD, 352, 95, 1168)}, // Tür öffnen
+                new Location[]{
+                        new Location(Script.WORLD, 353, 97, 1169),
+                        new Location(Script.WORLD, 354, 97, 1169),
+                        new Location(Script.WORLD, 355, 97, 1169),
+                        new Location(Script.WORLD, 356, 97, 1169),
+                        new Location(Script.WORLD, 353, 96, 1169),
+                        new Location(Script.WORLD, 354, 96, 1169),
+                        new Location(Script.WORLD, 355, 96, 1169),
+                        new Location(Script.WORLD, 356, 96, 1169),
+                        new Location(Script.WORLD, 353, 95, 1169),
+                        new Location(Script.WORLD, 354, 95, 1169),
+                        new Location(Script.WORLD, 355, 95, 1169),
+                        new Location(Script.WORLD, 356, 95, 1169),
+                        new Location(Script.WORLD, 353, 94, 1169),
+                        new Location(Script.WORLD, 354, 94, 1169),
+                        new Location(Script.WORLD, 355, 94, 1169),
+                        new Location(Script.WORLD, 356, 94, 1169),
+                }, Elevator.ElevatorAPI.KRANKENHAUS_VERWALTUNG, 2),
+        KRANKENHAUS_VERWALTUNG_RECHTS_0(17, new Location(Script.WORLD, 310, 79, 1171), // GUI
+                new Location[]{
+                        new Location(Script.WORLD, 309, 79, 1168)}, // Tür öffnen
+                new Location[]{
+                        new Location(Script.WORLD, 310, 81, 1169),
+                        new Location(Script.WORLD, 311, 81, 1169),
+                        new Location(Script.WORLD, 312, 81, 1169),
+                        new Location(Script.WORLD, 313, 81, 1169),
+                        new Location(Script.WORLD, 310, 80, 1169),
+                        new Location(Script.WORLD, 311, 80, 1169),
+                        new Location(Script.WORLD, 312, 80, 1169),
+                        new Location(Script.WORLD, 314, 80, 1169),
+                        new Location(Script.WORLD, 310, 79, 1169),
+                        new Location(Script.WORLD, 311, 79, 1169),
+                        new Location(Script.WORLD, 312, 79, 1169),
+                        new Location(Script.WORLD, 313, 79, 1169),
+                        new Location(Script.WORLD, 310, 78, 1169),
+                        new Location(Script.WORLD, 311, 78, 1169),
+                        new Location(Script.WORLD, 312, 78, 1169),
+                        new Location(Script.WORLD, 313, 78, 1169),
+                }, Elevator.ElevatorAPI.KRANKENHAUS_VERWALTUNG_LINKS, 0),
+
+        KRANKENHAUS_VERWALTUNG_RECHTS_1(17, new Location(Script.WORLD, 310, 87, 1171), // GUI
+                new Location[]{
+                        new Location(Script.WORLD, 309, 87, 1168)}, // Tür öffnen
+                new Location[]{
+                        new Location(Script.WORLD, 310, 89, 1169),
+                        new Location(Script.WORLD, 311, 89, 1169),
+                        new Location(Script.WORLD, 312, 89, 1169),
+                        new Location(Script.WORLD, 313, 89, 1169),
+                        new Location(Script.WORLD, 310, 88, 1169),
+                        new Location(Script.WORLD, 311, 88, 1169),
+                        new Location(Script.WORLD, 312, 88, 1169),
+                        new Location(Script.WORLD, 314, 88, 1169),
+                        new Location(Script.WORLD, 310, 87, 1169),
+                        new Location(Script.WORLD, 311, 87, 1169),
+                        new Location(Script.WORLD, 312, 87, 1169),
+                        new Location(Script.WORLD, 313, 87, 1169),
+                        new Location(Script.WORLD, 310, 86, 1169),
+                        new Location(Script.WORLD, 311, 86, 1169),
+                        new Location(Script.WORLD, 312, 86, 1169),
+                        new Location(Script.WORLD, 313, 86, 1169),
+                }, Elevator.ElevatorAPI.KRANKENHAUS_VERWALTUNG_LINKS, 1),
+
+        KRANKENHAUS_VERWALTUNG_RECHTS_2(17, new Location(Script.WORLD, 310, 95, 1171), // GUI
+                new Location[]{
+                        new Location(Script.WORLD, 309, 95, 1168)}, // Tür öffnen
+                new Location[]{
+                        new Location(Script.WORLD, 310, 97, 1169),
+                        new Location(Script.WORLD, 311, 97, 1169),
+                        new Location(Script.WORLD, 312, 97, 1169),
+                        new Location(Script.WORLD, 313, 97, 1169),
+                        new Location(Script.WORLD, 310, 96, 1169),
+                        new Location(Script.WORLD, 311, 96, 1169),
+                        new Location(Script.WORLD, 312, 96, 1169),
+                        new Location(Script.WORLD, 314, 96, 1169),
+                        new Location(Script.WORLD, 310, 95, 1169),
+                        new Location(Script.WORLD, 311, 95, 1169),
+                        new Location(Script.WORLD, 312, 95, 1169),
+                        new Location(Script.WORLD, 313, 95, 1169),
+                        new Location(Script.WORLD, 310, 94, 1169),
+                        new Location(Script.WORLD, 311, 94, 1169),
+                        new Location(Script.WORLD, 312, 94, 1169),
+                        new Location(Script.WORLD, 313, 94, 1169),
+                }, Elevator.ElevatorAPI.KRANKENHAUS_VERWALTUNG_LINKS, 2);
+
 
 
         int id;

@@ -1,5 +1,6 @@
 package de.newrp.Votifier;
 
+import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -12,7 +13,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.HashMap;
 
 public class VoteShop implements CommandExecutor {
-    public static final String PREFIX = "§8[§6Voteshop§8]§6 ";
+    public static final String PREFIX = "§8[§6VoteShop§8]§6 " + Messages.ARROW + " §7";
     public static final HashMap<String, Integer> karma = new HashMap<>();
 
     @Override

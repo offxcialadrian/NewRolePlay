@@ -110,11 +110,22 @@ public class Dishwasher implements CommandExecutor, Listener {
         if(!e.getView().getTitle().equals("§6Tellerwäscher")) return;
         e.setCancelled(true);
         if(e.getCurrentItem() == null || e.getCurrentItem().getType().equals(Material.AIR)) return;
-        if(e.getCurrentItem().getType() == Material.BOWL) return;
+        if(e.getCurrentItem().getType() == Material.BOWL) {
+            p.sendMessage(PREFIX + "Du hast den Teller zerbrochen.");
+            p.playSound(p.getLocation(), Sound.BLOCK_ANVIL_LAND, 1, 1);
+            int dish = dishes.get(p.getName());
+            dish--;
+            dishes.put(p.getName(), dish);
+            TOTAL_SCORE.replace(p.getName(), TOTAL_SCORE.get(p.getName())-1);
+            return;
+        }
         Inventory inv = e.getInventory();
         if(e.getCurrentItem().getType() == Material.DIRT) {
             inv.setItem(e.getSlot(), new ItemBuilder(Material.BOWL).setName("§aTeller").build());
             p.openInventory(inv);
+            int dish = dishes.get(p.getName());
+            dish--;
+            dishes.put(p.getName(), dish);
             return;
         }
 
@@ -139,9 +150,9 @@ public class Dishwasher implements CommandExecutor, Listener {
             p.sendMessage(PREFIX + "Du hast alle Teller gewaschen.");
             GFB.CURRENT.remove(p.getName());
             dishes.remove(p.getName());
-            GFB.DISHWASHER.addExp(p, TOTAL_SCORE.get(p.getName())*Script.getRandom(2,3));
-            Script.addEXP(p, GFB.DISHWASHER.getLevel(p) * TOTAL_SCORE.get(p.getName())*Script.getRandom(1, 2));
-            PayDay.addPayDay(p, GFB.DISHWASHER.getLevel(p) * TOTAL_SCORE.get(p.getName())/4);
+            GFB.DISHWASHER.addExp(p, TOTAL_SCORE.get(p.getName()));
+            Script.addEXP(p, GFB.DISHWASHER.getLevel(p) * TOTAL_SCORE.get(p.getName()));
+            PayDay.addPayDay(p, GFB.DISHWASHER.getLevel(p) * TOTAL_SCORE.get(p.getName())/2);
             TOTAL_SCORE.remove(p.getName());
             return;
         }

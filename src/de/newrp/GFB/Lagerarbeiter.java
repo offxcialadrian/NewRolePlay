@@ -287,12 +287,12 @@ public class Lagerarbeiter implements CommandExecutor, Listener {
             p.getInventory().clear();
             Cache.loadInventory(p);
             int amount = SCORE.get(p.getName());
-            if (amount == 1) {
+            if (amount == 0) {
                 GFB.CURRENT.remove(p.getName());
                 p.sendMessage(PREFIX + "§aFertig");
                 SCORE.remove(p.getName());
                 GFB.LAGERARBEITER.addExp(p, GFB.LAGERARBEITER.getLevel(p) * 10);
-                PayDay.addPayDay(p, GFB.LAGERARBEITER.getLevel(p) + TOTAL_SCORE.get(p.getName()));
+                PayDay.addPayDay(p, GFB.LAGERARBEITER.getLevel(p) + (TOTAL_SCORE.get(p.getName())/2));
                 Script.addEXP(p, GFB.LAGERARBEITER.getLevel(p) * Script.getRandom(3, 7));
             } else {
                 SCORE.replace(p.getName(), amount - 1);

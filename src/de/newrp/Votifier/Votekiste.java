@@ -177,19 +177,19 @@ public enum Votekiste {
                 switch (i) {
                     case PREMIUM_1:
                         p.sendMessage(VoteShop.PREFIX + "Du hast 1 Tag Premium gewonnen!");
-                        Premium.addPremium(p, TimeUnit.DAYS.toMillis(1));
+                        Premium.addPremiumStorage(p, TimeUnit.DAYS.toMillis(1), true);
                         break;
                     case PREMIUM_3:
                         p.sendMessage(VoteShop.PREFIX + "Du hast 3 Tage Premium gewonnen!");
-                        Premium.addPremium(p, TimeUnit.DAYS.toMillis(3));
+                        Premium.addPremiumStorage(p, TimeUnit.DAYS.toMillis(3), true);
                         break;
                     case PREMIUM_7:
                         p.sendMessage(VoteShop.PREFIX + "Du hast 7 Tage Premium gewonnen!");
-                        Premium.addPremium(p, TimeUnit.DAYS.toMillis(7));
+                        Premium.addPremiumStorage(p, TimeUnit.DAYS.toMillis(7), true);
                         break;
                     case PREMIUM_14:
                         p.sendMessage(VoteShop.PREFIX + "Du hast 14 Tage Premium gewonnen!");
-                        Premium.addPremium(p, TimeUnit.DAYS.toMillis(14));
+                        Premium.addPremiumStorage(p, TimeUnit.DAYS.toMillis(14), true);
                         break;
                     case CHANGE_TOKEN_PERSO:
                         p.sendMessage(VoteShop.PREFIX + "Du hast 1 ChangeToken (Personalausweis) gewonnen!");

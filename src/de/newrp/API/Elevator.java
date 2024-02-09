@@ -91,7 +91,17 @@ public class Elevator implements Listener {
         }),
         KHN(17, "KHN", new Location[]{
                 new Location(Script.WORLD, 347, 76, 1271, 271.12177f, 3.997005f), // 0
-                new Location(Script.WORLD, 347, 83, 1271, 271.41467f, 4.4470463f)});
+                new Location(Script.WORLD, 347, 83, 1271, 271.41467f, 4.4470463f)}),
+        KRANKENHAUS_VERWALTUNG_LINKS(17, "Krankenhaus-Verwaltung-Rechts", new Location[]{
+                new Location(Script.WORLD, 312, 78, 1171, 180.15894f, 3.9969811f),
+                new Location(Script.WORLD, 312, 86, 1171, 180.09619f, 1.8970591f),
+                new Location(Script.WORLD, 312, 94, 1171, 179.77881f, 1.747122f),
+        }),
+        KRANKENHAUS_VERWALTUNG(17, "Krankenhaus-Verwaltung", new Location[]{
+                new Location(Script.WORLD, 354, 78, 1172, 180.55103f, 2.4001045f),
+                new Location(Script.WORLD, 354, 86, 1171, 181.10797f, 2.6469564f),
+                new Location(Script.WORLD, 354, 94, 1172, 180.05945f, 2.347005f),
+        });
 
         int id;
         String name;

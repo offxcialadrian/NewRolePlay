@@ -13,12 +13,12 @@ import java.util.LinkedHashMap;
 
 public enum Achievement {
     FIRST_JOIN(1, "Willkommen!", "§rEin neuer Bewohner!", 50, null, false),
-    STATS(2, "Statistiken", "§rNutze §8/§6stats um dir deine Statistiken anzusehen", 10, "Du kannst dir deine Statistiken mit §8/§6stats §ransehen.\nHier siehst du wie lange du schon auf dem Server bist, wie viel Bargeld du hast und vieles mehr.\nBeachte, dass du deinen Kontostand nur an einem Bankautomaten sehen kannst.", false),
-    NAVI(3, "Navi", "§rNutze §8/§6navi um dir die Karte anzusehen", 10, "Du kannst dir die Karte mit §8/§6navi §ransehen.\nHier siehst du alle wichtigen Orte und kannst dich schnell zurechtfinden.", false),
+    STATS(2, "Statistiken", "§rNutze §8/§6stats§r um dir deine Statistiken anzusehen", 10, "Du kannst dir deine Statistiken mit §8/§6stats ansehen.\nHier siehst du wie lange du schon auf dem Server bist, wie viel Bargeld du hast und vieles mehr.\nBeachte, dass du deinen Kontostand nur an einem Bankautomaten sehen kannst.", false),
+    NAVI(3, "Navi", "§rNutze §8/§6navi§r um dir die Karte anzusehen", 10, "Du kannst dir die Karte mit §8/§6navi §ransehen.\nHier siehst du alle wichtigen Orte und kannst dich schnell zurechtfinden.", false),
     PERSONALAUSWEIS(4, "Personalausweis", "§rBeantrage dir einen Personalausweis in der Stadthalle.", 10, "Du hast nun einen Personalausweis. Dieser ist wichtig um dich zu identifizieren.", false),
     WAHLEN(5, "Wahlen", "§rJeden 15. eines neuen Quartals finden Wahlen statt. Führe §8/§6regierung §raus um mehr zu erfahren.", 10, "Jeden 15. eines neuen Quartals finden Wahlen statt. Die Regierung legt bspw. die Steuern fest und macht die Budgetplanung der Stadt.", false),
     SCHULE(6, "Gehe zur Schule", "§rGehe zur Schule und lerne etwas", 10, "Du kannst zur Schule gehen und lernen. Hier kannst du dein Wissen erweitern und deine GFB-Jobs leveln.", false),
-    HEALTH(7, "Gesundheit", "§rNutze §8/§6health um dir deine Gesundheit anzusehen", 10, "Du musst dringend auf deine Gesundheit achten!\nDu kannst deine Muskeln im Fitnessstudio steigern.\nAchte immer auf deinen Hunger und trinke genug Wasser.", false),
+    HEALTH(7, "Gesundheit", "§rNutze §8/§6health§r um dir deine Gesundheit anzusehen", 10, "Du musst dringend auf deine Gesundheit achten!\nDu kannst deine Muskeln im Fitnessstudio steigern.\nAchte immer auf deinen Hunger und trinke genug Wasser.", false),
     TEAMSPEAK(8, "TeamSpeak Verbindung", "§rVerbinde dich mit unserem TeamSpeak-Server und folge den Anweisungen des Bots der dich anschreiben wird.", 10, "Du hast dich nun mit dem TeamSpeak verbunden.", false),
     GFB_JOBS(9, "Führe einen GFB-Job aus", "§rSchaue im Navi nach einem GFB-Job und führe ihn aus.", 10, "GFB-Jobs sind der perfekte Einstieg darin Geld zu verdienen.\nArbeite hart und du wirst vielleicht einer der reichsten Spieler", false),
     BANKKONTO(10, "Bankkonto", "§rEröffne ein Bankkonto in der Zentralbank", 10, "Du hast nun ein Bankkonto, du kannst jetzt Geldautomaten nutzen uvm.\nDu verdienst nun auch Geld bei denen GFB-Jobs.", false),

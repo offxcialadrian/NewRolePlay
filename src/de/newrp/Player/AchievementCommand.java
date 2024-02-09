@@ -1,7 +1,9 @@
 package de.newrp.Player;
 
 import de.newrp.API.Achievement;
+import de.newrp.API.Debug;
 import de.newrp.API.Script;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -20,7 +22,8 @@ import java.util.Map;
 
 public class AchievementCommand implements CommandExecutor, Listener {
     public static void open(Player p, int page) {
-        Inventory inv = p.getServer().createInventory(null, 4 * 9, "§6Achievements");
+        Debug.debug("opening page " + page + " for " + p.getName());
+        Inventory inv = Bukkit.createInventory(null, 4 * 9, "§6Achievements");
         HashMap<Achievement, Boolean> map = Achievement.getAchievements(Script.getNRPID(p));
         Iterator<Map.Entry<Achievement, Boolean>> it = map.entrySet().iterator();
         int i = 0;
@@ -63,21 +66,24 @@ public class AchievementCommand implements CommandExecutor, Listener {
     @EventHandler
     public void onClick(InventoryClickEvent e) {
         if (e.getView().getTitle().equals("§6Achievements")) {
-            e.setCancelled(true);
-            e.getView().close();
             Achievement achievement = Achievement.getAchievementByName(ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName()));
-            if(achievement.justExplained()) {
+            if (achievement != null && achievement.justExplained()) {
                 achievement.grant((Player) e.getWhoClicked());
+                e.getView().close();
                 return;
             }
             if (e.getCurrentItem() != null && !e.getCurrentItem().getType().equals(Material.AIR) && e.getCurrentItem().hasItemMeta()) {
+                e.setCancelled(true);
+                e.getView().close();
                 Player p = (Player) e.getWhoClicked();
-                if (e.getCurrentItem().getItemMeta().getDisplayName().equals("§7» §6§lNächste Seite")) {
+                String buttonName = ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName());
+                if (buttonName.equals("Nächste Seite")) {
                     AchievementCommand.open(p, 2);
-                } else if (e.getCurrentItem().getItemMeta().getDisplayName().equals("§7« §6§lVorherige Seite")) {
+                } else if (buttonName.equals("Vorherige Seite")) {
                     AchievementCommand.open(p, 1);
                 }
             }
         }
     }
+
 }

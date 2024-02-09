@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit;
 public enum Aktie {
 
     AEKI(0, "AEKI", 1000),
-    CAFE_AM_X3(1, "wCafe am X3", 1000),
+    CAFE_AM_X3(1, "Cafe am X3", 1000),
     CAFE_STADTHALLE(2, "Cafe Stadthalle", 1000),
     SUPERMARKT_STADTHALLE(3, "Supermarkt Stadthalle", 1000),
     AUTOHAENDLER_STADTHALLE(4, "Autohändler Stadthalle", 1000),
@@ -64,6 +64,7 @@ public enum Aktie {
     }
 
     public void addAktie(Player p, int amount) {
+        Cashflow.addEntry(p, -(amount*this.getPrice()), "Kauf von " + amount + "x " + this.getName() + "-Aktie");
         int id = Script.getNRPID(p);
         long time = System.currentTimeMillis();
         try (Statement stmt = main.getConnection().createStatement();
@@ -84,6 +85,7 @@ public enum Aktie {
     }
 
     public void removeAktie(Player p, int amount) {
+        Cashflow.addEntry(p, (amount*this.getPrice()), "Verkauf von " + amount + "x " + this.getName() + "-Aktie");
         long time = System.currentTimeMillis();
         int id = Script.getNRPID(p);
         try (Statement stmt = main.getConnection().createStatement();

@@ -47,9 +47,6 @@ public class Cache {
             p.getInventory().clear();
             p.getInventory().setContents(inventar.get(p.getName()));
             inventar.remove(p.getName());
-            Debug.debug("inventory loaded for " + Script.getName(p));
-        } else {
-            Debug.debug("no inventory found for " + Script.getName(p));
         }
     }
 

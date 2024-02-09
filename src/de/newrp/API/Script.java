@@ -16,6 +16,7 @@ import de.newrp.Player.Mobile;
 import de.newrp.Player.Passwort;
 import de.newrp.TeamSpeak.TeamSpeak;
 import de.newrp.Ticket.TicketCommand;
+import de.newrp.Votifier.VoteListener;
 import de.newrp.Waffen.Weapon;
 import de.newrp.main;
 import me.arcaniax.hdb.api.HeadDatabaseAPI;
@@ -371,10 +372,22 @@ public class Script {
         return getRank(p).getWeight() >= SUPPORTER.getWeight();
     }
 
-    public static Boolean hasRank(Player p, Rank rank, Boolean allowDesc) {
-        if (allowDesc) {
-            if (getActiveAmountByRank(rank) == 0) {
-                return getRank(p).getWeight() - 50 == rank.getWeight();
+    public static Rank getNextHigherRank(Rank rank) {
+        Rank[] ranks = Rank.values();
+        for (int i = 0; i < ranks.length; i++) {
+            if (ranks[i] == rank) {
+                if (i + 1 < ranks.length) {
+                    return ranks[i + 1];
+                }
+            }
+        }
+        return rank;
+    }
+
+    public static Boolean hasRank(Player p, Rank rank, Boolean allowLower) {
+        if (allowLower) {
+            if (getActiveAmountByRank(getNextHigherRank(rank)) == 0) {
+                return getRank(p).getWeight() >= rank.getWeight() - 50;
             } else {
                 return getRank(p).getWeight() >= rank.getWeight();
             }
@@ -387,10 +400,10 @@ public class Script {
         return s.matches("^(?:[0-9]{1,3}\\.){3}[0-9]{1,3}$");
     }
 
-    public static Boolean hasRank(OfflinePlayer p, Rank rank, Boolean allowDesc) {
-        if (allowDesc) {
-            if (getActiveAmountByRank(rank) == 0) {
-                return getRank(p).getWeight() - 50 == rank.getWeight();
+    public static Boolean hasRank(OfflinePlayer p, Rank rank, Boolean allowLower) {
+        if (allowLower) {
+            if (getActiveAmountByRank(getNextHigherRank(rank)) == 0) {
+                return getRank(p).getWeight() >= rank.getWeight() - 50;
             } else {
                 return getRank(p).getWeight() >= rank.getWeight();
             }
@@ -416,6 +429,7 @@ public class Script {
                 i++;
             }
         }
+        Debug.debug(i + " team members with a higher rank are active.");
         return i;
     }
 
@@ -1209,6 +1223,19 @@ public class Script {
         setMoney(p, PaymentType.CASH, 1500);
         p.sendMessage(Messages.INFO + "Du hast dich erfolgreich registriert.");
         p.sendMessage(Messages.INFO + "Du hast automatisch einen Premium Account für 7 Tage erhalten.");
+
+        if(Script.getPreReleaseVotes(p) > 0) {
+            p.sendMessage(Messages.INFO + "Wir haben bereits " + Script.getPreReleaseVotes(p) + " Stimmen von dir erhalten. Diese werden dir nun gutgeschrieben.");
+            Script.executeUpdate("DELETE FROM pre_release_votes WHERE username='" + p.getName() + "'");
+            int id = Script.getNRPID(p);
+            int points = VoteListener.getVotepoints(id);
+            if (points == -1) {
+                Script.executeUpdate("INSERT INTO vote(id, votepoints, totalvotes) VALUES(" + id + ", " + getPreReleaseVotes(p) + ", " + getPreReleaseVotes(p) + ")");
+            } else {
+                Script.executeUpdate("UPDATE vote SET votepoints=votepoints+" + getPreReleaseVotes(p) + ", totalvotes=totalvotes+" + getPreReleaseVotes(p) + " WHERE id=" + id);
+            }
+        }
+
     }
 
     public static void registerPlayer(OfflinePlayer p) {
@@ -1321,6 +1348,12 @@ public class Script {
             p.sendMessage(Messages.INFO + "Du erhältst als Dankeschön deiner Treue 50 Exp");
             addEXP(p, 50);
         }
+
+        if(getPlayTime(p, true) % 150 == 0 && getPlayTime(p, false) == 0) {
+            p.sendMessage(Messages.INFO + "Du erhältst als Dankeschön deiner 3 Tage Premium");
+            Premium.addPremiumStorage(p, TimeUnit.DAYS.toMillis(3), true);
+        }
+
     }
 
     public static void setLevel(Player p, int level) {
@@ -1377,10 +1410,10 @@ public class Script {
 
     public static void addEXP(Player p, int exp) {
         int id = getNRPID(p);
-        if(main.event == Event.DOUBLE_XP_WEEKEND || main.event == Event.DOUBLE_XP) exp *= 2;
-        p.sendMessage("  §a+" + exp + " Exp!" + (main.event == Event.DOUBLE_XP_WEEKEND || main.event == Event.DOUBLE_XP? " §7(§6§lDOUBLE EXP§7)" : ""));
+        if (main.event == Event.DOUBLE_XP_WEEKEND || main.event == Event.DOUBLE_XP) exp *= 2;
+        p.sendMessage("  §a+" + exp + " Exp!" + (main.event == Event.DOUBLE_XP_WEEKEND || main.event == Event.DOUBLE_XP ? " §7(§6§lDOUBLE EXP§7)" : ""));
         sendActionBar(p, "§a+ " + exp + " Exp!");
-        executeUpdate("UPDATE level SET exp=" + (getExp(p) + exp) + " WHERE id=" + id);
+        executeUpdate("UPDATE level SET exp=" + (getExp(p) + exp) + " WHERE nrp_id=" + id);
         p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1F, 1F);
         int level_cost = getLevelCost(p);
         int current = getExp(p);
@@ -1567,6 +1600,13 @@ public class Script {
         p.spigot().sendMessage(msg1);
     }
 
+    public static void sendLinkMessage(Player p, String msg, String link, String hover) {
+        TextComponent msg1 = new TextComponent(msg);
+        msg1.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, link));
+        msg1.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(hover).create()));
+        p.spigot().sendMessage(msg1);
+    }
+
     public static void sendCopyMessage(Player p, String msg, String copy, String hover) {
         TextComponent msg1 = new TextComponent(msg);
         msg1.setClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, copy));
@@ -1692,6 +1732,18 @@ public class Script {
     public static int getBuiltBlocks(OfflinePlayer p) {
         try (Statement stmt = main.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT COUNT(id) AS total FROM baulog WHERE nrp_id=" + getNRPID(p))) {
+            if (rs.next()) {
+                return rs.getInt("total");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public static int getPreReleaseVotes(OfflinePlayer p) {
+        try (Statement stmt = main.getConnection().createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT COUNT(id) AS total FROM preReleaseVote WHERE username=" + p.getName())) {
             if (rs.next()) {
                 return rs.getInt("total");
             }
