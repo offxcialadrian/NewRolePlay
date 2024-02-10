@@ -127,12 +127,12 @@ public class Jail {
         if (Friedhof.isDead(p)) {
             World w = p.getWorld();
             Location[] locs = locs = new Location[]{new Location(Script.WORLD, 1018, 68, 548, 358.74432f, -1.3718445f)};
-            Location loc = locs[Script.getRandom(0, locs.length - 1)];
+            Location loc = locs[Script.getRandom(0, 0)];
             loc.getChunk().load();
 
             Bukkit.getScheduler().runTaskLater(main.getInstance(), () -> p.teleport(loc), 5);
         } else {
-            p.teleport(new Location(Script.WORLD, 1020, 67, 548, -20.52356f, 11.824921f));
+            p.teleport(new Location(Script.WORLD, 1018, 68, 548, 358.74432f, -1.3718445f));
         }
 
     }

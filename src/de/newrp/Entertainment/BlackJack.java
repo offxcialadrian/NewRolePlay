@@ -170,7 +170,7 @@ public class BlackJack implements CommandExecutor, Listener {
 
         if (nc >= 17 && nc <= pc) {
             int random = Script.getRandom(1, 100);
-            if (random <= 95) {
+            if (random <= 80) {
                 stand(p);
                 return;
             }

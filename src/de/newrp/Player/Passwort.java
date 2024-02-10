@@ -3,7 +3,7 @@ package de.newrp.Player;
 import de.newrp.API.AES;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
-import de.newrp.Administrator.Notications;
+import de.newrp.Administrator.Notifications;
 import de.newrp.main;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -13,11 +13,9 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.*;
 
-import javax.management.Notification;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -179,8 +177,8 @@ public class Passwort implements CommandExecutor, Listener {
             }, 1144L);
             Bukkit.getScheduler().runTaskLater(main.getInstance(), () -> {
                 if (Passwort.isLocked(p)) {
-                    p.kickPlayer("§8» §cNRP × New RolePlay §8┃ §cKICK §8« \n\n§8§m------------------------------\n\n§7Du wurdest vom Server gekickt§8.\n\n§7Grund §8× §eDu hast dein Passwort nicht eingegeben\n\n§7Solltest du dein Passwort vergessen haben, melde dich bitte auf unserem Discord beim Support!\n\n§8§m------------------------------");
-                    Notications.sendMessage(Notications.NotificationType.ADVANCED_ANTI_CHEAT, Script.getName(p) + " wurde vom Server gekickt (Passwort nicht eingegeben).");
+                    p.kickPlayer("§8» §cNRP × New RolePlay §8┃ §cKICK §8« \n\n§8§m------------------------------\n\n§7Du wurdest vom Server gekickt§8.\n\n§7Grund §8× §eDu hast dein Passwort nicht eingegeben\n\n§7Solltest du dein Passwort vergessen haben, melde dich bitte bei unserem Support!\n\n§8§m------------------------------");
+                    Notifications.sendMessage(Notifications.NotificationType.ADVANCED_ANTI_CHEAT, Script.getName(p) + " wurde vom Server gekickt (Passwort nicht eingegeben).");
                 }
             }, 1408L);
         }

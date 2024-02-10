@@ -1,7 +1,7 @@
 package de.newrp.Player;
 
 import de.newrp.API.*;
-import de.newrp.Administrator.Notications;
+import de.newrp.Administrator.Notifications;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Forum.Forum;
 import de.newrp.Government.Stadtkasse;
@@ -104,24 +104,94 @@ public class Annehmen implements CommandExecutor {
 
         } else if(offer.containsKey(p.getName() + ".tasche")) {
             Player tasche = Script.getPlayer(offer.get(p.getName() + ".tasche"));
-            if(tasche == null) {
+            if (tasche == null) {
                 p.sendMessage(Messages.PLAYER_NOT_FOUND);
                 return true;
             }
 
-            if(tasche.getLocation().distance(p.getLocation()) > 5) {
+            if (tasche.getLocation().distance(p.getLocation()) > 5) {
                 p.sendMessage(Messages.ERROR + "Der Spieler ist zu weit entfernt.");
                 return true;
             }
 
 
             Inventory inv = Bukkit.createInventory(null, 36, "§8[§9Tasche§8] §e» §9" + tasche.getName());
-            for(ItemStack is : p.getInventory().getContents()) {
-                if(is == null) continue;
+            for (ItemStack is : p.getInventory().getContents()) {
+                if (is == null) continue;
                 inv.addItem(is);
             }
             p.openInventory(inv);
             offer.remove(p.getName() + ".tasche");
+
+        } else if(offer.containsKey(p.getName() + ".erstehilfeschein")) {
+            Player medic = Script.getPlayer(offer.get(p.getName() + ".erstehilfeschein"));
+            if (medic == null) {
+                p.sendMessage(Messages.PLAYER_NOT_FOUND);
+                return true;
+            }
+
+            if (Script.getMoney(p, PaymentType.CASH) < 250) {
+                p.sendMessage(Messages.ERROR + "Du hast nicht genug Geld für einen Erste-Hilfe-Kurs.");
+                return true;
+            }
+
+            Licenses.ERSTE_HILFE.grant(Script.getNRPID(medic));
+            Script.executeAsyncUpdate("INSERT INTO erste_hilfe (nrp_id, awarded) VALUES (" + Script.getNRPID(medic) + ", " + System.currentTimeMillis() + ");");
+            offer.remove(p.getName() + ".erstehilfeschein");
+
+        } else if(offer.containsKey(p.getName() + ".sellhouse")) {
+            Player seller = Script.getPlayer(offer.get(p.getName() + ".sellhouse"));
+            int price = Integer.parseInt(offer.get(p.getName() + ".sellhouse.price"));
+            int houseID = Integer.parseInt(offer.get(p.getName() + ".sellhouse.house"));
+
+            if (seller == null) {
+                p.sendMessage(Messages.ERROR + "Der Verkäufer ist nicht mehr online.");
+                return true;
+            }
+
+            if (Script.getMoney(p, PaymentType.BANK) < price) {
+                p.sendMessage(Messages.ERROR + "Du hast nicht genug Geld auf deinem Bankkonto.");
+                return true;
+            }
+
+            House house = House.getHouseByID(houseID);
+            if (house == null) {
+                p.sendMessage(Messages.ERROR + "Das Haus existiert nicht mehr.");
+                return true;
+            }
+
+            if (house.getOwner() != Script.getNRPID(seller)) {
+                p.sendMessage(Messages.ERROR + "Der Verkäufer ist nicht mehr der Besitzer des Hauses.");
+                return true;
+            }
+
+            if (house.getOwner() == Script.getNRPID(p)) {
+                p.sendMessage(Messages.ERROR + "Du bist bereits der Besitzer des Hauses.");
+                return true;
+            }
+
+            if (House.getHouses(Script.getNRPID(p)).size() >= SlotLimit.HOUSE.get(Script.getNRPID(p))) {
+                p.sendMessage(Messages.ERROR + "Du hast zuviele Häuser um in noch einem weiteren zu wohnen.");
+                p.sendMessage(Messages.INFO + "Du kannst einen weiteren Hausslot im Shop erwerben.");
+                return true;
+            }
+
+            house.removeMieter(Script.getNRPID(seller));
+            Script.removeMoney(p, PaymentType.BANK, price);
+            Stadtkasse.addStadtkasse((int) Script.getPercent(Steuern.Steuer.HAUSVERKAUFSSTEUER.getPercentage(), price), "Hausverkauf von " + Script.getName(seller) + " an " + Script.getName(p) + " (Haus: " + house.getID() + ")", Steuern.Steuer.HAUSVERKAUFSSTEUER);
+            int add = price - (int) Script.getPercent(Steuern.Steuer.HAUSVERKAUFSSTEUER.getPercentage(), price);
+            Script.addMoney(seller, PaymentType.BANK, add);
+            house.setOwner(Script.getNRPID(p));
+            house.updateSign();
+            house.addMieter(new House.Mieter(p.getName(), houseID, 0, 0), true);
+            p.sendMessage(ACCEPTED + "Du hast das Haus erfolgreich gekauft.");
+            seller.sendMessage(PREFIX + Script.getName(p) + " hat dein Haus " + house.getID() + " gekauft.");
+            Log.HIGH.write(p.getName() + " hat das Haus " + house.getID() + " gekauft.");
+            offer.remove(p.getName() + ".sellhouse");
+            offer.remove(p.getName() + ".sellhouse.seller");
+            offer.remove(p.getName() + ".sellhouse.price");
+            offer.remove(p.getName() + ".sellhouse.house");
+            Achievement.HAUS.grant(p);
 
         } else if(offer.containsKey(p.getName() + ".joinorganisation")) {
             Player leader = Bukkit.getPlayer(offer.get(p.getName() + ".joinorganisation"));
@@ -186,7 +256,7 @@ public class Annehmen implements CommandExecutor {
             double tax = Steuern.Steuer.SHOP_VERKAUFSSTEUER.getPercentage();
             Stadtkasse.addStadtkasse((int) Script.getPercent(tax, price), "Shopverkauf von " + Script.getName(sell) + " an " + Script.getName(p) + " (Shop: " + shop.getPublicName() + ")", Steuern.Steuer.SHOP_VERKAUFSSTEUER);
             int add = price - (int) Script.getPercent(tax, price);
-            Notications.sendMessage(Notications.NotificationType.SHOP, "§6" + Script.getName(sell) + "§7 hat §6" + Script.getName(p) + " §7" + (Script.getGender(p) == Gender.MALE ? "seinen" : "ihren") + " Shop §6" + shop.getPublicName() + "§7 für §6" + price + "€ §7verkauft.");
+            Notifications.sendMessage(Notifications.NotificationType.SHOP, "§6" + Script.getName(sell) + "§7 hat §6" + Script.getName(p) + " §7" + (Script.getGender(p) == Gender.MALE ? "seinen" : "ihren") + " Shop §6" + shop.getPublicName() + "§7 für §6" + price + "€ §7verkauft.");
             Script.addMoney(sell, PaymentType.BANK, add);
             shop.setOwner(Script.getNRPID(p));
             p.sendMessage(ACCEPTED + "Du hast den Shop erfolgreich gekauft.");

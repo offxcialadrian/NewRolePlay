@@ -4,7 +4,7 @@ import de.newrp.API.Friedhof;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.Administrator.AntiCheatSystem;
-import de.newrp.Administrator.Notications;
+import de.newrp.Administrator.Notifications;
 import de.newrp.Administrator.Punish;
 import de.newrp.Call.Call;
 import de.newrp.Player.Passwort;
@@ -194,7 +194,7 @@ public class Chat implements Listener {
         String message = e.getMessage();
         Set<String> foundNames = getMentionedNames(message);
         String speakWord = "sagt";
-        Notications.sendMessage(Notications.NotificationType.CHAT, "§8[§c" + Script.getLevel(p) + "§8] §7" + Script.getName(p) + " sagt: §7" + message);
+        Notifications.sendMessage(Notifications.NotificationType.CHAT, "§8[§c" + Script.getLevel(p) + "§8] §7" + Script.getName(p) + " sagt: §7" + message);
         Script.updateExpBar(p);
         for (Player online : Bukkit.getOnlinePlayers()) {
             double distance = p.getLocation().distance(online.getLocation());
@@ -225,7 +225,7 @@ public class Chat implements Listener {
         for(String arg : msg.split(" ")) {
             for(String filter : Filter) {
                 if(arg.equalsIgnoreCase(filter) || arg.startsWith(filter) || arg.endsWith(filter) || arg.contains(filter)) {
-                    Notications.sendMessage(Notications.NotificationType.ADVANCED_ANTI_CHEAT, "Verdacht auf unangebrachtes Chatverhalten bei " + Script.getName(p) + " (Level " + p.getLevel() + ") §8» §c" + msg);
+                    Notifications.sendMessage(Notifications.NotificationType.ADVANCED_ANTI_CHEAT, "Verdacht auf unangebrachtes Chatverhalten bei " + Script.getName(p) + " (Level " + p.getLevel() + ") §8» §c" + msg);
                     return;
                 }
             }

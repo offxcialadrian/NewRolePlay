@@ -203,8 +203,8 @@ public class ElevatorDoor implements Listener {
                         new Location(Script.WORLD, 683, 92, 912),
                         new Location(Script.WORLD, 684, 92, 912),
                         new Location(Script.WORLD, 682, 91, 912),
-                        new Location(Script.WORLD, 682, 91, 912),
-                        new Location(Script.WORLD, 682, 91, 912),
+                        new Location(Script.WORLD, 683, 91, 912),
+                        new Location(Script.WORLD, 684, 91, 912),
                 }, Elevator.ElevatorAPI.AEKI, 3),
 
         AEKI_ETAGE_4(4, new Location(Script.WORLD, 682, 99, 914),
@@ -761,7 +761,7 @@ public class ElevatorDoor implements Listener {
                         new Location(Script.WORLD, 349, 83, 1272),
 
                 }, Elevator.ElevatorAPI.KHN, 1),
-        RANKENHAUS_VERWALTUNG_0(17, new Location(Script.WORLD, 353, 79, 1171), // GUI
+        KRANKENHAUS_VERWALTUNG_0(17, new Location(Script.WORLD, 353, 79, 1171), // GUI
                 new Location[]{
                         new Location(Script.WORLD, 352, 79, 1168)}, // Tür öffnen
                 new Location[]{
@@ -784,7 +784,7 @@ public class ElevatorDoor implements Listener {
                 }, Elevator.ElevatorAPI.KRANKENHAUS_VERWALTUNG, 0),
 
 
-        KRANKENHAUS_VERWALTUNG_LINKS_0(17, new Location(Script.WORLD, 353, 87, 1171), // GUI
+        KRANKENHAUS_VERWALTUNG_LINKS_1(17, new Location(Script.WORLD, 353, 87, 1171), // GUI
                 new Location[]{
                         new Location(Script.WORLD, 352, 87, 1168)}, // Tür öffnen
                 new Location[]{
@@ -806,7 +806,7 @@ public class ElevatorDoor implements Listener {
                         new Location(Script.WORLD, 356, 86, 1169),
                 }, Elevator.ElevatorAPI.KRANKENHAUS_VERWALTUNG, 1),
 
-        KRANKENHAUS_VERWALTUNG_LINKS_1(17, new Location(Script.WORLD, 353, 95, 1171), // GUI
+        KRANKENHAUS_VERWALTUNG_LINKS_2(17, new Location(Script.WORLD, 353, 95, 1171), // GUI
                 new Location[]{
                         new Location(Script.WORLD, 352, 95, 1168)}, // Tür öffnen
                 new Location[]{
@@ -838,7 +838,7 @@ public class ElevatorDoor implements Listener {
                         new Location(Script.WORLD, 310, 80, 1169),
                         new Location(Script.WORLD, 311, 80, 1169),
                         new Location(Script.WORLD, 312, 80, 1169),
-                        new Location(Script.WORLD, 314, 80, 1169),
+                        new Location(Script.WORLD, 313, 80, 1169),
                         new Location(Script.WORLD, 310, 79, 1169),
                         new Location(Script.WORLD, 311, 79, 1169),
                         new Location(Script.WORLD, 312, 79, 1169),
@@ -860,7 +860,7 @@ public class ElevatorDoor implements Listener {
                         new Location(Script.WORLD, 310, 88, 1169),
                         new Location(Script.WORLD, 311, 88, 1169),
                         new Location(Script.WORLD, 312, 88, 1169),
-                        new Location(Script.WORLD, 314, 88, 1169),
+                        new Location(Script.WORLD, 313, 88, 1169),
                         new Location(Script.WORLD, 310, 87, 1169),
                         new Location(Script.WORLD, 311, 87, 1169),
                         new Location(Script.WORLD, 312, 87, 1169),
@@ -882,7 +882,7 @@ public class ElevatorDoor implements Listener {
                         new Location(Script.WORLD, 310, 96, 1169),
                         new Location(Script.WORLD, 311, 96, 1169),
                         new Location(Script.WORLD, 312, 96, 1169),
-                        new Location(Script.WORLD, 314, 96, 1169),
+                        new Location(Script.WORLD, 313, 96, 1169),
                         new Location(Script.WORLD, 310, 95, 1169),
                         new Location(Script.WORLD, 311, 95, 1169),
                         new Location(Script.WORLD, 312, 95, 1169),
@@ -891,7 +891,135 @@ public class ElevatorDoor implements Listener {
                         new Location(Script.WORLD, 311, 94, 1169),
                         new Location(Script.WORLD, 312, 94, 1169),
                         new Location(Script.WORLD, 313, 94, 1169),
-                }, Elevator.ElevatorAPI.KRANKENHAUS_VERWALTUNG_LINKS, 2);
+                }, Elevator.ElevatorAPI.KRANKENHAUS_VERWALTUNG_LINKS, 2),
+        HGA_0(16, new Location(Script.WORLD, 703, 70, 877), // Haus ggü. Apotheke GUI
+                new Location[]{
+                        new Location(Script.WORLD, 701, 70, 873)}, // Tür öffnen
+                new Location[]{
+                        new Location(Script.WORLD, 702, 71, 874),
+                        new Location(Script.WORLD, 703, 71, 874),
+                        new Location(Script.WORLD, 704, 71, 874),
+                        new Location(Script.WORLD, 702, 70, 874),
+                        new Location(Script.WORLD, 703, 70, 874),
+                        new Location(Script.WORLD, 704, 70, 874),
+                        new Location(Script.WORLD, 702, 70, 874),
+                        new Location(Script.WORLD, 703, 69, 874),
+                        new Location(Script.WORLD, 704, 69, 874),
+                        new Location(Script.WORLD, 704, 69, 874),
+
+                }, Elevator.ElevatorAPI.HGA, 0),
+
+        HGA_1(16, new Location(Script.WORLD, 703, 70, 877), // Haus ggü. Apotheke GUI
+                new Location[]{
+                        new Location(Script.WORLD, 701, 70, 873)}, // Tür öffnen
+                new Location[]{
+                        new Location(Script.WORLD, 702, 80, 874),
+                        new Location(Script.WORLD, 703, 80, 874),
+                        new Location(Script.WORLD, 704, 80, 874),
+                        new Location(Script.WORLD, 702, 79, 874),
+                        new Location(Script.WORLD, 703, 79, 874),
+                        new Location(Script.WORLD, 704, 79, 874),
+                        new Location(Script.WORLD, 702, 78, 874),
+                        new Location(Script.WORLD, 703, 78, 874),
+                        new Location(Script.WORLD, 704, 78, 874),
+
+                }, Elevator.ElevatorAPI.HGA, 1),
+
+        HGA_2(16, new Location(Script.WORLD, 703, 87, 877), // Haus ggü. Apotheke GUI
+                new Location[]{
+                        new Location(Script.WORLD, 701, 87, 873)}, // Tür öffnen
+                new Location[]{
+                        new Location(Script.WORLD, 702, 80, 874),
+                        new Location(Script.WORLD, 703, 80, 874),
+                        new Location(Script.WORLD, 704, 80, 874),
+                        new Location(Script.WORLD, 702, 79, 874),
+                        new Location(Script.WORLD, 703, 79, 874),
+                        new Location(Script.WORLD, 704, 79, 874),
+                        new Location(Script.WORLD, 702, 78, 874),
+                        new Location(Script.WORLD, 703, 78, 874),
+                        new Location(Script.WORLD, 704, 78, 874),
+
+                }, Elevator.ElevatorAPI.HGA, 2),
+
+        HGA_3(16, new Location(Script.WORLD, 703, 87, 877), // Haus ggü. Apotheke GUI
+                new Location[]{
+                        new Location(Script.WORLD, 701, 87, 873)}, // Tür öffnen
+                new Location[]{
+                        new Location(Script.WORLD, 702, 88, 874),
+                        new Location(Script.WORLD, 703, 88, 874),
+                        new Location(Script.WORLD, 704, 88, 874),
+                        new Location(Script.WORLD, 702, 87, 874),
+                        new Location(Script.WORLD, 703, 87, 874),
+                        new Location(Script.WORLD, 704, 87, 874),
+                        new Location(Script.WORLD, 702, 86, 874),
+                        new Location(Script.WORLD, 703, 86, 874),
+                        new Location(Script.WORLD, 704, 86, 874),
+
+                }, Elevator.ElevatorAPI.HGA, 3),
+
+        HGA_4(16, new Location(Script.WORLD, 703, 87, 877), // Haus ggü. Apotheke GUI
+                new Location[]{
+                        new Location(Script.WORLD, 701, 87, 873)}, // Tür öffnen
+                new Location[]{
+                        new Location(Script.WORLD, 702, 96, 874),
+                        new Location(Script.WORLD, 703, 96, 874),
+                        new Location(Script.WORLD, 704, 96, 874),
+                        new Location(Script.WORLD, 702, 95, 874),
+                        new Location(Script.WORLD, 703, 95, 874),
+                        new Location(Script.WORLD, 704, 95, 874),
+                        new Location(Script.WORLD, 702, 94, 874),
+                        new Location(Script.WORLD, 703, 94, 874),
+                        new Location(Script.WORLD, 704, 94, 874),
+
+                }, Elevator.ElevatorAPI.HGA, 4),
+
+        HGA_5(16, new Location(Script.WORLD, 703, 105, 877), // Haus ggü. Apotheke GUI
+                new Location[]{
+                        new Location(Script.WORLD, 701, 105, 873)}, // Tür öffnen
+                new Location[]{
+                        new Location(Script.WORLD, 702, 106, 874),
+                        new Location(Script.WORLD, 703, 106, 874),
+                        new Location(Script.WORLD, 704, 106, 874),
+                        new Location(Script.WORLD, 702, 105, 874),
+                        new Location(Script.WORLD, 703, 105, 874),
+                        new Location(Script.WORLD, 704, 105, 874),
+                        new Location(Script.WORLD, 702, 104, 874),
+                        new Location(Script.WORLD, 703, 104, 874),
+                        new Location(Script.WORLD, 704, 104, 874),
+
+                }, Elevator.ElevatorAPI.HGA, 5),
+
+        HGA_6(16, new Location(Script.WORLD, 703, 114, 877), // Haus ggü. Apotheke GUI
+                new Location[]{
+                        new Location(Script.WORLD, 701, 114, 873)}, // Tür öffnen
+                new Location[]{
+                        new Location(Script.WORLD, 702, 115, 874),
+                        new Location(Script.WORLD, 703, 115, 874),
+                        new Location(Script.WORLD, 704, 115, 874),
+                        new Location(Script.WORLD, 702, 114, 874),
+                        new Location(Script.WORLD, 703, 114, 874),
+                        new Location(Script.WORLD, 704, 114, 874),
+                        new Location(Script.WORLD, 702, 113, 874),
+                        new Location(Script.WORLD, 703, 113, 874),
+                        new Location(Script.WORLD, 704, 113, 874),
+
+                }, Elevator.ElevatorAPI.HGA, 6),
+
+        HGA_7(16, new Location(Script.WORLD, 703, 122, 877), // Haus ggü. Apotheke GUI
+                new Location[]{
+                        new Location(Script.WORLD, 701, 114, 873)}, // Tür öffnen
+                new Location[]{
+                        new Location(Script.WORLD, 702, 123, 874),
+                        new Location(Script.WORLD, 703, 123, 874),
+                        new Location(Script.WORLD, 704, 123, 874),
+                        new Location(Script.WORLD, 702, 122, 874),
+                        new Location(Script.WORLD, 703, 122, 874),
+                        new Location(Script.WORLD, 704, 122, 874),
+                        new Location(Script.WORLD, 702, 121, 874),
+                        new Location(Script.WORLD, 703, 121, 874),
+                        new Location(Script.WORLD, 704, 121, 874),
+
+                }, Elevator.ElevatorAPI.HGA, 7);
 
 
 

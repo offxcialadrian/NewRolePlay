@@ -4,7 +4,6 @@ public enum HouseAddon {
 
     ALARM(1, "Alarmanlage", 9800),
     HAUSKASSE(2, "Hauskasse", 8250),
-    DROGENLAGER(3, "Drogenlager", 17800),
     SLOT(4, "Mieterslot", 2750),
     KUEHLSCHRANK(5, "Kühlschrank", 4950),
     WAFFENSCHRANK(6, "Waffenschrank", 10000);

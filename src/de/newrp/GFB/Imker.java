@@ -57,10 +57,10 @@ public class Imker implements CommandExecutor, Listener {
             return true;
         }
 
-        GFB.CURRENT.put(p.getName(), GFB.DISHWASHER);
+        GFB.CURRENT.put(p.getName(), GFB.IMKER);
         cooldown.put(p.getName(), System.currentTimeMillis() + 10 * 60 * 2000L);
         p.sendMessage(PREFIX + "Du hast den Job angenommen!");
-        int honey = GFB.DISHWASHER.getLevel(p) * Script.getRandom(3, 5);
+        int honey = GFB.IMKER.getLevel(p) * Script.getRandom(3, 5);
         honeys.put(p.getName(), honey);
         TOTAL_SCORE.put(p.getName(), honey);
         p.sendMessage(PREFIX + "Du musst " + honey + "x Honig besorgen.");
@@ -73,6 +73,7 @@ public class Imker implements CommandExecutor, Listener {
     @EventHandler
     public void onInteract2(PlayerInteractEvent e) {
         Player p = e.getPlayer();
+        if(!TOTAL_SCORE.containsKey(p.getName())) return;
         if(e.getAction() != Action.RIGHT_CLICK_BLOCK) return;
         if(e.getClickedBlock().getLocation().distance(new Location(Script.WORLD, 208, 66, 767, 46.838097f, 24.342066f))>30) return;
         if(!e.getClickedBlock().getType().equals(Material.BEE_NEST)) return;

@@ -1,9 +1,11 @@
 name: NewRolePlay
 main: de.newrp.main
-version: BETA
+version: EARLY-ACCESS
 description: NewRP Serversystem
 author: NewRP Entwicklungs-Team
 api-version: 1.16
+loadbefore:
+  - ProtocolLib
 depend: [ ProtocolLib ]
 commands:
   test:
@@ -518,3 +520,18 @@ commands:
     aliases: [ imkerei ]
   steuernotification:
     description: set your steuernotification
+  erstehilfekurs:
+    description: view the erstehilfekurs
+    aliases: [ ehk, erstehilfeschein ]
+  erstehilfe:
+    description: view the erstehilfe
+    aliases: [ eh ]
+  sellhouse:
+    description: sell a house
+    aliases: [ hausverkauf ]
+  leaderchat:
+    description: send a message to the leaderchat
+    aliases: [ l ]
+  waffenschein:
+    description: view the waffenschein
+    aliases: [ waffenscheine ]

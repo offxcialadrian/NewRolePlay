@@ -35,6 +35,7 @@ public class UseDrogen implements Listener {
 
         Player p = e.getPlayer();
         if(p.getInventory().getItemInMainHand() == null) return;
+        if(!p.getInventory().getItemInMainHand().hasItemMeta()) return;
         if(!p.getInventory().getItemInMainHand().getItemMeta().hasDisplayName()) return;
         Drogen droge = Drogen.getItemByName(ChatColor.stripColor(p.getInventory().getItemInMainHand().getItemMeta().getDisplayName()));
         if(droge == null) return;

@@ -3,7 +3,7 @@ package de.newrp.Chat;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.Administrator.AntiCheatSystem;
-import de.newrp.Administrator.Notications;
+import de.newrp.Administrator.Notifications;
 import de.newrp.Administrator.Punish;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -51,7 +51,7 @@ public class Whisper implements CommandExecutor {
         Set<String> foundNames = Chat.getMentionedNames(message);
         Location pLoc = p.getLocation();
         String speakWord = "flüstert";
-        Notications.sendMessage(Notications.NotificationType.CHAT, "§8[§c" + p.getLevel() + "§8] §7" + Script.getName(p) + " flüstert: §7" + message);
+        Notifications.sendMessage(Notifications.NotificationType.CHAT, "§8[§c" + p.getLevel() + "§8] §7" + Script.getName(p) + " flüstert: §7" + message);
         for (Player online : Bukkit.getOnlinePlayers()) {
             double distance = pLoc.distance(online.getLocation());
             if (distance > 8.0D) {

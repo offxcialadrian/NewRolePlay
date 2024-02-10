@@ -101,6 +101,15 @@ public class Elevator implements Listener {
                 new Location(Script.WORLD, 354, 78, 1172, 180.55103f, 2.4001045f),
                 new Location(Script.WORLD, 354, 86, 1171, 181.10797f, 2.6469564f),
                 new Location(Script.WORLD, 354, 94, 1172, 180.05945f, 2.347005f),
+        }),
+        HGA(16, "HGA", new Location[]{
+                new Location(Script.WORLD, 703, 69, 876, 178.42905f, 3.8999162f), // 0
+                new Location(Script.WORLD, 703, 78, 876, 179.48645f, 2.1001425f), // 1
+                new Location(Script.WORLD, 703, 86, 876, 179.79272f, 3.5996695f), // 2
+                new Location(Script.WORLD, 703, 86, 876, 180.53516f, 1.4996791f), // 3
+                new Location(Script.WORLD, 703, 104, 876, 179.66064f, 1.4999795f), // 4
+                new Location(Script.WORLD, 703, 113, 876, 178.53809f, 3.149921f),  // 5
+                new Location(Script.WORLD, 703, 121, 876, 178.55615f, 1.9500295f) // 6
         });
 
         int id;

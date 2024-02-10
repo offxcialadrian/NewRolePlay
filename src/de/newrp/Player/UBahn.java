@@ -10,19 +10,21 @@ import java.util.ArrayList;
 
 public class UBahn {
     enum Stops {
-        X3(1, "X3", new Location(Script.WORLD, 623, 57, 958, 122.71573f, 89.12498f), new Location(Script.WORLD, 621, 54, 950, 0.6724518f, 85.112625f), new Location(Script.WORLD, 625, 63, 988, 178.47375f, 87.25468f)),
-        GANGGEBIET(2, "Ganggebiet", new Location(Script.WORLD, 668, 40, 1280, -181.50128f, 89.12495f), new Location(Script.WORLD, 670, 37, 1299, -179.93205f, 87.6163f), new Location(Script.WORLD, 666, 46, 1260, 1.2470001f, 87.94817f)),
-        MALL(3, "Mall", new Location(Script.WORLD, 753, 57, 917, 180.9493f, 89.15512f), new Location(Script.WORLD, 755, 54, 936, -180.38312f, 88.25057f), new Location(Script.WORLD, 751, 62, 897, -0.7726388f, 87.586815f)),
-        BERUFSSHULE(4, "Berufsschule", new Location(Script.WORLD, 675, 57, 763, 271.1633f, 88.67237f), new Location(Script.WORLD, 644, 54, 765, -90.59423f, 85.95698f), new Location(Script.WORLD, 683, 62, 761, 82.348915f, 86.499985f));
+        X3(1,1, "X3", new Location(Script.WORLD, 623, 57, 958, 122.71573f, 89.12498f), new Location(Script.WORLD, 621, 54, 950, 0.6724518f, 85.112625f), new Location(Script.WORLD, 625, 63, 988, 178.47375f, 87.25468f)),
+        GANGGEBIET(2, 1, "Ganggebiet", new Location(Script.WORLD, 668, 40, 1280, -181.50128f, 89.12495f), new Location(Script.WORLD, 670, 37, 1299, -179.93205f, 87.6163f), new Location(Script.WORLD, 666, 46, 1260, 1.2470001f, 87.94817f)),
+        MALL(3, 1, "Mall", new Location(Script.WORLD, 753, 57, 917, 180.9493f, 89.15512f), new Location(Script.WORLD, 755, 54, 936, -180.38312f, 88.25057f), new Location(Script.WORLD, 751, 62, 897, -0.7726388f, 87.586815f)),
+        BERUFSSHULE(4, 1,"Berufsschule", new Location(Script.WORLD, 675, 57, 763, 271.1633f, 88.67237f), new Location(Script.WORLD, 644, 54, 765, -90.59423f, 85.95698f), new Location(Script.WORLD, 683, 62, 761, 82.348915f, 86.499985f));
 
         private final int id;
+        private final int line;
         private final String name;
         private final Location location;
         private final Location locationmin;
         private final Location locationmax;
 
-        Stops(int id, String name, Location location, Location locationmin, Location locationmax) {
+        Stops(int id, int line, String name, Location location, Location locationmin, Location locationmax) {
             this.id = id;
+            this.line = line;
             this.name = name;
             this.location = location;
             this.locationmin = locationmin;
@@ -47,6 +49,10 @@ public class UBahn {
 
         public Location getLocationmax() {
             return locationmax;
+        }
+
+        public int getLine() {
+            return line;
         }
 
         public static Stops getStopById(int id) {
@@ -77,11 +83,19 @@ public class UBahn {
         }
 
         public Stops getNextStop() {
-            int nextId = id + 1;
-            if (nextId > Stops.values().length) {
-                nextId = 1;
+            //get next stop from same line
+            for (Stops stop : values()) {
+                if (stop.getLine() == this.getLine() && stop.getId() == this.getId() + 1) {
+                    return stop;
+                }
             }
-            return getStopById(nextId);
+            //get first stop from same line
+            for (Stops stop : values()) {
+                if (stop.getLine() == this.getLine() && stop.getId() == 1) {
+                    return stop;
+                }
+            }
+            return null;
         }
 
     }

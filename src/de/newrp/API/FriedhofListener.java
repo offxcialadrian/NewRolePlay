@@ -1,6 +1,6 @@
 package de.newrp.API;
 
-import de.newrp.Administrator.Notications;
+import de.newrp.Administrator.Notifications;
 import de.newrp.Administrator.SDuty;
 import de.newrp.Call.Call;
 import de.newrp.main;
@@ -85,7 +85,7 @@ public class FriedhofListener implements Listener {
         }
 
         Player killer = p.getKiller();
-        Notications.sendMessage(Notications.NotificationType.DEAD, Script.getName(p) + " ist gestorben " + (killer!=null ? Messages.ARROW + " " + Script.getName(killer):Messages.ARROW + " " + p.getLastDamageCause().getCause().name()));
+        Notifications.sendMessage(Notifications.NotificationType.DEAD, Script.getName(p) + " ist gestorben " + (killer!=null ? Messages.ARROW + " " + Script.getName(killer):Messages.ARROW + " " + p.getLastDamageCause().getCause().name()));
         Friedhof friedhof = new Friedhof(Script.getNRPID(p), p.getName(), deathLocation, System.currentTimeMillis(), deathtime, cash, inventoryContent);
         Friedhof.setDead(p, friedhof);
     }

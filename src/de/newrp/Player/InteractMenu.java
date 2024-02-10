@@ -182,7 +182,12 @@ public class InteractMenu implements Listener {
                 tg.sendMessage(PREFIX + "Du wirst nun von " + Script.getName(p) + " getragen.");
                 Me.sendMessage(p, "trägt nun " + Script.getName(tg) + ".");
                 p.sendMessage(Messages.INFO + "Du kannst " + Script.getName(tg) + " mit §8/§6tragen §fwieder absetzen.");
-                p.setPassenger(tg);
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        p.setPassenger(tg);
+                    }
+                }.runTaskLater(de.newrp.main.getInstance(), 5L);
                 break;
             case "Handschellen öffnen":
                 if(Handschellen.isCuffed(tg)) {

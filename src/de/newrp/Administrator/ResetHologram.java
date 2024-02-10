@@ -19,7 +19,7 @@ public class ResetHologram implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender cs, @NotNull Command cmd, @NotNull String s, @NotNull String[] args) {
         Player p = (Player) cs;
 
-        if(!Script.hasRank(p, Rank.ADMINISTRATOR, true)) {
+        if(!Script.hasRank(p, Rank.SUPPORTER, false)) {
             p.sendMessage(Messages.NO_PERMISSION);
             return true;
         }

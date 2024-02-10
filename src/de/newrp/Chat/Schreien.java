@@ -3,7 +3,7 @@ package de.newrp.Chat;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.Administrator.AntiCheatSystem;
-import de.newrp.Administrator.Notications;
+import de.newrp.Administrator.Notifications;
 import de.newrp.Administrator.Punish;
 import de.newrp.Call.Call;
 import org.bukkit.Bukkit;
@@ -67,7 +67,7 @@ public class Schreien implements CommandExecutor {
 
         Chat.handleChatFilter(p, message);
 
-        Notications.sendMessage(Notications.NotificationType.CHAT, "§8[§c" + p.getLevel() + "§8] §7" + Script.getName(p) + " schreit: §7" + message);
+        Notifications.sendMessage(Notifications.NotificationType.CHAT, "§8[§c" + p.getLevel() + "§8] §7" + Script.getName(p) + " schreit: §7" + message);
         for (Player online : Bukkit.getOnlinePlayers()) {
             double distance = pLoc.distance(online.getLocation());
             if (distance > 35.0D) {

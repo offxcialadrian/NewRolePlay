@@ -4,7 +4,7 @@ import de.newrp.API.Log;
 import de.newrp.API.Messages;
 import de.newrp.API.PaymentType;
 import de.newrp.API.Script;
-import de.newrp.Administrator.Notications;
+import de.newrp.Administrator.Notifications;
 import de.newrp.Chat.Me;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -63,7 +63,7 @@ public class PayCommand implements CommandExecutor {
         tg.sendMessage(PREFIX + Script.getName(p) + " überreicht dir " + money + "€.");
         Log.LOW.write(p, "überreicht " + Script.getName(tg) + " " + money + "€.");
         Log.LOW.write(tg, "erhält von " + Script.getName(p) + " " + money + "€.");
-        Notications.sendMessage(Notications.NotificationType.PAYMENT, Script.getName(p) + " hat " + Script.getName(tg) + " " + money + "€ überreicht. (CASH)");
+        Notifications.sendMessage(Notifications.NotificationType.PAYMENT, Script.getName(p) + " hat " + Script.getName(tg) + " " + money + "€ überreicht. (CASH)");
 
 
         return false;

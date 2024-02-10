@@ -55,6 +55,11 @@ public class Strassenwartung implements CommandExecutor, Listener {
             }
         }
 
+        if(Construction.getRandomConstruction() == null) {
+            p.sendMessage(Messages.ERROR + "Es gibt gerade keine Baustellen. Bitte versuche es gleich erneut.");
+            return true;
+        }
+
         cooldown.put(p.getName(), System.currentTimeMillis() + 10 * 60 * 2000L);
         GFB.CURRENT.put(p.getName(), GFB.STRASSENWARTUNG);
         int count = GFB.STRASSENWARTUNG.getLevel(p) * Script.getRandom(4, 5);
@@ -372,7 +377,12 @@ public class Strassenwartung implements CommandExecutor, Listener {
         }
 
         public static Construction getRandomConstruction() {
-            return Construction.values()[(int) (Math.random() * Construction.values().length)];
+            for (Construction construction : Construction.values()) {
+                if (!CONSTRUCTION.containsKey(construction)) {
+                    return construction;
+                }
+            }
+            return null;
         }
 
         public int getID() {

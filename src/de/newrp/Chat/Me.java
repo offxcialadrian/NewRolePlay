@@ -2,7 +2,7 @@ package de.newrp.Chat;
 
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
-import de.newrp.Administrator.Notications;
+import de.newrp.Administrator.Notifications;
 import de.newrp.Administrator.Punish;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -45,7 +45,7 @@ public class Me implements CommandExecutor {
                     arg.equalsIgnoreCase("sein glied") || arg.equalsIgnoreCase("lustpunkt") || arg.equalsIgnoreCase("eichel") ||
                     arg.equalsIgnoreCase("bläst ihm") || arg.equalsIgnoreCase("steckt") || arg.equalsIgnoreCase("spritzt") ||
                     arg.equalsIgnoreCase("sex") || arg.equalsIgnoreCase("futterluke")) {
-                Notications.sendMessage(Notications.NotificationType.ADVANCED_ANTI_CHEAT, "Verdacht auf Missachtung der Vergewaltigungs-Regel bei " + Script.getName(p) + " " + Messages.ARROW + " " + message);
+                Notifications.sendMessage(Notifications.NotificationType.ADVANCED_ANTI_CHEAT, "Verdacht auf Missachtung der Vergewaltigungs-Regel bei " + Script.getName(p) + " " + Messages.ARROW + " " + message);
             }
 
         }

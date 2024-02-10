@@ -1,6 +1,5 @@
 package de.newrp.Administrator;
 
-import com.mojang.datafixers.types.templates.Check;
 import de.newrp.API.*;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Forum.Forum;
@@ -605,7 +604,7 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
         if (getBanUntil(p) > System.currentTimeMillis() || getBanUntil(p) == 0) {
             p.kickPlayer("§8» §cNRP × New RolePlay §8┃ §cBann §8« \n\n§8§m------------------------------\n\n§7Du wurdest vom Server gebannt§8.\n\n§7Grund §8× §e" + getBanReason(p) + "\n§7Gebannt bis §8× §e" + (getBanUntil(p) != 0 ? Script.dateFormat.format(getBanUntil(p)) : "Lebenslang") + "\n\n§7Einen Entbannungsantrag kannst du auf der Webseite stellen.\n\n§8§m------------------------------");
         }
-        Notications.sendMessage(Notications.NotificationType.JOIN, "§e" + Script.getName(e.getPlayer()) + " §7hat den Server betreten.");
+        Notifications.sendMessage(Notifications.NotificationType.JOIN, "§e" + Script.getName(e.getPlayer()) + " §7hat den Server betreten.");
     }
 
     public static void unban(OfflinePlayer p) {

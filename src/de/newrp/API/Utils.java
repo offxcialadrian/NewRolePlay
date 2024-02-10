@@ -31,22 +31,23 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+
+import static de.newrp.API.Rank.PLAYER;
 
 public class Utils implements Listener {
 
     private static final Material[] DROP_BLACKLIST = new Material[]{ Material.WOODEN_HOE, Material.LEAD, Material.ANDESITE_SLAB };
     private static final String[] BLOCKED_COMMANDS = new String[]{
             "/minecraft", "/spi", "/protocol", "/rl", "/restart", "/bukkit", "/time", "/version", "/icanhasbukkit", "/xp", "/tell",
-            "/toggledownfall", "/testfor", "/recipe", "/give", "/effect", "/enchant", "/deop", "/defaultgamemode", "/ban-ip",
+            "/toggledownfall", "/testfor", "/recipe", "/effect", "/enchant", "/deop", "/defaultgamemode", "/ban-ip",
             "/banlist", "/advancement", "/?", "/gamemode", "/gamerule", "/kill", "/list", "/about",
             "/ability", "/advancement", "/alwaysday", "/attribute", "/ban-ip", "/banlist", "/bossbar", "/camera", "/camerashake",
             "/changesetting", "/clear", "/clearspawnpoint", "/clone", "/connect", "/damage", "/data", "/datapack", "/daylock",
             "/dedicatedwsserver", "/defaultgamemode", "/deop", "/dialogue", "/difficulty", "/effect", "/enchant", "/event", "/execute",
-            "/experience", "/fill", "/fillbiome", "/fog", "/forceload", "/function", "/gamemode", "/gamerule", "/gametest", "/give",
+            "/experience", "/fill", "/fillbiome", "/fog", "/forceload", "/function", "/gamemode", "/gamerule", "/gametest",
             "/immutableworld", "/item", "/jfr", "/kill", "/list", "/locate", "/loot", "/mobevent", "/music", "/op",
             "/ops", "/pardon", "/pardon-ip", "/particle", "/perf", "/permission", "/place", "/playanimation", "/playsound", "/publish",
             "/random", "/recipe", "/reload", "/replaceitem", "/return", "/ride", "/save", "/save-all", "/save-off", "/save-on",
@@ -54,7 +55,7 @@ public class Utils implements Listener {
             "/setworldspawn", "/spawnpoint", "/spreadplayers", "/stop", "/stopsound", "/structure", "/summon", "/tag",
             "/teammsg", "/tell", "/tellraw", "/testfor", "/testforblock", "/testforblocks", "/tickingarea", "/time", "/title",
             "/titleraw", "/tm", "/toggledownfall", "/trigger", "/volumearea", "/wb", "/worldborder",
-            "/worldborder", "/wsserver", "/xp", "/ver", "/citizens", "/npc", "/vehicle", "/garage"
+            "/worldborder", "/wsserver", "/xp", "/ver", "/citizens", "/npc", "/vehicle", "/garage", "/tebex", "/buycraft"
     };
 
     private static final String[] BLOCKED_COMMANDS_SPECIFIC = new String[]{
@@ -95,16 +96,16 @@ public class Utils implements Listener {
     public void onLogin(PlayerLoginEvent e) {
         if (e.getResult() == PlayerLoginEvent.Result.KICK_WHITELIST) {
             e.disallow(PlayerLoginEvent.Result.KICK_WHITELIST, "§8» §cNRP × New RolePlay §8┃ §cKick §8« \n\n§8§m------------------------------\n\n§7Du wurdest vom Server gekickt§8.\n\n§7Grund §8× §e" + "Wartungsarbeiten");
-            Debug.debug(Script.PREFIX + "Dem Spieler " + e.getPlayer().getName() + " wurde der Zutritt verweigert, da der Server im Wartungsmodus ist.");
+            Bukkit.broadcastMessage(Script.PREFIX + "Dem Spieler " + e.getPlayer().getName() + " wurde der Zutritt verweigert, da der Server im Wartungsmodus ist.");
         }
     }
 
     @EventHandler
     public void onPing(ServerListPingEvent e) {
         if(Script.isInTestMode()) {
-            e.setMotd("§5§lNew RolePlay §8┃ §5Reallife §8× §5RolePlay §8┃ §c1.16.5\n§8» §7" + main.getInstance().getDescription().getVersion() + " §8- §eWartungsarbeiten!");
+            e.setMotd("§5§lNew RolePlay §8┃ §5Reallife §8× §5RolePlay §8┃ §c1.16.5\n§8» §a§l" + main.getInstance().getDescription().getVersion() + " §8- §eWartungsarbeiten!");
         } else {
-            e.setMotd("§5§lNew RolePlay §8┃ §5Reallife §8× §5RolePlay §8┃ §c1.16.5\n§8» §7" + main.getInstance().getDescription().getVersion() + " §8- §eWerde Teil einer neuen Ära!");
+            e.setMotd("§5§lNew RolePlay §8┃ §5Reallife §8× §5RolePlay §8┃ §c1.16.5\n§8» §a§l" + main.getInstance().getDescription().getVersion() + " §8- §eWerde Teil einer neuen Ära!");
         }
     }
 
@@ -201,22 +202,23 @@ public class Utils implements Listener {
                 Script.sendTeamMessage(AntiCheatSystem.PREFIX + Script.getName(p) + " wurde der Zugriff auf den Server verweigert, da er nicht aus Deutschland, Österreich oder der Schweiz kommt.");
                 return;
             }
+            p.teleport(new Location(Script.WORLD, 935, 66, 1198, 179.92924f, 0.32957163f));
             Script.registerPlayer(e.getPlayer());
             Script.sendActionBar(e.getPlayer(), "§7Willkommen auf §eNewRP§7!");
             e.getPlayer().sendMessage("§eNew RolePlay" + "§rWillkommen auf §eNewRP§7!");
-            Notications.sendMessage(Notications.NotificationType.REGISTRATION, "§e" + Script.getName(e.getPlayer()) + " §7hat sich auf dem Server registriert §8[§e#" + Script.getNRPID(e.getPlayer()) + "§8]");
+            Notifications.sendMessage(Notifications.NotificationType.REGISTRATION, "§e" + Script.getName(e.getPlayer()) + " §7hat sich auf dem Server registriert §8[§e#" + Script.getNRPID(e.getPlayer()) + "§8]");
             Title.sendTitle(p, 20, 50, 20, "§6Willkommen!", "§7auf §eNewRP§7!");
             Achievement.FIRST_JOIN.grant(p);
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    p.sendMessage(Script.PREFIX + "Du hast die vollständige Kontrolle über das \"Tutorial\". Nute einfach unser Achievement-System um den Server zu erkunden.");
+                    p.sendMessage(Script.PREFIX + "Du hast die vollständige Kontrolle über das \"Tutorial\". Nutze einfach unser Achievement-System, um den Server zu erkunden.");
                     p.sendMessage(Messages.INFO + "Nutze §8/§6achievement");
                     p.sendMessage(Messages.INFO + "Beachte bitte, dass wir nicht alles erklären können. Einige Dinge musst du selbst herausfinden. Wir sind aber immer unter §8/§6support §rzu erreichen.");
                     new BukkitRunnable() {
                         @Override
                         public void run() {
-                            p.sendMessage(Messages.INFO + "Die wichtigesten Chatbefehle sind §8/§6s §r(Schreien) und §8/§6w §r(Flüstern).");
+                            p.sendMessage(Messages.INFO + "Die wichtigsten Chatbefehle sind §8/§6s §r(Schreien) und §8/§6w §r(Flüstern).");
                             p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1.0F, 1.0F);
                         }
                     }.runTaskLater(main.getInstance(), 60*20L);
@@ -225,7 +227,6 @@ public class Utils implements Listener {
         }
         e.getPlayer().setPlayerListName(Script.getName(e.getPlayer()));
         Script.checkPlayerName(p);
-        Script.sendTabTitle(e.getPlayer());
         Script.resetHealth(p);
         Log.LOW.write(p, "hat den Server betreten.");
         new BukkitRunnable() {
@@ -240,7 +241,19 @@ public class Utils implements Listener {
         }.runTaskLater(main.getInstance(), 20L);
         p.setFlySpeed(0.1f);
         if(Wahlen.wahlenActive()) p.sendMessage(Messages.INFO + "Die Wahlen sind aktiv! Du kannst mit §8/§6wahlen §rdeine Stimme abgeben.");
-        Notications.sendMessage(Notications.NotificationType.LEAVE, "§e" + Script.getName(e.getPlayer()) + " §7hat den Server betreten.");
+        Notifications.sendMessage(Notifications.NotificationType.LEAVE, "§e" + Script.getName(e.getPlayer()) + " §7hat den Server betreten.");
+        if(Team.getTeam(p) == null && Script.isInTestMode()) {
+            Team.setTeam(p, Team.Teams.EARLY_ACCESS, false);
+            p.sendMessage(Messages.INFO + "Du hast automatisch das Team §eEarly-Access §7betreten.");
+        }
+        if(Licenses.ERSTE_HILFE.hasLicense(Script.getNRPID(p)) && ersteHilfeExpired(p)) {
+            Licenses.ERSTE_HILFE.remove(Script.getNRPID(p));
+            p.sendMessage(Messages.INFO + "Dein §eErste-Hilfe-Schein §7ist abgelaufen.");
+        }
+
+        Script.sendTabTitle(e.getPlayer());
+
+
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
@@ -329,7 +342,7 @@ public class Utils implements Listener {
     public void onJoinEvent(PlayerJoinEvent e) {
         if (Script.isInTestMode() && !Script.isNRPTeam(e.getPlayer()) && !e.getPlayer().isWhitelisted()) {
             e.getPlayer().kickPlayer("§eDer Server ist momentan im Wartungsmodus.");
-            Debug.debug("De, Spieler " + e.getPlayer().getName() + " wurde gekickt, da der Server im Wartungsmodus ist.");
+            Debug.debug("Der, Spieler " + e.getPlayer().getName() + " wurde gekickt, da der Server im Wartungsmodus ist.");
         } else if(Script.isInTestMode()) {
             e.getPlayer().sendMessage(Messages.INFO + "Der Server ist momentan im Wartungsmodus.");
             Achievement.BETA_TESTER.grant(e.getPlayer());
@@ -406,6 +419,7 @@ public class Utils implements Listener {
                     e.getClickedBlock().getType() == Material.COMMAND_BLOCK ||
                     e.getClickedBlock().getType() == Material.COMMAND_BLOCK_MINECART ||
                     e.getClickedBlock().getType() == Material.CHIPPED_ANVIL ||
+                    e.getClickedBlock().getType() == Material.COMPARATOR ||
                     e.getClickedBlock().getType() == Material.DAMAGED_ANVIL ||
                     e.getClickedBlock().getType() == Material.ENCHANTING_TABLE ||
                     e.getClickedBlock().getType() == Material.CRAFTING_TABLE ||
@@ -603,5 +617,16 @@ public class Utils implements Listener {
         return false;
     }
 
+    public static boolean ersteHilfeExpired(Player p) {
+        try (Statement stmt = main.getConnection().createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT erste_hilfe FROM ranks WHERE nrp_id=" + Script.getNRPID(p) + " ORDER BY id DESC LIMIT 1")) {
+            if (rs.next()) {
+                return (rs.getLong("awarded") + TimeUnit.DAYS.toMillis(30)) < System.currentTimeMillis();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
 
 }

@@ -100,6 +100,7 @@ public class TeamSpeak {
     }
 
     public static void sync(int id, Client c) {
+        if(!isVerified(id)) return;
         Bukkit.getScheduler().runTaskAsynchronously(main.getInstance(), () -> {
             String uid = getVerification(id);
             if (uid == null || c == null) return;
@@ -172,6 +173,7 @@ public class TeamSpeak {
 
 
     public static void sync(int id) {
+        if(!isVerified(id)) return;
         Bukkit.getScheduler().runTaskAsynchronously(main.getInstance(), () -> {
             String uid = getVerification(id);
             Client c = getClient(uid);

@@ -149,6 +149,11 @@ public class Banken implements CommandExecutor, Listener {
             return true;
         }
 
+        if(!Licenses.PERSONALAUSWEIS.hasLicense(Script.getNRPID(p))) {
+            p.sendMessage(Messages.ERROR + "Du benötigst einen Personalausweis um ein Bankkonto zu eröffnen.");
+            return true;
+        }
+
         Inventory inv = Bukkit.createInventory(null, 9, "§aBanken");
         int i = 0;
         for (Bank bank : Bank.values()) {

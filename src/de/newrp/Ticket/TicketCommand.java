@@ -2,7 +2,6 @@ package de.newrp.Ticket;
 
 import de.newrp.API.*;
 import de.newrp.Administrator.AntiCheatSystem;
-import de.newrp.Administrator.Notications;
 import de.newrp.Administrator.SDuty;
 import de.newrp.Player.AFK;
 import de.newrp.main;
@@ -15,7 +14,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

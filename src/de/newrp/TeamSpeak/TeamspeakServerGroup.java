@@ -15,6 +15,7 @@ public enum TeamspeakServerGroup {
     SOCIALMEDIA(28),
     EVENTTEAM(29),
     BAUTEAM(27),
+    EARLYACCESSTEAM(49),
     RETTUNGSDIENST(32);
 
     private final int groupID;

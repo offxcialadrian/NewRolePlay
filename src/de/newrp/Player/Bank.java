@@ -1,7 +1,7 @@
 package de.newrp.Player;
 
 import de.newrp.API.*;
-import de.newrp.Administrator.Notications;
+import de.newrp.Administrator.Notifications;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -79,7 +79,7 @@ public class Bank implements CommandExecutor {
                 p.sendMessage(PREFIX + "Neuer Kontostand§8: §a" + Script.getMoney(p, PaymentType.BANK) + "€");
                 p.sendMessage(PREFIX + "§8=========");
                 atm.addCash(betrag);
-                Notications.sendMessage(Notications.NotificationType.PAYMENT, Script.getName(p) + " hat " + betrag + "€ eingezahlt.");
+                Notifications.sendMessage(Notifications.NotificationType.PAYMENT, Script.getName(p) + " hat " + betrag + "€ eingezahlt.");
                 Log.NORMAL.write(p, "hat " + betrag + "€ eingezahlt.");
                 Cashflow.addEntry(p, betrag, "Einzahlung an ATM " + atm.getID());
                 return true;
@@ -111,7 +111,7 @@ public class Bank implements CommandExecutor {
                 p.sendMessage(PREFIX + "§8=========");
                 atm.removeCash(betrag);
                 p.sendMessage(Messages.INFO + "Es wurden " + Banken.getBankByPlayer(p).getTransactionKosten() + "€ Transaktionskosten abgezogen.");
-                Notications.sendMessage(Notications.NotificationType.PAYMENT, Script.getName(p) + " hat " + betrag + "€ ausgezahlt.");
+                Notifications.sendMessage(Notifications.NotificationType.PAYMENT, Script.getName(p) + " hat " + betrag + "€ ausgezahlt.");
                 Log.NORMAL.write(p, "hat " + betrag + "€ ausgezahlt.");
                 Cashflow.addEntry(p, -betrag, "Auszahlung an ATM " + atm.getID());
                 return true;
@@ -171,7 +171,7 @@ public class Bank implements CommandExecutor {
             Script.addMoney(Script.getNRPID(tg), PaymentType.BANK, betrag);
             p.sendMessage(PREFIX + "Du hast " + betrag + "€ an " + tg.getName() + " überwiesen. Verwendungszweck: " + reason);
             p.sendMessage(Messages.INFO + "Es wurden " + Banken.getBankByPlayer(p).getTransactionKosten() + "€ Transaktionskosten abgezogen.");
-            Notications.sendMessage(Notications.NotificationType.PAYMENT, Script.getName(p) + " hat " + betrag + "€ an " + tg.getName() + " überwiesen. Verwendungszweck: " + reason);
+            Notifications.sendMessage(Notifications.NotificationType.PAYMENT, Script.getName(p) + " hat " + betrag + "€ an " + tg.getName() + " überwiesen. Verwendungszweck: " + reason);
             if(tg.isOnline()) {
                 tg.getPlayer().sendMessage(PREFIX + "Du hast " + betrag + "€ von " + Script.getName(p) + " erhalten. Verwendungszweck: " + reason);
             } else {

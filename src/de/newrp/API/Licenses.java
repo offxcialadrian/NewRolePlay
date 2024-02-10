@@ -12,7 +12,8 @@ public enum Licenses {
     PERSONALAUSWEIS(0, "personalausweis", "Personalausweis"),
     FUEHRERSCHEIN(1, "fuehrerschein", "Führerschein"),
     WAFFENSCHEIN(2, "waffenschein", "Waffenschein"),
-    ANGELSCHEIN(3, "angelschein", "Angelschein");
+    ANGELSCHEIN(3, "angelschein", "Angelschein"),
+    ERSTE_HILFE(4, "erste_hilfe", "Erste Hilfe");
 
     private final int id;
     private final String dbName;
@@ -52,12 +53,13 @@ public enum Licenses {
     public static Map<Licenses, Boolean> getLicenses(Integer id) {
         Map<Licenses, Boolean> cache = new HashMap<>();
         try (Statement stmt = main.getConnection().createStatement();
-             ResultSet rs = stmt.executeQuery("SELECT personalausweis, waffenschein, fuehrerschein, angelschein FROM licenses WHERE id=" + id)) {
+             ResultSet rs = stmt.executeQuery("SELECT personalausweis, waffenschein, fuehrerschein, angelschein, erste_hilfe FROM licenses WHERE id=" + id)) {
             if (rs.next()) {
                 cache.put(Licenses.PERSONALAUSWEIS, rs.getBoolean("personalausweis"));
                 cache.put(Licenses.FUEHRERSCHEIN, rs.getBoolean("fuehrerschein"));
                 cache.put(Licenses.WAFFENSCHEIN, rs.getBoolean("waffenschein"));
                 cache.put(Licenses.ANGELSCHEIN, rs.getBoolean("angelschein"));
+                cache.put(Licenses.ERSTE_HILFE, rs.getBoolean("erste_hilfe"));
             }
         } catch (SQLException e) {
             e.printStackTrace();

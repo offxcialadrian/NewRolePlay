@@ -1,9 +1,8 @@
 package de.newrp.Shop;
 
 import de.newrp.API.*;
-import de.newrp.Administrator.Notications;
+import de.newrp.Administrator.Notifications;
 import de.newrp.Government.Stadtkasse;
-import de.newrp.Government.Steuern;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -77,7 +76,7 @@ public class BuyShop implements CommandExecutor {
                 p.sendMessage(PREFIX + "Du hast den Shop erfolgreich gekauft.");
                 Achievement.SHOP_OWNER.grant(p);
                 Log.HIGH.write(p.getName() + " hat den Shop " + shop.getPublicName() + " gekauft.");
-                Notications.sendMessage(Notications.NotificationType.SHOP, Script.getName(p) + " hat den Shop " + shop.getPublicName() + " gekauft.");
+                Notifications.sendMessage(Notifications.NotificationType.SHOP, Script.getName(p) + " hat den Shop " + shop.getPublicName() + " gekauft.");
                 Script.executeAsyncUpdate("DELETE FROM shopprice WHERE shopID = " + shop.getID() + ";");
                 return true;
 

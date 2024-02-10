@@ -1,5 +1,6 @@
 package de.newrp.Commands;
 
+import de.newrp.main;
 import de.newrp.API.*;
 import de.newrp.Administrator.SDuty;
 import net.citizensnpcs.api.CitizensAPI;

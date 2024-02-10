@@ -133,18 +133,23 @@ public class Personalausweis implements CommandExecutor, Listener {
                 Player p = (Player) e.getWhoClicked();
                 int id = Script.getNRPID(p);
                 if (is.getType().equals(Material.INK_SAC)) {
+                    Debug.debug("clicked " + is.getItemMeta().getDisplayName());
                     if (is.getItemMeta().getDisplayName().equals("§bMännlich")) {
                         if (!Licenses.PERSONALAUSWEIS.hasLicense(id)) {
                             cache.put(p, Gender.MALE);
+                            Debug.debug("put MALE into cache");
                         } else {
                             Script.setGender(p, Gender.MALE);
+                            Debug.debug("put MALE into cache");
                         }
                         openAgeMenu(p);
                     } else if (is.getItemMeta().getDisplayName().equals("§cWeiblich")) {
                         if (Licenses.PERSONALAUSWEIS.hasLicense(id)) {
                             cache.put(p, Gender.FEMALE);
+                            Debug.debug("put FEMALE into cache");
                         } else {
                             Script.setGender(p, Gender.FEMALE);
+                            Debug.debug("put MALE into cache");
                         }
                         openAgeMenu(p);
                     }

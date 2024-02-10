@@ -38,8 +38,8 @@ public class VoteListener implements Listener {
         if(!max_votes.containsKey(Script.getNRPID(player))) {
             max_votes.put(Script.getNRPID(player), 1);
         } else {
-            max_votes.put(Script.getNRPID(player), max_votes.get(Script.getNRPID(player)) + 1);
             if(max_votes.get(Script.getNRPID(player)) == 2) return;
+            max_votes.put(Script.getNRPID(player), max_votes.get(Script.getNRPID(player)) + 1);
         }
 
         int dayOfTheWeek = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);

@@ -123,9 +123,6 @@ public class Dishwasher implements CommandExecutor, Listener {
         if(e.getCurrentItem().getType() == Material.DIRT) {
             inv.setItem(e.getSlot(), new ItemBuilder(Material.BOWL).setName("§aTeller").build());
             p.openInventory(inv);
-            int dish = dishes.get(p.getName());
-            dish--;
-            dishes.put(p.getName(), dish);
             return;
         }
 
@@ -146,7 +143,7 @@ public class Dishwasher implements CommandExecutor, Listener {
         int dish = dishes.get(p.getName());
         dish--;
         dishes.put(p.getName(), dish);
-        if(dish == 0) {
+        if(dish <= 0) {
             p.sendMessage(PREFIX + "Du hast alle Teller gewaschen.");
             GFB.CURRENT.remove(p.getName());
             dishes.remove(p.getName());
@@ -154,6 +151,7 @@ public class Dishwasher implements CommandExecutor, Listener {
             Script.addEXP(p, GFB.DISHWASHER.getLevel(p) * TOTAL_SCORE.get(p.getName()));
             PayDay.addPayDay(p, GFB.DISHWASHER.getLevel(p) * TOTAL_SCORE.get(p.getName())/2);
             TOTAL_SCORE.remove(p.getName());
+            Cache.loadInventory(p);
             return;
         }
         p.sendMessage(PREFIX + "Du musst noch " + dish + " Teller waschen.");

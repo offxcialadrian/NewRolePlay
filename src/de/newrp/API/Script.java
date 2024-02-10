@@ -41,6 +41,7 @@ import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 import org.json.simple.JSONObject;
@@ -61,14 +62,12 @@ import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
-import static de.newrp.API.Rank.PLAYER;
-import static de.newrp.API.Rank.SUPPORTER;
+import static de.newrp.API.Rank.*;
 
 public class Script {
 
     public static World WORLD = Bukkit.getServer().getWorld("World");
     public static String PREFIX = "§8[§cNew RolePlay§8] §8" + Messages.ARROW + " §c";
-    public static String TEAM = "§8[§cTeam§8] §8» §c";
     public static SimpleDateFormat dateFormat = new SimpleDateFormat("d.M.y HH:mm:ss", Locale.GERMANY);
     public static SimpleDateFormat dateFormat2 = new SimpleDateFormat("d.M.y", Locale.GERMANY);
     public static DecimalFormat df = new DecimalFormat("#,###");
@@ -376,9 +375,8 @@ public class Script {
         Rank[] ranks = Rank.values();
         for (int i = 0; i < ranks.length; i++) {
             if (ranks[i] == rank) {
-                if (i + 1 < ranks.length) {
-                    return ranks[i + 1];
-                }
+                if (i == ranks.length - 1) return OWNER;
+                return ranks[i - 1];
             }
         }
         return rank;
@@ -504,13 +502,13 @@ public class Script {
             for (Player all : Bukkit.getOnlinePlayers()) {
                 if (isNRPTeam(all)) {
                     if (all != p)
-                        all.sendMessage(TEAM + cc + getRank(p).getName(p) + " " + getName(p) + " " + msg);
+                        all.sendMessage("§8[" + cc + "TEAM§8] " + cc + getRank(p).getName(p) + " " + getName(p) + " " + msg);
                 }
             }
         } else {
             for (Player all : Bukkit.getOnlinePlayers()) {
                 if (isNRPTeam(all)) {
-                    all.sendMessage(TEAM + cc + getRank(p).getName(p) + " " + getName(p) + " " + msg);
+                    all.sendMessage("§8[" + cc + "TEAM§8] " + cc + getRank(p).getName(p) + " " + getName(p) + " " + msg);
                 }
             }
         }
@@ -530,7 +528,7 @@ public class Script {
                 if (isNRPTeam(all)) {
                     if (getRank(p).getWeight() >= rank.getWeight()) {
                         if (all != p)
-                            all.sendMessage(TEAM + cc + getRank(p).getName(p) + " " + getName(p) + " " + msg);
+                            all.sendMessage("§8[" + cc + "TEAM§8] " + cc + getRank(p).getName(p) + " " + getName(p) + " " + msg);
                     }
                 }
             }
@@ -538,7 +536,7 @@ public class Script {
             for (Player all : Bukkit.getOnlinePlayers()) {
                 if (isNRPTeam(all)) {
                     if (getRank(p).getWeight() >= rank.getWeight()) {
-                        all.sendMessage(TEAM + cc + getRank(p).getName(p) + " " + getName(p) + " " + msg);
+                        all.sendMessage("§8[" + cc + "TEAM§8] " + cc + getRank(p).getName(p) + " " + getName(p) + " " + msg);
                     }
                 }
             }
@@ -583,6 +581,7 @@ public class Script {
     }
 
     public static void setGender(Player p, Gender gender) {
+        Script.executeUpdate("DELETE FROM gender WHERE nrp_id=" + Script.getNRPID(p));
         Script.executeAsyncUpdate("INSERT INTO gender (nrp_id, gender) VALUES (" + Script.getNRPID(p) + ", '" + (gender==Gender.MALE?"m":"f") + "')");
     }
 
@@ -1000,7 +999,7 @@ public class Script {
         amount = Math.abs(amount);
         executeUpdate("UPDATE money SET " + paymentType.getName() + "=" + (getMoney(id, paymentType) + amount) + " WHERE nrp_id=" + id);
 
-        if(Script.getLevel(Script.getOfflinePlayer(id)) == 1 && getMoney(id, paymentType) >= 100000) Script.sendTeamMessage(AntiCheatSystem.PREFIX + "Verdächtige Geldmenge: " + Script.getOfflinePlayer(id) + " (" + getMoney(id, paymentType) + "€)");
+        if(Script.getLevel(Script.getOfflinePlayer(id)) == 1 && getMoney(id, paymentType) >= 100000) Script.sendTeamMessage(AntiCheatSystem.PREFIX + "Verdächtige Geldmenge: " + Script.getOfflinePlayer(id).getName() + " (" + getMoney(id, paymentType) + "€)");
     }
 
     public static void addMoney(OfflinePlayer p, PaymentType paymentType, int amount) {
@@ -1216,7 +1215,7 @@ public class Script {
         executeUpdate("INSERT INTO level (nrp_id, level, exp) VALUES (" + getNRPID(p) + ", 1, 0)");
         executeUpdate("INSERT INTO playtime (id, nrp_id, hours, minutes, a_minutes, a_hours) VALUES (NULL, " + getNRPID(p) + ", 0, 1, 0, 0)");
         executeUpdate("INSERT INTO payday (id, nrp_id, time, money) VALUES (NULL, " + getNRPID(p) + ", 1, 0)");
-        executeUpdate("INSERT INTO licenses (id, personalausweis, fuehrerschein, waffenschein, angelschein) VALUES (" + getNRPID(p) + ", FALSE, FALSE, FALSE, FALSE)");
+        executeUpdate("INSERT INTO licenses (id, personalausweis, fuehrerschein, waffenschein, angelschein, erste_hilfe) VALUES (" + getNRPID(p) + ", FALSE, FALSE, FALSE, FALSE, FALSE)");
 
         Premium.addPremium(p, TimeUnit.DAYS.toMillis(7));
         p.setLevel(1);
@@ -1830,12 +1829,18 @@ public class Script {
     }
 
     public static void sendTabTitle(Player p) {
-        String header = "\n§5§lNEW ROLEPLAY\n";
-        String footer;
-        int online = Bukkit.getOnlinePlayers().size();
-        footer = "\n§6Version §8» §6" + main.getInstance().getDescription().getVersion() + "\n§cOnline §8» §c" + online + " Spieler\n";
-        p.setPlayerListHeader(header);
-        p.setPlayerListFooter(footer);
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                String header = "\n§5§lNEW ROLEPLAY\n";
+                String footer;
+                int online = Bukkit.getOnlinePlayers().size();
+                footer = "\n§6Version §8» §6" + main.getInstance().getDescription().getVersion() + "\n§cOnline §8» §c" + online + " Spieler\n";
+                p.setPlayerListHeader(header);
+                p.setPlayerListFooter(footer);
+            }
+        }.runTaskLater(main.getInstance(), 20);
+
 
     }
 

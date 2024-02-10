@@ -79,7 +79,6 @@ public class main extends JavaPlugin {
     public void onEnable() {
 
         Bukkit.getConsoleSender().sendMessage("§cNRP §8× §astarting with version " + this.getDescription().getVersion() + "..");
-
         instance = this;
         test = getServer().getMaxPlayers() == 20;
 
@@ -156,7 +155,7 @@ public class main extends JavaPlugin {
         getCommand("setlevel").setExecutor(new SetLevelCommand());
         getCommand("pay").setExecutor(new PayCommand());
         getCommand("daytime").setExecutor(new DayTime());
-        getCommand("notifications").setExecutor(new Notications());
+        getCommand("notifications").setExecutor(new Notifications());
         getCommand("lotto").setExecutor(new Lotto());
         getCommand("removesupport").setExecutor(new RemoveSupport());
         getCommand("demotesupport").setExecutor(new DemoteSupport());
@@ -323,6 +322,11 @@ public class main extends JavaPlugin {
         getCommand("strassenwartung").setExecutor(new Strassenwartung());
         getCommand("imker").setExecutor(new Imker());
         getCommand("steuernotification").setExecutor(new SteuerNotification());
+        getCommand("erstehilfekurs").setExecutor(new ErsteHilfeSchein());
+        getCommand("erstehilfe").setExecutor(new ErsteHilfe());
+        getCommand("sellhouse").setExecutor(new SellHouse());
+        getCommand("leaderchat").setExecutor(new LeaderChat());
+        getCommand("waffenschein").setExecutor(new Waffenschein());
 
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new SDuty(), this);
@@ -338,7 +342,7 @@ public class main extends JavaPlugin {
         pm.registerEvents(new AFK(), this);
         pm.registerEvents(new Punish(), this);
         pm.registerEvents(new HungerFix(), this);
-        pm.registerEvents(new Notications(), this);
+        pm.registerEvents(new Notifications(), this);
         pm.registerEvents(new Banken(), this);
         pm.registerEvents(new JoinTeam(), this);
         pm.registerEvents(new NaviClick(), this);
@@ -419,6 +423,8 @@ public class main extends JavaPlugin {
         pm.registerEvents(new Imker(), this);
         pm.registerEvents(new AddHouseDoor(), this);
         pm.registerEvents(new AchievementCommand(), this);
+        pm.registerEvents(new ErsteHilfe(), this);
+        pm.registerEvents(new HouseListener(), this);
 
 
         new AsyncHealth().runTaskTimerAsynchronously(this, 120 * 20L, 120 * 20L);

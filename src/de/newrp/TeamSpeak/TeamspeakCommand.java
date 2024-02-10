@@ -44,6 +44,10 @@ public class TeamspeakCommand implements CommandExecutor {
         }
 
         if(args.length == 1 && argument.equalsIgnoreCase("sync")) {
+            if(!TeamSpeak.isVerified(Script.getNRPID(p))) {
+                p.sendMessage(TeamSpeak.PREFIX + "§cDu hast dich noch nicht verifiziert.");
+                return true;
+            }
             p.sendMessage(TeamSpeak.PREFIX + "§cDu hast deinen Teamspeak Account neu synchronisiert.");
             TeamSpeak.sync(Script.getNRPID(p));
         } else if (argument.equalsIgnoreCase("forcesync") && Script.hasRank(p, Rank.ADMINISTRATOR, false) && SDuty.isSDuty(p)) {

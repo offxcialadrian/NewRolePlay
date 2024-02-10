@@ -111,6 +111,7 @@ public class Schule implements CommandExecutor, Listener {
                     }
                 }.runTaskLater(main.getInstance(), 20 * 60 * 30);
 
+                return;
             }
 
             GFB gfb = GFB.getGFBByName(e.getCurrentItem().getItemMeta().getDisplayName().replace("§8» §e", ""));

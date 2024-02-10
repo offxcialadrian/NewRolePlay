@@ -33,7 +33,7 @@ public class TeamChat implements CommandExecutor {
         for (Player all : Bukkit.getOnlinePlayers()) {
             if(Team.getTeam(all) == null) continue;
             if (Team.getTeam(all) == Team.getTeam(p))
-                all.sendMessage("§8[§e" + Team.getTeam(p).getName() + "§8] §e" + Script.getName(p) + (Team.isTeamLeader(p)?" (TL)":"") + " §8» §7" + msg);
+                all.sendMessage("§8[" + Team.getTeam(p).getColor() + Team.getTeam(p).getName() + "§8] " + Team.getTeam(p).getColor() + Script.getName(p) + (Team.isTeamLeader(p)?" (TL)":"") + " §8» §7" + msg);
         }
 
         return false;

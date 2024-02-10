@@ -22,7 +22,6 @@ public enum ShopItem {
     MIETERSLOT(4, "§7Mieterslot", new ItemStack(Material.CHEST), 20, 1, 20, HouseAddon.SLOT.getPrice(), 39500, false, false, false, new ShopType[] {ShopType.HOUSEADDON}),
     WAFFENSCHRANK(5, "§7Waffenschrank", new ItemStack(Material.CHEST), 20, 1, 20, HouseAddon.WAFFENSCHRANK.getPrice(), 39500, false, false, false, new ShopType[] {ShopType.HOUSEADDON}),
     ALARMANLAGE(7, "§7Alarmanlage", new ItemStack(Material.REDSTONE), 20, 1, 20, HouseAddon.ALARM.getPrice(), 39500, false, false, false, new ShopType[] {ShopType.HOUSEADDON}),
-    DROGENLAGER(8, "§7Drogenlager", new ItemStack(Material.CHEST), 20, 1, 20, HouseAddon.DROGENLAGER.getPrice(), 39500, false, false, false, new ShopType[] {ShopType.HOUSEADDON}),
     KUEHLSCHRANK(9, "§7Kühlschrank", new ItemStack(Material.CHEST), 20, 1, 20, HouseAddon.KUEHLSCHRANK.getPrice(), 39500, false, false, false, new ShopType[] {ShopType.HOUSEADDON}),
     PISTOLE(10, "§7Pistole", new ItemStack(Material.IRON_HORSE_ARMOR), 1, 1, 1, 1, 1, false, false, false, new ShopType[] {ShopType.GUNSHOP}),
     AMMO_9MM(11, "§89mm Munition", new ItemStack(Material.ARROW), Weapon.PISTOLE.getMagazineSize(), 1, 1, 1, 1, false, false, false, new ShopType[] {ShopType.GUNSHOP}),

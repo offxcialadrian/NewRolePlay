@@ -24,6 +24,10 @@ public class PremiumChannel implements CommandExecutor {
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         Player p = (Player) cs;
         int id = Script.getNRPID(p);
+        if(!TeamSpeak.isVerified(Script.getNRPID(p))) {
+            p.sendMessage(TeamSpeak.PREFIX + "Du musst deinen Teamspeak Account verifizieren.");
+            return true;
+        }
         if (Premium.hasPremium(p)) {
             if (hasChannel(p)) {
                 p.sendMessage(TeamSpeak.PREFIX + "Du hast bereits ein eigenen Teamspeak Channel erstellt.");

@@ -15,14 +15,13 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
 
 import java.sql.ResultSet;
 import java.sql.Statement;
 
-public class Notications implements CommandExecutor, Listener {
+public class Notifications implements CommandExecutor, Listener {
 
     public enum NotificationType {
         JOIN(1, "join", "Join-Notification"),
@@ -33,7 +32,9 @@ public class Notications implements CommandExecutor, Listener {
         DEAD(6, "dead", "Todes-Notification"),
         SHOP(7, "shop", "Shop-Notification"),
         ADVANCED_ANTI_CHEAT(8, "aac", "Advanced-Anti-Cheat-Notification"),
-        REGISTRATION(9, "registration", "Registration-Notification");
+        REGISTRATION(9, "registration", "Registration-Notification"),
+        DEBUG(10, "debug", "Debug-Notification"),
+        NRPSHOP(11, "nrpshop", "NRPSHOP-Notification");
 
         private final int id;
         private final String dbname;
@@ -105,7 +106,7 @@ public class Notications implements CommandExecutor, Listener {
             return true;
         }
 
-        Inventory inv = Bukkit.createInventory(null, 9, "§8[§aNotifications§8]");
+        Inventory inv = Bukkit.createInventory(null, Script.calcInvSize(NotificationType.values().length), "§8[§aNotifications§8]");
         for (NotificationType type : NotificationType.values()) {
             inv.setItem(type.getID() - 1, (isNotificationEnabled(p, type) ? new ItemBuilder(Material.REDSTONE_BLOCK).setName("§c" + type.getName()).setLore(" §7" + Messages.ARROW + " Deaktiviere " + type.getName()).build() : new ItemBuilder(Material.EMERALD_BLOCK).setName("§a" + type.getName()).setLore(" §7" + Messages.ARROW + " Aktiviere " + type.getName()).build()));
         }

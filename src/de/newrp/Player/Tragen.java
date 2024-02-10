@@ -136,7 +136,12 @@ public class Tragen implements CommandExecutor, Listener {
         p.sendMessage(PREFIX + "Du trägst nun " + Script.getName(tg) + ".");
         tg.sendMessage(PREFIX + "Du wirst nun von " + Script.getName(p) + " getragen.");
         Me.sendMessage(p, "trägt nun " + Script.getName(tg) + ".");
-        p.setPassenger(tg);
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                p.setPassenger(tg);
+            }
+        }.runTaskLater(de.newrp.main.getInstance(), 5L);
 
         return false;
     }

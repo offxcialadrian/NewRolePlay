@@ -3,7 +3,7 @@ package de.newrp.Chat;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.Administrator.AntiCheatSystem;
-import de.newrp.Administrator.Notications;
+import de.newrp.Administrator.Notifications;
 import de.newrp.Administrator.Punish;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -54,7 +54,7 @@ public class OOC implements CommandExecutor {
             all.sendMessage("§c((§lOOC §c" + Script.getName(p) + " §8» §c" + msg + "))");
         }
 
-        Notications.sendMessage(Notications.NotificationType.CHAT, "§c((§lOOC §c" + Script.getName(p) + " §8» §c" + msg + "))");
+        Notifications.sendMessage(Notifications.NotificationType.CHAT, "§c((§lOOC §c" + Script.getName(p) + " §8» §c" + msg + "))");
 
         return false;
     }

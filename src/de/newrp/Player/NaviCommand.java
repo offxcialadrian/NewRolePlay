@@ -21,7 +21,14 @@ public class NaviCommand implements CommandExecutor, TabCompleter {
 
     public static void openDefault(Player p) {
         Inventory inv = p.getServer().createInventory(null, 9, "§e§lNavi");
-        inv.setItem(0, Script.setName(Material.PAPER, "§6Allgemein"));
+        inv.setItem(0, Script.setName(Material.WRITABLE_BOOK, "§6Öffentliche Gebäude"));
+        inv.setItem(1, Script.setName(Material.ANVIL, "§6Berufe"));
+        inv.setItem(2, Script.setName(Material.FIREWORK_ROCKET, "§6Freizeit"));
+        inv.setItem(3, Script.setName(Material.IRON_PICKAXE, "§6GFB-Jobs"));
+        inv.setItem(4, Script.setName(Material.IRON_HORSE_ARMOR, "§6Illegale Organisationen"));
+        inv.setItem(5, Script.setName(Material.PAINTING, "§6Sehenswürdigkeiten"));
+        inv.setItem(6, Script.setName(Material.CARROT, "§6Shops"));
+        inv.setItem(7, Script.setName(Material.WATER_BUCKET, "§6Tankstellen"));
         Script.fillInv(inv);
         p.openInventory(inv);
     }

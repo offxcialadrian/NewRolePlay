@@ -37,7 +37,7 @@ public class CheckShop implements CommandExecutor {
         }
 
         if (shop == null) {
-            p.sendMessage("§cDu bist nicht in der nähe von einem Shop.");
+            p.sendMessage(Messages.ERROR + "§cDu bist nicht in der nähe von einem Shop.");
             return true;
         }
 

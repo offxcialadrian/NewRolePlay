@@ -3,6 +3,7 @@ package de.newrp.API;
 import de.newrp.Administrator.Checkpoints;
 import de.newrp.Berufe.AcceptNotruf;
 import de.newrp.Berufe.Beruf;
+import de.newrp.GFB.Schule;
 import de.newrp.Player.Notruf;
 import de.newrp.main;
 import org.bukkit.*;
@@ -53,6 +54,12 @@ public class Friedhof {
                 Bukkit.getScheduler().cancelTask(old_f.getTaskID());
             }
         }
+        if(Schule.STUDIYING.containsKey(p)) {
+            p.sendMessage(Schule.PREFIX + "Du hast den Kurs nicht bestanden.");
+            Schule.STUDIYING.remove(p);
+            Schule.STARTED.remove(p);
+        }
+
         final int taskID = Bukkit.getScheduler().scheduleSyncDelayedTask(main.getInstance(), () -> {
             if (p.isOnline()) revive(p, null);
         }, f.getDuration() * 20L);

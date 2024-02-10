@@ -4,11 +4,13 @@ import de.newrp.API.Messages;
 import de.newrp.API.Rank;
 import de.newrp.API.Script;
 import de.newrp.API.Team;
+import de.newrp.main;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class Baulog implements CommandExecutor {
 
@@ -35,9 +37,14 @@ public class Baulog implements CommandExecutor {
 
         if(args.length == 0) {
             p.sendMessage(PREFIX + "Übersicht:");
-            for(OfflinePlayer builder : Team.Teams.BAU.getAllMembers()) {
-                p.sendMessage(PREFIX + builder.getName() + " §8× §6" + Script.getBuiltBlocks(builder) + " §8(§6" + Script.getPercentage(Script.getBuiltOnlyPlacedBlocks(builder), Script.getBuiltBlocks(builder)) + "%§8)");
-            }
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    for(OfflinePlayer builder : Team.Teams.BAU.getAllMembers()) {
+                        p.sendMessage(PREFIX + builder.getName() + " §8× §6" + Script.getBuiltBlocks(builder) + " §8(§6" + Script.getPercentage(Script.getBuiltOnlyPlacedBlocks(builder), Script.getBuiltBlocks(builder)) + "%§8)");
+                    }
+                }
+            }.runTaskAsynchronously(main.getInstance());
             return true;
         }
 
