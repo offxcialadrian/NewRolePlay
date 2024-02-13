@@ -63,7 +63,6 @@ public class BurnPlant implements CommandExecutor {
         Beruf.Berufe.POLICE.sendMessage(Plantage.PREFIX + "Beamter " + Script.getName(p) + " hat erfolgreich eine " + typeName + " Plantage verbrannt.");
         Beruf.Berufe.GOVERNMENT.sendMessage(Plantage.PREFIX + "Beamter " + Script.getName(p) + " hat erfolgreich eine " + typeName + " Plantage verbrannt.");
 
-        int exp = Script.getRandom(10, 18);
         for (Player nearbyCop : nearbyCops) {
             nearbyCop.sendMessage(Plantage.PREFIX + "Du hast erfolgreich eine " + typeName + " Plantage verbrannt.");
             Script.addEXP(nearbyCop, Script.getRandom(8, 12));

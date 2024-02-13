@@ -2,6 +2,9 @@ package de.newrp.Medic;
 
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
+import de.newrp.Administrator.BuildMode;
+import de.newrp.Administrator.GoTo;
+import de.newrp.Administrator.SDuty;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Berufe.Duty;
 import de.newrp.Player.Annehmen;
@@ -9,10 +12,16 @@ import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.StringUtil;
 
-public class Rezept implements CommandExecutor {
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+public class Rezept implements CommandExecutor, TabCompleter {
 
     public static final String PREFIX = "§8[§cRezept§8] §c» §7";
 
@@ -56,7 +65,7 @@ public class Rezept implements CommandExecutor {
             return true;
         }
 
-        Medikamente m = Medikamente.getMedikament(args[1]);
+        Medikamente m = Medikamente.getMedikament(args[1].replace("-", " "));
         if(m == null) {
             p.sendMessage(Messages.ERROR + "Das Medikament wurde nicht gefunden.");
             p.sendMessage(Messages.INFO + "Verfügbare Medikamente:");
@@ -96,5 +105,28 @@ public class Rezept implements CommandExecutor {
                 return;
             }
         }
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender cs, Command cmd, String alias, String[] args) {
+        Player p = (Player) cs;
+        if (cmd.getName().equalsIgnoreCase("rezept")) {
+            final List<String> oneArgList = new ArrayList<>();
+            final List<String> completions = new ArrayList<>();
+            for (Medikamente medikamente : Medikamente.values()) {
+                oneArgList.add(medikamente.getName().replace(" ","-"));
+            }
+
+            if (args.length == 1) {
+                return null;
+            }
+
+            if (args.length == 2) {
+                StringUtil.copyPartialMatches(args[0], oneArgList, completions);
+            }
+            Collections.sort(completions);
+            return completions;
+        }
+        return Collections.EMPTY_LIST;
     }
 }

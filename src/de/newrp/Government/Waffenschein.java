@@ -26,6 +26,11 @@ public class Waffenschein implements CommandExecutor {
         if (Beruf.getBeruf(p) == Beruf.Berufe.GOVERNMENT) {
             if (args.length == 0) {
                 if(Beruf.getAbteilung(p) == Abteilung.Abteilungen.JUSTIZMINISTERIUM) {
+                    if(getApplicationAmount() == 0) {
+                        p.sendMessage(PREFIX + "Es gibt keine Anträge.");
+                        return true;
+                    }
+
                     sendApplications(p);
                     return true;
                 }
@@ -53,10 +58,6 @@ public class Waffenschein implements CommandExecutor {
                 if (args[0].equalsIgnoreCase("accept")) {
                     try {
                         int id = Integer.parseInt(args[1]);
-                        if (isAccepted(p)) {
-                            p.sendMessage(PREFIX + "Du hast diesen Antrag bereits angenommen.");
-                            return true;
-                        }
 
                         if (id <= 0) {
                             p.sendMessage(PREFIX + "Bitte gib eine gültige ID an.");
@@ -70,6 +71,12 @@ public class Waffenschein implements CommandExecutor {
 
                         if(Script.getMoney(id, PaymentType.BANK) < Script.getLevel(Script.getOfflinePlayer(id)) * 1000) {
                             p.sendMessage(PREFIX + "Der Spieler hat nicht genug Geld.");
+                            return true;
+                        }
+
+
+                        if (isAccepted(Script.getOfflinePlayer(id))) {
+                            p.sendMessage(PREFIX + "Du hast diesen Antrag bereits angenommen.");
                             return true;
                         }
 
@@ -149,16 +156,24 @@ public class Waffenschein implements CommandExecutor {
         return Script.getLong(p, "waffenschein", "date") > 0;
     }
 
+    public static int getApplicationAmount() {
+        try (Statement stmt = main.getConnection().createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT * FROM waffenschein WHERE accepted='0'")) {
+            int i = 0;
+            while (rs.next()) {
+                i++;
+            }
+            return i;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
     public static void sendApplications(Player p) {
         try (Statement stmt = main.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM waffenschein WHERE accepted='0'")) {
-            if (rs.next()) {
-                p.sendMessage(PREFIX + "Es gibt " + rs.getRow() + " Anträge auf einen Waffenschein.");
-                do {
-                    Script.sendClickableMessage(p, PREFIX + "Antrag von §6" + Script.getName(Script.getPlayer(rs.getInt("nrp_id"))) + " §8× §6" + rs.getInt("money") + "€ §8× §6" + Script.dateFormat.format(Script.getDate(rs.getLong("date"))) + " Uhr §8× §6§l#" + rs.getInt("id") + "§7.", "/waffenschein accept " + rs.getInt("id"), "§a§lAnnehmen");
-                } while (rs.next());
-            } else {
-                p.sendMessage(PREFIX + "Es gibt derzeit keine Anträge auf einen Waffenschein.");
+            while (rs.next()) {
+                Script.sendClickableMessage(p, PREFIX + "Antrag von §6" + Script.getName(Script.getPlayer(rs.getInt("nrp_id"))) + " §8× §6" + Script.dateFormat.format(Script.getDate(rs.getLong("date"))) + " Uhr §8× §6§l#" + rs.getInt("id") + "§7.", "/waffenschein accept " + rs.getInt("id"), "§a§lAnnehmen");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -222,7 +237,7 @@ public class Waffenschein implements CommandExecutor {
         return false;
     }
 
-    public static boolean isAccepted(Player p) {
-        return Script.getLong(p, "waffenschein", "accepted") == 1;
+    public static boolean isAccepted(OfflinePlayer p) {
+        return Script.getInt(p, "waffenschein", "accepted") == 1;
     }
 }

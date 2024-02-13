@@ -31,7 +31,7 @@ public class LeaderChat implements CommandExecutor {
             message.append(arg).append(" ");
         }
 
-        if(Beruf.isLeader(p, false)) {
+        if(Beruf.isLeader(p, true)) {
             Beruf.getBeruf(p).sendLeaderMessage("§3§l" + Beruf.getAbteilung(p).getName() + " " + Script.getName(p) + "§8: §b§l" + message.toString());
         } else {
             Organisation.getOrganisation(p).sendLeaderMessage("§3§l" + Organisation.getRankName(p) + " " + Script.getName(p) + "§8: §b§l" + message.toString());

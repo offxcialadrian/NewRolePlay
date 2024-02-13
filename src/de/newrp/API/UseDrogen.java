@@ -64,7 +64,7 @@ public class UseDrogen implements Listener {
         LEVEL.replace(p.getName(), level + 1);
         progressBar(p);
 
-        if (level >= 10) {
+        if (level >= 3) {
             Drogen.DrugPurity purity = Drogen.DrugPurity.getPurityByName(p.getInventory().getItemInMainHand().getItemMeta().getLore().get(0).replace("§7Reinheitsgrad: ", ""));
             Debug.debug(purity);
             droge.consume(p, purity);

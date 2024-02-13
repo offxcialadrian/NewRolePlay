@@ -165,16 +165,15 @@ public class Steuern implements CommandExecutor, TabCompleter {
                         }
 
                         steuern.put(steuer, System.currentTimeMillis());
-                        Script.executeAsyncUpdate("UPDATE city SET " + steuer.getDBName() + " = " + percentage);
                         Log.WARNING.write(p, "hat die " + steuer.getName() + " auf " + percentage + "% gesetzt.");
                         if(steuer == Steuer.GEWERBESTEUER || steuer == Steuer.GRUNDSTEUER) {
-                            p.sendMessage(PREFIX + "Du hast die " + steuer.getName() + " auf §6" + percentage + "€ §e gesetzt.");
-                            Bukkit.broadcastMessage("§8[§6NEWS§8] §6" + Messages.ARROW + " Die Regierung hat beschlossen die " + steuer.getName() + " auf §6" + percentage + "€ zu setzen.");
+                            p.sendMessage(PREFIX + "Du hast die " + steuer.getName() + " von " + steuer.getPercentage() + "€ auf §6" + percentage + "€ §e gesetzt.");
+                            Bukkit.broadcastMessage("§8[§6NEWS§8] §6" + Messages.ARROW + " Die Regierung hat beschlossen die " + steuer.getName() + " von " + steuer.getPercentage() + "€ auf §6" + percentage + "€ zu setzen.");
                             return true;
                         }
-                        p.sendMessage(PREFIX + "Du hast die " + steuer.getName() + " auf §6" + percentage + "% §egesetzt.");
-                        Bukkit.broadcastMessage("§8[§6NEWS§8] §6" + Messages.ARROW + " Die Regierung hat beschlossen die " + steuer.getName() + " auf §6" + percentage + "% zu setzen.");
-
+                        p.sendMessage(PREFIX + "Du hast die " + steuer.getName() + " von " + steuer.getPercentage() + "% auf §6" + percentage + "% §egesetzt.");
+                        Bukkit.broadcastMessage("§8[§6NEWS§8] §6" + Messages.ARROW + " Die Regierung hat beschlossen die " + steuer.getName() + " von " + steuer.getPercentage() + "% auf §6" + percentage + "% zu setzen.");
+                        Script.executeAsyncUpdate("UPDATE city SET " + steuer.getDBName() + " = " + percentage);
                         return true;
                     } catch (Exception e) {
                         p.sendMessage(Messages.ERROR + "Bitte gib eine gültige Prozentzahl an.");

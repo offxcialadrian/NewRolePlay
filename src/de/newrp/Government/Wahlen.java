@@ -14,8 +14,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.sql.ResultSet;
@@ -55,7 +53,7 @@ public class Wahlen implements CommandExecutor, Listener {
                     return true;
                 }
 
-                if(Beruf.getBeruf(p) == Beruf.Berufe.NEWS && !SDuty.isSDuty(p)) {
+                if (Beruf.getBeruf(p) == Beruf.Berufe.NEWS && !SDuty.isSDuty(p)) {
                     p.sendMessage(PREFIX + "Aktuelle Hochrechnungen:");
                     try (Statement stmt = main.getConnection().createStatement();
                          ResultSet rs = stmt.executeQuery("SELECT * FROM wahlen WHERE quartal = '" + getCurrentQuartal() + "' AND year = '" + Calendar.getInstance().get(Calendar.YEAR) + "'")) {
@@ -78,7 +76,7 @@ public class Wahlen implements CommandExecutor, Listener {
                     return true;
                 }
 
-                if(!SDuty.isSDuty(p)) {
+                if (!SDuty.isSDuty(p)) {
                     p.sendMessage(Messages.NO_SDUTY);
                     return true;
                 }
@@ -87,13 +85,13 @@ public class Wahlen implements CommandExecutor, Listener {
                 return true;
             }
 
-            if(args[0].equalsIgnoreCase("neuwahlen")) {
-                if(!Script.hasRank(p, Rank.ADMINISTRATOR, false)) {
+            if (args[0].equalsIgnoreCase("neuwahlen")) {
+                if (!Script.hasRank(p, Rank.ADMINISTRATOR, false)) {
                     p.sendMessage(Messages.NO_PERMISSION);
                     return true;
                 }
 
-                if(!SDuty.isSDuty(p)) {
+                if (!SDuty.isSDuty(p)) {
                     p.sendMessage(Messages.NO_SDUTY);
                     return true;
                 }
@@ -109,25 +107,25 @@ public class Wahlen implements CommandExecutor, Listener {
             }
         }
 
-        if(args.length == 2) {
-            if(args[0].equalsIgnoreCase("set")) {
-                if(!Script.hasRank(p, Rank.ADMINISTRATOR, false)) {
+        if (args.length == 2) {
+            if (args[0].equalsIgnoreCase("set")) {
+                if (!Script.hasRank(p, Rank.ADMINISTRATOR, false)) {
                     p.sendMessage(Messages.NO_PERMISSION);
                     return true;
                 }
 
-                if(!SDuty.isSDuty(p)) {
+                if (!SDuty.isSDuty(p)) {
                     p.sendMessage(Messages.NO_SDUTY);
                     return true;
                 }
 
                 OfflinePlayer tg = Script.getPlayer(args[1]);
-                if(tg == null) {
+                if (tg == null) {
                     p.sendMessage(Messages.PLAYER_NOT_FOUND);
                     return true;
                 }
 
-                if(hasApplied(tg)) {
+                if (hasApplied(tg)) {
                     p.sendMessage(PREFIX + "Der Spieler hat sich bereits aufgestellt.");
                     return true;
                 }
@@ -140,7 +138,7 @@ public class Wahlen implements CommandExecutor, Listener {
                 addToWahlen(tg);
                 p.sendMessage(PREFIX + "Du hast " + tg.getName() + " erfolgreich aufgestellt.");
                 Script.sendTeamMessage(p, ChatColor.GOLD, "hat " + tg.getName() + " zur Wahl aufgestellt.", true);
-                if(tg.isOnline()) {
+                if (tg.isOnline()) {
                     tg.getPlayer().sendMessage(PREFIX + "Du wurdest von " + Messages.RANK_PREFIX(p) + " zur Wahl aufgestellt.");
                 } else {
                     Script.addOfflineMessage(tg, PREFIX + "Du wurdest von " + Messages.RANK_PREFIX(p) + " zur Wahl aufgestellt.");
@@ -155,7 +153,7 @@ public class Wahlen implements CommandExecutor, Listener {
             return true;
         }
 
-        if(p.getLocation().distance(new Location(Script.WORLD, 545, 70, 1014, 0.46572876f, 14.078306f)) > 10) {
+        if (p.getLocation().distance(new Location(Script.WORLD, 545, 70, 1014, 0.46572876f, 14.078306f)) > 10) {
             p.sendMessage(Messages.ERROR + "Du befindest dich nicht an einer Wahlurne.");
             return true;
         }
@@ -165,7 +163,7 @@ public class Wahlen implements CommandExecutor, Listener {
     }
 
     public static boolean wahlenActive() {
-        if(neuWahlen) return true;
+        if (neuWahlen) return true;
         if (Calendar.getInstance().get(Calendar.MONTH) == Calendar.JANUARY && Calendar.getInstance().get(Calendar.DAY_OF_MONTH) == 15 && Calendar.getInstance().get(Calendar.HOUR_OF_DAY) < 18) {
             return true;
         } else if (Calendar.getInstance().get(Calendar.MONTH) == Calendar.JANUARY && Calendar.getInstance().get(Calendar.DAY_OF_MONTH) == 15 && (Calendar.getInstance().get(Calendar.HOUR_OF_DAY) < 20 && extend)) {
@@ -180,7 +178,8 @@ public class Wahlen implements CommandExecutor, Listener {
             return true;
         } else if (Calendar.getInstance().get(Calendar.MONTH) == Calendar.OCTOBER && Calendar.getInstance().get(Calendar.DAY_OF_MONTH) == 15 && Calendar.getInstance().get(Calendar.HOUR_OF_DAY) < 18) {
             return true;
-        } else return Calendar.getInstance().get(Calendar.MONTH) == Calendar.OCTOBER && Calendar.getInstance().get(Calendar.DAY_OF_MONTH) == 15 && (Calendar.getInstance().get(Calendar.HOUR_OF_DAY) < 20 && extend);
+        } else
+            return Calendar.getInstance().get(Calendar.MONTH) == Calendar.OCTOBER && Calendar.getInstance().get(Calendar.DAY_OF_MONTH) == 15 && (Calendar.getInstance().get(Calendar.HOUR_OF_DAY) < 20 && extend);
     }
 
     public static void getWahlResult() {
@@ -195,7 +194,7 @@ public class Wahlen implements CommandExecutor, Listener {
             return;
         }
 
-        if(getWinner() == -1 && getWahlApplications()==0) {
+        if (getWinner() == -1 && getWahlApplications() == 0) {
             Beruf.Berufe.NEWS.sendMessage(PREFIX + "Es gibt keine Kandidaten. Die Legislaturperiode der aktuellen Regierung wird um 1 Quartal verlängert.");
         }
 
@@ -203,9 +202,9 @@ public class Wahlen implements CommandExecutor, Listener {
         Beruf.Berufe.NEWS.sendMessage(PREFIX + "Die Nächsten Wahlen finden am §e" + getNextElection() + "§6 statt.");
 
         Beruf.Berufe.NEWS.sendMessage(PREFIX + "Das Ergebnis der Wahlen:");
-        for(OfflinePlayer p : Bukkit.getOnlinePlayers()) {
-            if(hasApplied(p)) {
-                Beruf.Berufe.NEWS.sendMessage(PREFIX + "§6" + p.getName() + " §8× §6" + getVotes(p) + " Stimmen (" + Script.getPercentage(getVotes(p), getTotalVotes()) + "%=");
+        for (OfflinePlayer p : getPlayers()) {
+            if (hasApplied(p)) {
+                Beruf.Berufe.NEWS.sendMessage(PREFIX + "§6" + p.getName() + " §8× §6" + getVotes(p) + " Stimmen (" + Script.getPercentage(getVotes(p), getTotalVotes()) + "%)");
             }
         }
 
@@ -215,15 +214,15 @@ public class Wahlen implements CommandExecutor, Listener {
             @Override
             public void run() {
                 OfflinePlayer winner = Script.getOfflinePlayer(getWinner());
-                if(!NewsCommand.wahlenNews) {
+                if (!NewsCommand.wahlenNews) {
                     Bukkit.broadcastMessage(NewsCommand.NEWS + winner.getName() + " hat die Wahlen mit " + getVotes(winner) + " Stimmen gewonnen!");
                     Bukkit.broadcastMessage(NewsCommand.NEWS + "Die Nächsten Wahlen finden am " + getNextElection() + " statt!");
                     Beruf.Berufe.NEWS.sendMessage(PREFIX + "Die News hat es nicht rechtzeitig geschafft das Ergebnis der Wahlen zu verkünden. Es wurde automatisch eine Meldung abgegeben.");
                     Script.sendTeamMessage(PREFIX + "Die News hat es nicht rechtzeitig geschafft das Ergebnis der Wahlen zu verkünden.");
                 }
 
-                if(Beruf.getBeruf(winner) != Beruf.Berufe.GOVERNMENT || !Beruf.isLeader(winner, false)) {
-                    for(Player all : Beruf.Berufe.GOVERNMENT.getMembers()) {
+                if (Beruf.getBeruf(winner) != Beruf.Berufe.GOVERNMENT || !Beruf.isLeader(winner, false)) {
+                    for (Player all : Beruf.Berufe.GOVERNMENT.getMembers()) {
                         all.sendMessage(PREFIX + "Die Legislaturperiode der aktuellen Regierung ist abgelaufen. Du bist nun nicht mehr in der Regierung.");
                     }
 
@@ -232,16 +231,17 @@ public class Wahlen implements CommandExecutor, Listener {
 
                 NewsCommand.wahlenNews = false;
                 NewsCommand.wahlenNewsActive = false;
-                if(Beruf.hasBeruf(winner) && Beruf.getBeruf(winner) != Beruf.Berufe.GOVERNMENT)  Beruf.getBeruf(winner).removeMember(winner);
-                if(Beruf.getBeruf(winner) != Beruf.Berufe.GOVERNMENT) Beruf.Berufe.GOVERNMENT.addMember(winner);
+                if (Beruf.hasBeruf(winner) && Beruf.getBeruf(winner) != Beruf.Berufe.GOVERNMENT)
+                    Beruf.getBeruf(winner).removeMember(winner);
+                if (Beruf.getBeruf(winner) != Beruf.Berufe.GOVERNMENT) Beruf.Berufe.GOVERNMENT.addMember(winner);
                 Beruf.setLeader(winner, true);
                 Achievement.WAHL_GEWONNEN.grant(winner);
-                if(Script.getPlayer(winner.getName()) != null)
+                if (Script.getPlayer(winner.getName()) != null)
                     Script.getPlayer(winner.getName()).sendMessage(Messages.INFO + "Herzlichen Glückwunsch! Du hast die Wahlen gewonnen! Du hast hiermit deine Rechte erhalten. Solltest du Hilfe benötigen, steht das Server-Team dir jederzeit zur Verfügung.");
 
 
             }
-        }.runTaskLater(main.getInstance(), 20L*60*10);
+        }.runTaskLater(main.getInstance(), 20L * 60 * 10);
     }
 
     public static String getNextElection() {
@@ -268,29 +268,22 @@ public class Wahlen implements CommandExecutor, Listener {
     }
 
     public static void sendWahlGUI(Player p) {
-        Bukkit.getScheduler().runTaskAsynchronously(main.getInstance(), () -> {
-            p.sendMessage(PREFIX + "Lade Wahl...");
-            p.sendMessage(Messages.INFO + "Niemand kann sehen, wen du wählst. Auch nicht die Administration.");
-            try (Statement stmt = main.getConnection().createStatement();
-                 ResultSet rs = stmt.executeQuery("SELECT * FROM wahlen WHERE quartal = '" + getCurrentQuartal() + "' AND year = '" + Calendar.getInstance().get(Calendar.YEAR) + "'")) {
-                if (rs.next()) {
-                    Inventory inv = Bukkit.createInventory(null, 54, "§8[§6Wahlen§8]");
-                    do {
-                        ItemStack head = new ItemStack(Material.PLAYER_HEAD, 1, (short) 3);
-                        SkullMeta meta = (SkullMeta) head.getItemMeta();
-                        meta.setOwningPlayer(Script.getOfflinePlayer(rs.getInt("nrp_id")));
-                        meta.setDisplayName("§6" + Script.getOfflinePlayer(rs.getInt("nrp_id")).getName());
-                        head.setItemMeta(meta);
-                        inv.addItem(head);
-                    } while (rs.next());
-                    p.openInventory(inv);
-                } else {
-                    p.sendMessage(PREFIX + "Es gibt derzeit keine Kandidaten.");
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
+        p.sendMessage(PREFIX + "Lade Wahl...");
+        p.sendMessage(Messages.INFO + "Niemand kann sehen, wen du wählst. Auch nicht die Administration.");
+        try (Statement stmt = main.getConnection().createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT * FROM wahlen WHERE quartal = '" + getCurrentQuartal() + "' AND year = '" + Calendar.getInstance().get(Calendar.YEAR) + "'")) {
+            if (rs.next()) {
+                Inventory inv = Bukkit.createInventory(null, 54, "§8[§6Wahlen§8]");
+                do {
+                    inv.addItem(new ItemBuilder(Material.PLAYER_HEAD).setName("§6" + Script.getOfflinePlayer(rs.getInt("nrp_id")).getName()).build());
+                } while (rs.next());
+                p.openInventory(inv);
+            } else {
+                p.sendMessage(PREFIX + "Es gibt derzeit keine Kandidaten.");
             }
-        });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static void addVote(Player p, int id) {
@@ -307,9 +300,9 @@ public class Wahlen implements CommandExecutor, Listener {
     }
 
     public static int getVote(Player p) {
-        try(Statement stmt = main.getConnection().createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM votes WHERE quartal = " + getCurrentQuartal() + " AND year = " + Calendar.getInstance().get(Calendar.YEAR) + " AND nrp_id = " + Script.getNRPID(p))) {
-            if(rs.next()) {
+        try (Statement stmt = main.getConnection().createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT * FROM votes WHERE quartal = " + getCurrentQuartal() + " AND year = " + Calendar.getInstance().get(Calendar.YEAR) + " AND nrp_id = " + Script.getNRPID(p))) {
+            if (rs.next()) {
                 return rs.getInt("president");
             }
         } catch (Exception e) {
@@ -319,9 +312,9 @@ public class Wahlen implements CommandExecutor, Listener {
     }
 
     public static int getVote(OfflinePlayer p) {
-        try(Statement stmt = main.getConnection().createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM votes WHERE quartal = " + getCurrentQuartal() + " AND year = " + Calendar.getInstance().get(Calendar.YEAR) + " AND nrp_id = " + Script.getNRPID(p))) {
-            if(rs.next()) {
+        try (Statement stmt = main.getConnection().createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT * FROM votes WHERE quartal = " + getCurrentQuartal() + " AND year = " + Calendar.getInstance().get(Calendar.YEAR) + " AND nrp_id = " + Script.getNRPID(p))) {
+            if (rs.next()) {
                 return rs.getInt("president");
             }
         } catch (Exception e) {
@@ -385,6 +378,22 @@ public class Wahlen implements CommandExecutor, Listener {
         return null;
     }
 
+    public static ArrayList<OfflinePlayer> getPlayers() {
+        ArrayList<OfflinePlayer> list = new ArrayList<>();
+        try (Statement stmt = main.getConnection().createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT * FROM wahlen WHERE quartal = '" + getCurrentQuartal() + "' AND year = '" + Calendar.getInstance().get(Calendar.YEAR) + "'")) {
+            if (rs.next()) {
+                do {
+                    list.add(Script.getOfflinePlayer(rs.getInt("nrp_id")));
+                } while (rs.next());
+                return list;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public static void addToWahlen(Player p) {
         Script.executeAsyncUpdate("INSERT INTO wahlen (id, nrp_id, quartal, year, votings) VALUES (NULL, '" + Script.getNRPID(p) + "', '" + getCurrentQuartal() + "', '" + Calendar.getInstance().get(Calendar.YEAR) + "', '0');");
     }
@@ -394,8 +403,8 @@ public class Wahlen implements CommandExecutor, Listener {
     }
 
     public static boolean hasApplied(Player p) {
-        try(Statement stmt = main.getConnection().createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM wahlen WHERE nrp_id = '" + Script.getNRPID(p) + "' AND quartal = '" + getCurrentQuartal() + "' AND year = '" + Calendar.getInstance().get(Calendar.YEAR) + "'")) {
+        try (Statement stmt = main.getConnection().createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT * FROM wahlen WHERE nrp_id = '" + Script.getNRPID(p) + "' AND quartal = '" + getCurrentQuartal() + "' AND year = '" + Calendar.getInstance().get(Calendar.YEAR) + "'")) {
             return rs.next();
         } catch (Exception e) {
             e.printStackTrace();
@@ -404,8 +413,8 @@ public class Wahlen implements CommandExecutor, Listener {
     }
 
     public static boolean hasApplied(OfflinePlayer p) {
-        try(Statement stmt = main.getConnection().createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM wahlen WHERE nrp_id = '" + Script.getNRPID(p) + "' AND quartal = '" + getCurrentQuartal() + "' AND year = '" + Calendar.getInstance().get(Calendar.YEAR) + "'")) {
+        try (Statement stmt = main.getConnection().createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT * FROM wahlen WHERE nrp_id = '" + Script.getNRPID(p) + "' AND quartal = '" + getCurrentQuartal() + "' AND year = '" + Calendar.getInstance().get(Calendar.YEAR) + "'")) {
             return rs.next();
         } catch (Exception e) {
             e.printStackTrace();

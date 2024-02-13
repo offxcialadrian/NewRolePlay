@@ -152,7 +152,7 @@ public class BlackListCommand implements CommandExecutor, Listener {
             String reason = sb.toString().trim();
             Blacklist.add(tg, o, reason, kills, price);
             p.sendMessage(Blacklist.PREFIX + "Der Spieler wurde auf die Blacklist gesetzt.");
-            tg.sendMessage(Blacklist.PREFIX + "Du wurdest auf die Blacklist der " + o.getName() + " gesetzt.");
+            tg.sendMessage(Blacklist.PREFIX + "Du wurdest auf die Blacklist der " + o.getName() + " gesetzt (Grund: " + reason + " | Preis: " + price + "€)");
             o.sendMessage(Blacklist.PREFIX + Script.getName(p) + " hat " + Script.getName(tg) + " auf die Blacklist gesetzt.");
             return true;
         }

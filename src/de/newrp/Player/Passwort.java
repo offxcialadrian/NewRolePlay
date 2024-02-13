@@ -89,6 +89,15 @@ public class Passwort implements CommandExecutor, Listener {
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         Player p = (Player) cs;
 
+        if(args.length == 0 && !isLocked(p)) {
+            p.sendMessage(Messages.ERROR + "/passwort set [Passwort]");
+            return true;
+        } else if(args.length == 0 && isLocked(p)) {
+            p.sendMessage(Messages.ERROR + "Du musst dein Passwort eingeben.");
+            p.sendMessage(Messages.INFO + "Nutze dafür §8/§6passwort [Passwort]");
+            return true;
+        }
+
         if(args.length == 1 && isLocked(p)) {
             if(usePasswort(p, args[0])) {
                 unlock(p);

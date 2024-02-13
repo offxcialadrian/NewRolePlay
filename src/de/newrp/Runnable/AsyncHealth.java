@@ -2,6 +2,7 @@ package de.newrp.Runnable;
 
 import de.newrp.API.Friedhof;
 import de.newrp.API.Health;
+import de.newrp.API.Krankheit;
 import de.newrp.API.Script;
 import de.newrp.Administrator.BuildMode;
 import de.newrp.Administrator.Checkpoints;
@@ -18,6 +19,9 @@ public class AsyncHealth extends BukkitRunnable {
     public void run() {
         for (Player p : Bukkit.getOnlinePlayers()) {
             if (Health.BLEEDING.containsKey(p.getName())) {
+                if(Script.getRandom(1, 100) <20) {
+                    Krankheit.ENTZUENDUNG.add(Script.getNRPID(p));
+                }
                 float amount = Health.BLEEDING.get(p.getName());
                 int id = Script.getNRPID(p);
                 Health.BLOOD.remove(id, amount);

@@ -8,6 +8,7 @@ import de.newrp.Chat.Me;
 import de.newrp.Waffen.Waffen;
 import de.newrp.main;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -34,7 +35,7 @@ public class ReviveCommand implements CommandExecutor {
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
         Player p = (Player) cs;
 
-        if (args.length == 1 && Script.hasRank(p, Rank.MODERATOR, true) && SDuty.isSDuty(p)) {
+        if (args.length == 1 && Script.hasRank(p, Rank.SUPPORTER, false) && SDuty.isSDuty(p)) {
 
             Player tg = Script.getPlayer(args[0]);
             if (tg == null) {
@@ -59,6 +60,7 @@ public class ReviveCommand implements CommandExecutor {
             p.sendMessage(PREFIX + "Du hast " + Script.getName(tg) + " wiederbelebt.");
             tg.sendMessage(PREFIX + "Du wurdest von " + Messages.RANK_PREFIX(p) + " wiederbelebt.");
             Friedhof.revive(tg, f.getDeathLocation());
+            Script.sendTeamMessage(p, ChatColor.RED, "hat " + Script.getName(tg) + " wiederbelebt.", true);
             if(Corpse.npcMap.containsKey(p)) Corpse.removeNPC(p);
             if (f.getInventoryContent() != null) {
                 tg.getInventory().clear();

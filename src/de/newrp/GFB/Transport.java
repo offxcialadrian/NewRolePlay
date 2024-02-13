@@ -1,9 +1,6 @@
 package de.newrp.GFB;
 
-import de.newrp.API.ItemBuilder;
-import de.newrp.API.Messages;
-import de.newrp.API.PayDay;
-import de.newrp.API.Script;
+import de.newrp.API.*;
 import de.newrp.Shop.Shops;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -131,6 +128,7 @@ public class Transport implements CommandExecutor, Listener {
 
         p.sendMessage(GFB.PREFIX + "Du hast dich für den Transport zum Shop §6" + shop.getName() + " §7entschieden.");
         p.sendMessage(GFB.PREFIX + "Du hast nun " + (GFB.TRANSPORT.getLevel(p)*5) + " Minuten Zeit, um die Ware zu transportieren.");
+        new Route(p.getName(), Script.getNRPID(p), p.getLocation(), shop.getBuyLocation()).start();
         p.sendMessage(Messages.INFO + "Klicke nun auf das Schild \"Lager\".");
         int score = Math.min(GFB.TRANSPORT.getLevel(p) * Script.getRandom(4, 7), shop.getLagerSize());
         p.sendMessage(GFB.PREFIX + "Du musst " + score + " Waren transportieren.");
@@ -178,14 +176,16 @@ public class Transport implements CommandExecutor, Listener {
             cooldown2.remove(p.getName());
             return;
         }
+
+        SHOP.get(p.getName()).addLager(Script.getRandom(4,5));
+        p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
+
         if(cooldown2.containsKey(p.getName())) {
             if(cooldown2.get(p.getName()) > System.currentTimeMillis()) {
                 Script.sendActionBar(p, Messages.ERROR + "Warte kurz...");
                 return;
             }
         }
-        SHOP.get(p.getName()).addLager(1);
-        p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
         SCORE.put(p.getName(), SCORE.get(p.getName()) - 1);
         p.sendMessage(GFB.PREFIX + "Du hast noch " + SCORE.get(p.getName()) + " Waren zu transportieren.");
         cooldown2.put(p.getName(), System.currentTimeMillis() + 1000L);

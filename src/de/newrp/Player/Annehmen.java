@@ -176,14 +176,14 @@ public class Annehmen implements CommandExecutor {
                 return true;
             }
 
-            house.removeMieter(Script.getNRPID(seller));
+            Script.executeUpdate("DELETE FROM house_bewohner WHERE houseID = " + houseID + " AND mieterID = " + Script.getNRPID(seller));
             Script.removeMoney(p, PaymentType.BANK, price);
             Stadtkasse.addStadtkasse((int) Script.getPercent(Steuern.Steuer.HAUSVERKAUFSSTEUER.getPercentage(), price), "Hausverkauf von " + Script.getName(seller) + " an " + Script.getName(p) + " (Haus: " + house.getID() + ")", Steuern.Steuer.HAUSVERKAUFSSTEUER);
             int add = price - (int) Script.getPercent(Steuern.Steuer.HAUSVERKAUFSSTEUER.getPercentage(), price);
             Script.addMoney(seller, PaymentType.BANK, add);
             house.setOwner(Script.getNRPID(p));
             house.updateSign();
-            house.addMieter(new House.Mieter(p.getName(), houseID, 0, 0), true);
+            Script.executeAsyncUpdate("INSERT INTO house_bewohner (houseID, mieterID, vermieter, miete, nebenkosten, immobilienmarkt) VALUES (" + houseID + ", " + Script.getNRPID(p) + ", " + true + ", " + 0 + ", 0, FALSE);");
             p.sendMessage(ACCEPTED + "Du hast das Haus erfolgreich gekauft.");
             seller.sendMessage(PREFIX + Script.getName(p) + " hat dein Haus " + house.getID() + " gekauft.");
             Log.HIGH.write(p.getName() + " hat das Haus " + house.getID() + " gekauft.");

@@ -18,7 +18,7 @@ public enum HologramList {
     EQUIP_MEDIC(12, "§8/§6equip",new Location(Script.WORLD, 267,74,1253)),
     EQUIP_NEWS(13, "§8/§6equip",new Location(Script.WORLD, 289, 66, 788)),
     BLACKJACK(14, "§8/§6blackjack",new Location(Script.WORLD, 790, 108, 858)),
-    ARBEITSLOSENGELD(15, "§8/§6arbeitslosengeld",new Location(Script.WORLD, 552, 69, 966)),
+    ARBEITSLOSENGELD(15, "§8/§6arbeitslosengeld",new Location(Script.WORLD, 552, 69, 965)),
     SELFSTORAGE(16, "§8/§6selfstorage",new Location(Script.WORLD, 1012, 67, 1202)),
     BUY_ELEKTRO(17, "§8/§6buy", new Location(Script.WORLD, 865, 73, 964)),
     BUY_SUPERMARKT(18, "§8/§6buy", new Location(Script.WORLD, 640, 67, 861)),
@@ -39,7 +39,9 @@ public enum HologramList {
     IMKEREI(33, "§8/§6imker", new Location(Script.WORLD, 222, 65, 771, 174.1878f, 10.542069f)),
     BUY_HOTELCALIFORNIA(34, "§8/§6buy", new Location(Script.WORLD, 275, 65, 971, -90.44937f, 4.9502726f)),
     BUY_MOTEL99(35, "§8/§6buy", new Location(Script.WORLD, 809, 63, 1221, -89.25004f, -1.3500005f)),
-    WAFFENSCHEIN(36, "§8/§6waffenschein", new Location(Script.WORLD, 552, 69, 967, -253.474f, 4.7215652f));
+    WAFFENSCHEIN(36, "§8/§6waffenschein", new Location(Script.WORLD, 552, 69, 968, -253.474f, 4.7215652f)),
+    BUY_APOTHEKE_AEKI(37, "§8/§6buy", new Location(Script.WORLD, 659, 67, 854, 88.650856f, 15.150019f)),
+    BUY_GANGSHOP(38, "§8/§6buy", new Location(Script.WORLD, 617, 64, 1277, 174.60092f, 15.899984f));
 
     private final int id;
     private final String name;

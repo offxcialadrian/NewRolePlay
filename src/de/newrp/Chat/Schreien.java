@@ -61,8 +61,8 @@ public class Schreien implements CommandExecutor {
         Location pLoc = p.getLocation();
         String speakWord = "schreit";
 
-        if(Call.isOnCall(p)) {
-            Call.sendMessage(p, message);
+        if(Call.isOnActiveCall(p)) {
+            Call.sendMessage(p, message, true);
         }
 
         Chat.handleChatFilter(p, message);

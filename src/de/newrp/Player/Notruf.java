@@ -36,7 +36,7 @@ public class Notruf implements Listener {
 
     public static void openGUI(Player p, Questions question) {
         int size = (int) Math.ceil(question.getAnswers().size() / 9.0) * 9;
-        Inventory inv = Bukkit.createInventory(null, size, "§8[§cNotruf§8] §7" + question.getQuestion());
+        Inventory inv = Bukkit.createInventory(null, size, "§8[§c112§8] §7" + question.getQuestion());
         int i = 0;
         for (Answers answer : Answers.values()) {
             if (answer.question == question) {
@@ -51,7 +51,7 @@ public class Notruf implements Listener {
     @EventHandler
     public void onClick(InventoryClickEvent e) {
         Player p = (Player) e.getWhoClicked();
-        if (e.getView().getTitle().startsWith("§8[§cNotruf§8]")) {
+        if (e.getView().getTitle().startsWith("§8[§c112§8]")) {
             e.setCancelled(true);
             if (e.getCurrentItem() == null || e.getCurrentItem().getType() == Material.AIR) return;
             for (Answers answer : Answers.values()) {
@@ -66,6 +66,7 @@ public class Notruf implements Listener {
                         } catch (NumberFormatException ex) {
                             verletzte = -1;
                         }
+                        Me.sendMessage(p, "wählt den Notruf auf seinem Handy.");
 
                         StringBuilder sb = new StringBuilder();
                         sb.append(PREFIX + "§6Achtung! Ein Notruf von " + Script.getName(p) + " ist eingegangen.")
@@ -79,12 +80,6 @@ public class Notruf implements Listener {
 
 
                         boolean straftat = answers.get(p.getName() + Questions.FRAGE3.getID()).equals("Ja");
-                        if(!straftat && verletzte == -1) {
-                            p.sendMessage(PREFIX + "§cDu hast keine Angaben gemacht. Der Notruf wurde abgebrochen.");
-                            questions.remove(p);
-                            answers.remove(p.getName() + questionID);
-                            return;
-                        }
                         ArrayList<Beruf.Berufe> berufe = new ArrayList<>();
                         if (verletzte != 0 && straftat) {
                             Beruf.Berufe.POLICE.sendMessage(sb.toString());

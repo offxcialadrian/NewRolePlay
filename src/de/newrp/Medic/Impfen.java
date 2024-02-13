@@ -4,6 +4,7 @@ import de.newrp.API.Krankheit;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.Chat.Me;
+import de.newrp.Player.AFK;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -32,6 +33,10 @@ public class Impfen implements Listener {
 
         long time = System.currentTimeMillis();
         Player rightClicked = (Player) e.getRightClicked();
+
+        if(AFK.isAFK(rightClicked)) {
+            Script.sendActionBar(p, Messages.ERROR + "Der Spieler ist AFK.");
+        }
 
         if (Krankheit.HUSTEN.isImpfed(Script.getNRPID(rightClicked))) {
             p.sendMessage(Messages.ERROR + "Der Spieler ist bereits geimpft.");

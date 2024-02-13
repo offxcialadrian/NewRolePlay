@@ -136,6 +136,9 @@ public class BuildMode implements CommandExecutor, Listener {
     @EventHandler
     public void openChest(PlayerInteractEvent e) {
         Player p = e.getPlayer();
+        if(Script.isInTestMode()) {
+            //Script.sendActionBar(p, Messages.INFO + "WORK IN PROGRESS " + p.getName());
+        }
         if (e.getAction() == Action.RIGHT_CLICK_BLOCK) {
             if (e.getClickedBlock().getType().equals(Material.CHEST))
                 if (!isInBuildMode(p)) e.setCancelled(true);

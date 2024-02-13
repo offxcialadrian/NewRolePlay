@@ -1,12 +1,9 @@
 package de.newrp.Votifier;
 
-import de.newrp.API.Baseballschlaeger;
-import de.newrp.API.Premium;
-import de.newrp.API.Token;
+import de.newrp.API.*;
 import de.newrp.Waffen.Waffen;
 import de.newrp.Waffen.Weapon;
 import de.newrp.main;
-import de.newrp.API.Script;
 import net.md_5.bungee.api.ChatColor;
 import net.minecraft.server.v1_16_R3.IChatBaseComponent;
 import net.minecraft.server.v1_16_R3.IChatBaseComponent.ChatSerializer;
@@ -75,6 +72,12 @@ public enum Votekiste {
         };
         ArrayList<ItemStack> items = new ArrayList<>();
         Items[][] raw = this.getItems();
+        //debug through the raw array
+        for (Items[] item : raw) {
+            for (Items is : item) {
+                Debug.debug(is.getItem().getItemMeta().getDisplayName());
+            }
+        }
         int x = 0;
         for (Items[] item : raw) {
             if (x == 0) {

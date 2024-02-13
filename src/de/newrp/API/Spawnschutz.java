@@ -1,5 +1,6 @@
 package de.newrp.API;
 
+import de.newrp.Ticket.TicketCommand;
 import de.newrp.main;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Arrow;
@@ -131,4 +132,40 @@ public class Spawnschutz implements Listener {
             ((Player) a.getShooter()).sendMessage("§8[§6Spawnschutz§8] §6 "+ Messages.ARROW + " Der Spieler ist im Spawnschutz.");
         }
     }
+
+    @EventHandler
+    public void onDamage1(EntityDamageByEntityEvent e) {
+        if (e.getEntityType() != EntityType.PLAYER) return;
+
+        Entity damager = e.getDamager();
+        Player p = (Player) e.getEntity();
+
+        if (Script.getLevel(p)!=1) return;
+        if(Script.getLevel((Player) e.getDamager()) != 1) return;
+
+        if (damager.getType() == EntityType.PLAYER) {
+            damager.sendMessage("§8[§cNeulingsschutz§8] §c "+ Messages.ARROW + " Der Spieler ist im Neulingsschutz.");
+        } else if (damager.getType() == EntityType.ARROW) {
+            Arrow a = (Arrow) damager;
+            ((Player) a.getShooter()).sendMessage("§8[§cNeulingsschutz§8] §c "+ Messages.ARROW + " Der Spieler ist im Neulingsschutz.");
+        }
+    }
+
+    @EventHandler
+    public void reportWarning(EntityDamageByEntityEvent e) {
+        if (e.getEntityType() != EntityType.PLAYER) return;
+
+        Entity damager = e.getDamager();
+        Player p = (Player) e.getEntity();
+
+        if(!TicketCommand.isInTicket(p)) return;
+
+        if (damager.getType() == EntityType.PLAYER) {
+            damager.sendMessage("§8[§cTicket§8] §c "+ Messages.ARROW + " Der Spieler ist im Ticket.");
+        } else if (damager.getType() == EntityType.ARROW) {
+            Arrow a = (Arrow) damager;
+            ((Player) a.getShooter()).sendMessage("§8[§cTicket§8] §c "+ Messages.ARROW + " Der Spieler ist im Ticket.");
+        }
+    }
+
 }

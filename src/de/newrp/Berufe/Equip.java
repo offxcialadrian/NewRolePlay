@@ -31,21 +31,22 @@ public class Equip implements CommandExecutor, Listener {
         SCHUTZWESTE("Schutzweste", Script.kevlar(1), 500, 0, null, Beruf.Berufe.POLICE, false),
         HANDSCHELLEN("Handschellen", Script.setName(new ItemStack(Material.LEAD, 2), "§7Handschellen"), 100, 0, null, Beruf.Berufe.POLICE, true),
         TAZER("Tazer", Script.setName(new ItemStack(Material.WOODEN_HOE, 1), "§7Tazer"), 100, 0, null, Beruf.Berufe.POLICE, true),
-        DONUT("Donut", Script.setName(new ItemStack(Material.COOKIE, 1), "§7Donut"), 1, 0, null, Beruf.Berufe.POLICE, false),
+        DONUT("Donut", new ItemBuilder(Material.COOKIE).setAmount(16).setName("§7Donut").build(), 1, 0, null, Beruf.Berufe.POLICE, false),
         MP7("MP7", new ItemBuilder(Material.GOLDEN_HORSE_ARMOR).setName("§7MP7").build(), 2900, 400, null, Beruf.Berufe.POLICE, false),
         EINSATZSCHILD("Einsatzschild", Script.einsatzschild(1), 1000, 0, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE, true),
-        EINSAZTZSCHILD_2("Einsatzschild", Script.einsatzschild(2), 1500, 0, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE, true),
+        EINSAZTZSCHILD_2("Einsatzschild [2]", Script.einsatzschild(2), 1500, 0, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE, true),
         RAUCHGRANATE("Rauchgranate", Script.rauchgranate(), 100, 0, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE, true),
         FLASHBANG("Flashbang", Script.flashbang(), 100, 0, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE, true),
         FALLSCHIRM("Fallschirm", Script.fallschirm(), 100, 0, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE, true),
         ZEITUNG("Zeitung", Script.setName(new ItemStack(Material.WRITABLE_BOOK), "§7Zeitung"), 100, 0, Abteilung.Abteilungen.CHEFREDAKTION, Beruf.Berufe.NEWS, true),
-        VERBAND("Verband", Script.setName(new ItemStack(Material.PAPER), "§7Verband"), 5, 0, null, Beruf.Berufe.RETTUNGSDIENST, false),
+        VERBAND("Verband", new ItemBuilder(Material.PAPER).setName("§7Verband").setAmount(5).build(), 5, 0, null, Beruf.Berufe.RETTUNGSDIENST, false),
         GIPS("Gips", Script.setName(new ItemStack(Material.PAPER), "§7Gips"), 50, 0, null, Beruf.Berufe.RETTUNGSDIENST, true),
         SCHWERE_SCHUTZWESTE("Schwere Schutzweste", Script.kevlar(2), 1000, 0, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE, true),
         SPRITZE("Spritze", Script.setName(new ItemStack(Material.END_ROD), "§7Spritze"), 10, 0, null, Beruf.Berufe.RETTUNGSDIENST, true),
         HUSTEN_IMPFUNG("Husten Impfung", Script.setName(new ItemStack(Material.END_ROD), "§7Husten Impfung"), 50, 0, null, Beruf.Berufe.RETTUNGSDIENST, true),
         KAFFEE("Kaffee", Script.setName(new ItemStack(Material.POTION), "§7Kaffee"), 10, 0, null, Beruf.Berufe.NEWS, false),
-        KEKSE("Kekse", Script.setName(new ItemStack(Material.COOKIE), "§7Kekse"), 10, 0, null, Beruf.Berufe.NEWS, false);
+        BROT("Brot", new ItemBuilder(Material.BREAD).setAmount(16).setName("§7Brot").build(), 10, 0, null, Beruf.Berufe.RETTUNGSDIENST, false),
+        KEKSE("Kekse",new ItemBuilder(Material.COOKIE).setAmount(16).setName("§7Keks").build(), 10, 0, null, Beruf.Berufe.NEWS, false);
 
         private String name;
         private ItemStack item;
@@ -105,7 +106,7 @@ public class Equip implements CommandExecutor, Listener {
 
         public static boolean isEquip(ItemStack is) {
             for (Stuff stuff : values()) {
-                if (stuff.getItem().equals(is)) {
+                if (stuff.getItem().isSimilar(is)) {
                     return true;
                 }
             }

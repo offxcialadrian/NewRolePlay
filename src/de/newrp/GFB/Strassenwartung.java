@@ -144,6 +144,7 @@ public class Strassenwartung implements CommandExecutor, Listener {
             }
         }
 
+
         if (SCORE.get(p.getName()) == 1) {
             int repaired_total = TOTAL_SCORE.get(p.getName()) - SCORE.get(p.getName());
             p.sendMessage(PREFIX + "Du hast alle Straßen repariert.");
@@ -159,12 +160,32 @@ public class Strassenwartung implements CommandExecutor, Listener {
             return;
         }
 
+        if(Construction.getRandomConstruction() == null) {
+            p.sendMessage(Messages.ERROR + "Leider gibt es derzeit keine Baustellen. Dein Job wurde beendet.");
+            int repaired_total = TOTAL_SCORE.get(p.getName()) - SCORE.get(p.getName());
+            p.sendMessage(PREFIX + "Du hast alle Straßen repariert.");
+            PayDay.addPayDay(p, GFB.STRASSENWARTUNG.getLevel(p) * Script.getRandom(2, 3) * repaired_total);
+            Script.addEXP(p, GFB.STRASSENWARTUNG.getLevel(p) * Script.getRandom(2, 3) * repaired_total);
+            GFB.STRASSENWARTUNG.addExp(p, GFB.STRASSENWARTUNG.getLevel(p) * Script.getRandom(3, 4) * repaired_total);
+            Cache.loadInventory(p);
+            GFB.CURRENT.remove(p.getName());
+            construction.remove(p.getName());
+            CONSTRUCTION.remove(construction.get(p.getName()));
+            SCORE.remove(p.getName());
+            TOTAL_SCORE.remove(p.getName());
+            return;
+        }
+
+
+        CONSTRUCTION.remove(construction.get(p.getName()));
+        construction.remove(p.getName());
         SCORE.put(p.getName(), SCORE.get(p.getName()) - 1);
         p.sendMessage(PREFIX + "Du hast noch " + SCORE.get(p.getName()) + " Straßen zu reparieren.");
+        Construction construction1 = Construction.getRandomConstruction();
+        construction.put(p.getName(), construction1);
+        CONSTRUCTION.put(construction.get(p.getName()), p.getName());
         p.sendMessage(PREFIX + "Nächste Baustelle: " + construction.get(p.getName()).getName());
         p.sendMessage(Messages.INFO + "Begebe dich zur nächsten Baustelle.");
-        construction.put(p.getName(), Construction.getRandomConstruction());
-        CONSTRUCTION.put(construction.get(p.getName()), p.getName());
         for (Location locs : construction.get(p.getName()).getLocations()) {
             if (locs.getBlock().getType() == Material.ANDESITE) {
                 locs.getBlock().setType(Material.ANDESITE_SLAB);

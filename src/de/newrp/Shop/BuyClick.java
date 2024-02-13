@@ -85,8 +85,8 @@ public class BuyClick implements Listener {
             }
             Achievement.HOTEL.grant(p);
             p.sendMessage(Hotel.PREFIX + "Willkommen im " + Hotel.Hotels.getHotelByName(e.getView().getTitle()).getName() + "!");
-            Script.executeAsyncUpdate("INSERT INTO hotel (nrp_id, room) VALUES (" + Script.getNRPID(p) + ", " + room.getID() + ")");
             p.sendMessage(Hotel.PREFIX + "Du hast das Zimmer " + room.getName() + " für " + room.getPrice() + "€ gebucht.");
+            Script.executeAsyncUpdate("INSERT INTO hotel (nrp_id, room) VALUES (" + Script.getNRPID(p) + ", " + room.getID() + ")");
             return;
         }
 

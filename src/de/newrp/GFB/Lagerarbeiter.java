@@ -32,6 +32,7 @@ public class Lagerarbeiter implements CommandExecutor, Listener {
     public static HashMap<String, Integer> SCORE = new HashMap<>();
     public static HashMap<String, Long> cooldown = new HashMap<>();
     public static HashMap<String, Integer> TOTAL_SCORE = new HashMap<>();
+    public static HashMap<String, Long> small_cooldown = new HashMap<>();
 
     public enum Type {
         OBST("Obst"),
@@ -60,7 +61,7 @@ public class Lagerarbeiter implements CommandExecutor, Listener {
 
     public enum Waren {
 
-        APFEL(1, "Apfel", new ItemBuilder(Material.APPLE).setName("§fApfel").build(), Type.OBST),
+        APFEL(1, "Äpfel", new ItemBuilder(Material.APPLE).setName("§fApfel").build(), Type.OBST),
         MELONE(2, "Melone", new ItemBuilder(Material.MELON).setName("§fMelone").build(), Type.GEMUESE),
         KAROTTE(3, "Karotte", new ItemBuilder(Material.CARROT).setName("§fKarotte").build(), Type.GEMUESE),
         KARTOFFEL(4, "Kartoffel", new ItemBuilder(Material.POTATO).setName("§fKartoffel").build(), Type.GEMUESE),
@@ -235,7 +236,12 @@ public class Lagerarbeiter implements CommandExecutor, Listener {
 
                         Inventory inv = Bukkit.createInventory(null, 9*5, "Produkt einsortieren");
                         inv.setItem(inv.getSize() - 1, new ItemBuilder(Material.GREEN_WOOL).setName("§aBestätigen").build());
-                        Cache.saveInventory(p);
+                        if(small_cooldown.containsKey(p.getName())) {
+                            if (small_cooldown.get(p.getName()) < System.currentTimeMillis()) Cache.saveInventory(p);
+                        } else {
+                            Cache.saveInventory(p);
+                        }
+                        small_cooldown.put(p.getName(), System.currentTimeMillis() + 5L);
                         p.getInventory().clear();
                         p.openInventory(inv);
                         p.setItemOnCursor(new ItemBuilder(ON_JOB.get(p.getName()).getMaterial().getType()).setAmount(inv.getSize() - 1).build());

@@ -8,6 +8,7 @@ import de.newrp.Berufe.Beruf;
 import de.newrp.Berufe.Duty;
 import de.newrp.Chat.Me;
 import de.newrp.Government.Stadtkasse;
+import de.newrp.Player.AFK;
 import de.newrp.main;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -57,8 +58,13 @@ public class Krankheitstest implements Listener {
             return;
         }
 
+
+
         long time = System.currentTimeMillis();
         Player tg = (Player) e.getRightClicked();
+        if(AFK.isAFK(tg)) {
+            Script.sendActionBar(p, Messages.ERROR + "Der Spieler ist AFK.");
+        }
 
         Long lastUsage = SPRITZE_COOLDOWN.get(tg.getName());
         if (lastUsage != null && lastUsage + TimeUnit.MINUTES.toMillis(4) > time) {

@@ -35,6 +35,11 @@ public class DangerLevel implements CommandExecutor {
             return true;
         }
 
+        if(tg == p) {
+            p.sendMessage(Messages.ERROR + "Du kannst nicht deine eigene Gefährlichkeitsstufe ändern.");
+            return true;
+        }
+
         if(!Script.isInt(args[1])) {
             p.sendMessage(Messages.ERROR + "Bitte gebe eine Zahl ein.");
             return true;

@@ -1,6 +1,7 @@
 package de.newrp.GFB;
 
 import de.newrp.API.*;
+import de.newrp.main;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -14,10 +15,12 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -29,6 +32,7 @@ public class Dishwasher implements CommandExecutor, Listener {
     public static final HashMap<String, Long> cooldown = new HashMap<>();
     public static final HashMap<String, Integer> dishes = new HashMap<>();
     public static final HashMap<String, Integer> TOTAL_SCORE = new HashMap<>();
+    public static final HashMap<String, Long> small_cooldown = new HashMap<>();
     public static ArrayList<String> ON_JOB = new ArrayList<>();
 
     @Override
@@ -87,7 +91,12 @@ public class Dishwasher implements CommandExecutor, Listener {
         if(!ON_JOB.contains(p.getName())) return;
         if(e.getAction() != Action.RIGHT_CLICK_BLOCK) return;
         if(!(e.getClickedBlock().getLocation().equals(new Location(Script.WORLD, 586, 67, 749))) && !(e.getClickedBlock().getLocation().equals(new Location(Script.WORLD, 585, 67, 749)))) return;
-        Cache.saveInventory(p);
+        if(small_cooldown.containsKey(p.getName())) {
+            if (small_cooldown.get(p.getName()) < System.currentTimeMillis()) Cache.saveInventory(p);
+        } else {
+            Cache.saveInventory(p);
+        }
+        small_cooldown.put(p.getName(), System.currentTimeMillis() + 5L);
         p.getInventory().clear();
         ArrayList<Integer> numbers = Script.getRandomNumbers(0, 6*9, 10);
         Inventory inv = Bukkit.createInventory(null, 6*9, "§6Tellerwäscher");
@@ -117,6 +126,8 @@ public class Dishwasher implements CommandExecutor, Listener {
             dish--;
             dishes.put(p.getName(), dish);
             TOTAL_SCORE.replace(p.getName(), TOTAL_SCORE.get(p.getName())-1);
+            ON_JOB.remove(p.getName());
+            Cache.loadInventory(p);
             return;
         }
         Inventory inv = e.getInventory();
@@ -143,6 +154,7 @@ public class Dishwasher implements CommandExecutor, Listener {
         int dish = dishes.get(p.getName());
         dish--;
         dishes.put(p.getName(), dish);
+        Cache.loadInventory(p);
         if(dish <= 0) {
             p.sendMessage(PREFIX + "Du hast alle Teller gewaschen.");
             GFB.CURRENT.remove(p.getName());
@@ -151,21 +163,11 @@ public class Dishwasher implements CommandExecutor, Listener {
             Script.addEXP(p, GFB.DISHWASHER.getLevel(p) * TOTAL_SCORE.get(p.getName()));
             PayDay.addPayDay(p, GFB.DISHWASHER.getLevel(p) * TOTAL_SCORE.get(p.getName())/2);
             TOTAL_SCORE.remove(p.getName());
-            Cache.loadInventory(p);
             return;
         }
         p.sendMessage(PREFIX + "Du musst noch " + dish + " Teller waschen.");
     }
 
-    @EventHandler
-    public void onCloseInventory(InventoryCloseEvent e) {
-        Player p = (Player) e.getPlayer();
-        if(!TOTAL_SCORE.containsKey(p.getName())) return;
-        if(!dishes.containsKey(p.getName())) return;
-        if(!e.getView().getTitle().equals("§6Tellerwäscher")) return;
-        ON_JOB.remove(p.getName());
-        Cache.loadInventory(p);
-    }
 
     @EventHandler
     public void onQuit(PlayerQuitEvent e) {

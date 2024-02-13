@@ -2,8 +2,10 @@ package de.newrp.News;
 
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
+import de.newrp.Administrator.Checkpoints;
 import de.newrp.Berufe.Abteilung;
 import de.newrp.Berufe.Beruf;
+import de.newrp.Police.Jail;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -26,12 +28,22 @@ public class NewsCommand implements CommandExecutor {
         }
 
         if(Beruf.getBeruf(p) != Beruf.Berufe.NEWS) {
-            p.sendMessage(Messages.ERROR + "Du Mitglieder der News können Nachrichten schalten.");
+            p.sendMessage(Messages.ERROR + "Nur Mitglieder der News können Nachrichten schalten.");
             return true;
         }
 
         if(args.length == 0) {
             p.sendMessage(Messages.ERROR + "/news [News]");
+            return true;
+        }
+
+        if(Checkpoints.hasCheckpoints(p)) {
+            p.sendMessage(Messages.ERROR + "Du kannst keine News schalten, wenn du Checkpoints hast.");
+            return true;
+        }
+
+        if(Jail.isInJail(p)) {
+            p.sendMessage(Messages.ERROR + "Du kannst keine News schalten, wenn du im Gefängnis bist.");
             return true;
         }
 

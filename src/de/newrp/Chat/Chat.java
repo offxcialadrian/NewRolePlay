@@ -187,14 +187,15 @@ public class Chat implements Listener {
 
         handleChatFilter(p, e.getMessage());
 
-        if(Call.isOnCall(p)) {
-            Call.sendMessage(p, e.getMessage());
+        if(Call.isOnActiveCall(p)) {
+            Call.sendMessage(p, e.getMessage(), false);
         }
 
         String message = e.getMessage();
         Set<String> foundNames = getMentionedNames(message);
         String speakWord = "sagt";
-        Notifications.sendMessage(Notifications.NotificationType.CHAT, "§8[§c" + Script.getLevel(p) + "§8] §7" + Script.getName(p) + " sagt: §7" + message);
+        if(message.endsWith("?")) speakWord = "fragt";
+        Notifications.sendMessage(Notifications.NotificationType.CHAT, "§8[§c" + Script.getLevel(p) + "§8] §7" + Script.getName(p) + " " + speakWord + ": §7" + message);
         Script.updateExpBar(p);
         for (Player online : Bukkit.getOnlinePlayers()) {
             double distance = p.getLocation().distance(online.getLocation());

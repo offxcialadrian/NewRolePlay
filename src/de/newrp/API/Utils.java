@@ -19,6 +19,7 @@ import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.event.server.ServerListPingEvent;
 import org.bukkit.event.server.TabCompleteEvent;
@@ -39,7 +40,7 @@ import static de.newrp.API.Rank.PLAYER;
 
 public class Utils implements Listener {
 
-    private static final Material[] DROP_BLACKLIST = new Material[]{ Material.WOODEN_HOE, Material.LEAD, Material.ANDESITE_SLAB };
+    private static final Material[] DROP_BLACKLIST = new Material[]{ Material.WOODEN_HOE, Material.LEAD, Material.ANDESITE_SLAB, Material.SHIELD };
     private static final String[] BLOCKED_COMMANDS = new String[]{
             "/minecraft", "/spi", "/protocol", "/rl", "/restart", "/bukkit", "/time", "/version", "/icanhasbukkit", "/xp", "/tell",
             "/toggledownfall", "/testfor", "/recipe", "/effect", "/enchant", "/deop", "/defaultgamemode", "/ban-ip",
@@ -55,11 +56,11 @@ public class Utils implements Listener {
             "/setworldspawn", "/spawnpoint", "/spreadplayers", "/stop", "/stopsound", "/structure", "/summon", "/tag",
             "/teammsg", "/tell", "/tellraw", "/testfor", "/testforblock", "/testforblocks", "/tickingarea", "/time", "/title",
             "/titleraw", "/tm", "/toggledownfall", "/trigger", "/volumearea", "/wb", "/worldborder",
-            "/worldborder", "/wsserver", "/xp", "/ver", "/citizens", "/npc", "/vehicle", "/garage", "/tebex", "/buycraft"
+            "/worldborder", "/wsserver", "/xp", "/citizens", "/npc", "/vehicle", "/garage", "/tebex", "/buycraft"
     };
 
     private static final String[] BLOCKED_COMMANDS_SPECIFIC = new String[]{
-            "/pl", "/plugins", "/give", "/whitelist"
+            "/pl", "/plugins", "/give", "/whitelist", "/ver", "/version"
     };
 
 
@@ -154,6 +155,7 @@ public class Utils implements Listener {
 
     @EventHandler
     public void onBedEnter(PlayerBedEnterEvent e) {
+        e.getPlayer().setBedSpawnLocation(null, false);
         e.setCancelled(false);
     }
 
@@ -197,11 +199,11 @@ public class Utils implements Listener {
                 p.sendMessage(Messages.INFO + "Du hast noch keinen BackupCode. Er ist wichtig, um deinen Account wiederherzustellen, falls du ihn verlierst. Nutze §8/§6backupcode §r, um einen BackupCode zu erhalten.");
 
         } else {
-            if (!Script.getCountry(p).contains("Germany") && !Script.getCountry(p).contains("Austria") && !Script.getCountry(p).contains("Switzerland") && !Script.isWhitelistedIP(p.getAddress().getAddress().getHostAddress())) {
+            /*if (!Script.getCountry(p).contains("Germany") && !Script.getCountry(p).contains("Austria") && !Script.getCountry(p).contains("Switzerland") && !Script.isWhitelistedIP(p.getAddress().getAddress().getHostAddress()) && !Script.isWhitelistedName(p.getName())) {
                 p.kickPlayer("§8» §cNRP × New RolePlay §8┃ §cAccess denied §8« \n\n§8§m------------------------------\n\n§7We are sorry to inform you that only players inside DE, AT & CH can join the server.\n\n§7If you think this is a mistake, please contact our support.\n\n§8§m------------------------------");
                 Script.sendTeamMessage(AntiCheatSystem.PREFIX + Script.getName(p) + " wurde der Zugriff auf den Server verweigert, da er nicht aus Deutschland, Österreich oder der Schweiz kommt.");
                 return;
-            }
+            }*/
             p.teleport(new Location(Script.WORLD, 935, 66, 1198, 179.92924f, 0.32957163f));
             Script.registerPlayer(e.getPlayer());
             Script.sendActionBar(e.getPlayer(), "§7Willkommen auf §eNewRP§7!");
@@ -250,8 +252,9 @@ public class Utils implements Listener {
             Licenses.ERSTE_HILFE.remove(Script.getNRPID(p));
             p.sendMessage(Messages.INFO + "Dein §eErste-Hilfe-Schein §7ist abgelaufen.");
         }
-
+        Script.updateListname(p);
         Script.sendTabTitle(e.getPlayer());
+        if(Friedhof.isDead(p)) Corpse.spawnNPC(p, Friedhof.getDead(p).getDeathLocation());
 
 
     }
@@ -265,6 +268,13 @@ public class Utils implements Listener {
             } else {
                 e.setCancelled(true);
             }
+        }
+    }
+
+    @EventHandler (priority = EventPriority.HIGHEST)
+    public void emptyBucket(PlayerBucketEmptyEvent e) {
+        if (!BuildMode.isInBuildMode(e.getPlayer())) {
+            e.setCancelled(true);
         }
     }
 
@@ -359,6 +369,15 @@ public class Utils implements Listener {
     }
 
     @EventHandler
+    public void stopFlowers(PlayerInteractEvent e) {
+        Block blk = e.getClickedBlock();
+        if (blk.getType().name().startsWith("POTTED_") || blk.getType() == Material.FLOWER_POT) {
+            e.setCancelled(!BuildMode.isInBuildMode(e.getPlayer()));
+            return;
+        }
+    }
+
+    @EventHandler
     public void pickUpItem(EntityPickupItemEvent e) {
         if(e.getEntity() instanceof Player) {
             if(e.getItem().getItemStack().getType() == Material.IRON_INGOT) {
@@ -368,6 +387,22 @@ public class Utils implements Listener {
             }
         }
     }
+
+    //stop destroying farms
+    @EventHandler
+    public void onDestroy(EntityChangeBlockEvent e) {
+        e.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onInteract2(PlayerInteractEvent e) {
+        Player p = e.getPlayer();
+        if(e.getAction() != Action.PHYSICAL) return;
+        if(e.getClickedBlock().getType() == Material.FARMLAND || e.getClickedBlock().getType() == Material.TURTLE_EGG) {
+            e.setCancelled(true);
+        }
+    }
+
 
     @EventHandler
     public void onInteract(PlayerInteractEvent e) {
@@ -407,10 +442,12 @@ public class Utils implements Listener {
             if (e.getClickedBlock().getType() == Material.CHEST ||
                     e.getClickedBlock().getType() == Material.TRAPPED_CHEST ||
                     e.getClickedBlock().getType() == Material.ENDER_CHEST ||
+                    e.getClickedBlock().getType() == Material.CAKE ||
                     e.getClickedBlock().getType() == Material.BARREL ||
                     e.getClickedBlock().getType() == Material.DISPENSER ||
                     e.getClickedBlock().getType() == Material.DROPPER ||
                     e.getClickedBlock().getType() == Material.HOPPER ||
+                    e.getClickedBlock().getType() == Material.SMITHING_TABLE ||
                     e.getClickedBlock().getType() == Material.FURNACE ||
                     e.getClickedBlock().getType() == Material.BLAST_FURNACE ||
                     e.getClickedBlock().getType() == Material.SMOKER ||
@@ -433,6 +470,7 @@ public class Utils implements Listener {
             }
         }
     }
+
 
     @EventHandler
     public void onMove(PlayerMoveEvent e) {
@@ -495,23 +533,6 @@ public class Utils implements Listener {
         }.runTaskLater(main.getInstance(), 20L);
     }
 
-    @EventHandler
-    public void onDamage(EntityDamageByEntityEvent e) {
-        if (e.getEntityType() != EntityType.PLAYER) return;
-
-        Entity damager = e.getDamager();
-        Player p = (Player) e.getEntity();
-
-        if (Script.getLevel(p) != 1) return;
-
-        e.setCancelled(true);
-        if (damager.getType() == EntityType.PLAYER) {
-            damager.sendMessage(Messages.ERROR + "Der Spieler ist im Neulingsschutz.");
-        } else if (damager.getType() == EntityType.ARROW) {
-            Arrow a = (Arrow) damager;
-            ((Player) a.getShooter()).sendMessage(Messages.ERROR + "Der Spieler ist im Neulingsschutz.");
-        }
-    }
 
     @EventHandler
     public void onDrop(PlayerDropItemEvent e) {
@@ -551,7 +572,8 @@ public class Utils implements Listener {
         }
         for (String s : BLOCKED_COMMANDS_SPECIFIC) {
             for (String cmd : e.getMessage().split(" ")) {
-                if (cmd.toLowerCase().startsWith(s)) {
+                if (cmd.toLowerCase().equalsIgnoreCase(s)) {
+                    Debug.debug("blocked due to " + s);
                     if (!Script.hasRank(e.getPlayer(), Rank.OWNER, false)) {
                         e.setCancelled(true);
                         Script.sendActionBar(e.getPlayer(), Messages.ERROR + "Der Befehl wurde nicht gefunden.");
@@ -607,7 +629,7 @@ public class Utils implements Listener {
 
     public static boolean hasOpenPresent(Player p) {
         try (Statement stmt = main.getConnection().createStatement();
-             ResultSet rs = stmt.executeQuery("SELECT * FROM playtime WHERE id=" + Script.getNRPID(p))) {
+             ResultSet rs = stmt.executeQuery("SELECT * FROM birthday WHERE id=" + Script.getNRPID(p))) {
             if (rs.next()) {
                 return rs.getInt("present")==1;
             }

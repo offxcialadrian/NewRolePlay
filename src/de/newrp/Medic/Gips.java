@@ -87,7 +87,10 @@ public class Gips implements Listener {
                 public void run() {
                     Krankheit.GEBROCHENER_ARM.remove(Script.getNRPID(rightClicked));
                     Krankheit.GEBROCHENES_BEIN.remove(Script.getNRPID(rightClicked));
-                    p.setWalkSpeed(0.2F);
+                    rightClicked.setWalkSpeed(0.2F);
+                    for (PotionEffect e : rightClicked.getActivePotionEffects()) {
+                        rightClicked.removePotionEffect(e.getType());
+                    }
                 }
             }. runTaskLater(main.getInstance(), 20L * 10);
 

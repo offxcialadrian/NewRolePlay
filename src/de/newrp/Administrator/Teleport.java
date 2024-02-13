@@ -1,5 +1,6 @@
 package de.newrp.Administrator;
 
+import de.newrp.API.Friedhof;
 import de.newrp.API.Messages;
 import de.newrp.API.Rank;
 import de.newrp.API.Script;
@@ -48,6 +49,11 @@ public class Teleport implements CommandExecutor, TabCompleter {
 
         if (tg == p) {
             p.sendMessage(Messages.ERROR + "Du kannst dich nicht selbst teleportieren.");
+            return true;
+        }
+
+        if(Friedhof.isDead(tg)) {
+            p.sendMessage(Messages.ERROR + "Der Spieler ist tot.");
             return true;
         }
 

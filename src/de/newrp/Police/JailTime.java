@@ -13,6 +13,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
@@ -63,6 +64,12 @@ public class JailTime implements CommandExecutor, Listener {
                 event.setCancelled(true);
             }
         }
+    }
+
+    @EventHandler
+    public void onDamage(EntityDamageEvent e) {
+        if(!(e.getEntity() instanceof Player)) return;
+        if(Jail.isInJail((Player) e.getEntity())) e.setCancelled(true);
     }
 
     @Override

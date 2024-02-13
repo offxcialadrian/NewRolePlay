@@ -66,7 +66,6 @@ public class AFK implements CommandExecutor, Listener {
             p.setCanPickupItems(true);
             Bukkit.getScoreboardManager().getMainScoreboard().getTeam("nopush").removeEntry(p.getName());
         }
-        p.getInventory().setItemInOffHand(new ItemStack(Material.AIR));
 
         new BukkitRunnable() {
             @Override
@@ -125,6 +124,9 @@ public class AFK implements CommandExecutor, Listener {
     @EventHandler
     public void onMove(PlayerMoveEvent e) {
         Player p = e.getPlayer();
+        if(Script.isInTestMode()) {
+            //Script.sendActionBar(p, Messages.INFO + "WORK IN PROGRESS " + p.getName());
+        }
         if (AFK.isAFK(p)) {
             boolean x = e.getFrom().getBlockX() != e.getTo().getBlockX();
             boolean y = Math.abs(e.getFrom().getY() - e.getTo().getY()) > 2;
@@ -140,7 +142,11 @@ public class AFK implements CommandExecutor, Listener {
     @EventHandler
     public void onDmg(EntityDamageByEntityEvent e) {
         if (e.getEntity() instanceof Player) {
+            if(Script.isInTestMode()) {
+                Script.sendActionBar((((Player) e.getEntity()).getPlayer()), Messages.INFO + "WORK IN PROGRESS " + ((Player) e.getEntity()).getName());
+            }
             if(isAFK((Player) e.getEntity())) e.setCancelled(true);
+            if(e.isCancelled()) return;
             Player p = (Player) e.getEntity();
             lastDmg.put(p.getName(), System.currentTimeMillis());
             lastActions.add(p.getName());
@@ -152,6 +158,9 @@ public class AFK implements CommandExecutor, Listener {
     public void onChat(AsyncPlayerChatEvent e) {
         Player p = e.getPlayer();
         lastActions.add(p.getName());
+        if(Script.isInTestMode()) {
+            //Script.sendActionBar(p, Messages.INFO + "WORK IN PROGRESS " + p.getName());
+        }
         if (AFK.isAFK(p)) {
             AFK.setAFK(p, false);
             p.sendMessage(PREFIX + "Du bist nun nicht mehr im AFK-Modus.");

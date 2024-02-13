@@ -54,6 +54,7 @@ public class HouseListener implements Listener {
             if(h == null) return;
             if(h.getOwner() != 0) return;
             if(Script.getMoney(p, PaymentType.BANK) >= h.getPrice()) {
+                Achievement.HAUS.grant(p);
                 Script.removeMoney(p, PaymentType.BANK, h.getPrice());
                 h.setOwner(Script.getNRPID(p));
                 h.updateSign();

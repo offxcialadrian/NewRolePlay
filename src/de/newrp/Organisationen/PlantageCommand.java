@@ -166,6 +166,19 @@ public class PlantageCommand implements CommandExecutor, Listener {
     }
 
     @EventHandler
+    public void onInteract(PlayerInteractEvent e) {
+        Player p = e.getPlayer();
+        if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+            if (e.getClickedBlock().getType().equals(Material.LARGE_FERN)) {
+                Plantage plant = Plantage.getNextPlantage(p, Organisation.getOrganisation(p));
+                if (plant != null) {
+                    openGUI(e.getPlayer(), plant);
+                }
+            }
+        }
+    }
+
+    @EventHandler
     public void onClick(InventoryClickEvent e) {
         if (e.getView().getTitle().equals("§aPlantage")) {
             ItemStack is = e.getCurrentItem();

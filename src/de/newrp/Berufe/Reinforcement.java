@@ -1,6 +1,7 @@
 package de.newrp.Berufe;
 
 import de.newrp.API.*;
+import de.newrp.Organisationen.Organisation;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
@@ -72,13 +73,13 @@ public class Reinforcement implements CommandExecutor {
 
         Player p = (Player) cs;
 
-        if (!Beruf.hasBeruf(p)) {
+        if (!Beruf.hasBeruf(p) && !Organisation.hasOrganisation(p)) {
             p.sendMessage(Messages.ERROR + "Du hast keinen Beruf!");
             return true;
         }
 
-        if(Beruf.getBeruf(p) != Beruf.Berufe.RETTUNGSDIENST && Beruf.getBeruf(p) != Beruf.Berufe.POLICE && Beruf.getBeruf(p) != Beruf.Berufe.GOVERNMENT) {
-            p.sendMessage(Messages.ERROR + "Du bist nicht im Rettungsdienst, Polizei oder Regierung.");
+        if(Beruf.getBeruf(p) != Beruf.Berufe.RETTUNGSDIENST && Beruf.getBeruf(p) != Beruf.Berufe.POLICE && Beruf.getBeruf(p) != Beruf.Berufe.GOVERNMENT && !Organisation.hasOrganisation(p)) {
+            p.sendMessage(Messages.ERROR + "Du bist nicht im Rettungsdienst, Polizei, Regierung oder in keiner Organisation.");
             return true;
         }
 
@@ -91,12 +92,23 @@ public class Reinforcement implements CommandExecutor {
 
         if (args.length > 2) {
             p.sendMessage(Messages.ERROR + "/reinforcement <Kürzel>");
+            return true;
         }
 
         if (args.length == 2) {
             if (args[0].equals("omw")) {
                 Player tg = Bukkit.getPlayer(args[1]);
                 new Route(p.getName(), Script.getNRPID(p), p.getLocation(), new_reinforcement.get(tg.getName())).start();
+                if(Organisation.hasOrganisation(tg)) {
+                    Organisation org = Organisation.getOrganisation(tg);
+                    if(org.getMembers().contains(tg)) {
+                        for (Player member : org.getMembers()) {
+                            member.sendMessage("§7➲ §3" + org.getName() + " " + Script.getName(p) + " kommt zum Verstärkungsruf von " + Script.getName(tg) + "! §7" + "(ETA: " + calcETA(p.getLocation().distance(new_reinforcement.get(tg.getName()))) + " Sekunden)");
+                        }
+                    }
+                    return true;
+                }
+
                 if (reinf_type.get(tg.getName()).isDChat()) {
 
                     for (Beruf.Berufe berufe : Beruf.Berufe.values()) {
@@ -123,6 +135,16 @@ public class Reinforcement implements CommandExecutor {
             Types type = Types.NORMAL;
             new_reinforcement.put(p.getName(), p.getLocation());
             reinf_type.put(p.getName(), type);
+            if(Organisation.hasOrganisation(p)) {
+                Organisation org = Organisation.getOrganisation(p);
+                if(org.getMembers().contains(p)) {
+                    for (Player member : org.getMembers()) {
+                        member.sendMessage("§c§l" + type.getName() + " §3" + org.getName() + " " + Script.getName(p) + " benötigt Unterstützung! §8➥ §7" + Navi.getNextNaviLocation(p.getLocation()) + " §7(" + (int) member.getLocation().distance(p.getLocation()) + "m)");
+                        OnMyWayLink(member, p);
+                    }
+                    return true;
+                }
+            }
             for (Player member : beruf.getMembers()) {
                 member.sendMessage("§c§l" + type.getName() + " §3" + Beruf.getAbteilung(p).getName() + " " + Script.getName(p) + " benötigt Unterstützung! §8➥ §7" + Navi.getNextNaviLocation(p.getLocation()) + " §7(" + (int) member.getLocation().distance(p.getLocation()) + "m)");
                 OnMyWayLink(member, p);
@@ -130,35 +152,49 @@ public class Reinforcement implements CommandExecutor {
             return true;
         }
 
-        if (args.length == 1) {
-            Types type = Types.getType(args[0]);
+        Types type = Types.getType(args[0]);
 
-            if (type == null) {
-                p.sendMessage(Messages.ERROR + "Kürzel nicht gefunden!");
+        if (type == null) {
+            p.sendMessage(Messages.ERROR + "Kürzel nicht gefunden!");
+            return true;
+        }
+
+        if(type.isDChat() && !Beruf.hasBeruf(p)) {
+            p.sendMessage(Messages.ERROR + "Du bist nicht im Rettungsdienst, Polizei oder Regierung.");
+            return true;
+        }
+
+        new_reinforcement.put(p.getName(), p.getLocation());
+        reinf_type.put(p.getName(), type);
+
+        if(Organisation.hasOrganisation(p)) {
+            Organisation org = Organisation.getOrganisation(p);
+            if(org.getMembers().contains(p)) {
+                for (Player member : org.getMembers()) {
+                    member.sendMessage("§c§l" + type.getName() + " §3" + org.getName() + " " + Script.getName(p) + " benötigt Unterstützung! §8➥ §7" + Navi.getNextNaviLocation(p.getLocation()) + " §7(" + (int) member.getLocation().distance(p.getLocation()) + "m)");
+                    OnMyWayLink(member, p);
+                }
+                return true;
+            }
+        }
+
+        if (type.isDChat()) {
+            if (beruf != Beruf.Berufe.RETTUNGSDIENST && beruf != Beruf.Berufe.POLICE && beruf != Beruf.Berufe.GOVERNMENT) {
+                p.sendMessage(Messages.ERROR + "Du bist nicht im Rettungsdienst, Polizei oder Regierung.");
                 return true;
             }
 
-            new_reinforcement.put(p.getName(), p.getLocation());
-            reinf_type.put(p.getName(), type);
-
-            if (type.isDChat()) {
-                if (beruf != Beruf.Berufe.RETTUNGSDIENST && beruf != Beruf.Berufe.POLICE && beruf != Beruf.Berufe.GOVERNMENT) {
-                    p.sendMessage(Messages.ERROR + "Du bist nicht im Rettungsdienst, Polizei oder Regierung.");
-                    return true;
-                }
-
-                List<Player> staatler = Beruf.Berufe.RETTUNGSDIENST.getMembers();
-                staatler.addAll(Beruf.Berufe.POLICE.getMembers());
-                staatler.addAll(Beruf.Berufe.GOVERNMENT.getMembers());
-                for (Player member : staatler) {
-                    member.sendMessage("§c§l" + type.getName() + " §3" + Beruf.getAbteilung(p).getName() + " " + Script.getName(p) + " benötigt Unterstützung! §8➥ §7" + Navi.getNextNaviLocation(p.getLocation()) + " §7(" + member.getLocation().distance(p.getLocation()) + "m)");
-                    OnMyWayLink(member, p);
-                }
-            } else {
-                for(Player member : beruf.getMembers()) {
-                    member.sendMessage("§c§l" + type.getName() + " §3" + Beruf.getAbteilung(p).getName() + " " + Script.getName(p) + " benötigt Unterstützung! §8➥ §7" + Navi.getNextNaviLocation(p.getLocation()) + " §7(" + member.getLocation().distance(p.getLocation()) + "m)");
-                    OnMyWayLink(member, p);
-                }
+            List<Player> staatler = Beruf.Berufe.RETTUNGSDIENST.getMembers();
+            staatler.addAll(Beruf.Berufe.POLICE.getMembers());
+            staatler.addAll(Beruf.Berufe.GOVERNMENT.getMembers());
+            for (Player member : staatler) {
+                member.sendMessage("§c§l" + type.getName() + " §3" + Beruf.getBeruf(p).getName() + " " + Script.getName(p) + " benötigt Unterstützung! §8➥ §7" + Navi.getNextNaviLocation(p.getLocation()) + " §7(" + (int) member.getLocation().distance(p.getLocation()) + "m)");
+                OnMyWayLink(member, p);
+            }
+        } else {
+            for(Player member : beruf.getMembers()) {
+                member.sendMessage("§c§l" + type.getName() + " §3" + Beruf.getAbteilung(p).getName() + " " + Script.getName(p) + " benötigt Unterstützung! §8➥ §7" + Navi.getNextNaviLocation(p.getLocation()) + " §7(" + (int) member.getLocation().distance(p.getLocation()) + "m)");
+                OnMyWayLink(member, p);
             }
         }
         return true;

@@ -1,14 +1,23 @@
 package de.newrp.Player;
 
 import de.newrp.API.*;
+import de.newrp.Administrator.BuildMode;
+import de.newrp.Administrator.GoTo;
 import de.newrp.Administrator.Notifications;
+import de.newrp.Administrator.SDuty;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
+import org.bukkit.util.StringUtil;
 
-public class Bank implements CommandExecutor {
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+public class Bank implements CommandExecutor, TabCompleter {
 
     private static final String PREFIX = "§8[§bBank§8] §b» ";
 
@@ -46,13 +55,14 @@ public class Bank implements CommandExecutor {
         }
 
 
-        if(!Script.isInt(args[1])) {
-            p.sendMessage(Messages.ERROR + "Du hast keinen gültigen Betrag angegeben.");
-            return true;
-        }
+
 
 
         if(args.length == 2) {
+            if(!Script.isInt(args[1])) {
+                p.sendMessage(Messages.ERROR + "Du hast keinen gültigen Betrag angegeben.");
+                return true;
+            }
             int betrag = Integer.parseInt(args[1]);
 
             if(betrag <= 0) {
@@ -87,6 +97,10 @@ public class Bank implements CommandExecutor {
 
 
             if (args[0].equalsIgnoreCase("auszahlen") || args[0].equalsIgnoreCase("abheben") || args[0].equalsIgnoreCase("abbuchen")) {
+                if(!Script.isInt(args[1])) {
+                    p.sendMessage(Messages.ERROR + "Du hast keinen gültigen Betrag angegeben.");
+                    return true;
+                }
                 if (atm.getCash() < betrag) {
                     p.sendMessage(Messages.ERROR + "Der Automat hat nicht genug Geld.");
                     return true;
@@ -138,12 +152,12 @@ public class Bank implements CommandExecutor {
                 return true;
             }
 
-            String reason = "";
+            StringBuilder reason = new StringBuilder();
             for(int i = 3; i < args.length; i++) {
-                reason += args[i] + " ";
+                reason.append(args[i]).append(" ");
             }
 
-            if(reason.isEmpty()) reason = "Kein Verwendungszweck angegeben.";
+            if(reason.length() == 0) reason = new StringBuilder("Kein Verwendungszweck angegeben.");
 
             if(betrag > Banken.getBankByPlayer(p).getTransactionLimit()) {
                 p.sendMessage(Messages.ERROR + "Deine Bank lässt nur Transaktionen bis " + Banken.getBankByPlayer(p).getTransactionLimit() + "€ zu.");
@@ -192,4 +206,29 @@ public class Bank implements CommandExecutor {
 
         return false;
     }
+
+    @Override
+    public List<String> onTabComplete(CommandSender cs, Command cmd, String alias, String[] args) {
+        Player p = (Player) cs;
+        if (cmd.getName().equalsIgnoreCase("bank") || cmd.getName().equals("atm") || cmd.getName().equalsIgnoreCase("geldautomat")) {
+            final List<String> oneArgList = new ArrayList<>();
+            final List<String> completions = new ArrayList<>();
+            oneArgList.add("einzahlen");
+            oneArgList.add("auszahlen");
+            oneArgList.add("überweisen");
+            oneArgList.add("info");
+
+            if (args.length == 1) {
+                StringUtil.copyPartialMatches(args[0], oneArgList, completions);
+            }
+
+            if (args.length == 2) {
+                return null;
+            }
+            Collections.sort(completions);
+            return completions;
+        }
+        return Collections.EMPTY_LIST;
+    }
+
 }

@@ -164,7 +164,7 @@ public class Kellner implements CommandExecutor, Listener {
         if(!GFB.CURRENT.containsKey(p.getName())) return;
         if(e.getAction() != Action.RIGHT_CLICK_BLOCK) return;
         if(e.getClickedBlock() == null) return;
-        if(!CURRENT.containsKey(p.getName()));
+        if(!CURRENT.containsKey(p.getName())) return;
         if(e.getClickedBlock().getLocation().equals(CURRENT.get(p.getName()).getLocation())) {
             p.sendMessage(PREFIX + "Du hast die Bestellung erfolgreich abgegeben.");
             p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);

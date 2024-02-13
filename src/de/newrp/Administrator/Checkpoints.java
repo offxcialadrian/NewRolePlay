@@ -228,16 +228,16 @@ public class Checkpoints implements Listener {
     }
 
     public static void clear(Player p) {
-        Script.executeAsyncUpdate("DELETE FROM checkpoints WHERE id = " + Script.getNRPID(p));
         clearCheckpoints(p);
+        Script.executeAsyncUpdate("DELETE FROM checkpoints WHERE id = " + Script.getNRPID(p));
         Cache.resetScoreboard(p);
         p.teleport(new Location(Script.WORLD, 587, 69, 991, -268.28235f, -3.7367816f));
         CHECKPOINTS.remove(p.getName());
     }
 
     public static void clear(OfflinePlayer p) {
-        Script.executeAsyncUpdate("DELETE FROM checkpoints WHERE id = " + Script.getNRPID(p));
         clearCheckpoints(p);
+        Script.executeAsyncUpdate("DELETE FROM checkpoints WHERE id = " + Script.getNRPID(p));
         CHECKPOINTS.remove(p.getName());
     }
 

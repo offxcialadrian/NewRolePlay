@@ -120,7 +120,6 @@ public class Shop implements CommandExecutor, Listener {
         }
 
         if(args.length == 3 && args[0].equalsIgnoreCase("sell")) {
-            Player buyer = Script.getPlayer(args[1]);
 
             if(args[1].equalsIgnoreCase("stadt")) {
                 p.sendMessage(PREFIX + "Du hast deinen Shop an die Stadt abgegeben und kein Geld erhalten.");
@@ -134,6 +133,9 @@ public class Shop implements CommandExecutor, Listener {
                 }
                 return true;
             }
+
+
+            Player buyer = Script.getPlayer(args[1]);
 
             if(buyer == null) {
                 p.sendMessage(Messages.PLAYER_NOT_FOUND);
@@ -327,7 +329,7 @@ public class Shop implements CommandExecutor, Listener {
                 if(is == null && si == ShopItem.Zeitung && !shop.isInShop(ShopItem.Zeitung)) {
                     is = Script.setNameAndLore(Material.WRITTEN_BOOK, "§9Zeitung", "§8» §6Lizensierungsgebühr: §6" + si.getLicensePrice() + "€", "§8» §6Einkaufspreis: §6" + si.getBuyPrice() + "€");
                 } else if(is == null && si == ShopItem.Zeitung && shop.isInShop(ShopItem.Zeitung)) {
-                    is = Script.setNameAndLore(Material.WRITTEN_BOOK, "§9Zeitung", "§8» §cKlicke um aus Shop zu entfernen (es erfolgt keine Gutschrift der Lizensierungsgebühr)");
+                    is = Script.setNameAndLore(Material.WRITTEN_BOOK, "§9Zeitung", "§8» §cKlicke um aus Shop zu entfernen");
                 }
                 if(!containsType(si, shop)) continue;
                 if(!shop.isInShop(si)) {

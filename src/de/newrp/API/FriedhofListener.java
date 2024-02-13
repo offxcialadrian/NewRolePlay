@@ -131,11 +131,11 @@ public class FriedhofListener implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler (priority = EventPriority.HIGHEST)
     public void onCommand(PlayerCommandPreprocessEvent e) {
         Player p = e.getPlayer();
         if (Friedhof.isDead(p)) {
-            if (!e.getMessage().startsWith("/friedhof") && !e.getMessage().startsWith("/passwort") && e.getMessage().startsWith("/password") && !e.getMessage().startsWith("/aduty") && !e.getMessage().startsWith("/tc") && !e.getMessage().startsWith("/sduty") && !SDuty.isSDuty(p)) {
+            if (!e.getMessage().startsWith("/friedhof") && !e.getMessage().startsWith("/passwort") && !e.getMessage().startsWith("/password") && !e.getMessage().startsWith("/aduty") && !e.getMessage().startsWith("/tc") && !e.getMessage().startsWith("/sduty") && !SDuty.isSDuty(p)) {
                 e.setCancelled(true);
                 p.sendMessage(Messages.ERROR + "Du kannst während du tot bist keine Befehle ausführen.");
             }

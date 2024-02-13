@@ -23,9 +23,9 @@ public class Banken implements CommandExecutor, Listener {
     private static final Location LOCATION = new Location(Script.WORLD, 949, 77, 934);
 
     public enum Bank {
-        BANK1(1, "Spaßkasse", 1000, 1000, 1000, 25, 0.00006),
-        BANK2(2, "Deutsche Zentralbank", 1000, 1000, 1000, 50, 0.00005),
-        BANK3(3, "Bank3", 1000, 1000, 1000, 30, 0.00003);
+        BANK1(1, "Spaßkasse", 1250, 6, 3000, 25, 0.00006),
+        BANK2(2, "Deutsche Zentralbank", 750, 3, 10000, 50, 0.00005),
+        BANK3(3, "DNB", 1000, 2, 10000, 30, 0.00003);
 
         private final int id;
         private final String name;
@@ -158,10 +158,9 @@ public class Banken implements CommandExecutor, Listener {
         int i = 0;
         for (Bank bank : Bank.values()) {
             inv.setItem(i, new ItemBuilder(Material.CHEST).setName("§9" + bank.getName()).setLore(" §7 " + Messages.ARROW + " Einrichtungsgebühr: §e" + bank.getEinrichtigungsKosten() + "€",
-                    " §7 " + Messages.ARROW + " Transktionsgebühr: §e" + bank.getTransactionKosten() + "€",
+                    " §7 " + Messages.ARROW + " Transaktionsgebühr: §e" + bank.getTransactionKosten() + "€",
                     " §7 " + Messages.ARROW + " Transaktionslimit: §e" + bank.getTransactionLimit() + "€",
-                    " §7 " + Messages.ARROW + " Kontoführungsgebühr: §e" + bank.getKontoKosten() + "€",
-                    " §7 " + Messages.ARROW + " Zinsen: §e" + bank.getInterestString() + "%").build());
+                    " §7 " + Messages.ARROW + " Kontoführungsgebühr: §e" + bank.getKontoKosten() + "€").build());
             i++;
         }
         p.openInventory(inv);

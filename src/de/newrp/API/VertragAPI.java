@@ -75,8 +75,9 @@ public class VertragAPI {
         String bedingung;
         long time;
         try (PreparedStatement statement = main.getConnection().prepareStatement(
-                "SELECT * FROM vertrag WHERE userID_from = ? ORDER BY id DESC")) {
+                "SELECT * FROM vertrag WHERE userID_from = ? OR userID_from = ? ORDER BY id DESC")) {
             statement.setInt(1, Script.getNRPID(p));
+            statement.setInt(2, Script.getNRPID(p));
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 from = rs.getInt("userID_from");

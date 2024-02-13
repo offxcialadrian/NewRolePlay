@@ -309,8 +309,12 @@ public class Mobile implements Listener {
                 p.sendMessage(PREFIX + "Du kannst dein Handy nicht während einer Fahrstuhl-Fahrt benutzen.");
                 return;
             }
-            long time = System.currentTimeMillis();
 
+            if(TOOGLE_COOLDOWN.containsKey(p.getName()) && TOOGLE_COOLDOWN.get(p.getName())>System.currentTimeMillis()) {
+                return;
+            }
+
+            long time = System.currentTimeMillis();
 
             Long lastClick = LAST_CLICK.get(p.getName());
             if (lastClick == null) {
@@ -333,16 +337,10 @@ public class Mobile implements Listener {
                 ItemStack is = inv.getItemInMainHand();
                 p.getInventory().setItemInHand(new ItemBuilder(Material.IRON_INGOT).setName("§7" + getPhone(p).getName()).build());
 
-                if (Health.BLEEDING.containsKey(p.getName())) {
-                    float amount = Health.BLEEDING.get(p.getName());
-                    if (amount < 1F) {
-                        Health.BLEEDING.remove(p.getName());
-                    }
-                }
 
                 Me.sendMessage(p, "schaltet " + (Script.getGender(p)==Gender.MALE?"sein":"ihr") + " Handy ein.");
 
-                TOOGLE_COOLDOWN.put(p.getName(), time);
+                TOOGLE_COOLDOWN.put(p.getName(), time+20L);
                 LAST_CLICK.remove(p.getName());
                 LEVEL.remove(p.getName());
             }
@@ -375,7 +373,7 @@ public class Mobile implements Listener {
         assert phone != null;
         Inventory inv = Bukkit.createInventory(null, 9, "§8» §aHandy");
         inv.setItem(0, new ItemBuilder(Material.CHEST).setName("§8» §cWerkseinstellungen").build());
-        inv.setItem(1, new ItemBuilder(Material.CHEST).setName("§8» §cCloud").setLore("§8 × §6Aktiviere die Cloud um Daten auf ein neues Handy automatisch zu übertragen.", "§8 × §6Dies kostet " + (Premium.hasPremium(p)?"5€":"10€"), "§8 × §6Aktiviert: " + (phone.hasCloud(p)?"§aJa":"§cNein")).build());
+        inv.setItem(1, new ItemBuilder(Material.CHEST).setName("§8» §cCloud").setLore("§8 × §6Aktiviere die Cloud für Datenübertragung.", "§8 × §6Dies kostet " + (Premium.hasPremium(p)?"5€":"10€"), "§8 × §6Aktiviert: " + (phone.hasCloud(p)?"§aJa":"§cNein")).build());
         inv.setItem(2, new ItemBuilder(Material.CHEST).setName("§8» §cTöne").setLore("§8 × §6Aktiviere Töne um Benachrichtigungen zu erhalten.", "§8 × §6Aktiviert: " + (phone.getLautlos(p)?"§cNein":"§aJa")).build());
         p.openInventory(inv);
     }
@@ -390,7 +388,7 @@ public class Mobile implements Listener {
         Player p = (Player) e.getWhoClicked();
         if(e.getCurrentItem().getItemMeta().getDisplayName().equals("§8» §cAusschalten")) {
             p.getInventory().setItemInHand(new ItemBuilder(Material.IRON_INGOT).setName("§c" + getPhone(p).getName()).build());
-            Me.sendMessage(p, "schaltet " + (Script.getGender(p)==Gender.MALE?"sein":"ihr") + " Handy ein.");
+            Me.sendMessage(p, "schaltet " + (Script.getGender(p)==Gender.MALE?"sein":"ihr") + " Handy aus.");
             p.closeInventory();
             return;
         }
@@ -426,7 +424,6 @@ public class Mobile implements Listener {
         if(e.getCurrentItem().getItemMeta().getDisplayName().equals("§8» §cNotruf")) {
             p.closeInventory();
             Notruf.openGUI(p, Notruf.Questions.FRAGE1);
-            Me.sendMessage(p, "wählt den Notruf auf seinem Handy.");
             return;
         }
         if(e.getCurrentItem().getItemMeta().getDisplayName().equals("§8» §cNavigation")) {

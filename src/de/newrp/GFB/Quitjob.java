@@ -73,6 +73,7 @@ public class Quitjob implements CommandExecutor {
                 Dishwasher.dishes.remove(p.getName());
                 Dishwasher.TOTAL_SCORE.remove(p.getName());
                 Dishwasher.ON_JOB.remove(p.getName());
+                Cache.loadInventory(p);
                 p.sendMessage(GFB.PREFIX + "Du hast den Job §6Tellerwäscher §7verlassen.");
                 break;
             case BURGERFRYER:
@@ -97,6 +98,7 @@ public class Quitjob implements CommandExecutor {
                 Imker.honeys.remove(p.getName());
                 Imker.TOTAL_SCORE.remove(p.getName());
                 Imker.ON_JOB.remove(p.getName());
+                Cache.loadInventory(p);
                 p.sendMessage(GFB.PREFIX + "Du hast den Job §6Imker §7verlassen.");
                 break;
 

@@ -23,7 +23,7 @@ public class SMSCommand implements CommandExecutor {
         Player p = (Player) cs;
 
         if(args.length < 2) {
-            p.sendMessage(Messages.ERROR + "/call [Spieler]");
+            p.sendMessage(Messages.ERROR + "/sms [Spieler] [Nachricht]");
             return true;
         }
 

@@ -19,12 +19,12 @@ public class FlyCommand implements CommandExecutor {
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
         Player p = (Player) cs;
 
-        if (!Script.hasRank(p, Rank.ADMINISTRATOR, true) && !Script.isInTestMode()) {
+        if (!Script.hasRank(p, Rank.ADMINISTRATOR, true)) {
             p.sendMessage(Messages.NO_PERMISSION);
             return true;
         }
 
-        if (!SDuty.isSDuty(p) && !Script.isInTestMode()) {
+        if (!SDuty.isSDuty(p)) {
             p.sendMessage(Messages.NO_SDUTY);
             return true;
         }

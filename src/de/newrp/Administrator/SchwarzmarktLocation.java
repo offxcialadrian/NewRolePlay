@@ -14,7 +14,7 @@ public class SchwarzmarktLocation implements CommandExecutor {
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
         Player p = (Player) cs;
 
-        if(!Script.hasRank(p, Rank.SUPPORTER, false)) {
+        if(!Script.hasRank(p, Rank.MODERATOR, false)) {
             p.sendMessage(Messages.NO_PERMISSION);
             return true;
         }

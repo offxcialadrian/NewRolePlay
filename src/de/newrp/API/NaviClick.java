@@ -1,5 +1,6 @@
 package de.newrp.API;
 
+import de.newrp.GFB.*;
 import de.newrp.Player.NaviCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -23,93 +24,111 @@ public class NaviClick implements Listener {
                 e.setCancelled(true);
                 switch (c.getItemMeta().getDisplayName()) {
                     case "§6Berufe": {
-                        Inventory inv = Bukkit.createInventory(null, 3 * 9, "§e§lNavi");
+                        Inventory inv = Bukkit.createInventory(null, 18, "§e§lNavi");
                         inv.setItem(0, Script.setName(Material.ANVIL, "§6" + Navi.KRANKENHAUS.getName()));
                         inv.setItem(1, Script.setName(Material.ANVIL, "§6" + Navi.NEWS.getName()));
                         inv.setItem(2, Script.setName(Material.ANVIL, "§6" + Navi.POLIZEIREVIER.getName()));
                         inv.setItem(3, Script.setName(Material.ANVIL, "§6" + Navi.STADTHALLE.getName()));
+                        inv.setItem(13, Script.setName(Material.REDSTONE, "§cZurück"));
                         Script.fillInv(inv);
                         p.openInventory(inv);
                         break;
 
-                    } case "§6Freizeit": {
-                            Inventory inv = Bukkit.createInventory(null, 3 * 9, "§e§lNavi");
-                            inv.setItem(0, Script.setName(Material.FIREWORK_ROCKET, "§6" + Navi.ARCADE.getName()));
-                            inv.setItem(1, Script.setName(Material.FIREWORK_ROCKET, "§6" + Navi.CASINO.getName()));
-                            inv.setItem(2, Script.setName(Material.FIREWORK_ROCKET, "§6" + Navi.CASINO.getName()));
-                            inv.setItem(3, Script.setName(Material.FIREWORK_ROCKET, "§6" + Navi.FREIZEITPARK.getName()));
-                            inv.setItem(4, Script.setName(Material.FIREWORK_ROCKET, "§6" + Navi.MALL.getName()));
-                            inv.setItem(5, Script.setName(Material.FIREWORK_ROCKET, "§6" + Navi.MOTEL.getName()));
-                            inv.setItem(6, Script.setName(Material.FIREWORK_ROCKET, "§6" + Navi.STRAND.getName()));
-                            Script.fillInv(inv);
-                            p.openInventory(inv);
-                            break;
+                    }
+                    case "§6Freizeit": {
+                        Inventory inv = Bukkit.createInventory(null, 18, "§e§lNavi");
+                        inv.setItem(0, Script.setName(Material.FIREWORK_ROCKET, "§6" + Navi.ARCADE.getName()));
+                        inv.setItem(1, Script.setName(Material.FIREWORK_ROCKET, "§6" + Navi.CASINO.getName()));
+                        inv.setItem(2, Script.setName(Material.FIREWORK_ROCKET, "§6" + Navi.CASINO.getName()));
+                        inv.setItem(3, Script.setName(Material.FIREWORK_ROCKET, "§6" + Navi.FREIZEITPARK.getName()));
+                        inv.setItem(4, Script.setName(Material.FIREWORK_ROCKET, "§6" + Navi.MALL.getName()));
+                        inv.setItem(5, Script.setName(Material.FIREWORK_ROCKET, "§6" + Navi.MOTEL.getName()));
+                        inv.setItem(6, Script.setName(Material.FIREWORK_ROCKET, "§6" + Navi.STRAND.getName()));
+                        inv.setItem(13, Script.setName(Material.REDSTONE, "§cZurück"));
+                        Script.fillInv(inv);
+                        p.openInventory(inv);
+                        break;
 
-                    } case "§6GFB-JOBS": {
-                            Inventory inv = Bukkit.createInventory(null, 3 * 9, "§e§lNavi");
-                            inv.setItem(0, Script.setName(Material.IRON_PICKAXE, "§6" + Navi.BURGERBRATER.getName()));
-                            inv.setItem(1, Script.setName(Material.IRON_PICKAXE, "§6" + Navi.EISHALLE.getName()));
-                            inv.setItem(2, Script.setName(Material.IRON_PICKAXE, "§6" + Navi.KELLNER.getName()));
-                            inv.setItem(3, Script.setName(Material.IRON_PICKAXE, "§6" + Navi.LAGERARBEITER.getName()));
-                            inv.setItem(4, Script.setName(Material.IRON_PICKAXE, "§6" + Navi.PIZZALIEFERANT.getName()));
-                            inv.setItem(5, Script.setName(Material.IRON_PICKAXE, "§6" + Navi.STRAßENWARTUNG.getName()));
-                            inv.setItem(6, Script.setName(Material.IRON_PICKAXE, "§6" + Navi.TELLERWÄSCHER.getName()));
-                            inv.setItem(7, Script.setName(Material.IRON_PICKAXE, "§6" + Navi.TRANSPORT.getName()));
-                            Script.fillInv(inv);
-                            p.openInventory(inv);
-                            break;
+                    }
+                    case "§6GFB-Jobs": {
+                        Inventory inv = Bukkit.createInventory(null, 18, "§e§lNavi");
+                        inv.setItem(0, Script.setNameAndLore(Material.IRON_PICKAXE, "§6" + Navi.BURGERBRATER.getName(), (BurgerFryer.cooldown.containsKey(p.getName()) && BurgerFryer.cooldown.get(p.getName())>System.currentTimeMillis() ? "§cDu musst noch " + Script.getRemainingTime(BurgerFryer.cooldown.get(p.getName())) + " warten." :"§aDu hast derzeit keinen Cooldown")));
+                        inv.setItem(1, Script.setNameAndLore(Material.IRON_PICKAXE, "§6" + Navi.EISHALLE.getName(), (Eishalle.cooldown.containsKey(p.getName()) && Eishalle.cooldown.get(p.getName())>System.currentTimeMillis() ? "§cDu musst noch " + Script.getRemainingTime(Eishalle.cooldown.get(p.getName())) + " warten." :"§aDu hast derzeit keinen Cooldown")));
+                        inv.setItem(2, Script.setNameAndLore(Material.IRON_PICKAXE, "§6" + Navi.KELLNER.getName(), (Kellner.cooldown.containsKey(p.getName()) && Kellner.cooldown.get(p.getName())>System.currentTimeMillis() ? "§cDu musst noch " + Script.getRemainingTime(Kellner.cooldown.get(p.getName())) + " warten." :"§aDu hast derzeit keinen Cooldown")));
+                        inv.setItem(3, Script.setNameAndLore(Material.IRON_PICKAXE, "§6" + Navi.LAGERARBEITER.getName(), (Lagerarbeiter.cooldown.containsKey(p.getName()) && Lagerarbeiter.cooldown.get(p.getName())>System.currentTimeMillis() ? "§cDu musst noch " + Script.getRemainingTime(Lagerarbeiter.cooldown.get(p.getName())) + " warten." :"§aDu hast derzeit keinen Cooldown")));
+                        inv.setItem(4, Script.setNameAndLore(Material.IRON_PICKAXE, "§6" + Navi.PIZZALIEFERANT.getName(), (Pizza.cooldown.containsKey(p.getName()) && Pizza.cooldown.get(p.getName())>System.currentTimeMillis() ? "§cDu musst noch " + Script.getRemainingTime(Pizza.cooldown.get(p.getName())) + " warten." :"§aDu hast derzeit keinen Cooldown")));
+                        inv.setItem(5, Script.setNameAndLore(Material.IRON_PICKAXE, "§6" + Navi.STRAßENWARTUNG.getName(), (Strassenwartung.cooldown.containsKey(p.getName()) && Strassenwartung.cooldown.get(p.getName())>System.currentTimeMillis() ? "§cDu musst noch " + Script.getRemainingTime(Strassenwartung.cooldown.get(p.getName())) + " warten." :"§aDu hast derzeit keinen Cooldown")));
+                        inv.setItem(6, Script.setNameAndLore(Material.IRON_PICKAXE, "§6" + Navi.TELLERWÄSCHER.getName(), (Dishwasher.cooldown.containsKey(p.getName()) && Dishwasher.cooldown.get(p.getName())>System.currentTimeMillis() ? "§cDu musst noch " + Script.getRemainingTime(Dishwasher.cooldown.get(p.getName())) + " warten." :"§aDu hast derzeit keinen Cooldown")));
+                        inv.setItem(7, Script.setNameAndLore(Material.IRON_PICKAXE, "§6" + Navi.TRANSPORT.getName(), (Transport.cooldown.containsKey(p.getName()) && Transport.cooldown.get(p.getName())>System.currentTimeMillis() ? "§cDu musst noch " + Script.getRemainingTime(Transport.cooldown.get(p.getName())) + " warten." :"§aDu hast derzeit keinen Cooldown")));
+                        inv.setItem(8, Script.setNameAndLore(Material.IRON_PICKAXE, "§6" + Navi.IMKER.getName(), (Imker.cooldown.containsKey(p.getName()) && Imker.cooldown.get(p.getName())>System.currentTimeMillis() ? "§cDu musst noch " + Script.getRemainingTime(Imker.cooldown.get(p.getName())) + " warten." :"§aDu hast derzeit keinen Cooldown")));
+                        inv.setItem(13, Script.setName(Material.REDSTONE, "§cZurück"));
+                        Script.fillInv(inv);
+                        p.openInventory(inv);
+                        break;
 
 
-                    } case "§6ILLEGALE ORGANISATION": {
-                            Inventory inv = Bukkit.createInventory(null, 3 * 9, "§e§lNavi");
-                            p.sendMessage(Messages.ERROR + "Soon..");
+                    }
+                    case "§6Illegale Organisationen": {
+                        Inventory inv = Bukkit.createInventory(null, 18, "§e§lNavi");
+                        p.sendMessage(Messages.ERROR + "Soon..");
                             /*
                             inv.setItem(0, Script.setName(Material.IRON_HORSE_ARMOR, "§6" + Navi.BLOODS.getName()));
                             Script.fillInv(inv);
                             p.openInventory(inv);*/
-                            break;
+                        break;
 
 
-                    } case "§6Öffentliche Gebäude": {
-                            Inventory inv = Bukkit.createInventory(null, 3 * 9, "§e§lNavi");
-                            inv.setItem(0, Script.setName(Material.WRITABLE_BOOK, "§6" + Navi.AEKI.getName()));
-                            inv.setItem(1, Script.setName(Material.WRITABLE_BOOK, "§6" + Navi.GERICHT.getName()));
-                            inv.setItem(2, Script.setName(Material.WRITABLE_BOOK, "§6" + Navi.SCHULE.getName()));
-                            inv.setItem(3, Script.setName(Material.WRITABLE_BOOK, "§6" + Navi.SELFSTORAGE.getName()));
-                            inv.setItem(4, Script.setName(Material.WRITABLE_BOOK, "§6" + Navi.STADTHALLE.getName()));
-                            inv.setItem(5, Script.setName(Material.WRITABLE_BOOK, "§6" + Navi.STAATSBANK.getName()));
-                            inv.setItem(6, Script.setName(Material.WRITABLE_BOOK, "§6" + Navi.TAXI.getName()));
-                            Script.fillInv(inv);
-                            p.openInventory(inv);
-                            break;
+                    }
+                    case "§6Öffentliche Gebäude": {
+                        Inventory inv = Bukkit.createInventory(null, 18, "§e§lNavi");
+                        inv.setItem(0, Script.setName(Material.WRITABLE_BOOK, "§6" + Navi.AEKI.getName()));
+                        inv.setItem(1, Script.setName(Material.WRITABLE_BOOK, "§6" + Navi.GERICHT.getName()));
+                        inv.setItem(2, Script.setName(Material.WRITABLE_BOOK, "§6" + Navi.SCHULE.getName()));
+                        inv.setItem(3, Script.setName(Material.WRITABLE_BOOK, "§6" + Navi.SELFSTORAGE.getName()));
+                        inv.setItem(4, Script.setName(Material.WRITABLE_BOOK, "§6" + Navi.STADTHALLE.getName()));
+                        inv.setItem(5, Script.setName(Material.WRITABLE_BOOK, "§6" + Navi.STAATSBANK.getName()));
+                        inv.setItem(6, Script.setName(Material.WRITABLE_BOOK, "§6" + Navi.TAXI.getName()));
+                        inv.setItem(13, Script.setName(Material.REDSTONE, "§cZurück"));
+                        Script.fillInv(inv);
+                        p.openInventory(inv);
+                        break;
 
 
-                    } case "§6Sehenswürdigkeiten": {
-                            Inventory inv = Bukkit.createInventory(null, 3 * 9, "§e§lNavi");
-                            inv.setItem(0, Script.setName(Material.PAINTING, "§6" + Navi.MUSEUM.getName()));
-                            inv.setItem(1, Script.setName(Material.PAINTING, "§6" + Navi.STATUE.getName()));
-                            Script.fillInv(inv);
-                            p.openInventory(inv);
-                            break;
+                    }
+                    case "§6Sehenswürdigkeiten": {
+                        Inventory inv = Bukkit.createInventory(null, 18, "§e§lNavi");
+                        inv.setItem(0, Script.setName(Material.PAINTING, "§6" + Navi.MUSEUM.getName()));
+                        inv.setItem(1, Script.setName(Material.PAINTING, "§6" + Navi.STATUE.getName()));
+                        inv.setItem(13, Script.setName(Material.REDSTONE, "§cZurück"));
+                        Script.fillInv(inv);
+                        p.openInventory(inv);
+                        break;
 
 
-                    } case "§6Shops": {
-                            Inventory inv = Bukkit.createInventory(null, 3 * 9, "§e§lNavi");
-                            inv.setItem(0, Script.setName(Material.CARROT, "§6" + Navi.MALL.getName()));
-                            inv.setItem(1, Script.setName(Material.CARROT, "§6" + Navi.SUPERMARKT.getName()));
-                            Script.fillInv(inv);
-                            p.openInventory(inv);
-                            break;
+                    }
+                    case "§6Shops": {
+                        Inventory inv = Bukkit.createInventory(null, 18, "§e§lNavi");
+                        inv.setItem(0, Script.setName(Material.CARROT, "§6" + Navi.MALL.getName()));
+                        inv.setItem(1, Script.setName(Material.CARROT, "§6" + Navi.SUPERMARKT.getName()));
+                        inv.setItem(2, Script.setName(Material.CARROT, "§6" + Navi.ELEKTROLADEN.getName()));
+                        inv.setItem(3, Script.setName(Material.CARROT, "§6" + Navi.WAFFENLADEN.getName()));
+                        inv.setItem(13, Script.setName(Material.REDSTONE, "§cZurück"));
+                        Script.fillInv(inv);
+                        p.openInventory(inv);
+                        break;
 
-                    } case "§6Tankstelle": {
-                            Inventory inv = Bukkit.createInventory(null, 3 * 9, "§e§lNavi");
-                            inv.setItem(0, Script.setName(Material.WATER_BUCKET, "§6" + Navi.TANKSTELLE_GANG.getName()));
-                            inv.setItem(1, Script.setName(Material.WATER_BUCKET, "§6" + Navi.TANKSTELLE_KH.getName()));
-                            Script.fillInv(inv);
-                            p.openInventory(inv);
-                            break;
+                    }
+                    case "§6Tankstelle": {
+                        Inventory inv = Bukkit.createInventory(null, 18, "§e§lNavi");
+                        inv.setItem(0, Script.setName(Material.WATER_BUCKET, "§6" + Navi.TANKSTELLE_GANG.getName()));
+                        inv.setItem(1, Script.setName(Material.WATER_BUCKET, "§6" + Navi.TANKSTELLE_KH.getName()));
+                        inv.setItem(13, Script.setName(Material.REDSTONE, "§cZurück"));
+                        Script.fillInv(inv);
+                        p.openInventory(inv);
+                        break;
 
-                } default:
+                    }
+                    default:
                         if (c.getItemMeta().getDisplayName().startsWith("§c")) {
                             NaviCommand.openDefault(p);
                         } else {

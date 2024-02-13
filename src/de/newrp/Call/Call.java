@@ -18,6 +18,15 @@ public class Call {
         return getCallIDByPlayer(p) != -1;
     }
 
+    public static boolean isOnActiveCall(Player p) {
+        for (int i : ON_CALL.keySet()) {
+            if (ON_CALL.get(i).contains(p)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static String PREFIX = "§8[§eTelefon§8] §e" + Messages.ARROW + " §7";
 
     public static boolean isWaitingForCall(Player p) {
@@ -80,13 +89,13 @@ public class Call {
         return -1;
     }
 
-    public static void sendMessage(Player chatter, String msg) {
+    public static void sendMessage(Player chatter, String msg, boolean shout) {
         for (Player p : ON_CALL.get(getCallIDByPlayer(chatter))) {
             if (!p.equals(chatter)) {
                 Mobile.getPhone(p).removeAkku(p, 1);
                 if(!Mobile.hasConnection(chatter))
                     msg = distortMessage(msg);
-                p.sendMessage(PREFIX + Script.getName(chatter) + " sagt: " + msg);
+                p.sendMessage(PREFIX + Script.getName(chatter) + " "+  (shout?"schreit: ":(msg.endsWith("?")?"fragt: ":"sagt: ")) + msg);
             }
         }
     }
@@ -127,7 +136,7 @@ public class Call {
         List<Player> playerList = ON_CALL.get(getCallIDByPlayer(p));
         if(playerList == null) return;
         if(playerList.isEmpty()) return;
-        if (playerList.size() == 2) {
+        if (playerList.size() == 3) {
             sendSystemMessage(p, "§7Der Anruf wurde beendet.", false);
             ON_CALL.remove(getCallIDByPlayer(p));
         } else {

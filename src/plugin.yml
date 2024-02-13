@@ -66,7 +66,7 @@ commands:
     aliases: [ shout, s, scream ]
   whisper:
     description: flüstere
-    aliases: [ w, wisper ]
+    aliases: [ w, wisper, flüstern ]
   me:
     description: mach etwas
   removewarn:
@@ -202,7 +202,7 @@ commands:
     description: add a door to a beruf
   installaddon:
     description: install an addon
-    aliases: [ insstallhausaddon, installhouseaddon ]
+    aliases: [ installhausaddon, installhouseaddon ]
   revive:
     description: revive a player
     aliases: [ rev ]
@@ -469,7 +469,7 @@ commands:
     aliases: [ burnplants ]
   organisationkasse:
     description: view the organisationkasse
-    aliases: [ organisationkassen, organisationkasse, okasse ]
+    aliases: [ organisationkassen, organisationkasse, okasse, orgkasse ]
   schwarzmarktlocation:
     description: view the schwarzmarktlocation
     aliases: [ schwarzmarktlocations, schwarzmarktlocationen, smarktloc ]
@@ -529,9 +529,17 @@ commands:
   sellhouse:
     description: sell a house
     aliases: [ hausverkauf ]
+  addpremiumtoplayer:
+    description: add premium to a player
   leaderchat:
     description: send a message to the leaderchat
     aliases: [ l ]
   waffenschein:
     description: view the waffenschein
     aliases: [ waffenscheine ]
+  dropammo:
+    description: drop ammo
+    aliases: [ dropmunition ]
+  sharelocation:
+    description: share your location
+    aliases: [ shareloc ]

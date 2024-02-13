@@ -136,21 +136,13 @@ public class Abteilung implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        if (args.length > 2) {
+        if (args.length > 2 || args.length == 0) {
             p.sendMessage(Messages.ERROR + "/abteilung [Spieler] [Abteilung]");
             return true;
         }
 
         if (!Beruf.isLeader(p, true)) {
             p.sendMessage(Messages.ERROR + "Du bist kein Leader.");
-            return true;
-        }
-
-        if(args.length == 0) {
-            p.sendMessage(PREFIX + "Alle Abteilungen der " + Beruf.getBeruf(p).getName() + ":");
-            for(OfflinePlayer all : Beruf.getBeruf(p).getAllMembers()) {
-                p.sendMessage("§8» §6" + all.getName() + "§8: §6" + Beruf.getAbteilung(all).getName());
-            }
             return true;
         }
 

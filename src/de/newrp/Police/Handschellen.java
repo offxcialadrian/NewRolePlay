@@ -1,6 +1,7 @@
 package de.newrp.Police;
 
 import de.newrp.API.Debug;
+import de.newrp.API.Krankheit;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.Administrator.SDuty;
@@ -10,6 +11,7 @@ import de.newrp.Berufe.Duty;
 import de.newrp.Chat.Me;
 import de.newrp.Player.AFK;
 import de.newrp.Player.AntiOfflineFlucht;
+import de.newrp.main;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.EntityType;
@@ -25,10 +27,14 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 public class Handschellen implements Listener {
     private static final Set<String> CUFFED = new HashSet<>();
@@ -47,59 +53,97 @@ public class Handschellen implements Listener {
 
     public static String PREFIX = "§8[§9Handschellen§8] §9» ";
 
-    public static HashMap<String, Long> cooldowns = new HashMap<>();
+    public static HashMap<Player, Integer> hits = new HashMap<>();
+
+    private static final Map<String, Long> BANDAGE_COOLDOWN = new HashMap<>();
+    private static final Map<String, Long> LAST_CLICK = new HashMap<>();
+    private static final Map<String, Integer> LEVEL = new HashMap<>();
+
 
     @EventHandler
     public void onInteract(PlayerInteractEntityEvent e) {
-        if (!e.getRightClicked().getType().equals(EntityType.PLAYER)) return;
         if (e.getHand() == EquipmentSlot.OFF_HAND) return;
+        if (!(e.getRightClicked() instanceof Player)) return;
+
+        if(AFK.isAFK((Player) e.getRightClicked())) {
+            Script.sendActionBar(e.getPlayer(), Messages.ERROR + Script.getName((Player) e.getRightClicked()) + " ist AFK.");
+            return;
+        }
 
         Player p = e.getPlayer();
-        if (!Duty.isInDuty(p)) return;
-        if(Beruf.getBeruf(p) != Beruf.Berufe.POLICE) return;
+        if (!interact(p)) return;
 
-        ItemStack is = p.getInventory().getItemInMainHand();
-        if (!is.getType().equals(Material.LEAD)) return;
+        long time = System.currentTimeMillis();
+        Player rightClicked = (Player) e.getRightClicked();
 
-        Player tg = (Player) e.getRightClicked();
-        if (AFK.isAFK(tg)) {
-            p.sendMessage(Messages.ERROR + "Der Spieler ist AFK.");
+        if(Handschellen.isCuffed(p)) {
             return;
         }
 
-        if(SDuty.isSDuty(tg)) {
-            p.sendMessage(Messages.ERROR + "Der Spieler ist im Supporter-Dienst.");
+        Long lastClick = LAST_CLICK.get(p.getName());
+        if (lastClick == null) {
+            LAST_CLICK.put(p.getName(), time);
             return;
         }
 
-        if (isCuffed(tg)) {
-            p.sendMessage("§cDer Spieler ist bereits in Handschellen.");
-            return;
-        }
+        long difference = time - lastClick;
+        if (difference >= 500) LEVEL.remove(p.getName());
 
+        int level = LEVEL.computeIfAbsent(p.getName(), k -> 0);
 
-        if (cooldowns.containsKey(p.getName())) {
-            long secondsLeft = ((cooldowns.get(p.getName()) / 1000) + 60) - (System.currentTimeMillis() / 1000);
-            if (secondsLeft > 0) {
-                p.sendMessage(Messages.ERROR + "Du kannst Handschellen nur alle 60 Sekunden benutzen.");
-                return;
+        LAST_CLICK.put(p.getName(), time);
+        LEVEL.put(p.getName(), level + 1);
+        progressBar(30,  p);
+
+        if (level >= 30) {
+            PlayerInventory inv = p.getInventory();
+            ItemStack is = inv.getItemInMainHand();
+            if (is.getAmount() > 1) {
+                is.setAmount(is.getAmount() - 1);
+            } else {
+                inv.setItemInMainHand(new ItemStack(Material.AIR));
             }
-        }
 
-        p.sendMessage(PREFIX + "Du hast " + Script.getName(tg) + " Handschellen angelegt.");
-        tg.sendMessage(PREFIX + "Dir wurde von " + Script.getName(p) + " Handschellen angelegt.");
-        Me.sendMessage(p, "hat " + Script.getName(tg) + " Handschellen angelegt.");
-        Handschellen.cuff(tg);
-        Script.freeze(tg);
-        cooldowns.put(p.getName(), System.currentTimeMillis());
-        AntiOfflineFlucht.cooldowns.put(p.getName(), System.currentTimeMillis());
+            p.sendMessage(PREFIX + "Du hast " + Script.getName(rightClicked) + " Handschellen angelegt.");
+            rightClicked.sendMessage(PREFIX + "Dir wurde von " + Script.getName(p) + " Handschellen angelegt.");
+            Me.sendMessage(p, "hat " + Script.getName(rightClicked) + " Handschellen angelegt.");
+            Handschellen.cuff(rightClicked);
+            Script.freeze(rightClicked);
 
-        if (is.getAmount() > 1) {
-            is.setAmount(is.getAmount() - 1);
-        } else {
-            p.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
+            if (is.getAmount() > 1) {
+                is.setAmount(is.getAmount() - 1);
+            } else {
+                p.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
+            }
+
+            BANDAGE_COOLDOWN.put(rightClicked.getName(), time);
+            LAST_CLICK.remove(p.getName());
+            LEVEL.remove(p.getName());
         }
     }
+
+    public boolean interact(Player p) {
+        if (p.getInventory().getItemInMainHand() == null) return false;
+
+        ItemStack is = p.getInventory().getItemInMainHand();
+        return is.hasItemMeta() && is.getItemMeta().getDisplayName() != null && is.getItemMeta().getDisplayName().equals("§7Handschellen");
+    }
+
+    private static void progressBar(double required_progress, Player p) {
+        double current_progress = LEVEL.get(p.getName());
+        double progress_percentage = current_progress / required_progress;
+        StringBuilder sb = new StringBuilder();
+        int bar_length = 10;
+        for (int i = 0; i < bar_length; i++) {
+            if (i < bar_length * progress_percentage) {
+                sb.append("§c▉");
+            } else {
+                sb.append("§8▉");
+            }
+        }
+        Script.sendActionBar(p, "§cHandschellen anlegen.. §8» §a" + sb.toString());
+    }
+
 
     @EventHandler
     public void onDMG(EntityDamageEvent e) {

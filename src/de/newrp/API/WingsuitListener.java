@@ -44,7 +44,7 @@ public class WingsuitListener implements Listener {
             Player p = (Player) e.getEntity();
             if (p.getInventory().getChestplate() != null && p.getInventory().getChestplate().getType().equals(Script.fallschirm().getType())) {
                 p.getInventory().getChestplate().setType(Material.AIR);
-                p.sendMessage("§8[§bWingsuit§8] §3Dein Wingsuit wurde zerschossen.");
+                p.sendMessage("§8[§bFallschirm§8] §3Dein Fallschirm wurde zerschossen.");
             }
         }
     }
@@ -66,7 +66,7 @@ public class WingsuitListener implements Listener {
     }
 
     private void destroyWingsuit(Player p) {
-        p.sendMessage("§8[§bWingsuit§8] §3Dein Wingsuit ist nun verbraucht.");
+        p.sendMessage("§8[§bFallschirm§8] §3Dein Fallschirm ist nun verbraucht.");
         p.getInventory().setChestplate(new ItemStack(Material.AIR));
         p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 3 * 20, 1));
         p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 2 * 20, 1));

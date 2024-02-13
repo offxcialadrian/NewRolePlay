@@ -45,7 +45,7 @@ public class PayShop implements Listener {
         i.setItemMeta(meta);
 
         if(Script.getMoney(p, type) < price) {
-            BuyClick.sendMessage(p, "Die Zahlung ist fehlgeschlagen, hast du überhaupt genug Geld!?");
+            BuyClick.sendMessage(p, "Die Zahlung ist fehlgeschlagen, haben Sie überhaupt genug Geld!?");
             return;
         }
 
@@ -110,6 +110,13 @@ public class PayShop implements Listener {
                     return;
                 }
                 break;
+            case AMMO_762MM:
+                if(!haveGun(p, Weapon.AK47)) {
+                    p.sendMessage(Messages.ERROR + "Du hast keine AK-47.");
+                    return;
+                }
+                Weapon.AK47.addMunition(Script.getNRPID(p), si.getAmount(s));
+                break;
             case AMMO_9MM:
                 if(!haveGun(p, Weapon.PISTOLE)) {
                     p.sendMessage(Messages.ERROR + "Du hast keine Pistole.");
@@ -121,6 +128,9 @@ public class PayShop implements Listener {
                 Beruf.Berufe.NEWS.addKasse(20);
                 break;
             case SCHMERZMITTEL:
+            case ENTZUENDUNGSHEMMENDE_SALBE:
+            case SCHMERZMITTEL_HIGH:
+            case ANTIBIOTIKA:
                 Medikamente m = Medikamente.getMedikamentByShopItem(si);
                 if(m == null) return;
                 if(!Rezept.hasRezept(p, m) && m.isRezeptNeeded()) {
@@ -135,6 +145,7 @@ public class PayShop implements Listener {
                     Stadtkasse.removeStadtkasse(price, "Kostenübernahme durch Krankenversicherung an " + Script.getName(p));
                 }
                 break;
+
             case WATER_BUCKET:
                 p.getInventory().addItem(Script.setNameAndLore(new ItemStack(Material.WATER_BUCKET), "§9Wasser", "§65/5"));
                 break;
@@ -154,13 +165,19 @@ public class PayShop implements Listener {
             Script.executeAsyncUpdate("DELETE FROM call_history WHERE nrp_id = " + Script.getNRPID(p));
             Script.executeAsyncUpdate("DELETE FROM messages WHERE nrp_id = " + Script.getNRPID(p) + " OR sender = " + Script.getNRPID(p));
         }
+
         if(si.addToInventory()) p.getInventory().addItem(i);
+
+        if(Mobile.isPhone(i)) {
+            Mobile.hasCloud(p);
+            Mobile.getPhone(p).setAkku(p, Mobile.getPhone(p).getMaxAkku());
+        }
 
         if(type == PaymentType.BANK) {
             Cashflow.addEntry(p, -price, "Einkauf: " + si.getName());
         }
 
-        BuyClick.sendMessage(p, "Vielen Dank für deinen Einkauf!");
+        BuyClick.sendMessage(p, "Vielen Dank für Ihren Einkauf!");
         Script.removeMoney(p, type, price);
         s.removeLager(si.getSize());
         double mwst = Steuern.Steuer.MEHRWERTSTEUER.getPercentage();

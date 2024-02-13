@@ -1,6 +1,7 @@
 package de.newrp.GFB;
 
 import de.newrp.API.*;
+import de.newrp.main;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -14,10 +15,12 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -29,6 +32,7 @@ public class Imker implements CommandExecutor, Listener {
     public static final HashMap<String, Long> cooldown = new HashMap<>();
     public static final HashMap<String, Integer> honeys = new HashMap<>();
     public static final HashMap<String, Integer> TOTAL_SCORE = new HashMap<>();
+    public static final HashMap<String, Long> small_cooldown = new HashMap<>();
     public static ArrayList<String> ON_JOB = new ArrayList<>();
 
     @Override
@@ -77,8 +81,6 @@ public class Imker implements CommandExecutor, Listener {
         if(e.getAction() != Action.RIGHT_CLICK_BLOCK) return;
         if(e.getClickedBlock().getLocation().distance(new Location(Script.WORLD, 208, 66, 767, 46.838097f, 24.342066f))>30) return;
         if(!e.getClickedBlock().getType().equals(Material.BEE_NEST)) return;
-        Cache.saveInventory(p);
-        p.getInventory().clear();
         ArrayList<Integer> numbers = Script.getRandomNumbers(0, 6*9, 10);
         Inventory inv = Bukkit.createInventory(null, 6*9, "§eImker");
         for(int i = 0; i < (6*9)-1; i++) {
@@ -89,6 +91,13 @@ public class Imker implements CommandExecutor, Listener {
             }
         }
         inv.setItem(6*9-1, new ItemBuilder(Material.GREEN_WOOL).setName("§aFertig").build());
+        if(small_cooldown.containsKey(p.getName())) {
+            if (small_cooldown.get(p.getName()) < System.currentTimeMillis()) Cache.saveInventory(p);
+        } else {
+            Cache.saveInventory(p);
+        }
+        small_cooldown.put(p.getName(), System.currentTimeMillis() + 5L);
+        p.getInventory().clear();
         p.openInventory(inv);
     }
 
@@ -119,6 +128,7 @@ public class Imker implements CommandExecutor, Listener {
         }
 
         p.closeInventory();
+        Cache.loadInventory(p);
         ON_JOB.remove(p.getName());
         p.sendMessage(PREFIX + "Du hast einmal Honig entnommen.");
         p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
@@ -136,16 +146,6 @@ public class Imker implements CommandExecutor, Listener {
             return;
         }
         p.sendMessage(PREFIX + "Du musst noch " + dish + "x Honig entnehmen.");
-    }
-
-    @EventHandler
-    public void onCloseInventory(InventoryCloseEvent e) {
-        Player p = (Player) e.getPlayer();
-        if(!TOTAL_SCORE.containsKey(p.getName())) return;
-        if(!honeys.containsKey(p.getName())) return;
-        if(!e.getView().getTitle().equals("§eImker")) return;
-        ON_JOB.remove(p.getName());
-        Cache.loadInventory(p);
     }
 
     @EventHandler

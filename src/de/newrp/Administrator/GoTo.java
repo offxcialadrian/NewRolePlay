@@ -4,6 +4,7 @@ import de.newrp.API.Log;
 import de.newrp.API.Messages;
 import de.newrp.API.Rank;
 import de.newrp.API.Script;
+import de.newrp.House.House;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -37,6 +38,7 @@ public class GoTo implements CommandExecutor, TabCompleter {
         SCHULE (12, "Schule", new String[]{"Berufsschule, BS"}, new Location(Script.WORLD, 701, 67, 763, -90.90038f, -3.2999737f)),
         TAXI (13, "Taxi", new String[]{"Taxihq"}, new Location(Script.WORLD, 689, 69, 1071, 359.399f, 7.2000093f)),
         ARCADE (14, "Arcade", new String[]{"Arcadehalle"}, new Location(Script.WORLD, 431, 67, 772, 91.49992f, -0.3000614f)),
+        WAFFENLADEN(15, "Waffenladen", new String[]{"Gunshop"}, new Location(Script.WORLD, 452, 69, 928, -51.94748f, 15.066549f)),
         FREIZEITPARK (15, "Freizeitpark", new String[]{"Park"}, new Location(Script.WORLD, 817, 66, 723)),
         MOTEL (16, "Motel", new String[]{"Hotel"}, new Location(Script.WORLD, 795, 64, 1222)),
         KNAST (17, "Gefängnis", new String[]{"Knast, Jail, JVA"}, new Location(Script.WORLD, 1018, 68, 549, 180.84424f, -9.02183f)),
@@ -113,8 +115,61 @@ public class GoTo implements CommandExecutor, TabCompleter {
             }
         }
 
+        if(args.length == 2) {
+            if(!args[0].equalsIgnoreCase("house") && !args[0].equalsIgnoreCase("h") && !args[0].equalsIgnoreCase("haus")) {
+                p.sendMessage(Messages.ERROR + "/goto [Punkt]");
+                return true;
+            }
+
+            if(!Script.isInt(args[1])) {
+                p.sendMessage(Messages.ERROR + "Bitte gib eine Zahl ein.");
+                return true;
+            }
+
+            int id = Integer.parseInt(args[1]);
+            House house = House.getHouseByID(id);
+            if(house == null) {
+                p.sendMessage(Messages.ERROR + "Haus nicht gefunden.");
+                return true;
+            }
+
+            p.sendMessage(PREFIX + "Du hast dich zu Haus " + house.getID() + " teleportiert.");
+            Script.sendTeamMessage(p, ChatColor.YELLOW, "hat sich zu Haus " + house.getID() + " teleportiert.", true);
+            Teleport.back.put(p, p.getLocation());
+            p.teleport(house.getSignLocation());
+            Log.NORMAL.write(p, "teleportierte sich zu Haus " + house.getID() + ".");
+            return true;
+        }
+
         if (args.length != 1) {
             p.sendMessage(Messages.ERROR + "/goto [Punkt]");
+            return true;
+        }
+
+        if(args[0].startsWith("house:") || args[0].startsWith("h:") || args[0].startsWith("haus:")) {
+            String[] split = args[0].split(":");
+            if(split.length != 2) {
+                p.sendMessage(Messages.ERROR + "/goto [Punkt]");
+                return true;
+            }
+
+            if(!Script.isInt(split[1])) {
+                p.sendMessage(Messages.ERROR + "Bitte gib eine Zahl ein.");
+                return true;
+            }
+
+            int id = Integer.parseInt(split[1]);
+            House house = House.getHouseByID(id);
+            if(house == null) {
+                p.sendMessage(Messages.ERROR + "Haus nicht gefunden.");
+                return true;
+            }
+
+            p.sendMessage(PREFIX + "Du hast dich zu Haus " + house.getID() + " teleportiert.");
+            Script.sendTeamMessage(p, ChatColor.YELLOW, "hat sich zu Haus " + house.getID() + " teleportiert.", true);
+            Teleport.back.put(p, p.getLocation());
+            p.teleport(house.getSignLocation());
+            Log.NORMAL.write(p, "teleportierte sich zu Haus " + house.getID() + ".");
             return true;
         }
 

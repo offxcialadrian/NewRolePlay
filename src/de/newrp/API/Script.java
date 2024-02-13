@@ -87,8 +87,8 @@ public class Script {
         if (!SDuty.isSDuty(p)) p.setPlayerListName("§r" + p.getName());
         if (Duty.isInDuty(p) && Beruf.getAbteilung(p) != Abteilung.Abteilungen.ZIVILPOLICE)
             p.setPlayerListName((Beruf.getBeruf(p) == Beruf.Berufe.POLICE ? "§9" : "§4") + p.getPlayerListName());
-        if (BuildMode.isInBuildMode(p)) p.setPlayerListName("§eB §8× §r" + p.getPlayerListName());
-        if (TicketCommand.isInTicket(p)) p.setPlayerListName("§bT §8× §r" + p.getPlayerListName());
+        if (BuildMode.isInBuildMode(p)) p.setPlayerListName("§e§lB §8× §r" + p.getPlayerListName());
+        if (TicketCommand.isInTicket(p)) p.setPlayerListName("§b§lT §8× §r" + p.getPlayerListName());
     }
 
     public static Inventory fillInv(Inventory inv) {
@@ -113,7 +113,7 @@ public class Script {
     public static ItemStack kevlar(int lvl) {
         ItemStack is = new ItemStack(Material.LEATHER_CHESTPLATE, 1, (short) (lvl == 1 ? 50 : 30));
         ItemMeta meta = is.getItemMeta();
-        meta.setDisplayName("§7Schutzweste");
+        meta.setDisplayName("§7" + (lvl==2?"Schwere ":"") + "Schutzweste");
         LeatherArmorMeta armormeta = (LeatherArmorMeta) meta;
         if (lvl == 1) {
             armormeta.setColor(Color.fromRGB(2105376));
@@ -193,6 +193,20 @@ public class Script {
 
     public static void addWhitelistedIP(String ip) {
         executeUpdate("INSERT INTO whitelisted_ips (ip) VALUES ('" + ip + "')");
+    }
+
+    public static void addWhiteListName(String name) {
+        executeUpdate("INSERT INTO whitelist (name) VALUES ('" + name + "')");
+    }
+
+    public static boolean isWhitelistedName(String name) {
+        try (Statement stmt = main.getConnection().createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT * FROM whitelist WHERE name='" + name + "'")) {
+            return rs.next();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return true;
     }
 
     public static void freeze(Player p) {
@@ -502,13 +516,13 @@ public class Script {
             for (Player all : Bukkit.getOnlinePlayers()) {
                 if (isNRPTeam(all)) {
                     if (all != p)
-                        all.sendMessage("§8[" + cc + "TEAM§8] " + cc + getRank(p).getName(p) + " " + getName(p) + " " + msg);
+                        all.sendMessage("§8[" + cc + "§lT§8] " + cc + "» " + cc + getRank(p).getName(p) + " " + getName(p) + " " + msg);
                 }
             }
         } else {
             for (Player all : Bukkit.getOnlinePlayers()) {
                 if (isNRPTeam(all)) {
-                    all.sendMessage("§8[" + cc + "TEAM§8] " + cc + getRank(p).getName(p) + " " + getName(p) + " " + msg);
+                    all.sendMessage("§8[" + cc + "§lT§8] " + cc + "» " + cc + getRank(p).getName(p) + " " + getName(p) + " " + msg);
                 }
             }
         }
@@ -528,7 +542,7 @@ public class Script {
                 if (isNRPTeam(all)) {
                     if (getRank(p).getWeight() >= rank.getWeight()) {
                         if (all != p)
-                            all.sendMessage("§8[" + cc + "TEAM§8] " + cc + getRank(p).getName(p) + " " + getName(p) + " " + msg);
+                            all.sendMessage("§8[" + cc + "§LT§8] " + cc + "» " + cc + getRank(p).getName(p) + " " + getName(p) + " " + msg);
                     }
                 }
             }
@@ -536,7 +550,7 @@ public class Script {
             for (Player all : Bukkit.getOnlinePlayers()) {
                 if (isNRPTeam(all)) {
                     if (getRank(p).getWeight() >= rank.getWeight()) {
-                        all.sendMessage("§8[" + cc + "TEAM§8] " + cc + getRank(p).getName(p) + " " + getName(p) + " " + msg);
+                        all.sendMessage("§8[" + cc + "§lT§8] " + cc + "» " + cc + getRank(p).getName(p) + " " + getName(p) + " " + msg);
                     }
                 }
             }
@@ -748,7 +762,8 @@ public class Script {
     }
 
     public static void executeAsyncUpdate(String sql) {
-        Bukkit.getScheduler().runTaskAsynchronously(main.getInstance(), () -> executeUpdate(sql));
+        executeUpdate(sql);
+        //Bukkit.getScheduler().runTaskAsynchronously(main.getInstance(), () -> ));
     }
 
     public static int getMoney(Player p, PaymentType paymentType) {

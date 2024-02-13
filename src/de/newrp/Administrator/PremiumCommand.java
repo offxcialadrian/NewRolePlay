@@ -59,7 +59,7 @@ public class PremiumCommand implements CommandExecutor {
                     p.sendMessage(PREFIX + "Du hast automatisch so lang Premium, wie du " + Script.getRank(p).getName(p) + " bist.");
                     return true;
                 }
-                p.sendMessage(PREFIX + "Du hast noch bis zum " + Script.dateFormat.format(Premium.getPremiumTime(p)) + " Uhr.");
+                p.sendMessage(PREFIX + "Du hast noch bis zum " + Script.dateFormat.format(Premium.getPremiumTime(p)) + " Uhr Premium.");
                 return true;
             }
         }

@@ -22,18 +22,18 @@ import java.util.Map.Entry;
 
 public class Spectate implements CommandExecutor, Listener {
     public static final HashMap<String, Location> spawn = new HashMap<>();
-    public static final HashMap<String, String> spectate = new HashMap<>();
+    public static final HashMap<Player, String> spectate = new HashMap<>();
 
     private static String PREFIX = "§8[§cSpectate§8] §c» §7";
     public static boolean isSpectating(Player admin) {
         if (admin == null) return false;
-        return spectate.containsKey(admin.getName());
+        return spectate.containsKey(admin);
     }
 
     public static void vanish(Player p) {
         p.setGameMode(GameMode.SPECTATOR);
         spawn.put(p.getName(), p.getLocation());
-        spectate.put(p.getName(), p.getName());
+        spectate.put(p, p.getName());
         for (Player online : Bukkit.getOnlinePlayers()) online.hidePlayer(main.getInstance(), p);
     }
 
@@ -122,7 +122,7 @@ public class Spectate implements CommandExecutor, Listener {
             admin.sendMessage(PREFIX + "Du beobachtest nun " + Script.getName(target) + ".");
             Script.sendTeamMessage(admin, ChatColor.RED, "beobachtet nun " + Script.getName(target) + ".", true);
         }
-        spectate.put(admin.getName(), target.getName());
+        spectate.put(admin, target.getName());
         for (Player online : Bukkit.getOnlinePlayers()) online.hidePlayer(main.getInstance(), admin);
     }
 
@@ -150,9 +150,9 @@ public class Spectate implements CommandExecutor, Listener {
     }
 
     public Player getSpectator(Player target) {
-        for (Entry<String, String> ent : spectate.entrySet()) {
+        for (Entry<Player, String> ent : spectate.entrySet()) {
             if (ent.getValue().equals(target.getName())) {
-                return Script.getPlayer(ent.getKey());
+                return ent.getKey();
             }
         }
         return null;
@@ -208,8 +208,8 @@ public class Spectate implements CommandExecutor, Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
         Player p = e.getPlayer();
-        for (Entry<String, String> ent : Spectate.spectate.entrySet()) {
-            p.hidePlayer(main.getInstance(), Script.getPlayer(ent.getKey()));
+        for (Entry<Player, String> ent : Spectate.spectate.entrySet()) {
+            p.hidePlayer(main.getInstance(), ent.getKey());
         }
     }
 

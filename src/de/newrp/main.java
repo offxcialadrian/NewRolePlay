@@ -327,6 +327,9 @@ public class main extends JavaPlugin {
         getCommand("sellhouse").setExecutor(new SellHouse());
         getCommand("leaderchat").setExecutor(new LeaderChat());
         getCommand("waffenschein").setExecutor(new Waffenschein());
+        getCommand("addpremiumtoplayer").setExecutor(new AddPremiumToPlayer());
+        getCommand("dropammo").setExecutor(new DropAmmo());
+        getCommand("sharelocation").setExecutor(new ShareLocation());
 
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new SDuty(), this);

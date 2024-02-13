@@ -48,7 +48,7 @@ public class ForumCommand implements CommandExecutor {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            Debug.debug(e.getMessage());
+            p.sendMessage(Messages.ERROR + "Verbindung zum Forum fehlgeschlagen. Bitte melde dies als Bug.");
         }
         return true;
     }

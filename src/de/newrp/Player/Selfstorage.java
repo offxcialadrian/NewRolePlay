@@ -134,6 +134,7 @@ public class Selfstorage implements CommandExecutor, Listener {
 
             if(hasSelfstorage(p)) {
                 p.sendMessage(PREFIX + "Du hast bereits einen Selfstorage-Room.");
+                p.sendMessage(PREFIX + "Dein Selfstorage-Room ist §6" + getSelfstorage(p).getName() + "§7.");
                 p.sendMessage(Messages.INFO + "Nutze §8/§6selfstorage remove §fum deinen Selfstorage-Room zu kündigen und alle Inhalte zu löschen.");
                 return true;
             }
@@ -147,6 +148,9 @@ public class Selfstorage implements CommandExecutor, Listener {
             setSelfstorage(p, free.getID());
             p.sendMessage(PREFIX + "Du hast einen Selfstorage-Room gemietet. Dein Raum ist §6" + free.getName() + "§7.");
             p.sendMessage(Messages.INFO + "Nutze §8/§6selfstorage remove §fum deinen Selfstorage-Room zu kündigen.");
+            return true;
+        } else if(args.length == 1 && args[0].equalsIgnoreCase("remove")) {
+            p.sendMessage(Messages.ERROR + "Du kannst deinen Selfstorage Raum nur am Empfang kündigen.");
             return true;
         }
 

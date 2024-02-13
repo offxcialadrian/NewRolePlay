@@ -146,7 +146,7 @@ public class Tragen implements CommandExecutor, Listener {
         return false;
     }
 
-    @EventHandler
+    /*@EventHandler
     public void onSneak(EntityDismountEvent e) {
         if(!(e.getEntity() instanceof Player)) return;
         Player p = (Player) e.getEntity();
@@ -215,6 +215,6 @@ public class Tragen implements CommandExecutor, Listener {
                 p.eject();
             }
         }.runTaskLater(de.newrp.main.getInstance(), 5L);
-    }
+    }*/
 
 }

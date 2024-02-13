@@ -29,7 +29,7 @@ public class BreakingNews implements CommandExecutor {
         }
 
         if (Beruf.getBeruf(p) != Beruf.Berufe.NEWS) {
-            p.sendMessage(Messages.ERROR + "Du Mitglieder der News können Nachrichten schalten.");
+            p.sendMessage(Messages.ERROR + "Nur Mitglieder der News können Nachrichten schalten.");
             return true;
         }
 

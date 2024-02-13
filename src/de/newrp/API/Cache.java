@@ -43,6 +43,7 @@ public class Cache {
     }
 
     public static void loadInventory(Player p) {
+        Debug.debug("loading inventory for " + p.getName());
         if (inventar.containsKey(p.getName())) {
             p.getInventory().clear();
             p.getInventory().setContents(inventar.get(p.getName()));
@@ -51,11 +52,9 @@ public class Cache {
     }
 
     public static void saveInventory(Player p) {
-        if(inventar.containsKey(p.getName())) {
-            inventar.replace(p.getName(), p.getInventory().getContents());
-        } else {
-            inventar.put(p.getName(), p.getInventory().getContents());
-        }
+        Debug.debug("saving inventory for " + p.getName());
+        if(inventar.containsKey(p.getName())) return;
+        inventar.put(p.getName(), p.getInventory().getContents());
     }
 
     public static void resetInventory(Player p) {
