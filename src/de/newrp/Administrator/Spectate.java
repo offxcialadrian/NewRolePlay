@@ -133,7 +133,7 @@ public class Spectate implements CommandExecutor, Listener {
         admin.setGameMode(GameMode.SURVIVAL);
         for (Player online : Bukkit.getOnlinePlayers()) online.showPlayer(main.getInstance(), admin);
         Script.sendTeamMessage(admin, ChatColor.RED, "beobachtet nun nicht mehr.", true);
-        spectate.remove(admin.getName());
+        spectate.remove(admin);
         if(Script.hasRank(admin, Rank.ADMINISTRATOR, false)) {
             admin.setAllowFlight(true);
             admin.setFlying(true);

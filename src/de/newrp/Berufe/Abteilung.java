@@ -25,6 +25,7 @@ public class Abteilung implements CommandExecutor, TabCompleter {
 
     public enum Abteilungen {
         GOVERNMENT_NONE(0, GOVERNMENT, "Regierungsmitglied"),
+        WIRTSCHAFTSMINISTERIUM(1, GOVERNMENT, "Wirtschaftsministerium"),
         ARBEITSAMT(1, GOVERNMENT, "Arbeitsamt"),
         FINANZAMT(2, GOVERNMENT, "Finanzamt"),
         JUSTIZMINISTERIUM(3, GOVERNMENT, "Justizministerium"),

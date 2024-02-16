@@ -42,10 +42,7 @@ public class UninviteCommand implements CommandExecutor {
             return true;
         }
 
-        if (Beruf.getBeruf(p) != Beruf.getBeruf(tg) && Organisation.getOrganisation(p) != Organisation.getOrganisation(tg)) {
-            p.sendMessage(Messages.ERROR + "Der Spieler ist nicht in deiner Organisation.");
-            return true;
-        }
+
 
         if(!Beruf.hasBeruf(tg) && !Organisation.hasOrganisation(tg)) {
             p.sendMessage(Messages.ERROR + "Der Spieler ist in keiner Organisation.");
@@ -54,6 +51,17 @@ public class UninviteCommand implements CommandExecutor {
 
         if(Beruf.hasBeruf(tg)) {
             Beruf.Berufe beruf = Beruf.getBeruf(p);
+
+            if(!Beruf.hasBeruf(tg)) {
+                p.sendMessage(Messages.ERROR + "Der Spieler hat keinen Beruf.");
+                return true;
+            }
+
+            if(Beruf.getBeruf(tg) != beruf) {
+                p.sendMessage(Messages.ERROR + "Der Spieler ist nicht in deinem Beruf.");
+                return true;
+            }
+
             if(Beruf.isCoLeader(p) && tg != p && Beruf.isLeader(tg, false)) {
                 p.sendMessage(Messages.ERROR + "Du kannst den Leader nicht entlassen.");
                 return true;
@@ -62,6 +70,7 @@ public class UninviteCommand implements CommandExecutor {
 
             if(tg.isOnline() && tg.getPlayer() != null) {
                 tg.getPlayer().sendMessage(PREFIX + "Du wurdest aus der " + Beruf.getBeruf(p).getName() + " entlassen.");
+                Equip.removeEquip(p);
             } else {
                 Script.addOfflineMessage(tg, PREFIX + "Du wurdest aus der " + Beruf.getBeruf(p).getName() + " entlassen.");
             }
@@ -74,6 +83,17 @@ public class UninviteCommand implements CommandExecutor {
         }
 
         Organisation beruf = Organisation.getOrganisation(p);
+
+        if(!Organisation.hasOrganisation(tg)) {
+            p.sendMessage(Messages.ERROR + "Der Spieler ist nicht in deiner Organisation.");
+            return true;
+        }
+
+        if(Organisation.getOrganisation(tg) != beruf) {
+            p.sendMessage(Messages.ERROR + "Der Spieler ist nicht in deiner Organisation.");
+            return true;
+        }
+
         beruf.removeExp(Script.getRandom(20, 30));
         if(Organisation.isCoLeader(p) && tg != p && Beruf.isLeader(tg, false)) {
             p.sendMessage(Messages.ERROR + "Du kannst den Leader nicht entlassen.");

@@ -94,6 +94,21 @@ public enum GFB {
         p.sendMessage(PREFIX + "Du hast " + exp + " Exp für den Job " + this.name + " erhalten (" + getExp(p) + "/" + getLevelCost(getLevel(p)) + ")");
     }
 
+    public void removeExp(Player p, int exp) {
+        if(getExp(p) - exp < 0) {
+            Script.executeAsyncUpdate("UPDATE gfb_level SET level=" + (getLevel(p) - 1) + " WHERE nrp_id='" + Script.getNRPID(p) + "' AND gfb_id=" + this.id);
+            Script.executeAsyncUpdate("UPDATE gfb_level SET exp=" + (getLevelCost(getLevel(p) - 1) - 1) + " WHERE nrp_id='" + Script.getNRPID(p) + "' AND gfb_id=" + this.id);
+            p.sendMessage(PREFIX + "Du bist beim GFB " + this.getName() + " nun Level " + (getLevel(p) - 1) + "!");
+            return;
+        }
+        try (Statement stmt = main.getConnection().createStatement()) {
+            stmt.executeUpdate("UPDATE gfb_level SET exp=" + (getExp(p) - exp) + " WHERE nrp_id='" + Script.getNRPID(p) + "' AND gfb_id=" + this.id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        p.sendMessage(PREFIX + "Du hast " + exp + " Exp für den Job " + this.name + " verloren (" + getExp(p) + "/" + getLevelCost(getLevel(p)) + ")");
+    }
+
     public int getLevel(Player p) {
         try (Statement stmt = main.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM gfb_level WHERE nrp_id='" + Script.getNRPID(p) + "' AND gfb_id=" + this.id)) {

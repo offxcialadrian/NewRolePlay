@@ -543,3 +543,6 @@ commands:
   sharelocation:
     description: share your location
     aliases: [ shareloc ]
+  gfblevel:
+    description: get your gfblevel
+    aliases: [ skilllevel, skill ]

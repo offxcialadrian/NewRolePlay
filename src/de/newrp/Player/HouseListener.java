@@ -27,6 +27,7 @@ public class HouseListener implements Listener {
         if(s.getLine(1).startsWith("==") && s.getLine(1).endsWith("==")) {
             House h = House.getHouseByID(Integer.parseInt(s.getLine(1).replace("==", "").replace(" ", "")));
             if(h == null) return;
+            if(h.getSignLocation().distance(e.getClickedBlock().getLocation()) > 1) return;
             Inventory inv = Bukkit.createInventory(null, 4*9, "§6Haus " + h.getID());
             inv.setItem(13, new ItemBuilder(Material.PLAYER_HEAD).setName("§6Besitzer").setLore((h.getOwner()==0?"§8§c» §cKein Besitzer": "§8§c» §6" + Script.getOfflinePlayer(h.getOwner()).getName())).build());
             inv.setItem(21, new ItemBuilder(Material.PAPER).setName("§6geringster Marktwert").setLore("§8§c» §6" + h.getPrice() + "€").build());

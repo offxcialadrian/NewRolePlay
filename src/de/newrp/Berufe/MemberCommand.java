@@ -2,15 +2,25 @@ package de.newrp.Berufe;
 
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
+import de.newrp.Administrator.BuildMode;
+import de.newrp.Administrator.GoTo;
+import de.newrp.Administrator.SDuty;
 import de.newrp.Organisationen.Organisation;
 import de.newrp.Player.AFK;
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
+import org.bukkit.util.StringUtil;
 
-public class MemberCommand implements CommandExecutor {
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+public class MemberCommand implements CommandExecutor, TabCompleter {
 
     private static final String PREFIX = "§8[§6Member§8] §6» §7";
 
@@ -72,4 +82,32 @@ public class MemberCommand implements CommandExecutor {
 
         return false;
     }
+
+    @Override
+    public List<String> onTabComplete(CommandSender cs, Command cmd, String alias, String[] args) {
+        Player p = (Player) cs;
+        if (cmd.getName().equalsIgnoreCase("member") || cmd.getName().equalsIgnoreCase("members") || cmd.getName().equalsIgnoreCase("memberinfo")) {
+            final List<String> oneArgList = new ArrayList<>();
+            final List<String> completions = new ArrayList<>();
+            for (GoTo.Points point : GoTo.Points.values()) {
+                oneArgList.add(point.getName());
+            }
+
+            for(Player player : Bukkit.getOnlinePlayers()) {
+                oneArgList.add(player.getName());
+            }
+
+            if (args.length == 1) {
+                StringUtil.copyPartialMatches(args[0], oneArgList, completions);
+            }
+
+            if (args.length == 2) {
+                return null;
+            }
+            Collections.sort(completions);
+            return completions;
+        }
+        return Collections.EMPTY_LIST;
+    }
+
 }

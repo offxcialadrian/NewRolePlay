@@ -330,6 +330,7 @@ public class main extends JavaPlugin {
         getCommand("addpremiumtoplayer").setExecutor(new AddPremiumToPlayer());
         getCommand("dropammo").setExecutor(new DropAmmo());
         getCommand("sharelocation").setExecutor(new ShareLocation());
+        getCommand("gfblevel").setExecutor(new GFBLevel());
 
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new SDuty(), this);
@@ -428,6 +429,7 @@ public class main extends JavaPlugin {
         pm.registerEvents(new AchievementCommand(), this);
         pm.registerEvents(new ErsteHilfe(), this);
         pm.registerEvents(new HouseListener(), this);
+        pm.registerEvents(new GFBLevel(), this);
 
 
         new AsyncHealth().runTaskTimerAsynchronously(this, 120 * 20L, 120 * 20L);

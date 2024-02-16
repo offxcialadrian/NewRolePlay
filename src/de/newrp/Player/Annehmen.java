@@ -116,7 +116,7 @@ public class Annehmen implements CommandExecutor {
 
 
             Inventory inv = Bukkit.createInventory(null, 36, "§8[§9Tasche§8] §e» §9" + tasche.getName());
-            for (ItemStack is : p.getInventory().getContents()) {
+            for (ItemStack is : tasche.getInventory().getContents()) {
                 if (is == null) continue;
                 inv.addItem(is);
             }

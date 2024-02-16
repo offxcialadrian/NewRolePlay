@@ -22,6 +22,11 @@ public class Stadtkasse implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
         Player p = (Player) cs;
+        if(!Beruf.hasBeruf(p) && !Script.hasRank(p, Rank.ADMINISTRATOR, false)) {
+            p.sendMessage(Messages.ERROR + "Du hast keinen Beruf.");
+            return true;
+        }
+
         if (Beruf.getBeruf(p) != Beruf.Berufe.GOVERNMENT && !SDuty.isSDuty(p)) {
             p.sendMessage(Messages.ERROR + "Du bist kein Regierungsmitglied.");
             return true;
@@ -32,7 +37,7 @@ public class Stadtkasse implements CommandExecutor {
             return true;
         }
 
-        p.sendMessage(PREFIX + "In der Stadtkasse befinden sich §e" + Script.df.format(getStadtkasse()) + "€.");
+        p.sendMessage(PREFIX + "In der Stadtkasse befinden sich §e" + getStadtkasse() + "€.");
 
 
         return false;

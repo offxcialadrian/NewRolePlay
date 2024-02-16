@@ -141,7 +141,7 @@ public class Spawnschutz implements Listener {
         Player p = (Player) e.getEntity();
 
         if (Script.getLevel(p)!=1) return;
-        if(Script.getLevel((Player) e.getDamager()) != 1) return;
+        if (Script.getLevel((Player) e.getDamager()) != 1) return;
 
         if (damager.getType() == EntityType.PLAYER) {
             damager.sendMessage("§8[§cNeulingsschutz§8] §c "+ Messages.ARROW + " Der Spieler ist im Neulingsschutz.");

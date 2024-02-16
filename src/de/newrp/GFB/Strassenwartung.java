@@ -398,7 +398,10 @@ public class Strassenwartung implements CommandExecutor, Listener {
         }
 
         public static Construction getRandomConstruction() {
-            for (Construction construction : Construction.values()) {
+            //get a random construction which is not in use but make it random
+            Construction[] constructions = Construction.values();
+            for (int i = 0; i < constructions.length; i++) {
+                Construction construction = constructions[Script.getRandom(0, constructions.length - 1)];
                 if (!CONSTRUCTION.containsKey(construction)) {
                     return construction;
                 }

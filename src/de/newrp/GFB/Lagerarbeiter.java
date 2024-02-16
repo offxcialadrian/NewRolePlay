@@ -220,7 +220,7 @@ public class Lagerarbeiter implements CommandExecutor, Listener {
                         }
 
                         if(ON_JOB.containsKey(p.getName())) {
-                            p.sendMessage(PREFIX + "Bring erstmal die " + ON_JOB.get(p.getName()).getName() + " weg.");
+                            p.sendMessage(PREFIX + "Bring erstmal " + ON_JOB.get(p.getName()).getName() + " weg.");
                             return;
                         }
 
@@ -302,7 +302,7 @@ public class Lagerarbeiter implements CommandExecutor, Listener {
                 Script.addEXP(p, GFB.LAGERARBEITER.getLevel(p) * Script.getRandom(3, 7));
             } else {
                 SCORE.replace(p.getName(), amount - 1);
-                p.sendMessage(PREFIX + "§aRichtig! §6Hole nun das nächste Produkt aus \"Ware\" und Sortiere es ein (" + (TOTAL_SCORE.get(p.getName())+1-amount) + "/" + (TOTAL_SCORE.get(p.getName())) + ")");
+                p.sendMessage(PREFIX + "§aRichtig! §6Hole nun das nächste Produkt aus \"Ware\" und Sortiere es ein (" + (TOTAL_SCORE.get(p.getName())-amount) + "/" + (TOTAL_SCORE.get(p.getName())) + ")");
             }
         }
     }

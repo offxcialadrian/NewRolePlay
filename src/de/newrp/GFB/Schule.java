@@ -1,6 +1,7 @@
 package de.newrp.GFB;
 
 import de.newrp.API.*;
+import de.newrp.Player.AFK;
 import de.newrp.main;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -37,6 +38,11 @@ public class Schule implements CommandExecutor, Listener {
         }
 
         Achievement.SCHULE.grant(p);
+
+        if(AFK.isAFK(p)) {
+            p.sendMessage(Messages.ERROR + "Du kannst die Schule nicht betreten, da du AFK bist.");
+            return true;
+        }
 
 
         if(STUDIYING.containsKey(p)) {

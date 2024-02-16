@@ -34,10 +34,15 @@ public class RemoveSupport implements CommandExecutor {
             return true;
         }
 
-        OfflinePlayer tg = Script.getPlayer(args[0]);
+        OfflinePlayer tg = Script.getOfflinePlayer(args[0]);
 
         if (Script.getNRPID(tg) == 0) {
             p.sendMessage(Messages.PLAYER_NOT_FOUND);
+            return true;
+        }
+
+        if(!Script.hasRank(tg, Rank.SUPPORTER, false)) {
+            p.sendMessage(Messages.ERROR + "Der Spieler ist kein Supporter.");
             return true;
         }
 
@@ -48,11 +53,6 @@ public class RemoveSupport implements CommandExecutor {
 
     private static void remove(Player p, OfflinePlayer tg) {
         p.sendMessage(PREFIX + "Du hast " + tg.getName() + " aus dem Support-Team entfernt.");
-        if(tg.isOnline()) {
-            tg.getPlayer().sendMessage(PREFIX + "Du wurdest aus dem Support-Team entfernt.");
-            tg.getPlayer().sendMessage(Messages.INFO + "Vielen Dank für deine Unterstützung!");
-            SDuty.removeSDuty(tg.getPlayer());
-        }
         Log.HIGH.write(p, "hat " + tg.getName() + " aus dem Support-Team entfernt.");
         Script.executeUpdate("DELETE FROM ranks WHERE nrp_id=" + Script.getNRPID(tg));
         Script.executeAsyncUpdate("DELETE FROM ticket_greeting WHERE nrp_id=" + Script.getNRPID(tg));
@@ -62,5 +62,10 @@ public class RemoveSupport implements CommandExecutor {
         Forum.syncPermission(tg);
         TeamSpeak.sync(Script.getNRPID(tg));
 
+        if(tg.isOnline()) {
+            tg.getPlayer().sendMessage(PREFIX + "Du wurdest aus dem Support-Team entfernt.");
+            tg.getPlayer().sendMessage(Messages.INFO + "Vielen Dank für deine Unterstützung!");
+            SDuty.removeSDuty(tg.getPlayer());
+        }
     }
 }

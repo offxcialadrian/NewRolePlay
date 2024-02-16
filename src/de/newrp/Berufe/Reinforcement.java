@@ -98,6 +98,10 @@ public class Reinforcement implements CommandExecutor {
         if (args.length == 2) {
             if (args[0].equals("omw")) {
                 Player tg = Bukkit.getPlayer(args[1]);
+                if(tg == null) {
+                    p.sendMessage(Messages.PLAYER_NOT_FOUND);
+                    return true;
+                }
                 new Route(p.getName(), Script.getNRPID(p), p.getLocation(), new_reinforcement.get(tg.getName())).start();
                 if(Organisation.hasOrganisation(tg)) {
                     Organisation org = Organisation.getOrganisation(tg);

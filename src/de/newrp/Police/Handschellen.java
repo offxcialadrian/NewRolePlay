@@ -95,7 +95,7 @@ public class Handschellen implements Listener {
         LEVEL.put(p.getName(), level + 1);
         progressBar(30,  p);
 
-        if (level >= 30) {
+        if (level >= 50) {
             PlayerInventory inv = p.getInventory();
             ItemStack is = inv.getItemInMainHand();
             if (is.getAmount() > 1) {
@@ -110,11 +110,6 @@ public class Handschellen implements Listener {
             Handschellen.cuff(rightClicked);
             Script.freeze(rightClicked);
 
-            if (is.getAmount() > 1) {
-                is.setAmount(is.getAmount() - 1);
-            } else {
-                p.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
-            }
 
             BANDAGE_COOLDOWN.put(rightClicked.getName(), time);
             LAST_CLICK.remove(p.getName());

@@ -1,6 +1,8 @@
 package de.newrp.Medic;
 
 import de.newrp.API.*;
+import de.newrp.GFB.GFB;
+import de.newrp.GFB.Lagerarbeiter;
 import de.newrp.main;
 import de.newrp.Administrator.BuildMode;
 import de.newrp.Administrator.SDuty;
@@ -251,6 +253,11 @@ public class Gips implements Listener {
     @EventHandler
     public void onDrink(PlayerItemConsumeEvent e) {
         Player p = e.getPlayer();
+        if(Lagerarbeiter.ON_JOB.containsKey(p.getName())) {
+            e.setCancelled(true);
+            p.sendMessage(Messages.INFO + "Du kannst während dieses Jobs nichts trinken.");
+            return;
+        }
         if (e.getItem().getType().equals(Material.POTION)) {
             p.getInventory().setItemInMainHand(Script.Pfandflasche());
             Health.THIRST.add(Script.getNRPID(p), Script.getRandomFloat(2.5F, 3F));

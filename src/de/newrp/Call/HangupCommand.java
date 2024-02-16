@@ -28,6 +28,9 @@ public class HangupCommand implements CommandExecutor {
             return true;
         }
 
+
+        p.sendMessage(Messages.INFO + "Du hast aufgelegt.");
+
         if(Call.getParticipants(Call.getCallIDByPlayer(p)).size() == 1) {
             Call.abort(p);
             return true;

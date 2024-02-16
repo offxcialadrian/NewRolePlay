@@ -30,6 +30,7 @@ public class Flashbang implements Listener {
                     return;
                 }
             }
+            player.getInventory().getItemInMainHand().setAmount(player.getInventory().getItemInMainHand().getAmount() - 1);
             cooldowns.put(e.getPlayer().getName(), time);
             e.getItemDrop().setPickupDelay(Integer.MAX_VALUE);
             Bukkit.getScheduler().runTaskLater(main.getInstance(), () -> {
@@ -43,7 +44,6 @@ public class Flashbang implements Listener {
                         p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, Math.abs(13 - distance) * 40, 1), false);
                     }
                 }
-                player.getInventory().getItemInMainHand().setAmount(player.getInventory().getItemInMainHand().getAmount() - 1);
                 e.getItemDrop().remove();
             }, 2 * 27L);
         }

@@ -1359,12 +1359,12 @@ public class Script {
             e.printStackTrace();
         }
         if(getPlayTime(p, true) % 50 == 0 && getPlayTime(p, false) == 0) {
-            p.sendMessage(Messages.INFO + "Du erhältst als Dankeschön deiner Treue 50 Exp");
+            p.sendMessage(PREFIX + "Du erhältst als Dankeschön für deine Treue 50 Exp");
             addEXP(p, 50);
         }
 
         if(getPlayTime(p, true) % 150 == 0 && getPlayTime(p, false) == 0) {
-            p.sendMessage(Messages.INFO + "Du erhältst als Dankeschön deiner 3 Tage Premium");
+            p.sendMessage(PREFIX + "Du erhältst als Dankeschön für deine Treue 3 Tage Premium");
             Premium.addPremiumStorage(p, TimeUnit.DAYS.toMillis(3), true);
         }
 

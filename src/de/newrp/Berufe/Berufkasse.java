@@ -22,6 +22,11 @@ public class Berufkasse implements CommandExecutor {
             return true;
         }
 
+        if(!Beruf.getBeruf(p).hasKasse()) {
+            p.sendMessage(Messages.ERROR + "Dieser Beruf hat keine Kasse.");
+            return true;
+        }
+
         if(!Beruf.isLeader(p, true) &&  !args[0].equalsIgnoreCase("einzahlen")) {
             p.sendMessage(Messages.ERROR + "Du bist kein Leader.");
             return true;

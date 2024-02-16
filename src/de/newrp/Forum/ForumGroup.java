@@ -7,14 +7,14 @@ public enum ForumGroup {
     ZIVILIST(3, "Zivilist"),
     ADMINISTRATOR(4, "Administratoren"),
     MODERATOR(5, "Moderator"),
-    SUPPORTER(6, "Supporter"),
+    SUPPORTER(10, "Supporter"),
     POLICE(9, "Polizei"),
     POLICE_LEADER(15, "Polizei Leader"),
     RETTUNGSDIENST(11, "Rettungsdienst"),
     RETTUNGSDIENST_LEADER(13, "Rettungsdienst Leader"),
     GOVERNMENT(12, "Regierung"),
     GOVERNMENT_LEADER(14, "Regierung Leader"),
-    NEWS(10, "News"),
+    NEWS(8, "News"),
     NEWS_LEADER(16, "News Leader"),
     VERIFIED(17, "Verifiziert");
 

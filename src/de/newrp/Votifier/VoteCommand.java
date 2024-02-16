@@ -35,8 +35,8 @@ public class VoteCommand implements CommandExecutor {
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         Player p = (Player) cs;
         p.sendMessage("§8===== §6Offizielle Voting-Seiten §8=====");
-        Script.sendLinkMessage(p, "  §8» §6Minecraft-Serverlist.net", "https://www.minecraft-serverlist.net/vote/58158/" + p.getName(),"§7Klicke hier um zu §6Minecraft-Serverlist.net §7zu gelangen!");
-        Script.sendLinkMessage(p, "  §8» §6Minecraft-Server.eu", "https://minecraft-server.eu/vote/index/22E2E/" + p.getName(), "§7Klicke hier um zu §6Minecraft-Server.eu §7zu gelangen!");
+        Script.sendLinkMessage(p, "  §8» " + (votes.containsKey(p.getName().toLowerCase() + ".minecraft-serverlist_net")?"§a":"§c") + "Minecraft-Serverlist.net", "https://www.minecraft-serverlist.net/vote/58158/" + p.getName(),"§7Klicke hier um zu §6Minecraft-Serverlist.net §7zu gelangen!");
+        Script.sendLinkMessage(p, "  §8» " + (votes.containsKey(p.getName().toLowerCase() + ".minecraft-server_eu")?"§a":"§c") + "Minecraft-Server.eu", "https://minecraft-server.eu/vote/index/22E2E/" + p.getName(), "§7Klicke hier um zu §6Minecraft-Server.eu §7zu gelangen!");
         p.sendMessage("§l§8______________________________________");
         int dayOfTheWeek = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
         boolean weekend = dayOfTheWeek == Calendar.FRIDAY || dayOfTheWeek == Calendar.SATURDAY || dayOfTheWeek == Calendar.SUNDAY;

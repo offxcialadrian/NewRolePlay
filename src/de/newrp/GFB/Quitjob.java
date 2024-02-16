@@ -51,6 +51,7 @@ public class Quitjob implements CommandExecutor {
                 Kellner.SCORE.remove(p.getName());
                 Kellner.CURRENT.remove(p.getName());
                 Kellner.TOTAL_SCORE.remove(p.getName());
+                Kellner.time.remove(p.getName());
                 Cache.loadInventory(p);
                 p.sendMessage(GFB.PREFIX + "Du hast den Job §6Kellner §7verlassen.");
                 break;

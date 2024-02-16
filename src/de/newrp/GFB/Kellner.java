@@ -2,6 +2,7 @@ package de.newrp.GFB;
 
 import de.newrp.API.Messages;
 import de.newrp.API.PayDay;
+import de.newrp.API.PaymentType;
 import de.newrp.API.Script;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -102,6 +103,7 @@ public class Kellner implements CommandExecutor, Listener {
     public static HashMap<String, Long> cooldown = new HashMap<>();
     public static HashMap<String, Tables> CURRENT = new HashMap<>();
     public static HashMap<String, Integer> TOTAL_SCORE = new HashMap<>();
+    public static HashMap<String, Long> time = new HashMap<>();
 
     @Override
     public boolean onCommand(@NotNull CommandSender cs, @NotNull Command cmd, @NotNull String s, @NotNull String[] args) {
@@ -156,6 +158,7 @@ public class Kellner implements CommandExecutor, Listener {
         CURRENT.put(p.getName(), table);
         p.sendMessage(GFB.PREFIX + "Bringe nun die Bestellung zu §6" + table.getName() + "§7.");
         p.sendMessage(Messages.INFO + "Klicke auf den Tisch, um die Bestellung abzugeben.");
+        time.put(p.getName(), System.currentTimeMillis());
     }
 
     @EventHandler
@@ -167,6 +170,17 @@ public class Kellner implements CommandExecutor, Listener {
         if(!CURRENT.containsKey(p.getName())) return;
         if(e.getClickedBlock().getLocation().equals(CURRENT.get(p.getName()).getLocation())) {
             p.sendMessage(PREFIX + "Du hast die Bestellung erfolgreich abgegeben.");
+            if(System.currentTimeMillis() - time.get(p.getName()) < 20 * 1000) {
+                p.sendMessage(PREFIX + "Du warst sehr schnell und hast ein Trinkgeld erhalten.");
+                Script.addMoney(p, PaymentType.CASH, Script.getRandom(1, 2));
+                time.remove(p.getName());
+                return;
+            } else if(System.currentTimeMillis() - time.get(p.getName()) > 60 * 1000) {
+                p.sendMessage(PREFIX + "Du warst zu langsam und der Kunde hat sich beschwert.");
+                GFB.KELLNER.removeExp(p, GFB.KELLNER.getLevel(p) * 2);
+                time.remove(p.getName());
+                return;
+            }
             p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
             CURRENT.remove(p.getName());
             p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
