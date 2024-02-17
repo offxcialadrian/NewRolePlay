@@ -174,12 +174,10 @@ public class Kellner implements CommandExecutor, Listener {
                 p.sendMessage(PREFIX + "Du warst sehr schnell und hast ein Trinkgeld erhalten.");
                 Script.addMoney(p, PaymentType.CASH, Script.getRandom(1, 2));
                 time.remove(p.getName());
-                return;
             } else if(System.currentTimeMillis() - time.get(p.getName()) > 60 * 1000) {
                 p.sendMessage(PREFIX + "Du warst zu langsam und der Kunde hat sich beschwert.");
                 GFB.KELLNER.removeExp(p, GFB.KELLNER.getLevel(p) * 2);
                 time.remove(p.getName());
-                return;
             }
             p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
             CURRENT.remove(p.getName());

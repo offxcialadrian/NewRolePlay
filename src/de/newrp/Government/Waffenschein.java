@@ -172,9 +172,10 @@ public class Waffenschein implements CommandExecutor {
     public static void sendApplications(Player p) {
         try (Statement stmt = main.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM waffenschein WHERE accepted='0'")) {
-            while (rs.next()) {
+            p.sendMessage(PREFIX + rs.getRow() + " Anträge gefunden.");
+            do  {
                 Script.sendClickableMessage(p, PREFIX + "Antrag von §6" + Script.getName(Script.getPlayer(rs.getInt("nrp_id"))) + " §8× §6" + Script.dateFormat.format(Script.getDate(rs.getLong("date"))) + " Uhr §8× §6§l#" + rs.getInt("id") + "§7.", "/waffenschein accept " + rs.getInt("id"), "§a§lAnnehmen");
-            }
+            } while (rs.next());
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -302,7 +302,7 @@ public class Lagerarbeiter implements CommandExecutor, Listener {
                 Script.addEXP(p, GFB.LAGERARBEITER.getLevel(p) * Script.getRandom(3, 7));
             } else {
                 SCORE.replace(p.getName(), amount - 1);
-                p.sendMessage(PREFIX + "§aRichtig! §6Hole nun das nächste Produkt aus \"Ware\" und Sortiere es ein (" + (TOTAL_SCORE.get(p.getName())-amount) + "/" + (TOTAL_SCORE.get(p.getName())) + ")");
+                p.sendMessage(PREFIX + "§aRichtig! §6Hole nun das nächste Produkt aus \"Ware\" und Sortiere es ein (" + (TOTAL_SCORE.get(p.getName())-SCORE.get(p.getName())) + "/" + (TOTAL_SCORE.get(p.getName())) + ")");
             }
         }
     }

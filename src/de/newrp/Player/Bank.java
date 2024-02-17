@@ -26,7 +26,7 @@ public class Bank implements CommandExecutor, TabCompleter {
         Player p = (Player) cs;
         ATM atm = ATM.getNearATM(p);
 
-        if(atm == null && (!(args.length == 2 && args[0].equalsIgnoreCase("überweisen")&&Premium.hasPremium(p)))) {
+        if(atm == null && (!(args.length >= 2 && args[0].equalsIgnoreCase("überweisen")&&Premium.hasPremium(p)))) {
             p.sendMessage(Messages.ERROR + "Du bist nicht in der Nähe eines Bankautomats.");
             return true;
         }
@@ -214,6 +214,8 @@ public class Bank implements CommandExecutor, TabCompleter {
             final List<String> oneArgList = new ArrayList<>();
             final List<String> completions = new ArrayList<>();
             oneArgList.add("einzahlen");
+            oneArgList.add("abheben");
+            oneArgList.add("abbuchen");
             oneArgList.add("auszahlen");
             oneArgList.add("überweisen");
             oneArgList.add("info");

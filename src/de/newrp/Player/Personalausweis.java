@@ -83,7 +83,7 @@ public class Personalausweis implements CommandExecutor, Listener {
                         return true;
                     }
                     p.sendMessage(PREFIX + "Du hast bereits einen Personalausweis.");
-                    p.sendMessage(Messages.INFO + "Mit /personalausweis change deinen Personalausweis ändern");
+                    p.sendMessage(Messages.INFO + "Mit /personalausweis change kannst du deinen Personalausweis ändern.");
                 } else {
                     if (Script.isInRange(p.getLocation(), new Location(p.getWorld(), 554, 70, 984), 4)) {
                         Inventory inv = p.getServer().createInventory(null, 9, "§3Personalausweis");
@@ -216,7 +216,7 @@ public class Personalausweis implements CommandExecutor, Listener {
 
                         p.sendMessage(PREFIX + "Alles klar. " + (g.equals(Gender.MALE) ? "Herr " : "Frau ") + p.getName() + ", Ihr Personalausweis ist in 5 Minuten fertig.");
                         p.sendMessage(PREFIX + "Kommen Sie dann wieder und geben Sie erneut §7/§6personalausweis§6 ein.");
-                        p.sendMessage(Messages.INFO + "Mit /sperrinfo kannst du sehen wie lange du noch warten musst.");
+                        p.sendMessage(Messages.INFO + "Mit /sperrinfo kannst du sehen, wie lange du noch warten musst.");
                         Sperre.PERSONALAUSWEIS.setSperre(id, 6);
                         Personalausweis.cooldown.put(p, System.currentTimeMillis());
                         e.getView().close();

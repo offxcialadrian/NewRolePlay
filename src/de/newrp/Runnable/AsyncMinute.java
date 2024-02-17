@@ -33,6 +33,8 @@ public class AsyncMinute extends BukkitRunnable {
             "§8[§cWerbung§8] §c" + Messages.ARROW + " §7Schau mal auf unseren §9Discord §7vorbei: §9https://discord.gg/newroleplay",
             "§8[§cWerbung§8] §c" + Messages.ARROW + " §7Schau mal auf unseren §fTeamspeak §7vorbei: §fnewrp.de",
             "§8[§cWerbung§8] §c" + Messages.ARROW + " §7Keine Lust mehr auf Werbung? Kaufe dir §bPremium §7und erhalte viele Vorteile!",
+            "§8[§cWerbung§8] §c" + Messages.ARROW + " §7Keine Lust mehr auf Werbung? Kaufe dir §bPremium §7und erhalte viele Vorteile!",
+            "§8[§cWerbung§8] §c" + Messages.ARROW + " §7Keine Lust mehr auf Werbung? Kaufe dir §bPremium §7und erhalte viele Vorteile!",
             "§8[§cWerbung§8] §c" + Messages.ARROW + " §7Schau mal in unserem Forum vorbei: §9https://forum.newrp.de/",
             "§8[§cWerbung§8] §c" + Messages.ARROW + " §7Schau mal auf unserer Webseite vorbei: §9https://newrp.de/",
             "§8[§cWerbung§8] §c" + Messages.ARROW + " §7Schau mal in unserem Shop vorbei: §9https://shop.newrp.de/",

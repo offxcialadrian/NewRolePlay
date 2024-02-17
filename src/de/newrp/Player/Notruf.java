@@ -1,10 +1,8 @@
 package de.newrp.Player;
 
-import de.newrp.API.Debug;
 import de.newrp.API.ItemBuilder;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
-import de.newrp.Administrator.SDuty;
 import de.newrp.Berufe.AcceptNotruf;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Berufe.Duty;
@@ -12,9 +10,6 @@ import de.newrp.Chat.Me;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -63,8 +58,7 @@ public class Notruf implements Listener {
                         int verletzte = -1;
                         try {
                             verletzte = Integer.parseInt(answers.get(p.getName() + Questions.FRAGE2.getID()));
-                        } catch (NumberFormatException ex) {
-                            verletzte = -1;
+                        } catch (NumberFormatException ignored) {
                         }
                         Me.sendMessage(p, "wählt den Notruf auf seinem Handy.");
 

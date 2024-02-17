@@ -107,18 +107,23 @@ public class PayDay extends BukkitRunnable {
                     }
                 }
 
-                p.sendMessage("§8" + Messages.ARROW + " §7Lohnsteuer (" + lohnsteuer + "%): §c-" + (int) Script.getPercent(lohnsteuer, salary) + "€");
-                Stadtkasse.addStadtkasse((int) Script.getPercent(lohnsteuer, salary), "Lohnsteuer von " + Script.getName(p) + " erhalten", Steuern.Steuer.LOHNSTEUER);
-                payday -= (int) Script.getPercent(lohnsteuer, salary);
+                if(Beruf.getBeruf(p).hasKasse() || Beruf.getBeruf(p) == Beruf.Berufe.RETTUNGSDIENST) {
+                    p.sendMessage("§8" + Messages.ARROW + " §7Lohnsteuer (" + lohnsteuer + "%): §c-" + (int) Script.getPercent(lohnsteuer, salary) + "€");
+                    Stadtkasse.addStadtkasse((int) Script.getPercent(lohnsteuer, salary), "Lohnsteuer von " + Script.getName(p) + " erhalten", Steuern.Steuer.LOHNSTEUER);
+                    payday -= (int) Script.getPercent(lohnsteuer, salary);
 
+                    p.sendMessage("§8" + Messages.ARROW + " §7Arbeitslosenversicherung (" + arbeitslosenversicherung + "%): §c-" + (int) Script.getPercent(arbeitslosenversicherung, salary) + "€");
+                    Stadtkasse.addStadtkasse((int) Script.getPercent(arbeitslosenversicherung, salary), "Arbeitslosenversicherung von " + Script.getName(p) + " erhalten", Steuern.Steuer.ARBEITSLOSENVERSICHERUNG);
+                    payday -= (int) Script.getPercent(arbeitslosenversicherung, salary);
 
-                p.sendMessage("§8" + Messages.ARROW + " §7Arbeitslosenversicherung (" + arbeitslosenversicherung + "%): §c-" + (int) Script.getPercent(arbeitslosenversicherung, salary) + "€");
-                Stadtkasse.addStadtkasse((int) Script.getPercent(arbeitslosenversicherung, salary), "Arbeitslosenversicherung von " + Script.getName(p) + " erhalten", Steuern.Steuer.ARBEITSLOSENVERSICHERUNG);
-                payday -= (int) Script.getPercent(arbeitslosenversicherung, salary);
-
-                p.sendMessage("§8" + Messages.ARROW + " §7Krankenversicherung (" + krankenversicherung + "%): §c-" + (int) Script.getPercent(krankenversicherung, salary) + "€");
-                Stadtkasse.addStadtkasse((int) Script.getPercent(krankenversicherung, salary), "Krankenversicherung von " + Script.getName(p) + " erhalten", Steuern.Steuer.KRANKENVERSICHERUNG);
-                payday -= (int) Script.getPercent(krankenversicherung, salary);
+                    p.sendMessage("§8" + Messages.ARROW + " §7Krankenversicherung (" + krankenversicherung + "%): §c-" + (int) Script.getPercent(krankenversicherung, salary) + "€");
+                    Stadtkasse.addStadtkasse((int) Script.getPercent(krankenversicherung, salary), "Krankenversicherung von " + Script.getName(p) + " erhalten", Steuern.Steuer.KRANKENVERSICHERUNG);
+                    payday -= (int) Script.getPercent(krankenversicherung, salary);
+                } else {
+                    p.sendMessage("§8" + Messages.ARROW + " §7Lohnsteuer (" + lohnsteuer + "%): §c-" + "§cVerbeamtet");
+                    p.sendMessage("§8" + Messages.ARROW + " §7Arbeitslosenversicherung (" + arbeitslosenversicherung + "%): §c-" + "§cVerbeamtet");
+                    p.sendMessage("§8" + Messages.ARROW + " §7Krankenversicherung (" + krankenversicherung + "%): §c-" + "§cVerbeamtet");
+                }
 
 
             } else if(Organisation.hasOrganisation(p)) {

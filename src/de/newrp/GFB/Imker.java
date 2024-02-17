@@ -131,6 +131,10 @@ public class Imker implements CommandExecutor, Listener {
         Cache.loadInventory(p);
         ON_JOB.remove(p.getName());
         p.sendMessage(PREFIX + "Du hast einmal Honig entnommen.");
+        if(Script.getRandom(1, 100) <=20) {
+            p.sendMessage(PREFIX + "Du wurdest von einer Biene gestochen, passe das nächste mal etwas besser auf.");
+            p.damage(2D);
+        }
         p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
         int dish = honeys.get(p.getName());
         dish--;

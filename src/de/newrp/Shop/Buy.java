@@ -3,6 +3,7 @@ package de.newrp.Shop;
 import de.newrp.API.Licenses;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
+import de.newrp.Police.Fahndung;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -36,6 +37,11 @@ public class Buy implements CommandExecutor {
 
         if (s == null) {
             p.sendMessage(Messages.ERROR + "§cDu bist nicht in der Nähe von einem Shop.");
+            return true;
+        }
+
+        if(s.getType() == ShopType.GUNSHOP && Fahndung.isFahnded(p)) {
+            p.sendMessage(Messages.ERROR + "§cDu kannst keine Waffen kaufen, da du gesucht wirst.");
             return true;
         }
 

@@ -44,11 +44,6 @@ public class GiveLeaderrechte implements CommandExecutor {
         }
 
         if(Beruf.hasBeruf(tg)) {
-            if(Beruf.isLeader(tg, true)) {
-                p.sendMessage(Messages.ERROR + " Dieser Spieler ist bereits Leader.");
-                return true;
-            }
-
             boolean main = args[1].equalsIgnoreCase("main");
 
             Beruf.setLeader(tg, main);

@@ -67,7 +67,7 @@ public class ShareLocation implements CommandExecutor {
             }
 
             p.sendMessage(Messages.INFO + "Dein Standort wurde an " + Script.getName(tg) + " gesendet.");
-            Script.sendClickableMessage(tg, Messages.INFO + Script.getName(p) + " befindet sich in der Nähe von " + Navi.getNextNaviLocation(p.getLocation()) + " (Klicke hier für eine exakte Navigation)", "/navi " + p.getLocation().getX() + "/" + p.getLocation().getY() + "/" + p.getLocation().getZ(), "§7» Klicke für Navigation");
+            Script.sendClickableMessage(tg, Messages.INFO + Script.getName(p) + " befindet sich in der Nähe von " + Navi.getNextNaviLocation(p.getLocation()) + " (Klicke hier für eine exakte Navigation)", "/navi " + (int) p.getLocation().getX() + "/" + (int) p.getLocation().getY() + "/" + (int) p.getLocation().getZ(), "§7» Klicke für Navigation");
 
             return false;
         }

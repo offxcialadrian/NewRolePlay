@@ -97,7 +97,7 @@ public class Schule implements CommandExecutor, Listener {
 
             if(e.getCurrentItem().getItemMeta().getDisplayName().equals("§8» §eFür alle Jobs lernen")) {
                 if(!Premium.hasPremium(p)) {
-                    p.sendMessage(Messages.ERROR + "Du benötigst Premium um für alle Jobs gleichzeitig zu lernen.");
+                    p.sendMessage(Messages.ERROR + "Du benötigst Premium, um für alle Jobs gleichzeitig zu lernen.");
                     p.sendMessage(Messages.INFO + "Du kannst Premium im Shop unter https://shop.newrp.de erwerben.");
                     return;
                 }
@@ -111,7 +111,7 @@ public class Schule implements CommandExecutor, Listener {
                 STUDIYING.put(p, null);
                 STARTED.put(p, System.currentTimeMillis());
                 p.sendMessage(PREFIX + "Du lernst nun für alle GFB-Jobs.");
-                p.sendMessage(Messages.INFO + "Gehe innerhalb der nächsten 30 Minuten nicht in den AFK-Modus um den Kurs zu bestehen.");
+                p.sendMessage(Messages.INFO + "Gehe innerhalb der nächsten 30 Minuten nicht in den AFK-Modus, um den Kurs zu bestehen.");
                 p.closeInventory();
 
                 new BukkitRunnable() {
@@ -142,7 +142,7 @@ public class Schule implements CommandExecutor, Listener {
             STUDIYING.put(p, gfb);
             STARTED.put(p, System.currentTimeMillis());
             p.sendMessage(PREFIX + "Du lernst nun für den GFB-Job " + gfb.getName() + ".");
-            p.sendMessage(Messages.INFO + "Gehe innerhalb der nächsten 15 Minuten nicht in den AFK-Modus um den Kurs zu bestehen.");
+            p.sendMessage(Messages.INFO + "Gehe innerhalb der nächsten 15 Minuten nicht in den AFK-Modus, um den Kurs zu bestehen.");
             p.closeInventory();
 
             new BukkitRunnable() {

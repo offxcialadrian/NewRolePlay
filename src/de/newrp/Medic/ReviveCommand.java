@@ -48,7 +48,7 @@ public class ReviveCommand implements CommandExecutor {
             }
 
             long time = System.currentTimeMillis();
-            if (cooldown.containsKey(p.getName())) {
+            if (cooldown.containsKey(p.getName()) && !Script.isInTestMode()) {
                 Long lastUsage = cooldown.get(p.getName());
                 if (lastUsage + 300 * 1000 > time) {
                     p.sendMessage("§cDu kannst erst in 5 Minuten einen Spieler wiederbeleben.");
@@ -82,17 +82,6 @@ public class ReviveCommand implements CommandExecutor {
             return true;
         }
 
-
-        Item item = null;
-
-        for (Entity ent : p.getNearbyEntities(1.2, 1.2, 1.2)) {
-            if (!ent.getType().equals(EntityType.DROPPED_ITEM)) continue;
-            Item i = (Item) ent;
-            if (i.getItemStack().getType().equals(Material.PLAYER_HEAD)) {
-                item = i;
-                break;
-            }
-        }
 
         Friedhof f_c;
         f_c = Friedhof.getDeathByLocation(p.getLocation());
