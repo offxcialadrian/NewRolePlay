@@ -82,8 +82,11 @@ public class main extends JavaPlugin {
         instance = this;
         test = getServer().getMaxPlayers() == 20;
 
+
+        //new C05(this);
+
         try {
-            mysql = new MySQL("85.214.163.72", "3306", "minecraft", "newrpentwicklung", "TtXf*H&gqkSTC2a2");
+            mysql = new MySQL("localhost", "3306", "minecraft", "newrpentwicklung", "TtXf*H&gqkSTC2a2");
             con = mysql.openConnection();
             Bukkit.getConsoleSender().sendMessage("§cNRP §8× §aVerbindung zur Datenbank hergestellt.");
         } catch (Exception e1) {
@@ -331,6 +334,7 @@ public class main extends JavaPlugin {
         getCommand("dropammo").setExecutor(new DropAmmo());
         getCommand("sharelocation").setExecutor(new ShareLocation());
         getCommand("gfblevel").setExecutor(new GFBLevel());
+        getCommand("equiplog").setExecutor(new Equiplog());
 
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new SDuty(), this);
@@ -430,6 +434,8 @@ public class main extends JavaPlugin {
         pm.registerEvents(new ErsteHilfe(), this);
         pm.registerEvents(new HouseListener(), this);
         pm.registerEvents(new GFBLevel(), this);
+        pm.registerEvents(new Pfandautomat(), this);
+        pm.registerEvents(new Fesseln(), this);
 
 
         new AsyncHealth().runTaskTimerAsynchronously(this, 120 * 20L, 120 * 20L);

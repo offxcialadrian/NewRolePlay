@@ -55,7 +55,7 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
 
         v = Violation.getViolationByArg(args[1]);
 
-        if(v != Violation.SICHERHEITSBANN && v != Violation.SPAM && !Script.hasRank(p, Rank.MODERATOR, true)) {
+        if (v != Violation.SICHERHEITSBANN && v != Violation.SPAM && !Script.hasRank(p, Rank.MODERATOR, true)) {
             p.sendMessage(Messages.NO_PERMISSION);
             return true;
         }
@@ -67,7 +67,7 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
 
         Player tg = Script.getPlayer(args[0]);
         OfflinePlayer offtg = Script.getOfflinePlayer(Script.getNRPID(args[0]));
-        if(Script.getNRPID(offtg) == 0) {
+        if (Script.getNRPID(offtg) == 0) {
             p.sendMessage(Messages.PLAYER_NOT_FOUND);
             p.sendMessage(Messages.INFO + "Du kannst auch Spieler registrieren die noch nie auf NewRP waren.");
             return true;
@@ -86,8 +86,8 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
         if (Script.hasRank(tg, Rank.SUPPORTER, false) && !Script.hasRank(p, Rank.ADMINISTRATOR, false)) {
             p.sendMessage(Messages.ERROR + "Du kannst keine Teammitglieder bestrafen.");
 
-            for(Player team : Script.getNRPTeam()) {
-                if(Script.hasRank(team, Rank.ADMINISTRATOR, false)) {
+            for (Player team : Script.getNRPTeam()) {
+                if (Script.hasRank(team, Rank.ADMINISTRATOR, false)) {
                     team.sendMessage(AntiCheatSystem.PREFIX + "§c" + Script.getName(p) + " §chat versucht ein Teammitglied zu bestrafen.");
                 }
             }
@@ -126,31 +126,35 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
     }
 
     public enum Violation {
-        CHEATEN(1, Punishment.BAN, Punishment.WARN, TimeUnit.DAYS.toMillis(7), 0,"Cheaten", "Wir konnten bei dir Cheats feststellen."),
-        BELEIDIGUNG(2, Punishment.BAN, null, TimeUnit.HOURS.toMillis(3), 0,"Beleidigung", "Du hast einen Spieler beleidigt."),
-        FREMDWERBUNG(3, Punishment.MUTE, null, TimeUnit.HOURS.toMillis(1), 0,"Fremdwerbung", "Du hast Fremdwerbung verbreitet."),
-        MOBBING_LEICHT(4, Punishment.BAN, null, TimeUnit.DAYS.toMillis(3), 0,"Mobbing (Leicht)", "Du hast andere Spieler gemobbt."),
-        MOBBING_SCHWER(5, Punishment.BAN, Punishment.WARN, 0, 0,"Mobbing (Schwer)", "Du hast andere Spieler gemobbt."),
-        RASSISMUS(6, Punishment.BAN, null, 0,0, "Rassismus", "Du hast rassistische Äußerungen getätigt."),
-        EXTREMISMUS(7, Punishment.BAN, null, 0, 0,"Extremismus", "Du hast extremistische Äußerungen getätigt."),
-        DROHUNG(8, Punishment.BAN, null, TimeUnit.HOURS.toMillis(24), 0,"Drohung", "Du hast anderen Spielern gedroht."),
-        BUGUSE(9, Punishment.BAN, null, TimeUnit.HOURS.toMillis(12), 0,"Buguse", "Du hast Spielfehler ausgenutzt."),
-        SUPPORTABUSE(10, Punishment.BAN, null, TimeUnit.HOURS.toMillis(1), 0,"Support Missbrauch", "Du hast das Ticket-System missbraucht."),
-        RECHTEMISSBRAUCH(11, Punishment.BAN, Punishment.WARN, TimeUnit.DAYS.toMillis(7), 0,"Rechte Missbrauch", "Du hast deine Rechte missbraucht."),
-        SICHERHEITSBANN(12, Punishment.BAN, null, 0, 0,"Sicherheitsbann", "Du wurdest zur Sicherheit gebannt. Sollte dir der Grund nicht bekannt sein, melde dich bei uns im Support."),
-        BAD_NEWS(13, Punishment.CHECKPOINTS, null, 0, 50, "Bad /news", "Du hast den Befehl /news missbraucht."),
-        BAD_NEWS_EXRTREM(13, Punishment.BAN, Punishment.CHECKPOINTS, TimeUnit.DAYS.toMillis(1), 150,"Extremer Missbrauch von /news", "Du hast den Befehl /news extrem missbraucht."),
-        BAD_STAATSMELDUNG(14, Punishment.BAN, null, TimeUnit.DAYS.toMillis(1), 0,"Bad /staatsmeldung", "Du hast den Befehl /staatsmeldung missbraucht."),
-        MISSBRAUCH_TRAGEN(15, Punishment.TRAGEN_SPERRE, null, 120, 0,"Missbrauch von /tragen", "Du hast den Befehl /tragen missbraucht."),
-        REPEATING_MISSBRAUCH_TRAGEN(16, Punishment.CHECKPOINTS, null, 0, 100,"Wiederholter Missbrauch von /tragen", "Du hast den Befehl /tragen wiederholt missbraucht."),
-        EXTREMER_MISSBRAUCH_TRAGEN(17, Punishment.BAN, Punishment.WARN, TimeUnit.DAYS.toMillis(14), 0,"Extremer Missbrauch von /tragen", "Du hast den Befehl /tragen extrem missbraucht."),
-        SPAM(18, Punishment.KICK, null, 0, 0,"Spam", "Du hast gespammt."),
-        WIEDERHOLTER_SPAM(19, Punishment.BAN, null, TimeUnit.MINUTES.toMillis(30), 0,"Wiederholter Spam", "Du hast wiederholt gespammt."),
-        EXTREMER_SPAM(20, Punishment.BAN, null, TimeUnit.HOURS.toMillis(1),0, "Extremer Spam", "Du hast extrem gespammt."),
-        WIEDERHOLTE_FREMDWERBUNG(21, Punishment.BAN, Punishment.WARN, TimeUnit.DAYS.toMillis(7), 0,"Wiederholte Fremdwerbung", "Du hast wiederholt Fremdwerbung verbreitet."),
-        UNREALISTISCHES_SPIELVERHALTEN(22, Punishment.CHECKPOINTS, null, 0, 50,"Unrealistisches Spielverhalten", "Du hast unrealistisches Spielverhalten gezeigt."),
-        UNZUREICHENDE_EIGNUNG(23, Punishment.BAN, null, 0, 0,"Unzureichende Eignung", "Du hast unzureichende Eignung gezeigt.");
 
+        AFK_FARMING(1, Punishment.BAN, null, TimeUnit.HOURS.toMillis(24), 0, "AFK-Farming", "Das Benutzen von externen Programmen, Bugs oder Ähnlichem verhindert, in den AFK-Modus zu wechseln oder diesen automatisch wieder zu verlassen."),
+        ACCOUNT_SHARING(2, Punishment.CHECKPOINTS, null, 0, 75, "Account Sharing", "Das Nutzen eines Accounts mit mehreren Personen. Eine Anmeldung als Multiaccount im Forum rechtfertigt kein Account-Sharing."),
+        ACCOUNT_SELLING(3, Punishment.BAN, null, 0, 0, "Account Selling", "Das Verschenken/Verkaufen eines Accounts."),
+        BAD_NEWS(4, null, null, 0, 0, "Bad /news", "Werbungen (/news) dürfen nur für das Werben oder das Suchen von bzw. nach Dienstleistungen, Produkten oder Veranstaltungen verwendet werden. "),
+        BAD_TICKET(5, Punishment.CHECKPOINTS, null, 0, 50, "Bad /ticket", "Unkooperatives oder unanständiges Verhalten im Ticket, aber auch das vorsätzliche Erstellen überflüssiger Tickets."),
+        REPEATING_BAD_TICKET(6, Punishment.BAN, null, TimeUnit.DAYS.toMillis(3), 0, "Bad /ticket (Wiederholt)", "Wiederholtes Unkooperatives oder unanständiges Verhalten im Report, aber auch das vorsätzliche Erstellen überflüssiger Reports."),
+        BELEIDIGUNG(7, Punishment.CHECKPOINTS, null, 0, 25, "Beleidigung", "Eine beleidigende Aussage, die nicht im Sinne des Roleplays ist und/oder einen Spieler in Reallife beleidigt."),
+        REPEATING_BELEIDIGUNG(8, Punishment.BAN, Punishment.CHECKPOINTS, TimeUnit.HOURS.toMillis(12), 50, "Beleidigung (Wiederholt)", "Wiederholte beleidigende Aussagen, die nicht im Sinne des Roleplays sind und/oder einen Spieler in Reallife beleidigen."),
+        BUGUSE(9, Punishment.CHECKPOINTS, null, 0, 100, "Buguse", "Das Ausnutzen eines Fehlers im System und/oder der Welt ohne diesen zu melden."),
+        BUGUSE_EIGENERTRAG(10, Punishment.BAN, Punishment.CHECKPOINTS, TimeUnit.DAYS.toMillis(7), 100, "Buguse mit Eigenertrag", "Das Ausnutzen eines Fehlers im System und/oder der Welt, um sich selbst einen Vorteil zu verschaffen."),
+        CHEATEN(11,Punishment.BAN, Punishment.WARN, TimeUnit.DAYS.toMillis(7), 0,"Cheaten","Betreten des Servers mit und/oder Nutzen von unerlaubten Spielmodifikationen oder externen Programmen, die dem Spieler einen Vorteil bringen und/oder die Physik des Servers umgehen."),
+        CHEATEN_SCHWERWIEGEND(12,Punishment.BAN, Punishment.WARN, TimeUnit.DAYS.toMillis(30),0,"Schwerwiegender Cheat","Betreten des Servers mit und/oder Nutzen von unerlaubten Spielmodifikationen oder externen Programmen, die dem Spieler einen Vorteil bringen und/oder die Physik des Servers umgehen."),
+        FREMDWERBUNG(13, Punishment.CHECKPOINTS, Punishment.WARN, TimeUnit.DAYS.toMillis(14), 0,"Fremdwerbung","Das Verbreiten von Plattformen, Verweisen oder ähnlichen Dingen, die nicht mit New RolePlay in Verbindung stehen. Dazu zählen auch bspw. andere TeamSpeak- sowie Discord-Server."),
+        HANDEL_MIT_SPIELEXTERNEN_DINGEN(14, Punishment.BAN, Punishment.WARN, TimeUnit.DAYS.toMillis(7), 0, "Handel mit spielexternen Dingen", "Tauschen von Ingameinhalten gegen etwas Spielexternes mit Wert, obgleich virtuell oder real."),
+        METAGAMING(15, Punishment.CHECKPOINTS, null, 0, 100, "Metagaming", "Das Nutzen von Informationen, die der Spieler nicht durch sein Roleplay erfahren hat."),
+        CYBERMOBBING(16, Punishment.BAN, null, 0, 0, "Cybermobbing", " Das Mobben eines Spielers, das sich auf sein Reallife ausweitet."),
+        RASSISMUSS(17, Punishment.BAN, null, 0, 0, "Rassismus", "Das Verbreiten von rassistischen Äußerungen."),
+        RUFMORD(18, Punishment.BAN, null, TimeUnit.DAYS.toMillis(7), 0, "Rufmord", "Das Verbreiten von unwahren Behauptungen über einen Spieler."),
+        RDM(19, Punishment.CHECKPOINTS, null, 0, 50, "Random Deathmatch", "Das Töten eines Spielers ohne einen RP-Grund."),
+        SPAM(20, Punishment.KICK, null, 0, 0, "Spam", "Das wiederholte Senden von Nachrichten, die den Chat stören."),
+        SPAM_WIEDERHOLT(21, Punishment.CHECKPOINTS, null, 0, 10, "Spam (Wiederholt)", "Das wiederholte Senden von Nachrichten, die den Chat stören."),
+        SUPPORTER_VERWEIGERUNG(22, Punishment.CHECKPOINTS, null, 0, 50, "Supporter-Verweigerung", "Das Missachten von Anweisungen eines Supporters oder das Belügen eines Supporters, welches im administrativen Zusammenhang geschieht."),
+        EROTIK_ROLEPLAY(23, Punishment.CHECKPOINTS, null, 0, 50, "Erotik-Roleplay", "Das Ausleben von sexuellen Handlungen im Roleplay."),
+        FOLTER_ROLEPLAY(24, Punishment.CHECKPOINTS, null, 0, 50, "Folter-Roleplay", "Das Ausleben von Folterhandlungen im Roleplay."),
+        RECHTE_AUSNUTZUNG(25, Punishment.BAN, null, TimeUnit.DAYS.toMillis(7), 0, "Rechte-Ausnutzung", "Das Ausnutzen von Rechten, die einem Spieler zustehen."),
+        SICHERHEITSBANN(98 ,Punishment.BAN, null,0,0,"Sicherheitsbann","Du wurdest zur Sicherheit gebannt. Sollte dir der Grund nicht bekannt sein, melde dich bei uns im Support."),
+
+        UNZUREICHENDE_EIGNUNG(99,Punishment.BAN, null,0,0,"Unzureichende Eignung","Du hast unzureichende Eignung gezeigt.");
 
 
         int id;
@@ -226,7 +230,7 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
             return null;
         }
 
-    }
+        }
 
     public enum Punishment {
         BAN("Bann"),
@@ -271,8 +275,8 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
                 Log.WARNING.write(tg, "wurde von " + Messages.RANK_PREFIX(p) + " für " + v.getName() + " gebannt.");
                 Log.HIGH.write(p, "hat " + Script.getName(tg) + " für " + v.getName() + " gebannt.");
                 Bukkit.broadcastMessage(Script.PREFIX + "§c" + Script.getName(tg) + " wurde von " + Messages.RANK_PREFIX(p) + " für §l" + v.getName() + "§c gebannt.");
-                if(Beruf.hasBeruf(tg)) Beruf.getBeruf(tg).removeMember(tg);
-                if(Organisation.hasOrganisation(tg)) Organisation.getOrganisation(tg).removeMember(tg);
+                if (Beruf.hasBeruf(tg)) Beruf.getBeruf(tg).removeMember(tg);
+                if (Organisation.hasOrganisation(tg)) Organisation.getOrganisation(tg).removeMember(tg);
             } else {
                 p.sendMessage(PREFIX + "Du hast " + Script.getName(tg) + " bis zum " + dateFormat.format(until) + " Uhr für " + v.getName() + " gebannt.");
                 tg.sendMessage(PREFIX + "Du wurdest von " + Script.getName(p) + " bis zum " + dateFormat.format(until) + " Uhr für " + v.getName() + " gebannt.");
@@ -328,13 +332,13 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
             Script.sendTeamMessage(p, ChatColor.RED, "hat " + Script.getName(tg) + " für " + v.getName() + " verwarnt.", true);
             Log.WARNING.write(tg, "wurde von " + Messages.RANK_PREFIX(p) + " für " + v.getName() + " verwarnt.");
             Log.HIGH.write(p, "hat " + Script.getName(tg) + " für " + v.getName() + " verwarnt.");
-            if(getWarns(tg) >= 3) {
+            if (getWarns(tg) >= 3) {
                 Script.executeUpdate("INSERT INTO `ban` (id, ban_id, nrp_id, since, until, reason, banned_by) VALUES (NULL, '" + generatePunishID() + "', '" + Script.getNRPID(tg) + "', '" + System.currentTimeMillis() + "', NULL, 'maximale Anzahl an Warns überschritten', '0');");
                 Bukkit.broadcastMessage(Script.PREFIX + "§c" + Script.getName(tg) + " wurde automatisch gebannt (3/3 Warns)");
             }
         }
 
-        if(punishment == Punishment.TRAGEN_SPERRE || secondaryPunishment == Punishment.TRAGEN_SPERRE) {
+        if (punishment == Punishment.TRAGEN_SPERRE || secondaryPunishment == Punishment.TRAGEN_SPERRE) {
             p.sendMessage(PREFIX + "Du hast " + tg.getName() + " eine Tragensperre für " + v.getDuration() + " Minuten gegeben.");
             tg.sendMessage(PREFIX + "Du hast von " + Script.getName(p) + " eine Tragensperre für " + v.getDuration() + " Minuten bekommen.");
             Script.sendTeamMessage(p, ChatColor.RED, "hat " + tg.getName() + " eine Tragensperre für " + v.getDuration() + " Minuten gegeben.", true);
@@ -343,7 +347,7 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
             Sperre.TRAGENSPERRE.setSperre(Script.getNRPID(tg), v.getDuration());
         }
 
-        if(punishment == Punishment.CHECKPOINTS || secondaryPunishment == Punishment.CHECKPOINTS) {
+        if (punishment == Punishment.CHECKPOINTS || secondaryPunishment == Punishment.CHECKPOINTS) {
             int checkpoints = v.getCheckpoints();
             p.sendMessage(PREFIX + "Du hast " + Script.getName(tg) + " zu " + checkpoints + " Checkpoints eingesperrt.");
             tg.sendMessage(PREFIX + "Du wurdest von " + Script.getName(p) + " zu " + checkpoints + " Checkpoints eingesperrt.");
@@ -351,7 +355,7 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
             Checkpoints.setCheckpoints(tg, checkpoints, true);
             Log.WARNING.write(p, "hat " + Script.getName(tg) + " zu " + checkpoints + " Checkpoints eingesperrt.");
             Log.HIGH.write(tg, "wurde von " + tg.getName() + " zu " + checkpoints + " Checkpoints eingesperrt.");
-            Bukkit.broadcastMessage(Script.PREFIX + "§c" + Script.getName(tg) + " wurde von " + Messages.RANK_PREFIX(p) +  " wegen §l" + v.getName() + "§c zu " + v.getCheckpoints() + " Checkpoints eingesperrt.");
+            Bukkit.broadcastMessage(Script.PREFIX + "§c" + Script.getName(tg) + " wurde von " + Messages.RANK_PREFIX(p) + " wegen §l" + v.getName() + "§c zu " + v.getCheckpoints() + " Checkpoints eingesperrt.");
             Checkpoints.start(tg, checkpoints);
         }
     }
@@ -369,8 +373,8 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
                 Log.WARNING.write(tg, "wurde von " + Script.getName(p) + " für " + v.getName() + " gebannt.");
                 Log.HIGH.write(p, "hat " + tg.getName() + " für " + v.getName() + " gebannt.");
                 Bukkit.broadcastMessage(Script.PREFIX + "§c" + tg.getName() + " wurde von " + Messages.RANK_PREFIX(p) + " für §l" + v.getName() + " §cgebannt.");
-                if(Beruf.hasBeruf(tg)) Beruf.getBeruf(tg).removeMember(tg);
-                if(Organisation.hasOrganisation(tg)) Organisation.getOrganisation(tg).removeMember(tg);
+                if (Beruf.hasBeruf(tg)) Beruf.getBeruf(tg).removeMember(tg);
+                if (Organisation.hasOrganisation(tg)) Organisation.getOrganisation(tg).removeMember(tg);
             } else {
                 p.sendMessage(PREFIX + "Du hast " + tg.getName() + " bis zum " + dateFormat.format(until) + " Uhr für " + v.getName() + " gebannt.");
                 Script.sendTeamMessage(p, ChatColor.RED, "hat " + tg.getName() + " bis zum " + dateFormat.format(until) + " Uhr für " + v.getName() + " gebannt.", true);
@@ -390,7 +394,7 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
                 Script.executeUpdate("INSERT INTO `mute` (id, mute_id, nrp_id, since, until, reason, muted_by) VALUES (NULL, '" + generatePunishID() + "', '" + Script.getNRPID(tg) + "', '" + System.currentTimeMillis() + "', " + (v.getDuration() > 0 ? untilLong : "NULL") + ", '" + v.getName() + "', '" + Script.getNRPID(p) + "');");
                 Log.WARNING.write(tg, "wurde von " + Messages.RANK_PREFIX(p) + " für " + v.getName() + " gemutet.");
                 Log.HIGH.write(p, "hat " + tg.getName() + " für " + v.getName() + " gemutet.");
-                Script.addOfflineMessage(tg,"Du wurdest von " + Script.getName(p) + " für §l" + v.getName() + "§c gemutet.");
+                Script.addOfflineMessage(tg, "Du wurdest von " + Script.getName(p) + " für §l" + v.getName() + "§c gemutet.");
                 Script.addOfflineMessage(tg, "Grund: " + v.getDescription());
             } else {
                 p.sendMessage(PREFIX + "Du hast " + tg.getName() + " bis zum " + dateFormat.format(until) + " Uhr für " + v.getName() + " gemutet.");
@@ -418,13 +422,13 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
             Log.HIGH.write(p, "hat " + tg.getName() + " für " + v.getName() + " verwarnt.");
             Script.addOfflineMessage(tg, PREFIX + "Du hast für " + v.getName() + " einen Warn erhalten.");
             Script.addOfflineMessage(tg, PREFIX + "Grund: " + v.getDescription());
-            if(getWarns(tg) >= 3) {
+            if (getWarns(tg) >= 3) {
                 Script.executeUpdate("INSERT INTO `ban` (id, ban_id, nrp_id, since, until, reason, banned_by) VALUES (NULL, '" + generatePunishID() + "', '" + Script.getNRPID(tg) + "', '" + System.currentTimeMillis() + "', NULL, 'maximale Anzahl an Warns überschritten', '0');");
                 Bukkit.broadcastMessage(Script.PREFIX + "§c" + tg.getName() + " wurde automatisch gebannt (3/3 Warns)");
             }
         }
 
-        if(punishment == Punishment.TRAGEN_SPERRE || secondaryPunishment == Punishment.TRAGEN_SPERRE) {
+        if (punishment == Punishment.TRAGEN_SPERRE || secondaryPunishment == Punishment.TRAGEN_SPERRE) {
             p.sendMessage(PREFIX + "Du hast " + tg.getName() + " eine Tragensperre für " + v.getDuration() + " Minuten gegeben.");
             Script.sendTeamMessage(p, ChatColor.RED, "hat " + tg.getName() + " eine Tragensperre für " + v.getDuration() + " Minuten gegeben.", true);
             Log.WARNING.write(tg, "hat von " + Messages.RANK_PREFIX(p) + " eine Tragensperre für " + v.getDuration() + " Minuten bekommen.");
@@ -433,7 +437,7 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
         }
 
 
-        if(punishment == Punishment.CHECKPOINTS || secondaryPunishment == Punishment.CHECKPOINTS) {
+        if (punishment == Punishment.CHECKPOINTS || secondaryPunishment == Punishment.CHECKPOINTS) {
             int checkpoints = v.getCheckpoints();
             p.sendMessage(PREFIX + "Du hast " + tg.getName() + " zu " + checkpoints + " Checkpoints eingesperrt.");
             Script.addOfflineMessage(tg, PREFIX + "Du wurdest von " + Script.getName(p) + " zu " + checkpoints + " Checkpoints eingesperrt.");
@@ -441,7 +445,7 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
             Script.executeAsyncUpdate("INSERT INTO checkpoints (id, checkpoints) VALUES (" + Script.getNRPID(tg) + ", " + checkpoints + ") ON DUPLICATE KEY UPDATE checkpoints = checkpoints + " + checkpoints + ";");
             Log.WARNING.write(p, "hat " + tg.getName() + " zu " + checkpoints + " Checkpoints eingesperrt.");
             Log.HIGH.write(tg, "wurde von " + Messages.RANK_PREFIX(p) + " zu " + checkpoints + " Checkpoints eingesperrt.");
-            Bukkit.broadcastMessage(Script.PREFIX + "§c" + tg.getName() + " wurde von " + Messages.RANK_PREFIX(p) +  " wegen §l" + v.getName() + "§c zu " + v.getCheckpoints() + " Checkpoints eingesperrt.");
+            Bukkit.broadcastMessage(Script.PREFIX + "§c" + tg.getName() + " wurde von " + Messages.RANK_PREFIX(p) + " wegen §l" + v.getName() + "§c zu " + v.getCheckpoints() + " Checkpoints eingesperrt.");
         }
     }
 
@@ -597,10 +601,10 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
     }
 
 
-    @EventHandler (priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onJoin(PlayerJoinEvent e) {
         Player p = e.getPlayer();
-        if(getBanUntil(p) == -1) return;
+        if (getBanUntil(p) == -1) return;
         if (getBanUntil(p) > System.currentTimeMillis() || getBanUntil(p) == 0) {
             p.kickPlayer("§8» §cNRP × New RolePlay §8┃ §cBann §8« \n\n§8§m------------------------------\n\n§7Du wurdest vom Server gebannt§8.\n\n§7Grund §8× §e" + getBanReason(p) + "\n§7Gebannt bis §8× §e" + (getBanUntil(p) != 0 ? Script.dateFormat.format(getBanUntil(p)) : "Lebenslang") + "\n\n§7Einen Entbannungsantrag kannst du auf der Webseite stellen.\n\n§8§m------------------------------");
         }

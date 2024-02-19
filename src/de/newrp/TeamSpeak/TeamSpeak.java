@@ -29,7 +29,7 @@ public class TeamSpeak {
 
     public static void connect() {
         TS3Config tsConfig = new TS3Config();
-        tsConfig.setHost("85.214.163.72");
+        tsConfig.setHost("85.214.16.16");
         tsConfig.setDebugLevel(Level.WARNING);
         tsConfig.setReconnectStrategy(ReconnectStrategy.exponentialBackoff());
         tsConfig.setFloodRate(TS3Query.FloodRate.UNLIMITED);
@@ -42,7 +42,7 @@ public class TeamSpeak {
         tsApiAsync = tsQuery.getAsyncApi();
 
         tsApi.selectVirtualServerByPort(9987);
-        tsApi.login("serveradmin", "mRlpUFC2");
+        tsApi.login("serveradmin", "jxNSdYD8");
         tsApi.setNickname("New RolePlay Bot");
         tsApi.registerEvent(TS3EventType.SERVER);
 

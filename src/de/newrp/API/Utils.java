@@ -40,7 +40,7 @@ import static de.newrp.API.Rank.PLAYER;
 
 public class Utils implements Listener {
 
-    private static final Material[] DROP_BLACKLIST = new Material[]{ Material.WOODEN_HOE, Material.LEAD, Material.ANDESITE_SLAB, Material.SHIELD, Material.LEATHER_CHESTPLATE, Material.IRON_INGOT };
+    private static final Material[] DROP_BLACKLIST = new Material[]{ Material.WOODEN_HOE, Material.LEAD, Material.ANDESITE_SLAB, Material.SHIELD, Material.LEATHER_CHESTPLATE };
     private static final String[] BLOCKED_COMMANDS = new String[]{
             "/minecraft", "/spi", "/protocol", "/rl", "/restart", "/bukkit", "/time", "/version", "/icanhasbukkit", "/xp", "/tell",
             "/toggledownfall", "/testfor", "/recipe", "/effect", "/enchant", "/deop", "/defaultgamemode", "/ban-ip",
@@ -56,7 +56,7 @@ public class Utils implements Listener {
             "/setworldspawn", "/spawnpoint", "/spreadplayers", "/stop", "/stopsound", "/structure", "/summon", "/tag",
             "/teammsg", "/tell", "/tellraw", "/testfor", "/testforblock", "/testforblocks", "/tickingarea", "/time", "/title",
             "/titleraw", "/tm", "/toggledownfall", "/trigger", "/volumearea", "/wb", "/worldborder",
-            "/worldborder", "/wsserver", "/xp", "/citizens", "/npc", "/vehicle", "/garage", "/tebex", "/buycraft"
+            "/worldborder", "/wsserver", "/xp", "/citizens", "/npc", "/vehicle", "/garage", "/tebex", "/buycraft", "/paper"
     };
 
     private static final String[] BLOCKED_COMMANDS_SPECIFIC = new String[]{
@@ -371,6 +371,7 @@ public class Utils implements Listener {
     @EventHandler
     public void stopFlowers(PlayerInteractEvent e) {
         Block blk = e.getClickedBlock();
+        if(blk == null) return;
         if (blk.getType().name().startsWith("POTTED_") || blk.getType() == Material.FLOWER_POT) {
             e.setCancelled(!BuildMode.isInBuildMode(e.getPlayer()));
             return;
@@ -498,7 +499,7 @@ public class Utils implements Listener {
             double z = playerToThrowLocation.getZ() - playerCenterLocation.getZ();
             Vector throwVector = new Vector(x, y, z);
             throwVector.normalize();
-            throwVector.multiply(3.1D);
+            throwVector.multiply(2.1D);
             throwVector.setY(.2D);
             e.getPlayer().setVelocity(throwVector);
             cooldowns.put(e.getPlayer().getName(), time);

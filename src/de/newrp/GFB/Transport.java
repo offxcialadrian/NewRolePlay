@@ -62,6 +62,8 @@ public class Transport implements CommandExecutor, Listener {
 
             if(i == 0) {
                 p.sendMessage(GFB.PREFIX + "Es gibt keine Shops, die Ware benötigen.");
+                p.sendMessage(Messages.INFO + "Der Job wurde automatisch beendet. Du hast keinen Cooldown erhalten.");
+                GFB.CURRENT.remove(p.getName());
                 return true;
             }
             p.openInventory(inv);

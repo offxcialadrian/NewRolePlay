@@ -143,7 +143,7 @@ public class AFK implements CommandExecutor, Listener {
     public void onDmg(EntityDamageByEntityEvent e) {
         if (e.getEntity() instanceof Player) {
             if(Script.isInTestMode()) {
-                Script.sendActionBar((((Player) e.getEntity()).getPlayer()), Messages.INFO + "WORK IN PROGRESS " + ((Player) e.getEntity()).getName());
+                //Script.sendActionBar((((Player) e.getEntity()).getPlayer()), Messages.INFO + "WORK IN PROGRESS " + ((Player) e.getEntity()).getName());
             }
             if(isAFK((Player) e.getEntity())) e.setCancelled(true);
             if(e.isCancelled()) return;

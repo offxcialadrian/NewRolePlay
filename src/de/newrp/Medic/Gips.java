@@ -129,7 +129,8 @@ public class Gips implements Listener {
     public void onFall(EntityDamageEvent e) {
         if (!(e.getEntity() instanceof Player)) return;
         if (e.getCause() != EntityDamageEvent.DamageCause.FALL) return;
-        if(e.isCancelled()) return;
+        if (e.isCancelled()) return;
+        if (Friedhof.isDead((Player) e.getEntity())) return;
         Player p = (Player) e.getEntity();
         if (e.getDamage() > 15) {
             Krankheit.GEBROCHENES_BEIN.add(Script.getNRPID(p));

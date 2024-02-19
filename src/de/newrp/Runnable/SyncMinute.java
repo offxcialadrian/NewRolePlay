@@ -53,7 +53,7 @@ public class SyncMinute extends BukkitRunnable {
                 npc.destroy();
             }
 
-            Bukkit.broadcastMessage(Script.PREFIX + "§4§lACHTUNG: §cDer Server startet in einer Minute neu! (erwartete Restart-Dauer: " + Script.getRandom(40, 60) + " Sekunden)");
+            Bukkit.broadcastMessage(Script.PREFIX + "§4§lACHTUNG: §cDer Server startet in einer Minute neu! (erwartete Restart-Dauer: " + Script.getRandom(20, 25) + " Sekunden)");
             try{ TeamSpeak.getApi().sendServerMessage("ACHTUNG! DER SERVER STARTET IN EINER MINUTE NEU!");} catch (Exception e) { Script.sendTeamMessage(Script.PREFIX + "Es erfolgte keine Nachricht auf dem TeamSpeak, da die Querry down ist."); }
             Bukkit.getScheduler().runTaskLater(main.getInstance(), () -> {
                 Bukkit.broadcastMessage(Script.PREFIX + "§4§lACHTUNG: §cDer Server startet in 30 Sekunden neu!");

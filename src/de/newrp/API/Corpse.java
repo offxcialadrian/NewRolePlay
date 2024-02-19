@@ -48,7 +48,9 @@ public class Corpse {
             poseField.setAccessible(true);
             DataWatcherObject<EntityPose> POSE = (DataWatcherObject<EntityPose>) poseField.get(null);
             watcher.set(POSE, EntityPose.SLEEPING);
-        } catch (Exception ignored) {
+        } catch (Exception e) {
+            Debug.debug("Error setting the pose for the NPC");
+            Debug.debug(e);
         }
 
         Location bedLocation = player.getLocation().add(1, 0, 0);

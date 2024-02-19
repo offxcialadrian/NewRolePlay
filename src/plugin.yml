@@ -546,3 +546,6 @@ commands:
   gfblevel:
     description: get your gfblevel
     aliases: [ skilllevel, skill ]
+  equiplog:
+    description: view the equiplog
+    aliases: [ equiplogs ]

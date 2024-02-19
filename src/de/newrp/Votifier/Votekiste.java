@@ -64,6 +64,7 @@ public enum Votekiste {
 
     public void open(Player p) {
         VoteListener.removeVotepoints(p, getPrice());
+        Debug.debug("opened votekiste");
         ItemStack[] random = new ItemStack[]{
                 Script.setName(new ItemStack(Material.COOKED_BEEF, Script.getRandom(1, 10)), "§6§lGebratenes Rindfleisch"),
                 Script.setName(new ItemStack(Material.PORKCHOP, Script.getRandom(1, 10)), "§6§lGebratenes Schweinefleisch"),
@@ -96,6 +97,8 @@ public enum Votekiste {
         }
         Collections.shuffle(items);
 
+        Debug.debug("reached another step");
+
         Inventory inv = p.getServer().createInventory(null, 27, "§6Votekiste");
         for (int i = 0; i < 9; i++) {
             inv.setItem(i, Script.setName(new ItemStack(Material.GRAY_STAINED_GLASS_PANE), "§r"));
@@ -103,11 +106,11 @@ public enum Votekiste {
         for (int i = 18; i <= 26; i++) {
             inv.setItem(i, Script.setName(new ItemStack(Material.GRAY_STAINED_GLASS_PANE), "§r"));
         }
-        inv.setItem(4, Script.setName(new ItemStack(Material.GREEN_STAINED_GLASS_PANE, 1, (byte) 14), "§c§l▼"));
+        inv.setItem(4, Script.setName(new ItemStack(Material.GREEN_STAINED_GLASS_PANE), "§c§l▼"));
         for (int i = 9; i <= 17; i++) {
             inv.setItem(i, items.get((i - 9)));
         }
-        inv.setItem(22, Script.setName(new ItemStack(Material.GREEN_STAINED_GLASS_PANE, 1, (byte) 14), "§c§l▲"));
+        inv.setItem(22, Script.setName(new ItemStack(Material.GREEN_STAINED_GLASS_PANE), "§c§l▲"));
         p.openInventory(inv);
 
         final int taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(main.getInstance(), new Runnable() {

@@ -89,8 +89,8 @@ public class MemberCommand implements CommandExecutor, TabCompleter {
         if (cmd.getName().equalsIgnoreCase("member") || cmd.getName().equalsIgnoreCase("members") || cmd.getName().equalsIgnoreCase("memberinfo")) {
             final List<String> oneArgList = new ArrayList<>();
             final List<String> completions = new ArrayList<>();
-            for (GoTo.Points point : GoTo.Points.values()) {
-                oneArgList.add(point.getName());
+            for (Beruf.Berufe beruf : Beruf.Berufe.values()) {
+                oneArgList.add(beruf.getName());
             }
 
             for(Player player : Bukkit.getOnlinePlayers()) {

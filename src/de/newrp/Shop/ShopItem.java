@@ -77,7 +77,8 @@ public enum ShopItem {
     EINZELFAHRASUSWEIS(91, "§6UBahn-Ticket", new ItemBuilder(Material.PAPER).setName("§6UBahn-Ticket [Einzelfahrausweis]").setLore("Verbleibende Fahrten: 1").build(), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.NEWS}),
     WOCHENFAHRASUSWEIS(92, "§6UBahn-Ticket", new ItemBuilder(Material.PAPER).setName("§6UBahn-Ticket [7 Fahrten]").setLore("Verbleibende Fahrten: 7").build(), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.NEWS}),
     MONATSFAHRASUSWEIS(93, "§6UBahn-Ticket", new ItemBuilder(Material.PAPER).setName("§6UBahn-Ticket [30 Fahrten]").setLore("Verbleibende Fahrten: 30").build(), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.NEWS}),
-    FALLSCHIRM(94, "§7Fallschirm", new ItemStack(Material.ELYTRA), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.GUNSHOP});
+    FALLSCHIRM(94, "§7Fallschirm", new ItemStack(Material.ELYTRA), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.GUNSHOP}),
+    KABELBINDER(95, "§7Kabelbinder", new ItemStack(Material.STRING), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.GUNSHOP, ShopType.SUPERMARKET});
 
     private final int id;
     private final String name;

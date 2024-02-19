@@ -44,7 +44,7 @@ public class UseDrogen implements Listener {
 
         Long lastUsage = DRUG_COOLDOWN.get(p.getName());
         if (lastUsage != null && lastUsage + TimeUnit.MINUTES.toMillis(1) > time) {
-            long cooldown = TimeUnit.MILLISECONDS.toSeconds(lastUsage + TimeUnit.MINUTES.toMillis(4) - time);
+            long cooldown = TimeUnit.MILLISECONDS.toSeconds(lastUsage + TimeUnit.MINUTES.toMillis(1) - time);
             Script.sendActionBar(p, "§cDu bist gerade noch im Rausch. (" + cooldown + " Sekunden verbleibend)");
             return;
         }

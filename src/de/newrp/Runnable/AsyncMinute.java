@@ -110,7 +110,7 @@ public class AsyncMinute extends BukkitRunnable {
                 if(Premium.hasPremium(p)) continue;
                 String advert = advertises[Script.getRandom(0, advertises.length-1)];
                 p.sendMessage(advert);
-                Title.sendTitle(p, 20, 100, 20, advert);
+                //Title.sendTitle(p, 20, 100, 20, advert);
                 Script.sendActionBar(p, "§8[§cWerbung§8] §c" + Messages.ARROW + " §7Mit Premium erhältst du keine Werbung.");
             }
         }

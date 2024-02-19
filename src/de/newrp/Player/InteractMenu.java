@@ -27,6 +27,7 @@ import org.spigotmc.event.entity.EntityDismountEvent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public class InteractMenu implements Listener {
 
@@ -34,28 +35,34 @@ public class InteractMenu implements Listener {
     public static String PREFIX = "§8[§6Interaktion§8] §6» §7";
     public static ArrayList<String> addiction_cooldown = new ArrayList<>();
     public static HashMap<String, Long> cooldown = new HashMap<>();
+    private static final Map<String, Integer> LEVEL = new HashMap<>();
 
 
     @EventHandler
     public void onInteractAtEntity(PlayerInteractAtEntityEvent e) {
         Player p = e.getPlayer();
-        if(!(e.getRightClicked() instanceof Player)) return;
+        if (!(e.getRightClicked() instanceof Player)) return;
         Player tg = (Player) e.getRightClicked();
-        if(!p.isSneaking()) return;
-        if(Friedhof.isDead(p)) return;
-        if(SDuty.isSDuty(tg)) {
+        if (!p.isSneaking()) return;
+        if (Friedhof.isDead(p)) return;
+        if (SDuty.isSDuty(tg)) {
             Script.sendActionBar(p, Messages.ERROR + "Du kannst nicht mit " + Script.getName(tg) + " interagieren, da " + (Script.getGender(tg) == Gender.MALE ? "er" : "sie") + " sich im Supporter-Dienst befindet.");
             return;
         }
 
-        if(AFK.isAFK(tg)) {
+        if (AFK.isAFK(tg)) {
             Script.sendActionBar(p, Messages.ERROR + "Du kannst nicht mit " + Script.getName(tg) + " interagieren, da " + (Script.getGender(tg) == Gender.MALE ? "er" : "sie") + " sich im AFK-Modus befindet.");
             return;
         }
 
         interacting.put(p.getName(), tg.getName());
 
-        Inventory inv = Bukkit.createInventory(null, 6*9, "§8» §eInteraktion");
+        Inventory inv = Bukkit.createInventory(null, 6 * 9, "§8» §eInteraktion");
+
+        if (Fesseln.isTiedUp(tg)) {
+            inv.setItem(13, new ItemBuilder(Material.IRON_DOOR).setName("§6Fesseln öffnen").setLore("§8× §7Öffne die Fesseln von §6" + Script.getName(tg) + "§7.").build());
+        }
+
         inv.setItem(20, new ItemBuilder(Material.BOOK).setName("§6Personalausweis zeigen").setLore("§8× §7Zeige §6" + Script.getName(tg) + " §7deinen Personalausweis.").build());
         inv.setItem(21, new ItemBuilder(Material.BOOK).setName("§6Lizenzen zeigen").setLore("§8× §7Zeige §6" + Script.getName(tg) + " §7deine Lizenzen.").build());
         inv.setItem(22, new ItemBuilder(Material.CHEST).setName("§6Tasche zeigen").setLore("§8× §7Zeige §6" + Script.getName(tg) + " §7deine Tasche.").build());
@@ -65,11 +72,11 @@ public class InteractMenu implements Listener {
         inv.setItem(31, new ItemBuilder(Material.LEAD).setName("§6Tragen").setLore("§8× §7Trage §6" + Script.getName(tg) + "§7.").build());
         inv.setItem(32, new ItemBuilder(Material.BARRIER).setName("§6Zeige Ticket").setLore("§8× §7Zeige §6" + Script.getName(tg) + "§7, dass du im Ticket bist.").build());
 
-        if((Handschellen.isCuffed(tg) && Beruf.getBeruf(p) == Beruf.Berufe.POLICE && Duty.isInDuty(p)) || p.getInventory().contains(Script.brechstange())) {
+        if ((Handschellen.isCuffed(tg) && Beruf.getBeruf(p) == Beruf.Berufe.POLICE && Duty.isInDuty(p)) || p.getInventory().contains(Script.brechstange())) {
             inv.setItem(40, new ItemBuilder(Material.IRON_DOOR).setName("§6Handschellen öffnen").setLore("§8× §7Öffne die Handschellen von §6" + Script.getName(tg) + "§7.").build());
         }
 
-        if(Beruf.hasBeruf(p)) {
+        if (Beruf.hasBeruf(p)) {
             if (Beruf.getBeruf(p).equals(Beruf.Berufe.POLICE) && Duty.isInDuty(p)) {
                 inv.setItem(39, new ItemBuilder(Material.IRON_DOOR).setName("§6Durchsuchen").setLore("§8× §7Durchsuche §6" + Script.getName(tg) + "§7.").build());
                 inv.setItem(41, new ItemBuilder(Material.NETHER_STAR).setName("§6Polizeicomputer").setLore("§8× §7Öffne den Polizeicomputer.").build());
@@ -86,25 +93,25 @@ public class InteractMenu implements Listener {
 
     @EventHandler
     public void onClick(InventoryClickEvent e) {
-        if(!e.getView().getTitle().equals("§8» §eInteraktion")) return;
+        if (!e.getView().getTitle().equals("§8» §eInteraktion")) return;
         e.setCancelled(true);
         Player p = (Player) e.getWhoClicked();
-        if(!interacting.containsKey(p.getName())) return;
+        if (!interacting.containsKey(p.getName())) return;
         Player tg = Script.getPlayer(interacting.get(p.getName()));
-        if(tg == null) return;
-        if(e.getCurrentItem() == null || e.getCurrentItem().getType() == Material.AIR) return;
-        if(cooldown.containsKey(p.getName()) && cooldown.get(p.getName()) > System.currentTimeMillis()) return;
-        if(p.getLocation().distance(tg.getLocation()) > 5) {
+        if (tg == null) return;
+        if (e.getCurrentItem() == null || e.getCurrentItem().getType() == Material.AIR) return;
+        if (cooldown.containsKey(p.getName()) && cooldown.get(p.getName()) > System.currentTimeMillis()) return;
+        if (p.getLocation().distance(tg.getLocation()) > 2) {
             p.sendMessage(Messages.ERROR + "Der Spieler ist zu weit entfernt.");
             return;
         }
         e.getView().close();
         interacting.remove(p.getName());
-        cooldown.put(p.getName(), System.currentTimeMillis()+5L);
+        cooldown.put(p.getName(), System.currentTimeMillis() + 5L);
 
-        switch (e.getCurrentItem().getItemMeta().getDisplayName().replace("§6","")) {
+        switch (e.getCurrentItem().getItemMeta().getDisplayName().replace("§6", "")) {
             case "Personalausweis zeigen":
-                if(!Licenses.PERSONALAUSWEIS.hasLicense(Script.getNRPID(p))) {
+                if (!Licenses.PERSONALAUSWEIS.hasLicense(Script.getNRPID(p))) {
                     p.sendMessage(Messages.ERROR + "Du hast keinen Personalausweis.");
                     return;
                 }
@@ -125,27 +132,27 @@ public class InteractMenu implements Listener {
                 } else {
                     tg.sendMessage(PREFIX + " §8× §6Wohnhaft: §6Obdachlos");
                 }
-                Me.sendMessage(p, "zeigt " + Script.getName(tg) + " " + (Script.getGender(p)==Gender.MALE?"seinen":"ihren") + " Personalausweis.");
+                Me.sendMessage(p, "zeigt " + Script.getName(tg) + " " + (Script.getGender(p) == Gender.MALE ? "seinen" : "ihren") + " Personalausweis.");
                 break;
             case "Lizenzen zeigen":
                 tg.sendMessage(PREFIX + Script.getName(p) + "s Lizenzen:");
-                Me.sendMessage(p, "zeigt " + Script.getName(tg) + " " + (Script.getGender(p)==Gender.MALE?"seine":"ihre") + " Lizenzen.");
-                for(Licenses license : Licenses.values()) {
-                    if(license.hasLicense(Script.getNRPID(p))) {
+                Me.sendMessage(p, "zeigt " + Script.getName(tg) + " " + (Script.getGender(p) == Gender.MALE ? "seine" : "ihre") + " Lizenzen.");
+                for (Licenses license : Licenses.values()) {
+                    if (license.hasLicense(Script.getNRPID(p))) {
                         tg.sendMessage(PREFIX + " §8× §6" + license.getName());
                     }
                 }
                 break;
             case "Tasche zeigen":
                 Annehmen.offer.put(tg.getName() + ".tasche", p.getName());
-                p.sendMessage(PREFIX + "Du hast " +  Script.getName(tg) + " angeboten deine Tasche zu sehen.");
-                tg.sendMessage(PREFIX + Script.getName(p) + " hat dir angeboten " + (Script.getGender(p)==Gender.MALE?"seine":"ihre") + " Tasche zu sehen.");
+                p.sendMessage(PREFIX + "Du hast " + Script.getName(tg) + " angeboten deine Tasche zu sehen.");
+                tg.sendMessage(PREFIX + Script.getName(p) + " hat dir angeboten " + (Script.getGender(p) == Gender.MALE ? "seine" : "ihre") + " Tasche zu sehen.");
                 Script.sendAcceptMessage(tg);
                 break;
             case "Küssen":
-                for(Krankheit krankheit : Krankheit.values()) {
-                    if(krankheit.isInfected(Script.getNRPID(p)) || krankheit.isInfected(Script.getNRPID(tg))) {
-                        if(krankheit.isTransmittable() && Script.getRandom(1, 100) >= 30) {
+                for (Krankheit krankheit : Krankheit.values()) {
+                    if (krankheit.isInfected(Script.getNRPID(p)) || krankheit.isInfected(Script.getNRPID(tg))) {
+                        if (krankheit.isTransmittable() && Script.getRandom(1, 100) >= 30) {
                             krankheit.add(Script.getNRPID(tg));
                         }
                     }
@@ -156,32 +163,29 @@ public class InteractMenu implements Listener {
                 break;
             case "Tragen":
 
-                p.sendMessage(Messages.ERROR + "Deaktiviert");
-                break;
-
-                /*if(Tragen.cooldown.containsKey(p)) {
-                    if(Tragen.cooldown.get(p) + Tragen.TIMEOUT > System.currentTimeMillis()) {
+                if (Tragen.cooldown.containsKey(p)) {
+                    if (Tragen.cooldown.get(p) + Tragen.TIMEOUT > System.currentTimeMillis()) {
                         p.sendMessage(Messages.ERROR + "Du kannst nur alle 5 Minuten einen Spieler tragen.");
                         return;
                     }
                 }
 
-                if(Sperre.TRAGENSPERRE.isActive(Script.getNRPID(p))) {
+                if (Sperre.TRAGENSPERRE.isActive(Script.getNRPID(p))) {
                     p.sendMessage(Messages.ERROR + "Du darfst derzeit keine Spieler tragen.");
                     return;
                 }
 
-                if(Tragen.cooldown.containsKey(tg)) {
+                if (Tragen.cooldown.containsKey(tg)) {
                     p.sendMessage(Messages.ERROR + "Der Spieler kann derzeit nicht getragen werden.");
                     return;
                 }
 
-                if(p.getPassenger() != null) {
+                if (p.getPassenger() != null) {
                     p.sendMessage(Messages.ERROR + "Du trägst bereits einen Spieler.");
                     return;
                 }
 
-                if(Tragen.tragen.containsKey(tg)) {
+                if (Tragen.tragen.containsKey(tg)) {
                     p.sendMessage(Messages.ERROR + "Der Spieler wird bereits getragen.");
                     return;
                 }
@@ -199,12 +203,12 @@ public class InteractMenu implements Listener {
                         p.setPassenger(tg);
                     }
                 }.runTaskLater(de.newrp.main.getInstance(), 5L);
-                break;*/
+                break;
             case "Handschellen öffnen":
-                if(Handschellen.isCuffed(tg)) {
+                if (Handschellen.isCuffed(tg)) {
                     Handschellen.uncuff(tg);
                     Me.sendMessage(p, "nimmt " + Script.getName(tg) + " die Handschellen ab.");
-                    if(Beruf.hasBeruf(p) && Beruf.getBeruf(p) == Beruf.Berufe.POLICE && Duty.isInDuty(p)) {
+                    if (Beruf.hasBeruf(p) && Beruf.getBeruf(p) == Beruf.Berufe.POLICE && Duty.isInDuty(p)) {
                         ItemStack is = Equip.Stuff.HANDSCHELLEN.getItem();
                         is.setAmount(1);
                         p.getInventory().addItem(is);
@@ -217,34 +221,34 @@ public class InteractMenu implements Listener {
                 }
                 break;
             case "Durchsuchen":
-                if(!Beruf.hasBeruf(p)) {
+                if (!Beruf.hasBeruf(p)) {
                     p.sendMessage(Messages.NO_PERMISSION);
                     return;
                 }
 
-                if(Beruf.getBeruf(p) != Beruf.Berufe.POLICE) {
+                if (Beruf.getBeruf(p) != Beruf.Berufe.POLICE) {
                     p.sendMessage(Messages.NO_PERMISSION);
                     return;
                 }
 
-                if(!Duty.isInDuty(p)) {
+                if (!Duty.isInDuty(p)) {
                     p.sendMessage(Messages.ERROR + "Du bist nicht im Dienst.");
                     return;
                 }
 
-                if(p == tg) {
+                if (p == tg) {
                     p.sendMessage(Messages.ERROR + "Du kannst dich nicht selbst durchsuchen.");
                     return;
                 }
 
-                if(p.getLocation().distance(tg.getLocation()) > 5) {
+                if (p.getLocation().distance(tg.getLocation()) > 5) {
                     p.sendMessage(Messages.ERROR + "Der Spieler ist zu weit entfernt.");
                     return;
                 }
 
-                Inventory inv2 = Bukkit.createInventory(null, 9*4, "§8[§9Frisk§8] §e» §9" + tg.getName());
-                for(ItemStack is : tg.getInventory().getContents()) {
-                    if(is == null) continue;
+                Inventory inv2 = Bukkit.createInventory(null, 9 * 4, "§8[§9Frisk§8] §e» §9" + tg.getName());
+                for (ItemStack is : tg.getInventory().getContents()) {
+                    if (is == null) continue;
                     inv2.addItem(is);
                 }
                 p.openInventory(inv2);
@@ -281,23 +285,23 @@ public class InteractMenu implements Listener {
                 tg.spigot().sendMessage(HealthCommand.muscle(p));
                 break;
             case "Abhängigkeit behandeln":
-                if(!Krankheit.ABHAENGIGKEIT.isInfected(Script.getNRPID(tg))) {
+                if (!Krankheit.ABHAENGIGKEIT.isInfected(Script.getNRPID(tg))) {
                     p.sendMessage(Messages.ERROR + "Der Spieler ist nicht abhängig.");
                     return;
                 }
 
-                if(addiction_cooldown.contains(tg.getName())) {
+                if (addiction_cooldown.contains(tg.getName())) {
                     p.sendMessage(Messages.ERROR + "Der Spieler wurde bereits behandelt.");
                     return;
                 }
 
                 addiction_cooldown.add(tg.getName());
                 Drogen.healAddiction(tg);
-                p.sendMessage(PREFIX + "Du hast " + Script.getName(tg) + " wegen " + (Script.getGender(tg)== Gender.MALE?"seiner":"ihrer") + " Abhängigkeit behandelt (" + (int) (Drogen.getAddictionHeal(tg)+1) + "/" + (Premium.hasPremium(tg) ? 1 : 3) + ").");
-                tg.sendMessage(PREFIX + "Du wurdest von " + Script.getName(p) + " wegen deiner Abhängigkeit behandelt (" + (int) (Drogen.getAddictionHeal(tg)+1) + "/" + (Premium.hasPremium(tg) ? 1 : 3) + ").");
+                p.sendMessage(PREFIX + "Du hast " + Script.getName(tg) + " wegen " + (Script.getGender(tg) == Gender.MALE ? "seiner" : "ihrer") + " Abhängigkeit behandelt (" + (int) (Drogen.getAddictionHeal(tg) + 1) + "/" + (Premium.hasPremium(tg) ? 1 : 3) + ").");
+                tg.sendMessage(PREFIX + "Du wurdest von " + Script.getName(p) + " wegen deiner Abhängigkeit behandelt (" + (int) (Drogen.getAddictionHeal(tg) + 1) + "/" + (Premium.hasPremium(tg) ? 1 : 3) + ").");
                 break;
             case "Zeige Ticket":
-                if(TicketCommand.getTicket(p) == null) {
+                if (TicketCommand.getTicket(p) == null) {
                     p.sendMessage(Messages.ERROR + "Du bist in keinem Ticket.");
                     return;
                 }
@@ -305,12 +309,48 @@ public class InteractMenu implements Listener {
                 p.sendMessage(PREFIX + "Du hast " + Script.getName(tg) + " gezeigt, dass du im Ticket bist.");
                 tg.sendMessage(PREFIX + Script.getName(p) + " ist derzeit im Ticket.");
                 break;
+            case "Fesseln öffnen":
+                if (!Fesseln.isTiedUp(tg)) {
+                    p.sendMessage(Messages.ERROR + "Der Spieler ist nicht gefesselt.");
+                    return;
+                }
+
+                p.sendMessage(PREFIX + "Du hast begonnen, die Fesseln von " + Script.getName(tg) + " zu öffnen.");
+                p.sendMessage(Messages.INFO + "Bleibe nun eng bei " + Script.getName(tg) + " um die Fesseln zu öffnen.");
+                LEVEL.put(p.getName(), 0);
+
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        if (!Fesseln.isTiedUp(tg)) {
+                            p.sendMessage(Messages.ERROR + "Der Spieler ist nicht mehr gefesselt.");
+                            cancel();
+                            return;
+                        }
+                        if (p.getLocation().distance(tg.getLocation()) > 2) {
+                            p.sendMessage(Messages.ERROR + "Du bist zu weit entfernt.");
+                            cancel();
+                            return;
+                        }
+                        if (LEVEL.get(p.getName()) >= 30) {
+                            Fesseln.untie(tg);
+                            p.sendMessage(PREFIX + "Du hast " + Script.getName(tg) + " die Fesseln abgenommen.");
+                            tg.sendMessage(PREFIX + "Dir wurden die Fesseln abgenommen.");
+                            cancel();
+                            return;
+                        }
+                        progressBar(31, p);
+                        LEVEL.replace(p.getName(), LEVEL.get(p.getName()) + 1);
+                    }
+                }.runTaskTimer(de.newrp.main.getInstance(), 0L, 20L);
+
+                break;
         }
     }
 
     @EventHandler
     public void clickInventoryUtil(InventoryClickEvent e) {
-        if(e.getView().getTitle().startsWith("§8[§9Tasche§8] §e» §9") || e.getView().getTitle().startsWith("§8[§9Frisk§8] §e» §9")) {
+        if (e.getView().getTitle().startsWith("§8[§9Tasche§8] §e» §9") || e.getView().getTitle().startsWith("§8[§9Frisk§8] §e» §9")) {
             e.setCancelled(true);
             e.getView().close();
         }
@@ -318,15 +358,15 @@ public class InteractMenu implements Listener {
 
     @EventHandler
     public void onSneak(EntityDismountEvent e) {
-        if(!(e.getEntity() instanceof Player)) return;
+        if (!(e.getEntity() instanceof Player)) return;
         Player p = (Player) e.getEntity();
-        if(!(e.getDismounted() instanceof Player)) return;
+        if (!(e.getDismounted() instanceof Player)) return;
         Player tg = (Player) e.getDismounted();
-        if(!Tragen.tragen.containsKey(tg)) return;
+        if (!Tragen.tragen.containsKey(tg)) return;
         new BukkitRunnable() {
             @Override
             public void run() {
-                if(!Tragen.tragen.containsKey(tg)) cancel();
+                if (!Tragen.tragen.containsKey(tg)) cancel();
                 tg.setPassenger(p);
             }
         }.runTaskLater(de.newrp.main.getInstance(), 5L);
@@ -337,5 +377,19 @@ public class InteractMenu implements Listener {
         interacting.remove(e.getPlayer().getName());
     }
 
+    private static void progressBar(double required_progress, Player p) {
+        double current_progress = LEVEL.get(p.getName());
+        double progress_percentage = current_progress / required_progress;
+        StringBuilder sb = new StringBuilder();
+        int bar_length = 10;
+        for (int i = 0; i < bar_length; i++) {
+            if (i < bar_length * progress_percentage) {
+                sb.append("§a▉");
+            } else {
+                sb.append("§8▉");
+            }
+        }
+        Script.sendActionBar(p, "§cFesseln öffnen.. §8» §a" + sb.toString());
+    }
 
 }

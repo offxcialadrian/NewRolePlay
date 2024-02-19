@@ -12,9 +12,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public enum Weapon {
-    PISTOLE(1, Script.setName(Material.IRON_HORSE_ARMOR, "§7Pistole"), "Pistole", 0.45F, .750, 15, 8.5D, 1.8, 4.1, 600, Munition.AMMO_9MM),
-    AK47(2, Script.setName(Material.DIAMOND_HORSE_ARMOR, "§7AK-47"), "AK-47", 1.7F, .300, 30, 6D, 2.1, 6, 500, Munition.AMMO_7_62_39MM),
-    MP7(3, Script.setName(Material.GOLDEN_HORSE_ARMOR, "§7MP7"), "MP7", 0.8F, .100, 40, 4D, 1.8, 3.5, 500, Munition.AMMO_46_30MM);
+    PISTOLE(1, Script.setName(Material.IRON_HORSE_ARMOR, "§7Pistole"), "Pistole", 0.45F, .750, 15, 8.5D, 1.8, 4.1, 600, 0, Munition.AMMO_9MM),
+    AK47(2, Script.setName(Material.DIAMOND_HORSE_ARMOR, "§7AK-47"), "AK-47", 1.7F, .300, 30, 6D, 2.1, 6, 500, 0, Munition.AMMO_7_62_39MM),
+    MP7(3, Script.setName(Material.GOLDEN_HORSE_ARMOR, "§7MP7"), "MP7", 0.8F, .100, 40, 4D, 1.8, 3.5, 500, 0, Munition.AMMO_46_30MM),
+    SNIPER(4, Script.setName(Material.STONE_HOE, "§7Sniper"), "Sniper", .8F, 8.270, 5, 14.5D, 5.3, 18, 0,-0.5, Munition.AMMO_7_62_51MM);
 
     private final int weaponID;
     private final ItemStack is;
@@ -26,9 +27,10 @@ public enum Weapon {
     private final double reload;
     private final double armor;
     private final int max_wear;
+    private double knockback;
     private final Munition ammo;
 
-    Weapon(int weaponID, ItemStack is, String name, float recoil, double cooldown, int magazine, double damage, double reload, double armor, int max_wear, Munition ammo) {
+    Weapon(int weaponID, ItemStack is, String name, float recoil, double cooldown, int magazine, double damage, double reload, double armor, int max_wear, double knockback, Munition ammo) {
         this.weaponID = weaponID;
         this.is = is;
         this.name = name;
@@ -39,6 +41,7 @@ public enum Weapon {
         this.reload = reload;
         this.armor = armor;
         this.max_wear = max_wear;
+        this.knockback = knockback;
         this.ammo = ammo;
     }
 
@@ -80,6 +83,10 @@ public enum Weapon {
 
     public double getDamage() {
         return this.damage;
+    }
+
+    public double getKnockback() {
+        return this.knockback;
     }
 
     public double getReload(int skill) {

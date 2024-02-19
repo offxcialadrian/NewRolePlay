@@ -19,6 +19,7 @@ import java.util.Map;
 public class Buy implements CommandExecutor {
 
     public static final HashMap<String, Shops> current = new HashMap<>();
+    public static final HashMap<String, Integer> amount = new HashMap<>();
 
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
@@ -66,6 +67,22 @@ public class Buy implements CommandExecutor {
 
         inv.setItem(((size / 9) <= 2 ? 13 : 22), Script.setName(Material.BARRIER, "§cSchließen"));
         p.openInventory(inv);
+
+        if(args.length == 1) {
+            if(!Script.isInt(args[0])) {
+                p.sendMessage(Messages.ERROR + "§cBitte gib eine gültige Zahl an.");
+                return true;
+            }
+
+            int a = Integer.parseInt(args[0]);
+            if(a < 1) {
+                p.sendMessage(Messages.ERROR + "§cBitte gib eine gültige Zahl an.");
+                return true;
+            }
+
+            amount.put(p.getName(), a);
+            p.sendMessage(Messages.INFO + "Du kaufst nun " + a + "x.");
+        }
 
         return false;
     }

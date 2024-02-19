@@ -24,31 +24,33 @@ import org.bukkit.inventory.ItemStack;
 
 public class Equip implements CommandExecutor, Listener {
 
-    private static final String PREFIX = "§8[§eEquip§8] §e» ";
+    public static final String PREFIX = "§8[§eEquip§8] §e» §7";
 
     public enum Stuff {
-        PISTOLE("Pistole", new ItemBuilder(Material.IRON_HORSE_ARMOR).setName("§7Pistole").build(), 1000, 75, null, Beruf.Berufe.POLICE, false),
-        SCHUTZWESTE("Schutzweste", Script.kevlar(1), 500, 0, null, Beruf.Berufe.POLICE, false),
-        HANDSCHELLEN("Handschellen", Script.setName(new ItemStack(Material.LEAD, 2), "§7Handschellen"), 100, 0, null, Beruf.Berufe.POLICE, true),
-        TAZER("Tazer", Script.setName(new ItemStack(Material.WOODEN_HOE, 1), "§7Tazer"), 100, 0, null, Beruf.Berufe.POLICE, true),
-        DONUT("Donut", new ItemBuilder(Material.COOKIE).setAmount(16).setName("§7Donut").build(), 1, 0, null, Beruf.Berufe.POLICE, false),
-        MP7("MP7", new ItemBuilder(Material.GOLDEN_HORSE_ARMOR).setName("§7MP7").build(), 2900, 400, null, Beruf.Berufe.POLICE, false),
-        EINSATZSCHILD("Einsatzschild", Script.einsatzschild(1), 1000, 0, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE, true),
-        EINSAZTZSCHILD_2("Einsatzschild [2]", Script.einsatzschild(2), 1500, 0, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE, true),
-        RAUCHGRANATE("Rauchgranate", Script.rauchgranate(), 100, 0, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE, true),
-        FLASHBANG("Flashbang", Script.flashbang(), 100, 0, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE, true),
-        FALLSCHIRM("Fallschirm", Script.fallschirm(), 100, 0, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE, true),
-        ZEITUNG("Zeitung", Script.setName(new ItemStack(Material.WRITABLE_BOOK), "§7Zeitung"), 100, 0, Abteilung.Abteilungen.CHEFREDAKTION, Beruf.Berufe.NEWS, true),
-        VERBAND("Verband", new ItemBuilder(Material.PAPER).setName("§7Verband").setAmount(5).build(), 5, 0, null, Beruf.Berufe.RETTUNGSDIENST, false),
-        GIPS("Gips", Script.setName(new ItemStack(Material.PAPER), "§7Gips"), 50, 0, null, Beruf.Berufe.RETTUNGSDIENST, true),
-        SCHWERE_SCHUTZWESTE("Schwere Schutzweste", Script.kevlar(2), 1000, 0, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE, true),
-        SPRITZE("Spritze", Script.setName(new ItemStack(Material.END_ROD), "§7Spritze"), 10, 0, null, Beruf.Berufe.RETTUNGSDIENST, true),
-        HUSTEN_IMPFUNG("Husten Impfung", Script.setName(new ItemStack(Material.END_ROD), "§7Husten Impfung"), 50, 0, null, Beruf.Berufe.RETTUNGSDIENST, true),
-        KAFFEE("Kaffee", Script.setName(new ItemStack(Material.POTION), "§7Kaffee"), 10, 0, null, Beruf.Berufe.NEWS, false),
-        BROT("Brot", new ItemBuilder(Material.BREAD).setAmount(16).setName("§7Brot").build(), 10, 0, null, Beruf.Berufe.RETTUNGSDIENST, false),
-        KEKSE("Kekse",new ItemBuilder(Material.COOKIE).setAmount(16).setName("§7Keks").build(), 10, 0, null, Beruf.Berufe.NEWS, false);
+        PISTOLE(1, "Pistole", new ItemBuilder(Material.IRON_HORSE_ARMOR).setName("§7Pistole").build(), 1000, 75, null, Beruf.Berufe.POLICE, false),
+        SCHUTZWESTE(2,"Schutzweste", Script.kevlar(1), 500, 0, null, Beruf.Berufe.POLICE, false),
+        HANDSCHELLEN(3, "Handschellen", Script.setName(new ItemStack(Material.LEAD, 2), "§7Handschellen"), 100, 0, null, Beruf.Berufe.POLICE, true),
+        TAZER(4, "Tazer", Script.setName(new ItemStack(Material.WOODEN_HOE, 1), "§7Tazer"), 100, 0, null, Beruf.Berufe.POLICE, true),
+        DONUT(5, "Donut", new ItemBuilder(Material.COOKIE).setAmount(16).setName("§7Donut").build(), 1, 0, null, Beruf.Berufe.POLICE, false),
+        MP7(6, "MP7", new ItemBuilder(Material.GOLDEN_HORSE_ARMOR).setName("§7MP7").build(), 2900, 400, null, Beruf.Berufe.POLICE, false),
+        EINSATZSCHILD(7, "Einsatzschild", Script.einsatzschild(1), 1000, 0, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE, true),
+        EINSAZTZSCHILD_2(8, "Schweres Einsatzschild", Script.einsatzschild(2), 1500, 0, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE, true),
+        RAUCHGRANATE(9, "Rauchgranate", Script.rauchgranate(), 100, 0, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE, true),
+        FLASHBANG(10, "Flashbang", Script.flashbang(), 100, 0, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE, true),
+        FALLSCHIRM(11,"Fallschirm", Script.fallschirm(), 100, 0, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE, true),
+        ZEITUNG(12, "Zeitung", Script.setName(new ItemStack(Material.WRITABLE_BOOK), "§7Zeitung"), 100, 0, Abteilung.Abteilungen.CHEFREDAKTION, Beruf.Berufe.NEWS, true),
+        VERBAND(13, "Verband", new ItemBuilder(Material.PAPER).setName("§7Verband").setAmount(5).build(), 5, 0, null, Beruf.Berufe.RETTUNGSDIENST, false),
+        GIPS(14, "Gips", Script.setName(new ItemStack(Material.PAPER), "§7Gips"), 50, 0, null, Beruf.Berufe.RETTUNGSDIENST, true),
+        SCHWERE_SCHUTZWESTE(15,"Schwere Schutzweste", Script.kevlar(2), 1000, 0, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE, true),
+        SPRITZE(16, "Spritze", Script.setName(new ItemStack(Material.END_ROD), "§7Spritze"), 10, 0, null, Beruf.Berufe.RETTUNGSDIENST, true),
+        HUSTEN_IMPFUNG(17,"Husten Impfung", Script.setName(new ItemStack(Material.END_ROD), "§7Husten Impfung"), 50, 0, null, Beruf.Berufe.RETTUNGSDIENST, true),
+        KAFFEE(18, "Kaffee", Script.setName(new ItemStack(Material.POTION), "§7Kaffee"), 10, 0, null, Beruf.Berufe.NEWS, false),
+        BROT(19, "Brot", new ItemBuilder(Material.BREAD).setAmount(16).setName("§7Brot").build(), 10, 0, null, Beruf.Berufe.RETTUNGSDIENST, false),
+        KEKSE(20, "Kekse",new ItemBuilder(Material.COOKIE).setAmount(16).setName("§7Keks").build(), 10, 0, null, Beruf.Berufe.NEWS, false),
+        SNIPER(21, "Sniper", new ItemBuilder(Material.STONE_HOE).setName("§7Sniper").build(), 5000, 100, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE, true);
 
         private String name;
+        private int id;
         private ItemStack item;
         private int cost;
         private int ammo;
@@ -57,7 +59,8 @@ public class Equip implements CommandExecutor, Listener {
         private boolean remove;
 
 
-        Stuff(String name, ItemStack item, int cost, int ammo, Abteilung.Abteilungen abteilung, Beruf.Berufe beruf, boolean remove) {
+        Stuff(int id, String name, ItemStack item, int cost, int ammo, Abteilung.Abteilungen abteilung, Beruf.Berufe beruf, boolean remove) {
+            this.id = id;
             this.name = name;
             this.item = item;
             this.cost = cost;
@@ -69,6 +72,10 @@ public class Equip implements CommandExecutor, Listener {
 
         public String getName() {
             return name;
+        }
+
+        public int getID() {
+            return id;
         }
 
         public ItemStack getItem() {
@@ -93,6 +100,15 @@ public class Equip implements CommandExecutor, Listener {
 
         public boolean removeOnUninvite() {
             return remove;
+        }
+
+        public static Stuff getStuff(int id) {
+            for (Stuff stuff : values()) {
+                if (stuff.getID() == id) {
+                    return stuff;
+                }
+            }
+            return null;
         }
 
         public static Stuff getStuff(String name) {
@@ -222,6 +238,22 @@ public class Equip implements CommandExecutor, Listener {
                 p.sendMessage(Messages.ERROR + "Dein Inventar ist voll.");
                 return;
             }
+
+            if(stuff == Stuff.SCHUTZWESTE || stuff == Stuff.SCHWERE_SCHUTZWESTE) {
+                if(p.getInventory().contains(Material.LEATHER_CHESTPLATE)) {
+                    p.sendMessage(Messages.ERROR + "Du kannst nur eine Schutzweste tragen.");
+                    return;
+                }
+            }
+
+            if(stuff == Stuff.EINSATZSCHILD || stuff == Stuff.EINSAZTZSCHILD_2) {
+                if(p.getInventory().contains(Material.SHIELD)) {
+                    p.sendMessage(Messages.ERROR + "Du kannst nur ein Einsatzschild tragen.");
+                    return;
+                }
+            }
+
+            Equiplog.addToEquipLog(p, stuff);
 
             if (!stuff.getBeruf().hasKasse()) {
                 if (Stadtkasse.getStadtkasse() < stuff.getCost()) {

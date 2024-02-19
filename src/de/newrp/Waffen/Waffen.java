@@ -22,6 +22,7 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -192,12 +193,12 @@ public class Waffen implements Listener {
                 v = 2.2F;
                 v1 = .90F;
                 break;
-            /*case VIPER9:
+            case SNIPER:
                 v = 10.0F;
                 v1 = .1F;
                 cloud = true;
                 break;
-            case EXTENSO18:
+            /*case EXTENSO18:
                 v = 5.0F;
                 v1 = .1F;
                 cloud = true;
@@ -225,7 +226,14 @@ public class Waffen implements Listener {
         p.playSound(p.getLocation(), Sound.ENTITY_FIREWORK_ROCKET_BLAST, v, v1);
         p.playSound(p.getLocation(), Sound.ITEM_FLINTANDSTEEL_USE, 1.0F, 1.0F);
 
+
+
         Location loc = p.getEyeLocation();
+        Vector knockback = loc.getDirection().multiply(w.getKnockback());
+
+        // Apply knockback to the player
+        if(p.getFallDistance() == 0 && w.getKnockback()<0) p.setVelocity(knockback);
+
         double maxLength = .5;
         for (double d = 0; d <= maxLength; d += 0.3) {
             loc.add(loc.getDirection().multiply(1D));

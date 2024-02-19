@@ -212,7 +212,7 @@ public class Mobile implements Listener {
         for(ItemStack is : p.getInventory().getContents()) {
             if(is == null) continue;
             for(Phones phones : Phones.values()) {
-                if(Objects.requireNonNull(ChatColor.stripColor(is.getItemMeta().getDisplayName())).startsWith(phones.getName())) {
+                if(Objects.requireNonNull(ChatColor.stripColor(is.getItemMeta().getDisplayName())).endsWith(phones.getName())) {
                     return phones;
                 }
             }
@@ -223,7 +223,7 @@ public class Mobile implements Listener {
     public static boolean isPhone(ItemStack is) {
         if(is == null || is.getType() == Material.AIR) return false;
         for(Phones phones : Phones.values()) {
-            if(Objects.requireNonNull(ChatColor.stripColor(is.getItemMeta().getDisplayName())).startsWith(phones.getName())) {
+            if(Objects.requireNonNull(ChatColor.stripColor(is.getItemMeta().getDisplayName())).endsWith(phones.getName())) {
                 return true;
             }
         }
@@ -335,7 +335,7 @@ public class Mobile implements Listener {
             if (level >= 10) {
                 PlayerInventory inv = p.getInventory();
                 ItemStack is = inv.getItemInMainHand();
-                p.getInventory().setItemInHand(new ItemBuilder(Material.IRON_INGOT).setName("§7" + getPhone(p).getName()).build());
+                p.getInventory().setItemInHand(new ItemBuilder(Material.IRON_INGOT).setName("§7" + p.getName() + "s " + getPhone(p).getName()).build());
 
 
                 Me.sendMessage(p, "schaltet " + (Script.getGender(p)==Gender.MALE?"sein":"ihr") + " Handy ein.");
@@ -387,7 +387,7 @@ public class Mobile implements Listener {
         if(e.getCurrentItem().getItemMeta() == null) return;
         Player p = (Player) e.getWhoClicked();
         if(e.getCurrentItem().getItemMeta().getDisplayName().equals("§8» §cAusschalten")) {
-            p.getInventory().setItemInHand(new ItemBuilder(Material.IRON_INGOT).setName("§c" + getPhone(p).getName()).build());
+            p.getInventory().setItemInHand(new ItemBuilder(Material.IRON_INGOT).setName("§c" + p.getName() + "s " + getPhone(p).getName()).build());
             Me.sendMessage(p, "schaltet " + (Script.getGender(p)==Gender.MALE?"sein":"ihr") + " Handy aus.");
             p.closeInventory();
             return;

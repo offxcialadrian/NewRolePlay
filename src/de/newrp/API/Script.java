@@ -134,7 +134,7 @@ public class Script {
     public static ItemStack einsatzschild(int level) {
         ItemStack schild = new ItemStack(Material.SHIELD, 1, (short) (level == 1 ? 240 : 160));
         ItemMeta meta = schild.getItemMeta();
-        meta.setDisplayName("§7Einsatzschild");
+        meta.setDisplayName("§7" + (level==2?"Schweres ":"") + "Einsatzschild");
         schild.setItemMeta(meta);
         return schild;
     }
@@ -732,8 +732,9 @@ public class Script {
 
     public static boolean isInt(String i) {
         try {
+            Integer.parseInt(i);
             return true;
-        } catch (NumberFormatException ex) {
+        } catch (Exception e) {
             return false;
         }
     }

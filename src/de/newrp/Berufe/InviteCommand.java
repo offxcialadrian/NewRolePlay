@@ -62,7 +62,7 @@ public class InviteCommand implements CommandExecutor {
         }
 
 
-            if(Organisation.getOrganisation(p).getAllMembers().size() >= Organisation.getOrganisation(p).getLevel()*3) {
+            if(Organisation.getOrganisation(p).getAllMembers().size() >= Math.min(5, Organisation.getOrganisation(p).getLevel()*3)) {
                 p.sendMessage(Messages.ERROR + "Deine Organisation ist voll.");
                 return true;
             }

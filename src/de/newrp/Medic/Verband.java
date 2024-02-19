@@ -98,7 +98,7 @@ public class Verband implements Listener {
             Long lastUsage = BANDAGE_COOLDOWN.get(p.getName());
             if (lastUsage != null && lastUsage + TimeUnit.MINUTES.toMillis(4) > time) {
                 long cooldown = TimeUnit.MILLISECONDS.toSeconds(lastUsage + TimeUnit.MINUTES.toMillis(4) - time);
-                p.sendMessage(Messages.ERROR + "Du bist bereits bandagiert. (" + cooldown + " Sekunden verbleibend)");
+                p.sendMessage(Messages.ERROR + "Der Spieler ist bereits bandagiert. (" + cooldown + " Sekunden verbleibend)");
                 return;
             }
 

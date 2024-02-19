@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.ItemDespawnEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
@@ -108,6 +109,27 @@ public class FriedhofListener implements Listener {
             if(Corpse.npcMap.containsKey(p)) Corpse.removeNPC(p);
             if (f.getTaskID() != 0) Bukkit.getScheduler().cancelTask(f.getTaskID());
             Friedhof.FRIEDHOF.remove(p.getName());
+        }
+    }
+
+    @EventHandler
+    public void onEntityDamage(EntityDamageEvent e) {
+        if (e.getEntity() instanceof Player) {
+            Player p = (Player) e.getEntity();
+            if (Friedhof.isDead(p)) {
+                e.setCancelled(true);
+            }
+        }
+    }
+
+    @EventHandler
+    public void onEntityDamageEntity(EntityDamageByEntityEvent e) {
+        if (e.getEntity() instanceof Player) {
+            Player p = (Player) e.getEntity();
+            Player damager = (Player) e.getDamager();
+            if (Friedhof.isDead(p) || Friedhof.isDead(damager)) {
+                e.setCancelled(true);
+            }
         }
     }
 
