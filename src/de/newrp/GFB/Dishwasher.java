@@ -81,7 +81,7 @@ public class Dishwasher implements CommandExecutor, Listener {
         if(ON_JOB.contains(p.getName())) return;
         if(!(e.getClickedBlock().getLocation().equals(new Location(Script.WORLD, 582, 68, 743)))) return;
         p.sendMessage(PREFIX + "Du hast erfolgreich einen Teller genommen.");
-        p.sendMessage(Messages.INFO + "Klicke nun auf das Waschbecken hinter dir um den Teller zu waschen.");
+        p.sendMessage(Messages.INFO + "Klicke nun auf das Waschbecken hinter dir, um den Teller zu waschen.");
         ON_JOB.add(p.getName());
     }
 
@@ -120,6 +120,7 @@ public class Dishwasher implements CommandExecutor, Listener {
         e.setCancelled(true);
         if(e.getCurrentItem() == null || e.getCurrentItem().getType().equals(Material.AIR)) return;
         if(e.getCurrentItem().getType() == Material.BOWL) {
+            p.closeInventory();
             p.sendMessage(PREFIX + "Du hast den Teller zerbrochen.");
             p.playSound(p.getLocation(), Sound.BLOCK_ANVIL_LAND, 1, 1);
             int dish = dishes.get(p.getName());

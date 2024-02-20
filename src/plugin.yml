@@ -19,7 +19,7 @@ commands:
     description: write into the chat
   tc:
     description: teamchat
-    aliases: [ teamchat, team ]
+    aliases: [ teamchat ]
   heal:
     description: heile einen spieler
   blackjack:
@@ -549,3 +549,12 @@ commands:
   equiplog:
     description: view the equiplog
     aliases: [ equiplogs ]
+  use:
+    description: use something
+    aliases: [ consume, konsumieren ]
+  team:
+    description: view the team
+    aliases: [ teaminfo, teammembers, admins, mods, supporter ]
+  memberactivity:
+    description: view the memberactivity
+    aliases: [ memberactivities ]

@@ -51,6 +51,7 @@ public class SteuerNotification implements CommandExecutor {
 
     public static void sendNotification(String msg) {
         for(Player player : Bukkit.getOnlinePlayers()) {
+            if(!Beruf.hasBeruf(player)) continue;
             if(activated(player) && Beruf.getBeruf(player).equals(Beruf.Berufe.GOVERNMENT) && (Beruf.getAbteilung(player) == Abteilung.Abteilungen.FINANZAMT || Beruf.isLeader(player, true))) {
                 player.sendMessage(PREFIX + msg);
             }

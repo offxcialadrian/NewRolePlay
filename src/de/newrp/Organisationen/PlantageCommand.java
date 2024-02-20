@@ -3,6 +3,9 @@ package de.newrp.Organisationen;
 import de.newrp.API.Messages;
 import de.newrp.API.Particle;
 import de.newrp.API.Script;
+import de.newrp.Administrator.BuildMode;
+import de.newrp.Administrator.GoTo;
+import de.newrp.Administrator.SDuty;
 import de.newrp.main;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -13,6 +16,7 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -26,17 +30,20 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.StringUtil;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class PlantageCommand implements CommandExecutor, Listener {
+public class PlantageCommand implements CommandExecutor, Listener, TabCompleter {
     public static void openGUI(Player p, Plantage plant) {
         int minutes = (int) TimeUnit.MILLISECONDS.toMinutes((plant.getTime() - System.currentTimeMillis()));
         StringBuilder sb = new StringBuilder(" §8»§6 Reif in ");
@@ -427,6 +434,29 @@ public class PlantageCommand implements CommandExecutor, Listener {
         if (e.getAction() == Action.PHYSICAL && e.getClickedBlock().getType() == Material.SOUL_SOIL) {
             e.setCancelled(true);
         }
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender cs, Command cmd, String alias, String[] args) {
+        Player p = (Player) cs;
+        if (cmd.getName().equalsIgnoreCase("plant") || cmd.getName().equalsIgnoreCase("pl") || cmd.getName().equalsIgnoreCase("plantage")) {
+            final List<String> oneArgList = new ArrayList<>();
+            final List<String> completions = new ArrayList<>();
+            oneArgList.add("plant");
+            oneArgList.add("info");
+            oneArgList.add("harvest");
+
+            if (args.length == 1) {
+                StringUtil.copyPartialMatches(args[0], oneArgList, completions);
+            }
+
+            if (args.length == 2) {
+                return null;
+            }
+            Collections.sort(completions);
+            return completions;
+        }
+        return Collections.EMPTY_LIST;
     }
 
 }

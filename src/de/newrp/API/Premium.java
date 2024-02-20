@@ -111,7 +111,7 @@ public class Premium {
 
     public static void addPremiumStorage(Player p, long time, boolean expires) {
         p.sendMessage(PREFIX + "Du hast §b" + TimeUnit.MILLISECONDS.toDays(time) + " Tage §7Premium erhalten.");
-        if(expires) p.sendMessage(Messages.INFO + "Du hast nun §b7 Tage §7Zeit, um dein Premium zu aktivieren. Nutze dazu §8/§6premium");
+        if(expires) p.sendMessage(Messages.INFO + "Du hast nun §b7 Tage §rZeit, um dein Premium zu aktivieren. Nutze dazu §8/§6premium");
         else p.sendMessage(Messages.INFO + "Nutze §8/§6premium §rum dein Premium zu aktivieren.");
         long expireDate = System.currentTimeMillis() + TimeUnit.DAYS.toMillis(7);
         Script.executeUpdate("INSERT INTO premium_storage (nrp_id, duration, expires) VALUES (" + Script.getNRPID(p) + ", " + time + ", " + (expires? expireDate : "NULL") + ")");

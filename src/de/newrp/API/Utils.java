@@ -40,7 +40,7 @@ import static de.newrp.API.Rank.PLAYER;
 
 public class Utils implements Listener {
 
-    private static final Material[] DROP_BLACKLIST = new Material[]{ Material.WOODEN_HOE, Material.LEAD, Material.ANDESITE_SLAB, Material.SHIELD, Material.LEATHER_CHESTPLATE };
+    private static final Material[] DROP_BLACKLIST = new Material[]{ Material.WOODEN_HOE, Material.LEAD, Material.ANDESITE_SLAB, Material.SHIELD, Material.LEATHER_CHESTPLATE, Material.WITHER_SKELETON_SKULL };
     private static final String[] BLOCKED_COMMANDS = new String[]{
             "/minecraft", "/spi", "/protocol", "/rl", "/restart", "/bukkit", "/time", "/version", "/icanhasbukkit", "/xp", "/tell",
             "/toggledownfall", "/testfor", "/recipe", "/effect", "/enchant", "/deop", "/defaultgamemode", "/ban-ip",
@@ -99,6 +99,15 @@ public class Utils implements Listener {
             e.disallow(PlayerLoginEvent.Result.KICK_WHITELIST, "§8» §cNRP × New RolePlay §8┃ §cKick §8« \n\n§8§m------------------------------\n\n§7Du wurdest vom Server gekickt§8.\n\n§7Grund §8× §e" + "Wartungsarbeiten");
             Bukkit.broadcastMessage(Script.PREFIX + "Dem Spieler " + e.getPlayer().getName() + " wurde der Zutritt verweigert, da der Server im Wartungsmodus ist.");
         }
+    }
+
+    @EventHandler
+    public void onMoving(PlayerMoveEvent e) {
+        Player p = e.getPlayer();
+        if(!Script.FREEZE.contains(p.getName())) return;
+        if(e.getFrom().getX() == e.getTo().getX() && e.getFrom().getY() == e.getTo().getY() && e.getFrom().getZ() == e.getTo().getZ()) return;
+        e.setCancelled(true);
+        p.setVelocity(p.getVelocity().zero());
     }
 
     @EventHandler

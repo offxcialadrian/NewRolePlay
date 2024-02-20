@@ -23,27 +23,26 @@ public class TeamspeakUpdate implements Listener {
         Bukkit.getScheduler().runTaskAsynchronously(main.getInstance(), () -> {
             try {
                 String name = "[cspacer]» " + (Bukkit.getOnlinePlayers().size()) + "/" + (Bukkit.getServer().getMaxPlayers()) + " Spieler online «";
-                if (!TeamSpeak.getApi().getChannelInfo(117).getName().equals(name)) {
+                if (!TeamSpeak.getApi().getChannelInfo(611).getName().equals(name)) {
                     Map<ChannelProperty, String> options = new HashMap<>();
                     options.put(ChannelProperty.CHANNEL_NAME, name);
-                    TeamSpeak.getApi().editChannel(117, options);
+                    TeamSpeak.getApi().editChannel(611, options);
                 }
             } catch (Exception e1) {
                 e1.printStackTrace();
                 Script.sendTeamMessage(TeamSpeak.PREFIX + "§cDie Verbindung zum TeamSpeak-System wurde unterbrochen.");
                 Script.sendTeamMessage(Messages.INFO + "Bei längeren Ausfällen bitte manuell neu starten.");
-			/*AdminChat.sendMessage("Die Verbindung zum Teamspeak wurde unterbrochen.");
 			if(SELF_TRY) {
-				AdminChat.sendMessage("Versuche automatisch verbindung herzustellen...");
+				Script.sendTeamMessage(TeamSpeak.PREFIX + "§cVersuche automatisch verbindung herzustellen...");
 				try {
-					Bukkit.getScheduler().runTaskAsynchronously(main.getInstance(), Teamspeak::disconnect);
+					Bukkit.getScheduler().runTaskAsynchronously(main.getInstance(), TeamSpeak::disconnect);
 				} catch (Exception exc) {
-					AdminChat.sendMessage("Die Verbindung zum Teamspeak konnte nicht automatisch hergstellt werden.");
+                    Script.sendTeamMessage(TeamSpeak.PREFIX + "§cDie Verbindung zum Teamspeak konnte nicht automatisch hergstellt werden.");
 				} finally {
-					Bukkit.getScheduler().runTaskAsynchronously(main.getInstance(), Teamspeak::connect);
-					AdminChat.sendMessage("Verbindung zum Teamspeak wieder aufgebaut.");
+					Bukkit.getScheduler().runTaskAsynchronously(main.getInstance(), TeamSpeak::connect);
+                    Script.sendTeamMessage(TeamSpeak.PREFIX + "§aVerbindung zum Teamspeak wieder aufgebaut.");
 				}
-			}*/
+			}
             }
         });
     }
@@ -53,10 +52,10 @@ public class TeamspeakUpdate implements Listener {
         Bukkit.getScheduler().runTaskAsynchronously(main.getInstance(), () -> {
             try {
                 String name = "[cspacer]» " + (Bukkit.getOnlinePlayers().size()) + "/" + (Bukkit.getServer().getMaxPlayers()) + " Spieler online «";
-                if (!TeamSpeak.getApi().getChannelInfo(117).getName().equals(name)) {
+                if (!TeamSpeak.getApi().getChannelInfo(611).getName().equals(name)) {
                     Map<ChannelProperty, String> options = new HashMap<>();
                     options.put(ChannelProperty.CHANNEL_NAME, name);
-                    TeamSpeak.getApi().editChannel(117, options);
+                    TeamSpeak.getApi().editChannel(611, options);
                 }
             } catch (Exception e1) {
                 e1.printStackTrace();

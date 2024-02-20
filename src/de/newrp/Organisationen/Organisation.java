@@ -346,6 +346,21 @@ public enum Organisation {
         return list;
     }
 
+    public List<OfflinePlayer> getAllLeaders() {
+        List<OfflinePlayer> list = new ArrayList<>();
+        try (Statement stmt = main.getConnection().createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT * FROM organisation WHERE organisationID='" + this.id + "' AND leader=1")) {
+            if (rs.next()) {
+                do {
+                    list.add(Script.getOfflinePlayer(rs.getInt("nrp_id")));
+                } while (rs.next());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
     public static int getRank(Player p) {
         return Script.getInt(p, "organisation", "rank");
     }

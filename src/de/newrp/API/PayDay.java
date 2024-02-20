@@ -11,6 +11,7 @@ import de.newrp.Government.Steuern;
 import de.newrp.House.House;
 import de.newrp.Organisationen.Organisation;
 import de.newrp.Player.*;
+import de.newrp.Shop.Buy;
 import de.newrp.Shop.Shop;
 import de.newrp.Shop.Shops;
 import de.newrp.main;
@@ -120,9 +121,9 @@ public class PayDay extends BukkitRunnable {
                     Stadtkasse.addStadtkasse((int) Script.getPercent(krankenversicherung, salary), "Krankenversicherung von " + Script.getName(p) + " erhalten", Steuern.Steuer.KRANKENVERSICHERUNG);
                     payday -= (int) Script.getPercent(krankenversicherung, salary);
                 } else {
-                    p.sendMessage("§8" + Messages.ARROW + " §7Lohnsteuer (" + lohnsteuer + "%): §c-" + "§cVerbeamtet");
-                    p.sendMessage("§8" + Messages.ARROW + " §7Arbeitslosenversicherung (" + arbeitslosenversicherung + "%): §c-" + "§cVerbeamtet");
-                    p.sendMessage("§8" + Messages.ARROW + " §7Krankenversicherung (" + krankenversicherung + "%): §c-" + "§cVerbeamtet");
+                    p.sendMessage("§8" + Messages.ARROW + " §7Lohnsteuer (" + lohnsteuer + "%): " + "§cVerbeamtet");
+                    p.sendMessage("§8" + Messages.ARROW + " §7Arbeitslosenversicherung (" + arbeitslosenversicherung + "%): " + "§cVerbeamtet");
+                    p.sendMessage("§8" + Messages.ARROW + " §7Krankenversicherung (" + krankenversicherung + "%): " + "§cVerbeamtet");
                 }
 
 
@@ -193,6 +194,15 @@ public class PayDay extends BukkitRunnable {
                 int price = 10;
                 p.sendMessage("§8" + Messages.ARROW + " §7Selfstorage-Room: §c-" + price + "€");
                 payday -= price;
+            }
+
+            if(Buy.isGymMember(p)) {
+                int price = Buy.getGym(p).getPrice();
+                p.sendMessage("§8" + Messages.ARROW + " §7Fitnessstudio: §c-" + price + "€");
+                payday -= price;
+                int mehrwertsteur = (int) Steuern.Steuer.MEHRWERTSTEUER.getPercentage();
+                Stadtkasse.addStadtkasse((int) Script.getPercent(mehrwertsteur, price), "Mehrwertsteuer von " + Script.getName(p) + " erhalten", Steuern.Steuer.MEHRWERTSTEUER);
+                Buy.getGym(p).addKasse((int) (price-Script.getPercent(mehrwertsteur, price)));
             }
 
             if(Hotel.hasHotelRoom(p)) {

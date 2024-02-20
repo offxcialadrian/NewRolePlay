@@ -10,6 +10,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
@@ -85,7 +86,7 @@ public class Fesseln implements Listener {
             Me.sendMessage(p, "fesselt " + rightClicked.getName() + ".");
             tie(rightClicked);
             AntiOfflineFlucht.cooldowns.put(rightClicked.getName(), time);
-            p.sendMessage(PREFIX + "Du hast " + Script.getNRPID(rightClicked) + " gefesselt.");
+            p.sendMessage(PREFIX + "Du hast " + Script.getName(rightClicked) + " gefesselt.");
             rightClicked.sendMessage(PREFIX + "Du wurdest von " + Script.getName(p) + " gefesselt.");
 
             COOLDOWN.put(rightClicked.getName(), time);
@@ -113,6 +114,16 @@ public class Fesseln implements Listener {
     public static void tie(Player p) {
         gefesselt.add(p.getName());
         Script.freeze(p);
+    }
+
+    @EventHandler
+    public void onHit(EntityDamageByEntityEvent e) {
+        if (!(e.getDamager() instanceof Player)) return;
+        Player damager = (Player) e.getDamager();
+        if(isTiedUp(damager)) {
+            e.setCancelled(true);
+            damager.sendMessage(PREFIX + "Du kannst niemanden schlagen.");
+        }
     }
 
     private static void progressBar(double required_progress, Player p) {

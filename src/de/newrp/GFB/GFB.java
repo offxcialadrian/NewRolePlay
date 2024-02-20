@@ -127,7 +127,7 @@ public enum GFB {
 
     public static int getLevelCost(int level) {
         int level_cost;
-        level_cost = 692 + ((level * 2) * 400);
+        level_cost = 692 + ((level * 2) * 250);
         if (level % 2 == 0) {
             level_cost += 173;
         }

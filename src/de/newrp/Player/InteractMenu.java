@@ -96,18 +96,18 @@ public class InteractMenu implements Listener {
         if (!e.getView().getTitle().equals("§8» §eInteraktion")) return;
         e.setCancelled(true);
         Player p = (Player) e.getWhoClicked();
+        if (cooldown.containsKey(p.getName()) && cooldown.get(p.getName()) > System.currentTimeMillis()) return;
         if (!interacting.containsKey(p.getName())) return;
         Player tg = Script.getPlayer(interacting.get(p.getName()));
         if (tg == null) return;
         if (e.getCurrentItem() == null || e.getCurrentItem().getType() == Material.AIR) return;
-        if (cooldown.containsKey(p.getName()) && cooldown.get(p.getName()) > System.currentTimeMillis()) return;
         if (p.getLocation().distance(tg.getLocation()) > 2) {
             p.sendMessage(Messages.ERROR + "Der Spieler ist zu weit entfernt.");
             return;
         }
         e.getView().close();
         interacting.remove(p.getName());
-        cooldown.put(p.getName(), System.currentTimeMillis() + 5L);
+        cooldown.put(p.getName(), System.currentTimeMillis() + 20L);
 
         switch (e.getCurrentItem().getItemMeta().getDisplayName().replace("§6", "")) {
             case "Personalausweis zeigen":
@@ -317,6 +317,7 @@ public class InteractMenu implements Listener {
 
                 p.sendMessage(PREFIX + "Du hast begonnen, die Fesseln von " + Script.getName(tg) + " zu öffnen.");
                 p.sendMessage(Messages.INFO + "Bleibe nun eng bei " + Script.getName(tg) + " um die Fesseln zu öffnen.");
+                Me.sendMessage(p, "öffnet die Fesseln von " + Script.getName(tg) + ".");
                 LEVEL.put(p.getName(), 0);
 
                 new BukkitRunnable() {
@@ -356,21 +357,6 @@ public class InteractMenu implements Listener {
         }
     }
 
-    @EventHandler
-    public void onSneak(EntityDismountEvent e) {
-        if (!(e.getEntity() instanceof Player)) return;
-        Player p = (Player) e.getEntity();
-        if (!(e.getDismounted() instanceof Player)) return;
-        Player tg = (Player) e.getDismounted();
-        if (!Tragen.tragen.containsKey(tg)) return;
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                if (!Tragen.tragen.containsKey(tg)) cancel();
-                tg.setPassenger(p);
-            }
-        }.runTaskLater(de.newrp.main.getInstance(), 5L);
-    }
 
     @EventHandler
     public void onQuit(PlayerQuitEvent e) {

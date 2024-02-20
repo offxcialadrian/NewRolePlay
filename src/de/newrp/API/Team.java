@@ -16,10 +16,10 @@ public class Team {
 
 
     public enum Teams {
-        SOCIALMEDIA(1, "Social-Media-Team", TeamspeakServerGroup.SOCIALMEDIA, 134, "§b"),
-        EVENT(2, "Event-Team", TeamspeakServerGroup.EVENTTEAM, 138, "§7"),
-        BAU(3, "Bau-Team", TeamspeakServerGroup.BAUTEAM, 135, "§e"),
-        EARLY_ACCESS(4, "Early-Access-Team", TeamspeakServerGroup.EARLYACCESSTEAM, 683, "§5");
+        SOCIALMEDIA(1, "Social-Media-Team", TeamspeakServerGroup.SOCIALMEDIA, 623, "§b"),
+        EVENT(2, "Event-Team", TeamspeakServerGroup.EVENTTEAM, 625, "§7"),
+        BAU(3, "Bau-Team", TeamspeakServerGroup.BAUTEAM, 624, "§e"),
+        EARLY_ACCESS(4, "Early-Access-Team", TeamspeakServerGroup.EARLYACCESSTEAM, 626, "§5");
 
         int id;
         String name;

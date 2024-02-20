@@ -40,6 +40,7 @@ public class HealCommand implements CommandExecutor {
             p.setHealth(p.getMaxHealth());
             p.setFoodLevel(20);
             p.setFireTicks(0);
+            Script.unfreeze(p);
 
             if(!Handschellen.isCuffed(p)) {
                 for (PotionEffect e : p.getActivePotionEffects()) {
@@ -74,6 +75,7 @@ public class HealCommand implements CommandExecutor {
         Krankheit.GEBROCHENES_BEIN.remove(Script.getNRPID(tg));
         Health.THIRST.set(Script.getNRPID(tg), Health.THIRST.getMax());
         tg.setWalkSpeed(0.2F);
+        Script.unfreeze(tg);
         if(!Handschellen.isCuffed(tg)) {
             for (PotionEffect e : p.getActivePotionEffects()) {
                 tg.removePotionEffect(e.getType());

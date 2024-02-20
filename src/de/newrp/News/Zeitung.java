@@ -25,7 +25,7 @@ import java.sql.Statement;
 
 public class Zeitung implements CommandExecutor, Listener {
     public static final String prefix = "§8[§6Zeitung§8]§6 " + Messages.ARROW + " §7";
-    public static ItemStack zeitung = null;
+    public static ItemStack zeitung;
     public static BookMeta cache = null;
 
     public static int getNextID() {
@@ -41,6 +41,7 @@ public class Zeitung implements CommandExecutor, Listener {
     }
 
     public static void saveZeitung(BookMeta item, Player p) {
+        p.sendMessage(prefix + "Die Zeitung wird gespeichert...");
         p.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
         item.setDisplayName("Zeitung [" + getNextID() + ". Auflage]");
         item.setGeneration(null);
@@ -48,6 +49,8 @@ public class Zeitung implements CommandExecutor, Listener {
         ItemStack i = new ItemStack(Material.WRITTEN_BOOK);
         i.setItemMeta(item);
         zeitung = i;
+        if(zeitung == null) Debug.debug("zeitung is null");
+        else Debug.debug(zeitung.getItemMeta().getDisplayName());
         StringBuilder text = new StringBuilder();
         for (String seite : item.getPages()) {
             if (seite != null) {

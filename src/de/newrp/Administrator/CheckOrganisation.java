@@ -9,9 +9,15 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
+import org.bukkit.util.StringUtil;
 
-public class CheckOrganisation implements CommandExecutor {
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+public class CheckOrganisation implements CommandExecutor, TabCompleter {
 
     public static String PREFIX = "§8[§eCheckOrganisation§8] §e» §7";
 
@@ -33,7 +39,7 @@ public class CheckOrganisation implements CommandExecutor {
             p.sendMessage(PREFIX + "§8» §7Blacklist: §e" + (o.hasBlacklist() ? "Ja" : "Nein"));
             p.sendMessage(PREFIX + "§8» §7Mitglieder: §e" + o.getAllMembers().size());
             StringBuilder leaders = new StringBuilder();
-            for(OfflinePlayer all : o.getLeaders()) {
+            for(OfflinePlayer all : o.getAllLeaders()) {
                 if(leaders.length() > 0) {
                     leaders.append(", ");
                 }
@@ -84,7 +90,7 @@ public class CheckOrganisation implements CommandExecutor {
         p.sendMessage(PREFIX + "§8» §7Blacklist: §e" + (o.hasBlacklist() ? "Ja" : "Nein"));
         p.sendMessage(PREFIX + "§8» §7Mitglieder: §e" + o.getAllMembers().size());
         StringBuilder leaders = new StringBuilder();
-        for(OfflinePlayer all : o.getLeaders()) {
+        for(OfflinePlayer all : o.getAllLeaders()) {
             if(leaders.length() > 0) {
                 leaders.append(", ");
             }
@@ -107,4 +113,29 @@ public class CheckOrganisation implements CommandExecutor {
 
         return false;
     }
+
+    @Override
+    public List<String> onTabComplete(CommandSender cs, Command cmd, String alias, String[] args) {
+        Player p = (Player) cs;
+        if (cmd.getName().equalsIgnoreCase("checkorg") || cmd.getName().equalsIgnoreCase("checkorganisation")) {
+            if (!SDuty.isSDuty(p)) return Collections.EMPTY_LIST;
+            final List<String> oneArgList = new ArrayList<>();
+            final List<String> completions = new ArrayList<>();
+            for(Organisation org : Organisation.values()) {
+                oneArgList.add(org.getName());
+            }
+
+            if (args.length == 1) {
+                StringUtil.copyPartialMatches(args[0], oneArgList, completions);
+            }
+
+            if (args.length == 2) {
+                return null;
+            }
+            Collections.sort(completions);
+            return completions;
+        }
+        return Collections.EMPTY_LIST;
+    }
+
 }

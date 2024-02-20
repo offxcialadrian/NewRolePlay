@@ -193,7 +193,7 @@ public class Shop implements CommandExecutor, Listener {
                 ShopItem bi = ShopItem.getItem(n.getKey());
                 ItemStack i = bi.getItemStack();
                 int[] a = n.getValue();
-                i.setAmount(a[0]);
+                if(i != null) i.setAmount(a[0]);
                 p.sendMessage("  §8× " + "§6" + bi.getName() + "§8: §6" + a[1] + "€ §8[§6Einkaufspreis§8: §6" + bi.getBuyPrice() + "€§8]");
             }
             return true;
@@ -260,7 +260,7 @@ public class Shop implements CommandExecutor, Listener {
             }
 
             shop.removeKasse(price);
-            shop.addLager(100);
+            shop.addLagerSize(100);
             p.sendMessage(PREFIX + "Du hast dein Lager um 100 Lagerplätze erweitert.");
             Notifications.sendMessage(Notifications.NotificationType.SHOP,  Script.getName(p) + " hat sein Lager um 100 Lagerplätze erweitert. [Shop: " + shop.getPublicName() + "]");
             Stadtkasse.addStadtkasse((int) Script.getPercent(Steuern.Steuer.MEHRWERTSTEUER.getPercentage(), price), "Mehrwertsteuer aus dem Verkauf von Lagererweiterung (Shop: " + shop.getPublicName() + ")", Steuern.Steuer.MEHRWERTSTEUER);

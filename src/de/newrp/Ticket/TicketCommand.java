@@ -47,14 +47,12 @@ public class TicketCommand implements CommandExecutor {
             p.sendMessage(PREFIX + "§cBitte beachte, dass es aufgrund der Uhrzeit zu längeren Wartezeiten kommen kann.");
         }
         SDuty.updateScoreboard();
-        int[] amount_time = getQueueTimeWithAmount(topic);
-        int time = (amount_time[0]) / 60;
-
-        if (time < 0) {
-            p.sendMessage(PREFIX + "Es sind noch " + amount_time[1] + " Tickets vor dir.");
-        } else {
-            p.sendMessage(PREFIX + "Es sind noch " + amount_time[1] + " Tickets vor dir.");
+        int amount = 0;
+        for (Map.Entry<Integer, Ticket.Queue> ent : queue.entrySet()) {
+            Ticket.Queue r = ent.getValue();
+            if (r.getTicketTopic().equals(topic)) amount++;
         }
+        p.sendMessage(PREFIX + "Es sind noch " + amount + " Tickets vor dir.");
     }
 
     public static void removeFromQueue(Player p) {
@@ -175,26 +173,6 @@ public class TicketCommand implements CommandExecutor {
         }
     }
 
-    public static int getQueueTime(TicketTopic ticket) {
-        double time = 0;
-        for (Map.Entry<Integer, Ticket.Queue> ent : queue.entrySet()) {
-            Ticket.Queue t = ent.getValue();
-        }
-        int active = 0;
-        if (ticket.getID() == 0) {
-            for (Player p : Script.getNRPTeam()) {
-                if (!AFK.isAFK(p) && !isInTicket(p)) {
-                    active++;
-                }
-            }
-            if (active != 0) {
-                time = (int) (time / active);
-            } else {
-                time = 0;
-            }
-        }
-        return (int) time;
-    }
 
     public static int[] getQueueTimeWithAmount(TicketTopic ticket) {
         double time = 0;

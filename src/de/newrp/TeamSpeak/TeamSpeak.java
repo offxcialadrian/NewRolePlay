@@ -29,7 +29,7 @@ public class TeamSpeak {
 
     public static void connect() {
         TS3Config tsConfig = new TS3Config();
-        tsConfig.setHost("85.214.16.16");
+        tsConfig.setHost("localhost");
         tsConfig.setDebugLevel(Level.WARNING);
         tsConfig.setReconnectStrategy(ReconnectStrategy.exponentialBackoff());
         tsConfig.setFloodRate(TS3Query.FloodRate.UNLIMITED);

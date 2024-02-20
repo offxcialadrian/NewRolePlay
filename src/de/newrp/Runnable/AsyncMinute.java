@@ -14,6 +14,7 @@ import de.newrp.Votifier.VoteShop;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.*;
@@ -56,7 +57,7 @@ public class AsyncMinute extends BukkitRunnable {
                 Mobile.getPhone(p).removeAkku(p, 1);
                 if(Mobile.getPhone(p).getAkku(p) <= 0) {
                     p.sendMessage(Mobile.PREFIX + "Dein Handy ist ausgeschaltet, da der Akku leer ist.");
-                    Mobile.setPhone(p, Mobile.getPhone(p));
+                    p.getInventory().addItem(new ItemBuilder(Material.IRON_INGOT).setName("§c" + p.getName() + "s " + ChatColor.stripColor(Mobile.getPhone(p).getName())).build());
                     continue;
                 }
                 if(Script.getPercentage(Mobile.getPhone(p).getAkku(p), Mobile.getPhone(p).getMaxAkku()) <= 10 && !battery.containsKey(p.getName()) && !battery.get(p.getName()).equals(10)) {

@@ -159,12 +159,12 @@ public enum Drogen {
 
         switch (this) {
             case PULVER:
-                p.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 220 * 20, 4 - purity.getID(), false, false));
+                if(!p.hasPotionEffect(PotionEffectType.ABSORPTION)) p.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 220 * 20, 4 - purity.getID(), false, false));
                 if (purity.getID() >= 2) {
                     p.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 20 * (5 + purity.getID()), 0, false, false));
                 }
                 p.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 2 * 20 * (8 - 2 * purity.getID()), 0, false, false));
-                p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 20 * (10 - purity.getID()), 2, false, false));
+                p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 20 * (10 - purity.getID()), 1, false, false));
                 break;
             case KRÄUTER:
                 if (purity.getID() > 0) {

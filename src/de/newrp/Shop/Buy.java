@@ -4,6 +4,7 @@ import de.newrp.API.Licenses;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.Police.Fahndung;
+import de.newrp.main;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -13,6 +14,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,6 +47,24 @@ public class Buy implements CommandExecutor {
 
         if(s.getType() == ShopType.GUNSHOP && Fahndung.isFahnded(p)) {
             p.sendMessage(Messages.ERROR + "§cDu kannst keine Waffen kaufen, da du gesucht wirst.");
+            return true;
+        }
+
+        if(s.getType() == ShopType.GYM) {
+            if(isGymMember(p) && Script.getLong(p, "gym", "until") > System.currentTimeMillis()) {
+                p.sendMessage(Messages.ERROR + "§cDu bist bereits Mitglied im Fitnessstudio.");
+                p.sendMessage(Messages.INFO + "Du kannst dein Abo in " + Script.getRemainingTime(Script.getLong(p, "gym", "until")) + " beenden.");
+                return true;
+            }
+
+            if(isGymMember(p)) {
+                p.sendMessage(Messages.INFO + "Du hast deine Mitgliedschaft im Fitnessstudio beendet.");
+                Script.executeUpdate("DELETE FROM gym WHERE nrp_id=" + Script.getNRPID(p));
+                return true;
+            }
+
+            p.sendMessage(Script.PREFIX + "Du bist nun Mitglied im Fitnessstudio.");
+            Script.executeUpdate("INSERT INTO gym (nrp_id, shopID, until) VALUES (" + Script.getNRPID(p) + ", " + s.getID() + ", " + (System.currentTimeMillis() + 1000L * 60 * 60 * 24 * 30) + ")");
             return true;
         }
 
@@ -86,4 +108,19 @@ public class Buy implements CommandExecutor {
 
         return false;
     }
+
+    public static boolean isGymMember(Player p) {
+        try (Statement stmt = main.getConnection().createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT * FROM gym WHERE nrp_id=" + Script.getNRPID(p))  ) {
+            return rs.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static Shops getGym(Player p) {
+        return Shops.getShop(Script.getInt(p, "gym", "shopID"));
+    }
+
 }

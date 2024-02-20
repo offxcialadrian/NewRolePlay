@@ -20,29 +20,29 @@ public class Ablehnen implements CommandExecutor {
         if (Annehmen.offer.containsKey(p.getName() + ".joinberuf")) {
             Player leader = Script.getPlayer(Annehmen.offer.get(p.getName() + ".joinberuf"));
             if (leader != null) {
-                leader.sendMessage(DENIED + Script.getName(p) + " hat es abgelehnt dem Beruf " + Beruf.getBeruf(leader).getName() + " beizutreten.");
+                leader.sendMessage(DENIED + Script.getName(p) + " hat es abgelehnt, dem Beruf " + Beruf.getBeruf(leader).getName() + " beizutreten.");
             }
-            p.sendMessage(DENIED + "Du hast es Abgelehnt dem Beruf " + Beruf.getBeruf(leader).getName() + " beizutreten.");
+            p.sendMessage(DENIED + "Du hast es abgelehnt, dem Beruf " + Beruf.getBeruf(leader).getName() + " beizutreten.");
             Annehmen.offer.remove(p.getName());
         } else if(Annehmen.offer.containsKey(p.getName() + ".jointeam")) {
             Player leader = Script.getPlayer(Annehmen.offer.get(p.getName() + ".jointeam"));
             if (leader != null) {
-                leader.sendMessage(DENIED + Script.getName(p) + " hat es abgelehnt dem Team " + Team.getTeam(leader).getName() + " beizutreten.");
+                leader.sendMessage(DENIED + Script.getName(p) + " hat es abgelehnt, dem Team " + Team.getTeam(leader).getName() + " beizutreten.");
             }
-            p.sendMessage(DENIED + "Du hast es Abgelehnt dem Team " + Team.getTeam(leader).getName() + " beizutreten.");
+            p.sendMessage(DENIED + "Du hast es abgelehnt, dem Team " + Team.getTeam(leader).getName() + " beizutreten.");
             Annehmen.offer.remove(p.getName());
         } else if(Annehmen.offer.containsKey(p.getName() + ".rezept")) {
             Player tg = Script.getPlayer(Annehmen.offer.get(p.getName() + ".rezept"));
             if (tg != null) {
-                tg.sendMessage(DENIED + Script.getName(p) + " hat es Abgelehnt dein Rezept anzunehmen.");
+                tg.sendMessage(DENIED + Script.getName(p) + " hat es abgelehnt, dein Rezept anzunehmen.");
             }
 
-            p.sendMessage(DENIED + "Du hast es Abgelehnt das Rezept anzunehmen.");
+            p.sendMessage(DENIED + "Du hast es abgelehnt, das Rezept anzunehmen.");
             Annehmen.offer.remove(p.getName() + ".rezept");
             Annehmen.offer.remove(p.getName() + ".rezept.medikament");
 
         } else if(Annehmen.offer.containsKey(p.getName() + ".erstehilfeschein")) {
-            p.sendMessage(DENIED + "Du hast es Abgelehnt den Erste-Hilfe-Schein zu erhalten.");
+            p.sendMessage(DENIED + "Du hast es abgelehnt, den Erste-Hilfe-Schein zu erhalten.");
             Annehmen.offer.remove(p.getName() + ".erstehilfeschein");
 
         } else if(Annehmen.offer.containsKey(p.getName() + ".sellhouse")) {
@@ -51,7 +51,7 @@ public class Ablehnen implements CommandExecutor {
                 owner.sendMessage(DENIED + Script.getName(p) + " hat es abgelehnt dein Haus zu kaufen.");
             }
 
-            p.sendMessage(DENIED + "Du hast es Abgelehnt das Haus zu kaufen.");
+            p.sendMessage(DENIED + "Du hast es abgelehnt, das Haus zu kaufen.");
             Annehmen.offer.remove(p.getName() + ".sellhouse");
             Annehmen.offer.remove(p.getName() + ".sellhouse.house");
             Annehmen.offer.remove(p.getName() + ".sellhouse.price");
@@ -59,33 +59,33 @@ public class Ablehnen implements CommandExecutor {
         } else if(Annehmen.offer.containsKey(p.getName() + ".vertrag.from")) {
             Player tg = Script.getPlayer(Annehmen.offer.get(p.getName() + ".vertrag.from"));
             if (tg != null) {
-                tg.sendMessage(DENIED + Script.getName(p) + " hat es Abgelehnt dein Vertrag anzunehmen.");
+                tg.sendMessage(DENIED + Script.getName(p) + " hat es abgelehnt, dein Vertrag anzunehmen.");
             }
-            p.sendMessage(DENIED + "Du hast es Abgelehnt den Vertrag anzunehmen.");
+            p.sendMessage(DENIED + "Du hast es abgelehnt, den Vertrag anzunehmen.");
             Annehmen.offer.remove(p.getName() + ".vertrag.from");
             Annehmen.offer.remove(p.getName() + ".vertrag.condition");
         } else if(Annehmen.offer.containsKey(p.getName() + ".tasche")) {
             Player tg = Script.getPlayer(Annehmen.offer.get(p.getName() + ".tasche"));
             if (tg != null) {
-                tg.sendMessage(DENIED + Script.getName(p) + " hat es Abgelehnt deine Tasche zu sehen.");
+                tg.sendMessage(DENIED + Script.getName(p) + " hat es abgelehnt, deine Tasche zu sehen.");
             }
-            p.sendMessage(DENIED + "Du hast es Abgelehnt die Tasche zu sehen.");
+            p.sendMessage(DENIED + "Du hast es abgelehnt, die Tasche zu sehen.");
             Annehmen.offer.remove(p.getName() + ".tasche");
 
         } else if(Annehmen.offer.containsKey(p.getName() + ".joinorganisation")) {
 
             Player leader = Script.getPlayer(Annehmen.offer.get(p.getName() + ".joinorganisation"));
             if (leader != null) {
-                leader.sendMessage(DENIED + Script.getName(p) + " hat es abgelehnt der Organisation " + Beruf.getBeruf(leader).getName() + " beizutreten.");
+                leader.sendMessage(DENIED + Script.getName(p) + " hat es abgelehnt, der Organisation " + Beruf.getBeruf(leader).getName() + " beizutreten.");
             }
-            p.sendMessage(DENIED + "Du hast es Abgelehnt der Organisation " + Beruf.getBeruf(leader).getName() + " beizutreten.");
+            p.sendMessage(DENIED + "Du hast es abgelehnt, der Organisation " + Beruf.getBeruf(leader).getName() + " beizutreten.");
             Annehmen.offer.remove(p.getName());
         } else if(Annehmen.offer.containsKey(p.getName() + ".shop.sell")) {
             Player sell = Script.getPlayer(Annehmen.offer.get(p.getName() + ".shop.sell.seller"));
             if (sell != null) {
-                sell.sendMessage(DENIED + Script.getName(p) + " hat es abgelehnt deinen Shop zu kaufen.");
+                sell.sendMessage(DENIED + Script.getName(p) + " hat es abgelehnt, deinen Shop zu kaufen.");
             }
-            p.sendMessage(DENIED + "Du hast es Abgelehnt den Shop zu kaufen.");
+            p.sendMessage(DENIED + "Du hast es abgelehnt, den Shop zu kaufen.");
             Annehmen.offer.remove(p.getName() + ".shop.sell");
             Annehmen.offer.remove(p.getName() + ".shop.sell.seller");
             Annehmen.offer.remove(p.getName() + ".shop.sell.price");
@@ -94,9 +94,9 @@ public class Ablehnen implements CommandExecutor {
         } else if(Annehmen.offer.containsKey(p.getName() + ".house.rent")) {
             Player owner = Script.getPlayer(Annehmen.offer.get(p.getName() + ".house.rent.owner"));
             if (owner != null) {
-                owner.sendMessage(DENIED + Script.getName(p) + " hat es abgelehnt dein Haus zu mieten.");
+                owner.sendMessage(DENIED + Script.getName(p) + " hat es abgelehnt, dein Haus zu mieten.");
             }
-            p.sendMessage(DENIED + "Du hast es Abgelehnt das Haus zu mieten.");
+            p.sendMessage(DENIED + "Du hast es abgelehnt, das Haus zu mieten.");
             Annehmen.offer.remove(p.getName() + ".house.rent");
             Annehmen.offer.remove(p.getName() + ".house.rent.owner");
             Annehmen.offer.remove(p.getName() + ".house.rent.price");

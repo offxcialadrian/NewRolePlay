@@ -2,6 +2,8 @@ package de.newrp.API;
 
 import de.newrp.Administrator.BuildMode;
 import de.newrp.Organisationen.Drogen;
+import de.newrp.Player.Fesseln;
+import de.newrp.Police.Handschellen;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -20,7 +22,7 @@ import java.util.concurrent.TimeUnit;
 
 public class UseDrogen implements Listener {
 
-    private static final Map<String, Long> DRUG_COOLDOWN = new HashMap<>();
+    public static final Map<String, Long> DRUG_COOLDOWN = new HashMap<>();
     private static final Map<String, Long> LAST_CLICK = new HashMap<>();
     private static final Map<String, Integer> LEVEL = new HashMap<>();
 
@@ -30,9 +32,6 @@ public class UseDrogen implements Listener {
         if (e.getHand() == EquipmentSlot.OFF_HAND) return;
         if(BuildMode.isInBuildMode(e.getPlayer())) return;
         if(e.getAction() != org.bukkit.event.block.Action.RIGHT_CLICK_AIR && e.getAction() != org.bukkit.event.block.Action.RIGHT_CLICK_BLOCK) return;
-
-
-
         Player p = e.getPlayer();
         if(p.getInventory().getItemInMainHand() == null) return;
         if(!p.getInventory().getItemInMainHand().hasItemMeta()) return;
@@ -40,12 +39,17 @@ public class UseDrogen implements Listener {
         Drogen droge = Drogen.getItemByName(ChatColor.stripColor(p.getInventory().getItemInMainHand().getItemMeta().getDisplayName()));
         if(droge == null) return;
 
+        if(Handschellen.isCuffed(p) || Fesseln.isTiedUp(p)) {
+            Script.sendActionBar(p, Messages.ERROR + "Du kannst keine Drogen konsumieren, wenn du gefesselt bist.");
+            return;
+        }
+
         long time = System.currentTimeMillis();
 
         Long lastUsage = DRUG_COOLDOWN.get(p.getName());
-        if (lastUsage != null && lastUsage + TimeUnit.MINUTES.toMillis(1) > time) {
-            long cooldown = TimeUnit.MILLISECONDS.toSeconds(lastUsage + TimeUnit.MINUTES.toMillis(1) - time);
-            Script.sendActionBar(p, "§cDu bist gerade noch im Rausch. (" + cooldown + " Sekunden verbleibend)");
+        if (lastUsage != null && lastUsage + TimeUnit.SECONDS.toMillis(30) > time) {
+            long cooldown = TimeUnit.MILLISECONDS.toSeconds(lastUsage + TimeUnit.SECONDS.toMillis(30) - time);
+            Script.sendActionBar(p, Messages.ERROR + "Du bist gerade noch im Rausch. (" + cooldown + " Sekunden verbleibend)");
             return;
         }
 
@@ -86,7 +90,7 @@ public class UseDrogen implements Listener {
 
     private static void progressBar(Player p) {
         double current_progress = LEVEL.get(p.getName());
-        double progress_percentage = current_progress / (double) 11;
+        double progress_percentage = current_progress / (double) 3;
         StringBuilder sb = new StringBuilder();
         int bar_length = 10;
         for (int i = 0; i < bar_length; i++) {

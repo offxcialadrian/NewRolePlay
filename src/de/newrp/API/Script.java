@@ -68,6 +68,7 @@ public class Script {
 
     public static World WORLD = Bukkit.getServer().getWorld("World");
     public static String PREFIX = "§8[§cNew RolePlay§8] §8" + Messages.ARROW + " §c";
+    public static final ArrayList<String> FREEZE = new ArrayList<>();
     public static SimpleDateFormat dateFormat = new SimpleDateFormat("d.M.y HH:mm:ss", Locale.GERMANY);
     public static SimpleDateFormat dateFormat2 = new SimpleDateFormat("d.M.y", Locale.GERMANY);
     public static DecimalFormat df = new DecimalFormat("#,###");
@@ -79,8 +80,18 @@ public class Script {
                 list.add(all);
             }
         }
+        //sort list by rank
+        list.sort((o1, o2) -> {
+            if (getRank(o1).getWeight() > getRank(o2).getWeight()) {
+                return -1;
+            } else if (getRank(o1).getWeight() < getRank(o2).getWeight()) {
+                return 1;
+            }
+            return 0;
+        });
         return list;
     }
+
 
     public static void updateListname(Player p) {
         if (SDuty.isSDuty(p)) p.setPlayerListName("§c§lNRP §8× §9" + p.getName());
@@ -210,14 +221,17 @@ public class Script {
     }
 
     public static void freeze(Player p) {
-        p.setWalkSpeed(0f);
+        FREEZE.add(p.getName());
+        /*p.setWalkSpeed(0f);
         p.removePotionEffect(PotionEffectType.JUMP);
-        p.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, Integer.MAX_VALUE, -100, false, false));
+        p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Integer.MAX_VALUE, 255, false, false));
+        p.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, Integer.MAX_VALUE, 128, false, false));*/
     }
 
     public static void unfreeze(Player p) {
-        p.setWalkSpeed(0.2f);
-        p.removePotionEffect(PotionEffectType.JUMP);
+        FREEZE.remove(p.getName());
+        /*p.setWalkSpeed(0.2f);
+        p.removePotionEffect(PotionEffectType.JUMP);*/
     }
 
     public static Weapon getWeapon(String name) {

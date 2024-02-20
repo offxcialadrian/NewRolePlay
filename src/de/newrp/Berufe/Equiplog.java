@@ -58,6 +58,17 @@ public class Equiplog implements CommandExecutor {
             p.sendMessage(Messages.PLAYER_NOT_FOUND);
             return true;
         }
+
+        if(!Beruf.hasBeruf(tg)) {
+            p.sendMessage(Messages.ERROR + "Dieser Spieler hat keinen Beruf.");
+            return true;
+        }
+
+        if(Beruf.getBeruf(tg).getID() != Beruf.getBeruf(p).getID()) {
+            p.sendMessage(Messages.ERROR + "Dieser Spieler hat nicht den gleichen Beruf wie du.");
+            return true;
+        }
+
         p.sendMessage(Equip.PREFIX + "EquipLog von " + Script.getName(tg) + " für die letzten " + hours + " Stunden §8[§7" + getTotalOfPlayer(tg, hours) + "€§8]:");
         sendEquiplog(p, tg, hours);
         return true;

@@ -57,8 +57,8 @@ public class SchwarzmarktListener implements Listener {
         inv.setItem(i++, Script.setNameAndLore(new ItemStack(Material.BEETROOT_SEEDS, amount[0]), "§aKräuter Samen", "§c80€"));
         inv.setItem(i++, Script.setNameAndLore(new ItemStack(Material.BEETROOT_SEEDS, amount[1]), "§7Pulver Samen", "§c100€"));
         inv.setItem(i++, Script.setNameAndLore(new ItemStack(Material.INK_SAC, 1), "§bSpezial-Dünger", "§c150€"));
-
         inv.setItem(i++, Script.setNameAndLore(new ItemStack(Material.BLAZE_ROD, 1), "§7Brechstange", "§c600€"));
+        inv.setItem(i++, Script.setNameAndLore(new ItemStack(Material.END_ROD, 1), "§7Testosteron-Spritze", "§c90€"));
         p.openInventory(inv);
     }
 
@@ -157,6 +157,17 @@ public class SchwarzmarktListener implements Listener {
                             int price = 600;
                             if (Script.getMoney(p, PaymentType.CASH) >= price) {
                                 p.getInventory().addItem(Script.brechstange());
+                                p.sendMessage(Schwarzmarkt.PREFIX + TEXT_POST_TRADE[Script.getRandom(0, TEXT_POST_TRADE.length - 1)]);
+                                Script.removeMoney(p, PaymentType.CASH, price);
+                            } else {
+                                p.sendMessage(Schwarzmarkt.PREFIX + TEXT_NO_MONEY[Script.getRandom(0, TEXT_NO_MONEY.length - 1)]);
+                            }
+                            break;
+                        }
+                        case "§7Testosteron-Spritze" : {
+                            int price = 90;
+                            if (Script.getMoney(p, PaymentType.CASH) >= price) {
+                                p.getInventory().addItem(Script.setName(new ItemStack(Material.END_ROD, is.getAmount()), "§7Testosteron-Spritze"));
                                 p.sendMessage(Schwarzmarkt.PREFIX + TEXT_POST_TRADE[Script.getRandom(0, TEXT_POST_TRADE.length - 1)]);
                                 Script.removeMoney(p, PaymentType.CASH, price);
                             } else {

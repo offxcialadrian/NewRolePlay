@@ -20,7 +20,7 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 public enum Votekiste {
-    NORMAL(1, "Normale Votekiste", 5, new Items[][]{new Items[]{Items.PREMIUM_1, Items.BASEBALLSCHLAEGER,
+    NORMAL(1, "Normale Votekiste", 5, new Items[][]{new Items[]{Items.PREMIUM_1, Items.BASEBALLSCHLAEGER, Items.CHANGE_TOKEN_PERSO,
             Items.SONNENBLUMENKERNE, Items.PISTOLE_MUNITION_50, Items.MP5_MUNITION_50,Items.FEUERWERK, Items.REZEPT}, new Items[]{Items.EXP_500, Items.EXP_750}}),
 
     SPECIAL(2, "Special Votekiste", 10, new Items[][]{new Items[]{Items.FEUERWERK, Items.REZEPT},
@@ -63,22 +63,20 @@ public enum Votekiste {
     }
 
     public void open(Player p) {
+        p.closeInventory();
         VoteListener.removeVotepoints(p, getPrice());
         Debug.debug("opened votekiste");
         ItemStack[] random = new ItemStack[]{
                 Script.setName(new ItemStack(Material.COOKED_BEEF, Script.getRandom(1, 10)), "§6§lGebratenes Rindfleisch"),
                 Script.setName(new ItemStack(Material.PORKCHOP, Script.getRandom(1, 10)), "§6§lGebratenes Schweinefleisch"),
                 Script.setName(new ItemStack(Material.COOKED_CHICKEN, Script.getRandom(1, 10)), "§6§lGebratenes Hühnchen"),
-                Script.setName(new ItemStack(Material.POTION, Script.getRandom(1, 3)), "§9Trinkwasser")
+                Script.setName(new ItemStack(Material.POTION, Script.getRandom(1, 3)), "§9Trinkwasser"),
+                Script.setName(new ItemStack(Material.PAPER, Script.getRandom(1, 5)), "§7Verband"),
+                Script.setName(new ItemStack(Material.PAPER, Script.getRandom(1, 10)), "§7Lottoschein"),
+                Script.setName(new ItemStack(Material.GLASS_BOTTLE, Script.getRandom(1, 3)), "§7Pfandflasche"),
         };
         ArrayList<ItemStack> items = new ArrayList<>();
         Items[][] raw = this.getItems();
-        //debug through the raw array
-        for (Items[] item : raw) {
-            for (Items is : item) {
-                Debug.debug(is.getItem().getItemMeta().getDisplayName());
-            }
-        }
         int x = 0;
         for (Items[] item : raw) {
             if (x == 0) {
@@ -108,10 +106,12 @@ public enum Votekiste {
         }
         inv.setItem(4, Script.setName(new ItemStack(Material.GREEN_STAINED_GLASS_PANE), "§c§l▼"));
         for (int i = 9; i <= 17; i++) {
-            inv.setItem(i, items.get((i - 9)));
+            inv.setItem(i, items.get((i - 9 + items.size()) % items.size()));
         }
         inv.setItem(22, Script.setName(new ItemStack(Material.GREEN_STAINED_GLASS_PANE), "§c§l▲"));
         p.openInventory(inv);
+
+        Debug.debug("reached another another step");
 
         final int taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(main.getInstance(), new Runnable() {
             int interval = 2;

@@ -1,5 +1,7 @@
 package de.newrp.API;
 
+import de.newrp.Player.Fesseln;
+import de.newrp.Police.Handschellen;
 import de.newrp.main;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -192,8 +194,9 @@ public class Chair implements Listener {
         if (p.isInsideVehicle()) return false;
         if (Script.isInAir(p)) return false;
         if (b.getData() > 3) return false;
-        if(Friedhof.isDead(p)) return false;
+        if (Friedhof.isDead(p)) return false;
         if (CHAIRS.containsKey(b.getLocation())) return false;
+        if (Handschellen.isCuffed(p) || Fesseln.isTiedUp(p)) return false;
         if (!b.getRelative(BlockFace.UP).getType().equals(Material.AIR) || b.getRelative(BlockFace.DOWN).getType().equals(Material.AIR))
             return false;
         if (!p.isOnGround()) return false;

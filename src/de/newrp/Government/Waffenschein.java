@@ -169,22 +169,14 @@ public class Waffenschein implements CommandExecutor {
         }
         return 0;
     }
+
     public static void sendApplications(Player p) {
         try (Statement stmt = main.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM waffenschein WHERE accepted='0'")) {
-
-            if (!rs.next()) {
-                // No rows found
-                p.sendMessage(PREFIX + "Keine Anträge gefunden.");
-                return;
+                p.sendMessage(PREFIX + "Anträge gefunden:");
+            while (rs.next()) {
+                Script.sendClickableMessage(p, PREFIX + "Antrag von §6" + Script.getOfflinePlayer(rs.getInt("nrp_id")).getName() + " §8× §6" + Script.dateFormat.format(rs.getLong("date")) + " Uhr §8× §6§l#" + rs.getInt("id") + "§7.", "/waffenschein accept " + rs.getInt("id"), "§a§lAnnehmen");
             }
-
-            rs.beforeFirst(); // Move cursor back to before the first row
-
-            p.sendMessage(PREFIX + "Anträge gefunden:");
-            do {
-                Script.sendClickableMessage(p, PREFIX + "Antrag von §6" + Script.getName(Script.getPlayer(rs.getInt("nrp_id"))) + " §8× §6" + Script.dateFormat.format(Script.getDate(rs.getLong("date"))) + " Uhr §8× §6§l#" + rs.getInt("id") + "§7.", "/waffenschein accept " + rs.getInt("id"), "§a§lAnnehmen");
-            } while (rs.next());
 
         } catch (Exception e) {
             e.printStackTrace();

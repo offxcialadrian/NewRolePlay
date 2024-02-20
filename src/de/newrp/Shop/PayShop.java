@@ -11,6 +11,7 @@ import de.newrp.Medic.Rezept;
 import de.newrp.Player.Mobile;
 import de.newrp.Waffen.Waffen;
 import de.newrp.Waffen.Weapon;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -49,7 +50,7 @@ public class PayShop implements Listener {
             return;
         }
 
-        int amount = (Buy.amount.containsKey(p.getName()) ? Buy.amount.get(p.getName()) : 1);
+        int amount = (Buy.amount.getOrDefault(p.getName(), 1));
         for (int j = 0; j < amount; j++) {
             switch (si) {
                 case LOTTOSCHEIN:
@@ -166,6 +167,7 @@ public class PayShop implements Listener {
             if (si.addToInventory()) p.getInventory().addItem(i);
 
             if (Mobile.isPhone(i)) {
+                p.getInventory().addItem(new ItemBuilder(Material.IRON_INGOT).setName("§c" + p.getName() + "s " + ChatColor.stripColor(si.getName())).build());
                 Mobile.hasCloud(p);
                 Mobile.getPhone(p).setAkku(p, Mobile.getPhone(p).getMaxAkku());
             }
@@ -173,25 +175,26 @@ public class PayShop implements Listener {
             if (type == PaymentType.BANK) {
                 Cashflow.addEntry(p, -price, "Einkauf: " + si.getName());
             }
-
-            BuyClick.sendMessage(p, "Vielen Dank für Ihren Einkauf!");
-            Script.removeMoney(p, type, price);
-            s.removeLager(si.getSize());
-            double mwst = Steuern.Steuer.MEHRWERTSTEUER.getPercentage();
-            Stadtkasse.addStadtkasse((int) Script.getPercent(mwst, price), "Mehrwertsteuer aus dem Verkauf von " + si.getName() + " (Shop: " + s.getPublicName() + ")", Steuern.Steuer.MEHRWERTSTEUER);
-            int add = price - (int) Script.getPercent(mwst, price) + (type == PaymentType.BANK ? -(int) Script.getPercent(2, price) : 0);
-            if (s.getOwner() > 0) {
-                s.addKasse(add);
-                s.removeKasse(si.getBuyPrice());
-                Log.NORMAL.write(p, "hat " + si.getName() + " für " + price + "€ gekauft.");
-                if (Script.getOfflinePlayer(s.getOwner()).isOnline())
-                    Script.sendActionBar(Script.getPlayer(s.getOwner()), Shop.PREFIX + "Dein Shop §6" + s.getPublicName() + " §7hat §6" + (add - si.getBuyPrice()) + "€ §7Gewinn gemacht aus dem Verkauf von §6" + si.getName() + " §7(§6" + price + "€§7)");
-            } else {
-                Stadtkasse.addStadtkasse(add, "Gewinn aus dem Verkauf von " + si.getName() + " (Shop: " + s.getPublicName() + ")", null);
-                Stadtkasse.removeStadtkasse(si.getBuyPrice(), "Einkauf von " + si.getName() + " (Shop: " + s.getPublicName() + ")");
-                Log.NORMAL.write(p, "hat " + si.getName() + " für " + price + "€ gekauft.");
-            }
         }
+
+        Script.removeMoney(p, type, price);
+        double mwst = Steuern.Steuer.MEHRWERTSTEUER.getPercentage();
+        int add = price - (int) Script.getPercent(mwst, price) + (type == PaymentType.BANK ? -(int) Script.getPercent(2, price) : 0);
+        if (s.getOwner() > 0) {
+            s.addKasse(add);
+            s.removeKasse(si.getBuyPrice());
+            Log.NORMAL.write(p, "hat " + si.getName() + " für " + price + "€ gekauft.");
+            if (Script.getOfflinePlayer(s.getOwner()).isOnline())
+                Script.sendActionBar(Script.getPlayer(s.getOwner()), Shop.PREFIX + "Dein Shop §6" + s.getPublicName() + " §7hat §6" + (add - si.getBuyPrice()) + "€ §7Gewinn gemacht aus dem Verkauf von §6" + si.getName() + " §7(§6" + price + "€§7)");
+        } else {
+            Stadtkasse.addStadtkasse(add, "Gewinn aus dem Verkauf von " + si.getName() + " (Shop: " + s.getPublicName() + ")", null);
+            Stadtkasse.removeStadtkasse(si.getBuyPrice(), "Einkauf von " + si.getName() + " (Shop: " + s.getPublicName() + ")");
+            Log.NORMAL.write(p, "hat " + si.getName() + " für " + price + "€ gekauft.");
+        }
+        BuyClick.sendMessage(p, "Vielen Dank für Ihren Einkauf!");
+        s.removeLager(si.getSize());
+        Stadtkasse.addStadtkasse((int) Script.getPercent(mwst, price), "Mehrwertsteuer aus dem Verkauf von " + si.getName() + " (Shop: " + s.getPublicName() + ")", Steuern.Steuer.MEHRWERTSTEUER);
+
         Achievement.EINKAUFEN.grant(p);
 
 

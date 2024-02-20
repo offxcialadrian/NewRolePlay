@@ -2,6 +2,7 @@ package de.newrp;
 
 import de.newrp.API.*;
 import de.newrp.Administrator.*;
+import de.newrp.Administrator.ServerTeam;
 import de.newrp.Berufe.*;
 import de.newrp.Call.CallCommand;
 import de.newrp.Call.HangupCommand;
@@ -10,6 +11,7 @@ import de.newrp.Chat.*;
 import de.newrp.Commands.DiscordCommand;
 import de.newrp.Commands.Test;
 import de.newrp.Entertainment.BlackJack;
+import de.newrp.Entertainment.Boxen;
 import de.newrp.Entertainment.Laufband;
 import de.newrp.Entertainment.Lotto;
 import de.newrp.Forum.ForumCommand;
@@ -335,6 +337,9 @@ public class main extends JavaPlugin {
         getCommand("sharelocation").setExecutor(new ShareLocation());
         getCommand("gfblevel").setExecutor(new GFBLevel());
         getCommand("equiplog").setExecutor(new Equiplog());
+        getCommand("use").setExecutor(new UseDrogenCommand());
+        getCommand("team").setExecutor(new ServerTeam());
+        getCommand("memberactivity").setExecutor(new MemberActivity());
 
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new SDuty(), this);
@@ -436,6 +441,9 @@ public class main extends JavaPlugin {
         pm.registerEvents(new GFBLevel(), this);
         pm.registerEvents(new Pfandautomat(), this);
         pm.registerEvents(new Fesseln(), this);
+        pm.registerEvents(new SniperZoom(), this);
+        pm.registerEvents(new Boxen(), this);
+        pm.registerEvents(new Drone(), this);
 
 
         new AsyncHealth().runTaskTimerAsynchronously(this, 120 * 20L, 120 * 20L);

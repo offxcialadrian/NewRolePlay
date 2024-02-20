@@ -11,5 +11,6 @@ public enum ShopType {
     MUSIC(),
     FLOWER(),
     HOTEL(),
+    GYM(),
     HOUSEADDON();
 }

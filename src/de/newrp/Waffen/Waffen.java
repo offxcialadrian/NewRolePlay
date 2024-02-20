@@ -3,6 +3,7 @@ package de.newrp.Waffen;
 import de.newrp.API.*;
 import de.newrp.Administrator.AimBot;
 import de.newrp.Administrator.SDuty;
+import de.newrp.Player.Fesseln;
 import de.newrp.Police.Handschellen;
 import de.newrp.main;
 import org.bukkit.Location;
@@ -91,6 +92,12 @@ public class Waffen implements Listener {
 
         if(Sperre.WAFFENSPERRE.isActive(Script.getNRPID(p))) {
             p.sendMessage(Messages.ERROR + "Du hast noch eine Waffensperre.");
+            return;
+        }
+
+        if(Fesseln.isTiedUp(p)) {
+            Script.sendActionBar(p, Messages.ERROR + "Du kannst keine Waffen benutzen, wenn du gefesselt bist.");
+            e.setCancelled(true);
             return;
         }
 

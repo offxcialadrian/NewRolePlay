@@ -249,10 +249,10 @@ public class BurgerFryer implements CommandExecutor, Listener {
                     PayDay.addPayDay(p, GFB.BURGERFRYER.getLevel(p) + (TOTAL_SCORE.get(p.getName())/2));
                     BURGER.remove(p.getName());
                     SCORE.remove(p.getName());
-                    TOTAL_SCORE.remove(p.getName());
                     NEEDED.remove(p.getName());
                     GFB.CURRENT.remove(p.getName());
                     Script.addEXP(p, TOTAL_SCORE.get(p.getName()));
+                    TOTAL_SCORE.remove(p.getName());
                 } else {
                     p.sendMessage(Messages.ERROR + "Du hast noch nicht alle Zutaten hinzugefügt.");
                 }

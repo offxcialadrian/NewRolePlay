@@ -5,6 +5,7 @@ import de.newrp.Berufe.Beruf;
 import de.newrp.Chat.Me;
 import de.newrp.Government.Stadtkasse;
 import de.newrp.News.BreakingNews;
+import de.newrp.Police.Handschellen;
 import de.newrp.main;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -304,6 +305,12 @@ public class Mobile implements Listener {
         Player p = e.getPlayer();
         if(e.getAction() != Action.RIGHT_CLICK_AIR && e.getAction() != Action.RIGHT_CLICK_BLOCK) return;
         if(!isPhone(p.getInventory().getItemInMainHand())) return;
+
+        if(Fesseln.isTiedUp(p) || Handschellen.isCuffed(p)) {
+            p.sendMessage(PREFIX + "Du kannst dein Handy nicht benutzen, wenn du gefesselt bist.");
+            return;
+        }
+
         if(!mobileIsOn(p)) {
             if(Elevator.progress.containsKey(p.getName())) {
                 p.sendMessage(PREFIX + "Du kannst dein Handy nicht während einer Fahrstuhl-Fahrt benutzen.");

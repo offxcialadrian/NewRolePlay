@@ -258,7 +258,7 @@ public class Friedhof {
 
     public static Friedhof getDeathByLocation(Location loc) {
         for (Friedhof f : FRIEDHOF.values()) {
-            if (Script.isInRange(loc, f.getDeathLocation(), 1.2)) {
+            if (Script.isInRange(loc, f.getDeathLocation(), 3.0)) {
                 return f;
             }
         }

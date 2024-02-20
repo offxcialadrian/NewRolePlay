@@ -57,6 +57,7 @@ public class UseMedikamente implements Listener {
                 Me.sendMessage(p, "nimmt ein Schmerzmittel ein.");
                 Script.playLocalSound(p.getLocation(), Sound.ENTITY_PLAYER_BURP, 5);
                 p.getInventory().getItemInMainHand().setAmount(p.getInventory().getItemInMainHand().getAmount() - 1);
+                if(!p.hasPotionEffect(PotionEffectType.ABSORPTION)) p.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 220 * 20, 2, false, false));
                 p.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 20 * 15, 2));
                 Drogen.addToAdiction(p);
                 return;

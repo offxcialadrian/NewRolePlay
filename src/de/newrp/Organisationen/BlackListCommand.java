@@ -11,12 +11,62 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
 
 public class BlackListCommand implements CommandExecutor, Listener {
+
+    public enum Reasons {
+        LEADERMORD("Leadermord", 100, 5, new Organisation[] {Organisation.BLOODS});
+
+        private final String name;
+        private final int price;
+        private final int kills;
+        private final Organisation[] organisations;
+
+        Reasons(String name, int price, int kills, Organisation[] organisations) {
+            this.name = name;
+            this.price = price;
+            this.kills = kills;
+            this.organisations = organisations;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public int getPrice() {
+            return price;
+        }
+
+        public int getKills() {
+            return kills;
+        }
+
+        public Organisation[] getOrganisations() {
+            return organisations;
+        }
+
+        public boolean hasReason(Organisation o) {
+            for(Organisation f : organisations) {
+                if(f == o) return true;
+            }
+            return false;
+        }
+
+        public static Reasons getReason(String name) {
+            for(Reasons r : values()) {
+                if(r.getName().equalsIgnoreCase(name.replace("-"," "))) return r;
+            }
+            return null;
+        }
+
+
+
+    }
 
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
@@ -113,7 +163,8 @@ public class BlackListCommand implements CommandExecutor, Listener {
             return true;
         }
 
-        if(args.length >= 5 && args[0].equalsIgnoreCase("add")) {
+
+        if(args[0].equalsIgnoreCase("add")) {
             Player tg = Script.getPlayer(args[1]);
             if(tg == null) {
                 p.sendMessage(Messages.PLAYER_NOT_FOUND);
@@ -123,41 +174,51 @@ public class BlackListCommand implements CommandExecutor, Listener {
                 p.sendMessage(Blacklist.PREFIX + "Der Spieler ist bereits auf der Blacklist.");
                 return true;
             }
-            int kills;
-            try {
-                kills = Integer.parseInt(args[2]);
-            } catch (NumberFormatException e) {
-                p.sendMessage(Blacklist.PREFIX + "Bitte gebe eine Zahl an.");
+
+            ArrayList<Reasons> reason = new ArrayList<>();
+
+            for(int i = 2; i < args.length; i++) {
+                if(Reasons.getReason(args[i]) == null) {
+                    p.sendMessage(Blacklist.PREFIX + "Der Grund " + args[i] + " existiert nicht.");
+                    continue;
+                }
+
+                if(!Reasons.getReason(args[i]).hasReason(o)) {
+                    p.sendMessage(Blacklist.PREFIX + "Der Grund " + args[i] + " ist nicht für deine Organisation verfügbar.");
+                    continue;
+                }
+
+                reason.add(Reasons.getReason(args[i]));
+            }
+
+            if(reason.isEmpty()) {
+                p.sendMessage(Blacklist.PREFIX + "Es wurde kein gültiger Grund gefunden.");
                 return true;
             }
-            if(kills > (o.getLevel() * 10)) {
-                p.sendMessage(Blacklist.PREFIX + "Du kannst maximal " + (o.getLevel() * 10) + " Kills vergeben.");
-                return true;
+
+            StringBuilder reasons = new StringBuilder();
+            int price = 0;
+            int kills = 0;
+            for(Reasons r : reason) {
+                reasons.append(r.getName()).append(", ");
+                price += r.getPrice();
+                kills += r.getKills();
             }
-            int price;
-            try {
-                price = Integer.parseInt(args[3]);
-            } catch (NumberFormatException e) {
-                p.sendMessage(Blacklist.PREFIX + "Bitte gebe eine Zahl an.");
-                return true;
-            }
-            if(price > (o.getLevel() * 100)) {
-                p.sendMessage(Blacklist.PREFIX + "Du kannst maximal " + (o.getLevel() * 100) + "€ vergeben.");
-                return true;
-            }
-            StringBuilder sb = new StringBuilder();
-            for(int i = 4; i < args.length; i++) {
-                sb.append(args[i]).append(" ");
-            }
-            String reason = sb.toString().trim();
-            Blacklist.add(tg, o, reason, kills, price);
+
+            price = Math.max(5000, price*(Math.min(1, o.getLevel()/2)));
+            kills = Math.max(100, kills);
+
+
+            Blacklist.add(tg, o, reasons.toString(), kills, price);
             p.sendMessage(Blacklist.PREFIX + "Der Spieler wurde auf die Blacklist gesetzt.");
-            tg.sendMessage(Blacklist.PREFIX + "Du wurdest auf die Blacklist der " + o.getName() + " gesetzt (Grund: " + reason + " | Preis: " + price + "€)");
+            tg.sendMessage(Blacklist.PREFIX + "Du wurdest auf die Blacklist der " + o.getName() + " gesetzt (Grund: " + reasons.toString() + " | Preis: " + price + "€)");
             o.sendMessage(Blacklist.PREFIX + Script.getName(p) + " hat " + Script.getName(tg) + " auf die Blacklist gesetzt.");
+            o.sendMessage(Blacklist.PREFIX + "Grund: " + reasons.toString() + " | Preis: " + price + "€");
             return true;
         }
 
         sendPossabilities(p);
+
 
         return false;
     }
@@ -179,7 +240,7 @@ public class BlackListCommand implements CommandExecutor, Listener {
 
     public static void sendPossabilities(Player p) {
         p.sendMessage("§8=== §6Blacklist §8===");
-        p.sendMessage("§8» §6/blacklist add [Spieler] [Kills] [Preis] [Grund]");
+        p.sendMessage("§8» §6/blacklist add [Spieler] [Grund]");
         p.sendMessage("§8» §6/blacklist remove [Spieler]");
         p.sendMessage("§8» §6/blacklist list");
     }

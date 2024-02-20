@@ -47,7 +47,10 @@ public class Equip implements CommandExecutor, Listener {
         KAFFEE(18, "Kaffee", Script.setName(new ItemStack(Material.POTION), "§7Kaffee"), 10, 0, null, Beruf.Berufe.NEWS, false),
         BROT(19, "Brot", new ItemBuilder(Material.BREAD).setAmount(16).setName("§7Brot").build(), 10, 0, null, Beruf.Berufe.RETTUNGSDIENST, false),
         KEKSE(20, "Kekse",new ItemBuilder(Material.COOKIE).setAmount(16).setName("§7Keks").build(), 10, 0, null, Beruf.Berufe.NEWS, false),
-        SNIPER(21, "Sniper", new ItemBuilder(Material.STONE_HOE).setName("§7Sniper").build(), 5000, 100, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE, true);
+        SNIPER(21, "Sniper", new ItemBuilder(Material.STONE_HOE).setName("§7Sniper").build(), 5000, 30, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE, true),
+        DROHNE_COPS(22, "Drohne", new ItemBuilder(Material.WITHER_SKELETON_SKULL).setName("§7Drohne").build(), 2000, 0, null, Beruf.Berufe.POLICE, true),
+        DROHNE_NEWS(23, "Drohne", new ItemBuilder(Material.WITHER_SKELETON_SKULL).setName("§7Drohne").build(), 2000, 0, Abteilung.Abteilungen.CHEFREDAKTION, Beruf.Berufe.NEWS, true),
+        DROHNE_RETTUNGSDIENST(24, "Drohne", new ItemBuilder(Material.WITHER_SKELETON_SKULL).setName("§7Drohne").build(), 2000, 0, null, Beruf.Berufe.RETTUNGSDIENST, true);
 
         private String name;
         private int id;

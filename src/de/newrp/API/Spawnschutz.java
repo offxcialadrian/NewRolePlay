@@ -144,10 +144,10 @@ public class Spawnschutz implements Listener {
 
         e.setCancelled(true);
         if (damager.getType() == EntityType.PLAYER) {
-            damager.sendMessage("§8[§cNeulingsschutz§8] §c "+ Messages.ARROW + " Der Spieler ist im Neulingsschutz.");
+            damager.sendMessage("§8[§cNeulingsschutz§8] §c "+ Messages.ARROW + " Die Aktion wurde aufgrund des Neulingsschutzes abgebrochen.");
         } else if (damager.getType() == EntityType.ARROW) {
             Arrow a = (Arrow) damager;
-            ((Player) a.getShooter()).sendMessage("§8[§cNeulingsschutz§8] §c "+ Messages.ARROW + " Der Spieler ist im Neulingsschutz.");
+            ((Player) a.getShooter()).sendMessage("§8[§cNeulingsschutz§8] §c "+ Messages.ARROW + " Die Aktion wurde aufgrund des Neulingsschutzes abgebrochen.");
         }
     }
 

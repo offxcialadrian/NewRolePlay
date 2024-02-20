@@ -227,26 +227,29 @@ public class Lagerarbeiter implements CommandExecutor, Listener {
                         Waren ware = Waren.getWareByID(Script.getRandom(1, Waren.values().length));
                         p.sendMessage(PREFIX + "Sortiere nun " + ware.getName() + " ein.");
                         ON_JOB.put(p.getName(), ware);
-                    } else if(s.getLine(2).equalsIgnoreCase("§l" + ON_JOB.get(p.getName()).getType().getName())) {
-                        if(!ON_JOB.containsKey(p.getName())) {
-                            p.sendMessage(PREFIX + "Du hast keine Ware zum einordnen.");
-                            return;
-                        }
-
-
-                        Inventory inv = Bukkit.createInventory(null, 9*5, "Produkt einsortieren");
-                        inv.setItem(inv.getSize() - 1, new ItemBuilder(Material.GREEN_WOOL).setName("§aBestätigen").build());
-                        if(small_cooldown.containsKey(p.getName())) {
-                            if (small_cooldown.get(p.getName()) < System.currentTimeMillis()) Cache.saveInventory(p);
-                        } else {
-                            Cache.saveInventory(p);
-                        }
-                        small_cooldown.put(p.getName(), System.currentTimeMillis() + 5L);
-                        p.getInventory().clear();
-                        p.openInventory(inv);
-                        p.setItemOnCursor(new ItemBuilder(ON_JOB.get(p.getName()).getMaterial().getType()).setAmount(inv.getSize() - 1).build());
                     } else {
-                        p.sendMessage(PREFIX + "Du musst erstmal " + ON_JOB.get(p.getName()).getType().getName() + " wegbringen.");
+                        if(!ON_JOB.containsKey(p.getName())) return;
+                        if(s.getLine(2).equalsIgnoreCase("§l" + ON_JOB.get(p.getName()).getType().getName())) {
+                            if(!ON_JOB.containsKey(p.getName())) {
+                                p.sendMessage(PREFIX + "Du hast keine Ware zum einordnen.");
+                                return;
+                            }
+
+
+                            Inventory inv = Bukkit.createInventory(null, 9*5, "Produkt einsortieren");
+                            inv.setItem(inv.getSize() - 1, new ItemBuilder(Material.GREEN_WOOL).setName("§aBestätigen").build());
+                            if(small_cooldown.containsKey(p.getName())) {
+                                if (small_cooldown.get(p.getName()) < System.currentTimeMillis()) Cache.saveInventory(p);
+                            } else {
+                                Cache.saveInventory(p);
+                            }
+                            small_cooldown.put(p.getName(), System.currentTimeMillis() + 5L);
+                            p.getInventory().clear();
+                            p.openInventory(inv);
+                            p.setItemOnCursor(new ItemBuilder(ON_JOB.get(p.getName()).getMaterial().getType()).setAmount(inv.getSize() - 1).build());
+                        } else {
+                            p.sendMessage(PREFIX + "Du musst erstmal " + ON_JOB.get(p.getName()).getType().getName() + " wegbringen.");
+                        }
                     }
                 }
             }
@@ -302,7 +305,7 @@ public class Lagerarbeiter implements CommandExecutor, Listener {
                 Script.addEXP(p, GFB.LAGERARBEITER.getLevel(p) * Script.getRandom(3, 7));
             } else {
                 SCORE.replace(p.getName(), amount - 1);
-                p.sendMessage(PREFIX + "§aRichtig! §6Hole nun das nächste Produkt aus \"Ware\" und Sortiere es ein (" + (TOTAL_SCORE.get(p.getName())-SCORE.get(p.getName())) + "/" + (TOTAL_SCORE.get(p.getName())) + ")");
+                p.sendMessage(PREFIX + "§aRichtig! §6Hole nun das nächste Produkt aus \"Ware\" und sortiere es ein (" + (TOTAL_SCORE.get(p.getName())-SCORE.get(p.getName())) + "/" + (TOTAL_SCORE.get(p.getName())+1) + ")");
             }
         }
     }

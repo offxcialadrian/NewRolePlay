@@ -77,9 +77,9 @@ public class AchievementCommand implements CommandExecutor, Listener {
                 e.getView().close();
                 Player p = (Player) e.getWhoClicked();
                 String buttonName = ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName());
-                if (buttonName.equals("Nächste Seite")) {
+                if (buttonName.endsWith("Nächste Seite")) {
                     AchievementCommand.open(p, 2);
-                } else if (buttonName.equals("Vorherige Seite")) {
+                } else if (buttonName.endsWith("Vorherige Seite")) {
                     AchievementCommand.open(p, 1);
                 }
             }
