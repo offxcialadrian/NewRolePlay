@@ -29,7 +29,7 @@ public class ScoreboardManager {
     }
 
     public enum ScoreboardTeam {
-        NO_PUSH("nopush", Option.COLLISION_RULE, OptionStatus.NEVER),
+        NO_PUSH("zzznopush", Option.COLLISION_RULE, OptionStatus.NEVER),
         NRPS("1nrps", null, null),
         GOVERNMENT("2government", null, null),
         POLICE("3police", null, null),

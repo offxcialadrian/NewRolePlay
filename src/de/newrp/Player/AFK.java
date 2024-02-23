@@ -54,7 +54,7 @@ public class AFK implements CommandExecutor, Listener {
             p.setCollidable(false);
             p.setCanPickupItems(false);
             if (p.isFlying()) p.setFlying(false);
-            Bukkit.getScoreboardManager().getMainScoreboard().getTeam("nopush").addEntry(p.getName());
+            Bukkit.getScoreboardManager().getMainScoreboard().getTeam("zzznopush").addEntry(p.getName());
             if(Schule.STUDIYING.containsKey(p)) {
                 p.sendMessage(Schule.PREFIX + "§cDu hast den Kurs nicht bestanden.");
                 Schule.STUDIYING.remove(p);
@@ -65,7 +65,7 @@ public class AFK implements CommandExecutor, Listener {
             afk.remove(p.getName());
             p.setCollidable(true);
             p.setCanPickupItems(true);
-            Bukkit.getScoreboardManager().getMainScoreboard().getTeam("nopush").removeEntry(p.getName());
+            Bukkit.getScoreboardManager().getMainScoreboard().getTeam("zzznopush").removeEntry(p.getName());
         }
 
         new BukkitRunnable() {
