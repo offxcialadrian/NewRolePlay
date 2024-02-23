@@ -1,6 +1,7 @@
 package de.newrp.Police;
 
 import de.newrp.API.Chair;
+import de.newrp.API.Log;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.Berufe.Beruf;
@@ -106,6 +107,8 @@ public class Arrest implements CommandExecutor {
             }
         }
 
+        Log.NORMAL.write(p, "hat " + Script.getName(tg) + " verhaftet (" + wanteds + ")");
+        Log.NORMAL.write(tg, "wurde von " + Script.getName(p) + " verhaftet (" + wanteds + ")");
         Script.addEXP(p, (Script.getRandom(10, 15) + Math.abs(wanteds / 6)));
         Script.removeWeapons(tg);
         Handschellen.uncuff(tg);

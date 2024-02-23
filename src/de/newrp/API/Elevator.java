@@ -1,5 +1,6 @@
 package de.newrp.API;
 
+import de.newrp.Player.AFK;
 import de.newrp.main;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -15,6 +16,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
@@ -221,6 +223,13 @@ public class Elevator implements Listener {
             p.closeInventory();
             return;
         }
+
+        Long lastUsage = AFK.lastDmg.get(p.getName());
+        if (p.hasPotionEffect(PotionEffectType.WITHER) || (lastUsage != null && lastUsage + 15 * 1000 > System.currentTimeMillis())) {
+            p.sendMessage(Messages.ERROR + "Du kannst gerade nicht mit einem Fahrstuhl fahren (Schaden).");
+            return;
+        }
+
         int etage = elevator.getEtageByLoc(p.getLocation());
         if (e.getView().getTitle().equals("§c" + elevator.getName() + " Fahrstuhl")) {
             e.setCancelled(true);

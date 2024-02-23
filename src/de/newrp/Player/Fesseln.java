@@ -43,9 +43,13 @@ public class Fesseln implements Listener {
         long time = System.currentTimeMillis();
         Player rightClicked = (Player) e.getRightClicked();
 
+        if(isTiedUp(p)) {
+            Script.sendActionBar(p, Messages.ERROR + "Du bist selbst gefesselt.");
+        }
+
         Long lastUsage = COOLDOWN.get(rightClicked.getName());
-        if (lastUsage != null && lastUsage + TimeUnit.MINUTES.toMillis(360) > time) {
-            p.sendMessage(Messages.ERROR + "Der Spieler kann gerade nicht gefesselt werden. (" + Script.getRemainingTime(lastUsage+TimeUnit.MINUTES.toMillis(360)) + " verbleibend)");
+        if (lastUsage != null && lastUsage + TimeUnit.MINUTES.toMillis(120) > time) {
+            p.sendMessage(Messages.ERROR + "Der Spieler kann gerade nicht gefesselt werden. (" + Script.getRemainingTime(lastUsage+TimeUnit.MINUTES.toMillis(120)) + " verbleibend)");
             return;
         }
 

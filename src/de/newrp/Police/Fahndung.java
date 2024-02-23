@@ -1,5 +1,6 @@
 package de.newrp.Police;
 
+import de.newrp.API.Log;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.Administrator.SDuty;
@@ -126,6 +127,8 @@ public class Fahndung implements CommandExecutor, TabCompleter {
         }
 
         String substring = sb.toString().substring(0, sb.toString().length() - 3);
+        Log.NORMAL.write(p, "hat eine Fahdung auf " + Script.getName(tg) + " ausgeschrieben (" + substring + ")");
+        Log.NORMAL.write(tg, "hat von " + Script.getName(p) + " eine Fahndung ausgeschrieben bekommen (" + substring + ")");
         p.sendMessage(PREFIX + "Der Spieler §e" + Script.getName(tg) + " §7wird nun wegen §e" + substring + " §7gefahndet.");
         Beruf.Berufe.POLICE.sendMessage(PREFIX + "Beamter: §e" + Script.getName(p) + " §8(§7WantedPunkte: " + Fahndung.getWanteds(tg) + "§8)");
         tg.sendMessage(PREFIX + "Du wirst nun wegen §e" + substring + " §7gefahndet.");
@@ -184,7 +187,7 @@ public class Fahndung implements CommandExecutor, TabCompleter {
             }
 
             if (args.length >= 2) {
-                StringUtil.copyPartialMatches(args[1], oneArgList, completions);
+                StringUtil.copyPartialMatches(args[args.length - 1], oneArgList, completions);
             }
             Collections.sort(completions);
             return completions;

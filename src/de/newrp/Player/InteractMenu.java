@@ -50,6 +50,10 @@ public class InteractMenu implements Listener {
             return;
         }
 
+        if(Fesseln.isTiedUp(p)) {
+            Script.sendActionBar(p, Messages.ERROR + "Du bist gefesselt.");
+        }
+
         if (AFK.isAFK(tg)) {
             Script.sendActionBar(p, Messages.ERROR + "Du kannst nicht mit " + Script.getName(tg) + " interagieren, da " + (Script.getGender(tg) == Gender.MALE ? "er" : "sie") + " sich im AFK-Modus befindet.");
             return;

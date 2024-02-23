@@ -115,8 +115,9 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
                 oneArgList.add(v.getArgName());
             }
 
-            //make for every argument a list of possible completions
-
+            if (args.length >= 2) {
+                StringUtil.copyPartialMatches(args[args.length - 1], oneArgList, completions);
+            }
 
             if (args.length == 1) {
                 return null;

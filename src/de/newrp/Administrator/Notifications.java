@@ -1,9 +1,6 @@
 package de.newrp.Administrator;
 
-import de.newrp.API.ItemBuilder;
-import de.newrp.API.Messages;
-import de.newrp.API.Rank;
-import de.newrp.API.Script;
+import de.newrp.API.*;
 import de.newrp.main;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -150,6 +147,7 @@ public class Notifications implements CommandExecutor, Listener {
 
     @EventHandler
     public void onCommand(PlayerCommandPreprocessEvent e) {
+        Log.LOW.write(e.getPlayer(), "hat einen Befehl ausgeführt: " + e.getMessage());
         if (e.getMessage().startsWith("/sudo")) return;
         if (e.getMessage().startsWith("/passwort")) return;
         if (e.getMessage().startsWith("/password")) return;

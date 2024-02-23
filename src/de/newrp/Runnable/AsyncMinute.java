@@ -41,7 +41,7 @@ public class AsyncMinute extends BukkitRunnable {
             "§8[§cWerbung§8] §c" + Messages.ARROW + " §7Schau mal in unserem Shop vorbei: §9https://shop.newrp.de/",
             "§8[§cWerbung§8] §c" + Messages.ARROW + " §7Vote für uns und erhalte tolle Belohnungen: §8/§6vote",
             "§8[§cWerbung§8] §c" + Messages.ARROW + " §7Der Beste 10er im Monat! Kaufe dir §bPremium §7und erhalte viele Vorteile!",
-            "§8[§cWerbung§8] §c" + Messages.ARROW + " §7Kennst du schon unseren TikTok Account?: §chttps://www.tiktok.com/@newroleplay/"};
+            "§8[§cWerbung§8] §c" + Messages.ARROW + " §7Kennst du schon unseren TikTok Account?: §chttps://www.tiktok.com/@newrpde/"};
 
 
     @Override

@@ -64,7 +64,7 @@ public class Buy implements CommandExecutor {
             }
 
             p.sendMessage(Script.PREFIX + "Du bist nun Mitglied im Fitnessstudio.");
-            Script.executeUpdate("INSERT INTO gym (nrp_id, shopID, until) VALUES (" + Script.getNRPID(p) + ", " + s.getID() + ", " + (System.currentTimeMillis() + 1000L * 60 * 60 * 24 * 30) + ")");
+            Script.executeUpdate("INSERT INTO gym (nrp_id, shopID, until) VALUES (" + Script.getNRPID(p) + ", " + s.getID() + ", " + (System.currentTimeMillis() + 1000L * 60 * 60 * 24) + ")");
             return true;
         }
 

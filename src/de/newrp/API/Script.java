@@ -1455,6 +1455,9 @@ public class Script {
     }
 
     public static void addEXP(Player p, int exp) {
+        if(exp > 200) {
+            Script.sendTeamMessage(AntiCheatSystem.PREFIX + "Verdacht auf Exp-Cheat bei " + Script.getName(p) + " (+" + exp + " Exp)");
+        }
         int id = getNRPID(p);
         if (main.event == Event.DOUBLE_XP_WEEKEND || main.event == Event.DOUBLE_XP) exp *= 2;
         p.sendMessage("  §a+" + exp + " Exp!" + (main.event == Event.DOUBLE_XP_WEEKEND || main.event == Event.DOUBLE_XP ? " §7(§6§lDOUBLE EXP§7)" : ""));

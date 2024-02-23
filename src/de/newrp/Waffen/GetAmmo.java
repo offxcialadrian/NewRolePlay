@@ -25,7 +25,7 @@ public class GetAmmo implements CommandExecutor {
             return true;
         }
 
-        if (h == null && (Hotel.isInHotelRoom(p) && Hotel.getHotelRoom(p).getType() == Hotel.RoomType.PRAESIDENTEN_SUITE)) {
+        if (h == null && !(Hotel.isInHotelRoom(p) && Hotel.getHotelRoom(p).getType() == Hotel.RoomType.PRAESIDENTEN_SUITE)) {
             p.sendMessage(PREFIX + "Deine Waffen sind Zuhause im Waffenschrank.");
             return true;
         }

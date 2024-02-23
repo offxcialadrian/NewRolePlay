@@ -29,6 +29,16 @@ public class RNRPChat implements CommandExecutor {
 
         String msg = String.join(" ", args);
 
+        if(Script.hasRank(p, Rank.OWNER, false)) {
+            if(args[0].equalsIgnoreCase("-a")) {
+                for (Player all : Bukkit.getOnlinePlayers()) {
+                    if (isNRPTeam(all) && Script.hasRank(all, Rank.ADMINISTRATOR, false)) {
+                        all.sendMessage("§c§lR§5§lNRP » §5" + Messages.RANK_PREFIX(p) + ": §3" + msg.replace("-a", ""));
+                    }
+                }
+                return true;
+            }
+        }
 
         for (Player all : Bukkit.getOnlinePlayers()) {
             if (isNRPTeam(all) && Script.hasRank(all, Script.getRank(p), false)) {
