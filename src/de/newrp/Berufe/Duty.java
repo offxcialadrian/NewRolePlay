@@ -3,6 +3,7 @@ package de.newrp.Berufe;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.Police.Fahndung;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -41,12 +42,14 @@ public class Duty implements CommandExecutor {
             }
 
             if (isInDuty(p)) {
+                Bukkit.getScoreboardManager().getMainScoreboard().getTeam("4medic").removeEntry(p.getName());
                 Beruf.Berufe.RETTUNGSDIENST.sendMessage(PREFIX + Script.getName(p) + " hat den Dienst verlassen.");
                 duty.remove(p.getName());
                 Script.updateListname(p);
                 return true;
             }
 
+            Bukkit.getScoreboardManager().getMainScoreboard().getTeam("4medic").addEntry(p.getName());
             Beruf.Berufe.RETTUNGSDIENST.sendMessage(PREFIX + Script.getName(p) + " hat den Dienst betreten.");
             duty.add(p.getName());
             Script.updateListname(p);
@@ -61,12 +64,14 @@ public class Duty implements CommandExecutor {
             }
 
             if (isInDuty(p)) {
+                Bukkit.getScoreboardManager().getMainScoreboard().getTeam("3police").removeEntry(p.getName());
                 Beruf.Berufe.POLICE.sendMessage(PREFIX + Script.getName(p) + " hat den Dienst verlassen.");
                 duty.remove(p.getName());
                 Script.updateListname(p);
                 return true;
             }
 
+            Bukkit.getScoreboardManager().getMainScoreboard().getTeam("3police").addEntry(p.getName());
             Beruf.Berufe.POLICE.sendMessage(PREFIX + Script.getName(p) + " hat den Dienst betreten.");
             duty.add(p.getName());
             Script.updateListname(p);
@@ -74,18 +79,21 @@ public class Duty implements CommandExecutor {
         }
 
         if(Beruf.getBeruf(p) == Beruf.Berufe.NEWS) {
+
             if (p.getLocation().distance(new Location(Script.WORLD, 301, 67, 762, 358.99658f, -1.2081925f)) > 10) {
                 p.sendMessage(Messages.ERROR + "Du befindest dich nicht in der Nähe des Duty-Punkt");
                 return true;
             }
 
             if (isInDuty(p)) {
+                Bukkit.getScoreboardManager().getMainScoreboard().getTeam("5news").removeEntry(p.getName());
                 Beruf.Berufe.NEWS.sendMessage(PREFIX + Script.getName(p) + " hat den Dienst verlassen.");
                 duty.remove(p.getName());
                 Script.updateListname(p);
                 return true;
             }
 
+            Bukkit.getScoreboardManager().getMainScoreboard().getTeam("5news").addEntry(p.getName());
             Beruf.Berufe.NEWS.sendMessage(PREFIX + Script.getName(p) + " hat den Dienst betreten.");
             duty.add(p.getName());
             Script.updateListname(p);
@@ -99,12 +107,14 @@ public class Duty implements CommandExecutor {
             }
 
             if (isInDuty(p)) {
+                Bukkit.getScoreboardManager().getMainScoreboard().getTeam("2government").removeEntry(p.getName());
                 Beruf.Berufe.GOVERNMENT.sendMessage(PREFIX + Script.getName(p) + " hat den Dienst verlassen.");
                 duty.remove(p.getName());
                 Script.updateListname(p);
                 return true;
             }
 
+            Bukkit.getScoreboardManager().getMainScoreboard().getTeam("2government").addEntry(p.getName());
             Beruf.Berufe.GOVERNMENT.sendMessage(PREFIX + Script.getName(p) + " hat den Dienst betreten.");
             duty.add(p.getName());
             Script.updateListname(p);
