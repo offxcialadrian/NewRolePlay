@@ -48,55 +48,58 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
             return true;
         }
 
-        if (args.length != 2) {
+        if (args.length < 2) {
             p.sendMessage(Messages.ERROR + "/punish [Spieler] [Verstoß]");
             return true;
         }
 
-        v = Violation.getViolationByArg(args[1]);
+        for(String arg : args) {
+            if(arg.equalsIgnoreCase(args[0])) continue;
+            v = Violation.getViolationByArg(arg);
 
-        if (v != Violation.SICHERHEITSBANN && v != Violation.SPAM && !Script.hasRank(p, Rank.MODERATOR, true)) {
-            p.sendMessage(Messages.NO_PERMISSION);
-            return true;
-        }
-
-        if (v == null) {
-            p.sendMessage(Messages.ERROR + "Verstoß nicht gefunden.");
-            return true;
-        }
-
-        Player tg = Script.getPlayer(args[0]);
-        OfflinePlayer offtg = Script.getOfflinePlayer(Script.getNRPID(args[0]));
-        if (Script.getNRPID(offtg) == 0) {
-            p.sendMessage(Messages.PLAYER_NOT_FOUND);
-            p.sendMessage(Messages.INFO + "Du kannst auch Spieler registrieren die noch nie auf NewRP waren.");
-            return true;
-        }
-
-        if (tg == null && offtg != null) {
-            Punish.punish(p, offtg, v);
-            return true;
-        }
-
-        if (p == tg && !Script.isInTestMode()) {
-            p.sendMessage(Messages.ERROR + "Du kannst dich nicht selbst bestrafen.");
-            return true;
-        }
-
-        if (Script.hasRank(tg, Rank.SUPPORTER, false) && !Script.hasRank(p, Rank.ADMINISTRATOR, false)) {
-            p.sendMessage(Messages.ERROR + "Du kannst keine Teammitglieder bestrafen.");
-
-            for (Player team : Script.getNRPTeam()) {
-                if (Script.hasRank(team, Rank.ADMINISTRATOR, false)) {
-                    team.sendMessage(AntiCheatSystem.PREFIX + "§c" + Script.getName(p) + " §chat versucht ein Teammitglied zu bestrafen.");
-                }
+            if (v != Violation.SICHERHEITSBANN && v != Violation.SPAM && !Script.hasRank(p, Rank.MODERATOR, true)) {
+                p.sendMessage(Messages.NO_PERMISSION);
+                return true;
             }
 
-            return true;
+            if (v == null) {
+                p.sendMessage(Messages.ERROR + "Verstoß nicht gefunden.");
+                return true;
+            }
+
+            Player tg = Script.getPlayer(args[0]);
+            OfflinePlayer offtg = Script.getOfflinePlayer(Script.getNRPID(args[0]));
+            if (Script.getNRPID(offtg) == 0) {
+                p.sendMessage(Messages.PLAYER_NOT_FOUND);
+                p.sendMessage(Messages.INFO + "Du kannst auch Spieler registrieren die noch nie auf NewRP waren.");
+                return true;
+            }
+
+            if (tg == null && offtg != null) {
+                Punish.punish(p, offtg, v);
+                return true;
+            }
+
+            if (p == tg && !Script.isInTestMode()) {
+                p.sendMessage(Messages.ERROR + "Du kannst dich nicht selbst bestrafen.");
+                return true;
+            }
+
+            if (Script.hasRank(tg, Rank.SUPPORTER, false) && !Script.hasRank(p, Rank.ADMINISTRATOR, false)) {
+                p.sendMessage(Messages.ERROR + "Du kannst keine Teammitglieder bestrafen.");
+
+                for (Player team : Script.getNRPTeam()) {
+                    if (Script.hasRank(team, Rank.ADMINISTRATOR, false)) {
+                        team.sendMessage(AntiCheatSystem.PREFIX + "§c" + Script.getName(p) + " §chat versucht ein Teammitglied zu bestrafen.");
+                    }
+                }
+
+                return true;
+            }
+
+
+            punish(p, tg, v);
         }
-
-
-        punish(p, tg, v);
 
         return false;
     }
@@ -112,11 +115,10 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
                 oneArgList.add(v.getArgName());
             }
 
-            if (args.length == 2) {
-                StringUtil.copyPartialMatches(args[1], oneArgList, completions);
-            }
+            //make for every argument a list of possible completions
 
-            if (args.length != 2) {
+
+            if (args.length == 1) {
                 return null;
             }
             Collections.sort(completions);

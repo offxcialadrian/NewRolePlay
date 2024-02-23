@@ -58,6 +58,7 @@ public class Waffenschein implements CommandExecutor {
                 if (args[0].equalsIgnoreCase("accept")) {
                     try {
                         int id = Integer.parseInt(args[1]);
+                        OfflinePlayer tg = getPlayerByWaffenscheinID(id);
 
                         if (id <= 0) {
                             p.sendMessage(PREFIX + "Bitte gib eine gültige ID an.");
@@ -69,20 +70,19 @@ public class Waffenschein implements CommandExecutor {
                             return true;
                         }
 
-                        if(Script.getMoney(id, PaymentType.BANK) < Script.getLevel(Script.getOfflinePlayer(id)) * 1000) {
+                        if(Script.getMoney(tg, PaymentType.BANK) < Script.getLevel(tg) * 1000) {
                             p.sendMessage(PREFIX + "Der Spieler hat nicht genug Geld.");
                             return true;
                         }
 
 
-                        if (isAccepted(Script.getOfflinePlayer(id))) {
+                        if (isAccepted(tg)) {
                             p.sendMessage(PREFIX + "Du hast diesen Antrag bereits angenommen.");
                             return true;
                         }
 
                         acceptApplication(id);
                         p.sendMessage(PREFIX + "Du hast den Antrag angenommen.");
-                        OfflinePlayer player = getPlayerByWaffenscheinID(id);
                         Beruf.Berufe.GOVERNMENT.sendMessage(PREFIX + Script.getName(p) + " hat den Antrag #" + id + " angenommen.");
                     } catch (Exception e) {
                         p.sendMessage(PREFIX + "Bitte gib eine gültige ID an.");

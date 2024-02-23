@@ -121,6 +121,7 @@ public class Corpse {
                 p.sendPacket(destroyPacket);
             }
         }
+        Script.updateListname(player);
     }
 
     public static void reloadNPC(Player player) {

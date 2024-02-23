@@ -65,4 +65,15 @@ public enum ATM {
         }
         return a;
     }
+
+    public static ATM getNearestATM(Location loc) {
+        ATM a = null;
+        for (ATM atm : ATM.values()) {
+            if (a == null || atm.getLocation().distance(loc) < a.getLocation().distance(loc)) {
+                a = atm;
+            }
+        }
+        return a;
+    }
+
 }

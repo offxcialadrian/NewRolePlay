@@ -5,17 +5,28 @@ import com.github.theholywaffle.teamspeak3.api.event.ClientMovedEvent;
 import com.github.theholywaffle.teamspeak3.api.event.TS3EventAdapter;
 import com.github.theholywaffle.teamspeak3.api.wrapper.Client;
 import de.newrp.API.Debug;
+import de.newrp.API.Premium;
 import de.newrp.API.Script;
 import de.newrp.main;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 
 public class TeamspeakListener extends TS3EventAdapter {
     @Override
     public void onClientJoin(ClientJoinEvent e) {
         Bukkit.getScheduler().runTaskAsynchronously(main.getInstance(), () -> {
+            if (!e.getClientDescription().isEmpty()) {
+                OfflinePlayer p = Script.getOfflinePlayer(e.getClientDescription());
+                if(!Premium.hasPremium(p) && TeamSpeak.hasGroup(e.getClientId(), TeamspeakServerGroup.PREMIUM)) {
+                    TeamSpeak.sync(Script.getNRPID(p));
+                    TeamSpeak.sendClientMessage(e.getClientId(), "Deine Rechte wurden synchronisiert, da du kein Premium mehr hast.");
+                }
+            }
+
             if(TeamSpeak.isVerified(Script.getNRPID(e.getClientDescription())) && Script.isNRPTeam(Script.getPlayer(e.getClientDescription()))) {
                 TeamSpeak.setName(e.getClientId(), e.getClientDescription());
             }
+
             if (!e.getClientDescription().isEmpty()) return;
             TeamSpeak.sendClientMessage(e.getClientId(), "Willkommen " + e.getClientNickname() + ", auf dem Teamspeak von New RolePlay!",
                     "Um dich freizuschalten und den Teamspeak normal nutzen zu können, musst du dich erst einmal verifizieren.",

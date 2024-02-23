@@ -7,16 +7,16 @@ public enum ForumGroup {
     ZIVILIST(3, "Zivilist"),
     ADMINISTRATOR(4, "Administratoren"),
     MODERATOR(5, "Moderator"),
-    SUPPORTER(10, "Supporter"),
-    POLICE(9, "Polizei"),
-    POLICE_LEADER(15, "Polizei Leader"),
-    RETTUNGSDIENST(11, "Rettungsdienst"),
+    SUPPORTER(7, "Supporter"),
+    POLICE(10, "Polizei"),
+    POLICE_LEADER(11, "Polizei Leader"),
+    RETTUNGSDIENST(12, "Rettungsdienst"),
     RETTUNGSDIENST_LEADER(13, "Rettungsdienst Leader"),
-    GOVERNMENT(12, "Regierung"),
-    GOVERNMENT_LEADER(14, "Regierung Leader"),
-    NEWS(8, "News"),
-    NEWS_LEADER(16, "News Leader"),
-    VERIFIED(17, "Verifiziert");
+    GOVERNMENT(14, "Regierung"),
+    GOVERNMENT_LEADER(15, "Regierung Leader"),
+    NEWS(16, "News"),
+    NEWS_LEADER(17, "News Leader"),
+    VERIFIED(18, "Verifiziert");
 
     private final int id;
     private final String name;

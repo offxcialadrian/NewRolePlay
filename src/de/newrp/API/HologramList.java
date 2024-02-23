@@ -42,7 +42,9 @@ public enum HologramList {
     WAFFENSCHEIN(36, "§8/§6waffenschein", new Location(Script.WORLD, 552, 69, 968, -253.474f, 4.7215652f)),
     BUY_APOTHEKE_AEKI(37, "§8/§6buy", new Location(Script.WORLD, 659, 67, 854, 88.650856f, 15.150019f)),
     BUY_GANGSHOP(38, "§8/§6buy", new Location(Script.WORLD, 617, 64, 1277, 174.60092f, 15.899984f)),
-    BUY_GYM(39, "§8/§6buy", new Location(Script.WORLD, 460, 66, 743, 58.60189f, 21.110485f));
+    BUY_GYM(39, "§8/§6buy", new Location(Script.WORLD, 460, 66, 743, 58.60189f, 21.110485f)),
+    DUTY_NEWS(40, "§8/§6duty", new Location(Script.WORLD, 301, 66, 762)),
+    DUTY_GOVERNMENT(41, "§8/§6duty", new Location(Script.WORLD, 555, 77, 972));
 
     private final int id;
     private final String name;

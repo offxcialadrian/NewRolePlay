@@ -36,4 +36,11 @@ public enum HouseAddon {
     public int getPrice() {
         return this.price;
     }
+
+    public static HouseAddon getHausAddonByName(String name) {
+        for (HouseAddon addon : values()) {
+            if (addon.getName().equalsIgnoreCase(name)) return addon;
+        }
+        return null;
+    }
 }

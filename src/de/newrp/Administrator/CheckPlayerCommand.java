@@ -59,7 +59,7 @@ public class CheckPlayerCommand implements CommandExecutor {
             if(Wahlen.wahlenActive()) {
                 p.sendMessage("§7Gewählt §8× §e" + (Wahlen.hasVoted(offtg) ? (Script.hasRank(p, Rank.ADMINISTRATOR, false)?Script.getOfflinePlayer(Wahlen.getVote(offtg)).getName():"Ja") : "Nein"));
             }
-            p.sendMessage("§7Premium §8× §e" + (Premium.hasPremium(offtg) ? "Ja §8(§e" + Script.dateFormat2.format(Premium.getPremiumTime(offtg)) + "§8)": "Nein"));
+            p.sendMessage("§7Premium §8× §e" + (Premium.hasPremium(offtg) ? "Ja §8(§e" + Script.dateFormat.format(Premium.getPremiumTime(offtg)) + " Uhr§8)": "Nein"));
             p.sendMessage("§7Warns §8× §e" + Punish.getWarns(offtg) + "/3");
             if(!Punish.getWarnsMap(offtg).isEmpty()) {
                 for(Map.Entry<Long, String> entry : Punish.getWarnsMap(offtg).entrySet()) {
@@ -74,7 +74,7 @@ public class CheckPlayerCommand implements CommandExecutor {
             p.sendMessage("§7PlayTime §8× §e" + Script.getPlayTime(offtg, true) + ":§e" + String.format("%02d", Script.getPlayTime(offtg, false)) + " Stunden" + " §8(§e" + Script.getActivePlayTime(offtg, true) + ":§e" + String.format("%02d", Script.getActivePlayTime(offtg, false)) + " Stunden§8)");
             p.sendMessage("§7Level §8× §e" + Script.getLevel(offtg));
             p.sendMessage("§7Beruf §8× §e" + (Beruf.hasBeruf(offtg) ? Beruf.getBeruf(offtg).getName() : "Kein Beruf") + (Beruf.isLeader(offtg, true) ? " §8(§eLeader§8)" : ""));
-            p.sendMessage("§7Organisation §8× §e" + (Organisation.hasOrganisation(offtg) ? Organisation.getOrganisation(offtg).getName() : "Keine Organisation") + (Organisation.isLeader(offtg, true) ? " §8(§eLeader§8)" : " §8(§e" + Organisation.getRankName(offtg) + "§8)"));
+            p.sendMessage("§7Organisation §8× §e" + (Organisation.hasOrganisation(offtg) ? Organisation.getOrganisation(offtg).getName() + (Organisation.isLeader(offtg, true) ? " §8(§eLeader§8)" : " §8(§e" + Organisation.getRankName(offtg) + "§8)") : "Keine Organisation"));
             StringBuilder houses = new StringBuilder();
             for(House house : House.getHouses(Script.getNRPID(offtg))) {
                 if(House.getHouses(Script.getNRPID(offtg)).size() == 1) {
@@ -119,7 +119,7 @@ public class CheckPlayerCommand implements CommandExecutor {
         p.sendMessage("§7Exp §8× §e" + Script.getExp(tg) + "/" + Script.getLevelCost(tg) + " Exp §8(§e" + Script.getPercentage(Script.getExp(tg), Script.getLevelCost(tg)) + "%§8)");
         p.sendMessage("§7Health §8× §e" + df.format(tg.getHealth()/2) + "/" + df.format(tg.getMaxHealth()/2) + " HP");
         p.sendMessage("§7Beruf §8× §e" + (Beruf.hasBeruf(tg) ? Beruf.getBeruf(tg).getName() : "Kein Beruf") + (Beruf.isLeader(tg, true) ? " §8(§eLeader§8)" : ""));
-        p.sendMessage("§7Organisation §8× §e" + (Organisation.hasOrganisation(tg) ? Organisation.getOrganisation(tg).getName() : "Keine Organisation") + (Organisation.isLeader(tg, true) ? " §8(§eLeader§8)" : " §8(§e" + Organisation.getRankName(tg) + "§8)"));
+        p.sendMessage("§7Organisation §8× §e" + (Organisation.hasOrganisation(tg) ? Organisation.getOrganisation(tg).getName() + (Organisation.isLeader(tg, true) ? " §8(§eLeader§8)" : " §8(§e" + Organisation.getRankName(tg) + "§8)") : "Keine Organisation"));
         StringBuilder houses = new StringBuilder();
         for(House house : House.getHouses(Script.getNRPID(tg))) {
             if(House.getHouses(Script.getNRPID(tg)).size() == 1) {

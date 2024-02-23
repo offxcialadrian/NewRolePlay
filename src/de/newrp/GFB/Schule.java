@@ -26,6 +26,7 @@ public class Schule implements CommandExecutor, Listener {
 
     public static HashMap<Player, GFB> STUDIYING = new HashMap<>();
     public static HashMap<Player, Long> STARTED = new HashMap<>();
+    public static HashMap<Player, BukkitRunnable> taskID = new HashMap<>();
     public static String PREFIX = "§8[§6Berufsschule§8] §6» §7";
 
     @Override
@@ -114,19 +115,23 @@ public class Schule implements CommandExecutor, Listener {
                 p.sendMessage(Messages.INFO + "Gehe innerhalb der nächsten 30 Minuten nicht in den AFK-Modus, um den Kurs zu bestehen.");
                 p.closeInventory();
 
-                new BukkitRunnable() {
+                //with taskID
+                BukkitRunnable task = new BukkitRunnable() {
                     @Override
                     public void run() {
-                        if(STUDIYING.containsKey(p)) {
+                        if(STUDIYING.containsKey(p) && taskID.containsKey(p)) {
                             p.sendMessage(PREFIX + "§aDu hast den Kurs bestanden.");
                             for(GFB gfb : GFB.values()) {
-                                gfb.addExp(p, gfb.getLevel(p) * Script.getRandom(20, 30));
+                                gfb.addExp(p, gfb.getLevel(p) * Script.getRandom(100, 200));
                             }
                             STUDIYING.remove(p);
                             STARTED.remove(p);
+                            taskID.remove(p);
                         }
                     }
-                }.runTaskLater(main.getInstance(), 20 * 60 * 30);
+                };
+                taskID.put(p, task);
+                task.runTaskLater(main.getInstance(), 20 * 60 * 30);
 
                 return;
             }
@@ -145,17 +150,21 @@ public class Schule implements CommandExecutor, Listener {
             p.sendMessage(Messages.INFO + "Gehe innerhalb der nächsten 15 Minuten nicht in den AFK-Modus, um den Kurs zu bestehen.");
             p.closeInventory();
 
-            new BukkitRunnable() {
+            //with taskID
+            BukkitRunnable task = new BukkitRunnable() {
                 @Override
                 public void run() {
-                    if(STUDIYING.containsKey(p)) {
+                    if(STUDIYING.containsKey(p) && taskID.containsKey(p)) {
                         p.sendMessage(PREFIX + "§aDu hast den Kurs bestanden.");
                         gfb.addExp(p, gfb.getLevel(p) * Script.getRandom(100, 200));
                         STUDIYING.remove(p);
                         STARTED.remove(p);
+                        taskID.remove(p);
                     }
                 }
-            }.runTaskLater(main.getInstance(), 20 * 60 * 15);
+            };
+            taskID.put(p, task);
+            task.runTaskLater(main.getInstance(), 20 * 60 * 15);
 
         }
     }

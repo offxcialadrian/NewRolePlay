@@ -22,10 +22,10 @@ import java.util.UUID;
 public class Beruf {
 
     public enum Berufe {
-        GOVERNMENT(1, "Regierung", false, false, false, 657, TeamspeakServerGroup.GOVERNMENT, new ForumGroup[]{ForumGroup.GOVERNMENT, ForumGroup.GOVERNMENT_LEADER}),
-        NEWS(2, "News", true, false, true, 696, TeamspeakServerGroup.NEWS, new ForumGroup[]{ForumGroup.NEWS, ForumGroup.NEWS_LEADER}),
-        POLICE(3, "Polizei", false, true, true, 671, TeamspeakServerGroup.POLICE, new ForumGroup[]{ForumGroup.POLICE, ForumGroup.POLICE_LEADER}),
-        RETTUNGSDIENST(4, "Rettungsdienst", false, true,true, 684, TeamspeakServerGroup.RETTUNGSDIENST, new ForumGroup[]{ForumGroup.RETTUNGSDIENST, ForumGroup.RETTUNGSDIENST_LEADER});
+        GOVERNMENT(1, "Regierung", false, true, false, 56, TeamspeakServerGroup.GOVERNMENT, new ForumGroup[]{ForumGroup.GOVERNMENT, ForumGroup.GOVERNMENT_LEADER}),
+        NEWS(2, "News", true, true, true, 95, TeamspeakServerGroup.NEWS, new ForumGroup[]{ForumGroup.NEWS, ForumGroup.NEWS_LEADER}),
+        POLICE(3, "Polizei", false, true, true, 70, TeamspeakServerGroup.POLICE, new ForumGroup[]{ForumGroup.POLICE, ForumGroup.POLICE_LEADER}),
+        RETTUNGSDIENST(4, "Rettungsdienst", false, true,true, 83, TeamspeakServerGroup.RETTUNGSDIENST, new ForumGroup[]{ForumGroup.RETTUNGSDIENST, ForumGroup.RETTUNGSDIENST_LEADER});
 
         int id;
         private final String name;

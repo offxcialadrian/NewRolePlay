@@ -35,6 +35,7 @@ public class VoteCommand implements CommandExecutor {
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         Player p = (Player) cs;
         p.sendMessage("§8===== §6Offizielle Voting-Seiten §8=====");
+        p.sendMessage("");
         Script.sendLinkMessage(p, "  §8» " + (votes.containsKey(p.getName().toLowerCase() + ".minecraft-serverlist_net")?"§c":"§a") + "Minecraft-Serverlist.net", "https://www.minecraft-serverlist.net/vote/58158/" + p.getName(),"§7Klicke hier um zu §6Minecraft-Serverlist.net §7zu gelangen!");
         Script.sendLinkMessage(p, "  §8» " + (votes.containsKey(p.getName().toLowerCase() + ".minecraft-server_eu")?"§c":"§a") + "Minecraft-Server.eu", "https://minecraft-server.eu/vote/index/22E2E/" + p.getName(), "§7Klicke hier um zu §6Minecraft-Server.eu §7zu gelangen!");
         p.sendMessage("§l§8______________________________________");

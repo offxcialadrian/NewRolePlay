@@ -56,9 +56,10 @@ public class AFK implements CommandExecutor, Listener {
             if (p.isFlying()) p.setFlying(false);
             Bukkit.getScoreboardManager().getMainScoreboard().getTeam("nopush").addEntry(p.getName());
             if(Schule.STUDIYING.containsKey(p)) {
-                p.sendMessage(Schule.PREFIX + "Du hast den Kurs nicht bestanden.");
+                p.sendMessage(Schule.PREFIX + "§cDu hast den Kurs nicht bestanden.");
                 Schule.STUDIYING.remove(p);
                 Schule.STARTED.remove(p);
+                Schule.taskID.get(p).cancel();
             }
         } else {
             afk.remove(p.getName());

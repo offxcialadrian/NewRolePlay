@@ -188,10 +188,10 @@ public class Waffen implements Listener {
                 v = 2.0F;
                 v1 = .95F;
                 break;
-            /*case SCATTER3:
+            case DESERT_EAGLE:
                 v = 2.0F;
-                v1 = 1.0F;
-                break;*/
+                v1 = .1F;
+                break;
             case AK47:
                 v = 2.5F;
                 v1 = .85F;
@@ -205,15 +205,11 @@ public class Waffen implements Listener {
                 v1 = .1F;
                 cloud = true;
                 break;
-            /*case EXTENSO18:
+            case JAGDFLINTE:
                 v = 5.0F;
                 v1 = .1F;
                 cloud = true;
                 break;
-            case ALPHA7:
-                Debug.debug("switch RPG7");
-                RPG7.launch(p);
-                return;*/
             default:
                 Debug.debug("switch default");
                 break;
@@ -277,6 +273,7 @@ public class Waffen implements Listener {
     @EventHandler
     public void onDrop(PlayerDropItemEvent e) {
         Item i = e.getItemDrop();
+        int slot = e.getPlayer().getInventory().getHeldItemSlot();
         if (e.getItemDrop() == null) return;
         Weapon w = null;
         for (Weapon w1 : Weapon.values()) {
@@ -294,7 +291,7 @@ public class Waffen implements Listener {
                 p.playSound(p.getLocation(), Sound.ITEM_FLINTANDSTEEL_USE, 1F, .05F);
                 cooldown.put(p.getName() + "." + w.getName().toLowerCase(), (long) (System.currentTimeMillis() + (w.getReload(6) * 1000)));
             }
-            p.getInventory().setItemInMainHand(reload(i.getItemStack(), w));
+            p.getInventory().setItem(slot, reload(i.getItemStack(), w));
         }
     }
     @EventHandler

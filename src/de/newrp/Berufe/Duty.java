@@ -73,6 +73,44 @@ public class Duty implements CommandExecutor {
             return true;
         }
 
+        if(Beruf.getBeruf(p) == Beruf.Berufe.NEWS) {
+            if (p.getLocation().distance(new Location(Script.WORLD, 301, 67, 762, 358.99658f, -1.2081925f)) > 10) {
+                p.sendMessage(Messages.ERROR + "Du befindest dich nicht in der Nähe des Duty-Punkt");
+                return true;
+            }
+
+            if (isInDuty(p)) {
+                Beruf.Berufe.NEWS.sendMessage(PREFIX + Script.getName(p) + " hat den Dienst verlassen.");
+                duty.remove(p.getName());
+                Script.updateListname(p);
+                return true;
+            }
+
+            Beruf.Berufe.NEWS.sendMessage(PREFIX + Script.getName(p) + " hat den Dienst betreten.");
+            duty.add(p.getName());
+            Script.updateListname(p);
+            return true;
+        }
+
+        if(Beruf.getBeruf(p) == Beruf.Berufe.GOVERNMENT) {
+            if (p.getLocation().distance(new Location(Script.WORLD, 555, 78, 972, 56.03585f, 13.083509f)) > 10) {
+                p.sendMessage(Messages.ERROR + "Du befindest dich nicht in der Nähe des Duty-Punkt");
+                return true;
+            }
+
+            if (isInDuty(p)) {
+                Beruf.Berufe.GOVERNMENT.sendMessage(PREFIX + Script.getName(p) + " hat den Dienst verlassen.");
+                duty.remove(p.getName());
+                Script.updateListname(p);
+                return true;
+            }
+
+            Beruf.Berufe.GOVERNMENT.sendMessage(PREFIX + Script.getName(p) + " hat den Dienst betreten.");
+            duty.add(p.getName());
+            Script.updateListname(p);
+            return true;
+        }
+
         p.sendMessage(Messages.ERROR + "Dein Beruf hat keinen Duty.");
 
         return false;

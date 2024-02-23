@@ -21,6 +21,7 @@ import de.newrp.Government.*;
 import de.newrp.House.*;
 import de.newrp.Medic.*;
 import de.newrp.News.BreakingNews;
+import de.newrp.News.Flugblatt;
 import de.newrp.News.NewsCommand;
 import de.newrp.News.Zeitung;
 import de.newrp.Organisationen.*;
@@ -340,6 +341,7 @@ public class main extends JavaPlugin {
         getCommand("use").setExecutor(new UseDrogenCommand());
         getCommand("team").setExecutor(new ServerTeam());
         getCommand("memberactivity").setExecutor(new MemberActivity());
+        getCommand("flugblatt").setExecutor(new Flugblatt());
 
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new SDuty(), this);
@@ -444,6 +446,7 @@ public class main extends JavaPlugin {
         pm.registerEvents(new SniperZoom(), this);
         pm.registerEvents(new Boxen(), this);
         pm.registerEvents(new Drone(), this);
+        pm.registerEvents(new Flugblatt(), this);
 
 
         new AsyncHealth().runTaskTimerAsynchronously(this, 120 * 20L, 120 * 20L);

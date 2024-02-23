@@ -7,6 +7,7 @@ import de.newrp.API.Script;
 import de.newrp.TeamSpeak.TeamSpeak;
 import de.newrp.main;
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -25,7 +26,7 @@ public class PremiumCommand implements CommandExecutor {
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
         Player p = (Player) cs;
 
-        if(!Script.hasRank(p, Rank.OWNER, false)) {
+        if(!Script.hasRank(p, Rank.OWNER, false) || !SDuty.isSDuty(p)) {
 
             if(args.length == 2) {
                 if(args[0].equalsIgnoreCase("activate")) {
@@ -36,6 +37,7 @@ public class PremiumCommand implements CommandExecutor {
                         p.sendMessage(Messages.ERROR + "Bitte gebe eine Zahl an.");
                         return true;
                     }
+
                     activatePremium(p, id);
                     return true;
                 }
@@ -53,15 +55,19 @@ public class PremiumCommand implements CommandExecutor {
                     p.sendMessage(PREFIX + "Du kannst noch Premium aktivieren.");
                     sendPremiumStorage(p);
                 }
-                return true;
             } else {
                 if(Script.hasRank(p, Rank.MODERATOR, false)) {
                     p.sendMessage(PREFIX + "Du hast automatisch so lang Premium, wie du " + Script.getRank(p).getName(p) + " bist.");
                     return true;
                 }
                 p.sendMessage(PREFIX + "Du hast noch bis zum " + Script.dateFormat.format(Premium.getPremiumTime(p)) + " Uhr Premium.");
-                return true;
+                if(hasPremiumStored(p)) {
+                    p.sendMessage(PREFIX);
+                    p.sendMessage(PREFIX + "Du kannst noch Premium aktivieren.");
+                    sendPremiumStorage(p);
+                }
             }
+            return true;
         }
 
         if(args.length != 2) {
@@ -108,7 +114,7 @@ public class PremiumCommand implements CommandExecutor {
     }
 
     public static void sendPremiumStorage(Player p) {
-        int i = 0;
+        int i = 1;
         try (Statement stmt = main.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM premium_storage WHERE nrp_id=" + Script.getNRPID(p) + " ORDER BY id ASC;")) {
 
@@ -117,12 +123,24 @@ public class PremiumCommand implements CommandExecutor {
 
                 if (expires == 0 || expires > System.currentTimeMillis()) {
                     String expirationMessage = (expires == 0) ? "(Läuft nicht ab)" : "Läuft in " + Script.getRemainingTime(rs.getLong("expires")) + " ab.";
-                    Script.sendClickableMessage(p, PREFIX + "§l#" + i++ + " §7» §b" + TimeUnit.MILLISECONDS.toDays(rs.getLong("duration")) + " Tage " + expirationMessage, "/premium activate " + i, "§7Klicke hier, um den Premium Rang zu aktivieren.");
+                    Script.sendClickableMessage(p, PREFIX + "§l#" + i++ + " §7» §b" + rs.getInt("duration") + " Tage " + expirationMessage, "/premium activate " + (i-1), "§7Klicke hier, um den Premium Rang zu aktivieren.");
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public static OfflinePlayer getOwner(int id) {
+        try (Statement stmt = main.getConnection().createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT * FROM premium_storage WHERE id=" + id)) {
+            if (rs.next()) {
+                return Script.getOfflinePlayer(rs.getInt("nrp_id"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public static void activatePremium(Player p, int id) {
@@ -136,7 +154,7 @@ public class PremiumCommand implements CommandExecutor {
                 if (expires == 0 || expires > System.currentTimeMillis()) {
                     i++;
                     if(i == id) {
-                        Premium.addPremium(p, rs.getLong("duration"));
+                        Premium.addPremium(p, TimeUnit.DAYS.toMillis(rs.getInt("duration")));
                         Script.executeAsyncUpdate("DELETE FROM premium_storage WHERE id=" + rs.getInt("id"));
                         p.sendMessage(PREFIX + "Du hast den Premium Rang aktiviert.");
                         return;

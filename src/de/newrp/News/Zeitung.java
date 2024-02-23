@@ -80,6 +80,35 @@ public class Zeitung implements CommandExecutor, Listener {
             return true;
         }
 
+        if(args.length == 1) {
+            if(!Script.isInt(args[0])) {
+                p.sendMessage(Messages.ERROR + "Die ID muss eine Zahl sein.");
+                return true;
+            }
+            int id = Integer.parseInt(args[0]);
+            if(id <= 0) {
+                p.sendMessage(Messages.ERROR + "Die ID muss größer als 0 sein.");
+                return true;
+            }
+
+            try (Statement stmt = main.getConnection().createStatement();
+                 ResultSet rs = stmt.executeQuery("SELECT * FROM zeitung WHERE id=" + id)) {
+                if(rs.next()) {
+                    String[] pages = rs.getString("content").split("/\\{new_page}/");
+                    ItemStack book = new ItemStack(Material.WRITTEN_BOOK);
+                    BookMeta bm = (BookMeta) book.getItemMeta();
+                    bm.setPages(pages);
+                    p.getInventory().addItem(Script.setName(book, "Zeitung [" + id + ". Auflage]"));
+                    p.sendMessage(prefix + "Die Zeitung wurde hinzugefügt.");
+                } else {
+                    p.sendMessage(Messages.ERROR + "Die Zeitung wurde nicht gefunden.");
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+        }
+
         if (p.getInventory().getItemInMainHand().getType().equals(Material.WRITTEN_BOOK)) {
             if (cache == null) {
                 cache = (BookMeta) p.getInventory().getItemInMainHand().getItemMeta();
@@ -99,6 +128,7 @@ public class Zeitung implements CommandExecutor, Listener {
     @EventHandler
     public void onEdit(PlayerEditBookEvent e) {
         Player p = e.getPlayer();
+        if(!e.getNewBookMeta().getTitle().startsWith("Zeitung")) return;
         if (Beruf.getBeruf(p) != Beruf.Berufe.NEWS) {
             p.sendMessage(Messages.ERROR + "Du bist kein Mitglied der News.");
             return;
@@ -132,6 +162,8 @@ public class Zeitung implements CommandExecutor, Listener {
         }
     }
 
+
+
     @EventHandler
     public void onClick(InventoryClickEvent e) {
         if (e.getView().getTitle().equals("§6Zeitung")) {
@@ -144,6 +176,8 @@ public class Zeitung implements CommandExecutor, Listener {
                     if (cache.getPages().size() > 5) {
                         saveZeitung(cache, p);
                         cache = null;
+                    } else {
+                        p.sendMessage(prefix + "Die Zeitung ist zu kurz.");
                     }
                 } else if (is.getItemMeta().getDisplayName().equals("§cNicht fertig")) {
                     p.sendMessage(prefix + "Okay, die Zeitung ist also noch nicht fertig.");

@@ -128,6 +128,24 @@ public class NaviClick implements Listener {
                         break;
 
                     }
+
+                    case "§6Finde..": {
+                        Inventory inv = Bukkit.createInventory(null, 18, "§e§lNavi");
+                        inv.setItem(0, Script.setName(Material.NETHER_STAR, "§6Nächster Bankautomat"));
+                        inv.setItem(13, Script.setName(Material.REDSTONE, "§cZurück"));
+                        Script.fillInv(inv);
+                        Script.fillInv(inv);
+                        p.openInventory(inv);
+                        break;
+                    }
+
+                    case "§6Nächster Bankautomat": {
+                        ATM atm = ATM.getNearestATM(p.getLocation());
+                        p.sendMessage(Navi.PREFIX + "Dir wird nun die Route zum Punkt §6§lGeldautomat " + atm.getID() + "§r§6 angezeigt.");
+                        p.sendMessage(Messages.INFO + "Mit /navistop oder erneut /navi wird die Route gelöscht.");
+                        new Route(p.getName(), Script.getNRPID(p), p.getLocation(), atm.getLocation()).start();
+                    }
+
                     default:
                         if (c.getItemMeta().getDisplayName().startsWith("§c")) {
                             NaviCommand.openDefault(p);

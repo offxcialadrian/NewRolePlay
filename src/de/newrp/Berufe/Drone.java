@@ -34,10 +34,12 @@ public class Drone implements Listener {
     public static String PREFIX = "§8[§9Drohne§8]§9 " + Messages.ARROW + " §7";
     public static HashMap<String, Location> location = new HashMap<>();
     public static ArrayList<String> drone = new ArrayList<>();
+    public static HashMap<String, Long> cooldown = new HashMap<>();
 
     public static void start(Player p) {
         location.put(p.getName(), p.getLocation());
         drone.add(p.getName());
+        cooldown.put(p.getName(), System.currentTimeMillis() + 1000L);
         Cache.saveInventory(p);
         p.getInventory().clear();
         p.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1));
@@ -49,11 +51,12 @@ public class Drone implements Listener {
         p.setFoodLevel(20);
     }
 
-    public static void stop(Player p) {
+    public static void stop(Player p, boolean giveBackDrone) {
         Cache.loadInventory(p);
         p.teleport(location.get(p.getName()));
         drone.remove(p.getName());
         location.remove(p.getName());
+        cooldown.remove(p.getName());
         p.setFlySpeed(0.1f);
         p.getInventory().setHelmet(new ItemStack(Material.AIR));
         p.setAllowFlight(false);
@@ -61,11 +64,11 @@ public class Drone implements Listener {
         p.setWalkSpeed(0.2f);
         p.setFoodLevel(20);
         p.removePotionEffect(PotionEffectType.INVISIBILITY);
-        p.getInventory().addItem(new ItemBuilder(Material.WITHER_SKELETON_SKULL).setName("§7Drohne").build());
+        if(giveBackDrone) p.getInventory().addItem(new ItemBuilder(Material.WITHER_SKELETON_SKULL).setName("§7Drohne").build());
     }
 
     public static void crash(Player p) {
-        stop(p);
+        stop(p, false);
         Beruf.getBeruf(p).sendMessage(PREFIX + "Die Drohne ist abgestürzt.");
         p.getWorld().createExplosion(p.getLocation().getX(), p.getLocation().getY(), p.getLocation().getZ(), 1F, false, false);
     }
@@ -77,10 +80,9 @@ public class Drone implements Listener {
 
     @EventHandler
     public void onToggleFly(PlayerToggleFlightEvent e) {
-
         if(isDrone(e.getPlayer())) {
-            if(e.getPlayer().getLocation().getBlock().getRelative(0, -1, 0).getType() != Material.AIR || e.getPlayer().getLocation().getBlock().getRelative(0, -2, 0).getType() != Material.AIR) {
-                stop(e.getPlayer());
+            if((e.getPlayer().getLocation().getBlock().getRelative(0, -1, 0).getType() != Material.AIR || e.getPlayer().getLocation().getBlock().getRelative(0, -2, 0).getType() != Material.AIR) && cooldown.get(e.getPlayer().getName())<System.currentTimeMillis()) {
+                stop(e.getPlayer(), true);
                 return;
             }
             e.setCancelled(true);
@@ -90,7 +92,7 @@ public class Drone implements Listener {
     @EventHandler
     public void onQuit(PlayerQuitEvent e) {
         if(isDrone(e.getPlayer())) {
-            stop(e.getPlayer());
+            stop(e.getPlayer(), true);
         }
     }
 
@@ -119,7 +121,7 @@ public class Drone implements Listener {
     public void onInventoryClick(InventoryClickEvent e) {
         if(isDrone((Player) e.getWhoClicked())) {
             if (e.getSlotType().equals(InventoryType.SlotType.ARMOR)) {
-                stop((Player) e.getWhoClicked());
+                stop((Player) e.getWhoClicked(), true);
                 Player p = (Player) e.getWhoClicked();
                 p.sendMessage(PREFIX + "Du hast die Drohne verlassen.");
             }
@@ -130,10 +132,10 @@ public class Drone implements Listener {
     public void onInteract(PlayerInteractEvent e) {
         if(e.getAction() != Action.RIGHT_CLICK_BLOCK && e.getAction() != Action.RIGHT_CLICK_AIR) return;
         if(Beruf.getBeruf(e.getPlayer()) == null) return;
-        if(e.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.WITHER_SKELETON_SKULL) && e.getPlayer().getInventory().getItemInMainHand().getItemMeta().getDisplayName().equals("§7Drohne")) {
+        if(e.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.WITHER_SKELETON_SKULL) && e.getPlayer().getInventory().getItemInMainHand().getItemMeta().getDisplayName().startsWith("§7Drohne")) {
             Player p = e.getPlayer();
-            Beruf.getBeruf(p).sendMessage(PREFIX + Beruf.getAbteilung(p).getName() + " " + Script.getName(p) + " hat eine Drohne gestartet.");
             p.getInventory().getItemInMainHand().setAmount(p.getInventory().getItemInMainHand().getAmount() - 1);
+            Beruf.getBeruf(p).sendMessage(PREFIX + Beruf.getAbteilung(p).getName() + " " + Script.getName(p) + " hat eine Drohne gestartet.");
             start(p);
         }
     }

@@ -117,6 +117,12 @@ public class Premium {
         Script.executeUpdate("INSERT INTO premium_storage (nrp_id, duration, expires) VALUES (" + Script.getNRPID(p) + ", " + time + ", " + (expires? expireDate : "NULL") + ")");
     }
 
+    public static void addPremiumStorage(Player p, int days) {
+        p.sendMessage(PREFIX + "Du hast §b§l" + days + " Tage §7Premium erhalten.");
+        p.sendMessage(Messages.INFO + "Nutze §8/§6premium §rum dein Premium zu aktivieren.");
+        Script.executeUpdate("INSERT INTO premium_storage (nrp_id, duration, expires) VALUES (" + Script.getNRPID(p) + ", " + days + ", " + "NULL" + ")");
+    }
+
 
 
 }

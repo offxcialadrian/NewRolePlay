@@ -29,6 +29,7 @@ public class NaviCommand implements CommandExecutor, TabCompleter {
         inv.setItem(5, Script.setName(Material.PAINTING, "§6Sehenswürdigkeiten"));
         inv.setItem(6, Script.setName(Material.CARROT, "§6Shops"));
         inv.setItem(7, Script.setName(Material.WATER_BUCKET, "§6Tankstellen"));
+        inv.setItem(8, Script.setName(Material.NETHER_STAR, "§6Finde.."));
         Script.fillInv(inv);
         p.openInventory(inv);
     }

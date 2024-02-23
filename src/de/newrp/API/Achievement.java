@@ -40,7 +40,8 @@ public enum Achievement {
     WAHL_GEWONNEN(26, "Wahlsieger", "§rGewinne eine Wahl", 500, null, false),
     REZEPT(27, "Rezept", "§rWerde Krank und lass dir ein Rezept im Krankenhaus ausstellen.", 50, null, false),
     TEAMJOIN(28, "Teammitglied", "§rTrete einem Team bei", 50, null, false),
-    TEAMLEADER(29, "Teamleiter", "§rWerde Teamleiter", 50, null, false);
+    TEAMLEADER(29, "Teamleiter", "§rWerde Teamleiter", 50, null, false),
+    PREMIUM(30, "Premium", "§rKaufe dir Premium", 50, null, false);
 
 
 

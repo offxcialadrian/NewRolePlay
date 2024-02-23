@@ -56,7 +56,7 @@ public class Utils implements Listener {
             "/setworldspawn", "/spawnpoint", "/spreadplayers", "/stop", "/stopsound", "/structure", "/summon", "/tag",
             "/teammsg", "/tell", "/tellraw", "/testfor", "/testforblock", "/testforblocks", "/tickingarea", "/time", "/title",
             "/titleraw", "/tm", "/toggledownfall", "/trigger", "/volumearea", "/wb", "/worldborder",
-            "/worldborder", "/wsserver", "/xp", "/citizens", "/npc", "/vehicle", "/garage", "/tebex", "/buycraft", "/paper"
+            "/worldborder", "/wsserver", "/xp", "/citizens", "/npc", "/vehicle", "/garage", "/tebex", "/buycraft", "/paper", "/addpremiumtoplayer"
     };
 
     private static final String[] BLOCKED_COMMANDS_SPECIFIC = new String[]{
@@ -105,6 +105,7 @@ public class Utils implements Listener {
     public void onMoving(PlayerMoveEvent e) {
         Player p = e.getPlayer();
         if(!Script.FREEZE.contains(p.getName())) return;
+        if(e.getFrom().getY() > e.getTo().getY()) return;
         if(e.getFrom().getX() == e.getTo().getX() && e.getFrom().getY() == e.getTo().getY() && e.getFrom().getZ() == e.getTo().getZ()) return;
         e.setCancelled(true);
         p.setVelocity(p.getVelocity().zero());
@@ -392,7 +393,7 @@ public class Utils implements Listener {
         if(e.getEntity() instanceof Player) {
             if(e.getItem().getItemStack().getType() == Material.IRON_INGOT) {
                 if(!Mobile.hasPhone((Player) e.getEntity())) return;
-                Script.sendActionBar((Player) e.getEntity(), Messages.ERROR + "Du kannst nicht mehrere Handy aufeinmal besitzen.");
+                Script.sendActionBar((Player) e.getEntity(), Messages.ERROR + "Du kannst nicht mehrere Handys aufeinmal besitzen.");
                 e.setCancelled(true);
             }
         }

@@ -42,7 +42,7 @@ public class TeamSpeak {
         tsApiAsync = tsQuery.getAsyncApi();
 
         tsApi.selectVirtualServerByPort(9987);
-        tsApi.login("serveradmin", "jxNSdYD8");
+        tsApi.login("serveradmin", "gMtBt03d");
         tsApi.setNickname("New RolePlay Bot");
         tsApi.registerEvent(TS3EventType.SERVER);
 
@@ -259,6 +259,14 @@ public class TeamSpeak {
         int dbID = c.getDatabaseId();
         addToServerGroup(f.getTeamspeakServerGroup(), dbID);
         addToChannelGroup(f.getChannelID(), (f.isLeader(id, true) ? TeamspeakServerGroup.TeamspeakChannelGroup.LEADER : TeamspeakServerGroup.TeamspeakChannelGroup.MEMBER), dbID);
+    }
+
+    public static boolean hasGroup(int id, TeamspeakServerGroup g) {
+        String uid = getVerification(id);
+        if (uid == null) return false;
+        Client c = getClient(uid);
+        if (c == null) return false;
+        return c.isInServerGroup(g.getGroupID());
     }
 
     public static void removeFrakGroups(int id, Beruf.Berufe f) {

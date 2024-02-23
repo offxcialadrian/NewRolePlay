@@ -205,6 +205,7 @@ public class Strassenwartung implements CommandExecutor, Listener {
     public void onQuit(PlayerQuitEvent e) {
         Player p = e.getPlayer();
         if (!construction.containsKey(p.getName())) return;
+        Cache.loadInventory(p);
         Strassenwartung.construction.remove(p.getName());
         for (Location loc : Strassenwartung.construction.get(p.getName()).getLocations()) {
             loc.getBlock().setType(Material.ANDESITE_SLAB);
@@ -212,7 +213,6 @@ public class Strassenwartung implements CommandExecutor, Listener {
         Strassenwartung.CONSTRUCTION.remove(Strassenwartung.construction.get(p.getName()));
         Strassenwartung.SCORE.remove(p.getName());
         Strassenwartung.TOTAL_SCORE.remove(p.getName());
-        Cache.loadInventory(p);
         p.sendMessage(GFB.PREFIX + "Du hast den Job §6Straßenwartung §7verlassen.");
     }
 

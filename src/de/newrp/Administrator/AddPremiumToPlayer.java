@@ -1,5 +1,6 @@
 package de.newrp.Administrator;
 
+import de.newrp.API.Achievement;
 import de.newrp.API.Premium;
 import de.newrp.API.Script;
 import org.bukkit.command.Command;
@@ -16,11 +17,13 @@ public class AddPremiumToPlayer implements CommandExecutor {
         if (!(cs instanceof ConsoleCommandSender)) return true;
 
         Player player = Script.getPlayer(args[0]);
-        int days = Integer.parseInt(args[1].replace("d", ""));
+        int days = Integer.parseInt(args[1]);
+        Script.addEXP(player, 50);
 
-        player.sendMessage(Premium.PREFIX + "§7Vielen Dank für deinen Einkauf.");
-        Premium.addPremiumStorage(player, days, false);
-        Notifications.sendMessage(Notifications.NotificationType.NRPSHOP, Script.getName(player) + " hat " + days + " Tage im Shop Premium erworben.");
+        player.sendMessage(Premium.PREFIX + "§a§lVielen Dank für deinen Einkauf.");
+        Achievement.PREMIUM.grant(player);
+        Premium.addPremiumStorage(player, days);
+        Notifications.sendMessage(Notifications.NotificationType.NRPSHOP, Script.getName(player) + " hat " + days + " Tage Premium im Shop erworben.");
 
         return false;
     }

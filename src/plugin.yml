@@ -558,3 +558,6 @@ commands:
   memberactivity:
     description: view the memberactivity
     aliases: [ memberactivities ]
+  flugblatt:
+    description: view the flugblatt
+    aliases: [ flugblätter ]

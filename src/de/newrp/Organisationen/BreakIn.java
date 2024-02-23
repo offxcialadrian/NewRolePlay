@@ -22,6 +22,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,10 +36,11 @@ public class BreakIn implements Listener {
     @EventHandler
     public void onInteract(PlayerInteractEvent e) {
         Player p = (Player) e.getPlayer();
+        if(!p.getInventory().getItemInMainHand().equals(Script.brechstange())) return;
 
         long time = System.currentTimeMillis();
         Long lastUsage = TOTAL_COOLDOWN.get(p.getName());
-        if (TOTAL_COOLDOWN.containsKey(p.getName()) && lastUsage + 10800 * 1000 > time) {
+        if (TOTAL_COOLDOWN.containsKey(p.getName()) && lastUsage + 10800 * 1000 > time && HOUSES.containsKey(p.getName())) {
             p.sendMessage(Messages.ERROR + "Du kannst nur alle 3 Stunden in ein Haus einbrechen.");
             return;
         }

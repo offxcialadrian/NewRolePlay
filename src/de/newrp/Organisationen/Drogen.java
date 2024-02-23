@@ -131,7 +131,7 @@ public enum Drogen {
     }
 
     public static void healAddiction(Player p) {
-        if(getAddictionHeal(p) != 3 && !Premium.hasPremium(p)) {
+        if(getAddictionHeal(p) < 2 && !Premium.hasPremium(p)) {
             Script.executeAsyncUpdate("INSERT INTO drug_addiction (nrp_id, time, heal) VALUES (" + Script.getNRPID(p) + ", " + System.currentTimeMillis() + ", true)");
         } else {
             Script.executeAsyncUpdate("DELETE FROM drug_addiction WHERE nrp_id = " + Script.getNRPID(p));

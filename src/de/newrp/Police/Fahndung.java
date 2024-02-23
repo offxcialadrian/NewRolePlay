@@ -81,11 +81,6 @@ public class Fahndung implements CommandExecutor, TabCompleter {
 
         }
 
-        if(args.length != 2) {
-            p.sendMessage(Messages.ERROR + "/fahndung [Spieler] [Grund]");
-            return true;
-        }
-
         Player tg = Script.getPlayer(args[0]);
         if(tg == null) {
             p.sendMessage(Messages.PLAYER_NOT_FOUND);
@@ -103,11 +98,6 @@ public class Fahndung implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        if(!Straftat.straftatExists(args[1])) {
-            p.sendMessage(Messages.ERROR + "Dieser Fahndungsgrund existiert nicht.");
-            return true;
-        }
-
         if(SDuty.isSDuty(tg)) {
             p.sendMessage(Messages.ERROR + "Du kannst keine Spieler im Supporter-Dienst fahnden.");
             return true;
@@ -118,11 +108,27 @@ public class Fahndung implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        int id = Straftat.getReasonID(args[1]);
-        Beruf.Berufe.POLICE.sendMessage(PREFIX + "Der Spieler §e" + Script.getName(tg) + " §7wird nun wegen §e" + args[1].replace("-"," ") + " §7gefahndet.");
-        Beruf.Berufe.POLICE.sendMessage(PREFIX + "Beamter: §e" + Script.getName(p) + " §8(§7WantedPunkte: " + Straftat.getWanteds(id) + "§8)");
-        tg.sendMessage(PREFIX + "Du wirst nun wegen §e" + args[1].replace("-"," ") + " §7gefahndet.");
-        Script.executeAsyncUpdate("INSERT INTO wanted (nrp_id, copID, wantedreason, time) VALUES ('" + Script.getNRPID(tg) + "', '" + Script.getNRPID(p) + "', '" + id + "', '" + System.currentTimeMillis() + "')");
+        ArrayList<Straftat> straftaten = new ArrayList<>();
+        StringBuilder sb = new StringBuilder();
+        for(String arg : args) {
+            if(arg.equalsIgnoreCase(args[0])) continue;
+            if(!Straftat.straftatExists(arg.replace("-"," "))) {
+                p.sendMessage(Messages.ERROR + "Die Straftat §e" + arg.replace("-"," ") + " §7existiert nicht.");
+                continue;
+            }
+            sb.append(arg).append(" & ");
+            Script.executeAsyncUpdate("INSERT INTO wanted (nrp_id, copID, wantedreason, time) VALUES ('" + Script.getNRPID(tg) + "', '" + Script.getNRPID(p) + "', '" + Straftat.getReasonID(arg) + "', '" + System.currentTimeMillis() + "')");
+        }
+
+        if(sb.toString().isEmpty()) {
+            p.sendMessage(Messages.ERROR + "Du musst mindestens eine Straftat angeben.");
+            return true;
+        }
+
+        String substring = sb.toString().substring(0, sb.toString().length() - 3);
+        p.sendMessage(PREFIX + "Der Spieler §e" + Script.getName(tg) + " §7wird nun wegen §e" + substring + " §7gefahndet.");
+        Beruf.Berufe.POLICE.sendMessage(PREFIX + "Beamter: §e" + Script.getName(p) + " §8(§7WantedPunkte: " + Fahndung.getWanteds(tg) + "§8)");
+        tg.sendMessage(PREFIX + "Du wirst nun wegen §e" + substring + " §7gefahndet.");
 
         return false;
     }
@@ -177,7 +183,7 @@ public class Fahndung implements CommandExecutor, TabCompleter {
                 return null;
             }
 
-            if (args.length == 2) {
+            if (args.length >= 2) {
                 StringUtil.copyPartialMatches(args[1], oneArgList, completions);
             }
             Collections.sort(completions);

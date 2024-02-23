@@ -92,12 +92,28 @@ public class Script {
         return list;
     }
 
+    public static ItemStack tazer() {
+        ItemStack i = new ItemStack(Material.WOODEN_HOE);
+        ItemMeta meta = i.getItemMeta();
+        meta.setUnbreakable(true);
+        meta.setDisplayName("§7Tazer");
+        i.setItemMeta(meta);
+        return i;
+    }
+
 
     public static void updateListname(Player p) {
+        String color = "";
+        if(Beruf.hasBeruf(p)) {
+            if(Beruf.getBeruf(p) == Beruf.Berufe.POLICE) color = "§9";
+            if(Beruf.getBeruf(p) == Beruf.Berufe.RETTUNGSDIENST) color = "§4";
+            if(Beruf.getBeruf(p) == Beruf.Berufe.GOVERNMENT) color = "§3";
+            if(Beruf.getBeruf(p) == Beruf.Berufe.NEWS) color = "§6";
+        }
         if (SDuty.isSDuty(p)) p.setPlayerListName("§c§lNRP §8× §9" + p.getName());
         if (!SDuty.isSDuty(p)) p.setPlayerListName("§r" + p.getName());
         if (Duty.isInDuty(p) && Beruf.getAbteilung(p) != Abteilung.Abteilungen.ZIVILPOLICE)
-            p.setPlayerListName((Beruf.getBeruf(p) == Beruf.Berufe.POLICE ? "§9" : "§4") + p.getPlayerListName());
+            p.setPlayerListName(color + p.getPlayerListName());
         if (BuildMode.isInBuildMode(p)) p.setPlayerListName("§e§lB §8× §r" + p.getPlayerListName());
         if (TicketCommand.isInTicket(p)) p.setPlayerListName("§b§lT §8× §r" + p.getPlayerListName());
     }
@@ -741,6 +757,7 @@ public class Script {
     }
 
     public static void sendBugReport(Player p, String msg) {
+        p.sendMessage(Script.PREFIX + "Oh nein, ein Bug ist aufgetreten. Wir haben diesen Bug automatisch gemeldet. Bitte entschuldige die Unannehmlichkeiten.");
         sendTeamMessage("§c§lARC: §c" + getName(p) + ": " + msg);
     }
 

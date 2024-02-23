@@ -23,10 +23,10 @@ public class TeamspeakUpdate implements Listener {
         Bukkit.getScheduler().runTaskAsynchronously(main.getInstance(), () -> {
             try {
                 String name = "[cspacer]» " + (Bukkit.getOnlinePlayers().size()) + "/" + (Bukkit.getServer().getMaxPlayers()) + " Spieler online «";
-                if (!TeamSpeak.getApi().getChannelInfo(611).getName().equals(name)) {
+                if (!TeamSpeak.getApi().getChannelInfo(4).getName().equals(name)) {
                     Map<ChannelProperty, String> options = new HashMap<>();
                     options.put(ChannelProperty.CHANNEL_NAME, name);
-                    TeamSpeak.getApi().editChannel(611, options);
+                    TeamSpeak.getApi().editChannel(4, options);
                 }
             } catch (Exception e1) {
                 e1.printStackTrace();
@@ -52,10 +52,10 @@ public class TeamspeakUpdate implements Listener {
         Bukkit.getScheduler().runTaskAsynchronously(main.getInstance(), () -> {
             try {
                 String name = "[cspacer]» " + (Bukkit.getOnlinePlayers().size()) + "/" + (Bukkit.getServer().getMaxPlayers()) + " Spieler online «";
-                if (!TeamSpeak.getApi().getChannelInfo(611).getName().equals(name)) {
+                if (!TeamSpeak.getApi().getChannelInfo(4).getName().equals(name)) {
                     Map<ChannelProperty, String> options = new HashMap<>();
                     options.put(ChannelProperty.CHANNEL_NAME, name);
-                    TeamSpeak.getApi().editChannel(611, options);
+                    TeamSpeak.getApi().editChannel(4, options);
                 }
             } catch (Exception e1) {
                 e1.printStackTrace();

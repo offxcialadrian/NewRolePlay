@@ -198,8 +198,9 @@ public class Lagerarbeiter implements CommandExecutor, Listener {
 
         GFB.CURRENT.put(p.getName(), GFB.LAGERARBEITER);
         p.sendMessage(PREFIX + "Gehe ins Lager, hole dir eine Palette und fang an deinen Job zu machen.");
-        p.sendMessage(Messages.INFO + "Klicke Rechtsklick auf das Schild \"Ware\".");
         int totalscore = GFB.LAGERARBEITER.getLevel(p) * Script.getRandom(7, 12);
+        p.sendMessage(Messages.INFO + "Klicke Rechtsklick auf das Schild \"Ware\".");
+        p.sendMessage(Messages.INFO + "Du musst insgesamt " + totalscore + " Waren verräumen.");
         SCORE.put(p.getName(), totalscore);
         TOTAL_SCORE.put(p.getName(), totalscore);
         cooldown.put(p.getName(), System.currentTimeMillis() + 10 * 60 * 2000L);

@@ -5,6 +5,7 @@ import de.newrp.Administrator.SDuty;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Government.Stadtkasse;
 import de.newrp.Government.Steuern;
+import de.newrp.House.House;
 import de.newrp.House.HouseAddon;
 import de.newrp.Medic.Medikamente;
 import de.newrp.Medic.Rezept;
@@ -47,6 +48,12 @@ public class PayShop implements Listener {
 
         if (si.premiumNeeded() && !Premium.hasPremium(p)) {
             p.sendMessage(Messages.ERROR + "Du kannst dieses Item nur mit Premium erwerben.");
+            return;
+        }
+
+        HouseAddon addon = HouseAddon.getHausAddonByName(ChatColor.stripColor(si.getName()));
+        if(addon != null && !House.hasHouse(Script.getNRPID(p))) {
+            p.sendMessage(Messages.ERROR + "Du hast kein Haus.");
             return;
         }
 
@@ -107,6 +114,48 @@ public class PayShop implements Listener {
                         p.sendMessage(Messages.ERROR + "Du hast bereits eine AK-47.");
                         return;
                     }
+                    break;
+                case DEAGLE:
+                    if (!Licenses.WAFFENSCHEIN.hasLicense(Script.getNRPID(p))) {
+                        BuyClick.sendMessage(p, "Du hast keinen Waffenschein.");
+                        return;
+                    }
+                    if (!haveGun(p, Weapon.DESERT_EAGLE)) {
+                        Weapon w = Weapon.DESERT_EAGLE;
+                        p.getInventory().addItem(Waffen.setAmmo(w.getWeapon(), 0, 0));
+                        Weapon.DESERT_EAGLE.addToInventory(Script.getNRPID(p));
+                    } else {
+                        p.sendMessage(Messages.ERROR + "Du hast bereits eine Desert Eagle.");
+                        return;
+                    }
+                    break;
+                case AMMO_50AE:
+                    if (!haveGun(p, Weapon.DESERT_EAGLE)) {
+                        p.sendMessage(Messages.ERROR + "Du hast keine Desert Eagle.");
+                        return;
+                    }
+                    Weapon.DESERT_EAGLE.addMunition(Script.getNRPID(p), si.getAmount(s));
+                    break;
+                case JAGDFLINTE:
+                    if (!Licenses.WAFFENSCHEIN.hasLicense(Script.getNRPID(p))) {
+                        BuyClick.sendMessage(p, "Du hast keinen Waffenschein.");
+                        return;
+                    }
+                    if (!haveGun(p, Weapon.JAGDFLINTE)) {
+                        Weapon w = Weapon.JAGDFLINTE;
+                        p.getInventory().addItem(Waffen.setAmmo(w.getWeapon(), 0, 0));
+                        Weapon.JAGDFLINTE.addToInventory(Script.getNRPID(p));
+                    } else {
+                        p.sendMessage(Messages.ERROR + "Du hast bereits eine Jagdflinte.");
+                        return;
+                    }
+                    break;
+                case SCHROT:
+                    if (!haveGun(p, Weapon.JAGDFLINTE)) {
+                        p.sendMessage(Messages.ERROR + "Du hast keine Jagdflinte.");
+                        return;
+                    }
+                    Weapon.JAGDFLINTE.addMunition(Script.getNRPID(p), si.getAmount(s));
                     break;
                 case AMMO_762MM:
                     if (!haveGun(p, Weapon.AK47)) {
@@ -196,7 +245,7 @@ public class PayShop implements Listener {
         Stadtkasse.addStadtkasse((int) Script.getPercent(mwst, price), "Mehrwertsteuer aus dem Verkauf von " + si.getName() + " (Shop: " + s.getPublicName() + ")", Steuern.Steuer.MEHRWERTSTEUER);
 
         Achievement.EINKAUFEN.grant(p);
-
+        Buy.amount.remove(p.getName());
 
         if (si.isReopen()) BuyClick.reopen(p);
         SDuty.updateScoreboard();

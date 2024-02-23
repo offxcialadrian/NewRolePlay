@@ -225,7 +225,7 @@ public enum Shops {
             ItemStack i = bi.getItemStack();
             if(i == null) continue;
             int[] a = n.getValue();
-            i.setAmount(a[0]);
+            i.setAmount(bi.getItemStack().getAmount());
             if(i.getItemMeta().hasDisplayName()) {
                 ItemMeta im = i.getItemMeta();
                 ArrayList<String> lore = new ArrayList<>();

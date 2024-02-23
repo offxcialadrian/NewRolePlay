@@ -57,7 +57,7 @@ public class JoinTeam implements CommandExecutor, Listener {
             if (team == null) return;
             if (Team.getTeam(p) != null) Team.removeTeam(p);
             Team.setTeam(p, team, true);
-            p.sendMessage(PREFIX + "Du bist nun im  " + team.getName() + ".");
+            p.sendMessage(PREFIX + "Du bist nun im " + team.getName() + ".");
             Script.sendTeamMessage(p, ChatColor.YELLOW, "ist nun im " + team.getName() + ".", true);
             Log.HIGH.write(p.getName() + " hat das Team " + team.getName() + " betreten.");
             p.closeInventory();

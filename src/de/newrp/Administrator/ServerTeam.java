@@ -3,6 +3,7 @@ package de.newrp.Administrator;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.Player.AFK;
+import de.newrp.Ticket.TicketCommand;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -24,13 +25,14 @@ public class ServerTeam implements CommandExecutor {
 
         List<Player> nrps = Script.getNRPTeam();
         nrps.removeIf(nrp -> !SDuty.isSDuty(nrp));
+        nrps.removeIf(TicketCommand::isInTicket);
 
         if (nrps.isEmpty()) {
             p.sendMessage(Script.PREFIX + "Es ist derzeit kein Teammitglied im Supporter-Dienst.");
             return true;
         }
 
-        p.sendMessage(Script.PREFIX + "Folgende Teammitglieder sind derzeit im Supporter-Dienst:");
+        p.sendMessage(Script.PREFIX + "Folgende Teammitglieder sind derzeit verfügbar:");
         for (Player nrp : nrps) {
             String color = "§7";
             switch (Script.getRank(nrp)) {
@@ -45,7 +47,7 @@ public class ServerTeam implements CommandExecutor {
                     color = "§e";
                     break;
             }
-            p.sendMessage(Script.PREFIX + "§6" + Script.getName(nrp) + " §8× " + color + Script.getRank(nrp).getName(nrp) + (AFK.isAFK(nrp) ? " §8× §6AFK" : ""));
+            p.sendMessage("§8" + Messages.ARROW + " §6" + Script.getName(nrp) + " §8× " + color + Script.getRank(nrp).getName(nrp) + (AFK.isAFK(nrp) ? " §8× §6AFK" : ""));
         }
 
         return false;

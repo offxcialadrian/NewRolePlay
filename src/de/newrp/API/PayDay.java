@@ -197,7 +197,7 @@ public class PayDay extends BukkitRunnable {
             }
 
             if(Buy.isGymMember(p)) {
-                int price = Buy.getGym(p).getPrice();
+                int price = 20;
                 p.sendMessage("§8" + Messages.ARROW + " §7Fitnessstudio: §c-" + price + "€");
                 payday -= price;
                 int mehrwertsteur = (int) Steuern.Steuer.MEHRWERTSTEUER.getPercentage();

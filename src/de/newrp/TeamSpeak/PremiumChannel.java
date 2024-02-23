@@ -39,7 +39,7 @@ public class PremiumChannel implements CommandExecutor {
                             properties.put(ChannelProperty.CHANNEL_NAME, "» Privater Talk [" + channel + "]");
                             properties.put(ChannelProperty.CHANNEL_DESCRIPTION, "» Privater Talk von " + p.getName() + ".");
                             properties.put(ChannelProperty.CHANNEL_FLAG_SEMI_PERMANENT, "1");
-                            properties.put(ChannelProperty.CPID, "708");
+                            properties.put(ChannelProperty.CPID, "107");
 
                             TeamSpeak.getTsApiAsync().createChannel("» Privater Talk [" + channel + "]", properties);
                             channel += 1;
@@ -64,7 +64,7 @@ public class PremiumChannel implements CommandExecutor {
                                 properties.put(ChannelProperty.CHANNEL_NAME, "» Privater Talk [" + channel + "]");
                                 properties.put(ChannelProperty.CHANNEL_DESCRIPTION, "» Privater Talk von " + p.getName() + ".");
                                 properties.put(ChannelProperty.CHANNEL_FLAG_SEMI_PERMANENT, "1");
-                                properties.put(ChannelProperty.CPID, "708");
+                                properties.put(ChannelProperty.CPID, "107");
                                 properties.put(ChannelProperty.CHANNEL_PASSWORD, args[0]);
 
                                 TeamSpeak.getApi().createChannel("» Privater Talk [" + channel + "]", properties);

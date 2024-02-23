@@ -76,8 +76,14 @@ public class BuyClick implements Listener {
         if(s.getType() == ShopType.HOTEL) {
             Hotel.RoomType rt = Hotel.RoomType.getRoomByName(ChatColor.stripColor(si.getName()));
             Hotel.Hotels hotel = Hotel.Hotels.getHotelByName(ChatColor.stripColor(e.getView().getTitle()));
-            if(hotel == null) return;
-            if(rt == null) return;
+            if(hotel == null) {
+                Script.sendBugReport(p, "hotel is null -> " + ChatColor.stripColor(e.getView().getTitle()));
+                return;
+            }
+            if(rt == null) {
+                Script.sendBugReport(p, "rt is null -> " + ChatColor.stripColor(si.getName()));
+                return;
+            }
             Hotel.Rooms room = hotel.getFreeRoom(rt);
             if(room == null) {
                 sendMessage(p, "Es tut uns leid, aber wir haben keine freien Zimmer mehr.");

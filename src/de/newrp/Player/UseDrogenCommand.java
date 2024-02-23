@@ -62,11 +62,7 @@ public class UseDrogenCommand implements CommandExecutor {
             if(is.getItemMeta().getDisplayName().equalsIgnoreCase(droge.getName()) && (Drogen.DrugPurity.getPurityByName(is.getItemMeta().getLore().get(0).replace("§7Reinheitsgrad: ", "")) == purity)) {
                 droge.consume(p, purity);
                 UseDrogen.DRUG_COOLDOWN.put(p.getName(), System.currentTimeMillis());
-                if (is.getAmount() > 1) {
-                    is.setAmount(is.getAmount() - 1);
-                } else {
-                    is.setType(Material.AIR);
-                }
+                is.setAmount(is.getAmount() - 1);
                 return true;
             }
         }

@@ -30,7 +30,7 @@ public class Equip implements CommandExecutor, Listener {
         PISTOLE(1, "Pistole", new ItemBuilder(Material.IRON_HORSE_ARMOR).setName("§7Pistole").build(), 1000, 75, null, Beruf.Berufe.POLICE, false),
         SCHUTZWESTE(2,"Schutzweste", Script.kevlar(1), 500, 0, null, Beruf.Berufe.POLICE, false),
         HANDSCHELLEN(3, "Handschellen", Script.setName(new ItemStack(Material.LEAD, 2), "§7Handschellen"), 100, 0, null, Beruf.Berufe.POLICE, true),
-        TAZER(4, "Tazer", Script.setName(new ItemStack(Material.WOODEN_HOE, 1), "§7Tazer"), 100, 0, null, Beruf.Berufe.POLICE, true),
+        TAZER(4, "Tazer", Script.tazer(), 100, 0, null, Beruf.Berufe.POLICE, true),
         DONUT(5, "Donut", new ItemBuilder(Material.COOKIE).setAmount(16).setName("§7Donut").build(), 1, 0, null, Beruf.Berufe.POLICE, false),
         MP7(6, "MP7", new ItemBuilder(Material.GOLDEN_HORSE_ARMOR).setName("§7MP7").build(), 2900, 400, null, Beruf.Berufe.POLICE, false),
         EINSATZSCHILD(7, "Einsatzschild", Script.einsatzschild(1), 1000, 0, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE, true),
@@ -38,7 +38,7 @@ public class Equip implements CommandExecutor, Listener {
         RAUCHGRANATE(9, "Rauchgranate", Script.rauchgranate(), 100, 0, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE, true),
         FLASHBANG(10, "Flashbang", Script.flashbang(), 100, 0, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE, true),
         FALLSCHIRM(11,"Fallschirm", Script.fallschirm(), 100, 0, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE, true),
-        ZEITUNG(12, "Zeitung", Script.setName(new ItemStack(Material.WRITABLE_BOOK), "§7Zeitung"), 100, 0, Abteilung.Abteilungen.CHEFREDAKTION, Beruf.Berufe.NEWS, true),
+        ZEITUNG(12, "Buch und Stift", Script.setName(new ItemStack(Material.WRITABLE_BOOK), "§7Buch und Stift"), 100, 0, Abteilung.Abteilungen.CHEFREDAKTION, Beruf.Berufe.NEWS, true),
         VERBAND(13, "Verband", new ItemBuilder(Material.PAPER).setName("§7Verband").setAmount(5).build(), 5, 0, null, Beruf.Berufe.RETTUNGSDIENST, false),
         GIPS(14, "Gips", Script.setName(new ItemStack(Material.PAPER), "§7Gips"), 50, 0, null, Beruf.Berufe.RETTUNGSDIENST, true),
         SCHWERE_SCHUTZWESTE(15,"Schwere Schutzweste", Script.kevlar(2), 1000, 0, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE, true),
@@ -48,9 +48,9 @@ public class Equip implements CommandExecutor, Listener {
         BROT(19, "Brot", new ItemBuilder(Material.BREAD).setAmount(16).setName("§7Brot").build(), 10, 0, null, Beruf.Berufe.RETTUNGSDIENST, false),
         KEKSE(20, "Kekse",new ItemBuilder(Material.COOKIE).setAmount(16).setName("§7Keks").build(), 10, 0, null, Beruf.Berufe.NEWS, false),
         SNIPER(21, "Sniper", new ItemBuilder(Material.STONE_HOE).setName("§7Sniper").build(), 5000, 30, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE, true),
-        DROHNE_COPS(22, "Drohne", new ItemBuilder(Material.WITHER_SKELETON_SKULL).setName("§7Drohne").build(), 2000, 0, null, Beruf.Berufe.POLICE, true),
-        DROHNE_NEWS(23, "Drohne", new ItemBuilder(Material.WITHER_SKELETON_SKULL).setName("§7Drohne").build(), 2000, 0, Abteilung.Abteilungen.CHEFREDAKTION, Beruf.Berufe.NEWS, true),
-        DROHNE_RETTUNGSDIENST(24, "Drohne", new ItemBuilder(Material.WITHER_SKELETON_SKULL).setName("§7Drohne").build(), 2000, 0, null, Beruf.Berufe.RETTUNGSDIENST, true);
+        DROHNE_COPS(22, "Drohne [Polizei]", new ItemBuilder(Material.WITHER_SKELETON_SKULL).setName("§7Drohne [Polizei]").build(), 2000, 0, null, Beruf.Berufe.POLICE, true),
+        DROHNE_NEWS(23, "Drohne [News]", new ItemBuilder(Material.WITHER_SKELETON_SKULL).setName("§7Drohne [News]").build(), 2000, 0, Abteilung.Abteilungen.CHEFREDAKTION, Beruf.Berufe.NEWS, true),
+        DROHNE_RETTUNGSDIENST(24, "Drohne [Rettungsdienst]", new ItemBuilder(Material.WITHER_SKELETON_SKULL).setName("§7Drohne [Rettungsdienst]").build(), 2000, 0, Abteilung.Abteilungen.NOTFALLMEDIZIN, Beruf.Berufe.RETTUNGSDIENST, true);
 
         private String name;
         private int id;
@@ -183,10 +183,10 @@ public class Equip implements CommandExecutor, Listener {
 
         for (Stuff stuff : Stuff.values()) {
             if (stuff.getBeruf() == beruf) {
-                if (stuff.getAbteilung() == null) {
+                if (stuff.getAbteilung() == null || Beruf.isLeader(p, true)) {
                     inv.addItem(stuff.getItem());
                 } else {
-                    if (Beruf.getAbteilung(p) == stuff.getAbteilung()) {
+                    if (Beruf.getAbteilung(p) == stuff.getAbteilung() || Beruf.isLeader(p, true)) {
                         inv.addItem(stuff.getItem());
                     }
                 }
@@ -217,7 +217,7 @@ public class Equip implements CommandExecutor, Listener {
                 p.sendMessage(Messages.ERROR + "Du kannst dir nur Items von deinem Beruf ausrüsten.");
                 return;
             }
-            if (stuff.getAbteilung() != null) {
+            if (stuff.getAbteilung() != null && !Beruf.isLeader(p, true)) {
                 if (Beruf.getAbteilung(p) != stuff.getAbteilung()) {
                     p.sendMessage(Messages.ERROR + "Du kannst dir nur Items von deiner Abteilung ausrüsten.");
                     return;

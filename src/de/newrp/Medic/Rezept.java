@@ -8,6 +8,7 @@ import de.newrp.Administrator.SDuty;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Berufe.Duty;
 import de.newrp.Player.Annehmen;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -91,7 +92,7 @@ public class Rezept implements CommandExecutor, TabCompleter {
 
     public static boolean hasRezept(Player p, Medikamente m) {
         for(ItemStack is : p.getInventory().getContents()) {
-            if(is != null && is == m.getRezept()) {
+            if(is != null && is.getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.stripColor(m.getRezept().getItemMeta().getDisplayName()))) {
                 return true;
             }
         }

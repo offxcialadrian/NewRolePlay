@@ -5,6 +5,7 @@ import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.Berufe.Abteilung;
 import de.newrp.Berufe.Beruf;
+import de.newrp.Berufe.Duty;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -29,6 +30,11 @@ public class Staatsmeldung implements CommandExecutor {
 
         if(args.length == 0) {
             p.sendMessage(Messages.ERROR + "Bitte gib eine Nachricht an!");
+            return true;
+        }
+
+        if(!Duty.isInDuty(p)) {
+            p.sendMessage(Messages.ERROR + "Du bist nicht im Dienst!");
             return true;
         }
 
