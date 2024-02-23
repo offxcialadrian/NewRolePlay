@@ -3,7 +3,9 @@ package de.newrp.Police;
 import de.newrp.API.*;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Berufe.Duty;
+import de.newrp.Call.Call;
 import de.newrp.House.House;
+import de.newrp.Player.Mobile;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -151,6 +153,11 @@ public static String PREFIX = "§8[§9Polizeicomputer§8] §9" + Messages.ARROW 
                 }
 
                 if(title.equals("Orten")) {
+                    if(!Mobile.hasPhone(tg) || Mobile.mobileIsOn(tg)) {
+                        p.sendMessage(Messages.ERROR + "Das Handy von " + Script.getName(tg) + " ist nicht eingeschaltet.");
+                        return;
+                    }
+
                     p.sendMessage(PREFIX + "Du hast " + Script.getName(tg) + " geortet.");
                     Navi navi = Navi.getNextNaviLocation(tg.getLocation());
                     Script.sendClickableMessage(p, PREFIX  + Script.getName(tg) + " befindet sich bei " + navi.getName(), "/navi " + navi.getName(), "Klicke um dich zum nächsten Punkt zu navigieren.");

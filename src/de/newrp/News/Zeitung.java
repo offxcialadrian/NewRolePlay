@@ -103,7 +103,8 @@ public class Zeitung implements CommandExecutor, Listener {
                     bm.setTitle("Zeitung [" + id + ". Auflage]");
                     bm.setPages(pages);
                     p.getInventory().addItem(Script.setName(book, "Zeitung [" + id + ". Auflage]"));
-                    p.sendMessage(prefix + "Die Zeitung wurde hinzugefügt.");
+                    p.sendMessage(prefix + "Die Zeitung wurde deinem Inventar hinzugefügt.");
+                    return true;
                 } else {
                     p.sendMessage(Messages.ERROR + "Die Zeitung wurde nicht gefunden.");
                 }
@@ -148,15 +149,10 @@ public class Zeitung implements CommandExecutor, Listener {
                 cache = e.getNewBookMeta();
             }
             if (e.getNewBookMeta().getPageCount() > 5) {
-                if (e.getNewBookMeta().getPages().size() > 5) {
                     Inventory inv = p.getServer().createInventory(null, 9, "§6Zeitung");
                     inv.setItem(3, Script.setName(new ItemStack(Material.EMERALD_BLOCK), "§aFertig"));
                     inv.setItem(5, Script.setName(new ItemStack(Material.REDSTONE_BLOCK), "§cNicht fertig"));
                     p.openInventory(inv);
-                } else {
-                    e.setSigning(false);
-                    p.sendMessage(prefix + "Die Zeitung ist zu kurz.");
-                }
             } else {
                 e.setSigning(false);
                 p.sendMessage(prefix + "Die Zeitung ist zu kurz.");
@@ -209,7 +205,7 @@ public class Zeitung implements CommandExecutor, Listener {
             if (e.getCurrentItem() != null && !e.getCurrentItem().getType().equals(Material.AIR) && e.getCurrentItem().hasItemMeta()) {
                 ItemStack is = e.getCurrentItem();
                 if (is.getItemMeta().getDisplayName().equals("§aFertig")) {
-                    if (cache.getPages().size() > 5) {
+                    if (cache.getPageCount() > 5) {
                         saveZeitung(cache, p);
                         cache = null;
                     } else {

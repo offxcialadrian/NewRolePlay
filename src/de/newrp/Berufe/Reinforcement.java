@@ -78,11 +78,6 @@ public class Reinforcement implements CommandExecutor {
             return true;
         }
 
-        if(Beruf.getBeruf(p) != Beruf.Berufe.RETTUNGSDIENST && Beruf.getBeruf(p) != Beruf.Berufe.POLICE && Beruf.getBeruf(p) != Beruf.Berufe.GOVERNMENT && !Organisation.hasOrganisation(p)) {
-            p.sendMessage(Messages.ERROR + "Du bist nicht im Rettungsdienst, Polizei, Regierung oder in keiner Organisation.");
-            return true;
-        }
-
         if (Sperre.MUTE.isActive(Script.getNRPID(p))) {
             p.sendMessage(Messages.ERROR + "Du bist gemuted.");
             return false;
@@ -163,11 +158,6 @@ public class Reinforcement implements CommandExecutor {
             return true;
         }
 
-        if(type.isDChat() && !Beruf.hasBeruf(p)) {
-            p.sendMessage(Messages.ERROR + "Du bist nicht im Rettungsdienst, Polizei oder Regierung.");
-            return true;
-        }
-
         new_reinforcement.put(p.getName(), p.getLocation());
         reinf_type.put(p.getName(), type);
 
@@ -176,7 +166,7 @@ public class Reinforcement implements CommandExecutor {
             if(org.getMembers().contains(p)) {
                 for (Player member : org.getMembers()) {
                     member.sendMessage("§c§l" + type.getName() + " §3" + org.getName() + " " + Script.getName(p) + " benötigt Unterstützung! §8➥ §7" + Navi.getNextNaviLocation(p.getLocation()) + " §7(" + (int) member.getLocation().distance(p.getLocation()) + "m)");
-                    OnMyWayLink(member, p);
+                      OnMyWayLink(member, p);
                 }
                 return true;
             }
