@@ -466,6 +466,7 @@ public class main extends JavaPlugin {
         Blacklist.load();
         Plantage.loadAll();
         Schwarzmarkt.spawnRandom();
+        Zeitung.restoreZeitung();
 
         Script.executeUpdate("UPDATE birthday SET geschenk = 0");
 

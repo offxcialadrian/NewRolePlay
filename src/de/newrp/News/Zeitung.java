@@ -97,6 +97,10 @@ public class Zeitung implements CommandExecutor, Listener {
                     String[] pages = rs.getString("content").split("/\\{new_page}/");
                     ItemStack book = new ItemStack(Material.WRITTEN_BOOK);
                     BookMeta bm = (BookMeta) book.getItemMeta();
+                    bm.setGeneration(null);
+                    bm.setAuthor("News Redaktion");
+                    bm.setDisplayName("Zeitung [" + id + ". Auflage]");
+                    bm.setTitle("Zeitung [" + id + ". Auflage]");
                     bm.setPages(pages);
                     p.getInventory().addItem(Script.setName(book, "Zeitung [" + id + ". Auflage]"));
                     p.sendMessage(prefix + "Die Zeitung wurde hinzugefügt.");
@@ -159,6 +163,38 @@ public class Zeitung implements CommandExecutor, Listener {
             }
         } else {
             Debug.debug("book has no author");
+        }
+    }
+
+    public static int getLatestZeitungID() {
+        try (Statement stmt = main.getConnection().createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT id FROM zeitung ORDER BY id DESC LIMIT 1")) {
+            if (rs.next()) {
+                return rs.getInt("id");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+
+    public static void restoreZeitung() {
+        try (Statement stmt = main.getConnection().createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT * FROM zeitung WHERE id=" + getLatestZeitungID())) {
+            if(rs.next()) {
+                String[] pages = rs.getString("content").split("/\\{new_page}/");
+                ItemStack book = new ItemStack(Material.WRITTEN_BOOK);
+                BookMeta bm = (BookMeta) book.getItemMeta();
+                bm.setDisplayName("Zeitung [" + getLatestZeitungID() + ". Auflage]");
+                bm.setGeneration(null);
+                bm.setTitle("Zeitung [" + getLatestZeitungID() + ". Auflage]");
+                bm.setAuthor("News Redaktion");
+                bm.setPages(pages);
+                zeitung = book;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 

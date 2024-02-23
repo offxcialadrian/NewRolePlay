@@ -46,7 +46,7 @@ public class Schule implements CommandExecutor, Listener {
         }
 
 
-        if(STUDIYING.containsKey(p)) {
+        if(STUDIYING.containsKey(p) ) {
             p.sendMessage(Messages.ERROR + "Du lernst bereits.");
             if(STARTED.containsKey(p)) {
                 long time = System.currentTimeMillis();
