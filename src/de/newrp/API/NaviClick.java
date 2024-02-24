@@ -2,6 +2,8 @@ package de.newrp.API;
 
 import de.newrp.GFB.*;
 import de.newrp.Player.NaviCommand;
+import de.newrp.Shop.ShopType;
+import de.newrp.Shop.Shops;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -132,6 +134,7 @@ public class NaviClick implements Listener {
                     case "§6Finde..": {
                         Inventory inv = Bukkit.createInventory(null, 18, "§e§lNavi");
                         inv.setItem(0, Script.setName(Material.NETHER_STAR, "§6Nächster Bankautomat"));
+                        inv.setItem(2, Script.setName(Material.NETHER_STAR, "§6Nächste Apotheke"));
                         inv.setItem(13, Script.setName(Material.REDSTONE, "§cZurück"));
                         Script.fillInv(inv);
                         Script.fillInv(inv);
@@ -144,6 +147,19 @@ public class NaviClick implements Listener {
                         p.sendMessage(Navi.PREFIX + "Dir wird nun die Route zum Punkt §6§lGeldautomat " + atm.getID() + "§r§6 angezeigt.");
                         p.sendMessage(Messages.INFO + "Mit /navistop oder erneut /navi wird die Route gelöscht.");
                         new Route(p.getName(), Script.getNRPID(p), p.getLocation(), atm.getLocation()).start();
+                    }
+
+                    case "§6Nächste Apotheke": {
+                        Shops nearest = Shops.APOTHEKE;
+                        for(Shops shop : Shops.values()) {
+                            if(shop.getType() != ShopType.PHARMACY) continue;
+                            if(shop.getBuyLocation().distance(p.getLocation())<nearest.getBuyLocation().distance(p.getLocation())) nearest = shop;
+                        }
+
+                        p.sendMessage(Navi.PREFIX + "Dir wird nun die Route zur nächsten §6§lApotheke§r§6 angezeigt.");
+                        p.sendMessage(Messages.INFO + "Mit /navistop oder erneut /navi wird die Route gelöscht.");
+                        new Route(p.getName(), Script.getNRPID(p), p.getLocation(), nearest.getBuyLocation()).start();
+
                     }
 
                     default:

@@ -3,16 +3,25 @@ package de.newrp.Waffen;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.API.SlotLimit;
+import de.newrp.Administrator.BuildMode;
+import de.newrp.Administrator.GoTo;
+import de.newrp.Administrator.SDuty;
 import de.newrp.House.House;
 import de.newrp.House.HouseAddon;
 import de.newrp.Player.Hotel;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.StringUtil;
 
-public class GetAmmo implements CommandExecutor {
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+public class GetAmmo implements CommandExecutor, TabCompleter {
     public static final String PREFIX = "§8[§7Waffenschrank§8] §3";
 
     @Override
@@ -104,4 +113,29 @@ public class GetAmmo implements CommandExecutor {
         w.removeWear(id, 1);
         return true;
     }
+
+    @Override
+    public List<String> onTabComplete(CommandSender cs, Command cmd, String alias, String[] args) {
+        Player p = (Player) cs;
+        if (cmd.getName().equalsIgnoreCase("getammo") || cmd.getName().equalsIgnoreCase("getmunition")) {
+            final List<String> oneArgList = new ArrayList<>();
+            final List<String> completions = new ArrayList<>();
+            for (Weapon weapon : Weapon.values()) {
+                if(!GetGun.haveGun(p, weapon)) continue;
+                oneArgList.add(weapon.getName());
+            }
+
+            if (args.length == 1) {
+                StringUtil.copyPartialMatches(args[0], oneArgList, completions);
+            }
+
+            if (args.length == 2) {
+                return null;
+            }
+            Collections.sort(completions);
+            return completions;
+        }
+        return Collections.EMPTY_LIST;
+    }
+
 }

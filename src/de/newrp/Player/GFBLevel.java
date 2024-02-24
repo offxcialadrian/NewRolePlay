@@ -2,6 +2,7 @@ package de.newrp.Player;
 
 import de.newrp.API.ItemBuilder;
 import de.newrp.API.Messages;
+import de.newrp.API.Script;
 import de.newrp.GFB.GFB;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -27,10 +28,11 @@ public class GFBLevel implements CommandExecutor, Listener {
         }
 
         if(args.length == 0) {
-            Inventory inv = Bukkit.createInventory(null, 9, "§6GFB Level");
+            Inventory inv = Bukkit.createInventory(null, 18, "§6GFB Level");
             for(GFB gfb : GFB.values()) {
                 inv.addItem(new ItemBuilder(Material.NETHER_STAR).setName("§6" + gfb.getName()).setLore(" §7» Level: §6" + gfb.getLevel(p), " §7» Exp: §6" + gfb.getExp(p) + "§8/§6" + GFB.getLevelCost(gfb.getLevel(p))).build());
             }
+            Script.fillInv(inv);
             p.openInventory(inv);
             return true;
         }

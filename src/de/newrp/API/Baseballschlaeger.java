@@ -32,11 +32,12 @@ public class Baseballschlaeger implements Listener {
             if(e.isCancelled()) return;
             Player victim = (Player) e.getEntity();
 
-            if (SDuty.isSDuty(victim) || BuildMode.isInBuildMode(victim) || AFK.isAFK(victim)) {
+            if (SDuty.isSDuty(victim) || BuildMode.isInBuildMode(victim) || AFK.isAFK(victim) || Script.getLevel(victim)==1) {
                 return;
             }
 
             Player damager = (Player) e.getDamager();
+            if(damager.getLevel()==1) return;
             if (damager.getInventory().getItemInMainHand() != null && damager.getInventory().getItemInMainHand().hasItemMeta() && damager.getInventory().getItemInMainHand().getItemMeta().getDisplayName() != null && damager.getInventory().getItemInMainHand().getItemMeta().getDisplayName().equals("§7Baseballschläger")) {
                 long time = System.currentTimeMillis();
                 Long lastUsage = cooldown.get(damager.getName());
