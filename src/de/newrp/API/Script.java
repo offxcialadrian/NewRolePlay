@@ -1404,6 +1404,7 @@ public class Script {
 
     public static void setLevel(Player p, int level) {
         executeUpdate("UPDATE level SET level=" + level + " WHERE nrp_id=" + getNRPID(p));
+        executeUpdate("UPDATE level SET exp=" + 0 + " WHERE nrp_id=" + getNRPID(p));
         p.setLevel(level);
         p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1F, 1F);
         Log.NORMAL.write(p, "hat Level " + level + " erreicht.");

@@ -17,11 +17,14 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 
+import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class Policecomputer implements CommandExecutor, Listener {
 
 public static String PREFIX = "§8[§9Polizeicomputer§8] §9" + Messages.ARROW + " ";
+public static HashMap<String, Long> cooldown = new HashMap<>();
 
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
@@ -158,6 +161,12 @@ public static String PREFIX = "§8[§9Polizeicomputer§8] §9" + Messages.ARROW 
                         return;
                     }
 
+                    if(cooldown.containsKey(tg.getName()) && cooldown.get(tg.getName())>System.currentTimeMillis()) {
+                        p.sendMessage(Messages.ERROR + "Du kannst " + Script.getName(tg) + " erst in " + Script.getRemainingTime(cooldown.get(tg.getName())) + " orten.");
+                        return;
+                    }
+
+                    cooldown.put(tg.getName(), (System.currentTimeMillis()+ TimeUnit.MINUTES.toMillis(10)));
                     p.sendMessage(PREFIX + "Du hast " + Script.getName(tg) + " geortet.");
                     Navi navi = Navi.getNextNaviLocation(tg.getLocation());
                     Script.sendClickableMessage(p, PREFIX  + Script.getName(tg) + " befindet sich bei " + navi.getName(), "/navi " + navi.getName(), "Klicke um dich zum nächsten Punkt zu navigieren.");

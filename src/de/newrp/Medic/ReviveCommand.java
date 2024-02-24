@@ -51,7 +51,7 @@ public class ReviveCommand implements CommandExecutor {
             if (cooldown.containsKey(p.getName()) && !Script.isInTestMode()) {
                 Long lastUsage = cooldown.get(p.getName());
                 if (lastUsage + 300 * 1000 > time) {
-                    p.sendMessage("§cDu kannst erst in 5 Minuten einen Spieler wiederbeleben.");
+                    p.sendMessage(Messages.ERROR + "Du kannst erst in " + Script.getRemainingTime(lastUsage+300+1000) + " einen Spieler wiederbeleben.");
                     return true;
                 }
             }

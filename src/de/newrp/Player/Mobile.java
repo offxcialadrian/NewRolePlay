@@ -135,6 +135,10 @@ public class Mobile implements Listener {
 
         public void removeAkku(Player p, int akku) {
             akku = getAkku(p) - akku;
+            if (akku <= 0) {
+                p.getInventory().removeItem(new ItemStack(Material.IRON_INGOT));
+                p.getInventory().addItem(new ItemBuilder(Material.IRON_INGOT).setName("§c" + p.getName() + "s " + ChatColor.stripColor(Mobile.getPhone(p).getName())).build());
+            }
             Script.executeAsyncUpdate("UPDATE phone SET akku = " + akku + " WHERE nrp_id = " + Script.getNRPID(p));
         }
 
