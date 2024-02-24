@@ -55,7 +55,7 @@ public class Handschellen implements Listener {
 
     public static HashMap<Player, Integer> hits = new HashMap<>();
 
-    private static final Map<String, Long> BANDAGE_COOLDOWN = new HashMap<>();
+    private static final Map<String, Long> COOLDOWN = new HashMap<>();
     private static final Map<String, Long> LAST_CLICK = new HashMap<>();
     private static final Map<String, Integer> LEVEL = new HashMap<>();
 
@@ -95,7 +95,7 @@ public class Handschellen implements Listener {
         LEVEL.put(p.getName(), level + 1);
         progressBar(30,  p);
 
-        if (level >= 50) {
+        if (level >= 30) {
             PlayerInventory inv = p.getInventory();
             ItemStack is = inv.getItemInMainHand();
             if (is.getAmount() > 1) {
@@ -111,7 +111,7 @@ public class Handschellen implements Listener {
             Script.freeze(rightClicked);
 
 
-            BANDAGE_COOLDOWN.put(rightClicked.getName(), time);
+            COOLDOWN.put(rightClicked.getName(), time);
             LAST_CLICK.remove(p.getName());
             LEVEL.remove(p.getName());
         }
