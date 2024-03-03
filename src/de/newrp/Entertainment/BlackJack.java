@@ -42,7 +42,7 @@ public class BlackJack implements CommandExecutor, Listener {
             return true;
         }
 
-        if(win.containsKey(p.getName()) && win.get(p.getName()) >= 2000) {
+        if(win.containsKey(p.getName()) && win.get(p.getName()) >= 5000) {
             p.sendMessage(Messages.ERROR + "Du hast heute schon zu viel gewonnen. Versuche es morgen erneut.");
             return true;
         }

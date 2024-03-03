@@ -38,6 +38,10 @@ public class Fesseln implements Listener {
         if (!interact(p)) return;
         if(Handschellen.isCuffed(p)) return;
         if (!(e.getRightClicked() instanceof Player)) return;
+        if(isTiedUp(p)) {
+            Script.sendActionBar(p, Messages.ERROR + "Du bist selbst gefesselt.");
+            return;
+        }
 
 
         long time = System.currentTimeMillis();
@@ -45,6 +49,12 @@ public class Fesseln implements Listener {
 
         if(isTiedUp(p)) {
             Script.sendActionBar(p, Messages.ERROR + "Du bist selbst gefesselt.");
+            return;
+        }
+
+        if(isTiedUp(rightClicked)) {
+            Script.sendActionBar(p, Messages.ERROR + "Der Spieler ist bereits gefesselt.");
+            return;
         }
 
         Long lastUsage = COOLDOWN.get(rightClicked.getName());

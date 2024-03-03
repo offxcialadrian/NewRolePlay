@@ -3,6 +3,7 @@ package de.newrp.Player;
 import de.newrp.API.*;
 import de.newrp.Administrator.SDuty;
 import de.newrp.Berufe.Beruf;
+import de.newrp.Berufe.Drone;
 import de.newrp.Berufe.Duty;
 import de.newrp.Berufe.Equip;
 import de.newrp.Chat.Me;
@@ -45,13 +46,24 @@ public class InteractMenu implements Listener {
         Player tg = (Player) e.getRightClicked();
         if (!p.isSneaking()) return;
         if (Friedhof.isDead(p)) return;
-        if (SDuty.isSDuty(tg)) {
-            Script.sendActionBar(p, Messages.ERROR + "Du kannst nicht mit " + Script.getName(tg) + " interagieren, da " + (Script.getGender(tg) == Gender.MALE ? "er" : "sie") + " sich im Supporter-Dienst befindet.");
+        if(Drone.isDrone(p)) {
+            p.sendMessage(Messages.ERROR + "Du kannst als Drohne nicht interagieren.");
+            return;
+        }
+
+        if(Drone.isDrone(tg)) {
+            p.sendMessage(Messages.ERROR + "Du kannst nicht mit einer Drohne interagieren.");
             return;
         }
 
         if(Fesseln.isTiedUp(p)) {
             Script.sendActionBar(p, Messages.ERROR + "Du bist gefesselt.");
+            return;
+        }
+
+        if (SDuty.isSDuty(tg)) {
+            Script.sendActionBar(p, Messages.ERROR + "Du kannst nicht mit " + Script.getName(tg) + " interagieren, da " + (Script.getGender(tg) == Gender.MALE ? "er" : "sie") + " sich im Supporter-Dienst befindet.");
+            return;
         }
 
         if (AFK.isAFK(tg)) {
@@ -337,14 +349,15 @@ public class InteractMenu implements Listener {
                             cancel();
                             return;
                         }
-                        if (LEVEL.get(p.getName()) >= 30) {
+                        if (LEVEL.get(p.getName()) >= 15) {
                             Fesseln.untie(tg);
+                            Me.sendMessage(p, "hat " + Script.getName(tg) + " die Fesseln abgenommen.");
                             p.sendMessage(PREFIX + "Du hast " + Script.getName(tg) + " die Fesseln abgenommen.");
                             tg.sendMessage(PREFIX + "Dir wurden die Fesseln abgenommen.");
                             cancel();
                             return;
                         }
-                        progressBar(31, p);
+                        progressBar(16, p);
                         LEVEL.replace(p.getName(), LEVEL.get(p.getName()) + 1);
                     }
                 }.runTaskTimer(de.newrp.main.getInstance(), 0L, 20L);

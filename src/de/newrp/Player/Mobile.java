@@ -5,6 +5,7 @@ import de.newrp.Berufe.Beruf;
 import de.newrp.Chat.Me;
 import de.newrp.Government.Stadtkasse;
 import de.newrp.News.BreakingNews;
+import de.newrp.News.Umfrage;
 import de.newrp.Police.Handschellen;
 import de.newrp.main;
 import org.bukkit.Bukkit;
@@ -43,8 +44,7 @@ public class Mobile implements Listener {
 
         APPLE(1, "iPhone 15", 1800, new ItemBuilder(Material.IRON_INGOT).setName("iPhone 15").build(), 20),
         SAMSUNG(2, "Galaxy S21", 1600, new ItemBuilder(Material.IRON_INGOT).setName("Galaxy S21").build(), 10),
-        HUAWEI(3, "P60", 1400, new ItemBuilder(Material.IRON_INGOT).setName("P60").build(), 8),
-        GOOGLE(4, "Pixel 10", 1200, new ItemBuilder(Material.IRON_INGOT).setName("Pixel 10").build(), 5);
+        HUAWEI(3, "P60", 1400, new ItemBuilder(Material.IRON_INGOT).setName("P60").build(), 8);
 
         int id;
         String name;
@@ -365,16 +365,17 @@ public class Mobile implements Listener {
     public static void openGUI(Player p) {
         Mobile.Phones phone = Mobile.getPhone(p);
         assert phone != null;
-        Inventory inv = Bukkit.createInventory(null, (Premium.hasPremium(p)?18:9), "§8» §aHandy");
+        Inventory inv = Bukkit.createInventory(null, 18, "§8» §aHandy");
         inv.setItem(0, new ItemBuilder(Material.RED_STAINED_GLASS_PANE).setName("§8» §cAusschalten").build());
         inv.setItem(1, new ItemBuilder(Material.CHEST).setName("§8» §cBreaking News").build());
         inv.setItem(2, new ItemBuilder(Material.CHEST).setName("§8» §cTelefon").build());
         inv.setItem(3, new ItemBuilder(Material.CHEST).setName("§8» §cMessenger").build());
         inv.setItem(4, new ItemBuilder(Material.CHEST).setName("§8» §cEinstellungen").build());
-        inv.setItem(5, new ItemBuilder(Material.CHEST).setName("§8» §cNotruf").build());
-        inv.setItem(6, new ItemBuilder(Material.CHEST).setName("§8» §cNavigation").build());
-        inv.setItem(7, new ItemBuilder(Material.CHEST).setName("§8» §cAkku").setLore("§8 × §6" + Script.getPercentage(phone.getAkku(p), phone.getMaxAkku()) + "%").build());
-        inv.setItem(8, new ItemBuilder(Material.CHEST).setName("§8» §cVerbindung").setLore("§8 × §6" + (hasConnection(p)?"§aJa":"§cNein")).build());
+        inv.setItem(5, new ItemBuilder(Material.CHEST).setName("§8» §cUmfragen").build());
+        inv.setItem(6, new ItemBuilder(Material.CHEST).setName("§8» §cNotruf").build());
+        inv.setItem(7, new ItemBuilder(Material.CHEST).setName("§8» §cNavigation").build());
+        inv.setItem(8, new ItemBuilder(Material.CHEST).setName("§8» §cAkku").setLore("§8 × §6" + Script.getPercentage(phone.getAkku(p), phone.getMaxAkku()) + "%").build());
+        inv.setItem(9, new ItemBuilder(Material.CHEST).setName("§8» §cVerbindung").setLore("§8 × §6" + (hasConnection(p)?"§aJa":"§cNein")).build());
         if(Premium.hasPremium(p)) inv.setItem(9, new ItemBuilder(Material.CHEST).setName("§8» §cOnline-Banking").build());
         p.openInventory(inv);
     }
@@ -420,6 +421,23 @@ public class Mobile implements Listener {
                 Beruf.Berufe.NEWS.addKasse(10);
                 checkedBreakingNews.add(p.getName());
             }
+            return;
+        }
+        if(e.getCurrentItem().getItemMeta().getDisplayName().equals("§8» §cUmfragen")) {
+            if(Umfrage.getActiveUmfrage() == null) {
+                p.sendMessage(PREFIX + "Es gibt derzeit keine aktive Umfrage.");
+                return;
+            }
+
+            if(!Umfrage.players.isEmpty() && Umfrage.players.contains(p.getName())) {
+                p.sendMessage(Messages.ERROR + "Du kannst nur einmal am Tag an der Umfrage teilnehmen.");
+            }
+
+            Inventory inv = Bukkit.createInventory(null, Script.calcInvSize(Umfrage.getActiveUmfrage().getAntworten().size()), "§8[§6Umfrage§8] §6" + Umfrage.getActiveUmfrage().getFrage());
+            for (Map.Entry<String, Integer> entry : Umfrage.getActiveUmfrage().getAntworten().entrySet()) {
+                inv.addItem(new ItemBuilder(Material.PAPER).setName("§8» §6" + entry.getKey()).build());
+            }
+            p.openInventory(inv);
             return;
         }
         if(e.getCurrentItem().getItemMeta().getDisplayName().equals("§8» §cTelefon")) {

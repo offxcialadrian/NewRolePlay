@@ -171,7 +171,7 @@ public class Call {
     }
 
     public static void deny(Player p) {
-        sendSystemMessage(p, "hat den Anruf abgelehnt.", true);
+        sendSystemMessage(p, Script.getName(p) + " hat den Anruf abgelehnt.", true);
         if (isWaitingForCall(p)) {
             int callID = getCallIDByPlayer(p);
             List<Player> playerList = WAITING_FOR_CALL.get(callID);

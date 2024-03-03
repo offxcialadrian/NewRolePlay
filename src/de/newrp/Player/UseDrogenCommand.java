@@ -44,8 +44,8 @@ public class UseDrogenCommand implements CommandExecutor {
         }
 
         Long lastUsage = UseDrogen.DRUG_COOLDOWN.get(p.getName());
-        if (lastUsage != null && lastUsage + TimeUnit.SECONDS.toMillis(30) > System.currentTimeMillis()) {
-            long cooldown = TimeUnit.MILLISECONDS.toSeconds(lastUsage + TimeUnit.SECONDS.toMillis(30) - System.currentTimeMillis());
+        if (lastUsage != null && lastUsage + TimeUnit.SECONDS.toMillis(15) > System.currentTimeMillis()) {
+            long cooldown = TimeUnit.MILLISECONDS.toSeconds(lastUsage + TimeUnit.SECONDS.toMillis(15) - System.currentTimeMillis());
             Script.sendActionBar(p, Messages.ERROR + "Du bist gerade noch im Rausch. (" + cooldown + " Sekunden verbleibend)");
             return true;
         }

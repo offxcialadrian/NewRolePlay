@@ -74,6 +74,12 @@ public class BuyClick implements Listener {
         }
 
         if(s.getType() == ShopType.HOTEL) {
+            if(Hotel.hasHotelRoom(p)) {
+                sendMessage(p, "Alles Klar, sie haben den check-out vollzogen.");
+                Script.executeUpdate("DELETE FROM hotel WHERE nrp_id=" + Script.getNRPID(p));
+                return;
+            }
+
             Hotel.RoomType rt = Hotel.RoomType.getRoomByName(ChatColor.stripColor(si.getName()));
             Hotel.Hotels hotel = Hotel.Hotels.getHotelByName(ChatColor.stripColor(e.getView().getTitle()));
             if(hotel == null) {

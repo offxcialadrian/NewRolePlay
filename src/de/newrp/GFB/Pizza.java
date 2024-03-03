@@ -4,6 +4,7 @@ import de.newrp.API.*;
 import de.newrp.House.House;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.Sound;
 import org.bukkit.block.Furnace;
 import org.bukkit.command.Command;
@@ -20,6 +21,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
@@ -103,7 +105,7 @@ public class Pizza implements CommandExecutor, Listener {
         timer.put(p.getName(), System.currentTimeMillis() + TimeUnit.SECONDS.toMillis((int) p.getLocation().distance(house.get(p.getName()).getSignLocation())));
         p.sendMessage(PREFIX + "§8=== §6Pizza §8===\n" +
                 PREFIX + "§8» §7Adresse: §6Haus " + house.get(p.getName()).getID() + "\n" +
-                PREFIX + "§8» §7Kunde: §6" + Script.getOfflinePlayer(house.get(p.getName()).getOwner()).getName() + "\n" +
+                PREFIX + "§8» §7Kunde: §6" +getRandomPlayer(house.get(p.getName())).getName() + "\n" +
                 PREFIX + "§8» §7Zeit: §6" + Script.getRemainingTime(timer.get(p.getName())) + "\n" +
                 PREFIX + "§8» §7Preis: §6" + Script.getRandom(10, 20) + "€");
         p.sendMessage(Messages.INFO + "Klicke Rechtsklick auf das Hausschild, sobald du vor dem Haus bist.");
@@ -120,13 +122,13 @@ public class Pizza implements CommandExecutor, Listener {
         if(!e.getClickedBlock().getLocation().equals(house.get(p.getName()).getSignLocation())) return;
 
         if(timer.get(p.getName()) < System.currentTimeMillis()) {
+            pizza.replace(p.getName(), pizza.get(p.getName()) - 1);
             p.sendMessage(PREFIX + "Du hast die Pizza nicht rechtzeitig ausgeliefert und erhältst kein Gehalt für diese Auslieferung.");
             p.sendMessage(Messages.INFO + "Gehe nun in die Küche und nehme die nächste Pizza aus dem Ofen (Rechtsklick).");
             p.sendMessage(PREFIX + "Du hast noch " + pizza.get(p.getName()) + " Pizzen zu liefern.");
             p.sendMessage(Messages.INFO + "Gehe nun in die Küche und nehme die nächste Pizza aus dem Ofen (Rechtsklick).");
             p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
             house.remove(p.getName());
-            pizza.replace(p.getName(), pizza.get(p.getName()) - 1);
             TOTAL_SCORE.replace(p.getName(), TOTAL_SCORE.get(p.getName()) - 1);
             return;
         }
@@ -135,7 +137,7 @@ public class Pizza implements CommandExecutor, Listener {
         house.remove(p.getName());
         pizza.replace(p.getName(), pizza.get(p.getName()) - 1);
 
-        if(Script.getRandom(1, 100) <= 30) {
+        if(Script.getRandom(1, 100) <= 20) {
             p.sendMessage(PREFIX + "Der Kunde war sehr zufrieden und hat dir ein Trinkgeld gegeben.");
             Script.addMoney(p, PaymentType.CASH, Script.getRandom(1, 3));
         }
@@ -177,6 +179,14 @@ public class Pizza implements CommandExecutor, Listener {
         if(timer.containsKey(p.getName())) {
             timer.remove(p.getName());
         }
+    }
+
+    public static OfflinePlayer getRandomPlayer(House h) {
+        ArrayList<OfflinePlayer> players = new ArrayList<>();
+        for(House.Mieter m : h.getMieter()) {
+            players.add(Script.getOfflinePlayer(m.getID()));
+        }
+        return players.get(Script.getRandom(0, players.size() - 1));
     }
 
 }

@@ -147,7 +147,7 @@ public class Notifications implements CommandExecutor, Listener {
 
     @EventHandler
     public void onCommand(PlayerCommandPreprocessEvent e) {
-        Log.LOW.write(e.getPlayer(), "hat einen Befehl ausgeführt: " + e.getMessage());
+        Log.COMMAND.write(e.getPlayer(), e.getMessage());
         if (e.getMessage().startsWith("/sudo")) return;
         if (e.getMessage().startsWith("/passwort")) return;
         if (e.getMessage().startsWith("/password")) return;

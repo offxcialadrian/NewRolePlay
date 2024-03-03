@@ -18,7 +18,8 @@ public class NaviClick implements Listener {
 
     @EventHandler
     public void onClick(InventoryClickEvent e) {
-        if (e.getView().getTitle() != null && e.getView().getTitle().equals("§e§lNavi")) {
+        e.getView().getTitle();
+        if (e.getView().getTitle().equals("§e§lNavi")) {
             if (e.getCurrentItem() != null && !e.getCurrentItem().getType().equals(Material.AIR) && e.getCurrentItem().hasItemMeta()) {
                 ItemStack c = e.getCurrentItem();
                 e.getView().close();
@@ -41,11 +42,10 @@ public class NaviClick implements Listener {
                         Inventory inv = Bukkit.createInventory(null, 18, "§e§lNavi");
                         inv.setItem(0, Script.setName(Material.FIREWORK_ROCKET, "§6" + Navi.ARCADE.getName()));
                         inv.setItem(1, Script.setName(Material.FIREWORK_ROCKET, "§6" + Navi.CASINO.getName()));
-                        inv.setItem(2, Script.setName(Material.FIREWORK_ROCKET, "§6" + Navi.CASINO.getName()));
-                        inv.setItem(3, Script.setName(Material.FIREWORK_ROCKET, "§6" + Navi.FREIZEITPARK.getName()));
-                        inv.setItem(4, Script.setName(Material.FIREWORK_ROCKET, "§6" + Navi.MALL.getName()));
-                        inv.setItem(5, Script.setName(Material.FIREWORK_ROCKET, "§6" + Navi.MOTEL.getName()));
-                        inv.setItem(6, Script.setName(Material.FIREWORK_ROCKET, "§6" + Navi.STRAND.getName()));
+                        inv.setItem(2, Script.setName(Material.FIREWORK_ROCKET, "§6" + Navi.FREIZEITPARK.getName()));
+                        inv.setItem(3, Script.setName(Material.FIREWORK_ROCKET, "§6" + Navi.MALL.getName()));
+                        inv.setItem(4, Script.setName(Material.FIREWORK_ROCKET, "§6" + Navi.MOTEL.getName()));
+                        inv.setItem(5, Script.setName(Material.FIREWORK_ROCKET, "§6" + Navi.STRAND.getName()));
                         inv.setItem(13, Script.setName(Material.REDSTONE, "§cZurück"));
                         Script.fillInv(inv);
                         p.openInventory(inv);
@@ -134,9 +134,8 @@ public class NaviClick implements Listener {
                     case "§6Finde..": {
                         Inventory inv = Bukkit.createInventory(null, 18, "§e§lNavi");
                         inv.setItem(0, Script.setName(Material.NETHER_STAR, "§6Nächster Bankautomat"));
-                        inv.setItem(2, Script.setName(Material.NETHER_STAR, "§6Nächste Apotheke"));
+                        inv.setItem(1, Script.setName(Material.NETHER_STAR, "§6Nächste Apotheke"));
                         inv.setItem(13, Script.setName(Material.REDSTONE, "§cZurück"));
-                        Script.fillInv(inv);
                         Script.fillInv(inv);
                         p.openInventory(inv);
                         break;
@@ -147,6 +146,7 @@ public class NaviClick implements Listener {
                         p.sendMessage(Navi.PREFIX + "Dir wird nun die Route zum Punkt §6§lGeldautomat " + atm.getID() + "§r§6 angezeigt.");
                         p.sendMessage(Messages.INFO + "Mit /navistop oder erneut /navi wird die Route gelöscht.");
                         new Route(p.getName(), Script.getNRPID(p), p.getLocation(), atm.getLocation()).start();
+                        break;
                     }
 
                     case "§6Nächste Apotheke": {
@@ -159,7 +159,7 @@ public class NaviClick implements Listener {
                         p.sendMessage(Navi.PREFIX + "Dir wird nun die Route zur nächsten §6§lApotheke§r§6 angezeigt.");
                         p.sendMessage(Messages.INFO + "Mit /navistop oder erneut /navi wird die Route gelöscht.");
                         new Route(p.getName(), Script.getNRPID(p), p.getLocation(), nearest.getBuyLocation()).start();
-
+                        break;
                     }
 
                     default:

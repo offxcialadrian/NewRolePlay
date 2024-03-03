@@ -251,27 +251,27 @@ public enum Votekiste {
                         p.getInventory().addItem(price);
                         break;
                     case PISTOLE_MUNITION_50:
-                        p.sendMessage(VoteShop.PREFIX + "Du hast 50 Munition für die P-69 gewonnen!");
+                        p.sendMessage(VoteShop.PREFIX + "Du hast 50 Munition für die Glory gewonnen!");
                         Weapon.PISTOLE.addMunition(id, 50);
                         break;
                     case PISTOLE_MUNITION_75:
-                        p.sendMessage(VoteShop.PREFIX + "Du hast 75 Munition für die P-69 gewonnen!");
+                        p.sendMessage(VoteShop.PREFIX + "Du hast 75 Munition für die Glory gewonnen!");
                         Weapon.PISTOLE.addMunition(id, 75);
                         break;
                     case PISTOLE_MUNITION_100:
-                        p.sendMessage(VoteShop.PREFIX + "Du hast 100 Munition für die P-69 gewonnen!");
+                        p.sendMessage(VoteShop.PREFIX + "Du hast 100 Munition für die Glory gewonnen!");
                         Weapon.PISTOLE.addMunition(id, 100);
                         break;
                     case MP5_MUNITION_50:
-                        p.sendMessage(VoteShop.PREFIX + "Du hast 50 Munition für die Scatter-3 gewonnen!");
+                        p.sendMessage(VoteShop.PREFIX + "Du hast 50 Munition für die Peacekeeper gewonnen!");
                         Weapon.AK47.addMunition(id, 50);
                         break;
                     case MP5_MUNITION_75:
-                        p.sendMessage(VoteShop.PREFIX + "Du hast 75 Munition für die Scatter-3 gewonnen!");
+                        p.sendMessage(VoteShop.PREFIX + "Du hast 75 Munition für die Peacekeeper gewonnen!");
                         Weapon.AK47.addMunition(id, 75);
                         break;
                     case MP5_MUNITION_100:
-                        p.sendMessage(VoteShop.PREFIX + "Du hast 100 Munition für die Scatter-3 gewonnen!");
+                        p.sendMessage(VoteShop.PREFIX + "Du hast 100 Munition für die Peacekeeper gewonnen!");
                         Weapon.AK47.addMunition(id, 100);
                         break;
                     case FEUERWERK:
@@ -409,6 +409,7 @@ public enum Votekiste {
         task[1] = taskId1.getTaskId();
         tasks.put(p.getName(), task);
     }
+
 
     public enum Items {
         PREMIUM_1(1, Script.setName(Script.addGlow(new ItemStack(Material.DIAMOND)), "Premium 1 Tag"), 2F),

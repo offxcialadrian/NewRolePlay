@@ -154,8 +154,13 @@ public class Arbeitslosengeld implements CommandExecutor {
             return true;
         }
 
-        if (hasApplied(p)) {
+        if (hasApplied(p) && !isAccepted(p)) {
             p.sendMessage(Messages.ERROR + "Du hast bereits Arbeitslosengeld beantragt. Bitte warte auf eine Antwort.");
+            return true;
+        }
+
+        if(hasApplied(p)) {
+            p.sendMessage(Messages.ERROR + "Du kannst nur alle zwei Wochen Arbeitslosengeld beantragen.");
             return true;
         }
 

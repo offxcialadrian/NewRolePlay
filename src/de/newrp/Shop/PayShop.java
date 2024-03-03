@@ -69,7 +69,7 @@ public class PayShop implements Listener {
                         return;
                     }
                     houseaddon.put(p.getName(), HouseAddon.HAUSKASSE);
-                    p.sendMessage(Messages.INFO + "Gehe zu deinem Haus und nutze §8/§6installaddon§r um das Hauskassen-Addon zu installieren.");
+                    p.sendMessage(Messages.INFO + "Gehe zu deinem Haus und nutze §8/§6installaddon§r, um das Hauskassen-Addon zu installieren.");
                     break;
                 case MIETERSLOT:
                     if (houseaddon.containsKey(p.getName())) {
@@ -77,7 +77,7 @@ public class PayShop implements Listener {
                         return;
                     }
                     houseaddon.put(p.getName(), HouseAddon.SLOT);
-                    p.sendMessage(Messages.INFO + "Gehe zu deinem Haus und nutze §8/§6installaddon§r um das Mieterslot-Addon zu installieren.");
+                    p.sendMessage(Messages.INFO + "Gehe zu deinem Haus und nutze §8/§6installaddon§r, um das Mieterslot-Addon zu installieren.");
                     break;
                 case WAFFENSCHRANK:
                     if (houseaddon.containsKey(p.getName())) {
@@ -85,7 +85,7 @@ public class PayShop implements Listener {
                         return;
                     }
                     houseaddon.put(p.getName(), HouseAddon.WAFFENSCHRANK);
-                    p.sendMessage(Messages.INFO + "Gehe zu deinem Haus und nutze §8/§6installaddon§r um das Waffenschrank-Addon zu installieren.");
+                    p.sendMessage(Messages.INFO + "Gehe zu deinem Haus und nutze §8/§6installaddon§r, um das Waffenschrank-Addon zu installieren.");
                     break;
                 case PISTOLE:
                     if (!Licenses.WAFFENSCHEIN.hasLicense(Script.getNRPID(p))) {
@@ -97,7 +97,7 @@ public class PayShop implements Listener {
                         p.getInventory().addItem(Waffen.setAmmo(w.getWeapon(), 0, 0));
                         Weapon.PISTOLE.addToInventory(Script.getNRPID(p));
                     } else {
-                        p.sendMessage(Messages.ERROR + "Du hast bereits eine Pistole.");
+                        p.sendMessage(Messages.ERROR + "Du hast bereits eine Glory.");
                         return;
                     }
                     break;
@@ -111,7 +111,7 @@ public class PayShop implements Listener {
                         p.getInventory().addItem(Waffen.setAmmo(w.getWeapon(), 0, 0));
                         Weapon.AK47.addToInventory(Script.getNRPID(p));
                     } else {
-                        p.sendMessage(Messages.ERROR + "Du hast bereits eine AK-47.");
+                        p.sendMessage(Messages.ERROR + "Du hast bereits eine Peacekeeper.");
                         return;
                     }
                     break;
@@ -125,16 +125,16 @@ public class PayShop implements Listener {
                         p.getInventory().addItem(Waffen.setAmmo(w.getWeapon(), 0, 0));
                         Weapon.DESERT_EAGLE.addToInventory(Script.getNRPID(p));
                     } else {
-                        p.sendMessage(Messages.ERROR + "Du hast bereits eine Desert Eagle.");
+                        p.sendMessage(Messages.ERROR + "Du hast bereits eine Ivory.");
                         return;
                     }
                     break;
                 case AMMO_50AE:
                     if (!haveGun(p, Weapon.DESERT_EAGLE)) {
-                        p.sendMessage(Messages.ERROR + "Du hast keine Desert Eagle.");
+                        p.sendMessage(Messages.ERROR + "Du hast keine Ivory.");
                         return;
                     }
-                    Weapon.DESERT_EAGLE.addMunition(Script.getNRPID(p), si.getAmount(s));
+                    Weapon.DESERT_EAGLE.addMunition(Script.getNRPID(p), Weapon.DESERT_EAGLE.getMagazineSize());
                     break;
                 case JAGDFLINTE:
                     if (!Licenses.WAFFENSCHEIN.hasLicense(Script.getNRPID(p))) {
@@ -146,30 +146,30 @@ public class PayShop implements Listener {
                         p.getInventory().addItem(Waffen.setAmmo(w.getWeapon(), 0, 0));
                         Weapon.JAGDFLINTE.addToInventory(Script.getNRPID(p));
                     } else {
-                        p.sendMessage(Messages.ERROR + "Du hast bereits eine Jagdflinte.");
+                        p.sendMessage(Messages.ERROR + "Du hast bereits eine Guardian.");
                         return;
                     }
                     break;
                 case SCHROT:
                     if (!haveGun(p, Weapon.JAGDFLINTE)) {
-                        p.sendMessage(Messages.ERROR + "Du hast keine Jagdflinte.");
+                        p.sendMessage(Messages.ERROR + "Du hast keine Guardian.");
                         return;
                     }
-                    Weapon.JAGDFLINTE.addMunition(Script.getNRPID(p), si.getAmount(s));
+                    Weapon.JAGDFLINTE.addMunition(Script.getNRPID(p), Weapon.JAGDFLINTE.getMagazineSize());
                     break;
                 case AMMO_762MM:
                     if (!haveGun(p, Weapon.AK47)) {
-                        p.sendMessage(Messages.ERROR + "Du hast keine AK-47.");
+                        p.sendMessage(Messages.ERROR + "Du hast keine Peacekeeper.");
                         return;
                     }
-                    Weapon.AK47.addMunition(Script.getNRPID(p), si.getAmount(s));
+                    Weapon.AK47.addMunition(Script.getNRPID(p), Weapon.AK47.getMagazineSize());
                     break;
                 case AMMO_9MM:
                     if (!haveGun(p, Weapon.PISTOLE)) {
-                        p.sendMessage(Messages.ERROR + "Du hast keine Pistole.");
+                        p.sendMessage(Messages.ERROR + "Du hast keine Glory.");
                         return;
                     }
-                    Weapon.PISTOLE.addMunition(Script.getNRPID(p), si.getAmount(s));
+                    Weapon.PISTOLE.addMunition(Script.getNRPID(p), Weapon.PISTOLE.getMagazineSize());
                     break;
                 case Zeitung:
                     Beruf.Berufe.NEWS.addKasse(20);

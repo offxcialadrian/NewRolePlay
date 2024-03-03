@@ -81,7 +81,6 @@ public class BreakIn implements Listener {
         HOUSES.put(p.getName(), house);
         p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 90 * 20, 2));
         p.sendMessage(PREFIX + "Du hast begonnen in das Haus " + house.getID() + " einzubrechen.");
-        p.getInventory().getItemInMainHand().setAmount(p.getInventory().getItemInMainHand().getAmount() - 1);
         progress.put(p.getName(), 0.0);
         new BukkitRunnable() {
             @Override
@@ -114,16 +113,26 @@ public class BreakIn implements Listener {
                     return;
                 }
 
+                if(progress.get(p.getName()) < 60) {
+                    progress.put(p.getName(), progress.get(p.getName()) + 1);
+                    progressBar(61, p);
+                    return;
+                }
+
 
                 House house = HOUSES.get(p.getName());
                 int geld = (house.getKasse() / 3);
                 p.sendMessage(PREFIX + "Du hast alles. Verschwinde nun bevor die Polizei eintrifft!");
+                p.getInventory().getItemInMainHand().setAmount(p.getInventory().getItemInMainHand().getAmount() - 1);
                 Script.addMoney(p, PaymentType.CASH, (int) (geld * 0.8));
                 house.setKasse(house.getKasse() - (int) (geld * 0.8));
                 COOLDOWNS.remove(p.getName());
                 HOUSES.remove(p.getName());
                 TOTAL_COOLDOWN.put(p.getName(), System.currentTimeMillis());
                 progress.remove(p.getName());
+                if(house.hasAddon(HouseAddon.ALARM)) {
+                    Beruf.Berufe.POLICE.sendMessage(Notruf.PREFIX + "Ein Einbruch bei Haus " + house.getID() + " wurde gemeldet.");
+                }
                 if(Organisation.hasOrganisation(p)) {
                     Organisation.getOrganisation(p).addExp(Script.getRandom(1, 10));
                 }
@@ -135,4 +144,20 @@ public class BreakIn implements Listener {
         return;
 
     }
+
+    private static void progressBar(double required_progress, Player p) {
+        double current_progress = progress.get(p.getName());
+        double progress_percentage = current_progress / required_progress;
+        StringBuilder sb = new StringBuilder();
+        int bar_length = 10;
+        for (int i = 0; i < bar_length; i++) {
+            if (i < bar_length * progress_percentage) {
+                sb.append("§a▉");
+            } else {
+                sb.append("§8▉");
+            }
+        }
+        Script.sendActionBar(p, "§cEinbrechen.. §8» §a" + sb.toString());
+    }
+
 }

@@ -26,7 +26,7 @@ public enum Achievement {
     ORGANISATIONEN(12, "Organisationen", "§rEs gibt verschiedene Organisationen, welche du beitreten kannst (Klicke dieses Achievement an).", 10, "Du kannst verschiedenen illegalen Organisationen beitreten. Diese sind ähnlich zu den Berufen, nur das diese gegen das System arbeiten und das Böse in der Stadt verbreiten.", true),
     HOTEL(13, "Hotel", "§rSolang du kein Haus besitzt oder keinen Mietvertrag hast, kannst du im Hotel schlafen.", 10, "Du bist nun im Hotel untergebracht. Du solltest aber bald ein Haus (zur Miete) finden.", false),
     HAUS(14, "Haus", "§rKaufe dir ein Haus oder schließe einen Mietvertrag ab.", 10, "Du hast nun ein Haus. Hier kannst du mit §8/§6akku §rdeinen Akku aufladen und vieles mehr.", false),
-    UBAHN(15, "UBahn", "§rFahre mit der U-Bahn", 10, "Die U-Bahn ist ein schnelles Transportmittelm um von A nach B zu kommen.\nNutze sie, um schneller zu deinem Ziel zu gelangen.", false),
+    UBAHN(15, "UBahn", "§rFahre mit der U-Bahn", 10, "Die U-Bahn ist ein schnelles Transportmittel, um von A nach B zu kommen.\nNutze sie, um schneller zu deinem Ziel zu gelangen.", false),
     EINKAUFEN(16, "Einkaufen", "§rKaufe etwas", 10, "Du warst nun in diesem Shop einkaufen.\nDu wirst immer wieder einkaufen müssen, um deine Bedürfnisse zu stillen.\nDu kannst später auch selbst Shops erwerben.", false),
     VOTEN(17, "Voten", "§rVotes sind für unseren Server von entscheidener Bedeutung. Nutze §8/§6vote", 50, "Vielen Dank für deinen Vote!\nDu kannst jeden Tag für uns Voten.", false),
     BACKUPCODE(18, "Backupcode", "§rErstelle dir einen Backupcode", 10, "Du hast nun einen Backupcode. Dieser ist wichtig, um deinen Account wiederherzustellen, falls du dein Passwort vergessen hast.", false),

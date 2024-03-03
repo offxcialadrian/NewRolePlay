@@ -131,10 +131,12 @@ public class Duty implements CommandExecutor {
     }
 
     public static void setDuty(Player p) {
+        Bukkit.getScoreboardManager().getMainScoreboard().getTeam("player").removeEntry(p.getName());
         duty.add(p.getName());
     }
 
     public static void removeDuty(Player p) {
+        Bukkit.getScoreboardManager().getMainScoreboard().getTeam("player").addEntry(p.getName());
         duty.remove(p.getName());
     }
 

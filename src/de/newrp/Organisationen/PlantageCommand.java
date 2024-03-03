@@ -252,13 +252,11 @@ public class PlantageCommand implements CommandExecutor, Listener, TabCompleter 
                             break;
                         case "§7Dünger":
                             if (e.getClick().equals(ClickType.RIGHT)) {
+                                DateFormat df = new SimpleDateFormat("dd.MM.yy HH:mm:ss");
+                                Date last_fertilize = new Date(plant.getLastFertilize());
                                 if (!plant.getFertilize() || plant.getLastFertilize() == 0) {
-                                    DateFormat df = new SimpleDateFormat("dd.MM.yy HH:mm:ss");
-                                    Date last_fertilize = new Date(plant.getLastFertilize());
                                     p.sendMessage(Plantage.PREFIX + "Die Plantage muss gedüngt werden.\n" + Plantage.PREFIX + (plant.getLastFertilize() == 0 ? "Die Plantage wurde noch nicht gedüngt." : "Letztes Mal gedüngt: " + df.format(last_fertilize) + "."));
                                 } else {
-                                    DateFormat df = new SimpleDateFormat("dd.MM.yy HH:mm:ss");
-                                    Date last_fertilize = new Date(plant.getLastFertilize());
                                     p.sendMessage(Plantage.PREFIX + "Die Plantage muss nicht gedüngt werden.\n" + Plantage.PREFIX + "Letztes Mal gedüngt: " + df.format(last_fertilize) + ".");
                                 }
                             } else {
@@ -277,7 +275,7 @@ public class PlantageCommand implements CommandExecutor, Listener, TabCompleter 
                                                     dünger = true;
                                                     int i = Integer.parseInt(uses);
                                                     if (i == 1) {
-                                                        item.setAmount(0);
+                                                        item.setAmount(item.getAmount()-1);
                                                     } else {
                                                         meta.setLore(Collections.singletonList("§6" + (i - 1) + "/5"));
                                                         item.setItemMeta(meta);
@@ -289,7 +287,7 @@ public class PlantageCommand implements CommandExecutor, Listener, TabCompleter 
                                             }
                                         } else if (item.getItemMeta().getDisplayName().equals("§bSpezial-Dünger")) {
                                             spezialDünger = true;
-                                            item.setAmount(0);
+                                            item.setAmount(item.getAmount()-1);
                                             break;
                                         }
                                     }

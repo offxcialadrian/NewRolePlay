@@ -197,8 +197,8 @@ public class Chair implements Listener {
         if (Friedhof.isDead(p)) return false;
         if (CHAIRS.containsKey(b.getLocation())) return false;
         if (Handschellen.isCuffed(p) || Fesseln.isTiedUp(p)) return false;
-        if (!(b.getBlockData() instanceof Stairs)) return false;
-        if (((Stairs) b.getBlockData()).getFacing() == BlockFace.DOWN) return false;
+        //if (!(b.getBlockData() instanceof Stairs)) return false;
+        //if (((Stairs) b.getBlockData()).getFacing() == BlockFace.DOWN) return false;
         if (!b.getRelative(BlockFace.UP).getType().equals(Material.AIR) || b.getRelative(BlockFace.DOWN).getType().equals(Material.AIR))
             return false;
         if (!p.isOnGround()) return false;

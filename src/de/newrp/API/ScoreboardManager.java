@@ -24,7 +24,7 @@ public class ScoreboardManager {
         clearMainScoreboard();
         for (ScoreboardTeam team : ScoreboardTeam.values()) {
             Team t = MAIN.registerNewTeam(team.getName());
-            t.setOption(team.getOption(), team.getOptionStatus());
+            if(team.getOption() != null) t.setOption(team.getOption(), team.getOptionStatus());
         }
     }
 
@@ -34,7 +34,8 @@ public class ScoreboardManager {
         GOVERNMENT("2government", null, null),
         POLICE("3police", null, null),
         MEDIC("4medic", null, null),
-        NEWS("5news", null, null);
+        NEWS("5news", null, null),
+        PLAYER("player", null, null);
 
 
         private final String name;

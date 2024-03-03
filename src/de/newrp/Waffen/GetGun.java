@@ -2,6 +2,7 @@ package de.newrp.Waffen;
 
 import de.newrp.API.*;
 import de.newrp.Administrator.BuildMode;
+import de.newrp.Berufe.Drone;
 import de.newrp.House.House;
 import de.newrp.House.HouseAddon;
 import de.newrp.Player.Hotel;
@@ -40,6 +41,11 @@ public class GetGun implements CommandExecutor, Listener {
         int id = Script.getNRPID(p);
         if (Sperre.WAFFENSPERRE.isActive(id)) {
             p.sendMessage(Messages.ERROR + "Mit einer Waffensperre kannst du keine Waffen aus dem Waffenschrank nehmen.");
+            return true;
+        }
+
+        if(Drone.isDrone(p)) {
+            p.sendMessage(Messages.ERROR + "Du kannst als Drohne keine Waffen benutzen.");
             return true;
         }
 

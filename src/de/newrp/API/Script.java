@@ -858,6 +858,34 @@ public class Script {
         return null;
     }
 
+    public static String setString(Player p, String dbName, String s, String value) {
+        try (Statement stmt = main.getConnection().createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT * FROM " + dbName + " WHERE nrp_id='" + getNRPID(p) + "'")) {
+            if (rs.next()) {
+                executeUpdate("UPDATE " + dbName + " SET " + s + "='" + value + "' WHERE nrp_id='" + getNRPID(p) + "'");
+            } else {
+                executeUpdate("INSERT INTO " + dbName + " (nrp_id, " + s + ") VALUES (" + getNRPID(p) + ", '" + value + "')");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static String setString(OfflinePlayer p, String dbName, String s, String value) {
+        try (Statement stmt = main.getConnection().createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT * FROM " + dbName + " WHERE nrp_id='" + getNRPID(p) + "'")) {
+            if (rs.next()) {
+                executeUpdate("UPDATE " + dbName + " SET " + s + "='" + value + "' WHERE nrp_id='" + getNRPID(p) + "'");
+            } else {
+                executeUpdate("INSERT INTO " + dbName + " (nrp_id, " + s + ") VALUES (" + getNRPID(p) + ", '" + value + "')");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public static String getString(OfflinePlayer p, String dbName, String s) {
         try (Statement stmt = main.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM " + dbName + " WHERE nrp_id='" + getNRPID(p) + "'")) {
@@ -962,6 +990,8 @@ public class Script {
 
     public static void removeDrugs(Player p) {
         p.getInventory().remove(Material.SUGAR);
+        p.getItemOnCursor();
+        if(p.getItemOnCursor().getType() == Material.SUGAR) p.setItemOnCursor(new ItemStack(Material.AIR));
     }
 
     public static long getLastDisconnect(OfflinePlayer p) {
@@ -1867,6 +1897,14 @@ public class Script {
     }
 
     public static int getPercentage(int amount, int total) {
+        return (int) ((double) amount / total * 100);
+    }
+
+    public static int getPercentage(double amount, double total) {
+        return (int) ((double) amount / total * 100);
+    }
+
+    public static int getPercentage(double amount, int total) {
         return (int) ((double) amount / total * 100);
     }
 

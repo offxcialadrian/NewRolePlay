@@ -14,6 +14,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -90,6 +92,16 @@ public class Drone implements Listener {
     }
 
     @EventHandler
+    public void onPickupItem(EntityPickupItemEvent e) {
+        if(e.getEntity() instanceof Player) {
+            Player p = (Player) e.getEntity();
+            if(isDrone(p)) {
+                e.setCancelled(true);
+            }
+        }
+    }
+
+    @EventHandler
     public void onQuit(PlayerQuitEvent e) {
         if(isDrone(e.getPlayer())) {
             stop(e.getPlayer(), true);
@@ -113,6 +125,16 @@ public class Drone implements Listener {
                 crash(p);
                 Player damager = (Player) e.getDamager();
                 damager.sendMessage(PREFIX + "Du hast die Drohne abgeschossen.");
+            }
+        }
+    }
+
+    @EventHandler
+    public void onDamage(EntityDamageEvent e) {
+        if(e.getEntity() instanceof Player) {
+            Player p = (Player) e.getEntity();
+            if(isDrone(p)) {
+                crash(p);
             }
         }
     }

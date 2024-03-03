@@ -56,8 +56,8 @@ public class VertragAPI {
             statement.setInt(1, id);
             ResultSet rs = statement.executeQuery();
             if (rs.next()) {
-                from = rs.getInt("from");
-                to = rs.getInt("to");
+                from = rs.getInt("userID_from");
+                to = rs.getInt("userID_to");
                 bedingung = rs.getString("bedingung");
                 time = rs.getLong("time");
                 return new VertragAPI(id, from, to, bedingung, time);

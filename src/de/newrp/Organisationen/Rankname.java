@@ -38,7 +38,7 @@ public class Rankname implements CommandExecutor {
             return true;
         }
 
-        if(rank > o.getLevel()) {
+        if(rank > 6) {
             p.sendMessage(Messages.ERROR + "Der Rang darf nicht höher als das Level deiner Organisation sein.");
             return true;
         }

@@ -23,9 +23,9 @@ public enum ShopItem {
     WAFFENSCHRANK(5, "§7Waffenschrank", new ItemStack(Material.CHEST), 20, 1, 20, HouseAddon.WAFFENSCHRANK.getPrice(), 39500, false, false, false, new ShopType[] {ShopType.HOUSEADDON}),
     ALARMANLAGE(7, "§7Alarmanlage", new ItemStack(Material.REDSTONE), 20, 1, 20, HouseAddon.ALARM.getPrice(), 39500, false, false, false, new ShopType[] {ShopType.HOUSEADDON}),
     KUEHLSCHRANK(9, "§7Kühlschrank", new ItemStack(Material.CHEST), 20, 1, 20, HouseAddon.KUEHLSCHRANK.getPrice(), 39500, false, false, false, new ShopType[] {ShopType.HOUSEADDON}),
-    PISTOLE(10, "§7Pistole", new ItemStack(Material.IRON_HORSE_ARMOR), 1, 1, 1, 1, 1, false, false, false, new ShopType[] {ShopType.GUNSHOP}),
-    AMMO_9MM(11, "§79mm Munition", new ItemBuilder(Material.ARROW).setAmount(Weapon.PISTOLE.getMagazineSize()).build(), 1, 1, 1, 1, 1, false, false, false, new ShopType[] {ShopType.GUNSHOP}),
-    AK47(12, "§7AK-47", new ItemStack(Material.DIAMOND_HORSE_ARMOR), 1, 1, 1, 1, 1, false, false, false, new ShopType[] {ShopType.GUNSHOP}),
+    PISTOLE(10, "§7Glory", new ItemStack(Material.IRON_HORSE_ARMOR), 1, 1, 1, 1, 1, false, false, false, new ShopType[] {ShopType.GUNSHOP}),
+    AMMO_9MM(11, "§79mm Munition (" + Weapon.PISTOLE.getName() + ")", new ItemBuilder(Material.ARROW).setAmount(Weapon.PISTOLE.getMagazineSize()).build(), 1, 1, 1, 1, 1, false, false, false, new ShopType[] {ShopType.GUNSHOP}),
+    AK47(12, "§7Peacekeeper", new ItemStack(Material.DIAMOND_HORSE_ARMOR), 1, 1, 1, 1, 1, false, false, false, new ShopType[] {ShopType.GUNSHOP}),
     HEISSE_SCHOKOLADE(43, "§rHeiße Schokolade", new ItemStack(Material.FLOWER_POT), 1, 2, 25, 2, 3000, true, true, false, new ShopType[] {ShopType.CAFE}),
     FILTERKAFFEE(44, "§rFilterkaffee", new ItemStack(Material.FLOWER_POT), 1, 2, 25, 2, 3000, true, true, false, new ShopType[] {ShopType.CAFE}),
     LATTE_MACCHIATO(45, "§rLatte Macchiato", new ItemStack(Material.FLOWER_POT), 1, 2, 25, 2, 3000, true, true, false, new ShopType[] {ShopType.CAFE}),
@@ -41,7 +41,7 @@ public enum ShopItem {
     MAP(56, "§7Karte", new ItemStack(Material.MAP), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.SUPERMARKET, ShopType.NEWS}),
     VERBAND(57, "§7Verband", new ItemStack(Material.PAPER), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.PHARMACY}),
     TRINKWASSER(58, "§7Trinkwasser", new ItemStack(Material.POTION), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.SUPERMARKET, ShopType.CAFE, ShopType.NEWS}),
-    AMMO_762MM(59, "§7.762mm Munition", new ItemBuilder(Material.ARROW).setAmount(Weapon.AK47.getMagazineSize()).build(), 1, 1, 1, 1, 1, false, false, false, new ShopType[] {ShopType.GUNSHOP}),
+    AMMO_762MM(59, "§7.762mm Munition (" + Weapon.AK47.getName() + ")", new ItemBuilder(Material.ARROW).setAmount(Weapon.AK47.getMagazineSize()).build(), 1, 1, 1, 1, 1, false, false, false, new ShopType[] {ShopType.GUNSHOP}),
     KEVLAR(51, "§7Schutzweste", Script.kevlar(1), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.GUNSHOP}),
     SCHMERZMITTEL_HIGH(60, "§fSchmerzmittel (High)", new ItemStack(Material.PAPER), 10, 2, 25, 2, 3000, true, true, false, new ShopType[] {ShopType.PHARMACY}),
     ANTIBIOTIKA(61, "§fAntibiotika", new ItemStack(Material.PAPER), 5, 2, 25, 2, 3000, true, true, false, new ShopType[] {ShopType.PHARMACY}),
@@ -78,10 +78,10 @@ public enum ShopItem {
     MONATSFAHRASUSWEIS(93, "§6UBahn-Ticket", new ItemBuilder(Material.PAPER).setName("§6UBahn-Ticket [30 Fahrten]").setLore("Verbleibende Fahrten: 30").build(), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.NEWS}),
     FALLSCHIRM(94, "§7Fallschirm", new ItemStack(Material.ELYTRA), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.GUNSHOP}),
     KABELBINDER(95, "§7Kabelbinder", new ItemStack(Material.STRING), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.GUNSHOP, ShopType.SUPERMARKET}),
-    JAGDFLINTE(96, "§7Extenso18", new ItemStack(Material.DIAMOND_HOE), 1, 1, 1, 1, 1, false, false, false, new ShopType[] {ShopType.GUNSHOP}),
-    SCHROT(97, "§7Schrot", new ItemBuilder(Material.ARROW).setAmount(Weapon.JAGDFLINTE.getMagazineSize()).build(), 1, 1, 1, 1, 1, false, false, false, new ShopType[] {ShopType.GUNSHOP}),
-    DEAGLE(98, "§7Desert Eagle", new ItemStack(Material.GOLDEN_HOE), 1, 1, 1, 1, 1, false, false, false, new ShopType[] {ShopType.GUNSHOP}),
-    AMMO_50AE(99, "§7.50AE Munition", new ItemBuilder(Material.ARROW).setAmount(Weapon.DESERT_EAGLE.getMagazineSize()).build(), 1, 1, 1, 1, 1, false, false, false, new ShopType[] {ShopType.GUNSHOP});
+    JAGDFLINTE(96, "§7Guardian", new ItemStack(Material.DIAMOND_HOE), 1, 1, 1, 1, 1, false, false, false, new ShopType[] {ShopType.GUNSHOP}),
+    SCHROT(97, "§7Schrot (" + Weapon.JAGDFLINTE.getName() + ")", new ItemBuilder(Material.ARROW).setAmount(Weapon.JAGDFLINTE.getMagazineSize()).build(), 1, 1, 1, 1, 1, false, false, false, new ShopType[] {ShopType.GUNSHOP}),
+    DEAGLE(98, "§7Ivory", new ItemStack(Material.GOLDEN_HOE), 1, 1, 1, 1, 1, false, false, false, new ShopType[] {ShopType.GUNSHOP}),
+    AMMO_50AE(99, "§7.50AE Munition (" + Weapon.DESERT_EAGLE.getName() + ")", new ItemBuilder(Material.ARROW).setAmount(Weapon.DESERT_EAGLE.getMagazineSize()).build(), 1, 1, 1, 1, 1, false, false, false, new ShopType[] {ShopType.GUNSHOP});
 
     private final int id;
     private final String name;

@@ -42,7 +42,7 @@ public class Utils implements Listener {
 
     private static final Material[] DROP_BLACKLIST = new Material[]{ Material.WOODEN_HOE, Material.LEAD, Material.ANDESITE_SLAB, Material.SHIELD, Material.LEATHER_CHESTPLATE, Material.WITHER_SKELETON_SKULL };
     private static final String[] BLOCKED_COMMANDS = new String[]{
-            "/minecraft", "/spi", "/protocol", "/rl", "/restart", "/bukkit", "/time", "/version", "/icanhasbukkit", "/xp", "/tell",
+            "/minecraft", "/spi", "/protocol", "/rl", "/restart", "/bukkit", "/version", "/icanhasbukkit", "/xp", "/tell",
             "/toggledownfall", "/testfor", "/recipe", "/effect", "/enchant", "/deop", "/defaultgamemode", "/ban-ip",
             "/banlist", "/advancement", "/?", "/gamemode", "/gamerule", "/kill", "/list", "/about",
             "/ability", "/advancement", "/alwaysday", "/attribute", "/ban-ip", "/banlist", "/bossbar", "/camera", "/camerashake",
@@ -54,13 +54,13 @@ public class Utils implements Listener {
             "/random", "/recipe", "/reload", "/replaceitem", "/return", "/ride", "/save", "/save-all", "/save-off", "/save-on",
             "/say", "/schedule", "/scoreboard", "/script", "/scriptevent", "/seed", "/setblock", "/setidletimeout", "/setmaxplayers",
             "/setworldspawn", "/spawnpoint", "/spreadplayers", "/stop", "/stopsound", "/structure", "/summon", "/tag",
-            "/teammsg", "/tell", "/tellraw", "/testfor", "/testforblock", "/testforblocks", "/tickingarea", "/time", "/title",
+            "/teammsg", "/tell", "/tellraw", "/testfor", "/testforblock", "/testforblocks", "/tickingarea", "/title",
             "/titleraw", "/tm", "/toggledownfall", "/trigger", "/volumearea", "/wb", "/worldborder",
             "/worldborder", "/wsserver", "/xp", "/citizens", "/npc", "/vehicle", "/garage", "/tebex", "/buycraft", "/paper", "/addpremiumtoplayer"
     };
 
     private static final String[] BLOCKED_COMMANDS_SPECIFIC = new String[]{
-            "/pl", "/plugins", "/give", "/whitelist", "/ver", "/version"
+            "/pl", "/plugins", "/give", "/whitelist", "/ver", "/version", "/time"
     };
 
 
@@ -105,8 +105,7 @@ public class Utils implements Listener {
     public void onMoving(PlayerMoveEvent e) {
         Player p = e.getPlayer();
         if(!Script.FREEZE.contains(p.getName())) return;
-        if(e.getFrom().getY() > e.getTo().getY()) return;
-        if(e.getFrom().getX() == e.getTo().getX() && e.getFrom().getY() == e.getTo().getY() && e.getFrom().getZ() == e.getTo().getZ()) return;
+        if(e.getFrom().getX() == e.getTo().getX() && e.getFrom().getZ() == e.getTo().getZ()) return;
         e.setCancelled(true);
         p.setVelocity(p.getVelocity().zero());
     }
@@ -114,7 +113,7 @@ public class Utils implements Listener {
     @EventHandler
     public void onPing(ServerListPingEvent e) {
         if(Script.isInTestMode()) {
-            e.setMotd("§5§lNew RolePlay §8┃ §5Reallife §8× §5RolePlay §8┃ §c1.16.5\n§8» §a§l" + main.getInstance().getDescription().getVersion() + " §8- §eWartungsarbeiten!");
+            e.setMotd("§5§lNew RolePlay §8┃ §5Reallife §8× §5RolePlay §8┃ §c1.16.5\n§8» §a§l" + main.getInstance().getDescription().getVersion() + " §8- §6§l23.03.2023 18 Uhr!");
         } else {
             e.setMotd("§5§lNew RolePlay §8┃ §5Reallife §8× §5RolePlay §8┃ §c1.16.5\n§8» §a§l" + main.getInstance().getDescription().getVersion() + " §8- §eWerde Teil einer neuen Ära!");
         }
@@ -181,6 +180,7 @@ public class Utils implements Listener {
         Script.sendOfflineMessages(p);
         Script.updateExpBar(p);
         Corpse.reloadNPC(p);
+        Bukkit.getScoreboardManager().getMainScoreboard().getTeam("player").addEntry(p.getName());
         for (Player online : Bukkit.getOnlinePlayers()) {
             if (BuildMode.isInBuildMode(online)) {
                 if (Team.getTeam(p) != Team.Teams.BAU && !Script.hasRank(p, Rank.SUPPORTER, false)) {
@@ -214,7 +214,12 @@ public class Utils implements Listener {
                 Script.sendTeamMessage(AntiCheatSystem.PREFIX + Script.getName(p) + " wurde der Zugriff auf den Server verweigert, da er nicht aus Deutschland, Österreich oder der Schweiz kommt.");
                 return;
             }*/
-            p.teleport(new Location(Script.WORLD, 935, 66, 1198, 179.92924f, 0.32957163f));
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    p.teleport(new Location(Script.WORLD, 935, 66, 1198, 179.92924f, 0.32957163f));
+                }
+            }.runTaskLaterAsynchronously(main.getInstance(), 20L);
             Script.registerPlayer(e.getPlayer());
             Script.sendActionBar(e.getPlayer(), "§7Willkommen auf §eNewRP§7!");
             e.getPlayer().sendMessage("§eNew RolePlay" + "§rWillkommen auf §eNewRP§7!");
@@ -254,10 +259,6 @@ public class Utils implements Listener {
         p.setFlySpeed(0.1f);
         if(Wahlen.wahlenActive()) p.sendMessage(Messages.INFO + "Die Wahlen sind aktiv! Du kannst mit §8/§6wahlen §rdeine Stimme abgeben.");
         Notifications.sendMessage(Notifications.NotificationType.LEAVE, "§e" + Script.getName(e.getPlayer()) + " §7hat den Server betreten.");
-        if(Team.getTeam(p) == null && Script.isInTestMode()) {
-            Team.setTeam(p, Team.Teams.EARLY_ACCESS, false);
-            p.sendMessage(Messages.INFO + "Du hast automatisch das Team §eEarly-Access §7betreten.");
-        }
         if(Licenses.ERSTE_HILFE.hasLicense(Script.getNRPID(p)) && ersteHilfeExpired(p)) {
             Licenses.ERSTE_HILFE.remove(Script.getNRPID(p));
             p.sendMessage(Messages.INFO + "Dein §eErste-Hilfe-Schein §7ist abgelaufen.");
@@ -521,6 +522,7 @@ public class Utils implements Listener {
     @EventHandler
     public void onQuit(PlayerQuitEvent e) {
         Player p = e.getPlayer();
+        Bukkit.getScoreboardManager().getMainScoreboard().getTeam("player").removeEntry(p.getName());
         if (SDuty.isSDuty(p)) {
             SDuty.removeSDuty(p);
         }

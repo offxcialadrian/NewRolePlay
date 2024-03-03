@@ -128,7 +128,7 @@ public class Shop implements CommandExecutor, Listener {
                 Script.executeAsyncUpdate("DELETE FROM shopprice WHERE shopID=" + shop.getID());
                 for(ShopItem si : ShopItem.values()) {
                     if(Arrays.asList(si.getShopTypes()).contains(shop.getType())) {
-                        Script.executeAsyncUpdate("INSERT INTO shopprice (amount, price, itemID, shopID) VALUES (" + si.getSize() + ", " + (si.getBuyPrice()+(int) Script.getPercent(30, si.getBuyPrice())) + ", " + si.getID() + ", " + shop.getID() + ")");
+                        Script.executeAsyncUpdate("INSERT INTO shopprice (amount, price, itemID, shopID) VALUES (" + si.getSize() + ", " + (si.getBuyPrice()+(int) Script.getPercent(70, si.getBuyPrice())) + ", " + si.getID() + ", " + shop.getID() + ")");
                     }
                 }
                 return true;

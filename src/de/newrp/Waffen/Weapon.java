@@ -12,12 +12,12 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public enum Weapon {
-    PISTOLE(1, Script.setName(Material.IRON_HORSE_ARMOR, "§7Pistole"), "Pistole", 0.45F, .750, 15, 8.5D, 1.8, 4.1, 600, 0, Munition.AMMO_9MM),
-    AK47(2, Script.setName(Material.DIAMOND_HORSE_ARMOR, "§7AK-47"), "AK-47", 1.7F, .400, 30, 6D, 2.1, 6, 500, 0, Munition.AMMO_7_62_39MM),
-    MP7(3, Script.setName(Material.GOLDEN_HORSE_ARMOR, "§7MP7"), "MP7", 0.8F, .100, 40, 4D, 1.8, 3.5, 500, 0, Munition.AMMO_46_30MM),
-    SNIPER(4, Script.setName(Material.STONE_HOE, "§7Sniper"), "Sniper", .8F, 8.270, 5, 14.5D, 5.3, 18, 0,-0.5, Munition.AMMO_7_62_51MM),
-    DESERT_EAGLE(5, Script.setName(Material.GOLDEN_HOE, "§7Desert-Eagle"), "Desert-Eagle", .8F, .900, 12, 10D, 1.9, 5, 600, -0.1, Munition.AMMO_50AE),
-    JAGDFLINTE(6, Script.setName(Material.DIAMOND_HOE, "§7Extenso18"), "Extenso18", 0.4F, 1.8, 5, 11.5D, 2.6, 14, 600, -0.2, Munition.SCHROT);
+    PISTOLE(1, Script.setName(Material.IRON_HORSE_ARMOR, "§7Glory"), "Glory", 0.45F, .750, 15, 8.5D, 1.8, 4.1, 600, 0, Munition.AMMO_9MM),
+    AK47(2, Script.setName(Material.DIAMOND_HORSE_ARMOR, "§7Peacekeeper"), "Peacekeeper", 1.7F, .400, 30, 6D, 2.1, 6, 500, 0, Munition.AMMO_7_62_39MM),
+    MP7(3, Script.setName(Material.GOLDEN_HORSE_ARMOR, "§7Striker"), "Striker", 0.8F, .100, 40, 4D, 1.8, 3.5, 500, 0, Munition.AMMO_46_30MM),
+    SNIPER(4, Script.setName(Material.STONE_HOE, "§7Sentinel"), "Sentinel", .8F, 8.270, 5, 14.5D, 5.3, 18, 0,-0.5, Munition.AMMO_7_62_51MM),
+    DESERT_EAGLE(5, Script.setName(Material.GOLDEN_HOE, "§7Ivory"), "Ivory", .8F, .900, 12, 10D, 1.9, 5, 600, -0.1, Munition.AMMO_50AE),
+    JAGDFLINTE(6, Script.setName(Material.DIAMOND_HOE, "§7Guardian"), "Guardian", 0.4F, 1.8, 5, 11.5D, 2.6, 14, 600, -0.2, Munition.SCHROT);
 
     private final int weaponID;
     private final ItemStack is;

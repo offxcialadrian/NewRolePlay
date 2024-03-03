@@ -43,15 +43,20 @@ public class Transport implements CommandExecutor, Listener {
             return true;
         }
 
-        if(GFB.CURRENT.containsKey(p.getName()) && GFB.CURRENT.get(p.getName()) == GFB.TRANSPORT && !SCORE.containsKey(p.getName())) {int invSize = 0;
+        if(GFB.CURRENT.containsKey(p.getName()) && GFB.CURRENT.get(p.getName()) == GFB.TRANSPORT && !SCORE.containsKey(p.getName())) {
+            int invSize = 0;
             for(Shops shop : Shops.values()) {
                 if(shop.getLager() >= shop.getLagerSize()) continue;
                 invSize++;
             }
+
             if(invSize == 0) {
                 p.sendMessage(GFB.PREFIX + "Es gibt keine Shops, die Ware benötigen.");
+                p.sendMessage(Messages.INFO + "Der Job wurde automatisch beendet. Du hast keinen Cooldown erhalten.");
+                GFB.CURRENT.remove(p.getName());
                 return true;
             }
+
             invSize = (int) Math.ceil(invSize / 9.0) * 9;
             Inventory inv = Bukkit.createInventory(null, invSize, "§8» §eTransport");
             int i = 0;

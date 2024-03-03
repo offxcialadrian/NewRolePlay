@@ -74,6 +74,7 @@ public class SDuty implements CommandExecutor, Listener {
 
     public static void removeSDuty(Player p) {
         Bukkit.getScoreboardManager().getMainScoreboard().getTeam("1nrps").removeEntry(p.getName());
+        Bukkit.getScoreboardManager().getMainScoreboard().getTeam("player").addEntry(p.getName());
         Log.NORMAL.write(p, "hat den Supporter-Dienst verlassen.");
         if (BuildMode.isInBuildMode(p)) {;
             p.getInventory().clear();
@@ -94,6 +95,7 @@ public class SDuty implements CommandExecutor, Listener {
     }
 
     public static void setSDuty(Player p) {
+        Bukkit.getScoreboardManager().getMainScoreboard().getTeam("player").removeEntry(p.getName());
         Bukkit.getScoreboardManager().getMainScoreboard().getTeam("1nrps").addEntry(p.getName());
         Log.NORMAL.write(p, "hat den Supporter-Dienst betreten.");
         if(Script.hasRank(p, Rank.ADMINISTRATOR, false)) {

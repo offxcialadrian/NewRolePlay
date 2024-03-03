@@ -3,6 +3,7 @@ package de.newrp.Shop;
 import de.newrp.API.Licenses;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
+import de.newrp.Berufe.Drone;
 import de.newrp.Police.Fahndung;
 import de.newrp.main;
 import org.bukkit.Location;
@@ -19,6 +20,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class Buy implements CommandExecutor {
 
@@ -38,6 +40,11 @@ public class Buy implements CommandExecutor {
                     break;
                 }
             }
+        }
+
+        if(Drone.isDrone(p)) {
+            p.sendMessage(Messages.ERROR + "Du kannst als Drohne keine Shops benutzen.");
+            return true;
         }
 
         if (s == null) {
@@ -64,7 +71,7 @@ public class Buy implements CommandExecutor {
             }
 
             p.sendMessage(Script.PREFIX + "Du bist nun Mitglied im Fitnessstudio.");
-            Script.executeUpdate("INSERT INTO gym (nrp_id, shopID, until) VALUES (" + Script.getNRPID(p) + ", " + s.getID() + ", " + (System.currentTimeMillis() + 1000L * 60 * 60 * 24) + ")");
+            Script.executeUpdate("INSERT INTO gym (nrp_id, shopID, until) VALUES (" + Script.getNRPID(p) + ", " + s.getID() + ", " + (System.currentTimeMillis() + TimeUnit.HOURS.toMillis(2)) + ")");
             return true;
         }
 

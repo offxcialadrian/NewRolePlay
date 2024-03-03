@@ -9,6 +9,7 @@ import de.newrp.Government.Stadtkasse;
 import de.newrp.Waffen.Waffen;
 import de.newrp.Waffen.Weapon;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -46,7 +47,7 @@ public class Equip implements CommandExecutor, Listener {
         HUSTEN_IMPFUNG(17,"Husten Impfung", Script.setName(new ItemStack(Material.END_ROD), "§7Husten Impfung"), 50, 0, null, Beruf.Berufe.RETTUNGSDIENST, true),
         KAFFEE(18, "Kaffee", Script.setName(new ItemStack(Material.POTION), "§7Kaffee"), 10, 0, null, Beruf.Berufe.NEWS, false),
         BROT(19, "Brot", new ItemBuilder(Material.BREAD).setAmount(16).setName("§7Brot").build(), 10, 0, null, Beruf.Berufe.RETTUNGSDIENST, false),
-        KEKSE(20, "Kekse",new ItemBuilder(Material.COOKIE).setAmount(16).setName("§7Keks").build(), 10, 0, null, Beruf.Berufe.NEWS, false),
+        KEKSE(20, "Kekse",new ItemBuilder(Material.COOKIE).setAmount(16).setName("§7Kekse").build(), 10, 0, null, Beruf.Berufe.NEWS, false),
         SNIPER(21, "Sniper", new ItemBuilder(Material.STONE_HOE).setName("§7Sniper").build(), 5000, 30, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE, true),
         DROHNE_COPS(22, "Drohne [Polizei]", new ItemBuilder(Material.WITHER_SKELETON_SKULL).setName("§7Drohne [Polizei]").build(), 2000, 0, null, Beruf.Berufe.POLICE, true),
         DROHNE_NEWS(23, "Drohne [News]", new ItemBuilder(Material.WITHER_SKELETON_SKULL).setName("§7Drohne [News]").build(), 2000, 0, Abteilung.Abteilungen.CHEFREDAKTION, Beruf.Berufe.NEWS, true),
@@ -153,6 +154,11 @@ public class Equip implements CommandExecutor, Listener {
             return true;
         }
 
+        if(Drone.isDrone(p)) {
+            p.sendMessage(Messages.ERROR + "Du kannst dich nicht als Drohne ausrüsten.");
+            return true;
+        }
+
         Beruf.Berufe beruf = Beruf.getBeruf(p);
         Inventory inv = Bukkit.createInventory(null, (beruf == Beruf.Berufe.POLICE && Beruf.getAbteilung(p) == Abteilung.Abteilungen.SEK ? 18 : 9), "§8» §7Equip");
 
@@ -198,7 +204,7 @@ public class Equip implements CommandExecutor, Listener {
 
     @EventHandler
     public void onDrop(PlayerDropItemEvent e) {
-        if (Stuff.isEquip(e.getItemDrop().getItemStack())) {
+        if (Stuff.isEquip(e.getItemDrop().getItemStack()) && Stuff.getStuff(ChatColor.stripColor(e.getItemDrop().getItemStack().getItemMeta().getDisplayName())).removeOnUninvite()) {
             e.setCancelled(true);
         }
     }
@@ -211,7 +217,7 @@ public class Equip implements CommandExecutor, Listener {
         if (e.getCurrentItem().getType() == Material.AIR) return;
         if (e.getView().getTitle().equalsIgnoreCase("§8» §7Equip")) {
             e.setCancelled(true);
-            Stuff stuff = Stuff.getStuff(e.getCurrentItem().getItemMeta().getDisplayName().replace("§7", "").replace("§8", "").replace("§9", "").replace("§e", "").replace("§6", "").replace("§c", "").replace("§a", "").replace("§b", "").replace("§d", "").replace("§f", ""));
+            Stuff stuff = Stuff.getStuff(ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName()));
             if (stuff == null) return;
             if (Beruf.getBeruf(p) != stuff.getBeruf()) {
                 p.sendMessage(Messages.ERROR + "Du kannst dir nur Items von deinem Beruf ausrüsten.");

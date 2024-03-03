@@ -94,11 +94,6 @@ public class UnrentCommand implements CommandExecutor {
             return true;
         }
 
-        if (!Script.isInt(args[0])) {
-            p.sendMessage(Messages.ERROR + "/unrent [Spieler] [Haus]");
-            return true;
-        }
-
         if (!Script.isInt(args[1])) {
             p.sendMessage(Messages.ERROR + "/unrent [Spieler] [Haus]");
             return true;

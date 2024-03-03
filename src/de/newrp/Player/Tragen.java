@@ -88,7 +88,7 @@ public class Tragen implements CommandExecutor, Listener {
 
 
 
-    /*@EventHandler
+    @EventHandler
     public void onHit(EntityDamageEvent e) {
         if (!(e.getEntity() instanceof Player)) return;
         Player p = (Player) e.getEntity();
@@ -99,12 +99,7 @@ public class Tragen implements CommandExecutor, Listener {
         p.sendMessage(PREFIX + "Du hast " + Script.getName(tg) + " abgesetzt.");
         tg.sendMessage(PREFIX + "Du wurdest von " + Script.getName(p) + " abgesetzt.");
         Me.sendMessage(p, "hat " + Script.getName(tg) + " abgesetzt.");
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                p.eject();
-            }
-        }.runTaskLater(main.getInstance(), 5L);
+        p.eject();
     }
 
     @EventHandler
@@ -117,12 +112,7 @@ public class Tragen implements CommandExecutor, Listener {
         p.sendMessage(PREFIX + "Du hast " + Script.getName(tg) + " abgesetzt.");
         tg.sendMessage(PREFIX + "Du wurdest von " + Script.getName(p) + " abgesetzt.");
         Me.sendMessage(p, "hat " + Script.getName(tg) + " abgesetzt.");
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                p.eject();
-            }
-        }.runTaskLater(main.getInstance(), 5L);
+        p.eject();
     }
 
     @EventHandler
@@ -136,11 +126,6 @@ public class Tragen implements CommandExecutor, Listener {
         p.sendMessage(PREFIX + "Du hast " + Script.getName(tg) + " abgesetzt.");
         tg.sendMessage(PREFIX + "Du wurdest von " + Script.getName(p) + " abgesetzt.");
         Me.sendMessage(p, "hat " + Script.getName(tg) + " abgesetzt.");
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                p.eject();
-            }
-        }.runTaskLater(main.getInstance(), 5L);
-    }*/
+        p.eject();
+    }
 }

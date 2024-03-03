@@ -22,13 +22,14 @@ import java.util.UUID;
 public class Beruf {
 
     public enum Berufe {
-        GOVERNMENT(1, "Regierung", false, true, false, 56, TeamspeakServerGroup.GOVERNMENT, new ForumGroup[]{ForumGroup.GOVERNMENT, ForumGroup.GOVERNMENT_LEADER}),
-        NEWS(2, "News", true, true, true, 95, TeamspeakServerGroup.NEWS, new ForumGroup[]{ForumGroup.NEWS, ForumGroup.NEWS_LEADER}),
-        POLICE(3, "Polizei", false, true, true, 70, TeamspeakServerGroup.POLICE, new ForumGroup[]{ForumGroup.POLICE, ForumGroup.POLICE_LEADER}),
-        RETTUNGSDIENST(4, "Rettungsdienst", false, true,true, 83, TeamspeakServerGroup.RETTUNGSDIENST, new ForumGroup[]{ForumGroup.RETTUNGSDIENST, ForumGroup.RETTUNGSDIENST_LEADER});
+        GOVERNMENT(1, "Regierung", new Location(Script.WORLD, 557, 88, 991, 89.61847f, 0.46322706f),false, true, false, 56, TeamspeakServerGroup.GOVERNMENT, new ForumGroup[]{ForumGroup.GOVERNMENT, ForumGroup.GOVERNMENT_LEADER}),
+        NEWS(2, "News", new Location(Script.WORLD, 294, 67, 789, 204.75023f, 5.849994f), true, true, true, 95, TeamspeakServerGroup.NEWS, new ForumGroup[]{ForumGroup.NEWS, ForumGroup.NEWS_LEADER}),
+        POLICE(3, "Polizei", new Location(Script.WORLD, 413, 71, 825, 37.74829f, 2.2104692f),false, true, true, 70, TeamspeakServerGroup.POLICE, new ForumGroup[]{ForumGroup.POLICE, ForumGroup.POLICE_LEADER}),
+        RETTUNGSDIENST(4, "Rettungsdienst", new Location(Script.WORLD, 267, 75, 1254, 245.1552f, 8.946896f),false, true,true, 83, TeamspeakServerGroup.RETTUNGSDIENST, new ForumGroup[]{ForumGroup.RETTUNGSDIENST, ForumGroup.RETTUNGSDIENST_LEADER});
 
         int id;
         private final String name;
+        Location loc;
         boolean kasse;
         boolean duty;
         boolean equip;
@@ -36,9 +37,10 @@ public class Beruf {
         TeamspeakServerGroup serverGroup;
         ForumGroup[] forumGroup;
 
-        Berufe(int id, String name, boolean kasse, boolean duty, boolean equip, int channelid, TeamspeakServerGroup serverGroup, ForumGroup[] forumGroup) {
+        Berufe(int id, String name, Location loc, boolean kasse, boolean duty, boolean equip, int channelid, TeamspeakServerGroup serverGroup, ForumGroup[] forumGroup) {
             this.id = id;
             this.name = name;
+            this.loc = loc;
             this.kasse = kasse;
             this.duty = duty;
             this.equip = equip;
@@ -65,6 +67,10 @@ public class Beruf {
 
         public boolean hasDuty() {
             return duty;
+        }
+
+        public Location getLoc() {
+            return loc;
         }
 
         public TeamspeakServerGroup getTeamspeakServerGroup() {
@@ -200,10 +206,10 @@ public class Beruf {
         public void addMember(Player p, Player leader) {
             Script.executeUpdate("INSERT INTO berufe (nrp_id, berufID, salary, abteilung, leader, coleader) VALUES ('" + Script.getNRPID(p) + "', '" + getID() + "', '0', '0', '0', '0')");
             for (Player members : getPlayersFromBeruf(this)) {
-                members.sendMessage("§8[§e" + getName() + "§8] §e" + p.getName() + " §eist dem Beruf beigetreten.");
+                members.sendMessage("§8[§6" + getName() + "§8] §6» §7" + p.getName() + " ist dem Beruf beigetreten.");
             }
-            sendLeaderMessage("§8[§e" + getName() + "§8] §e" + Script.getName(leader) + " §ehat " + Script.getName(p) + " in den Beruf eingeladen.");
-            Script.sendTeamMessage("§8[§eBerufeControl§8] §e" + Script.getName(leader) + " §ehat " + Script.getName(p) + " in den Beruf " + getName() + " eingeladen.");
+            sendLeaderMessage("§8[§6" + getName() + "§8] §6» §7" + Script.getName(leader) + " hat " + Script.getName(p) + " in den Beruf eingeladen.");
+            Script.sendTeamMessage("§8[§6BC§8] §6» §7" + Script.getName(leader) + " hat " + Script.getName(p) + " in den Beruf " + getName() + " eingeladen.");
             if (Arbeitslosengeld.hasArbeitslosengeld(p))
                 p.sendMessage(Messages.INFO + "Dein Arbeitslosengeld wurde automatisch gekündigt.");
             Arbeitslosengeld.deleteArbeitslosengeld(p);
@@ -212,9 +218,9 @@ public class Beruf {
         public void addMember(OfflinePlayer p) {
             Script.executeUpdate("INSERT INTO berufe (nrp_id, berufID, salary, abteilung, leader, coleader) VALUES ('" + Script.getNRPID(p) + "', '" + getID() + "', '0', '0', '0', '0')");
             for (Player members : getPlayersFromBeruf(this)) {
-                members.sendMessage("§8[§e" + getName() + "§8] §e" + p.getName() + " §eist dem Beruf beigetreten.");
+                members.sendMessage("§8[§6" + getName() + "§8] §6» §7" + p.getName() + " ist dem Beruf beigetreten.");
             }
-            sendLeaderMessage("§8[§e" + getName() + "§8] §e" + p.getName() + " ist nun Teil des Berufs.");
+            sendLeaderMessage("§8[§6" + getName() + "§8] §6» §7" + p.getName() + " ist nun Teil des Berufs.");
             Arbeitslosengeld.deleteArbeitslosengeld(p);
         }
 
@@ -223,10 +229,10 @@ public class Beruf {
             Equip.removeEquip(p);
             Script.executeUpdate("DELETE FROM berufe WHERE nrp_id = '" + Script.getNRPID(p) + "'");
             for (Player members : getPlayersFromBeruf(this)) {
-                members.sendMessage("§8[§e" + getName() + "§8] §e" + p.getName() + " §ehat den Beruf verlassen.");
+                members.sendMessage("§8[§6" + getName() + "§8] §6» §7" + p.getName() + " hat den Beruf verlassen.");
             }
-            sendLeaderMessage("§8[§e" + getName() + "§8] §e" + Script.getName(leader) + " §ehat " + Script.getName(p) + " aus dem Beruf geworfen.");
-            Script.sendTeamMessage("§8[§eBerufeControl§8] §e" + Script.getName(leader) + " §ehat " + Script.getName(p) + " aus dem Beruf " + getName() + " geworfen.");
+            sendLeaderMessage("§8[§6" + getName() + "§8] §6» §7" + Script.getName(leader) + " §7hat " + Script.getName(p) + " aus dem Beruf geworfen.");
+            Script.sendTeamMessage("§8[§6BC§8] §6» §7" + Script.getName(leader) + " §7hat " + Script.getName(p) + " aus dem Beruf " + getName() + " geworfen.");
         }
 
         public void removeMember(OfflinePlayer p, Player leader) {
@@ -236,17 +242,16 @@ public class Beruf {
             }
             Script.executeUpdate("DELETE FROM berufe WHERE nrp_id = '" + Script.getNRPID(p) + "'");
             for (Player members : getPlayersFromBeruf(this)) {
-                members.sendMessage("§8[§e" + getName() + "§8] §e" + p.getName() + " §ehat den Beruf verlassen.");
+                members.sendMessage("§8[§6" + getName() + "§8] §6» §7" + p.getName() + " §ehat den Beruf verlassen.");
             }
-            sendLeaderMessage("§8[§e" + getName() + "§8] §e" + Script.getName(leader) + " §ehat " + p.getName() + " aus dem Beruf geworfen.");
-            Script.sendTeamMessage("§8[§eBerufeControl§8] §e" + Script.getName(leader) + " §ehat " + p.getName() + " aus dem Beruf " + getName() + " geworfen.");
-            Script.addOfflineMessage(p, "§8[§eBeruf§8] §e" + Messages.ARROW + " Du wurdest aus deinem Beruf geworfen.");
+            sendLeaderMessage("§8[§6" + getName() + "§8] §6» §7" + Script.getName(leader) + " hat " + p.getName() + " aus dem Beruf geworfen.");
+            Script.sendTeamMessage("§8[§6BC§8] §6» §7" + Script.getName(leader) + " hat " + p.getName() + " aus dem Beruf " + getName() + " geworfen.");
         }
 
         public void removeMember(OfflinePlayer p) {
             Script.executeUpdate("DELETE FROM berufe WHERE nrp_id = '" + Script.getNRPID(p) + "'");
             for (Player members : getPlayersFromBeruf(this)) {
-                members.sendMessage("§8[§e" + getName() + "§8] §e" + p.getName() + " §ehat den Beruf verlassen.");
+                members.sendMessage("§8[§6" + getName() + "§8] §6» §7" + p.getName() + " §ehat den Beruf verlassen.");
             }
         }
 

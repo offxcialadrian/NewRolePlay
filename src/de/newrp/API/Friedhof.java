@@ -5,6 +5,7 @@ import de.newrp.Berufe.AcceptNotruf;
 import de.newrp.Berufe.Beruf;
 import de.newrp.GFB.Schule;
 import de.newrp.Player.Notruf;
+import de.newrp.Player.Spawnchange;
 import de.newrp.main;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
@@ -62,7 +63,7 @@ public class Friedhof {
 
         final int taskID = Bukkit.getScheduler().scheduleSyncDelayedTask(main.getInstance(), () -> {
             if (p.isOnline()) revive(p, null);
-        }, f.getDuration() * 20L);
+        }, f.getDeathtimeLeft() * 20L);
         f.setTaskID(taskID);
 
 
@@ -83,11 +84,10 @@ public class Friedhof {
 
         World w = p.getWorld();
             p.setPlayerWeather(WeatherType.DOWNFALL);
-            locs = new Location[]{Script.setDirection(new Location(w, 221, 76, 673), Direction.WEST)};
+            locs = new Location[]{new Location(Script.WORLD, 222, 75, 673, 92.5503f, -2.699904f)};
 
         Location loc = locs[Script.getRandom(0, locs.length - 1)];
-
-        Bukkit.getScheduler().runTaskLater(main.getInstance(), () -> p.teleport(loc), 5);
+        p.teleport(loc);
 
         p.setPlayerWeather(WeatherType.DOWNFALL);
         Script.resetPotionEffects(p);
@@ -156,10 +156,12 @@ public class Friedhof {
                 p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 12 * 20, 2, false, false));
                 p.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 15 * 20, 2, false, false));
             } else {
-                Location loc = new Location(p.getWorld(), 333, 78, 1159);
-                loc.getChunk().load();
+                if(Spawnchange.getSpawnLoc(p) != null) {
+                    p.teleport(Spawnchange.getSpawnLoc(p));
+                } else {
+                    p.teleport(new Location(p.getWorld(), 278,75,1232,270.05463f,0.84689033f));
+                }
 
-                p.teleport(loc);
                 new BukkitRunnable() {
                     @Override
                     public void run() {

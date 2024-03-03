@@ -70,7 +70,7 @@ public class UninviteCommand implements CommandExecutor {
 
             if(tg.isOnline() && tg.getPlayer() != null) {
                 tg.getPlayer().sendMessage(PREFIX + "Du wurdest aus der " + Beruf.getBeruf(p).getName() + " entlassen.");
-                Equip.removeEquip(p);
+                Equip.removeEquip(tg.getPlayer());
             } else {
                 Script.addOfflineMessage(tg, PREFIX + "Du wurdest aus der " + Beruf.getBeruf(p).getName() + " entlassen.");
             }

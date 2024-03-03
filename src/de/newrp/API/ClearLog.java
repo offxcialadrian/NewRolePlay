@@ -15,7 +15,7 @@ public class ClearLog {
     }
 
     public enum Log {
-        ALG("arbeitslosengeld", 30);
+        ALG("arbeitslosengeld", 14);
 
         private final String table;
         private final int days;

@@ -1,8 +1,6 @@
 package de.newrp.Runnable;
 
-import de.newrp.API.Debug;
-import de.newrp.API.Schwarzmarkt;
-import de.newrp.API.Script;
+import de.newrp.API.*;
 import de.newrp.Commands.Test;
 import de.newrp.GFB.GFB;
 import de.newrp.GFB.Schule;
@@ -61,6 +59,12 @@ public class SyncMinute extends BukkitRunnable {
                     Bukkit.broadcastMessage(Script.PREFIX + "§4§lACHTUNG: §cDer Server startet in 10 Sekunden neu!");
                     Bukkit.getScheduler().runTaskLater(main.getInstance(), () -> {
                         Bukkit.broadcastMessage(Script.PREFIX + "§4§lACHTUNG: §cDer Server startet in 5 Sekunden neu!");
+                        for(Player all : Bukkit.getOnlinePlayers()) {
+                            if(Cache.inventar.containsKey(all.getName())) {
+                                Cache.loadInventory(all);
+                                all.sendMessage(Messages.INFO + "Der Server restartet und dein Inventar wurde wiederhergestellt.");
+                            }
+                        }
                         Bukkit.getScheduler().runTaskLater(main.getInstance(), () -> {
                             Bukkit.broadcastMessage(Script.PREFIX + "§4§lACHTUNG: §cDer Server startet in 4 Sekunden neu!");
                             Bukkit.getScheduler().runTaskLater(main.getInstance(), () -> {

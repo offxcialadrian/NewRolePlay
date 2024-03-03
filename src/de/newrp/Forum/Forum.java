@@ -61,7 +61,7 @@ public class Forum {
     }
 
     public static void syncPermission(OfflinePlayer p) {
-        if(getForumID(Script.getNRPID(p)) == 0) {
+        if(getForumID(Script.getNRPID(p)) == 0 && p.isOnline()) {
             p.getPlayer().sendMessage(Messages.ERROR + "Du hast dich noch nicht verifiziert und daher keine Forum Rechte erhalten.");
             return;
         }

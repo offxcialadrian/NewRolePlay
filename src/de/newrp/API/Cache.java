@@ -11,7 +11,7 @@ import java.util.HashMap;
 public class Cache {
 
     private static final HashMap<String, Scoreboard> scoreboard = new HashMap<>();
-    private static final HashMap<String, ItemStack[]> inventar = new HashMap<>();
+    public static final HashMap<String, ItemStack[]> inventar = new HashMap<>();
 
     public static Scoreboard getScoreboard(Player p) {
         if (scoreboard.containsKey(p.getName()))

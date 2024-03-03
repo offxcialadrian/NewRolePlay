@@ -561,3 +561,19 @@ commands:
   flugblatt:
     description: view the flugblatt
     aliases: [ flugblätter ]
+  togglewhisper:
+    description: toggle whisper
+  umfragen:
+    description: view the umfragen
+    aliases: [ umfrage, polls ]
+  spawnchange:
+    description: change the spawn
+  boot:
+    description: boot a player
+  timer:
+    description: view the timer
+  calculator:
+    description: open the calculator
+    aliases: [ rechner, calc ]
+  todo:
+    description: view the todo

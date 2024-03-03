@@ -32,7 +32,7 @@ public class Baseballschlaeger implements Listener {
             if(e.isCancelled()) return;
             Player victim = (Player) e.getEntity();
 
-            if (SDuty.isSDuty(victim) || BuildMode.isInBuildMode(victim) || AFK.isAFK(victim) || Script.getLevel(victim)==1) {
+            if (SDuty.isSDuty(victim) || BuildMode.isInBuildMode(victim) || AFK.isAFK(victim) || Script.getLevel(victim)==1 || Friedhof.isDead(victim)) {
                 return;
             }
 

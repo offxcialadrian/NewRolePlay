@@ -8,6 +8,7 @@ import de.newrp.Administrator.Notifications;
 import de.newrp.Administrator.Punish;
 import de.newrp.Call.Call;
 import de.newrp.Player.Passwort;
+import de.newrp.Player.ToggleWhisper;
 import de.newrp.Ticket.Ticket;
 import de.newrp.Ticket.TicketCommand;
 import org.apache.commons.lang.StringUtils;
@@ -146,6 +147,10 @@ public class Chat implements Listener {
         Player p = e.getPlayer();
         e.setCancelled(true);
 
+        if (ToggleWhisper.whisper.contains(p.getName())) {
+            p.performCommand("w " + e.getMessage());
+            return;
+        }
 
         if (Passwort.isLocked(e.getPlayer())) {
             p.sendMessage(Messages.ERROR + "Du musst dein Passwort eingeben!");

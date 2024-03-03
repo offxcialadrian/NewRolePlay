@@ -26,7 +26,7 @@ public enum Navi {
     NEWS("News", new Location(Script.WORLD, 288, 65, 847, 202.56625f, -0.67760885f)),
     PIZZALIEFERANT("Pizzalieferant", new Location(Script.WORLD, 639, 69, 882, 64.68632f, 8.036635f)),
     SELFSTORAGE("Selfstorage", new Location(Script.WORLD, 1002, 68, 1201, 270.67163f, 4.968159f)),
-    STRAND("Stand", new Location(Script.WORLD, 589, 65, 703, 181.56335f, 5.6223764f)),
+    STRAND("Strand", new Location(Script.WORLD, 589, 65, 703, 181.56335f, 5.6223764f)),
     STAATSBANK("Staatsbank", new Location(Script.WORLD, 933, 77, 934, -88.35006f, 3.300051f)),
     WAFFENLADEN("Waffenladen",new Location(Script.WORLD, 452, 69, 928, -55.912292f, 19.697329f)),
     STATUE("Statue", new Location(Script.WORLD, 584, 66, 555, 179.85078f, 2.4608523E-4f)),

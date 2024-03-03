@@ -11,6 +11,7 @@ import de.newrp.Berufe.Duty;
 import de.newrp.Chat.Me;
 import de.newrp.Player.AFK;
 import de.newrp.Player.AntiOfflineFlucht;
+import de.newrp.Player.Fesseln;
 import de.newrp.main;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
@@ -76,7 +77,12 @@ public class Handschellen implements Listener {
         long time = System.currentTimeMillis();
         Player rightClicked = (Player) e.getRightClicked();
 
-        if(Handschellen.isCuffed(p)) {
+        if(Handschellen.isCuffed(p) || Fesseln.isTiedUp(p)) {
+            return;
+        }
+
+        if(Handschellen.isCuffed(rightClicked)) {
+            Script.sendActionBar(p, Messages.ERROR + "Der Spieler ist bereits gefesselt.");
             return;
         }
 

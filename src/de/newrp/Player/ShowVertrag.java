@@ -1,5 +1,6 @@
 package de.newrp.Player;
 
+import de.newrp.API.Gender;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.API.VertragAPI;
@@ -51,8 +52,10 @@ public class ShowVertrag implements CommandExecutor {
         }
 
         p.sendMessage(Vertrag.PREFIX + "Du hast " + Script.getName(tg) +  " deinen Vertrag mit " + v.getTo() + " gezeigt.");
-        tg.sendMessage(Vertrag.PREFIX + Script.getName(p) + " hat dir seinen Vertrag mit " + v.getTo() + " gezeigt.");
+        tg.sendMessage(Vertrag.PREFIX + Script.getName(p) + " hat dir " + (Script.getGender(p)== Gender.MALE?"seinen":"ihren") + " Vertrag mit " + Script.getOfflinePlayer(v.getTo()).getName() + " gezeigt.");
         tg.sendMessage(Vertrag.PREFIX + "§6Bedingungen: " + v.getBedingung());
+        tg.sendMessage(Vertrag.PREFIX + "§6Von: " + Script.getOfflinePlayer(v.getFrom()).getName());
+        tg.sendMessage(Vertrag.PREFIX + "§6An: " + Script.getOfflinePlayer(v.getTo()).getName());
         tg.sendMessage(Vertrag.PREFIX + "§6Datum: " + Script.dateFormat.format(v.getTime()) + " Uhr");
         tg.sendMessage(Vertrag.PREFIX + "§6Vertrags-ID: " + v.getID());
         Me.sendMessage(p, "zeigt " + Script.getName(tg) + " einen Vertrag.");

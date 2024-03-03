@@ -2,6 +2,7 @@ package de.newrp.Medic;
 
 import de.newrp.API.*;
 import de.newrp.Chat.Me;
+import de.newrp.Player.Fesseln;
 import de.newrp.Police.Handschellen;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -31,6 +32,10 @@ public class Verband implements Listener {
         Player p = e.getPlayer();
         if (!interact(p)) return;
         if(Handschellen.isCuffed(p)) return;
+        if(Fesseln.isTiedUp(p)) {
+            Script.sendActionBar(p, Messages.ERROR + "Du bist gefesselt.");
+            return;
+        }
         if(p.isSneaking()) {
             long time = System.currentTimeMillis();
 

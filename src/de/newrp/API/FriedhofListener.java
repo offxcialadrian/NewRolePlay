@@ -3,6 +3,7 @@ package de.newrp.API;
 import de.newrp.Administrator.Notifications;
 import de.newrp.Administrator.SDuty;
 import de.newrp.Call.Call;
+import de.newrp.Player.Fesseln;
 import de.newrp.main;
 import org.bukkit.*;
 import org.bukkit.entity.EntityType;
@@ -36,6 +37,7 @@ public class FriedhofListener implements Listener {
 
         Chair.NO_TELEPORT.add(p.getName());
         if (p.isInsideVehicle()) p.leaveVehicle();
+        if(Fesseln.isTiedUp(p)) Fesseln.untie(p);
 
 
         //Sekunden

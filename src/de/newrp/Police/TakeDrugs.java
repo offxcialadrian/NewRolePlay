@@ -24,6 +24,11 @@ public class TakeDrugs implements CommandExecutor {
             return true;
         }
 
+        if(args.length != 1) {
+            p.sendMessage(Messages.ERROR + "/takedrugs [Spieler]");
+            return true;
+        }
+
         Player tg = Script.getPlayer(args[0]);
         if(tg == null) {
             p.sendMessage(Messages.PLAYER_NOT_FOUND);
