@@ -17,21 +17,23 @@ public class ChatClear implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender cs, @NotNull Command cmd, @NotNull String s, @NotNull String[] args) {
         Player p = (Player) cs;
 
-        if(!Script.hasRank(p, Rank.MODERATOR, true)) {
+        if (!Script.hasRank(p, Rank.MODERATOR, true)) {
             p.sendMessage(Messages.NO_PERMISSION);
             return true;
         }
 
-        if(!SDuty.isSDuty(p)) {
+        if (!SDuty.isSDuty(p)) {
             p.sendMessage(Messages.NO_SDUTY);
             return true;
         }
 
-        for(Player all : Bukkit.getOnlinePlayers()) {
-            if(!Script.isInTestMode()) if(Script.hasRank(all, Rank.SUPPORTER, false)) continue;
-            for(int i = 0; i < 1000; i++) {
-                all.sendMessage("§c§lCC §8» §cChat leert sich... ");
+        for (Player all : Bukkit.getOnlinePlayers()) {
+            if (!Script.isInTestMode()) if (Script.hasRank(all, Rank.SUPPORTER, false)) continue;
+            Bukkit.broadcastMessage("§c§lChatClear wird eingeleitet...");
+            for (int i = 0; i < 1000; i++) {
+                all.sendMessage("§c§l" + generateRandomString(5));
             }
+            Bukkit.broadcastMessage("§c§lChatClear beendet.");
         }
 
         p.sendMessage(Script.PREFIX + "Du hast den Chat geleert.");
