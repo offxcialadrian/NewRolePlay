@@ -15,7 +15,7 @@ public class GetDebugStick implements CommandExecutor {
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
         Player p = (Player) cs;
         if(!BuildMode.isInBuildMode(p)) {
-            p.sendMessage(Messages.ERROR + "Du bist nicht im BuildMode.");
+            p.sendMessage(Messages.ERROR + "Du bist nicht im BuildMode!");
             return true;
         }
         p.getInventory().addItem(new ItemBuilder(Material.DEBUG_STICK).setName("§eDebug-Stick").setLore(Script.getName(p)+"s Debug-Stick").build());
