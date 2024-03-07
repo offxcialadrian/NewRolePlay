@@ -14,7 +14,7 @@ public class Calculator implements CommandExecutor {
     public static String PREFIX = "§8[§bTaschenrechner§8] §b" + Messages.ARROW + " §7";
 
     @Override
-    public boolean onCommand(@NotNull CommandSender cs, @NotNull Command cmd, @NotNull String s, @NotNull String[] args) {
+    public boolean onCommand(@NotNull CommandSender cs, Command cmd, @NotNull String s, @NotNull String[] args) {
         Player p = (Player) cs;
 
         if(args.length == 0) {

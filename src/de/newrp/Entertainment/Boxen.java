@@ -43,6 +43,7 @@ public class Boxen implements Listener {
 
         if(!Buy.isGymMember(p)) {
             Script.sendActionBar(p, Messages.ERROR + "Du musst dich erst im Fitnessstudio anmelden.");
+            return;
         }
 
         long time = System.currentTimeMillis();

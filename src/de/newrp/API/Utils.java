@@ -177,13 +177,6 @@ public class Utils implements Listener {
     @EventHandler
     public void onFish(PlayerFishEvent e) {
         e.setExpToDrop(0);
-        //stop player from getting anything else than fish
-        if(e.getCaught() != null) {
-            if(e.getCaught().getType() != EntityType.COD && e.getCaught().getType() != EntityType.SALMON && e.getCaught().getType() != EntityType.PUFFERFISH && e.getCaught().getType() != EntityType.TROPICAL_FISH){
-                e.getCaught().remove();
-                e.setCancelled(true);
-            }
-        }
     }
 
     @EventHandler

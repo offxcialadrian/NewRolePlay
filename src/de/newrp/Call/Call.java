@@ -143,6 +143,7 @@ public class Call {
         }
         if (playerList.size() == 2) {
             sendSystemMessage(p, "§7Der Anruf wurde beendet.", false);
+            WAITING_FOR_CALL.remove(getCallIDByPlayer(p));
             ON_CALL.remove(getCallIDByPlayer(p));
         } else {
             playerList.remove(p);
@@ -201,6 +202,7 @@ public class Call {
                 Script.executeUpdate("INSERT INTO missed_calls (fromID, toID, time) VALUES ('" + Script.getNRPID(p) + "', '" + Script.getNRPID(player) + "', '" + System.currentTimeMillis() + "')");
             }
             WAITING_FOR_CALL.remove(callID);
+            ON_CALL.remove(callID);
         } else if(isOnCall(p)) {
             hangup(p);
         }

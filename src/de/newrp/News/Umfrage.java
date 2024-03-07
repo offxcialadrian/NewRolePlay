@@ -85,6 +85,9 @@ public class Umfrage {
     }
 
     public static void createUmfrage(String frage, String[] antworten) {
+        for (int i = 0; i < antworten.length; i++) {
+            antworten[i] = antworten[i].substring(1);
+        }
         try {
             String insertUmfrageQuery = "INSERT INTO umfragen (frage, active) VALUES (?, 1)";
             try (PreparedStatement umfrageStatement = main.getConnection().prepareStatement(insertUmfrageQuery,
