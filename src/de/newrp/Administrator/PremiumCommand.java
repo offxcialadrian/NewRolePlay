@@ -26,6 +26,32 @@ public class PremiumCommand implements CommandExecutor {
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
         Player p = (Player) cs;
 
+        if(args.length >= 2 && args[0].equalsIgnoreCase("feedback")) {
+            if(!AddPremiumToPlayer.awaitFeedback.containsKey(p.getName())) {
+                p.sendMessage(Messages.ERROR + "Du hast keine ausstehenden Feedbacks.");
+                return true;
+            }
+
+            if(args.length < 5) {
+                p.sendMessage(Messages.ERROR + "Bitte gebe dein Feedback ausführlicher an.");
+                return true;
+            }
+
+            StringBuilder feedback = new StringBuilder();
+            for (int i = 1; i < args.length; i++) {
+                feedback.append(args[i]).append(" ");
+            }
+
+            p.sendMessage(PREFIX + "Vielen Dank für dein Feedback.");
+            p.sendMessage(Messages.INFO + "Bitte beachte, dass wir bei \"Troll-Feedback\" dein zusätliches Premium entfernen.");
+            p.sendMessage(Messages.INFO + "Dein Feedback: " + feedback.toString());
+            Script.executeUpdate("INSERT INTO premium_feedback (nrp_id, days, feedback) VALUES (" + Script.getNRPID(p) + ", " + AddPremiumToPlayer.awaitFeedback.get(p.getName()) + ", '" + feedback.toString() + "')");
+            Premium.addPremium(p, TimeUnit.DAYS.toMillis(3));
+            AddPremiumToPlayer.awaitFeedback.remove(p.getName());
+            Notifications.sendMessage(Notifications.NotificationType.NRPSHOP, Script.getName(p) + " hat ein Feedback abgegeben und drei weitere Tage Premium erhalten (" + feedback.toString() + ").");
+
+        }
+
         if(!Script.hasRank(p, Rank.OWNER, false) || !SDuty.isSDuty(p)) {
 
             if(args.length == 2) {

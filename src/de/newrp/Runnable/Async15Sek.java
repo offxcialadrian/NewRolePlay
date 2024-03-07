@@ -9,11 +9,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 public class Async15Sek extends BukkitRunnable {
     @Override
     public void run() {
-        for(Player p : Bukkit.getOnlinePlayers()) {
-            if(UBahn.isInSubway(p)) {
-                Achievement.UBAHN.grant(p);
-                UBahn.driveToNextStop(p);
-            }
-        }
+
     }
 }

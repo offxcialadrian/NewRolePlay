@@ -27,6 +27,21 @@ public class Premium {
         return false;
     }
 
+    public static boolean hasPremium(Integer id) {
+        if(Script.hasRank(id, Rank.MODERATOR, false)) return true;
+        try (Statement stmt = main.getConnection().createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT * FROM premium WHERE nrp_id=" + id + " ORDER BY id DESC LIMIT 1;")) {
+            if (rs.next()) {
+                if (rs.getLong("until") > System.currentTimeMillis()) {
+                    return true;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     public static long getPremiumTime(Player p) {
         if(Script.hasRank(p, Rank.MODERATOR, false)) return 0;
         try (Statement stmt = main.getConnection().createStatement();
@@ -120,6 +135,11 @@ public class Premium {
     public static void addPremiumStorage(Player p, int days) {
         p.sendMessage(PREFIX + "Du hast §b§l" + days + " Tage §7Premium erhalten.");
         p.sendMessage(Messages.INFO + "Nutze §8/§6premium §rum dein Premium zu aktivieren.");
+        if(days>=30) p.sendMessage(Messages.INFO + "Nutze §8/§6premium feedback §rund teile uns mit, warum du dich für den Premiumkauf entschieden hast. Du erhältst dafür 3 weitere Tage Premium.");
+        Script.executeUpdate("INSERT INTO premium_storage (nrp_id, duration, expires) VALUES (" + Script.getNRPID(p) + ", " + days + ", " + "NULL" + ")");
+    }
+
+    public static void addPremiumStorage(OfflinePlayer p, int days) {
         Script.executeUpdate("INSERT INTO premium_storage (nrp_id, duration, expires) VALUES (" + Script.getNRPID(p) + ", " + days + ", " + "NULL" + ")");
     }
 

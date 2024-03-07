@@ -20,7 +20,7 @@ import java.util.List;
 public class BlackListCommand implements CommandExecutor, Listener {
 
     public enum Reasons {
-        LEADERMORD("Leadermord", 100, 5, new Organisation[] {Organisation.BLOODS});
+        LEADERMORD("Leadermord", 100, 5, new Organisation[] {Organisation.FALCONE});
 
         private final String name;
         private final int price;
@@ -206,7 +206,7 @@ public class BlackListCommand implements CommandExecutor, Listener {
             }
 
             price = Math.max(5000, price*(Math.min(1, o.getLevel()/2)));
-            kills = Math.max(100, kills);
+            kills = Math.max(100, kills*(Math.min(1, o.getLevel()/2)));
 
 
             Blacklist.add(tg, o, reasons.toString(), kills, price);

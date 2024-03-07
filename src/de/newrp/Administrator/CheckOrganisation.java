@@ -55,7 +55,7 @@ public class CheckOrganisation implements CommandExecutor, TabCompleter {
             }
             p.sendMessage(PREFIX + "§8» §7Mitglieder: §e" + members.toString());
             p.sendMessage(PREFIX + "§8» §7Rangnamen:");
-            for(int i = 0; i <= o.getLevel(); i++) {
+            for(int i = 0; i <= 6; i++) {
                 p.sendMessage(PREFIX + "§8» §7Rang " + i + ": §e" + o.getRankName(i, Gender.MALE) + " §8| §e" + o.getRankName(i, Gender.FEMALE));
             }
             return true;
@@ -106,7 +106,7 @@ public class CheckOrganisation implements CommandExecutor, TabCompleter {
         }
         p.sendMessage(PREFIX + "§8» §7Mitglieder: §e" + members.toString());
         p.sendMessage(PREFIX + "§8» §7Rangnamen:");
-        for(int i = 0; i <= o.getLevel(); i++) {
+        for(int i = 0; i <= 6; i++) {
             p.sendMessage(PREFIX + "§8» §7Rang " + i + ": §e" + o.getRankName(i, Gender.MALE) + " §8| §e" + o.getRankName(i, Gender.FEMALE));
         }
 

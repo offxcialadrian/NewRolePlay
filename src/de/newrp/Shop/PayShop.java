@@ -211,6 +211,7 @@ public class PayShop implements Listener {
                 Script.executeAsyncUpdate("DELETE FROM handy_settings WHERE nrp_id = " + Script.getNRPID(p));
                 Script.executeAsyncUpdate("DELETE FROM call_history WHERE nrp_id = " + Script.getNRPID(p));
                 Script.executeAsyncUpdate("DELETE FROM messages WHERE nrp_id = " + Script.getNRPID(p) + " OR sender = " + Script.getNRPID(p));
+                Script.executeUpdate("DELETE FROM missed_calls WHERE toID = " + Script.getNRPID(p));
             }
 
             if (si.addToInventory()) p.getInventory().addItem(i);

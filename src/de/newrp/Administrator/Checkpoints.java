@@ -130,6 +130,9 @@ public class Checkpoints implements Listener {
         Location loc = new Location(Script.WORLD, 484, 8, 561, 87.723145f, 7.387953f);
         loc.getChunk().load();
         p.teleport(loc);
+        p.sendMessage(Messages.INFO + "Herzlich Willkommen im Checkpoints-Gefängnis.");
+        p.sendMessage(Messages.INFO + "Du musst den dir zugewiesenen Redstone-Block finden und anklicken, um ihn zu entfernen.");
+        p.sendMessage(Messages.INFO + "Du hast " + checkpoints + " Checkpoints.");
 
         setScoreboard(p, checkpoints);
         setCheckpoints(p, checkpoints, false);

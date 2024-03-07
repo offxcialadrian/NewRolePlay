@@ -84,7 +84,10 @@ public class Expression {
             throw new ExpressionException("Unexpected character: " + wrongChar);
         }
 
-        if (eat('^')) x = Math.pow(x, parseFactor());
+        if (eat('^')) {
+            double exponent = parseFactor();
+            x = Math.pow(x, exponent);
+        }
 
         return x;
     }

@@ -346,6 +346,12 @@ public class main extends JavaPlugin {
         getCommand("timer").setExecutor(new Timer());
         getCommand("calculator").setExecutor(new Calculator());
         getCommand("todo").setExecutor(new ToDoCommand());
+        getCommand("jailwork").setExecutor(new JailWork());
+        getCommand("takewaffenschein").setExecutor(new TakeWaffenschein());
+        getCommand("takedriverslicense").setExecutor(new TakeDriversLicense());
+        getCommand("partikel").setExecutor(new ParticleCommand());
+        getCommand("chatclear").setExecutor(new ChatClear());
+        getCommand("anrufbeantworter").setExecutor(new Anrufbeantworter());
 
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new SDuty(), this);
@@ -453,6 +459,8 @@ public class main extends JavaPlugin {
         pm.registerEvents(new Flugblatt(), this);
         pm.registerEvents(new UmfragenCommand(), this);
         pm.registerEvents(new Spawnchange(), this);
+        pm.registerEvents(new JailWork(), this);
+        pm.registerEvents(new ParticleCommand(), this);
 
 
         new AsyncHealth().runTaskTimerAsynchronously(this, 120 * 20L, 120 * 20L);
@@ -463,7 +471,8 @@ public class main extends JavaPlugin {
         new AsyncDaylightCycle().runTaskTimer(this, 20L, 600L);
         new SyncMinute().runTaskTimer(this, 60 * 20L, 60 * 20L);
         new AsyncPlantation().runTaskTimerAsynchronously(this, 60 * 20L, 60 * 20L);
-        new Async15Sek().runTaskTimerAsynchronously(this, 15* 20L, 15 * 20L);
+        //new Async15Sek().runTaskTimerAsynchronously(this, 15* 20L, 15 * 20L);
+        new Sync15Sek().runTaskTimer(this, 15 * 20L, 15 * 20L);
 
         ScoreboardManager.initMainScoreboard();
         Hologram.reload();

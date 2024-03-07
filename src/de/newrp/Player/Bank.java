@@ -5,12 +5,19 @@ import de.newrp.Administrator.BuildMode;
 import de.newrp.Administrator.GoTo;
 import de.newrp.Administrator.Notifications;
 import de.newrp.Administrator.SDuty;
+import de.newrp.Berufe.Beruf;
+import de.newrp.Chat.Me;
+import de.newrp.Government.Stadtkasse;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.block.Banner;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.util.StringUtil;
 
 import java.util.ArrayList;
@@ -133,8 +140,105 @@ public class Bank implements CommandExecutor, TabCompleter {
         }
 
         if(args[0].equalsIgnoreCase("überweisen")) {
-            OfflinePlayer tg = Script.getOfflinePlayer(args[1]);
 
+            if(args[1].equalsIgnoreCase("stadt") || args[1].equalsIgnoreCase("stadtkasse")) {
+                if(!Script.isInt(args[2])) {
+                    p.sendMessage(Messages.ERROR + "Du hast keinen gültigen Betrag angegeben.");
+                    return true;
+                }
+
+                int betrag = Integer.parseInt(args[2]);
+
+                if(betrag <= 0) {
+                    p.sendMessage(Messages.ERROR + "Du kannst nicht mit negativen Beträgen arbeiten.");
+                    return true;
+                }
+
+                StringBuilder reason = new StringBuilder();
+                for(int i = 3; i < args.length; i++) {
+                    reason.append(args[i]).append(" ");
+                }
+
+                if(reason.length() == 0) reason = new StringBuilder("Kein Verwendungszweck angegeben.");
+
+                if(betrag > Banken.getBankByPlayer(p).getTransactionLimit()) {
+                    p.sendMessage(Messages.ERROR + "Deine Bank lässt nur Transaktionen bis " + Banken.getBankByPlayer(p).getTransactionLimit() + "€ zu.");
+                    return true;
+                }
+
+                if(Script.getMoney(p, PaymentType.BANK) < betrag) {
+                    p.sendMessage(Messages.ERROR + "Du hast nicht genug Geld.");
+                    return true;
+                }
+
+                int totalcost = (betrag+Banken.getBankByPlayer(p).getTransactionKosten());
+
+                if(Script.getMoney(p, PaymentType.BANK) < totalcost) {
+                    p.sendMessage(Messages.ERROR + "Du hast nicht genug Geld um die Transaktionskosten zu decken.");
+                    return true;
+                }
+
+                Script.removeMoney(p, PaymentType.BANK, (totalcost));
+                Stadtkasse.addStadtkasse(betrag, "Einzahlung von " + Script.getName(p) + " Verwendungszweck: " + reason, null);
+                p.sendMessage(PREFIX + "Du hast " + betrag + "€ an die Stadtkasse überwiesen. Verwendungszweck: " + reason);
+                p.sendMessage(Messages.INFO + "Es wurden " + Banken.getBankByPlayer(p).getTransactionKosten() + "€ Transaktionskosten abgezogen.");
+                Notifications.sendMessage(Notifications.NotificationType.PAYMENT, Script.getName(p) + " hat " + betrag + "€ an Stadtkasse überwiesen. Verwendungszweck: " + reason);
+                Log.NORMAL.write(p, "hat " + betrag + "€ an " + "Stadtkasse" + " überwiesen. Verwendungszweck: " + reason);
+                Cashflow.addEntry(p, -totalcost, "Überweisung an Stadtkasse Verwendungszweck: " + reason);
+                Me.sendMessage(p, "tätigt eine Überweisung.");
+                return true;
+            }
+
+            if(args[1].equalsIgnoreCase("news") || args[1].equalsIgnoreCase("nachrichten")) {
+                if(!Script.isInt(args[2])) {
+                    p.sendMessage(Messages.ERROR + "Du hast keinen gültigen Betrag angegeben.");
+                    return true;
+                }
+
+                int betrag = Integer.parseInt(args[2]);
+
+                if(betrag <= 0) {
+                    p.sendMessage(Messages.ERROR + "Du kannst nicht mit negativen Beträgen arbeiten.");
+                    return true;
+                }
+
+                StringBuilder reason = new StringBuilder();
+                for(int i = 3; i < args.length; i++) {
+                    reason.append(args[i]).append(" ");
+                }
+
+                if(reason.length() == 0) reason = new StringBuilder("Kein Verwendungszweck angegeben.");
+
+                if(betrag > Banken.getBankByPlayer(p).getTransactionLimit()) {
+                    p.sendMessage(Messages.ERROR + "Deine Bank lässt nur Transaktionen bis " + Banken.getBankByPlayer(p).getTransactionLimit() + "€ zu.");
+                    return true;
+                }
+
+                if(Script.getMoney(p, PaymentType.BANK) < betrag) {
+                    p.sendMessage(Messages.ERROR + "Du hast nicht genug Geld.");
+                    return true;
+                }
+
+                int totalcost = (betrag+Banken.getBankByPlayer(p).getTransactionKosten());
+
+                if(Script.getMoney(p, PaymentType.BANK) < totalcost) {
+                    p.sendMessage(Messages.ERROR + "Du hast nicht genug Geld um die Transaktionskosten zu decken.");
+                    return true;
+                }
+
+                Script.removeMoney(p, PaymentType.BANK, (totalcost));
+                Beruf.Berufe.NEWS.addKasse(betrag);
+                Beruf.Berufe.NEWS.sendMessage(PREFIX + "Die News-Agency hat " + betrag + "€ von " + Script.getName(p) + " erhalten. Verwendungszweck: " + reason);
+                p.sendMessage(PREFIX + "Du hast " + betrag + "€ an die Stadtkasse überwiesen. Verwendungszweck: " + reason);
+                p.sendMessage(Messages.INFO + "Es wurden " + Banken.getBankByPlayer(p).getTransactionKosten() + "€ Transaktionskosten abgezogen.");
+                Notifications.sendMessage(Notifications.NotificationType.PAYMENT, Script.getName(p) + " hat " + betrag + "€ an Stadtkasse überwiesen. Verwendungszweck: " + reason);
+                Log.NORMAL.write(p, "hat " + betrag + "€ an " + "Stadtkasse" + " überwiesen. Verwendungszweck: " + reason);
+                Cashflow.addEntry(p, -totalcost, "Überweisung an Stadtkasse Verwendungszweck: " + reason);
+                Me.sendMessage(p, "tätigt eine Überweisung.");
+                return true;
+            }
+
+            OfflinePlayer tg = Script.getOfflinePlayer(args[1]);
             if(Script.getNRPID(tg) == 0) {
                 p.sendMessage(Messages.PLAYER_NOT_FOUND);
                 return true;
@@ -195,6 +299,7 @@ public class Bank implements CommandExecutor, TabCompleter {
             Log.NORMAL.write(tg, "hat " + betrag + "€ von " + Script.getName(p) + " erhalten. Verwendungszweck: " + reason);
             Cashflow.addEntry(p, -totalcost, "Überweisung an " + tg.getName() + " Verwendungszweck: " + reason);
             Cashflow.addEntry(tg, betrag, "Überweisung von " + Script.getName(p) + " Verwendungszweck: " + reason);
+            Me.sendMessage(p, "tätigt eine Überweisung.");
             return true;
         }
 
@@ -231,6 +336,18 @@ public class Bank implements CommandExecutor, TabCompleter {
             return completions;
         }
         return Collections.EMPTY_LIST;
+    }
+
+    @EventHandler
+    public void onInteract(PlayerInteractEvent e) {
+        if(e.getAction() != Action.RIGHT_CLICK_BLOCK) return;
+        Player p = e.getPlayer();
+        if(BuildMode.isInBuildMode(p)) return;
+        if(e.getClickedBlock() == null) return;
+        if(!(e.getClickedBlock().getBlockData() instanceof Banner)) return;
+        ATM atm = ATM.getNearATM(p);
+        if(atm == null) return;
+        p.performCommand("bank info");
     }
 
 }

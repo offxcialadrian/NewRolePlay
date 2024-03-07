@@ -1,8 +1,6 @@
 package de.newrp.Government;
 
-import de.newrp.API.Messages;
-import de.newrp.API.Rank;
-import de.newrp.API.Script;
+import de.newrp.API.*;
 import de.newrp.Administrator.SDuty;
 import de.newrp.Berufe.Beruf;
 import de.newrp.main;
@@ -18,6 +16,7 @@ import java.sql.Statement;
 public class Stadtkasse implements CommandExecutor {
 
     public static final String PREFIX = "§8[§eStadtkasse§8] §e» §7";
+    public static int AUSZAHLUNG = 0;
 
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
@@ -37,7 +36,64 @@ public class Stadtkasse implements CommandExecutor {
             return true;
         }
 
-        p.sendMessage(PREFIX + "In der Stadtkasse befinden sich §e" + getStadtkasse() + "€.");
+        if(!Beruf.isLeader(p, true) && !Script.hasRank(p, Rank.ADMINISTRATOR, false)) {
+            p.sendMessage(Messages.ERROR + "Du bist kein Leader.");
+            return true;
+        }
+
+        ATM atm = ATM.getNearestATM(p.getLocation());
+        if(atm == null) {
+            p.sendMessage(Messages.ERROR + "Du befindest dich nicht in der Nähe eines Geldautomaten.");
+            return true;
+        }
+
+        if(args.length == 1 && args[0].equalsIgnoreCase("info")) {
+            p.sendMessage(PREFIX + "In der Stadtkasse befinden sich §e" + getStadtkasse() + "€.");
+            return true;
+        }
+
+        if(args.length >= 2 && args[0].equalsIgnoreCase("auszahlen")) {
+            if(!Script.isInt(args[1])) {
+                p.sendMessage(Messages.ERROR + "Der Betrag muss eine Zahl sein.");
+                return true;
+            }
+
+            int betrag = Integer.parseInt(args[1]);
+            if(betrag <= 0) {
+                p.sendMessage(Messages.ERROR + "Der Betrag muss größer als 0 sein.");
+                return true;
+            }
+
+            if(getStadtkasse() < betrag) {
+                p.sendMessage(Messages.ERROR + "In der Stadtkasse befinden sich nicht genügend Geld.");
+                return true;
+            }
+
+            if(AUSZAHLUNG + betrag > 50000) {
+                p.sendMessage(Messages.ERROR + "Es können maximal 50.000€ am Tag ausgezahlt werden.");
+                return true;
+            }
+
+            AUSZAHLUNG += betrag;
+            atm.removeCash(betrag);
+            StringBuilder reason = new StringBuilder();
+            if(args.length > 2) {
+                for(int i = 2; i < args.length; i++) {
+                    if(reason.length() > 0) {
+                        reason.append(" ");
+                    }
+                    reason.append(args[i]);
+                }
+            }
+            Stadtkasse.removeStadtkasse(betrag, "Auszahlung von " + Script.getName(p) + " Verwendungszweck: " + reason.toString());
+            Beruf.Berufe.GOVERNMENT.sendMessage(PREFIX + "Es wurde " + betrag + "€ aus der Stadtkasse ausgezahlt. Verwendungszweck: " + reason.toString());
+            Script.addMoney(p, PaymentType.CASH, betrag);
+            return true;
+        }
+
+
+
+
 
 
         return false;

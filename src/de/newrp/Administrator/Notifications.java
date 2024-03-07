@@ -123,7 +123,7 @@ public class Notifications implements CommandExecutor, Listener {
                     if (e.getCurrentItem().getItemMeta().getDisplayName().equals("§a" + type.getName())) {
                         Script.executeUpdate("INSERT INTO notifications (nrp_id, notification_id) VALUES ('" + Script.getNRPID(p) + "', '" + type.getID() + "')");
                         p.sendMessage(PREFIX + "Du hast die " + type.getName() + " aktiviert.");
-                        p.closeInventory();
+                        e.getInventory().setItem(e.getSlot(), new ItemBuilder(Material.REDSTONE_BLOCK).setName("§c" + type.getName()).setLore(" §7" + Messages.ARROW + " Deaktiviere " + type.getName()).build());
                         return;
                     }
                 }
@@ -132,7 +132,7 @@ public class Notifications implements CommandExecutor, Listener {
                     if (e.getCurrentItem().getItemMeta().getDisplayName().equals("§c" + type.getName())) {
                         Script.executeUpdate("DELETE FROM notifications WHERE nrp_id = '" + Script.getNRPID(p) + "' AND notification_id = '" + type.getID() + "'");
                         p.sendMessage(PREFIX + "Du hast die " + type.getName() + " deaktiviert.");
-                        p.closeInventory();
+                        e.getInventory().setItem(e.getSlot(), new ItemBuilder(Material.EMERALD_BLOCK).setName("§a" + type.getName()).setLore(" §7" + Messages.ARROW + " Aktiviere " + type.getName()).build());
                         return;
                     }
                 }

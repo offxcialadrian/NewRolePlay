@@ -7,6 +7,11 @@ import org.bukkit.scoreboard.Team;
 import org.bukkit.scoreboard.Team.Option;
 import org.bukkit.scoreboard.Team.OptionStatus;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
 public class ScoreboardManager {
 
     public static final Scoreboard MAIN = Bukkit.getServer().getScoreboardManager().getMainScoreboard();
@@ -22,11 +27,15 @@ public class ScoreboardManager {
 
     public static void initMainScoreboard() {
         clearMainScoreboard();
-        for (ScoreboardTeam team : ScoreboardTeam.values()) {
+        List<ScoreboardTeam> sortedTeams = Arrays.asList(ScoreboardTeam.values());
+        sortedTeams.sort(Comparator.comparingInt(Enum::ordinal));
+
+        for (ScoreboardTeam team : sortedTeams) {
             Team t = MAIN.registerNewTeam(team.getName());
-            if(team.getOption() != null) t.setOption(team.getOption(), team.getOptionStatus());
+            if (team.getOption() != null) t.setOption(team.getOption(), team.getOptionStatus());
         }
     }
+
 
     public enum ScoreboardTeam {
         NO_PUSH("zzznopush", Option.COLLISION_RULE, OptionStatus.NEVER),

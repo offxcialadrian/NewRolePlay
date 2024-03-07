@@ -3,6 +3,7 @@ package de.newrp.Medic;
 import de.newrp.API.Krankheit;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
+import de.newrp.Berufe.Beruf;
 import de.newrp.Chat.Me;
 import de.newrp.Player.AFK;
 import org.bukkit.Material;
@@ -69,6 +70,8 @@ public class Impfen implements Listener {
 
             Me.sendMessage(p, "impft " + Script.getName(rightClicked));
             Krankheit.HUSTEN.setImpfed(Script.getNRPID(rightClicked), TimeUnit.DAYS.toMillis(14));
+            p.sendMessage("§8[§aImpfen§8] §a» §7Du hast " + Script.getName(rightClicked) + " erfolgreich geimpft.");
+            rightClicked.sendMessage("§8[§aImpfen§8] §a» §7Du wurdest von " + Script.getName(p) + " gegen Husten geimpft.");
 
             LAST_CLICK.remove(p.getName());
             LEVEL.remove(p.getName());

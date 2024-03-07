@@ -23,6 +23,7 @@ public class ParticleManager {
 
     public static HashMap<ParticleManager.ParticleType, ParticleManager.ParticleWrapper> getParticles(int userID) {
         HashMap<ParticleManager.ParticleType, ParticleManager.ParticleWrapper> map = ParticleManager.getDefaultCacheMap();
+        if(!Premium.hasPremium(userID)) return map;
         try (Statement stmt = main.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT routeID, spotID FROM particles WHERE userID=" + userID)) {
             if (rs.next()) {
@@ -38,6 +39,17 @@ public class ParticleManager {
     public static ParticleWrapper getParticle(int userID, ParticleType type) {
         HashMap<ParticleType, ParticleWrapper> cache = getParticles(userID);
         return cache.get(type);
+    }
+
+    public static void setParticle(int userID, ParticleType type, ParticleWrapper particle) {
+        switch (type) {
+            case ROUTE:
+                Script.executeAsyncUpdate("INSERT INTO particles (userID, routeID) VALUES (" + userID + ", " + particle.getID() + ") ON DUPLICATE KEY UPDATE routeID = " + particle.getID());
+                break;
+            case SPOT:
+                Script.executeAsyncUpdate("INSERT INTO particles (userID, spotID) VALUES (" + userID + ", " + particle.getID() + ") ON DUPLICATE KEY UPDATE spotID = " + particle.getID());
+                break;
+        }
     }
 
     public enum ParticleType {

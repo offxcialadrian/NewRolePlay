@@ -5,6 +5,7 @@ import de.newrp.Berufe.Equip;
 import de.newrp.Chat.Me;
 import de.newrp.Police.Handschellen;
 import de.newrp.main;
+import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
@@ -12,6 +13,7 @@ import org.bukkit.potion.PotionEffectType;
 
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 public enum Drogen {
@@ -32,6 +34,9 @@ public enum Drogen {
     private final boolean consumable;
 
 
+
+    public static HashMap<String, Integer> taskID = new HashMap<>();
+    public static HashMap<String, Drogen> test  = new HashMap<>();
     Drogen(int id, boolean drug, String name, String[] alternativeNames, DrugPurity defaultPurity, String suffix, boolean consumable) {
         this.id = id;
         this.drug = drug;
@@ -149,6 +154,21 @@ public enum Drogen {
             Script.playLocalSound(p.getLocation(), Sound.ENTITY_PLAYER_BURP, 5);
             Me.sendMessage(p, "konsumiert " + this.getName() + ".");
         }
+
+        if(test.containsKey(p.getName())) {
+            test.remove(p.getName());
+            Bukkit.getScheduler().cancelTask(taskID.get(p.getName()));
+            taskID.remove(p.getName());
+        }
+
+        int task = Bukkit.getScheduler().scheduleSyncDelayedTask(main.getInstance(), () -> {
+            if(!test.containsKey(p.getName())) return;
+            test.remove(p.getName());
+            taskID.remove(p.getName());
+        }, 30*60*20L);
+
+        test.put(p.getName(), this);
+        taskID.put(p.getName(), task);
 
         if(Krankheit.ABHAENGIGKEIT.isInfected(id)) {
             p.sendMessage(Messages.INFO + "Du hast eine Abhängigkeit entwickelt. Das Konsumieren hat keine Wirkung gezeigt.");

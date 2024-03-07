@@ -63,22 +63,31 @@ public class MemberCommand implements CommandExecutor, TabCompleter {
                 return true;
             }
 
+            Organisation org = Organisation.getOrganisation(args[0]);
+            if(org != null) {
+                p.sendMessage(PREFIX + "Mitglieder von " + org.getName() + ":");
+                for(OfflinePlayer player : org.getAllMembers()) {
+                    p.sendMessage("§8" + Messages.ARROW + " §6" + player.getName() + " §8(§6" + Organisation.getRankName(player) + "§8)" + (player.isOnline()? " §8[§aOnline§8] " + (AFK.isAFK(Script.getPlayer(Script.getNRPID(player)))?"§8[§6AFK§8]":"" ) : ""));
+                }
+                return true;
+            }
+
             OfflinePlayer tg = Script.getOfflinePlayer(args[0]);
             if(Script.getNRPID(tg) == 0) {
                 p.sendMessage(Messages.ERROR + "Spieler oder Beruf nicht gefunden.");
                 return true;
             }
 
-            if(!Beruf.hasBeruf(tg)) {
-                p.sendMessage(Messages.ERROR + "Dieser Spieler hat keinen Beruf.");
+            if(!Beruf.hasBeruf(tg) && !Organisation.hasOrganisation(tg)) {
+                p.sendMessage(Messages.ERROR + tg.getName() + " hat keinen Beruf oder ist in keiner Organisation.");
                 return true;
             }
 
-            p.sendMessage(PREFIX + tg.getName() + " ist Mitglied von " + Beruf.getBeruf(tg).getName());
+            p.sendMessage(PREFIX + tg.getName() + " befindet sich in der " + (Beruf.hasBeruf(tg)? Beruf.getBeruf(tg).getName() : Organisation.getOrganisation(tg).getName()) + ".");
             return true;
         }
 
-        p.sendMessage(Messages.ERROR + "/member [Beruf/Spieler]");
+        p.sendMessage(Messages.ERROR + "/member [Beruf/Organisation/Spieler]");
 
         return false;
     }
@@ -91,6 +100,9 @@ public class MemberCommand implements CommandExecutor, TabCompleter {
             final List<String> completions = new ArrayList<>();
             for (Beruf.Berufe beruf : Beruf.Berufe.values()) {
                 oneArgList.add(beruf.getName());
+            }
+            for (Organisation org : Organisation.values()) {
+                oneArgList.add(org.getName());
             }
 
             for(Player player : Bukkit.getOnlinePlayers()) {

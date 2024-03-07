@@ -32,7 +32,7 @@ public class Spawnchange implements CommandExecutor, Listener {
             return true;
         }
 
-        p.sendMessage(PREFIX + "Dein aktuelles Spawnpoint ist §6" + getSpawnName(p) + "§7.");
+        p.sendMessage(PREFIX + "Dein aktueller Spawnpoint ist §6" + (getSpawnName(p)==null?"Krankenhaus":getSpawnName(p)) + "§7.");
 
         Inventory inv = Bukkit.createInventory(null, 9, "§6Spawnpoint auswählen");
         inv.addItem(new ItemBuilder(Material.PAPER).setName("§6Krankenhaus").build());

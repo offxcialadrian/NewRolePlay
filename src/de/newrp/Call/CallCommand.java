@@ -3,6 +3,7 @@ package de.newrp.Call;
 import de.newrp.API.Messages;
 import de.newrp.API.Premium;
 import de.newrp.API.Script;
+import de.newrp.Player.Anrufbeantworter;
 import de.newrp.Player.Mobile;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -67,17 +68,17 @@ public class CallCommand implements CommandExecutor, Listener {
         }
 
         if(!Mobile.mobileIsOn(tg)) {
-            p.sendMessage(Messages.ERROR + "Der gewünschte Gesprächsteilnehmer ist nicht erreichbar.");
+            p.sendMessage(Anrufbeantworter.PREFIX + (Anrufbeantworter.getAnrufbeantworter(tg) == null ? "Der gewünschte Gesprächsteilnehmer ist derzeit nicht erreichbar." : Anrufbeantworter.getAnrufbeantworter(tg)));
             return true;
         }
 
         if(!Mobile.hasConnection(tg)) {
-            p.sendMessage(Messages.ERROR + "Der gewünschte Gesprächsteilnehmer ist nicht erreichbar.");
+            p.sendMessage(Anrufbeantworter.PREFIX + (Anrufbeantworter.getAnrufbeantworter(tg) == null ? "Der gewünschte Gesprächsteilnehmer ist derzeit nicht erreichbar." : Anrufbeantworter.getAnrufbeantworter(tg)));
             return true;
         }
 
         if(Call.isOnCall(tg) || Call.isWaitingForCall(tg)) {
-            p.sendMessage(Messages.ERROR + "Besetzt.");
+            p.sendMessage(Anrufbeantworter.PREFIX + (Anrufbeantworter.getAnrufbeantworter(tg) == null ? "Der gewünschte Gesprächsteilnehmer ist derzeit nicht erreichbar." : Anrufbeantworter.getAnrufbeantworter(tg)));
             return true;
         }
 

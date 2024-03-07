@@ -62,6 +62,8 @@ public class Tragen implements CommandExecutor, Listener {
             }
         }
 
+
+
         if (Tragen.tragenTasks.containsKey(tg)) {
             Tragen.tragenTasks.get(tg).cancel();
             Tragen.tragenTasks.remove(tg);

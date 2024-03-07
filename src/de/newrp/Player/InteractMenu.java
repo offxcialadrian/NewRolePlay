@@ -24,7 +24,6 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.spigotmc.event.entity.EntityDismountEvent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,17 +45,17 @@ public class InteractMenu implements Listener {
         Player tg = (Player) e.getRightClicked();
         if (!p.isSneaking()) return;
         if (Friedhof.isDead(p)) return;
-        if(Drone.isDrone(p)) {
+        if (Drone.isDrone(p)) {
             p.sendMessage(Messages.ERROR + "Du kannst als Drohne nicht interagieren.");
             return;
         }
 
-        if(Drone.isDrone(tg)) {
+        if (Drone.isDrone(tg)) {
             p.sendMessage(Messages.ERROR + "Du kannst nicht mit einer Drohne interagieren.");
             return;
         }
 
-        if(Fesseln.isTiedUp(p)) {
+        if (Fesseln.isTiedUp(p)) {
             Script.sendActionBar(p, Messages.ERROR + "Du bist gefesselt.");
             return;
         }
@@ -74,6 +73,11 @@ public class InteractMenu implements Listener {
         interacting.put(p.getName(), tg.getName());
 
         Inventory inv = Bukkit.createInventory(null, 6 * 9, "§8» §eInteraktion");
+
+        if (Beruf.hasBeruf(p) && (Beruf.getBeruf(p) == Beruf.Berufe.POLICE || Beruf.getBeruf(p) == Beruf.Berufe.RETTUNGSDIENST) && Duty.isInDuty(p)) {
+            inv.setItem(12, new ItemBuilder(Material.END_ROD).setName("§6Drogentest").setLore("§8× §7Führe einen Drogentest bei §6" + Script.getName(tg) + "§7 durch.").build());
+            inv.setItem(14, new ItemBuilder(Material.END_ROD).setName("§6Alkoholtest").setLore("§8× §7Führe einen Alkoholtest bei §6" + Script.getName(tg) + "§7 durch.").build());
+        }
 
         if (Fesseln.isTiedUp(tg)) {
             inv.setItem(13, new ItemBuilder(Material.IRON_DOOR).setName("§6Fesseln öffnen").setLore("§8× §7Öffne die Fesseln von §6" + Script.getName(tg) + "§7.").build());
@@ -314,7 +318,9 @@ public class InteractMenu implements Listener {
                 addiction_cooldown.add(tg.getName());
                 Drogen.healAddiction(tg);
                 p.sendMessage(PREFIX + "Du hast " + Script.getName(tg) + " wegen " + (Script.getGender(tg) == Gender.MALE ? "seiner" : "ihrer") + " Abhängigkeit behandelt (" + (int) (Drogen.getAddictionHeal(tg) + 1) + "/" + (Premium.hasPremium(tg) ? 1 : 3) + ").");
-                tg.sendMessage(PREFIX + "Du wurdest von " + Script.getName(p) + " wegen deiner Abhängigkeit behandelt (" + (int) (Drogen.getAddictionHeal(tg) + 1) + "/" + (Premium.hasPremium(tg) ? 1 : 3) + ").");
+                tg.sendMessage(PREFIX + "Du wurdest von " + Script.getName(p) + " wegen deiner Abhängigkeit behandelt (" + (int) (Drogen.getAddictionHeal(tg) + 1) + "/" + (Premium.hasPremium(tg) ? 1 : 2) + ").");
+                if (!Krankheit.ABHAENGIGKEIT.isInfected(Script.getNRPID(tg)))
+                    tg.sendMessage(Messages.INFO + "Du bist nun nicht mehr abhängig.");
                 break;
             case "Zeige Ticket":
                 if (TicketCommand.getTicket(p) == null) {
@@ -361,7 +367,37 @@ public class InteractMenu implements Listener {
                         LEVEL.replace(p.getName(), LEVEL.get(p.getName()) + 1);
                     }
                 }.runTaskTimer(de.newrp.main.getInstance(), 0L, 20L);
+                break;
+            case "Drogentest":
+                if (!Duty.isInDuty(p)) {
+                    p.sendMessage(Messages.ERROR + "Du bist nicht im Dienst.");
+                    return;
+                }
 
+                Beruf.getBeruf(p).sendMessage(PREFIX + Script.getName(p) + " führt einen Drogentest bei " + Script.getName(tg) + " durch.");
+                Me.sendMessage(p, "führt einen Drogentest bei " + Script.getName(tg) + " durch.");
+                if (Drogen.test.containsKey(tg.getName())) {
+                    p.sendMessage(PREFIX + "Du hast einen Drogentest bei " + Script.getName(tg) + " durchgeführt.");
+                    tg.sendMessage(PREFIX + "Du wurdest von " + Script.getName(p) + " auf Drogen getestet.");
+                    p.sendMessage(Messages.INFO + "Ergebnis: §cPositiv §8(§7" + Drogen.test.get(tg.getName()).getName() + "§8)");
+                } else {
+                    p.sendMessage(PREFIX + "Du hast einen Drogentest bei " + Script.getName(tg) + " durchgeführt.");
+                    tg.sendMessage(PREFIX + "Du wurdest von " + Script.getName(p) + " auf Drogen getestet.");
+                    p.sendMessage(Messages.INFO + "Ergebnis: §aNegativ");
+                }
+
+                break;
+            case "Alkoholtest":
+                if (!Duty.isInDuty(p)) {
+                    p.sendMessage(Messages.ERROR + "Du bist nicht im Dienst.");
+                    return;
+                }
+
+                Beruf.getBeruf(p).sendMessage(PREFIX + Script.getName(p) + " führt einen Alkoholtest bei " + Script.getName(tg) + " durch.");
+                Me.sendMessage(p, "führt einen Alkoholtest bei " + Script.getName(tg) + " durch.");
+                p.sendMessage(PREFIX + "Du hast einen Alkoholtest bei " + Script.getName(tg) + " durchgeführt.");
+                tg.sendMessage(PREFIX + "Du wurdest von " + Script.getName(p) + " auf Alkohol getestet.");
+                p.sendMessage(Messages.INFO + "Ergebnis: §aNegativ");
                 break;
         }
     }

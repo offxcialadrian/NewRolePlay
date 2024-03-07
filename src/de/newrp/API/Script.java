@@ -322,6 +322,18 @@ public class Script {
         return PLAYER;
     }
 
+    public static Rank getRank(int p) {
+        try (Statement stmt = main.getConnection().createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT rank_id FROM ranks WHERE nrp_id=" + p)) {
+            if (rs.next()) {
+                return Rank.getRankByID(rs.getInt("rank_id"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return PLAYER;
+    }
+
     public static Rank getRank(OfflinePlayer p) {
         try (Statement stmt = main.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT rank_id FROM ranks WHERE nrp_id=" + getNRPID(p))) {
@@ -427,6 +439,18 @@ public class Script {
     }
 
     public static Boolean hasRank(Player p, Rank rank, Boolean allowLower) {
+        if (allowLower) {
+            if (getActiveAmountByRank(getNextHigherRank(rank)) == 0) {
+                return getRank(p).getWeight() >= rank.getWeight() - 50;
+            } else {
+                return getRank(p).getWeight() >= rank.getWeight();
+            }
+        } else {
+            return getRank(p).getWeight() >= rank.getWeight();
+        }
+    }
+
+    public static Boolean hasRank(Integer p, Rank rank, Boolean allowLower) {
         if (allowLower) {
             if (getActiveAmountByRank(getNextHigherRank(rank)) == 0) {
                 return getRank(p).getWeight() >= rank.getWeight() - 50;
@@ -1421,6 +1445,7 @@ public class Script {
             e.printStackTrace();
         }
         if(getPlayTime(p, true) % 50 == 0 && getPlayTime(p, false) == 0) {
+            p.sendMessage(PREFIX + "Du spielst nun bereits seit " + getPlayTime(p, true) + " Stunden aktiv auf NRP × New RolePlay. Vielen Dank dafür!");
             p.sendMessage(PREFIX + "Du erhältst als Dankeschön für deine Treue 50 Exp");
             addEXP(p, 50);
         }

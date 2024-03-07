@@ -56,7 +56,7 @@ public class Utils implements Listener {
             "/setworldspawn", "/spawnpoint", "/spreadplayers", "/stop", "/stopsound", "/structure", "/summon", "/tag",
             "/teammsg", "/tell", "/tellraw", "/testfor", "/testforblock", "/testforblocks", "/tickingarea", "/title",
             "/titleraw", "/tm", "/toggledownfall", "/trigger", "/volumearea", "/wb", "/worldborder",
-            "/worldborder", "/wsserver", "/xp", "/citizens", "/npc", "/vehicle", "/garage", "/tebex", "/buycraft", "/paper", "/addpremiumtoplayer"
+            "/worldborder", "/wsserver", "/xp", "/citizens", "/npc", "/vehicle", "/garage", "/tebex", "/buycraft", "/paper", "/addpremiumtoplayer", "/dynmap"
     };
 
     private static final String[] BLOCKED_COMMANDS_SPECIFIC = new String[]{
@@ -113,9 +113,9 @@ public class Utils implements Listener {
     @EventHandler
     public void onPing(ServerListPingEvent e) {
         if(Script.isInTestMode()) {
-            e.setMotd("§5§lNew RolePlay §8┃ §5Reallife §8× §5RolePlay §8┃ §c1.16.5\n§8» §a§l" + main.getInstance().getDescription().getVersion() + " §8- §6§l23.03.2023 18 Uhr!");
+            e.setMotd("§5§lNew RolePlay §8┃ §5Reallife §8× §5RolePlay §8┃ §c1.16.5\n§8» §a§l" + "RELEASE" + " §8- §6§l23.03.2024 18 Uhr!");
         } else {
-            e.setMotd("§5§lNew RolePlay §8┃ §5Reallife §8× §5RolePlay §8┃ §c1.16.5\n§8» §a§l" + main.getInstance().getDescription().getVersion() + " §8- §eWerde Teil einer neuen Ära!");
+            e.setMotd("§5§lNew RolePlay §8┃ §5Reallife §8× §5RolePlay §8┃ §c1.16.5\n§8» §a§l" + main.getInstance().getDescription().getVersion() + " §8- §5Werde Teil einer neuen Ära!");
         }
     }
 
@@ -170,7 +170,20 @@ public class Utils implements Listener {
 
     @EventHandler
     public void onBedLeave(PlayerBedLeaveEvent e) {
+        e.setSpawnLocation(false);
         e.getPlayer().setBedSpawnLocation(null);
+    }
+
+    @EventHandler
+    public void onFish(PlayerFishEvent e) {
+        e.setExpToDrop(0);
+        //stop player from getting anything else than fish
+        if(e.getCaught() != null) {
+            if(e.getCaught().getType() != EntityType.COD && e.getCaught().getType() != EntityType.SALMON && e.getCaught().getType() != EntityType.PUFFERFISH && e.getCaught().getType() != EntityType.TROPICAL_FISH){
+                e.getCaught().remove();
+                e.setCancelled(true);
+            }
+        }
     }
 
     @EventHandler
@@ -317,8 +330,9 @@ public class Utils implements Listener {
     public void onHeal(EntityRegainHealthEvent e) {
         if(!(e.getEntity() instanceof Player)) return;
         if(((Player) e.getEntity()).hasPotionEffect(PotionEffectType.REGENERATION)) return;
-        if(e.getRegainReason() == EntityRegainHealthEvent.RegainReason.EATING || e.getRegainReason() == EntityRegainHealthEvent.RegainReason.SATIATED && ((Player) e.getEntity()).getHealth() >= 19)
+        if(e.getRegainReason() == EntityRegainHealthEvent.RegainReason.EATING || e.getRegainReason() == EntityRegainHealthEvent.RegainReason.SATIATED && ((Player) e.getEntity()).getHealth() >= (((Player) e.getEntity()).getMaxHealth()*0.75)) {
             e.setCancelled(true);
+        }
     }
 
     @EventHandler
@@ -503,16 +517,7 @@ public class Utils implements Listener {
                 Script.sendActionBar(e.getPlayer(), Messages.INFO + "Du kannst dieses Gebiet nur betreten, da du im BuildMode bist.");
                 return;
             }
-            Location playerCenterLocation = e.getTo();
-            Location playerToThrowLocation = e.getPlayer().getEyeLocation();
-            double x = playerToThrowLocation.getX() - playerCenterLocation.getX();
-            double y = playerToThrowLocation.getY() - playerCenterLocation.getY();
-            double z = playerToThrowLocation.getZ() - playerCenterLocation.getZ();
-            Vector throwVector = new Vector(x, y, z);
-            throwVector.normalize();
-            throwVector.multiply(2.1D);
-            throwVector.setY(.2D);
-            e.getPlayer().setVelocity(throwVector);
+            e.getPlayer().setVelocity(e.getPlayer().getLocation().getDirection().multiply(-8));
             cooldowns.put(e.getPlayer().getName(), time);
             e.getPlayer().damage(2D);
             e.getPlayer().sendMessage(Script.PREFIX + "§c§lDu hast das Ende der Welt erreicht.");

@@ -61,7 +61,7 @@ public class Shop implements CommandExecutor, Listener {
             return true;
         }
 
-        if(Shops.getShopsByPlayer(Script.getNRPID(p)).size() > SlotLimit.SHOP.get(Script.getNRPID(p)) && !args[0].equalsIgnoreCase("sell")) {
+        if(Shops.getShopsByPlayer(Script.getNRPID(p)).size() > SlotLimit.SHOP.get(Script.getNRPID(p)) && !args[0].equalsIgnoreCase("sell") && !args[0].equalsIgnoreCase("verkaufen")) {
             p.sendMessage(Messages.ERROR + "Du hast zuviele Shops");
             p.sendMessage(Messages.INFO + "Du kannst einen weiteren Shopslot im Shop erwerben.");
             return true;

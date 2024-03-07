@@ -365,10 +365,12 @@ public class Mobile implements Listener {
     public static void openGUI(Player p) {
         Mobile.Phones phone = Mobile.getPhone(p);
         assert phone != null;
+        int amount;
+        //set amount to minimum of 1 and missed calls
         Inventory inv = Bukkit.createInventory(null, 18, "§8» §aHandy");
         inv.setItem(0, new ItemBuilder(Material.RED_STAINED_GLASS_PANE).setName("§8» §cAusschalten").build());
         inv.setItem(1, new ItemBuilder(Material.CHEST).setName("§8» §cBreaking News").build());
-        inv.setItem(2, new ItemBuilder(Material.CHEST).setName("§8» §cTelefon").build());
+        inv.setItem(2, new ItemBuilder(Material.CHEST).setName("§8» §cTelefon").setAmount(Math.max(1, getMissedCalls(p))).build());
         inv.setItem(3, new ItemBuilder(Material.CHEST).setName("§8» §cMessenger").build());
         inv.setItem(4, new ItemBuilder(Material.CHEST).setName("§8» §cEinstellungen").build());
         inv.setItem(5, new ItemBuilder(Material.CHEST).setName("§8» §cUmfragen").build());
@@ -415,6 +417,7 @@ public class Mobile implements Listener {
                 return;
             }
 
+            p.sendMessage(PREFIX + "Breaking News von " + Script.dateFormat.format(BreakingNews.BREAKING_NEWS_TIME) + " Uhr.");
             p.sendMessage(BreakingNews.BREAKING_NEWS);
             if(!checkedBreakingNews.contains(p.getName())) {
                 Stadtkasse.removeStadtkasse(10, "Rundfunk");
@@ -431,6 +434,8 @@ public class Mobile implements Listener {
 
             if(!Umfrage.players.isEmpty() && Umfrage.players.contains(p.getName())) {
                 p.sendMessage(Messages.ERROR + "Du kannst nur einmal am Tag an der Umfrage teilnehmen.");
+                p.closeInventory();
+                return;
             }
 
             Inventory inv = Bukkit.createInventory(null, Script.calcInvSize(Umfrage.getActiveUmfrage().getAntworten().size()), "§8[§6Umfrage§8] §6" + Umfrage.getActiveUmfrage().getFrage());
@@ -442,6 +447,11 @@ public class Mobile implements Listener {
         }
         if(e.getCurrentItem().getItemMeta().getDisplayName().equals("§8» §cTelefon")) {
             p.closeInventory();
+            if(getMissedCalls(p) > 0) {
+                p.sendMessage(PREFIX + "Du hast " + getMissedCalls(p) + " verpasste Anrufe.");
+                sendMissedCalls(p);
+                return;
+            }
             sendCallHistory(p);
             return;
         }
@@ -475,6 +485,7 @@ public class Mobile implements Listener {
             Script.executeAsyncUpdate("DELETE FROM handy_settings WHERE nrp_id = " + Script.getNRPID(p));
             Script.executeAsyncUpdate("DELETE FROM call_history WHERE nrp_id = " + Script.getNRPID(p));
             Script.executeAsyncUpdate("DELETE FROM messages WHERE nrp_id = " + Script.getNRPID(p) + " OR sender = " + Script.getNRPID(p));
+            Script.executeAsyncUpdate("DELETE FROM missed_calls WHERE toID = " + Script.getNRPID(p));
             p.sendMessage(PREFIX + "Du hast die Werkseinstellungen wiederhergestellt.");
             return;
         }
@@ -548,5 +559,35 @@ public class Mobile implements Listener {
         Script.sendActionBar(p, "§cHandy anschalten.. §8» §a" + sb.toString());
     }
 
+    public static int getMissedCalls(Player p) {
+        try(PreparedStatement stmt = main.getConnection().prepareStatement("SELECT * FROM missed_calls WHERE toID = ?")) {
+            stmt.setInt(1, Script.getNRPID(p));
+            ResultSet rs = stmt.executeQuery();
+            int i = 0;
+            while (rs.next()) {
+                i++;
+            }
+            return i;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public static void sendMissedCalls(Player p) {
+        try (PreparedStatement stmt = main.getConnection().prepareStatement("SELECT * FROM missed_calls WHERE toID = ?")) {
+            stmt.setInt(1, Script.getNRPID(p));
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                p.sendMessage(PREFIX + "§8» §6" + Script.getOfflinePlayer(rs.getInt("fromID")).getName() + " §7» " + "§6" + Script.dateFormat.format(rs.getLong("time")) + " Uhr");
+            }
+            Script.executeUpdate("DELETE FROM missed_calls WHERE toID = " + Script.getNRPID(p));
+            if (!rs.next()) {
+                p.sendMessage(PREFIX + "§8» §7Du hast keine verpassten Anrufe.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
 }

@@ -577,3 +577,20 @@ commands:
     aliases: [ rechner, calc ]
   todo:
     description: view the todo
+  jailwork:
+    description: view the jailwork
+    aliases: [ gefängnisarbeit ]
+  takewaffenschein:
+    description: take a waffenschein
+    aliases: [ takegunlicense, removewaffenschein ]
+  takedriverslicense:
+    description: take a driverslicense
+    aliases: [ takeführerschein, removeführerschein ]
+  partikel:
+    description: view the partikel
+    aliases: [ particles ]
+  chatclear:
+    description: clear the chat
+    aliases: [ cc ]
+  anrufbeantworter:
+    description: view the anrufbeantworter

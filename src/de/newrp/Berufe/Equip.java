@@ -38,7 +38,7 @@ public class Equip implements CommandExecutor, Listener {
         EINSAZTZSCHILD_2(8, "Schweres Einsatzschild", Script.einsatzschild(2), 1500, 0, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE, true),
         RAUCHGRANATE(9, "Rauchgranate", Script.rauchgranate(), 100, 0, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE, true),
         FLASHBANG(10, "Flashbang", Script.flashbang(), 100, 0, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE, true),
-        FALLSCHIRM(11,"Fallschirm", Script.fallschirm(), 100, 0, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE, true),
+        FALLSCHIRM(11,"Fallschirm", Script.fallschirm(), 100, 0, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE, false),
         ZEITUNG(12, "Buch und Stift", Script.setName(new ItemStack(Material.WRITABLE_BOOK), "§7Buch und Stift"), 100, 0, Abteilung.Abteilungen.CHEFREDAKTION, Beruf.Berufe.NEWS, true),
         VERBAND(13, "Verband", new ItemBuilder(Material.PAPER).setName("§7Verband").setAmount(5).build(), 5, 0, null, Beruf.Berufe.RETTUNGSDIENST, false),
         GIPS(14, "Gips", Script.setName(new ItemStack(Material.PAPER), "§7Gips"), 50, 0, null, Beruf.Berufe.RETTUNGSDIENST, true),
@@ -48,7 +48,7 @@ public class Equip implements CommandExecutor, Listener {
         KAFFEE(18, "Kaffee", Script.setName(new ItemStack(Material.POTION), "§7Kaffee"), 10, 0, null, Beruf.Berufe.NEWS, false),
         BROT(19, "Brot", new ItemBuilder(Material.BREAD).setAmount(16).setName("§7Brot").build(), 10, 0, null, Beruf.Berufe.RETTUNGSDIENST, false),
         KEKSE(20, "Kekse",new ItemBuilder(Material.COOKIE).setAmount(16).setName("§7Kekse").build(), 10, 0, null, Beruf.Berufe.NEWS, false),
-        SNIPER(21, "Sniper", new ItemBuilder(Material.STONE_HOE).setName("§7Sniper").build(), 5000, 30, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE, true),
+        SNIPER(21, Weapon.SNIPER.getName(), Weapon.SNIPER.getWeapon(), 5000, 30, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE, true),
         DROHNE_COPS(22, "Drohne [Polizei]", new ItemBuilder(Material.WITHER_SKELETON_SKULL).setName("§7Drohne [Polizei]").build(), 2000, 0, null, Beruf.Berufe.POLICE, true),
         DROHNE_NEWS(23, "Drohne [News]", new ItemBuilder(Material.WITHER_SKELETON_SKULL).setName("§7Drohne [News]").build(), 2000, 0, Abteilung.Abteilungen.CHEFREDAKTION, Beruf.Berufe.NEWS, true),
         DROHNE_RETTUNGSDIENST(24, "Drohne [Rettungsdienst]", new ItemBuilder(Material.WITHER_SKELETON_SKULL).setName("§7Drohne [Rettungsdienst]").build(), 2000, 0, Abteilung.Abteilungen.NOTFALLMEDIZIN, Beruf.Berufe.RETTUNGSDIENST, true);

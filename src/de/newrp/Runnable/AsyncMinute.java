@@ -55,7 +55,7 @@ public class AsyncMinute extends BukkitRunnable {
         for(Player p : Bukkit.getOnlinePlayers()) {
             if(Mobile.hasPhone(p) && Mobile.mobileIsOn(p) && !AFK.isAFK(p)) {
                 Mobile.getPhone(p).removeAkku(p, 1);
-                if(Mobile.getPhone(p).getAkku(p) <= 0) {
+                if(Mobile.getPhone(p).getAkku(p) <= 0 && Mobile.mobileIsOn(p)) {
                     p.sendMessage(Mobile.PREFIX + "Dein Handy ist ausgeschaltet, da der Akku leer ist.");
                     p.getInventory().removeItem(new ItemStack(Material.IRON_INGOT));
                     p.getInventory().addItem(new ItemBuilder(Material.IRON_INGOT).setName("§c" + p.getName() + "s " + ChatColor.stripColor(Mobile.getPhone(p).getName())).build());

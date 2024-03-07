@@ -1,9 +1,6 @@
 package de.newrp.Berufe;
 
-import de.newrp.API.Cache;
-import de.newrp.API.ItemBuilder;
-import de.newrp.API.Messages;
-import de.newrp.API.Script;
+import de.newrp.API.*;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -124,7 +121,8 @@ public class Drone implements Listener {
             if(isDrone(p)) {
                 crash(p);
                 Player damager = (Player) e.getDamager();
-                damager.sendMessage(PREFIX + "Du hast die Drohne abgeschossen.");
+                damager.sendMessage(PREFIX + "Du hast die Drohne zerstört.");
+                Achievement.DROHNEN_DESTROYER.grant(damager);
             }
         }
     }

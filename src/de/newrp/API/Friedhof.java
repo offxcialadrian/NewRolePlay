@@ -82,11 +82,13 @@ public class Friedhof {
         FRIEDHOF.put(p.getName(), f);
         Location[] locs;
 
+        Debug.debug("dead: " + p.getName() + " " + p.getKiller() + " " + p.getLastDamageCause().getCause().name());
         World w = p.getWorld();
             p.setPlayerWeather(WeatherType.DOWNFALL);
             locs = new Location[]{new Location(Script.WORLD, 222, 75, 673, 92.5503f, -2.699904f)};
 
         Location loc = locs[Script.getRandom(0, locs.length - 1)];
+        Debug.debug("loc: " + loc);
         p.teleport(loc);
 
         p.setPlayerWeather(WeatherType.DOWNFALL);

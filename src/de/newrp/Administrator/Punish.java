@@ -53,6 +53,15 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
             return true;
         }
 
+        Player tg = Script.getPlayer(args[0]);
+        OfflinePlayer offtg = Script.getOfflinePlayer(Script.getNRPID(args[0]));
+        if (Script.getNRPID(offtg) == 0) {
+            p.sendMessage(Messages.PLAYER_NOT_FOUND);
+            return true;
+        }
+
+
+
         for(String arg : args) {
             if(arg.equalsIgnoreCase(args[0])) continue;
             v = Violation.getViolationByArg(arg);
@@ -64,14 +73,6 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
 
             if (v == null) {
                 p.sendMessage(Messages.ERROR + "Verstoß nicht gefunden.");
-                return true;
-            }
-
-            Player tg = Script.getPlayer(args[0]);
-            OfflinePlayer offtg = Script.getOfflinePlayer(Script.getNRPID(args[0]));
-            if (Script.getNRPID(offtg) == 0) {
-                p.sendMessage(Messages.PLAYER_NOT_FOUND);
-                p.sendMessage(Messages.INFO + "Du kannst auch Spieler registrieren die noch nie auf NewRP waren.");
                 return true;
             }
 
@@ -291,6 +292,12 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
                 Bukkit.broadcastMessage(Script.PREFIX + "§c" + Script.getName(tg) + " wurde von " + Messages.RANK_PREFIX(p) + " bis zum " + dateFormat.format(until) + " Uhr für §l" + v.getName() + " §cgebannt.");
             }
 
+            if(Script.hasRank(p, Rank.SUPPORTER, false)) {
+                Script.executeUpdate("DELETE FROM ranks WHERE nrp_id=" + Script.getNRPID(tg));
+                Script.executeAsyncUpdate("DELETE FROM ticket_greeting WHERE nrp_id=" + Script.getNRPID(tg));
+                Script.executeAsyncUpdate("DELETE FROM ticket_farewell WHERE nrp_id=" + Script.getNRPID(tg));
+                Script.executeAsyncUpdate("DELETE from notifications WHERE nrp_id=" + Script.getNRPID(tg));
+            }
             TeamSpeak.sync(Script.getNRPID(tg));
             Forum.syncPermission(tg);
         }
@@ -385,6 +392,12 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
                 Log.WARNING.write(tg, "wurde von " + Script.getName(p) + " bis zum " + dateFormat.format(until) + " Uhr für " + v.getName() + " gebannt.");
                 Log.HIGH.write(p, "hat " + tg.getName() + " bis zum " + dateFormat.format(until) + " Uhr für " + v.getName() + " gebannt.");
                 Bukkit.broadcastMessage(Script.PREFIX + "§c" + tg.getName() + " wurde von " + Messages.RANK_PREFIX(p) + " bis zum " + dateFormat.format(until) + " Uhr für §l" + v.getName() + " §cgebannt.");
+            }
+            if(Script.hasRank(p, Rank.SUPPORTER, false)) {
+                Script.executeUpdate("DELETE FROM ranks WHERE nrp_id=" + Script.getNRPID(tg));
+                Script.executeAsyncUpdate("DELETE FROM ticket_greeting WHERE nrp_id=" + Script.getNRPID(tg));
+                Script.executeAsyncUpdate("DELETE FROM ticket_farewell WHERE nrp_id=" + Script.getNRPID(tg));
+                Script.executeAsyncUpdate("DELETE from notifications WHERE nrp_id=" + Script.getNRPID(tg));
             }
             TeamSpeak.sync(Script.getNRPID(tg));
             Forum.syncPermission(tg);

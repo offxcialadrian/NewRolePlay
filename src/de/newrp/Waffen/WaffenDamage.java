@@ -1,6 +1,7 @@
 package de.newrp.Waffen;
 
 import de.newrp.API.Debug;
+import de.newrp.API.Friedhof;
 import de.newrp.API.Health;
 import de.newrp.API.Script;
 import de.newrp.Player.AFK;
@@ -28,7 +29,7 @@ public class WaffenDamage implements Listener {
         ItemStack chestplate = p.getInventory().getChestplate();
         if (chestplate == null || chestplate.getType() != Material.LEATHER_CHESTPLATE) {
             e.setDamage(isHeadshot(arrow, p) ? w.getDamage() + 2D : w.getDamage());
-            if (Script.getRandom(1, 200) == 2) {
+            if (Script.getRandom(1, 100) == 2) {
                 Health.setBleeding(p);
             }
         } else {

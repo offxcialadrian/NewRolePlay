@@ -1,6 +1,8 @@
 package de.newrp.GFB;
 
+import com.github.theholywaffle.teamspeak3.api.wrapper.Message;
 import de.newrp.API.Achievement;
+import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.main;
 import org.bukkit.Location;
@@ -81,6 +83,10 @@ public enum GFB {
     public void addExp(Player p, int exp) {
         Achievement.GFB_JOBS.grant(p);
         if(getExp(p) + exp >= getLevelCost(getLevel(p))) {
+            if(getLevel(p) >= 10) {
+                p.sendMessage(PREFIX + Messages.INFO + "Du hast das maximale Level erreicht!");
+                return;
+            }
             Script.executeAsyncUpdate("UPDATE gfb_level SET level=" + (getLevel(p) + 1) + " WHERE nrp_id='" + Script.getNRPID(p) + "' AND gfb_id=" + this.id);
             Script.executeAsyncUpdate("UPDATE gfb_level SET exp=0 WHERE nrp_id='" + Script.getNRPID(p) + "' AND gfb_id=" + this.id);
             p.sendMessage(PREFIX + "Du bist beim GFB " + this.getName() + " nun Level " + (getLevel(p)) + "!");

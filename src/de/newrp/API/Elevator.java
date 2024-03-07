@@ -207,6 +207,7 @@ public class Elevator implements Listener {
             Player p = (Player) e.getEntity();
             if(progress.containsKey(p.getName()) && !e.isCancelled()) {
                 progress.remove(p.getName());
+                p.closeInventory();
                 p.sendMessage("§cDie Fahrt wurde abgebrochen, da du Schaden erlitten hast.");
             }
         }
@@ -219,6 +220,7 @@ public class Elevator implements Listener {
         Player p = (Player) e.getWhoClicked();
         ElevatorAPI elevator = ElevatorAPI.getNearestElevator(3, p.getLocation());
         if(!e.getView().getTitle().contains("Fahrstuhl")) return;
+        e.setCancelled(true);
         if(elevator == null) {
             p.closeInventory();
             return;
@@ -227,6 +229,19 @@ public class Elevator implements Listener {
         Long lastUsage = AFK.lastDmg.get(p.getName());
         if (p.hasPotionEffect(PotionEffectType.WITHER) || (lastUsage != null && lastUsage + 15 * 1000 > System.currentTimeMillis())) {
             p.sendMessage(Messages.ERROR + "Du kannst gerade nicht mit einem Fahrstuhl fahren (Schaden).");
+            p.closeInventory();
+            return;
+        }
+
+        if(!p.getPassengers().isEmpty()) {
+            p.sendMessage(Messages.ERROR + "Du kannst nicht mit einem Fahrstuhl fahren, wenn du jemanden trägst.");
+            p.closeInventory();
+            return;
+        }
+
+        if(p.getVehicle() != null) {
+            p.sendMessage(Messages.ERROR + "Du kannst nicht mit einem Fahrstuhl fahren, wenn du getragen wirst.");
+            p.closeInventory();
             return;
         }
 

@@ -39,8 +39,8 @@ public class Route {
         this.userID = userID;
         this.origin = origin;
         this.message = message;
-        this.particle_route = ParticleManager.getParticle(userID, ParticleManager.ParticleType.ROUTE);
-        this.particle_spot = ParticleManager.getParticle(userID, ParticleManager.ParticleType.SPOT);
+        this.particle_route = (ParticleManager.getParticle(userID, ParticleManager.ParticleType.ROUTE)!=null) ? ParticleManager.getParticle(userID, ParticleManager.ParticleType.ROUTE) : ParticleWrapper.END_ROD;
+        this.particle_spot = (ParticleManager.getParticle(userID, ParticleManager.ParticleType.SPOT)!=null) ? ParticleManager.getParticle(userID, ParticleManager.ParticleType.SPOT) : ParticleWrapper.FIREWORKS_SPARK;
         this.particleRunnable = null;
         this.destiny = destiny;
         this.spotRunnable = spotRunnable;
@@ -63,8 +63,8 @@ public class Route {
         this.userID = userID;
         this.origin = origin;
         this.message = message;
-        this.particle_route = ParticleManager.getParticle(userID, ParticleManager.ParticleType.ROUTE);
-        this.particle_spot = ParticleManager.getParticle(userID, ParticleManager.ParticleType.SPOT);
+        this.particle_route = (ParticleManager.getParticle(userID, ParticleManager.ParticleType.ROUTE)!=null) ? ParticleManager.getParticle(userID, ParticleManager.ParticleType.ROUTE) : ParticleWrapper.END_ROD;
+        this.particle_spot = (ParticleManager.getParticle(userID, ParticleManager.ParticleType.SPOT)!=null) ? ParticleManager.getParticle(userID, ParticleManager.ParticleType.SPOT) : ParticleWrapper.FIREWORKS_SPARK;
         this.particleRunnable = null;
         this.destiny = destiny;
         this.spotRunnable = null;
@@ -75,8 +75,8 @@ public class Route {
         this.userID = userID;
         this.origin = origin;
         this.message = null;
-        this.particle_route = ParticleManager.getParticle(userID, ParticleManager.ParticleType.ROUTE);
-        this.particle_spot = ParticleManager.getParticle(userID, ParticleManager.ParticleType.SPOT);
+        this.particle_route = (ParticleManager.getParticle(userID, ParticleManager.ParticleType.ROUTE)!=null) ? ParticleManager.getParticle(userID, ParticleManager.ParticleType.ROUTE) : ParticleWrapper.END_ROD;
+        this.particle_spot = (ParticleManager.getParticle(userID, ParticleManager.ParticleType.SPOT)!=null) ? ParticleManager.getParticle(userID, ParticleManager.ParticleType.SPOT) : ParticleWrapper.FIREWORKS_SPARK;
         this.particleRunnable = null;
         this.destiny = destiny;
         this.spotRunnable = null;

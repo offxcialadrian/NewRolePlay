@@ -113,6 +113,7 @@ public class Call {
     }
 
     public static int getParticipantsAmount(int i) {
+        if(ON_CALL.isEmpty()) return 0;
         if(!ON_CALL.containsKey(i) && !WAITING_FOR_CALL.containsKey(i)) return 0;
         return ON_CALL.get(i).size() + WAITING_FOR_CALL.get(i).size();
     }
@@ -136,6 +137,10 @@ public class Call {
         List<Player> playerList = ON_CALL.get(getCallIDByPlayer(p));
         if(playerList == null) return;
         if(playerList.isEmpty()) return;
+        for(Player player : WAITING_FOR_CALL.get(getCallIDByPlayer(p))) {
+            player.sendMessage(PREFIX + "Der Anruf wurde abgebrochen.");
+            Script.executeUpdate("INSERT INTO missed_calls (fromID, toID, time) VALUES ('" + Script.getNRPID(p) + "', '" + Script.getNRPID(player) + "', '" + System.currentTimeMillis() + "')");
+        }
         if (playerList.size() == 2) {
             sendSystemMessage(p, "§7Der Anruf wurde beendet.", false);
             ON_CALL.remove(getCallIDByPlayer(p));
@@ -154,7 +159,7 @@ public class Call {
         Script.sendActionBar(tg, "§7Dein Handy klingelt!");
         tg.sendMessage(PREFIX + Messages.INFO + "Benutze /p zum Annehmen oder /h zum ablehnen");
         String pronun = (Script.getGender(caller) == Gender.MALE ? "seinem" : "ihrem");
-        Script.sendLocalMessage(5, caller, "§a§o* " + Script.getName(caller) + " wählt eine Nummer auf " + pronun + " Handy.");
+        Script.sendLocalMessage(5, caller, "§a§o* " + Script.getName(caller) + " wählt eine Nummer auf " + pronun + " " + Mobile.getPhone(caller).getName() + ".");
         ON_CALL.put(generateCallID(), new ArrayList<>(Collections.singletonList(caller)));
         WAITING_FOR_CALL.put(getCallIDByPlayer(caller), new ArrayList<>(Collections.singletonList(tg)));
     }
@@ -193,6 +198,7 @@ public class Call {
             List<Player> playerList = WAITING_FOR_CALL.get(callID);
             for(Player player : playerList) {
                 player.sendMessage(PREFIX + "Der Anruf wurde abgebrochen.");
+                Script.executeUpdate("INSERT INTO missed_calls (fromID, toID, time) VALUES ('" + Script.getNRPID(p) + "', '" + Script.getNRPID(player) + "', '" + System.currentTimeMillis() + "')");
             }
             WAITING_FOR_CALL.remove(callID);
         } else if(isOnCall(p)) {

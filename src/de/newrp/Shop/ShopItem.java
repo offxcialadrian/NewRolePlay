@@ -3,6 +3,7 @@ package de.newrp.Shop;
 import de.newrp.API.ItemBuilder;
 import de.newrp.API.Script;
 import de.newrp.House.HouseAddon;
+import de.newrp.News.Zeitung;
 import de.newrp.Waffen.Weapon;
 import de.newrp.main;
 import org.bukkit.Material;
@@ -31,7 +32,7 @@ public enum ShopItem {
     LATTE_MACCHIATO(45, "§rLatte Macchiato", new ItemStack(Material.FLOWER_POT), 1, 2, 25, 2, 3000, true, true, false, new ShopType[] {ShopType.CAFE}),
     ESPRESSO(46, "§rEspresso", new ItemStack(Material.FLOWER_POT), 1, 2, 25, 2, 3000, true, true, false, new ShopType[] {ShopType.CAFE}),
     CRAPPUCHINO(47, "§rCrappuchino", new ItemStack(Material.FLOWER_POT), 1, 2, 25, 2, 3000, true, true, false, new ShopType[] {ShopType.CAFE}),
-    Zeitung(48, "§9Zeitung", de.newrp.News.Zeitung.zeitung, 1, 2, 25, 30, 3000, true, true, false, new ShopType[] {ShopType.CAFE, ShopType.SUPERMARKET, ShopType.NEWS}),
+    Zeitung(48, "§9Zeitung", de.newrp.News.Zeitung.zeitung, 1, 2, 25, de.newrp.News.Zeitung.getBuyPrice(), 3000, true, true, false, new ShopType[] {ShopType.CAFE, ShopType.SUPERMARKET, ShopType.NEWS}),
     SCHMERZMITTEL(49, "§fSchmerzmittel", new ItemStack(Material.PAPER), 5, 2, 25, 2, 3000, true, true, false, new ShopType[] {ShopType.PHARMACY, ShopType.SUPERMARKET}),
     BASEBALLSCHLAEGER(50, "§7Baseballschläger", new ItemStack(Material.BONE), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.GUNSHOP}),
     SAMSUNG_HANDY(52, "§cGalaxy S21", new ItemStack(Material.IRON_INGOT), 1, 1, 1, 1, 1, false, false, false, new ShopType[] {ShopType.ELECTRONIC}),
@@ -81,7 +82,8 @@ public enum ShopItem {
     JAGDFLINTE(96, "§7Guardian", new ItemStack(Material.DIAMOND_HOE), 1, 1, 1, 1, 1, false, false, false, new ShopType[] {ShopType.GUNSHOP}),
     SCHROT(97, "§7Schrot (" + Weapon.JAGDFLINTE.getName() + ")", new ItemBuilder(Material.ARROW).setAmount(Weapon.JAGDFLINTE.getMagazineSize()).build(), 1, 1, 1, 1, 1, false, false, false, new ShopType[] {ShopType.GUNSHOP}),
     DEAGLE(98, "§7Ivory", new ItemStack(Material.GOLDEN_HOE), 1, 1, 1, 1, 1, false, false, false, new ShopType[] {ShopType.GUNSHOP}),
-    AMMO_50AE(99, "§7.50AE Munition (" + Weapon.DESERT_EAGLE.getName() + ")", new ItemBuilder(Material.ARROW).setAmount(Weapon.DESERT_EAGLE.getMagazineSize()).build(), 1, 1, 1, 1, 1, false, false, false, new ShopType[] {ShopType.GUNSHOP});
+    AMMO_50AE(99, "§7.50AE Munition (" + Weapon.DESERT_EAGLE.getName() + ")", new ItemBuilder(Material.ARROW).setAmount(Weapon.DESERT_EAGLE.getMagazineSize()).build(), 1, 1, 1, 1, 1, false, false, false, new ShopType[] {ShopType.GUNSHOP}),
+    ANGELRUTE(100, "§7Angelrute", new ItemStack(Material.FISHING_ROD), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.SUPERMARKET});
 
     private final int id;
     private final String name;

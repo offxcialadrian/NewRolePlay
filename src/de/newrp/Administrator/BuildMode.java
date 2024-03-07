@@ -57,6 +57,12 @@ public class BuildMode implements CommandExecutor, Listener {
         }
 
         if (args.length == 0) {
+
+            if(Checkpoints.hasCheckpoints(p)) {
+                p.sendMessage(Messages.ERROR + "Du hast noch Checkpoints.");
+                return true;
+            }
+
             if (isInBuildMode(p)) {
                 removeBuildMode(p);
                 p.sendMessage(PREFIX + "Du hast den BuildMode verlassen.");
@@ -82,6 +88,11 @@ public class BuildMode implements CommandExecutor, Listener {
 
         if(Team.getTeam(tg) != Team.Teams.BAU && !Script.isNRPTeam(tg)) {
             p.sendMessage(Messages.ERROR + "Dieser Spieler ist kein Bau-Team Mitglied und kein NRP.");
+            return true;
+        }
+
+        if (Checkpoints.hasCheckpoints(tg)) {
+            p.sendMessage(Messages.ERROR + "Dieser Spieler hat noch Checkpoints.");
             return true;
         }
 

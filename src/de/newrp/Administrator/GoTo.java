@@ -40,7 +40,7 @@ public class GoTo implements CommandExecutor, TabCompleter {
         ARCADE (14, "Arcade", new String[]{"Arcadehalle"}, new Location(Script.WORLD, 431, 67, 772, 91.49992f, -0.3000614f)),
         WAFFENLADEN(15, "Waffenladen", new String[]{"Gunshop"}, new Location(Script.WORLD, 452, 69, 928, -51.94748f, 15.066549f)),
         FREIZEITPARK (15, "Freizeitpark", new String[]{"Park"}, new Location(Script.WORLD, 817, 66, 723)),
-        MOTEL (16, "Motel", new String[]{"Hotel"}, new Location(Script.WORLD, 795, 64, 1222)),
+        MOTEL (16, "Motel", new String[]{"Motel99"}, new Location(Script.WORLD, 795, 64, 1222)),
         KNAST (17, "Gefängnis", new String[]{"Knast, Jail, JVA"}, new Location(Script.WORLD, 1018, 68, 549, 180.84424f, -9.02183f)),
         CASINO (18, "Casino", new String[]{"Spielhalle"}, new Location(Script.WORLD, 780, 109, 856, 0.22738647f, 5.2779894f)),
         SELFSTORAGE(19, "Selfstorage", new String[]{"Selfstorage, MyPlace, Lagerhalle"},new Location(Script.WORLD, 1001, 68, 1201, 274.2714f, 3.0181432f)),
@@ -55,7 +55,8 @@ public class GoTo implements CommandExecutor, TabCompleter {
         DISHWASHER(28, "Tellerwäscher", new String[]{"Tellerwäscher"}, new Location(Script.WORLD, 589, 67, 729, -358.82983f, 3.6454659f)),
         BURGERBRATER(29, "Burgerbrater", new String[]{"Burgerbrater"},new Location(Script.WORLD, 463, 67, 785, 180.7009f, 2.8104913f)),
         STRASSENWARTUNG(30, "Straßenwartung", new String[]{"Straßenwartung"}, new Location(Script.WORLD, 470, 66, 1310, 2.0073476f, 4.0150375f)),
-        IMKER(31, "Imker", new String[]{"Imker"}, new Location(Script.WORLD, 216, 66, 773, 201.95145f, 0.35791647f));
+        IMKER(31, "Imker", new String[]{"Imker"}, new Location(Script.WORLD, 216, 66, 773, 201.95145f, 0.35791647f)),
+        HOTEL(32, "Hotel", new String[]{"Hotel"}, new Location(Script.WORLD, 243, 66, 971, -87.70117f, -0.74990237f));
 
         int id;
         String name;

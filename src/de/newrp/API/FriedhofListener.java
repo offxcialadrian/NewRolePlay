@@ -87,6 +87,9 @@ public class FriedhofListener implements Listener {
             Call.hangup(p);
         }
 
+        if(p.getLastDamageCause().getCause() == EntityDamageEvent.DamageCause.WITHER) {
+            Health.THIRST.add(Script.getNRPID(p), (Health.THIRST.getMax()/2));
+        }
         Player killer = p.getKiller();
         Notifications.sendMessage(Notifications.NotificationType.DEAD, Script.getName(p) + " ist gestorben " + (killer!=null ? Messages.ARROW + " " + Script.getName(killer):Messages.ARROW + " " + p.getLastDamageCause().getCause().name()));
         Friedhof friedhof = new Friedhof(Script.getNRPID(p), p.getName(), deathLocation, System.currentTimeMillis(), deathtime, cash, inventoryContent);

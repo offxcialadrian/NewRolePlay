@@ -3,6 +3,7 @@ package de.newrp.News;
 import de.newrp.API.Debug;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
+import de.newrp.Administrator.SDuty;
 import de.newrp.Berufe.Beruf;
 import de.newrp.main;
 import org.bukkit.ChatColor;
@@ -22,10 +23,12 @@ import org.bukkit.inventory.meta.BookMeta;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 public class Zeitung implements CommandExecutor, Listener {
     public static final String prefix = "§8[§6Zeitung§8]§6 " + Messages.ARROW + " §7";
     public static ItemStack zeitung;
+    public static ArrayList<Integer> zeitungIDs = new ArrayList<>();
     public static BookMeta cache = null;
 
     public static int getNextID() {
@@ -65,18 +68,33 @@ public class Zeitung implements CommandExecutor, Listener {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         Player p = (Player) cs;
-        if (!Beruf.hasBeruf(p)) {
+        if (!Beruf.hasBeruf(p) && !SDuty.isSDuty(p)) {
             p.sendMessage(Messages.ERROR + "Du hast keinen Beruf.");
             return true;
         }
 
-        if (Beruf.getBeruf(p) != Beruf.Berufe.NEWS) {
+        if (Beruf.getBeruf(p) != Beruf.Berufe.NEWS && !SDuty.isSDuty(p)) {
             p.sendMessage(Messages.ERROR + "Du bist kein Mitglied der News.");
             return true;
         }
 
-        if (!Beruf.isLeader(p, true)) {
+        if (!Beruf.isLeader(p, true) && !SDuty.isSDuty(p)) {
             p.sendMessage(Messages.ERROR + "Du bist kein Leader.");
+            return true;
+        }
+
+        if(args.length == 2 && args[0].equalsIgnoreCase("setprice")) {
+            if(!Script.isInt(args[1])) {
+                p.sendMessage(Messages.ERROR + "Der Preis muss eine Zahl sein.");
+                return true;
+            }
+            int price = Integer.parseInt(args[1]);
+            if(price < 0) {
+                p.sendMessage(Messages.ERROR + "Der Preis muss größer oder gleich 0 sein.");
+                return true;
+            }
+            Script.executeUpdate("UPDATE zeitung_price SET price=" + price);
+            p.sendMessage(prefix + "Der Preis wurde gesetzt.");
             return true;
         }
 
@@ -91,6 +109,11 @@ public class Zeitung implements CommandExecutor, Listener {
                 return true;
             }
 
+            if(zeitungIDs.contains(id)) {
+                p.sendMessage(Messages.ERROR + "Du kannst eine Zeitung nur einmal am Tag abrufen.");
+                return true;
+            }
+
             try (Statement stmt = main.getConnection().createStatement();
                  ResultSet rs = stmt.executeQuery("SELECT * FROM zeitung WHERE id=" + id)) {
                 if(rs.next()) {
@@ -102,8 +125,10 @@ public class Zeitung implements CommandExecutor, Listener {
                     bm.setDisplayName("Zeitung [" + id + ". Auflage]");
                     bm.setTitle("Zeitung [" + id + ". Auflage]");
                     bm.setPages(pages);
-                    p.getInventory().addItem(Script.setName(book, "Zeitung [" + id + ". Auflage]"));
+                    book.setItemMeta(bm);
+                    p.getInventory().addItem(book);
                     p.sendMessage(prefix + "Die Zeitung wurde deinem Inventar hinzugefügt.");
+                    zeitungIDs.add(id);
                     return true;
                 } else {
                     p.sendMessage(Messages.ERROR + "Die Zeitung wurde nicht gefunden.");
@@ -187,6 +212,7 @@ public class Zeitung implements CommandExecutor, Listener {
                 bm.setTitle("Zeitung [" + getLatestZeitungID() + ". Auflage]");
                 bm.setAuthor("News Redaktion");
                 bm.setPages(pages);
+                book.setItemMeta(bm);
                 zeitung = book;
             }
         } catch (SQLException e) {
@@ -217,6 +243,18 @@ public class Zeitung implements CommandExecutor, Listener {
                 }
             }
         }
+    }
+
+    public static int getBuyPrice() {
+        try (Statement stmt = main.getConnection().createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT price FROM zeitung_price")) {
+            if (rs.next()) {
+                return rs.getInt("price");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 
 }

@@ -45,6 +45,11 @@ public class Boot implements CommandExecutor {
         new BukkitRunnable() {
             @Override
             public void run() {
+                if(!LEVEL.containsKey(p.getName())) {
+                    cancel();
+                    return;
+                }
+
                 if(LEVEL.get(p.getName()) >= 15) {
                     Me.sendMessage(p, "ist am Ziel angekommen.");
                     Script.removeMoney(p, PaymentType.BANK, 10);
@@ -53,6 +58,7 @@ public class Boot implements CommandExecutor {
                     } else {
                         p.teleport(new Location(Script.WORLD, 997, 63, 568, 89.792786f, 7.7781887f));
                     }
+                    LEVEL.remove(p.getName());
                     cancel();
                     return;
                 }

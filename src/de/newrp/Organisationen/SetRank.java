@@ -9,21 +9,23 @@ import org.bukkit.entity.Player;
 
 public class SetRank implements CommandExecutor {
 
+    public static String PREFIX = "§8[§eSetRank§8] §e» §7";
+
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
         Player p = (Player) cs;
         if(!Organisation.hasOrganisation(p)) {
-            p.sendMessage(Blacklist.PREFIX + "Du bist in keiner Organisation.");
+            p.sendMessage(PREFIX + "Du bist in keiner Organisation.");
             return true;
         }
 
         if(!Organisation.isLeader(p, true)) {
-            p.sendMessage(Blacklist.PREFIX + "Du bist kein Leader.");
+            p.sendMessage(PREFIX + "Du bist kein Leader.");
             return true;
         }
 
         if(args.length != 2) {
-            p.sendMessage(Blacklist.PREFIX + "/setrank [Spieler] [Rang]");
+            p.sendMessage(PREFIX + "/setrank [Spieler] [Rang]");
             return true;
         }
 
@@ -34,12 +36,12 @@ public class SetRank implements CommandExecutor {
         }
 
         if(!Organisation.hasOrganisation(tg)) {
-            p.sendMessage(Blacklist.PREFIX + "Der Spieler ist in keiner Organisation.");
+            p.sendMessage(PREFIX + "Der Spieler ist in keiner Organisation.");
             return true;
         }
 
         if(Organisation.getOrganisation(p) != Organisation.getOrganisation(tg)) {
-            p.sendMessage(Blacklist.PREFIX + "Der Spieler ist nicht in deiner Organisation.");
+            p.sendMessage(PREFIX + "Der Spieler ist nicht in deiner Organisation.");
             return true;
         }
 
@@ -49,22 +51,22 @@ public class SetRank implements CommandExecutor {
         try {
             rank = Integer.parseInt(args[1]);
         } catch (NumberFormatException e) {
-            p.sendMessage(Blacklist.PREFIX + "Der Rang muss eine Zahl sein.");
+            p.sendMessage(PREFIX + "Der Rang muss eine Zahl sein.");
             return true;
         }
 
-        if(rank > o.getLevel()) {
-            p.sendMessage(Blacklist.PREFIX + "Der Rang darf nicht höher als das Level deiner Organisation sein.");
+        if(rank > 6) {
+            p.sendMessage(PREFIX + "Organisationen haben nicht mehr als 6 Ränge.");
             return true;
         }
 
-        if(rank < 1) {
-            p.sendMessage(Blacklist.PREFIX + "Der Rang darf nicht kleiner als 1 sein.");
+        if(rank < 0) {
+            p.sendMessage(PREFIX + "Der Rang darf nicht kleiner als 0 sein.");
             return true;
         }
 
         if(Organisation.getRank(tg) == rank) {
-            p.sendMessage(Blacklist.PREFIX + "Der Spieler hat bereits den Rang " + rank + ".");
+            p.sendMessage(PREFIX + "Der Spieler hat bereits den Rang " + rank + ".");
             return true;
         }
 

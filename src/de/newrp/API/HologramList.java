@@ -46,7 +46,8 @@ public enum HologramList {
     DUTY_NEWS(40, "§8/§6duty", new Location(Script.WORLD, 301, 66, 762)),
     DUTY_GOVERNMENT(41, "§8/§6duty", new Location(Script.WORLD, 555, 77, 972)),
     BOOT_JAIL(42, "§8/§6boot", new Location(Script.WORLD, 997, 62, 568, 89.792786f, 7.7781887f)),
-    BOOT_LAND(43, "§8/§6boot", new Location(Script.WORLD, 791, 62, 549, 182.14655f, 9.560561f));
+    BOOT_LAND(43, "§8/§6boot", new Location(Script.WORLD, 791, 62, 549, 182.14655f, 9.560561f)),
+    GEFÄNGNISARBEIT(44, "§8/§6gefängnisarbeit", new Location(Script.WORLD, 1034, 60, 573, 273.69238f, 5.6780663f));
 
     private final int id;
     private final String name;

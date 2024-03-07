@@ -36,8 +36,8 @@ public class TeamspeakListener extends TS3EventAdapter {
 
     @Override
     public void onClientMoved(ClientMovedEvent e) {
+        Debug.debug("Client moved: " + e.getClientId() + " " + e.getTargetChannelId());
         Bukkit.getScheduler().runTaskAsynchronously(main.getInstance(), () -> {
-            Debug.debug("Client moved: " + e.getClientId() + " " + e.getTargetChannelId());
             if (e.getTargetChannelId() != 15) return;
             Client client = TeamSpeak.getApi().getClientInfo(e.getClientId());
             Script.sendTeamMessage("§8[§cSupport§8] §c" + client.getNickname() + " §7hat den TeamSpeak-Support betreten.");

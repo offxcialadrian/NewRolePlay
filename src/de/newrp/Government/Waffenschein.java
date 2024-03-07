@@ -141,11 +141,19 @@ public class Waffenschein implements CommandExecutor {
 
 
         if (hasApplied(p)) {
-            p.sendMessage(Messages.ERROR + "Du hast bereits einen Waffenschein beantragt. Bitte warte auf eine Antwort.");
+            Script.executeUpdate("DELETE FROM waffenschein WHERE nrp_id=" + Script.getNRPID(p));
+            p.sendMessage(PREFIX + "Du hast deinen Antrag zurückgezogen.");
+            return true;
+        }
+
+        if(Script.getMoney(p, PaymentType.BANK) < Script.getLevel(p) * 1000) {
+            p.sendMessage(Messages.ERROR + "Du hast nicht genug Geld.");
+            p.sendMessage(Messages.INFO + "Du benötigst " + Script.getLevel(p) * 1000 + "€.");
             return true;
         }
 
         p.sendMessage(PREFIX + "Du hast erfolgreich einen Waffenschein beantragt. Bitte warte auf eine Antwort durch die Verwaltung.");
+        p.sendMessage(Messages.INFO + "Die Ausstellung des Waffenscheins kostet dich " + Script.getLevel(p) * 1000 + "€. Falls du nicht bereit bist, so viel zu zahlen, kannst du den Antrag zurückziehen.");
         Script.executeAsyncUpdate("INSERT INTO waffenschein (nrp_id, date, accepted) VALUES ('" + Script.getNRPID(p) + "', '" + System.currentTimeMillis() + "', '0')");
         Beruf.Berufe.GOVERNMENT.sendMessage(PREFIX + Script.getName(p) + " hat einen Waffenschein beantragt.");
 

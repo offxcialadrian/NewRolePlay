@@ -2,7 +2,6 @@ package de.newrp.News;
 
 import de.newrp.API.Log;
 import de.newrp.API.Messages;
-import de.newrp.API.Script;
 import de.newrp.Berufe.Abteilung;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Player.Mobile;
@@ -17,9 +16,11 @@ import java.util.ArrayList;
 
 public class BreakingNews implements CommandExecutor {
 
-        public static String NEWS = "§8[§6Breaking News§8] §6" + Messages.ARROW + " ";
-        public static String BREAKING_NEWS = null;
-        public static ArrayList<String> waitingForMessage = new ArrayList<>();
+    public static String NEWS = "§8[§6Breaking News§8] §6" + Messages.ARROW + " ";
+    public static String BREAKING_NEWS = null;
+    public static Long BREAKING_NEWS_TIME;
+    public static ArrayList<String> waitingForMessage = new ArrayList<>();
+
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
         Player p = (Player) cs;
@@ -49,10 +50,11 @@ public class BreakingNews implements CommandExecutor {
         }
 
         BREAKING_NEWS = msg.toString();
-        for(Player all : Bukkit.getOnlinePlayers()) {
-            if(Mobile.hasPhone(p) && Mobile.hasConnection(p)) {
+        BREAKING_NEWS_TIME = System.currentTimeMillis();
+        for (Player all : Bukkit.getOnlinePlayers()) {
+            if (Mobile.hasPhone(p) && Mobile.hasConnection(p)) {
                 all.sendMessage(NEWS + "NachrichtenApp: Es gibt eine Breaking News!");
-                if(!Mobile.getPhone(p).getLautlos(p)) {
+                if (!Mobile.getPhone(p).getLautlos(p)) {
                     all.playSound(all.getLocation(), Sound.ENTITY_SHEEP_AMBIENT, 1, 1);
                 }
             }
