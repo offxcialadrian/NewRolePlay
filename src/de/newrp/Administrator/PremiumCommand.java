@@ -43,7 +43,7 @@ public class PremiumCommand implements CommandExecutor {
             }
 
             p.sendMessage(PREFIX + "Vielen Dank für dein Feedback.");
-            p.sendMessage(Messages.INFO + "Bitte beachte, dass wir bei \"Troll-Feedback\" dein zusätliches Premium entfernen.");
+            p.sendMessage(Messages.INFO + "Bitte beachte, dass wir bei \"Troll-Feedback\" dein zusätzliches Premium entfernen.");
             p.sendMessage(Messages.INFO + "Dein Feedback: " + feedback.toString());
             Script.executeUpdate("INSERT INTO premium_feedback (nrp_id, days, feedback) VALUES (" + Script.getNRPID(p) + ", " + AddPremiumToPlayer.awaitFeedback.get(p.getName()) + ", '" + feedback.toString() + "')");
             Premium.addPremium(p, TimeUnit.DAYS.toMillis(3));

@@ -1,7 +1,7 @@
 <component name="libraryTable">
   <library name="nuvotifier">
     <CLASSES>
-      <root url="jar://$USER_HOME$/Downloads/nuvotifier.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../nuvotifier.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
