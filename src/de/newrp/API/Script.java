@@ -418,6 +418,13 @@ public class Script {
         return p.getName();
     }
 
+    public static String getName(OfflinePlayer p) {
+        if(p.isOnline() && p.getPlayer() != null) {
+            if (isNRPTeam(p) && SDuty.isSDuty(p.getPlayer())) return "NRP × " + p.getName();
+        }
+        return p.getName();
+    }
+
 
     public static Boolean isNRPTeam(Player p) {
         return getRank(p).getWeight() >= SUPPORTER.getWeight();

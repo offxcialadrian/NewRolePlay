@@ -49,7 +49,7 @@ public class PremiumCommand implements CommandExecutor {
             Premium.addPremium(p, TimeUnit.DAYS.toMillis(3));
             AddPremiumToPlayer.awaitFeedback.remove(p.getName());
             Notifications.sendMessage(Notifications.NotificationType.NRPSHOP, Script.getName(p) + " hat ein Feedback abgegeben und drei weitere Tage Premium erhalten (" + feedback.toString() + ").");
-
+            return true;
         }
 
         if(!Script.hasRank(p, Rank.OWNER, false) || !SDuty.isSDuty(p)) {
