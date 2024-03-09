@@ -43,7 +43,7 @@ public class InviteCommand implements CommandExecutor {
             return true;
         }
 
-        if(p.getLocation().distance(tg.getLocation()) > 5) {
+        if (p.getLocation().distance(tg.getLocation()) > 5) {
             p.sendMessage(Messages.ERROR + "Der Spieler ist zu weit entfernt.");
             return true;
         }
@@ -53,7 +53,7 @@ public class InviteCommand implements CommandExecutor {
             return true;
         }
 
-        if(Beruf.hasBeruf(p)) {
+        if (Beruf.hasBeruf(p)) {
             Annehmen.offer.put(tg.getName() + ".joinberuf", p.getName());
             p.sendMessage(PREFIX + "Du hast " + Script.getName(tg) + " in " + Beruf.getBeruf(p).getName() + " eingeladen.");
             tg.sendMessage(PREFIX + "Du wurdest von " + Script.getName(p) + " in " + Beruf.getBeruf(p).getName() + " eingeladen.");
@@ -62,10 +62,10 @@ public class InviteCommand implements CommandExecutor {
         }
 
 
-            if(Organisation.getOrganisation(p).getAllMembers().size() >= slots(Organisation.getOrganisation(p))) {
-                p.sendMessage(Messages.ERROR + "Deine Organisation ist voll.");
-                return true;
-            }
+        if (Organisation.getOrganisation(p).getAllMembers().size() >= slots(Organisation.getOrganisation(p))) {
+            p.sendMessage(Messages.ERROR + "Deine Organisation ist voll.");
+            return true;
+        }
 
 
         Annehmen.offer.put(tg.getName() + ".joinorganisation", p.getName());
@@ -78,7 +78,7 @@ public class InviteCommand implements CommandExecutor {
     }
 
     public static int slots(Organisation o) {
-        return Math.max(15, o.getLevel() * 3);
+        return Math.min(30, Math.max(15, o.getLevel() * 3));
     }
 
 }

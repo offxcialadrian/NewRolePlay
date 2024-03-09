@@ -36,7 +36,7 @@ public class PayShop implements Listener {
     public static void pay(Player p, PaymentType type, ShopItem si, Shops s) {
         int price = (Buy.amount.containsKey(p.getName()) ? si.getPrice(s) * Buy.amount.get(p.getName()) : si.getPrice(s));
         ItemStack i = si.getItemStack();
-        i.setAmount(si.getAmount(s));
+        i.setAmount(si.getItemStack().getAmount());
         ItemMeta meta = i.getItemMeta();
         meta.setLore(Collections.emptyList());
         i.setItemMeta(meta);

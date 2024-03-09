@@ -114,6 +114,8 @@ public class Annehmen implements CommandExecutor {
                 return true;
             }
 
+            p.sendMessage(ACCEPTED + "Du siehst nun die Tasche von " + Script.getName(tasche) + ".");
+            tasche.sendMessage(PREFIX + Script.getName(p) + " sieht nun deine Tasche.");
 
             Inventory inv = Bukkit.createInventory(null, 36, "§8[§9Tasche§8] §e» §9" + tasche.getName());
             for (ItemStack is : tasche.getInventory().getContents()) {

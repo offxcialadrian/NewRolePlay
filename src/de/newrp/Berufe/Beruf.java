@@ -203,6 +203,12 @@ public class Beruf {
             return list;
         }
 
+        public static boolean hasAbteilung(Player p, Abteilung abteilung) {
+            if(Beruf.isLeader(p, true)) return true;
+            if(getAbteilung(p) == null) return false;
+            return (getAbteilung(p).equals(abteilung));
+        }
+
         public void addMember(Player p, Player leader) {
             Script.executeUpdate("INSERT INTO berufe (nrp_id, berufID, salary, abteilung, leader, coleader) VALUES ('" + Script.getNRPID(p) + "', '" + getID() + "', '0', '0', '0', '0')");
             for (Player members : getPlayersFromBeruf(this)) {

@@ -246,7 +246,7 @@ public class Elevator implements Listener {
         }
 
         int etage = elevator.getEtageByLoc(p.getLocation());
-        if (e.getView().getTitle().equals("§c" + elevator.getName() + " Fahrstuhl")) {
+        if (e.getView().getTitle().equals("§cFahrstuhl")) {
             e.setCancelled(true);
             if (e.getCurrentItem().getType().equals(Material.IRON_DOOR)) {
                 p.sendMessage("§8[§c" + elevator.getName() + "§8] " + "§6Du hast die Türen geöffnet.");
@@ -304,9 +304,9 @@ public class Elevator implements Listener {
 
 
         if (etagen_amount <= 5) {
-            inv = Bukkit.createInventory(null, InventoryType.HOPPER, "§c" + elevator.getName() + " Fahrstuhl");
+            inv = Bukkit.createInventory(null, InventoryType.HOPPER, "§cFahrstuhl");
         } else {
-            inv = Bukkit.createInventory(null, (etagen_amount<=9?9:18), "§c" + elevator.getName() + " Fahrstuhl");
+            inv = Bukkit.createInventory(null, (etagen_amount<=9?9:18), "§cFahrstuhl");
         }
         int i = 0;
         String etage;

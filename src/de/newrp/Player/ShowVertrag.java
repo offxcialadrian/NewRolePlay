@@ -51,7 +51,7 @@ public class ShowVertrag implements CommandExecutor {
             return true;
         }
 
-        p.sendMessage(Vertrag.PREFIX + "Du hast " + Script.getName(tg) +  " deinen Vertrag mit " + v.getTo() + " gezeigt.");
+        p.sendMessage(Vertrag.PREFIX + "Du hast " + Script.getName(tg) +  " deinen Vertrag mit " + Script.getOfflinePlayer(v.getTo()).getName() + " gezeigt.");
         tg.sendMessage(Vertrag.PREFIX + Script.getName(p) + " hat dir " + (Script.getGender(p)== Gender.MALE?"seinen":"ihren") + " Vertrag mit " + Script.getOfflinePlayer(v.getTo()).getName() + " gezeigt.");
         tg.sendMessage(Vertrag.PREFIX + "§6Bedingungen: " + v.getBedingung());
         tg.sendMessage(Vertrag.PREFIX + "§6Von: " + Script.getOfflinePlayer(v.getFrom()).getName());

@@ -41,9 +41,9 @@ public class KickCommand implements CommandExecutor {
             return true;
         }
 
-        String reason = "";
+        StringBuilder reason = new StringBuilder();
         for (int i = 1; i < args.length; i++) {
-            reason += args[i] + " ";
+            reason.append(args[i]).append(" ");
         }
 
         if (Script.isNRPTeam(tg) && !Script.hasRank(p, Rank.ADMINISTRATOR, false)) {
@@ -53,7 +53,7 @@ public class KickCommand implements CommandExecutor {
 
         p.sendMessage("§8[§cKick§8] §cDu hast " + Script.getName(tg) + " gekickt.");
         tg.kickPlayer("§8» §cNRP × New RolePlay §8┃ §cKick §8« \n\n§8§m------------------------------\n\n§7Du wurdest vom Server gekickt§8.\n\n§7Grund §8× §e" + reason);
-        Bukkit.broadcastMessage(Script.PREFIX + "§c" + Script.getName(tg) + " wurde von " + Script.getName(p) + " für " + reason + "gekickt.");
+        Bukkit.broadcastMessage(Script.PREFIX + "§c" + Script.getName(tg) + " wurde von " + Script.getName(p) + " für §c§l" + reason + "§r§cgekickt.");
 
         return false;
     }

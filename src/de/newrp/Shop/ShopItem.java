@@ -35,7 +35,7 @@ public enum ShopItem {
     Zeitung(48, "§9Zeitung", de.newrp.News.Zeitung.zeitung, 1, 2, 25, de.newrp.News.Zeitung.getBuyPrice(), 3000, true, true, false, new ShopType[] {ShopType.CAFE, ShopType.SUPERMARKET, ShopType.NEWS}),
     SCHMERZMITTEL(49, "§fSchmerzmittel", new ItemStack(Material.PAPER), 5, 2, 25, 2, 3000, true, true, false, new ShopType[] {ShopType.PHARMACY, ShopType.SUPERMARKET}),
     BASEBALLSCHLAEGER(50, "§7Baseballschläger", new ItemStack(Material.BONE), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.GUNSHOP}),
-    SAMSUNG_HANDY(52, "§cUniversum S21", new ItemStack(Material.IRON_INGOT), 1, 1, 1, 1, 1, false, false, false, new ShopType[] {ShopType.ELECTRONIC}),
+    SAMSUNG_HANDY(52, "§cSamstar", new ItemStack(Material.IRON_INGOT), 1, 1, 1, 1, 1, false, false, false, new ShopType[] {ShopType.ELECTRONIC}),
     HUAWEI_HANDY(53, "§cHawaii P55", new ItemStack(Material.IRON_INGOT), 1, 1, 1, 1, 1, false, false, false, new ShopType[] {ShopType.ELECTRONIC}),
     APPLE_HANDY(55, "§cyouPhone 15", new ItemStack(Material.IRON_INGOT), 1, 1, 1, 1, 1, false, false, false, new ShopType[] {ShopType.ELECTRONIC}),
     MAP(56, "§7Karte", new ItemStack(Material.MAP), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.SUPERMARKET, ShopType.NEWS}),

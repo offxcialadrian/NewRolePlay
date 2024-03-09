@@ -116,6 +116,10 @@ public class Abteilung implements CommandExecutor, TabCompleter {
             return list;
         }
 
+        public boolean hasAbteilung(OfflinePlayer p) {
+            return Script.getInt(p, "berufe", "abteilung") == this.getID();
+        }
+
         public void sendMessage(String message) {
             for (OfflinePlayer all : getOnlineMembers()) {
                 if (all.isOnline()) {

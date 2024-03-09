@@ -43,7 +43,7 @@ public class Mobile implements Listener {
     public enum Phones {
 
         APPLE(1, "youPhone 15", 1800, new ItemBuilder(Material.IRON_INGOT).setName("youPhone 15").build(), 20),
-        SAMSUNG(2, "Universum S21", 1600, new ItemBuilder(Material.IRON_INGOT).setName("Universum S21").build(), 10),
+        SAMSUNG(2, "Samstar", 1600, new ItemBuilder(Material.IRON_INGOT).setName("Samstar").build(), 10),
         HUAWEI(3, "Hawaii P55", 1400, new ItemBuilder(Material.IRON_INGOT).setName("Hawaii P55").build(), 8);
 
         int id;
