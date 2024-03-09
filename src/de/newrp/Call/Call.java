@@ -182,7 +182,7 @@ public class Call {
             int callID = getCallIDByPlayer(p);
             List<Player> playerList = WAITING_FOR_CALL.get(callID);
             playerList.remove(p);
-            if(playerList.isEmpty()) {
+            if(playerList.size() == 1) {
                 WAITING_FOR_CALL.remove(callID);
             } else {
                 WAITING_FOR_CALL.put(callID, playerList);

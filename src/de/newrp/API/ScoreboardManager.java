@@ -34,12 +34,18 @@ public class ScoreboardManager {
             Team t = MAIN.registerNewTeam(team.getName());
             if (team.getOption() != null) t.setOption(team.getOption(), team.getOptionStatus());
         }
+
+        for(Team team : MAIN.getTeams()) {
+            System.out.println("Team: " + team.getName() + " Option: " + team.getOption(Option.COLLISION_RULE));
+            Debug.debug("Team: " + team.getName() + " Option: " + team.getOption(Option.COLLISION_RULE));
+        }
+
     }
 
 
     public enum ScoreboardTeam {
         NO_PUSH("zzznopush", Option.COLLISION_RULE, OptionStatus.NEVER),
-        NRPS("1nrps", null, null),
+        NRPS("1nrps", Option.COLLISION_RULE, OptionStatus.NEVER),
         GOVERNMENT("2government", null, null),
         POLICE("3police", null, null),
         MEDIC("4medic", null, null),

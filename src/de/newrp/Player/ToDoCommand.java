@@ -69,6 +69,7 @@ public class ToDoCommand implements CommandExecutor {
 
             try (Statement stmt = main.getConnection().createStatement()) {
                 stmt.executeUpdate("DELETE FROM todos WHERE nrp_id=" + Script.getNRPID(p) + " AND id=" + getDatabaseID(p, Integer.parseInt(args[1])));
+                p.sendMessage(PREFIX + "ToDo entfernt.");
             } catch (Exception e) {
                 e.printStackTrace();
             }

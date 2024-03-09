@@ -186,7 +186,6 @@ public class Utils implements Listener {
         Script.sendOfflineMessages(p);
         Script.updateExpBar(p);
         Corpse.reloadNPC(p);
-        Bukkit.getScoreboardManager().getMainScoreboard().getTeam("player").addEntry(p.getName());
         for (Player online : Bukkit.getOnlinePlayers()) {
             if (BuildMode.isInBuildMode(online)) {
                 if (Team.getTeam(p) != Team.Teams.BAU && !Script.hasRank(p, Rank.SUPPORTER, false)) {
@@ -256,6 +255,7 @@ public class Utils implements Listener {
             @Override
             public void run() {
                 Script.resetHealth(p);
+                Bukkit.getScoreboardManager().getMainScoreboard().getTeam("player").addEntry(p.getName());
                 SDuty.updateScoreboard();
                 for(Player all : Bukkit.getOnlinePlayers()) {
                     Script.sendTabTitle(all);

@@ -19,6 +19,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.scoreboard.Team;
 
 import java.util.UUID;
 
@@ -39,6 +40,17 @@ public class Test implements CommandExecutor, Listener {
         if(!SDuty.isSDuty(p)) {
             p.sendMessage(Messages.NO_SDUTY);
             return true;
+        }
+
+        /*try {
+            Bukkit.getScoreboardManager().getMainScoreboard().getTeam("player").addEntry(p.getName());
+        } catch (Exception e) {
+            Debug.debug("Error: " + e.getMessage());
+            e.printStackTrace();
+        }*/
+
+        for(String entries : ScoreboardManager.MAIN.getTeam("player").getEntries()) {
+            Debug.debug(entries);
         }
 
         if(args.length != 1) {

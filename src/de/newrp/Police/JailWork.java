@@ -39,6 +39,7 @@ public class JailWork implements CommandExecutor, Listener {
         }
 
         p.sendMessage(Messages.INFO + "Erstelle nun das Kennzeichen.");
+        p.sendMessage(Messages.INFO + "Klicke auf die Buchstaben und Zahlen um das Kennzeichen zu erstellen.");
 
         license.put(p.getName(), getRandomLicensePlate());
         Inventory inv = Bukkit.createInventory(null, 9, "§8» §6" + license.get(p.getName()));

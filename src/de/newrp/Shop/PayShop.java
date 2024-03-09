@@ -172,7 +172,7 @@ public class PayShop implements Listener {
                     Weapon.PISTOLE.addMunition(Script.getNRPID(p), Weapon.PISTOLE.getMagazineSize());
                     break;
                 case Zeitung:
-                    Beruf.Berufe.NEWS.addKasse(20);
+                    Beruf.Berufe.NEWS.addKasse(si.getBuyPrice());
                     break;
                 case SCHMERZMITTEL:
                 case ENTZUENDUNGSHEMMENDE_SALBE:

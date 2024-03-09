@@ -42,9 +42,9 @@ public class Mobile implements Listener {
 
     public enum Phones {
 
-        APPLE(1, "iPhone 15", 1800, new ItemBuilder(Material.IRON_INGOT).setName("iPhone 15").build(), 20),
-        SAMSUNG(2, "Galaxy S21", 1600, new ItemBuilder(Material.IRON_INGOT).setName("Galaxy S21").build(), 10),
-        HUAWEI(3, "P60", 1400, new ItemBuilder(Material.IRON_INGOT).setName("P60").build(), 8);
+        APPLE(1, "youPhone 15", 1800, new ItemBuilder(Material.IRON_INGOT).setName("youPhone 15").build(), 20),
+        SAMSUNG(2, "Universum S21", 1600, new ItemBuilder(Material.IRON_INGOT).setName("Universum S21").build(), 10),
+        HUAWEI(3, "Hawaii P55", 1400, new ItemBuilder(Material.IRON_INGOT).setName("Hawaii P55").build(), 8);
 
         int id;
         String name;
@@ -349,7 +349,7 @@ public class Mobile implements Listener {
                 p.getInventory().setItemInHand(new ItemBuilder(Material.IRON_INGOT).setName("§7" + p.getName() + "s " + getPhone(p).getName()).build());
 
 
-                Me.sendMessage(p, "schaltet " + (Script.getGender(p)==Gender.MALE?"sein":"ihr") + " Handy ein.");
+                Me.sendMessage(p, "schaltet " + (Script.getGender(p)==Gender.MALE?"sein":"ihr") + " " + Mobile.getPhone(p).getName() + " ein.");
 
                 TOOGLE_COOLDOWN.put(p.getName(), time+20L);
                 LAST_CLICK.remove(p.getName());
@@ -362,33 +362,42 @@ public class Mobile implements Listener {
 
     }
 
+    public static ItemStack missedCall(Player p){
+        ItemStack is = Script.setNameAndLore(Script.getHead(47477), "§8» §cTelefon", "§8 × §6Verpasste Anrufe: " + getMissedCalls(p));
+        is.setAmount(Math.max(1, getMissedCalls(p)));
+        return is;
+    }
+
     public static void openGUI(Player p) {
         Mobile.Phones phone = Mobile.getPhone(p);
         assert phone != null;
         int amount;
         //set amount to minimum of 1 and missed calls
-        Inventory inv = Bukkit.createInventory(null, 18, "§8» §aHandy");
-        inv.setItem(0, new ItemBuilder(Material.RED_STAINED_GLASS_PANE).setName("§8» §cAusschalten").build());
-        inv.setItem(1, new ItemBuilder(Material.CHEST).setName("§8» §cBreaking News").build());
-        inv.setItem(2, new ItemBuilder(Material.CHEST).setName("§8» §cTelefon").setAmount(Math.max(1, getMissedCalls(p))).build());
-        inv.setItem(3, new ItemBuilder(Material.CHEST).setName("§8» §cMessenger").build());
-        inv.setItem(4, new ItemBuilder(Material.CHEST).setName("§8» §cEinstellungen").build());
-        inv.setItem(5, new ItemBuilder(Material.CHEST).setName("§8» §cUmfragen").build());
-        inv.setItem(6, new ItemBuilder(Material.CHEST).setName("§8» §cNotruf").build());
-        inv.setItem(7, new ItemBuilder(Material.CHEST).setName("§8» §cNavigation").build());
-        inv.setItem(8, new ItemBuilder(Material.CHEST).setName("§8» §cAkku").setLore("§8 × §6" + Script.getPercentage(phone.getAkku(p), phone.getMaxAkku()) + "%").build());
-        inv.setItem(9, new ItemBuilder(Material.CHEST).setName("§8» §cVerbindung").setLore("§8 × §6" + (hasConnection(p)?"§aJa":"§cNein")).build());
-        if(Premium.hasPremium(p)) inv.setItem(9, new ItemBuilder(Material.CHEST).setName("§8» §cOnline-Banking").build());
+        Inventory inv = Bukkit.createInventory(null, 9*5, "§8» §aHandy");
+        inv.setItem(13, new ItemBuilder(Material.RED_STAINED_GLASS_PANE).setName("§8» §cAusschalten").build());
+        inv.setItem(20, Script.setNameAndLore(Script.getHead(74287), "§8» §cBreaking News", "§8 × §6Aktuell: " + (BreakingNews.BREAKING_NEWS==null?"§cNein":"§aJa")));
+        inv.setItem(21, missedCall(p));
+        inv.setItem(22, Script.setName(Script.getHead(34470), "§8» §cMessenger"));
+        inv.setItem(23, Script.setName(Script.getHead(27523), "§8» §cEinstellungen"));
+        inv.setItem(24, Script.setName(Script.getHead(11504), "§8» §cUmfragen"));
+        inv.setItem(29, Script.setName(Script.getHead(1914), "§8» §cNotruf"));
+        inv.setItem(30, Script.setName(Script.getHead(2981), "§8» §cNavigation"));
+        inv.setItem(31, Script.setNameAndLore(Script.getHead(14010), "§8» §cAkku", "§8 × §6" + Script.getPercentage(phone.getAkku(p), phone.getMaxAkku()) + "%"));
+        inv.setItem(32, Script.setNameAndLore(Script.getHead(26588), "§8» §cVerbindung", "§8 × §6" + (hasConnection(p)?"§aJa":"§cNein")));
+        inv.setItem(33, Script.setName(Script.getHead(60078), "§8» §cOnline-Banking"));
+        Script.fillInv(inv);
         p.openInventory(inv);
     }
 
     public static void openSettingGUI(Player p) {
         Mobile.Phones phone = Mobile.getPhone(p);
         assert phone != null;
-        Inventory inv = Bukkit.createInventory(null, 9, "§8» §aHandy");
-        inv.setItem(0, new ItemBuilder(Material.CHEST).setName("§8» §cWerkseinstellungen").build());
-        inv.setItem(1, new ItemBuilder(Material.CHEST).setName("§8» §cCloud").setLore("§8 × §6Aktiviere die Cloud für Datenübertragung.", "§8 × §6Dies kostet " + (Premium.hasPremium(p)?"5€":"10€"), "§8 × §6Aktiviert: " + (phone.hasCloud(p)?"§aJa":"§cNein")).build());
-        inv.setItem(2, new ItemBuilder(Material.CHEST).setName("§8» §cTöne").setLore("§8 × §6Aktiviere Töne um Benachrichtigungen zu erhalten.", "§8 × §6Aktiviert: " + (phone.getLautlos(p)?"§cNein":"§aJa")).build());
+        Inventory inv = Bukkit.createInventory(null, 5*9, "§8» §aHandy");
+        inv.setItem(13, Script.setName(Material.BARRIER, "§8» §cZurück"));
+        inv.setItem(21, Script.setName(Script.getHead(58141), "§8» §cWerkseinstellungen"));
+        inv.setItem(22, Script.setNameAndLore(Script.getHead(50328),"§8» §cCloud", "§8 × §6Aktiviere die Cloud für Datenübertragung.", "§8 × §6Dies kostet " + (Premium.hasPremium(p)?"5€":"10€"), "§8 × §6Aktiviert: " + (phone.hasCloud(p)?"§aJa":"§cNein")));
+        inv.setItem(23, Script.setNameAndLore(Script.getHead(27508), "§8» §cTöne", "§8 × §6Aktiviere Töne um Benachrichtigungen zu erhalten.", "§8 × §6Aktiviert: " + (phone.getLautlos(p)?"§cNein":"§aJa")));
+        Script.fillInv(inv);
         p.openInventory(inv);
     }
 
@@ -438,10 +447,20 @@ public class Mobile implements Listener {
                 return;
             }
 
-            Inventory inv = Bukkit.createInventory(null, Script.calcInvSize(Umfrage.getActiveUmfrage().getAntworten().size()), "§8[§6Umfrage§8] §6" + Umfrage.getActiveUmfrage().getFrage());
+            Inventory inv = Bukkit.createInventory(null, 5*9, "§8[§6Umfrage§8]");
+
+            inv.setItem(13, new ItemBuilder(Material.PAPER).setName("§8» §6" + Umfrage.getActiveUmfrage().getFrage()).build());
+            int i = 20;
             for (Map.Entry<String, Integer> entry : Umfrage.getActiveUmfrage().getAntworten().entrySet()) {
-                inv.addItem(new ItemBuilder(Material.PAPER).setName("§8» §6" + entry.getKey()).build());
+                if(i < 25) {
+                    inv.setItem(i++, new ItemBuilder(Material.PAPER).setName("§8» §6" + entry.getKey()).build());
+                } else {
+                    i = 29;
+                    inv.setItem(i++, new ItemBuilder(Material.PAPER).setName("§8» §6" + entry.getKey()).build());
+                }
             }
+
+            Script.fillInv(inv);
             p.openInventory(inv);
             return;
         }
@@ -540,6 +559,11 @@ public class Mobile implements Listener {
             p.sendMessage(PREFIX + "§8=== §6" + Banken.getBankByPlayer(p).getName() + " §8===");
             p.sendMessage(PREFIX + "Kontostand: " + Script.getMoney(p, PaymentType.BANK) + "€");
             p.sendMessage(PREFIX + "§8=========");
+        } else if(e.getCurrentItem().getItemMeta().getDisplayName().equals("§8» §cZurück")) {
+            p.closeInventory();
+            openGUI(p);
+        } else {
+            e.setCancelled(true);
         }
 
     }

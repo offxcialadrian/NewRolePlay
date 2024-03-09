@@ -594,3 +594,9 @@ commands:
     aliases: [ cc ]
   anrufbeantworter:
     description: view the anrufbeantworter
+  kamera:
+    description: view the kamera
+    aliases: [ camera ]
+  tv:
+    description: view the tv
+    aliases: [ fernseher ]

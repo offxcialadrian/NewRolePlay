@@ -1,6 +1,7 @@
 package de.newrp.API;
 
 import de.newrp.Organisationen.SchwarzmarktListener;
+import de.newrp.Waffen.Weapon;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.trait.SkinTrait;
@@ -105,8 +106,8 @@ public enum Schwarzmarkt {
     }
 
     public enum TradeItem {
-        LOTTOSCHEIN(0, new ItemStack(Material.IRON_HORSE_ARMOR), "Pistole", 1),
-        BASEBALLSCHLAEGER(2, new ItemStack(Material.DIAMOND_HORSE_ARMOR), "AK-47", 1);
+        LOTTOSCHEIN(0, new ItemStack(Material.IRON_HORSE_ARMOR), Weapon.PISTOLE.getName(), 1),
+        BASEBALLSCHLAEGER(2, new ItemStack(Material.DIAMOND_HORSE_ARMOR), Weapon.AK47.getName(), 1);
 
         private final int id;
         private final ItemStack item;

@@ -101,6 +101,14 @@ public class Script {
         return i;
     }
 
+    public static ItemStack createHead(int headid, String name) {
+        ItemStack item = Script.getHead(headid);
+        ItemMeta meta = item.getItemMeta();
+        meta.setDisplayName(name);
+        item.setItemMeta(meta);
+        return item;
+    }
+
 
     public static void updateListname(Player p) {
         String color = "";
@@ -811,6 +819,7 @@ public class Script {
         inv.setItem(1, cash);
         inv.setItem(3, bank);
         p.openInventory(inv);
+        Script.fillInv(inv);
         Debug.debug("step 3");
     }
 
@@ -1151,8 +1160,11 @@ public class Script {
     }
 
     public static boolean isValidPassword(String password) {
-        String ePattern = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!])(?=\\S+$).{8,}$";
-        java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);
+        String regex = "^(?=.*[0-9])"
+                + "(?=.*[a-z])(?=.*[A-Z])"
+                + "(?=.*[@#$%^&+=])"
+                + "(?=\\S+$).{8,20}$";
+        java.util.regex.Pattern p = java.util.regex.Pattern.compile(regex);
         java.util.regex.Matcher m = p.matcher(password);
         return m.matches();
     }

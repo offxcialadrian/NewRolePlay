@@ -1,6 +1,8 @@
 package de.newrp.Player;
 
 import de.newrp.API.*;
+import de.newrp.Government.Straftat;
+import de.newrp.Police.Fahndung;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -117,8 +119,14 @@ public class UBahn {
             removeTicket(p);
         } else {
             if(Script.getRandom(1, 100) <= (Premium.hasPremium(p) ? 20 : 30)) {
-                p.sendMessage("§8[§eUBahn§8] §e" + Messages.ARROW + " §7Du wurdest beim Schwarzfahren erwischt und zahlst 60€ Vertragsstrafe.");
-                Script.removeMoney(p, PaymentType.BANK, 60);
+                if (Script.getMoney(p, PaymentType.BANK) >= 60) {
+                    p.sendMessage("§8[§eUBahn§8] §e" + Messages.ARROW + " §7Du wurdest beim Schwarzfahren erwischt und zahlst 60€ Vertragsstrafe.");
+                    Script.removeMoney(p, PaymentType.BANK, 60);
+                } else {
+                    p.sendMessage("§8[§eUBahn§8] §e" + Messages.ARROW + " §7Du wurdest beim Schwarzfahren erwischt und zahlst 60€ Vertragsstrafe.");
+                    p.sendMessage(Messages.INFO + "Du hast nicht genug Geld auf deinem Konto um die Vertragsstrafe zu bezahlen. Du wirst gesucht.");
+                    Script.executeAsyncUpdate("INSERT INTO wanted (nrp_id, copID, wantedreason, time) VALUES ('" + Script.getNRPID(p) + "', '" + Script.getNRPID(p) + "', '" + Straftat.getReasonID("Schwarzfahren") + "', '" + System.currentTimeMillis() + "')");
+                }
             }
         }
 

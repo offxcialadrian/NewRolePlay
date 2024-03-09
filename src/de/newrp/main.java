@@ -352,6 +352,8 @@ public class main extends JavaPlugin {
         getCommand("partikel").setExecutor(new ParticleCommand());
         getCommand("chatclear").setExecutor(new ChatClear());
         getCommand("anrufbeantworter").setExecutor(new Anrufbeantworter());
+        getCommand("kamera").setExecutor(new KameraCommand());
+        getCommand("tv").setExecutor(new TV());
 
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new SDuty(), this);
@@ -461,6 +463,9 @@ public class main extends JavaPlugin {
         pm.registerEvents(new Spawnchange(), this);
         pm.registerEvents(new JailWork(), this);
         pm.registerEvents(new ParticleCommand(), this);
+        pm.registerEvents(new KameraCommand(), this);
+        pm.registerEvents(new TV(), this);
+        pm.registerEvents(new TestoSpritze(), this);
 
 
         new AsyncHealth().runTaskTimerAsynchronously(this, 120 * 20L, 120 * 20L);
