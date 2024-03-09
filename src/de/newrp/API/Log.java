@@ -14,6 +14,8 @@ public enum Log {
     NORMAL(2),
     HIGH(3),
     WARNING(4),
+    DAMAGE(97),
+    CHAT(98),
     COMMAND(99);
 
     private final int importance;

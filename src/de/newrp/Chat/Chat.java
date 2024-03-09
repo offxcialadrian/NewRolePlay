@@ -1,6 +1,7 @@
 package de.newrp.Chat;
 
 import de.newrp.API.Friedhof;
+import de.newrp.API.Log;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.Administrator.AntiCheatSystem;
@@ -173,11 +174,12 @@ public class Chat implements Listener {
         }
 
         for(String arg : e.getMessage().split(" ")) {
-            if(arg.equalsIgnoreCase("ChatCraft")) {
+            if(arg.contains("ChatCraft")) {
                 p.kickPlayer("§8» §cNRP × New RolePlay §8┃ §cKICK §8« \n\n§8§m------------------------------\n\n§7Du wurdest vom Server gekickt§8.\n\n§7Grund §8× §eVerbindung mit ChatCraft\n\n§8§m------------------------------");
                 Script.sendTeamMessage(AntiCheatSystem.PREFIX + Script.getName(p) + " wurde vom Server gekickt (Verbindung mit ChatCraft).");
                 return;
             }
+
             if(arg.startsWith("http://") || arg.startsWith("https://") || arg.startsWith("www.") || arg.startsWith(".de")  || arg.startsWith(".eu") || arg.startsWith("germanrp") || arg.startsWith("grp") || arg.startsWith("unicacity") || arg.startsWith("turniptales") || arg.toLowerCase().startsWith("turnip")) {
                 Script.sendTeamMessage(AntiCheatSystem.PREFIX + "Verdacht auf Fremdwerbung bei " + Script.getName(p) + " (Level " + p.getLevel() + ") §8» §c" + e.getMessage());
                 p.sendMessage(AntiCheatSystem.PREFIX + "Es liegt ein Verdacht auf Fremdwerbung vor oder deine Nachricht enthält einen Link. Die Nachricht wurde nicht gesendet. Wenn du denkst, dass es sich um einen Fehler handelt, melde ihn bitte im Forum.");
@@ -209,6 +211,7 @@ public class Chat implements Listener {
             }
             online.sendMessage(constructMessage(p, message, speakWord, foundNames, distance, ChatType.NORMAL));
         }
+        Log.CHAT.write(p, "[Chat]" +  message);
 
     }
 

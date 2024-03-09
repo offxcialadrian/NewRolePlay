@@ -1,5 +1,6 @@
 package de.newrp.Chat;
 
+import de.newrp.API.Log;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.Administrator.AntiCheatSystem;
@@ -75,6 +76,7 @@ public class Schreien implements CommandExecutor {
             }
             online.sendMessage(Chat.constructMessage(p, message, speakWord, foundNames, distance, Chat.ChatType.SHOUT));
         }
+        Log.CHAT.write(p, "[Schreien]" +  message);
         return true;
     }
 }

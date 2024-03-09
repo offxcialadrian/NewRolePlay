@@ -276,6 +276,15 @@ public class Utils implements Listener {
 
     }
 
+    @EventHandler
+    public void onDmg(EntityDamageByEntityEvent e) {
+        if(!(e.getDamager() instanceof Player)) return;
+        if(!(e.getEntity() instanceof Player)) return;
+        Player damager = (Player) e.getDamager();
+        Player victim = (Player) e.getEntity();
+        Log.DAMAGE.write(Script.getName(damager) + " hat " + Script.getName(victim) + " " + (int) e.getDamage() + " Herzen Schaden zugefügt (" + damager.getInventory().getItemInMainHand() + ") " + (e.isCancelled()?"[BLOCKED]":""));
+    }
+
     @EventHandler(priority = EventPriority.HIGHEST)
     public void itemFrameItemRemoval(HangingBreakByEntityEvent e) {
         if (e.getEntity().getType().equals(EntityType.ITEM_FRAME) || e.getEntity().getType().equals(EntityType.PAINTING)) {

@@ -1,5 +1,6 @@
 package de.newrp.Chat;
 
+import de.newrp.API.Log;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.Administrator.Notifications;
@@ -51,6 +52,7 @@ public class Me implements CommandExecutor {
         }
 
         Script.sendLocalMessage(7, p, "§a§o* " + Script.getName(p) + " " + message);
+        Log.CHAT.write(p, "[ME]" +  message);
         return false;
     }
 

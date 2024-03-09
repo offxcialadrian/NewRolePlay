@@ -33,7 +33,7 @@ public class Equip implements CommandExecutor, Listener {
         HANDSCHELLEN(3, "Handschellen", Script.setName(new ItemStack(Material.LEAD, 2), "§7Handschellen"), 100, 0, null, Beruf.Berufe.POLICE, true),
         TAZER(4, "Tazer", Script.tazer(), 100, 0, null, Beruf.Berufe.POLICE, true),
         DONUT(5, "Donut", new ItemBuilder(Material.COOKIE).setAmount(16).setName("§7Donut").build(), 1, 0, null, Beruf.Berufe.POLICE, false),
-        MP7(6, "MP7", new ItemBuilder(Material.GOLDEN_HORSE_ARMOR).setName("§7MP7").build(), 2900, 400, null, Beruf.Berufe.POLICE, false),
+        MP7(6, "Striker", new ItemBuilder(Material.GOLDEN_HORSE_ARMOR).setName("§7Striker").build(), 2900, 400, null, Beruf.Berufe.POLICE, false),
         EINSATZSCHILD(7, "Einsatzschild", Script.einsatzschild(1), 1000, 0, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE, true),
         EINSAZTZSCHILD_2(8, "Schweres Einsatzschild", Script.einsatzschild(2), 1500, 0, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE, true),
         RAUCHGRANATE(9, "Rauchgranate", Script.rauchgranate(), 100, 0, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE, true),
@@ -51,7 +51,10 @@ public class Equip implements CommandExecutor, Listener {
         SNIPER(21, Weapon.SNIPER.getName(), Weapon.SNIPER.getWeapon(), 5000, 30, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE, true),
         DROHNE_COPS(22, "Drohne [Polizei]", new ItemBuilder(Material.WITHER_SKELETON_SKULL).setName("§7Drohne [Polizei]").build(), 2000, 0, null, Beruf.Berufe.POLICE, true),
         DROHNE_NEWS(23, "Drohne [News]", new ItemBuilder(Material.WITHER_SKELETON_SKULL).setName("§7Drohne [News]").build(), 2000, 0, Abteilung.Abteilungen.CHEFREDAKTION, Beruf.Berufe.NEWS, true),
-        DROHNE_RETTUNGSDIENST(24, "Drohne [Rettungsdienst]", new ItemBuilder(Material.WITHER_SKELETON_SKULL).setName("§7Drohne [Rettungsdienst]").build(), 2000, 0, Abteilung.Abteilungen.NOTFALLMEDIZIN, Beruf.Berufe.RETTUNGSDIENST, true);
+        DROHNE_RETTUNGSDIENST(24, "Drohne [Rettungsdienst]", new ItemBuilder(Material.WITHER_SKELETON_SKULL).setName("§7Drohne [Rettungsdienst]").build(), 2000, 0, Abteilung.Abteilungen.NOTFALLMEDIZIN, Beruf.Berufe.RETTUNGSDIENST, true),
+
+        MUNITION_PISTOLE(25, Weapon.PISTOLE.getAmmoType().getName(), new ItemBuilder(Material.ARROW).setAmount(Weapon.PISTOLE.getMagazineSize()).build(), 100, 0, null, Beruf.Berufe.POLICE, true),
+        MUNITION_MP7(26, Weapon.MP7.getAmmoType().getName(), new ItemBuilder(Material.ARROW).setAmount(Weapon.MP7.getMagazineSize()).build(), 100, 0, null, Beruf.Berufe.POLICE, true);
 
         private String name;
         private int id;
@@ -243,6 +246,8 @@ public class Equip implements CommandExecutor, Listener {
                 }
             }
 
+
+
             if (p.getInventory().firstEmpty() == -1) {
                 p.sendMessage(Messages.ERROR + "Dein Inventar ist voll.");
                 return;
@@ -275,6 +280,35 @@ public class Equip implements CommandExecutor, Listener {
                 Stadtkasse.removeStadtkasse(stuff.getCost(), stuff.getName() + " für " + Script.getName(p) + " (" + Beruf.getBeruf(p).getName() + ")");
             } else {
                 stuff.getBeruf().removeKasse(stuff.getCost());
+            }
+
+            if(stuff == Stuff.MUNITION_MP7 || stuff == Stuff.MUNITION_PISTOLE) {
+                Weapon w = null;
+                if(stuff == Stuff.MUNITION_MP7) {
+                    w = Weapon.MP7;
+                } else {
+                    w = Weapon.PISTOLE;
+                }
+                p.getInventory().remove(w.getWeapon().getType());
+                int ammunitionInWeapon = Waffen.getAmmo(w.getWeapon()) + Waffen.getAmmoTotal(w.getWeapon());
+
+                int newAmmunitionInWeapon = ammunitionInWeapon + stuff.getItem().getAmount();
+
+                int magazine;
+                int total;
+                if (newAmmunitionInWeapon > w.getMagazineSize()) {
+                    magazine = w.getMagazineSize();
+                    total = newAmmunitionInWeapon - w.getMagazineSize();
+                } else {
+                    magazine = newAmmunitionInWeapon;
+                    total = 0;
+                }
+
+                p.getInventory().addItem(Waffen.setAmmo(w.getWeapon(), magazine, total));
+                p.sendMessage(PREFIX + "Du hast dich mit " + stuff.getName() + " ausgerüstet.");
+                Beruf.getBeruf(p).sendLeaderMessage("§8[§e" + Beruf.getBeruf(p).getName() + "§8] §e» " + Script.getName(p) + " hat sich mit " + stuff.getName() + " ausgerüstet.");
+                Log.LOW.write(p, "hat sich mit " + w.getName() + " ausgerüstet.");
+                return;
             }
 
             for (Weapon w : Weapon.values()) {

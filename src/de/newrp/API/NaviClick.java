@@ -2,6 +2,7 @@ package de.newrp.API;
 
 import de.newrp.GFB.*;
 import de.newrp.Player.NaviCommand;
+import de.newrp.Player.UBahn;
 import de.newrp.Shop.ShopType;
 import de.newrp.Shop.Shops;
 import org.bukkit.Bukkit;
@@ -135,6 +136,7 @@ public class NaviClick implements Listener {
                         Inventory inv = Bukkit.createInventory(null, 18, "§e§lNavi");
                         inv.setItem(0, Script.setName(Material.NETHER_STAR, "§6Nächster Bankautomat"));
                         inv.setItem(1, Script.setName(Material.NETHER_STAR, "§6Nächste Apotheke"));
+                        inv.setItem(2, Script.setName(Material.NETHER_STAR, "§6Nächste U-Bahn"));
                         inv.setItem(13, Script.setName(Material.REDSTONE, "§cZurück"));
                         Script.fillInv(inv);
                         p.openInventory(inv);
@@ -159,6 +161,13 @@ public class NaviClick implements Listener {
                         p.sendMessage(Navi.PREFIX + "Dir wird nun die Route zur nächsten §6§lApotheke§r§6 angezeigt.");
                         p.sendMessage(Messages.INFO + "Mit /navistop oder erneut /navi wird die Route gelöscht.");
                         new Route(p.getName(), Script.getNRPID(p), p.getLocation(), nearest.getBuyLocation()).start();
+                        break;
+                    }
+                    case "§6Nächste U-Bahn": {
+                        UBahn.Stops stop = UBahn.getNearestStop(p);
+                        p.sendMessage(Navi.PREFIX + "Dir wird nun die Route zur nächsten §6§lU-Bahn-Haltestelle (" + stop.getName() + ")§r§6 angezeigt.");
+                        p.sendMessage(Messages.INFO + "Mit /navistop oder erneut /navi wird die Route gelöscht.");
+                        new Route(p.getName(), Script.getNRPID(p), p.getLocation(), stop.getLocation()).start();
                         break;
                     }
 

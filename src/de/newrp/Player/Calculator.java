@@ -1,6 +1,6 @@
 package de.newrp.Player;
 
-import de.newrp.API.Expression;
+import de.newrp.API.Expressions;
 import de.newrp.API.Messages;
 import de.newrp.API.Premium;
 import org.bukkit.command.Command;
@@ -28,10 +28,10 @@ public class Calculator implements CommandExecutor {
             return true;
         }
 
-        Expression expr = new Expression(String.join(" ", args).replace(" ", ""));
+        Expressions expr = new Expressions(String.join(" ", args).replace(" ", ""));
         try {
             expr.evaluate();
-        } catch (Expression.ExpressionException e) {
+        } catch (Expressions.ExpressionException e) {
             p.sendMessage(Messages.ERROR + "Ungültiger Ausdruck.");
             return true;
         }
