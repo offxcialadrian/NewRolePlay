@@ -354,6 +354,7 @@ public class main extends JavaPlugin {
         getCommand("anrufbeantworter").setExecutor(new Anrufbeantworter());
         getCommand("kamera").setExecutor(new KameraCommand());
         getCommand("tv").setExecutor(new TV());
+        getCommand("slap").setExecutor(new SlapCommand());
 
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new SDuty(), this);

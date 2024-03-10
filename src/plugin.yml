@@ -600,3 +600,6 @@ commands:
   tv:
     description: view the tv
     aliases: [ fernseher ]
+  slap:
+    description: slap a player
+    aliases: [ schlagen, klatsche ]

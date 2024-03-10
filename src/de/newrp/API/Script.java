@@ -481,6 +481,17 @@ public class Script {
         return s.matches("^(?:[0-9]{1,3}\\.){3}[0-9]{1,3}$");
     }
 
+    public static String rainbowChatColor(String string) {
+        int currColor;
+        StringBuilder newMessage = new StringBuilder();
+        String colors = "1234569abcde";
+        for (int i = 0; i < string.length(); i++) {
+            currColor = new Random().nextInt(colors.length() - 1) + 1;
+            newMessage.append(ChatColor.RESET).append(ChatColor.getByChar(colors.charAt(currColor))).append(string.charAt(i));
+        }
+        return newMessage.toString();
+    }
+
     public static Boolean hasRank(OfflinePlayer p, Rank rank, Boolean allowLower) {
         if (allowLower) {
             if (getActiveAmountByRank(getNextHigherRank(rank)) == 0) {
