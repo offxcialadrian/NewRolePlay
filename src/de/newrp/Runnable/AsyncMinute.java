@@ -125,6 +125,7 @@ public class AsyncMinute extends BukkitRunnable {
                 if(e instanceof ItemFrame) continue;
                 if(e instanceof ArmorStand) continue;
                 if(e instanceof Painting) continue;
+                if(e instanceof Boat) continue;
                 if(e.getEntityId() == CitizensAPI.getNPCRegistry().getById(Schwarzmarkt.SCHWARZMARKT_ID).getEntity().getEntityId()) continue;
                 e.remove();
             }
@@ -140,8 +141,6 @@ public class AsyncMinute extends BukkitRunnable {
 
 
         for (Player p : Bukkit.getOnlinePlayers()) {
-
-            if (!AFK.isAFK(p)) AFK.updateAFK(p);
             if (!AFK.isAFK(p)) Script.increaseActivePlayTime(p);
             Script.increasePlayTime(p);
             if(Script.getRandom(1, 10) == 1) {

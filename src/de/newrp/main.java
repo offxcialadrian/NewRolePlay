@@ -478,6 +478,7 @@ public class main extends JavaPlugin {
         new AsyncPlantation().runTaskTimerAsynchronously(this, 60 * 20L, 60 * 20L);
         //new Async15Sek().runTaskTimerAsynchronously(this, 15* 20L, 15 * 20L);
         new Sync15Sek().runTaskTimer(this, 15 * 20L, 15 * 20L);
+        new Async2Min().runTaskTimer(this, 120 * 20L, 120 * 20L);
 
         ScoreboardManager.initMainScoreboard();
         Hologram.reload();

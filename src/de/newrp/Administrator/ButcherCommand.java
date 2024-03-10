@@ -50,6 +50,7 @@ public class ButcherCommand implements CommandExecutor {
             if(e instanceof ItemFrame) continue;
             if(e instanceof ArmorStand) continue;
             if(e instanceof Painting) continue;
+            if(e instanceof Boat) continue;
             if(e.getEntityId() == CitizensAPI.getNPCRegistry().getById(Schwarzmarkt.SCHWARZMARKT_ID).getEntity().getEntityId()) continue;
             e.remove();
         }
