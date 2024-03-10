@@ -120,6 +120,6 @@ public class Forum {
         if (Team.SOCIAL_MEDIA.isInTeam(id)) addUserToGroup(forumid, ForumGroup.SOCIAL_MEDIA);
         if (Script.isYoutuber(id)) addUserToGroup(forumid, ForumGroup.YOUTUBER);*/
 
-        p.sendMessage(prefix + "§7Deine Forenrechte wurden synchronisiert.");
+        p.sendMessage(prefix + "§aDeine Forenrechte wurden synchronisiert.");
     }
 }

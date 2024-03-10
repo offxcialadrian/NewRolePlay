@@ -65,8 +65,8 @@ public class BuyShop implements CommandExecutor {
                 }
 
                 if(Shops.getShopsByPlayer(Script.getNRPID(p)).size() >= SlotLimit.SHOP.get(Script.getNRPID(p))) {
-                    p.sendMessage(Messages.ERROR + "Du hast nicht genug Shopslots");
-                    p.sendMessage(Messages.INFO + "Du kannst einen weiteren Shopslot im Shop erwerben.");
+                    p.sendMessage(Messages.ERROR + "Du hast nicht genug Shopslots.");
+                    p.sendMessage(Messages.INFO + "Du kannst einen weiteren Shopslot im Onlineshop erwerben.");
                     return true;
                 }
 

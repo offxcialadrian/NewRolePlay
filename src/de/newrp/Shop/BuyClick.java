@@ -75,7 +75,7 @@ public class BuyClick implements Listener {
 
         if(s.getType() == ShopType.HOTEL) {
             if(Hotel.hasHotelRoom(p)) {
-                sendMessage(p, "Alles Klar, sie haben den check-out vollzogen.");
+                sendMessage(p, "Alles Klar, Sie haben den Check-Out vollzogen.");
                 Script.executeUpdate("DELETE FROM hotel WHERE nrp_id=" + Script.getNRPID(p));
                 return;
             }

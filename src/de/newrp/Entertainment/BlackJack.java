@@ -62,7 +62,7 @@ public class BlackJack implements CommandExecutor, Listener {
                                 return true;
                             }
                             p.sendMessage(Messages.INFO + "Glücksspiel kann süchtig machen. Spiele verantwortungsbewusst.");
-                            p.sendMessage(Messages.INFO + "Solltest du Hilfe benötigen wende dich an: §6https://www.bzga.de/");
+                            p.sendMessage(Messages.INFO + "Solltest du Hilfe benötigen, wende dich an: §6https://www.bzga.de/");
                             bet.put(p.getName(), i);
                             Script.removeMoney(p, PaymentType.CASH, i);
                             cashier.put(p.getName(), Cards.getRandomCard().getValue());

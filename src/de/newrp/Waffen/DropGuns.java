@@ -22,11 +22,12 @@ public class DropGuns implements CommandExecutor {
         }
 
         if(Handschellen.isCuffed(p)) {
-            p.sendMessage(Messages.ERROR + "Du kannst deine Waffen nicht dropen, da du Handschellen um hast.");
+            p.sendMessage(Messages.ERROR + "Du kannst deine Waffen nicht droppen, da du Handschellen an hast.");
             return true;
         }
 
-        Me.sendMessage(p, "lässt eine Waffe fallen.");
+        //Me.sendMessage(p, "lässt eine Waffe fallen.");
+        Me.sendMessage(p, "lässt etwas metallisches fallen.");
         Script.removeWeapons(p);
         Log.NORMAL.write(p, "hat seine Waffen fallen gelassen.");
 

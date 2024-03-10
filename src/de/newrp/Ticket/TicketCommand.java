@@ -43,7 +43,7 @@ public class TicketCommand implements CommandExecutor {
         queue.put(Script.getNRPID(p), new Ticket.Queue(p, topic, System.currentTimeMillis()));
         p.sendMessage(PREFIX + "Dein Ticket wurde abgesendet und wird schnellstmöglich bearbeitet.");
         Calendar calendar = Calendar.getInstance();
-        if (calendar.get(Calendar.HOUR_OF_DAY) < 8 || calendar.get(Calendar.HOUR_OF_DAY) > 22) {
+        if (calendar.get(Calendar.HOUR_OF_DAY) < 8 || calendar.get(Calendar.HOUR_OF_DAY) > 20) {
             p.sendMessage(PREFIX + "§cBitte beachte, dass es aufgrund der Uhrzeit zu längeren Wartezeiten kommen kann.");
         }
         SDuty.updateScoreboard();
@@ -199,7 +199,7 @@ public class TicketCommand implements CommandExecutor {
     }
 
     public static void sendTicketTitle(Player p) {
-        Title.sendTitle(p, 20, 50, 20, "§bDein Ticket wurde angenommen");
+        Title.sendTitle(p, 20, 50, 20, "§bDein Ticket wurde angenommen!");
     }
 
     public static void reset() {
@@ -307,7 +307,7 @@ public class TicketCommand implements CommandExecutor {
             } else {
 
                 if (getFarewell(p).equals(msg)) {
-                    p.sendMessage(Messages.ERROR + "Die Nachricht ist bereits die aktuelle Nachricht.");
+                    p.sendMessage(Messages.ERROR + "Die Nachricht ist bereits deine aktuelle Nachricht.");
                     return true;
                 }
                 Script.executeAsyncUpdate("UPDATE ticket_farewell SET farewell='" + msg + "' WHERE nrp_id=" + Script.getNRPID(p) + ";");

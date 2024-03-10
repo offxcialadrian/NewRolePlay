@@ -47,7 +47,7 @@ public class PremiumChannel implements CommandExecutor {
                             p.sendMessage(TeamSpeak.PREFIX + "Du hast einen privaten Channel im Teamspeak erstellt.");
                             Client c = TeamSpeak.getClient(id);
                             if (c == null) {
-                                p.sendMessage(TeamSpeak.PREFIX + "Es konnte kein Channel erstellt werden da du nicht auf dem Teamspeak verbunden bist.");
+                                p.sendMessage(TeamSpeak.PREFIX + "Es konnte kein Channel erstellt werden, da du nicht auf dem Teamspeak verbunden bist.");
                                 return;
                             }
                             TeamSpeak.addToChannelGroup(TeamSpeak.getApi().getChannelByNameExact("» Privater Talk [" + (channel - 1) + "]", false).getId(), TeamspeakServerGroup.TeamspeakChannelGroup.CHANNEL_ERSTELLER, c.getDatabaseId());
