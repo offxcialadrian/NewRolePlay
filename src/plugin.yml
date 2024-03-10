@@ -603,3 +603,6 @@ commands:
   slap:
     description: slap a player
     aliases: [ schlagen, klatsche ]
+  raffle:
+    description: starts a raffle
+    aliases: [ verlosung ]
