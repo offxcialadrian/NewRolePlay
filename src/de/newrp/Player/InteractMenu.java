@@ -120,6 +120,7 @@ public class InteractMenu implements Listener {
         if (!interacting.containsKey(p.getName())) return;
         Player tg = Script.getPlayer(interacting.get(p.getName()));
         if (tg == null) return;
+        if(Drone.isDrone(p) || Drone.isDrone(tg)) return;
         if (e.getCurrentItem() == null || e.getCurrentItem().getType() == Material.AIR) return;
         if (p.getLocation().distance(tg.getLocation()) > 2) {
             p.sendMessage(Messages.ERROR + "Der Spieler ist zu weit entfernt.");

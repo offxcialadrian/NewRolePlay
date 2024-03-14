@@ -133,7 +133,7 @@ public class Kellner implements CommandExecutor, Listener {
 
         cooldown.put(p.getName(), System.currentTimeMillis() + 10 * 60 * 2000L);
         GFB.CURRENT.put(p.getName(), GFB.KELLNER);
-        int totalscore = GFB.KELLNER.getLevel(p) * Script.getRandom(8, 12);
+        int totalscore = GFB.KELLNER.getLevel(p) + Script.getRandom(8, 12);
         SCORE.put(p.getName(), totalscore);
         TOTAL_SCORE.put(p.getName(), totalscore);
         p.sendMessage(PREFIX + "Du hast den Job §6Kellner §7angenommen.");
@@ -185,10 +185,11 @@ public class Kellner implements CommandExecutor, Listener {
             p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
             int left = SCORE.get(p.getName()) - 1;
             if(left == 0) {
-                GFB.KELLNER.addExp(p, GFB.KELLNER.getLevel(p) * Script.getRandom(5, 7));
+                GFB.KELLNER.addExp(p, GFB.KELLNER.getLevel(p) + Script.getRandom(5, 7));
                 SCORE.remove(p.getName());
                 GFB.CURRENT.remove(p.getName());
-                PayDay.addPayDay(p, GFB.KELLNER.getLevel(p) * TOTAL_SCORE.get(p.getName())/2);
+                PayDay.addPayDay(p, GFB.KELLNER.getLevel(p) + TOTAL_SCORE.get(p.getName()));
+                TOTAL_SCORE.remove(p.getName());
                 return;
             }
             SCORE.put(p.getName(), left);

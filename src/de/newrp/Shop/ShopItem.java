@@ -6,9 +6,11 @@ import de.newrp.House.HouseAddon;
 import de.newrp.News.Zeitung;
 import de.newrp.Waffen.Weapon;
 import de.newrp.main;
+import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,37 +18,37 @@ import java.sql.Statement;
 
 public enum ShopItem {
 
-    BROT(0, "§fBrot", new ItemBuilder(Material.BREAD).setAmount(16).build(), 5, 1, 20, 2, 2400, true, true, false, new ShopType[] {ShopType.SUPERMARKET}),
-    KAFFEE(1, "§fKaffee", new ItemStack(Material.POTION, 1), 1, 1, 20, 2, 3900, true, true, false, new ShopType[] {ShopType.SUPERMARKET}),
-    LOTTOSCHEIN(2, "§7Lottoschein", new ItemStack(Material.PAPER), 1, 1, 20, 30, 1000, false, true, false, new ShopType[] {ShopType.SUPERMARKET, ShopType.NEWS}),
-    HAUSKASSE(3, "§7Hauskasse", new ItemStack(Material.CHEST), 20, 1, 20, HouseAddon.HAUSKASSE.getPrice(), 34000, false, false, false, new ShopType[] {ShopType.HOUSEADDON}),
-    MIETERSLOT(4, "§7Mieterslot", new ItemStack(Material.CHEST), 20, 1, 20, HouseAddon.SLOT.getPrice(), 39500, false, false, false, new ShopType[] {ShopType.HOUSEADDON}),
-    WAFFENSCHRANK(5, "§7Waffenschrank", new ItemStack(Material.CHEST), 20, 1, 20, HouseAddon.WAFFENSCHRANK.getPrice(), 39500, false, false, false, new ShopType[] {ShopType.HOUSEADDON}),
-    ALARMANLAGE(7, "§7Alarmanlage", new ItemStack(Material.REDSTONE), 20, 1, 20, HouseAddon.ALARM.getPrice(), 39500, false, false, false, new ShopType[] {ShopType.HOUSEADDON}),
-    KUEHLSCHRANK(9, "§7Kühlschrank", new ItemStack(Material.CHEST), 20, 1, 20, HouseAddon.KUEHLSCHRANK.getPrice(), 39500, false, false, false, new ShopType[] {ShopType.HOUSEADDON}),
-    PISTOLE(10, "§7Glory", new ItemStack(Material.IRON_HORSE_ARMOR), 1, 1, 1, 1, 1, false, false, false, new ShopType[] {ShopType.GUNSHOP}),
-    AMMO_9MM(11, "§79mm Munition (" + Weapon.PISTOLE.getName() + ")", new ItemBuilder(Material.ARROW).setAmount(Weapon.PISTOLE.getMagazineSize()).build(), 1, 1, 1, 1, 1, false, false, false, new ShopType[] {ShopType.GUNSHOP}),
-    AK47(12, "§7Peacekeeper", new ItemStack(Material.DIAMOND_HORSE_ARMOR), 1, 1, 1, 1, 1, false, false, false, new ShopType[] {ShopType.GUNSHOP}),
-    HEISSE_SCHOKOLADE(43, "§rHeiße Schokolade", new ItemStack(Material.FLOWER_POT), 1, 2, 25, 2, 3000, true, true, false, new ShopType[] {ShopType.CAFE}),
-    FILTERKAFFEE(44, "§rFilterkaffee", new ItemStack(Material.FLOWER_POT), 1, 2, 25, 2, 3000, true, true, false, new ShopType[] {ShopType.CAFE}),
-    LATTE_MACCHIATO(45, "§rLatte Macchiato", new ItemStack(Material.FLOWER_POT), 1, 2, 25, 2, 3000, true, true, false, new ShopType[] {ShopType.CAFE}),
-    ESPRESSO(46, "§rEspresso", new ItemStack(Material.FLOWER_POT), 1, 2, 25, 2, 3000, true, true, false, new ShopType[] {ShopType.CAFE}),
-    CRAPPUCHINO(47, "§rCrappuchino", new ItemStack(Material.FLOWER_POT), 1, 2, 25, 2, 3000, true, true, false, new ShopType[] {ShopType.CAFE}),
-    Zeitung(48, "§9Zeitung", de.newrp.News.Zeitung.zeitung, 1, 2, 25, de.newrp.News.Zeitung.getBuyPrice(), 3000, true, true, false, new ShopType[] {ShopType.CAFE, ShopType.SUPERMARKET, ShopType.NEWS}),
-    SCHMERZMITTEL(49, "§fSchmerzmittel", new ItemStack(Material.PAPER), 5, 2, 25, 2, 3000, true, true, false, new ShopType[] {ShopType.PHARMACY, ShopType.SUPERMARKET}),
-    BASEBALLSCHLAEGER(50, "§7Baseballschläger", new ItemStack(Material.BONE), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.GUNSHOP}),
-    SAMSUNG_HANDY(52, "§cSamstar", new ItemStack(Material.IRON_INGOT), 1, 1, 1, 1, 1, false, false, false, new ShopType[] {ShopType.ELECTRONIC}),
-    HUAWEI_HANDY(53, "§cHawaii P55", new ItemStack(Material.IRON_INGOT), 1, 1, 1, 1, 1, false, false, false, new ShopType[] {ShopType.ELECTRONIC}),
-    APPLE_HANDY(55, "§cyouPhone 15", new ItemStack(Material.IRON_INGOT), 1, 1, 1, 1, 1, false, false, false, new ShopType[] {ShopType.ELECTRONIC}),
-    MAP(56, "§7Karte", new ItemStack(Material.MAP), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.SUPERMARKET, ShopType.NEWS}),
-    VERBAND(57, "§7Verband", new ItemStack(Material.PAPER), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.PHARMACY}),
-    TRINKWASSER(58, "§7Trinkwasser", new ItemStack(Material.POTION), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.SUPERMARKET, ShopType.CAFE, ShopType.NEWS}),
-    AMMO_762MM(59, "§7.762mm Munition (" + Weapon.AK47.getName() + ")", new ItemBuilder(Material.ARROW).setAmount(Weapon.AK47.getMagazineSize()).build(), 1, 1, 1, 1, 1, false, false, false, new ShopType[] {ShopType.GUNSHOP}),
-    KEVLAR(51, "§7Schutzweste", Script.kevlar(1), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.GUNSHOP}),
-    SCHMERZMITTEL_HIGH(60, "§fSchmerzmittel (High)", new ItemStack(Material.PAPER), 10, 2, 25, 2, 3000, true, true, false, new ShopType[] {ShopType.PHARMACY}),
-    ANTIBIOTIKA(61, "§fAntibiotika", new ItemStack(Material.PAPER), 5, 2, 25, 2, 3000, true, true, false, new ShopType[] {ShopType.PHARMACY}),
-    HUSTENSAFT(62, "§fHustensaft", new ItemStack(Material.PAPER), 5, 2, 25, 2, 3000, true, true, false, new ShopType[] {ShopType.PHARMACY}),
-    ENTZUENDUNGSHEMMENDE_SALBE(63, "§fEntzündungshemmende Salbe", new ItemStack(Material.PAPER), 5, 2, 25, 2, 3000, true, true, false, new ShopType[] {ShopType.PHARMACY}),
+    BROT(0, "§fBrot", new ItemBuilder(Material.BREAD).setAmount(8).build(), 2, 1, 20, 4, 2400, false, true, false, new ShopType[] {ShopType.SUPERMARKET}),
+    KAFFEE(1, "§fKaffee", new ItemStack(Material.POTION, 1), 3, 1, 20, 2, 1500, false, true, false, new ShopType[] {ShopType.CAFE}),
+    LOTTOSCHEIN(2, "§7Lottoschein", new ItemStack(Material.PAPER), 1, 1, 20, 25, 7500, false, true, false, new ShopType[] {ShopType.NEWS}),
+    HAUSKASSE(3, "§7Hauskasse", new ItemStack(Material.CHEST), 10, 1, 20, HouseAddon.HAUSKASSE.getPrice(), 6000, false, false, false, new ShopType[] {ShopType.HOUSEADDON}),
+    MIETERSLOT(4, "§7Mieterslot", new ItemStack(Material.CHEST), 10, 1, 20, HouseAddon.SLOT.getPrice(), 10000, false, false, false, new ShopType[] {ShopType.HOUSEADDON}),
+    WAFFENSCHRANK(5, "§7Waffenschrank", new ItemStack(Material.CHEST), 10, 1, 20, HouseAddon.WAFFENSCHRANK.getPrice(), 14000, false, false, false, new ShopType[] {ShopType.HOUSEADDON}),
+    ALARMANLAGE(7, "§7Alarmanlage", new ItemStack(Material.REDSTONE), 10, 1, 20, HouseAddon.ALARM.getPrice(), 12000, false, false, false, new ShopType[] {ShopType.HOUSEADDON}),
+    KUEHLSCHRANK(9, "§7Kühlschrank", new ItemStack(Material.CHEST), 10, 1, 20, HouseAddon.KUEHLSCHRANK.getPrice(), 1200, false, false, false, new ShopType[] {ShopType.HOUSEADDON}),
+    PISTOLE(10, "§7Glory", new ItemStack(Material.IRON_HORSE_ARMOR), 15, 1, 1, 6000, 12000, false, false, false, new ShopType[] {ShopType.GUNSHOP}),
+    AMMO_9MM(11, "§79mm Munition (" + Weapon.PISTOLE.getName() + ")", new ItemBuilder(Material.ARROW).setAmount(Weapon.PISTOLE.getMagazineSize()).build(), 1, 1, 1, 15, 6000, false, false, false, new ShopType[] {ShopType.GUNSHOP}),
+    AK47(12, "§7Peacekeeper", new ItemStack(Material.DIAMOND_HORSE_ARMOR), 20, 1, 1, 11000, 22000, false, false, false, new ShopType[] {ShopType.GUNSHOP}),
+    HEISSE_SCHOKOLADE(43, "§rHeiße Schokolade", new ItemStack(Material.FLOWER_POT), 3, 2, 25, 3, 1800, true, true, false, new ShopType[] {ShopType.CAFE}),
+    FILTERKAFFEE(44, "§rFilterkaffee", new ItemStack(Material.FLOWER_POT), 3, 2, 25, 3, 1800, true, true, false, new ShopType[] {ShopType.CAFE}),
+    LATTE_MACCHIATO(45, "§rLatte Macchiato", new ItemStack(Material.FLOWER_POT), 3, 2, 25, 3, 1800, true, true, false, new ShopType[] {ShopType.CAFE}),
+    ESPRESSO(46, "§rEspresso", new ItemStack(Material.FLOWER_POT), 3, 2, 25, 4, 2100, true, true, false, new ShopType[] {ShopType.CAFE}),
+    CRAPPUCHINO(47, "§rCrappuchino", new ItemStack(Material.FLOWER_POT), 3, 2, 25, 3, 1800, true, true, false, new ShopType[] {ShopType.CAFE}),
+    Zeitung(48, "§9Zeitung", de.newrp.News.Zeitung.zeitung, 3, 2, 25, de.newrp.News.Zeitung.getBuyPrice(), 1800, true, true, false, new ShopType[] {ShopType.CAFE, ShopType.SUPERMARKET, ShopType.NEWS}),
+    SCHMERZMITTEL(49, "§fSchmerzmittel", new ItemStack(Material.PAPER), 2, 2, 25, 45, 4900, true, true, false, new ShopType[] {ShopType.PHARMACY, ShopType.SUPERMARKET}),
+    BASEBALLSCHLAEGER(50, "§7Baseballschläger", new ItemStack(Material.BONE), 5, 1, 1, 750, 4500, false, true, false, new ShopType[] {ShopType.GUNSHOP}),
+    SAMSUNG_HANDY(52, "§cSamstar", new ItemStack(Material.IRON_INGOT), 5, 1, 1, 100, 3500, false, false, false, new ShopType[] {ShopType.ELECTRONIC}),
+    HUAWEI_HANDY(53, "§cHawaii P55", new ItemStack(Material.IRON_INGOT), 5, 1, 1, 50, 600, false, false, false, new ShopType[] {ShopType.ELECTRONIC}),
+    APPLE_HANDY(55, "§cyouPhone 15", new ItemStack(Material.IRON_INGOT), 5, 1, 1, 300, 11000, false, false, false, new ShopType[] {ShopType.ELECTRONIC}),
+    MAP(56, "§7Karte", new ItemStack(Material.MAP), 3, 1, 1, 10, 1100, false, true, false, new ShopType[] {ShopType.SUPERMARKET, ShopType.NEWS}),
+    VERBAND(57, "§7Verband", new ItemStack(Material.PAPER), 3, 1, 1, 60, 4300, false, true, false, new ShopType[] {ShopType.PHARMACY}),
+    TRINKWASSER(58, "§7Trinkwasser", new ItemStack(Material.POTION), 3, 1, 1, 2, 500, false, true, false, new ShopType[] {ShopType.SUPERMARKET, ShopType.CAFE, ShopType.NEWS}),
+    AMMO_762MM(59, "§7.762mm Munition (" + Weapon.AK47.getName() + ")", new ItemBuilder(Material.ARROW).setAmount(Weapon.AK47.getMagazineSize()).build(), 1, 1, 1, 30, 3000, false, false, false, new ShopType[] {ShopType.GUNSHOP}),
+    KEVLAR(51, "§7Schutzweste", Script.kevlar(1), 20, 1, 1, 2900, 14900, false, true, false, new ShopType[] {ShopType.GUNSHOP}),
+    SCHMERZMITTEL_HIGH(60, "§fSchmerzmittel (High)", new ItemStack(Material.PAPER), 2, 2, 25, 65, 6100, true, true, false, new ShopType[] {ShopType.PHARMACY}),
+    ANTIBIOTIKA(61, "§fAntibiotika", new ItemStack(Material.PAPER), 5, 2, 25, 75, 4900, true, true, false, new ShopType[] {ShopType.PHARMACY}),
+    HUSTENSAFT(62, "§fHustensaft", new ItemStack(Material.PAPER), 5, 2, 25, 60, 3400, true, true, false, new ShopType[] {ShopType.PHARMACY}),
+    ENTZUENDUNGSHEMMENDE_SALBE(63, "§fEntzündungshemmende Salbe", new ItemStack(Material.PAPER), 5, 2, 25, 30, 2600, true, true, false, new ShopType[] {ShopType.PHARMACY}),
     CD_1(65, "§6Gold", new ItemStack(Material.MUSIC_DISC_11), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.MUSIC}),
     CD_2(66, "§6Green", new ItemStack(Material.MUSIC_DISC_13), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.MUSIC}),
     CD_3(67, "§6Blocks", new ItemStack(Material.MUSIC_DISC_BLOCKS), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.MUSIC}),
@@ -58,14 +60,14 @@ public enum ShopItem {
     CD_9(73, "§6Strad", new ItemStack(Material.MUSIC_DISC_STRAD),   1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.MUSIC}),
     CD_10(74, "§6Ward", new ItemStack(Material.MUSIC_DISC_WARD), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.MUSIC}),
     CD_11(75, "§6Wait", new ItemStack(Material.MUSIC_DISC_WAIT), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.MUSIC}),
-    ROSE(76, "§7Rose", new ItemStack(Material.WITHER_ROSE), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.FLOWER}),
-    TULPE(77, "§7Tulpe", new ItemStack(Material.RED_TULIP), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.FLOWER}),
-    MARGARITE(78, "§7Margarite", new ItemStack(Material.OXEYE_DAISY), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.FLOWER}),
-    GERBERA(79, "§7Gerbera", new ItemStack(Material.ORANGE_TULIP), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.FLOWER}),
-    LILIEN(80, "§7Lilien", new ItemStack(Material.WHITE_TULIP), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.FLOWER}),
-    MARGARITE_PINK(81, "§7Pink Margarite", new ItemStack(Material.PINK_TULIP), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.FLOWER}),
-    WATER_BUCKET(82, "§7Wasser", Script.setNameAndLore(new ItemStack(Material.WATER_BUCKET), "§9Wasser", "§65/5"), 1, 1, 1, 1, 1, false, false, false, new ShopType[] {ShopType.FLOWER}),
-    DUENGER(83, "§7Dünger", new ItemStack(Material.INK_SAC), 1, 1, 1, 1, 1, false, false, false, new ShopType[] {ShopType.FLOWER}),
+    ROSE(76, "§7Rose", new ItemStack(Material.WITHER_ROSE), 1, 1, 1, 10, 600, false, true, false, new ShopType[] {ShopType.FLOWER}),
+    TULPE(77, "§7Tulpe", new ItemStack(Material.RED_TULIP), 1, 1, 1, 5, 300, false, true, false, new ShopType[] {ShopType.FLOWER}),
+    MARGARITE(78, "§7Margarite", new ItemStack(Material.OXEYE_DAISY), 1, 1, 1, 3, 150, false, true, false, new ShopType[] {ShopType.FLOWER}),
+    GERBERA(79, "§7Gerbera", new ItemStack(Material.ORANGE_TULIP), 1, 1, 1, 3, 150, false, true, false, new ShopType[] {ShopType.FLOWER}),
+    LILIEN(80, "§7Lilien", new ItemStack(Material.WHITE_TULIP), 1, 1, 1, 3, 150, false, true, false, new ShopType[] {ShopType.FLOWER}),
+    MARGARITE_PINK(81, "§7Pink Margarite", new ItemStack(Material.PINK_TULIP), 1, 1, 1, 4, 200, false, true, false, new ShopType[] {ShopType.FLOWER}),
+    WATER_BUCKET(82, "§7Wasser", Script.setNameAndLore(new ItemStack(Material.WATER_BUCKET), "§9Wasser", "§65/5"), 5, 1, 1, 40, 2000, false, false, false, new ShopType[] {ShopType.FLOWER}),
+    DUENGER(83, "§7Dünger", new ItemStack(Material.INK_SAC), 1, 1, 1, 50, 2600, false, false, false, new ShopType[] {ShopType.FLOWER}),
     EINZELZIMMER(84, "§7Einzelzimmer", new ItemStack(Material.OAK_DOOR), 1, 1, 1, 1, 1, false, false, false, new ShopType[] {ShopType.HOTEL}),
     DOPPELZIMMER(85, "§7Doppelzimmer", new ItemStack(Material.OAK_DOOR), 1, 1, 1, 1, 1, false, false, false, new ShopType[] {ShopType.HOTEL}),
     MEHRBETTZIMMER(86, "§7Mehrbettzimmer", new ItemStack(Material.OAK_DOOR), 1, 1, 1, 1, 1, false, false, false, new ShopType[] {ShopType.HOTEL}),
@@ -73,16 +75,33 @@ public enum ShopItem {
     EXECUTIVE_SUITE(88, "§7Executive Suite", new ItemStack(Material.OAK_DOOR), 1, 1, 1, 1, 1, false, false, false, new ShopType[] {ShopType.HOTEL}),
     DELUXE_ZIMMER(89, "§7Deluxe Zimmer", new ItemStack(Material.OAK_DOOR), 1, 1, 1, 1, 1, false, false, false, new ShopType[] {ShopType.HOTEL}),
     PRAESIDENTEN_SUITE(90, "§7Präsidenten Suite", new ItemStack(Material.OAK_DOOR), 1, 1, 1, 1, 1, false, false, false, new ShopType[] {ShopType.HOTEL}),
-    EINZELFAHRASUSWEIS(91, "§6UBahn-Ticket", new ItemBuilder(Material.PAPER).setName("§6UBahn-Ticket [Einzelfahrausweis]").setLore("Verbleibende Fahrten: 1").build(), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.NEWS}),
-    WOCHENFAHRASUSWEIS(92, "§6UBahn-Ticket", new ItemBuilder(Material.PAPER).setName("§6UBahn-Ticket [7 Fahrten]").setLore("Verbleibende Fahrten: 7").build(), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.NEWS}),
-    MONATSFAHRASUSWEIS(93, "§6UBahn-Ticket", new ItemBuilder(Material.PAPER).setName("§6UBahn-Ticket [30 Fahrten]").setLore("Verbleibende Fahrten: 30").build(), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.NEWS}),
-    FALLSCHIRM(94, "§7Fallschirm", new ItemStack(Material.ELYTRA), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.GUNSHOP}),
-    KABELBINDER(95, "§7Kabelbinder", new ItemStack(Material.STRING), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.GUNSHOP, ShopType.SUPERMARKET}),
-    JAGDFLINTE(96, "§7Guardian", new ItemStack(Material.DIAMOND_HOE), 1, 1, 1, 1, 1, false, false, false, new ShopType[] {ShopType.GUNSHOP}),
-    SCHROT(97, "§7Schrot (" + Weapon.JAGDFLINTE.getName() + ")", new ItemBuilder(Material.ARROW).setAmount(Weapon.JAGDFLINTE.getMagazineSize()).build(), 1, 1, 1, 1, 1, false, false, false, new ShopType[] {ShopType.GUNSHOP}),
-    DEAGLE(98, "§7Ivory", new ItemStack(Material.GOLDEN_HOE), 1, 1, 1, 1, 1, false, false, false, new ShopType[] {ShopType.GUNSHOP}),
-    AMMO_50AE(99, "§7.50AE Munition (" + Weapon.DESERT_EAGLE.getName() + ")", new ItemBuilder(Material.ARROW).setAmount(Weapon.DESERT_EAGLE.getMagazineSize()).build(), 1, 1, 1, 1, 1, false, false, false, new ShopType[] {ShopType.GUNSHOP}),
-    ANGELRUTE(100, "§7Angelrute", new ItemStack(Material.FISHING_ROD), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.SUPERMARKET});
+    EINZELFAHRASUSWEIS(91, "§6UBahn-Ticket", new ItemBuilder(Material.PAPER).setName("§6UBahn-Ticket [Einzelfahrausweis]").setLore("Verbleibende Fahrten: 1").build(), 1, 1, 1, 3, 1300, false, true, false, new ShopType[] {ShopType.NEWS}),
+    WOCHENFAHRASUSWEIS(92, "§6UBahn-Ticket", new ItemBuilder(Material.PAPER).setName("§6UBahn-Ticket [7 Fahrten]").setLore("Verbleibende Fahrten: 7").build(), 1, 1, 1, 10, 2400, false, true, false, new ShopType[] {ShopType.NEWS}),
+    MONATSFAHRASUSWEIS(93, "§6UBahn-Ticket", new ItemBuilder(Material.PAPER).setName("§6UBahn-Ticket [30 Fahrten]").setLore("Verbleibende Fahrten: 30").build(), 1, 1, 1, 20, 5100, false, true, false, new ShopType[] {ShopType.NEWS}),
+    FALLSCHIRM(94, "§7Fallschirm", new ItemStack(Material.ELYTRA), 5, 1, 1, 600, 4100, false, true, false, new ShopType[] {ShopType.GUNSHOP}),
+    KABELBINDER(95, "§7Kabelbinder", new ItemStack(Material.STRING), 3, 1, 1, 100, 1900, false, true, false, new ShopType[] {ShopType.GUNSHOP, ShopType.SUPERMARKET}),
+    JAGDFLINTE(96, "§7Guardian", new ItemStack(Material.DIAMOND_HOE), 5, 1, 1, 5500, 10000, false, false, false, new ShopType[] {ShopType.JAGDHUETTE}),
+    SCHROT(97, "§7Schrot (" + Weapon.JAGDFLINTE.getName() + ")", new ItemBuilder(Material.ARROW).setAmount(Weapon.JAGDFLINTE.getMagazineSize()).build(), 2, 1, 1, 50, 4500, false, false, false, new ShopType[] {ShopType.GUNSHOP}),
+    DEAGLE(98, "§7Ivory", new ItemStack(Material.GOLDEN_HOE), 15, 1, 1, 8300, 16600, false, false, false, new ShopType[] {ShopType.GUNSHOP}),
+    AMMO_50AE(99, "§7.50AE Munition (" + Weapon.DESERT_EAGLE.getName() + ")", new ItemBuilder(Material.ARROW).setAmount(Weapon.DESERT_EAGLE.getMagazineSize()).build(), 2, 1, 1, 25, 4500, false, false, false, new ShopType[] {ShopType.GUNSHOP}),
+    ANGELRUTE(100, "§7Angelrute", new ItemStack(Material.FISHING_ROD), 10, 1, 1, 150, 1590, false, true, false, new ShopType[] {ShopType.ANGELSHOP}),
+    STEAK(101, "§fSteak", new ItemBuilder(Material.COOKED_BEEF).setAmount(8).build(), 2, 1, 20, 2, 2000, false, true, false, new ShopType[] {ShopType.FASTFOOD}),
+    POMMES(102, "§fPommes", new ItemBuilder(Material.BAKED_POTATO).setAmount(16).build(), 2, 1, 20, 3, 2400, false, true, false, new ShopType[] {ShopType.FASTFOOD}),
+    CHICKEN(103, "§fHähnchen", new ItemBuilder(Material.COOKED_BEEF).setAmount(8).build(), 2, 1, 20, 1, 2400, false, true, false, new ShopType[] {ShopType.FASTFOOD}),
+    SHOE_1(104, "§7Schuh", Shoe(Color.BLACK), 1, 1, 1, 50, 500, false, true, false, new ShopType[] {ShopType.SHOE_STORE}),
+    SHOE_2(105, "§7Schuh", Shoe(Color.BLUE), 1, 1, 1, 50, 500, false, true, false, new ShopType[] {ShopType.SHOE_STORE}),
+    SHOE_3(106, "§7Schuh", Shoe(Color.GREEN), 1, 1, 1, 50, 500, false, true, false, new ShopType[] {ShopType.SHOE_STORE}),
+    SHOE_4(107, "§7Schuh", Shoe(Color.RED), 1, 1, 1, 50, 500, false, true, false, new ShopType[] {ShopType.SHOE_STORE}),
+    SHOE_5(108, "§7Schuh", Shoe(Color.PURPLE), 1, 1, 1, 50, 500, false, true, false, new ShopType[] {ShopType.SHOE_STORE}),
+    SHOE_6(109, "§7Schuh", Shoe(Color.YELLOW), 1, 1, 1, 50, 500, false, true, false, new ShopType[] {ShopType.SHOE_STORE}),
+    SHOE_7(110, "§7Schuh", Shoe(Color.WHITE), 1, 1, 1, 50, 500, false, true, false, new ShopType[] {ShopType.SHOE_STORE}),
+    SHOE_8(111, "§7Schuh", Shoe(Color.ORANGE), 1, 1, 1, 50, 500, false, true, false, new ShopType[] {ShopType.SHOE_STORE}),
+    SHOE_9(112, "§7Schuh", Shoe(Color.FUCHSIA), 1, 1, 1, 50, 500, false, true, false, new ShopType[] {ShopType.SHOE_STORE}),
+    CARROTT(113, "§fKarotte", new ItemBuilder(Material.CARROT).setAmount(16).build(), 2, 1, 20, 1, 2000, false, true, false, new ShopType[] {ShopType.GEMUESE}),
+    POTATO(114, "§fBereren", new ItemBuilder(Material.SWEET_BERRIES).setAmount(16).build(), 2, 1, 20, 1, 2000, false, true, false, new ShopType[] {ShopType.GEMUESE}),
+    APPLE(115, "§fApfel", new ItemBuilder(Material.APPLE).setAmount(8).build(), 2, 1, 20, 3, 2000, false, true, false, new ShopType[] {ShopType.GEMUESE}),
+    MELON(116, "§fMelone", new ItemBuilder(Material.MELON_SLICE).setAmount(16).build(), 2, 1, 20, 2, 2000, false, true, false, new ShopType[] {ShopType.GEMUESE});
+
 
     private final int id;
     private final String name;
@@ -235,6 +254,14 @@ public enum ShopItem {
             if (i.getName().equalsIgnoreCase(name)) return i;
         }
         return null;
+    }
+
+    public static ItemStack Shoe(Color color) {
+        ItemStack shoe = new ItemStack(Material.LEATHER_BOOTS);
+        LeatherArmorMeta meta = (LeatherArmorMeta) shoe.getItemMeta();
+        meta.setColor(color);
+        shoe.setItemMeta(meta);
+        return shoe;
     }
 
 

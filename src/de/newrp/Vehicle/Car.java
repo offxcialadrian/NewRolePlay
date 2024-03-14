@@ -1,5 +1,6 @@
 package de.newrp.Vehicle;
 
+import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.API.SlotLimit;
 import de.newrp.main;
@@ -7,7 +8,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Boat;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Minecart;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -27,10 +27,10 @@ public class Car {
 
     public static final List<Car> CARS = new ArrayList<>();
     public static final HashMap<Car, Boolean> LIVE_BOMB = new HashMap<>();
-    public static final String PREFIX = "§8[§6Car§8]§7 ";
+    public static final String PREFIX = "§8[§6Auto§8] §6" + Messages.ARROW + " §7";
 
     private final int carID;
-    private Boat minecartEntity;
+    private Boat boatEntity;
     private final CarType carType;
     private final Player owner;
     private int fuel;
@@ -44,10 +44,10 @@ public class Car {
     private Strafzettel strafzettel;
     private final List<VehicleAddon> addons;
 
-    public Car(int carID, Boat minecartEntity, CarType carType, Player owner, int fuel, int carheal, int mileage, int insurance, boolean locked,
+    public Car(int carID, Boat boatEntity, CarType carType, Player owner, int fuel, int carheal, int mileage, int insurance, boolean locked,
                boolean activated, boolean bomb, String licenseplate, Strafzettel strafzettel, List<VehicleAddon> addons) {
         this.carID = carID;
-        this.minecartEntity = minecartEntity;
+        this.boatEntity = boatEntity;
         this.carType = carType;
         this.owner = owner;
         this.fuel = fuel;
@@ -100,12 +100,7 @@ public class Car {
     }
 
     public static void clearAll() {
-        for (Minecart mc : Script.WORLD.getEntitiesByClass(Minecart.class)) {
-            if (mc.getCustomName() != null && mc.getCustomName().equals("farmer") && mc.getPassengers().isEmpty()) {
-                mc.remove();
-                continue;
-            }
-
+        for (Boat mc : Script.WORLD.getEntitiesByClass(Boat.class)) {
             Car car = getCarByEntityID(mc.getEntityId());
 
             if (car != null && car.getOwner() == null) {
@@ -217,22 +212,13 @@ public class Car {
         Scoreboard sb = Bukkit.getScoreboardManager().getNewScoreboard();
         Objective obj = sb.registerNewObjective("Vehicle", "dummy");
         obj.setDisplaySlot(DisplaySlot.SIDEBAR);
-        if (p.getVehicle().getCustomName() != null && p.getVehicle().getCustomName().equals("fahrschule")) {
-            obj.setDisplayName("§6Fahrschule");
-            obj.getScore("§aTank§8:").setScore(100);
-            obj.getScore("§aTacho§8:").setScore(0);
-            obj.getScore("§aZustand§8:").setScore(1000);
-            obj.getScore("§aKilometer§8:").setScore(0);
-            obj.getScore("§aGang§8:").setScore(0);
-        } else {
-            if (car.getCarType() == null) return;
-            obj.setDisplayName("§6" + car.getCarType().getName());
-            obj.getScore("§aTank§8:").setScore(car.getFuel());
-            obj.getScore("§aTacho§8:").setScore(0);
-            obj.getScore("§aZustand§8:").setScore(car.getCarheal());
-            obj.getScore("§aKilometer§8:").setScore(car.getMileage());
-            obj.getScore("§aGang§8:").setScore(0);
-        }
+        if (car.getCarType() == null) return;
+        obj.setDisplayName("§6" + car.getCarType().getName());
+        obj.getScore("§aTank§8:").setScore(car.getFuel());
+        obj.getScore("§aTacho§8:").setScore(0);
+        obj.getScore("§aZustand§8:").setScore(car.getCarheal());
+        obj.getScore("§aKilometer§8:").setScore(car.getMileage());
+        obj.getScore("§aGang§8:").setScore(0);
         p.setScoreboard(sb);
     }
 
@@ -311,7 +297,7 @@ public class Car {
     public String toString() {
         return "Car{" +
                 "carID=" + carID +
-                ", minecartEntity=" + minecartEntity +
+                ", boatEntity=" + boatEntity +
                 ", carType=" + carType +
                 ", owner=" + owner +
                 ", fuel=" + fuel +
@@ -332,11 +318,11 @@ public class Car {
     }
 
     public Boat getBoatEntity() {
-        return this.minecartEntity;
+        return this.boatEntity;
     }
 
     public void setBoatEntity(Boat minecartEntity) {
-        this.minecartEntity = minecartEntity;
+        this.boatEntity = minecartEntity;
     }
 
     public CarType getCarType() {
@@ -626,4 +612,20 @@ public class Car {
 
         if (mc != null) mc.teleport(new Location(Script.WORLD, x, 71, z));
     }
+
+    /*
+        Score platzhalter1 = o.getScore(ChatColor.RED + "");
+        Score platzhalter2 = o.getScore(ChatColor.YELLOW + "");
+        Score score1 = o.getScore(ChatColor.GRAY + "§bOnline§8:");
+        Score score2 = o.getScore(ChatColor.DARK_AQUA + " §8» §a" + (Bukkit.getOnlinePlayers().size()- AFK.afk.size()) + " §8| §c" + AFK.afk.size() + " §8| §e" + Bukkit.getOnlinePlayers().size());
+        Score score3 = o.getScore(ChatColor.GRAY + "§bTickets§8:");
+        Score score4 = o.getScore(ChatColor.DARK_AQUA + " §8» §eBug: " + amount.get(TicketTopic.BUG));
+        Score score5 = o.getScore(ChatColor.DARK_AQUA + " §8» §eFrage: " + amount.get(TicketTopic.FRAGE));
+        Score score6 = o.getScore(ChatColor.DARK_AQUA + " §8» §eSpieler: " + amount.get(TicketTopic.SPIELER));
+        Score score7 = o.getScore(ChatColor.DARK_AQUA + " §8» §eAccount: " + amount.get(TicketTopic.ACCOUNT));
+        Score score8 = o.getScore(ChatColor.DARK_AQUA + " §8» §eSonstiges: " + amount.get(TicketTopic.SONSTIGES));
+        Score score9 = o.getScore(ChatColor.GRAY + "");
+        Score score10 = o.getScore(ChatColor.GRAY + "§bStadtkasse§8:");
+        Score score11 = o.getScore(ChatColor.DARK_AQUA + " §8» §e" + df.format(stadtkasse) + "€");
+     */
 }

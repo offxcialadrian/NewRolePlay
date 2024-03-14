@@ -169,7 +169,7 @@ public class BurgerFryer implements CommandExecutor, Listener {
 
         cooldown.put(p.getName(), System.currentTimeMillis() + 10 * 60 * 2000L);
         GFB.CURRENT.put(p.getName(), GFB.BURGERFRYER);
-        int count = GFB.BURGERFRYER.getLevel(p) * Script.getRandom(5, 7);
+        int count = GFB.BURGERFRYER.getLevel(p) + Script.getRandom(5, 7);
         SCORE.put(p.getName(), count);
         TOTAL_SCORE.put(p.getName(), count);
         p.sendMessage(PREFIX + "Du hast " + count + " Burger zu braten.");
@@ -245,13 +245,13 @@ public class BurgerFryer implements CommandExecutor, Listener {
             } else {
                 if(NEEDED.get(p.getName()).isEmpty()) {
                     p.sendMessage(PREFIX + "Du hast nun alle Burger zubereitet.");
-                    GFB.BURGERFRYER.addExp(p, GFB.BURGERFRYER.getLevel(p) * Script.getRandom(5, 7));
-                    PayDay.addPayDay(p, GFB.BURGERFRYER.getLevel(p) + (TOTAL_SCORE.get(p.getName())/2));
+                    GFB.BURGERFRYER.addExp(p, GFB.BURGERFRYER.getLevel(p) + Script.getRandom(5, 7)/2);
+                    PayDay.addPayDay(p, GFB.BURGERFRYER.getLevel(p) + (TOTAL_SCORE.get(p.getName())));
                     BURGER.remove(p.getName());
                     SCORE.remove(p.getName());
                     NEEDED.remove(p.getName());
                     GFB.CURRENT.remove(p.getName());
-                    Script.addEXP(p, TOTAL_SCORE.get(p.getName()));
+                    Script.addEXP(p, GFB.BURGERFRYER.getLevel(p) + Script.getRandom(5, 7));
                     TOTAL_SCORE.remove(p.getName());
                 } else {
                     p.sendMessage(Messages.ERROR + "Du hast noch nicht alle Zutaten hinzugefügt.");

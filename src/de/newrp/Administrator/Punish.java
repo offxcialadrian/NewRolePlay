@@ -143,7 +143,7 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
         BUGUSE_EIGENERTRAG(10, Punishment.BAN, Punishment.CHECKPOINTS, TimeUnit.DAYS.toMillis(7), 100, "Buguse mit Eigenertrag", "Das Ausnutzen eines Fehlers im System und/oder der Welt, um sich selbst einen Vorteil zu verschaffen."),
         CHEATEN(11,Punishment.BAN, Punishment.WARN, TimeUnit.DAYS.toMillis(7), 0,"Cheaten","Betreten des Servers mit und/oder Nutzen von unerlaubten Spielmodifikationen oder externen Programmen, die dem Spieler einen Vorteil bringen und/oder die Physik des Servers umgehen."),
         CHEATEN_SCHWERWIEGEND(12,Punishment.BAN, Punishment.WARN, TimeUnit.DAYS.toMillis(30),0,"Schwerwiegender Cheat","Betreten des Servers mit und/oder Nutzen von unerlaubten Spielmodifikationen oder externen Programmen, die dem Spieler einen Vorteil bringen und/oder die Physik des Servers umgehen."),
-        FREMDWERBUNG(13, Punishment.CHECKPOINTS, Punishment.WARN, TimeUnit.DAYS.toMillis(14), 0,"Fremdwerbung","Das Verbreiten von Plattformen, Verweisen oder ähnlichen Dingen, die nicht mit New RolePlay in Verbindung stehen. Dazu zählen auch bspw. andere TeamSpeak- sowie Discord-Server."),
+        FREMDWERBUNG(13, Punishment.CHECKPOINTS, Punishment.WARN, TimeUnit.DAYS.toMillis(14), 100,"Fremdwerbung","Das Verbreiten von Plattformen, Verweisen oder ähnlichen Dingen, die nicht mit New RolePlay in Verbindung stehen. Dazu zählen auch bspw. andere TeamSpeak- sowie Discord-Server."),
         HANDEL_MIT_SPIELEXTERNEN_DINGEN(14, Punishment.BAN, Punishment.WARN, TimeUnit.DAYS.toMillis(7), 0, "Handel mit spielexternen Dingen", "Tauschen von Ingameinhalten gegen etwas Spielexternes mit Wert, obgleich virtuell oder real."),
         METAGAMING(15, Punishment.CHECKPOINTS, null, 0, 100, "Metagaming", "Das Nutzen von Informationen, die der Spieler nicht durch sein Roleplay erfahren hat."),
         CYBERMOBBING(16, Punishment.BAN, null, 0, 0, "Cybermobbing", " Das Mobben eines Spielers, das sich auf sein Reallife ausweitet."),
@@ -156,6 +156,7 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
         EROTIK_ROLEPLAY(23, Punishment.CHECKPOINTS, null, 0, 50, "Erotik-Roleplay", "Das Ausleben von sexuellen Handlungen im Roleplay."),
         FOLTER_ROLEPLAY(24, Punishment.CHECKPOINTS, null, 0, 50, "Folter-Roleplay", "Das Ausleben von Folterhandlungen im Roleplay."),
         RECHTE_AUSNUTZUNG(25, Punishment.BAN, null, TimeUnit.DAYS.toMillis(7), 0, "Rechte-Ausnutzung", "Das Ausnutzen von Rechten, die einem Spieler zustehen."),
+
         SICHERHEITSBANN(98 ,Punishment.BAN, null,0,0,"Sicherheitsbann","Du wurdest zur Sicherheit gebannt. Sollte dir der Grund nicht bekannt sein, melde dich bei uns im Support."),
 
         UNZUREICHENDE_EIGNUNG(99,Punishment.BAN, null,0,0,"Unzureichende Eignung","Du hast unzureichende Eignung gezeigt.");

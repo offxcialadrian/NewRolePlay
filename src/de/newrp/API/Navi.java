@@ -38,7 +38,11 @@ public enum Navi {
     TRANSPORT("Transport", new Location(Script.WORLD, 932, 66, 1083, 178.20059f, 4.050012f)),
     IMKEREI("Imkerei", new Location(Script.WORLD, 216, 66, 773, 201.95145f, 0.35791647f)),
     ELEKTROLADEN("Elektroladen", new Location(Script.WORLD, 864, 74, 963, -41.849865f, 19.049988f)),
-    X3("X3", new Location(Script.WORLD, 693, 71, 992, -269.9325f, 1.3498036f));
+    X3("X3", new Location(Script.WORLD, 693, 71, 992, -269.9325f, 1.3498036f)),
+    APOTHEKE_KH("Apotheke am Krankenhaus", new Location(Script.WORLD, 342, 76, 1078, -89.94908f, 2.8520296f)),
+    APOTHEKE_X3("Apotheke am AEKI", new Location(Script.WORLD, 662, 68, 860, -180.32812f, 4.0531044f)),
+    GYM("Fitnessstudio", new Location(Script.WORLD, 462, 67, 741, 58.66165f, 86.08832f)),
+    FISCH("Fischhandlung", new Location(Script.WORLD, 424, 68, 917, 0.47094727f, 89.93327f));
 
 
     private final String name;
@@ -66,6 +70,13 @@ public enum Navi {
             }
         }
         return n;
+    }
+
+    public static Navi getNaviByName(String name) {
+        for (Navi n : values()) {
+            if (n.getName().equalsIgnoreCase(name)) return n;
+        }
+        return null;
     }
 
     public String getName() {

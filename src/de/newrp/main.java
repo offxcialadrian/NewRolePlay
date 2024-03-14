@@ -356,6 +356,7 @@ public class main extends JavaPlugin {
         getCommand("tv").setExecutor(new TV());
         getCommand("slap").setExecutor(new SlapCommand());
         getCommand("raffle").setExecutor(new RaffleCommand());
+        getCommand("sellfisch").setExecutor(new Sellfisch());
 
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new SDuty(), this);

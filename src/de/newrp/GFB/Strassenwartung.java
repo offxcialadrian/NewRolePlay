@@ -62,7 +62,7 @@ public class Strassenwartung implements CommandExecutor, Listener {
 
         cooldown.put(p.getName(), System.currentTimeMillis() + 10 * 60 * 2000L);
         GFB.CURRENT.put(p.getName(), GFB.STRASSENWARTUNG);
-        int count = GFB.STRASSENWARTUNG.getLevel(p) * Script.getRandom(4, 5);
+        int count = GFB.STRASSENWARTUNG.getLevel(p) + Script.getRandom(4, 5);
         SCORE.put(p.getName(), count);
         TOTAL_SCORE.put(p.getName(), count);
         construction.put(p.getName(), Construction.getRandomConstruction());
@@ -148,9 +148,9 @@ public class Strassenwartung implements CommandExecutor, Listener {
         if (SCORE.get(p.getName()) == 1) {
             int repaired_total = TOTAL_SCORE.get(p.getName()) - SCORE.get(p.getName());
             p.sendMessage(PREFIX + "Du hast alle Straßen repariert.");
-            PayDay.addPayDay(p, GFB.STRASSENWARTUNG.getLevel(p) * Script.getRandom(2, 3) * repaired_total);
-            Script.addEXP(p, GFB.STRASSENWARTUNG.getLevel(p) * Script.getRandom(2, 3) * repaired_total);
-            GFB.STRASSENWARTUNG.addExp(p, GFB.STRASSENWARTUNG.getLevel(p) * Script.getRandom(3, 4) * repaired_total);
+            PayDay.addPayDay(p, GFB.STRASSENWARTUNG.getLevel(p) + (repaired_total*3));
+            Script.addEXP(p, GFB.STRASSENWARTUNG.getLevel(p) + (repaired_total*3));
+            GFB.STRASSENWARTUNG.addExp(p, GFB.STRASSENWARTUNG.getLevel(p) + (repaired_total*2));
             Cache.loadInventory(p);
             GFB.CURRENT.remove(p.getName());
             construction.remove(p.getName());
@@ -164,9 +164,9 @@ public class Strassenwartung implements CommandExecutor, Listener {
             p.sendMessage(Messages.ERROR + "Leider gibt es derzeit keine Baustellen. Dein Job wurde beendet.");
             int repaired_total = TOTAL_SCORE.get(p.getName()) - SCORE.get(p.getName());
             p.sendMessage(PREFIX + "Du hast alle Straßen repariert.");
-            PayDay.addPayDay(p, GFB.STRASSENWARTUNG.getLevel(p) * Script.getRandom(2, 3) * repaired_total);
-            Script.addEXP(p, GFB.STRASSENWARTUNG.getLevel(p) * Script.getRandom(2, 3) * repaired_total);
-            GFB.STRASSENWARTUNG.addExp(p, GFB.STRASSENWARTUNG.getLevel(p) * Script.getRandom(3, 4) * repaired_total);
+            PayDay.addPayDay(p, GFB.STRASSENWARTUNG.getLevel(p) + (repaired_total*3));
+            Script.addEXP(p, GFB.STRASSENWARTUNG.getLevel(p) + (repaired_total*3));
+            GFB.STRASSENWARTUNG.addExp(p, GFB.STRASSENWARTUNG.getLevel(p) + (repaired_total*2));
             Cache.loadInventory(p);
             GFB.CURRENT.remove(p.getName());
             construction.remove(p.getName());

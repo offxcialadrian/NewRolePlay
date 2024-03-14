@@ -29,10 +29,10 @@ public class NaviClick implements Listener {
                 switch (c.getItemMeta().getDisplayName()) {
                     case "§6Berufe": {
                         Inventory inv = Bukkit.createInventory(null, 18, "§e§lNavi");
-                        inv.setItem(0, Script.setName(Material.ANVIL, "§6" + Navi.KRANKENHAUS.getName()));
-                        inv.setItem(1, Script.setName(Material.ANVIL, "§6" + Navi.NEWS.getName()));
-                        inv.setItem(2, Script.setName(Material.ANVIL, "§6" + Navi.POLIZEIREVIER.getName()));
-                        inv.setItem(3, Script.setName(Material.ANVIL, "§6" + Navi.STADTHALLE.getName()));
+                        inv.setItem(0, Script.setName(Material.GHAST_TEAR, "§6" + Navi.KRANKENHAUS.getName()));
+                        inv.setItem(1, Script.setName(Material.WRITABLE_BOOK, "§6" + Navi.NEWS.getName()));
+                        inv.setItem(2, Script.setName(Material.LEAD, "§6" + Navi.POLIZEIREVIER.getName()));
+                        inv.setItem(3, Script.setName(Script.getGermanyFlag(), "§6" + Navi.STADTHALLE.getName()));
                         inv.setItem(13, Script.setName(Material.REDSTONE, "§cZurück"));
                         Script.fillInv(inv);
                         p.openInventory(inv);
@@ -41,12 +41,12 @@ public class NaviClick implements Listener {
                     }
                     case "§6Freizeit": {
                         Inventory inv = Bukkit.createInventory(null, 18, "§e§lNavi");
-                        inv.setItem(0, Script.setName(Material.FIREWORK_ROCKET, "§6" + Navi.ARCADE.getName()));
-                        inv.setItem(1, Script.setName(Material.FIREWORK_ROCKET, "§6" + Navi.CASINO.getName()));
+                        inv.setItem(0, Script.setName(Material.REDSTONE_LAMP, "§6" + Navi.ARCADE.getName()));
+                        inv.setItem(1, Script.setName(Material.DIAMOND, "§6" + Navi.CASINO.getName()));
                         inv.setItem(2, Script.setName(Material.FIREWORK_ROCKET, "§6" + Navi.FREIZEITPARK.getName()));
-                        inv.setItem(3, Script.setName(Material.FIREWORK_ROCKET, "§6" + Navi.MALL.getName()));
-                        inv.setItem(4, Script.setName(Material.FIREWORK_ROCKET, "§6" + Navi.MOTEL.getName()));
-                        inv.setItem(5, Script.setName(Material.FIREWORK_ROCKET, "§6" + Navi.STRAND.getName()));
+                        inv.setItem(3, Script.setName(Material.RED_BED, "§6" + Navi.MOTEL.getName()));
+                        inv.setItem(4, Script.setName(Material.SAND, "§6" + Navi.STRAND.getName()));
+                        inv.setItem(5, Script.setName(Material.IRON_BLOCK, "§6" + Navi.GYM.getName()));
                         inv.setItem(13, Script.setName(Material.REDSTONE, "§cZurück"));
                         Script.fillInv(inv);
                         p.openInventory(inv);
@@ -55,15 +55,15 @@ public class NaviClick implements Listener {
                     }
                     case "§6GFB-Jobs": {
                         Inventory inv = Bukkit.createInventory(null, 18, "§e§lNavi");
-                        inv.setItem(0, Script.setNameAndLore(Material.IRON_PICKAXE, "§6" + Navi.BURGERBRATER.getName(), (BurgerFryer.cooldown.containsKey(p.getName()) && BurgerFryer.cooldown.get(p.getName())>System.currentTimeMillis() ? "§cDu musst noch " + Script.getRemainingTime(BurgerFryer.cooldown.get(p.getName())) + " warten." :"§aDu hast derzeit keinen Cooldown")));
-                        inv.setItem(1, Script.setNameAndLore(Material.IRON_PICKAXE, "§6" + Navi.EISHALLE.getName(), (Eishalle.cooldown.containsKey(p.getName()) && Eishalle.cooldown.get(p.getName())>System.currentTimeMillis() ? "§cDu musst noch " + Script.getRemainingTime(Eishalle.cooldown.get(p.getName())) + " warten." :"§aDu hast derzeit keinen Cooldown")));
-                        inv.setItem(2, Script.setNameAndLore(Material.IRON_PICKAXE, "§6" + Navi.KELLNER.getName(), (Kellner.cooldown.containsKey(p.getName()) && Kellner.cooldown.get(p.getName())>System.currentTimeMillis() ? "§cDu musst noch " + Script.getRemainingTime(Kellner.cooldown.get(p.getName())) + " warten." :"§aDu hast derzeit keinen Cooldown")));
-                        inv.setItem(3, Script.setNameAndLore(Material.IRON_PICKAXE, "§6" + Navi.LAGERARBEITER.getName(), (Lagerarbeiter.cooldown.containsKey(p.getName()) && Lagerarbeiter.cooldown.get(p.getName())>System.currentTimeMillis() ? "§cDu musst noch " + Script.getRemainingTime(Lagerarbeiter.cooldown.get(p.getName())) + " warten." :"§aDu hast derzeit keinen Cooldown")));
-                        inv.setItem(4, Script.setNameAndLore(Material.IRON_PICKAXE, "§6" + Navi.PIZZALIEFERANT.getName(), (Pizza.cooldown.containsKey(p.getName()) && Pizza.cooldown.get(p.getName())>System.currentTimeMillis() ? "§cDu musst noch " + Script.getRemainingTime(Pizza.cooldown.get(p.getName())) + " warten." :"§aDu hast derzeit keinen Cooldown")));
-                        inv.setItem(5, Script.setNameAndLore(Material.IRON_PICKAXE, "§6" + Navi.STRAßENWARTUNG.getName(), (Strassenwartung.cooldown.containsKey(p.getName()) && Strassenwartung.cooldown.get(p.getName())>System.currentTimeMillis() ? "§cDu musst noch " + Script.getRemainingTime(Strassenwartung.cooldown.get(p.getName())) + " warten." :"§aDu hast derzeit keinen Cooldown")));
-                        inv.setItem(6, Script.setNameAndLore(Material.IRON_PICKAXE, "§6" + Navi.TELLERWÄSCHER.getName(), (Dishwasher.cooldown.containsKey(p.getName()) && Dishwasher.cooldown.get(p.getName())>System.currentTimeMillis() ? "§cDu musst noch " + Script.getRemainingTime(Dishwasher.cooldown.get(p.getName())) + " warten." :"§aDu hast derzeit keinen Cooldown")));
-                        inv.setItem(7, Script.setNameAndLore(Material.IRON_PICKAXE, "§6" + Navi.TRANSPORT.getName(), (Transport.cooldown.containsKey(p.getName()) && Transport.cooldown.get(p.getName())>System.currentTimeMillis() ? "§cDu musst noch " + Script.getRemainingTime(Transport.cooldown.get(p.getName())) + " warten." :"§aDu hast derzeit keinen Cooldown")));
-                        inv.setItem(8, Script.setNameAndLore(Material.IRON_PICKAXE, "§6" + Navi.IMKER.getName(), (Imker.cooldown.containsKey(p.getName()) && Imker.cooldown.get(p.getName())>System.currentTimeMillis() ? "§cDu musst noch " + Script.getRemainingTime(Imker.cooldown.get(p.getName())) + " warten." :"§aDu hast derzeit keinen Cooldown")));
+                        inv.setItem(0, Script.setNameAndLore(Material.COOKED_BEEF, "§6" + Navi.BURGERBRATER.getName(), (BurgerFryer.cooldown.containsKey(p.getName()) && BurgerFryer.cooldown.get(p.getName())>System.currentTimeMillis() ? "§cDu musst noch " + Script.getRemainingTime(BurgerFryer.cooldown.get(p.getName())) + " warten." :"§aDu hast derzeit keinen Cooldown")));
+                        inv.setItem(1, Script.setNameAndLore(Material.ICE, "§6" + Navi.EISHALLE.getName(), (Eishalle.cooldown.containsKey(p.getName()) && Eishalle.cooldown.get(p.getName())>System.currentTimeMillis() ? "§cDu musst noch " + Script.getRemainingTime(Eishalle.cooldown.get(p.getName())) + " warten." :"§aDu hast derzeit keinen Cooldown")));
+                        inv.setItem(2, Script.setNameAndLore(Material.GLASS_BOTTLE, "§6" + Navi.KELLNER.getName(), (Kellner.cooldown.containsKey(p.getName()) && Kellner.cooldown.get(p.getName())>System.currentTimeMillis() ? "§cDu musst noch " + Script.getRemainingTime(Kellner.cooldown.get(p.getName())) + " warten." :"§aDu hast derzeit keinen Cooldown")));
+                        inv.setItem(3, Script.setNameAndLore(Material.CHEST, "§6" + Navi.LAGERARBEITER.getName(), (Lagerarbeiter.cooldown.containsKey(p.getName()) && Lagerarbeiter.cooldown.get(p.getName())>System.currentTimeMillis() ? "§cDu musst noch " + Script.getRemainingTime(Lagerarbeiter.cooldown.get(p.getName())) + " warten." :"§aDu hast derzeit keinen Cooldown")));
+                        inv.setItem(4, Script.setNameAndLore(Material.PUMPKIN_PIE, "§6" + Navi.PIZZALIEFERANT.getName(), (Pizza.cooldown.containsKey(p.getName()) && Pizza.cooldown.get(p.getName())>System.currentTimeMillis() ? "§cDu musst noch " + Script.getRemainingTime(Pizza.cooldown.get(p.getName())) + " warten." :"§aDu hast derzeit keinen Cooldown")));
+                        inv.setItem(5, Script.setNameAndLore(Material.ANDESITE_SLAB, "§6" + Navi.STRAßENWARTUNG.getName(), (Strassenwartung.cooldown.containsKey(p.getName()) && Strassenwartung.cooldown.get(p.getName())>System.currentTimeMillis() ? "§cDu musst noch " + Script.getRemainingTime(Strassenwartung.cooldown.get(p.getName())) + " warten." :"§aDu hast derzeit keinen Cooldown")));
+                        inv.setItem(6, Script.setNameAndLore(Material.BOWL, "§6" + Navi.TELLERWÄSCHER.getName(), (Dishwasher.cooldown.containsKey(p.getName()) && Dishwasher.cooldown.get(p.getName())>System.currentTimeMillis() ? "§cDu musst noch " + Script.getRemainingTime(Dishwasher.cooldown.get(p.getName())) + " warten." :"§aDu hast derzeit keinen Cooldown")));
+                        inv.setItem(7, Script.setNameAndLore(Material.SADDLE, "§6" + Navi.TRANSPORT.getName(), (Transport.cooldown.containsKey(p.getName()) && Transport.cooldown.get(p.getName())>System.currentTimeMillis() ? "§cDu musst noch " + Script.getRemainingTime(Transport.cooldown.get(p.getName())) + " warten." :"§aDu hast derzeit keinen Cooldown")));
+                        inv.setItem(8, Script.setNameAndLore(Material.BEEHIVE, "§6" + Navi.IMKER.getName(), (Imker.cooldown.containsKey(p.getName()) && Imker.cooldown.get(p.getName())>System.currentTimeMillis() ? "§cDu musst noch " + Script.getRemainingTime(Imker.cooldown.get(p.getName())) + " warten." :"§aDu hast derzeit keinen Cooldown")));
                         inv.setItem(13, Script.setName(Material.REDSTONE, "§cZurück"));
                         Script.fillInv(inv);
                         p.openInventory(inv);
@@ -84,13 +84,13 @@ public class NaviClick implements Listener {
                     }
                     case "§6Öffentliche Gebäude": {
                         Inventory inv = Bukkit.createInventory(null, 18, "§e§lNavi");
-                        inv.setItem(0, Script.setName(Material.WRITABLE_BOOK, "§6" + Navi.AEKI.getName()));
-                        inv.setItem(1, Script.setName(Material.WRITABLE_BOOK, "§6" + Navi.GERICHT.getName()));
-                        inv.setItem(2, Script.setName(Material.WRITABLE_BOOK, "§6" + Navi.SCHULE.getName()));
-                        inv.setItem(3, Script.setName(Material.WRITABLE_BOOK, "§6" + Navi.SELFSTORAGE.getName()));
-                        inv.setItem(4, Script.setName(Material.WRITABLE_BOOK, "§6" + Navi.STADTHALLE.getName()));
-                        inv.setItem(5, Script.setName(Material.WRITABLE_BOOK, "§6" + Navi.STAATSBANK.getName()));
-                        inv.setItem(6, Script.setName(Material.WRITABLE_BOOK, "§6" + Navi.TAXI.getName()));
+                        inv.setItem(0, Script.setName(Material.WARPED_PLANKS, "§6" + Navi.AEKI.getName()));
+                        inv.setItem(1, Script.setName(Material.QUARTZ_PILLAR, "§6" + Navi.GERICHT.getName()));
+                        inv.setItem(2, Script.setName(Material.WRITTEN_BOOK, "§6" + Navi.SCHULE.getName()));
+                        inv.setItem(3, Script.setName(Material.CHEST, "§6" + Navi.SELFSTORAGE.getName()));
+                        inv.setItem(4, Script.setName(Script.getGermanyFlag(), "§6" + Navi.STADTHALLE.getName()));
+                        inv.setItem(5, Script.setName(Material.GOLD_INGOT, "§6" + Navi.STAATSBANK.getName()));
+                        inv.setItem(6, Script.setName(Material.OAK_BOAT, "§6" + Navi.TAXI.getName()));
                         inv.setItem(13, Script.setName(Material.REDSTONE, "§cZurück"));
                         Script.fillInv(inv);
                         p.openInventory(inv);
@@ -101,7 +101,7 @@ public class NaviClick implements Listener {
                     case "§6Sehenswürdigkeiten": {
                         Inventory inv = Bukkit.createInventory(null, 18, "§e§lNavi");
                         inv.setItem(0, Script.setName(Material.PAINTING, "§6" + Navi.MUSEUM.getName()));
-                        inv.setItem(1, Script.setName(Material.PAINTING, "§6" + Navi.STATUE.getName()));
+                        inv.setItem(1, Script.setName(Material.PRISMARINE, "§6" + Navi.STATUE.getName()));
                         inv.setItem(13, Script.setName(Material.REDSTONE, "§cZurück"));
                         Script.fillInv(inv);
                         p.openInventory(inv);
@@ -111,10 +111,13 @@ public class NaviClick implements Listener {
                     }
                     case "§6Shops": {
                         Inventory inv = Bukkit.createInventory(null, 18, "§e§lNavi");
-                        inv.setItem(0, Script.setName(Material.CARROT, "§6" + Navi.MALL.getName()));
-                        inv.setItem(1, Script.setName(Material.CARROT, "§6" + Navi.SUPERMARKT.getName()));
-                        inv.setItem(2, Script.setName(Material.CARROT, "§6" + Navi.ELEKTROLADEN.getName()));
-                        inv.setItem(3, Script.setName(Material.CARROT, "§6" + Navi.WAFFENLADEN.getName()));
+                        inv.setItem(0, Script.setName(Material.GLASS, "§6" + Navi.MALL.getName()));
+                        inv.setItem(1, Script.setName(Material.BREAD, "§6" + Navi.SUPERMARKT.getName()));
+                        inv.setItem(2, Script.setName(Material.IRON_INGOT, "§6" + Navi.ELEKTROLADEN.getName()));
+                        inv.setItem(3, Script.setName(Material.DIAMOND_HORSE_ARMOR, "§6" + Navi.WAFFENLADEN.getName()));
+                        inv.setItem(4, Script.setName(Material.GHAST_TEAR, "§6" + Navi.APOTHEKE_KH.getName()));
+                        inv.setItem(5, Script.setName(Material.GHAST_TEAR, "§6" + Navi.APOTHEKE_X3.getName()));
+                        inv.setItem(6, Script.setName(Material.TROPICAL_FISH, "§6" + Navi.FISCH.getName()));
                         inv.setItem(13, Script.setName(Material.REDSTONE, "§cZurück"));
                         Script.fillInv(inv);
                         p.openInventory(inv);
@@ -134,9 +137,9 @@ public class NaviClick implements Listener {
 
                     case "§6Finde..": {
                         Inventory inv = Bukkit.createInventory(null, 18, "§e§lNavi");
-                        inv.setItem(0, Script.setName(Material.NETHER_STAR, "§6Nächster Bankautomat"));
-                        inv.setItem(1, Script.setName(Material.NETHER_STAR, "§6Nächste Apotheke"));
-                        inv.setItem(2, Script.setName(Material.NETHER_STAR, "§6Nächste U-Bahn"));
+                        inv.setItem(0, Script.setName(Material.GOLD_INGOT, "§6Nächster Bankautomat"));
+                        inv.setItem(1, Script.setName(Material.GHAST_TEAR, "§6Nächste Apotheke"));
+                        inv.setItem(2, Script.setName(Material.RAIL, "§6Nächste U-Bahn"));
                         inv.setItem(13, Script.setName(Material.REDSTONE, "§cZurück"));
                         Script.fillInv(inv);
                         p.openInventory(inv);

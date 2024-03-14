@@ -177,6 +177,18 @@ public class Utils implements Listener {
     @EventHandler
     public void onFish(PlayerFishEvent e) {
         e.setExpToDrop(0);
+        if(e.getState() == PlayerFishEvent.State.CAUGHT_ENTITY) {
+            e.setCancelled(true);
+            e.getPlayer().getInventory().addItem(getRandomFish());
+        }
+    }
+
+    public static ItemStack getRandomFish() {
+        int random = Script.getRandom(1, 100);
+        if(random <= 60) return new ItemStack(Material.COD);
+        if(random <= 80) return new ItemStack(Material.SALMON);
+        if(random <= 90) return new ItemStack(Material.PUFFERFISH);
+        return new ItemStack(Material.TROPICAL_FISH);
     }
 
     @EventHandler

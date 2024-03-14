@@ -73,6 +73,7 @@ public class AcceptNotruf implements CommandExecutor, Listener {
         if(Notruf.call2.get(tg).size() == 1) {
             Notruf.call.remove(tg);
             Notruf.call2.remove(tg);
+            Notruf.call3.remove(tg);
         } else {
             ArrayList<Beruf.Berufe> berufe = new ArrayList<>();
             for(Beruf.Berufe b : Notruf.call2.get(tg)) {
@@ -129,6 +130,9 @@ public class AcceptNotruf implements CommandExecutor, Listener {
                     return;
                 }
             }
+            Notruf.call.remove(p);
+            Notruf.call2.remove(p);
+            Notruf.call3.remove(p);
         }
     }
 

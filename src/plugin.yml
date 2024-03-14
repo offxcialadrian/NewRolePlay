@@ -606,3 +606,6 @@ commands:
   raffle:
     description: starts a raffle
     aliases: [ verlosung ]
+  sellfisch:
+    description: sell a fisch
+    aliases: [ fischverkauf, sellfish ]

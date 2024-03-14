@@ -28,14 +28,18 @@ import net.md_5.bungee.api.chat.TextComponent;
 import net.minecraft.server.v1_16_R3.NBTTagCompound;
 import net.minecraft.server.v1_16_R3.NBTTagList;
 import org.bukkit.*;
+import org.bukkit.block.Banner;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.banner.Pattern;
+import org.bukkit.block.banner.PatternType;
 import org.bukkit.craftbukkit.v1_16_R3.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.BannerMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.SkullMeta;
@@ -1474,13 +1478,13 @@ public class Script {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if(getPlayTime(p, true) % 50 == 0 && getPlayTime(p, false) == 0) {
-            p.sendMessage(PREFIX + "Du spielst nun bereits seit " + getPlayTime(p, true) + " Stunden aktiv auf NRP × New RolePlay. Vielen Dank dafür!");
-            p.sendMessage(PREFIX + "Du erhältst als Dankeschön für deine Treue 50 Exp");
-            addEXP(p, 50);
+        if(getActivePlayTime(p, true) % 50 == 0 && getActivePlayTime(p, false) == 0) {
+            p.sendMessage(PREFIX + "Du spielst nun bereits seit " + getActivePlayTime(p, true) + " Stunden aktiv auf NRP × New RolePlay. Vielen Dank dafür!");
+            p.sendMessage(PREFIX + "Du erhältst als Dankeschön für deine Treue " + getActivePlayTime(p, true) + " Exp");
+            addEXP(p, getActivePlayTime(p, true));
         }
 
-        if(getPlayTime(p, true) % 150 == 0 && getPlayTime(p, false) == 0) {
+        if(getActivePlayTime(p, true) % 150 == 0 && getActivePlayTime(p, false) == 0) {
             p.sendMessage(PREFIX + "Du erhältst als Dankeschön für deine Treue 3 Tage Premium");
             Premium.addPremiumStorage(p, TimeUnit.DAYS.toMillis(3), true);
         }
@@ -1494,6 +1498,18 @@ public class Script {
         p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1F, 1F);
         Log.NORMAL.write(p, "hat Level " + level + " erreicht.");
         updateExpBar(p);
+    }
+
+    public static ItemStack getGermanyFlag() {
+        ItemStack banner = new ItemStack(Material.WHITE_BANNER);
+        BannerMeta banner1 = (BannerMeta) banner.getItemMeta();
+        List<Pattern> patterns = new ArrayList<>();
+        patterns.add(new Pattern(DyeColor.RED, PatternType.BASE));
+        patterns.add(new Pattern(DyeColor.BLACK, PatternType.STRIPE_LEFT));
+        patterns.add(new Pattern(DyeColor.YELLOW, PatternType.STRIPE_RIGHT));
+        banner1.setPatterns(patterns);
+        banner.setItemMeta(banner1);
+        return banner;
     }
 
     public static int getExp(String name) {

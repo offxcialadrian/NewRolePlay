@@ -198,7 +198,7 @@ public class Lagerarbeiter implements CommandExecutor, Listener {
 
         GFB.CURRENT.put(p.getName(), GFB.LAGERARBEITER);
         p.sendMessage(PREFIX + "Gehe ins Lager, hole dir eine Palette und fang an deinen Job zu machen.");
-        int totalscore = GFB.LAGERARBEITER.getLevel(p) * Script.getRandom(7, 12);
+        int totalscore = GFB.LAGERARBEITER.getLevel(p) + Script.getRandom(7, 12);
         p.sendMessage(Messages.INFO + "Klicke Rechtsklick auf das Schild \"Ware\".");
         p.sendMessage(Messages.INFO + "Du musst insgesamt " + totalscore + " Waren verräumen.");
         SCORE.put(p.getName(), totalscore);
@@ -301,9 +301,9 @@ public class Lagerarbeiter implements CommandExecutor, Listener {
                 GFB.CURRENT.remove(p.getName());
                 p.sendMessage(PREFIX + "§aFertig");
                 SCORE.remove(p.getName());
-                GFB.LAGERARBEITER.addExp(p, GFB.LAGERARBEITER.getLevel(p) * 10);
-                PayDay.addPayDay(p, GFB.LAGERARBEITER.getLevel(p) + (TOTAL_SCORE.get(p.getName())/2));
-                Script.addEXP(p, GFB.LAGERARBEITER.getLevel(p) * Script.getRandom(3, 7));
+                GFB.LAGERARBEITER.addExp(p, GFB.LAGERARBEITER.getLevel(p) + TOTAL_SCORE.get(p.getName())/2);
+                PayDay.addPayDay(p, GFB.LAGERARBEITER.getLevel(p) + (TOTAL_SCORE.get(p.getName())));
+                Script.addEXP(p, GFB.LAGERARBEITER.getLevel(p) + TOTAL_SCORE.get(p.getName()));
             } else {
                 SCORE.replace(p.getName(), amount - 1);
                 p.sendMessage(PREFIX + "§aRichtig! §6Hole nun das nächste Produkt aus \"Ware\" und sortiere es ein (" + (TOTAL_SCORE.get(p.getName())-SCORE.get(p.getName())) + "/" + (TOTAL_SCORE.get(p.getName())+1) + ")");

@@ -1,9 +1,6 @@
 package de.newrp.Administrator;
 
-import de.newrp.API.Log;
-import de.newrp.API.Messages;
-import de.newrp.API.Rank;
-import de.newrp.API.Script;
+import de.newrp.API.*;
 import de.newrp.House.House;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -101,7 +98,7 @@ public class GoTo implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
         Player p = (Player) cs;
-        Points gp;
+        Navi gp;
 
         if (!Script.hasRank(p, Rank.SUPPORTER, false)) {
             if(!Script.isInTestMode() || !BuildMode.isInBuildMode(p)) {
@@ -175,7 +172,7 @@ public class GoTo implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        gp = Points.getPointByName(args[0]);
+        gp = Navi.getNaviByName(args[0]);
 
         if (gp == null) {
             p.sendMessage(Messages.ERROR + "Punkt nicht gefunden.");
@@ -198,7 +195,7 @@ public class GoTo implements CommandExecutor, TabCompleter {
             if (!SDuty.isSDuty(p) && !BuildMode.isInBuildMode(p)) return Collections.EMPTY_LIST;
             final List<String> oneArgList = new ArrayList<>();
             final List<String> completions = new ArrayList<>();
-            for (Points point : Points.values()) {
+            for (Navi point : Navi.values()) {
                 oneArgList.add(point.getName());
             }
 

@@ -9,6 +9,7 @@ import de.newrp.Waffen.Weapon;
 import de.newrp.Waffen.WeaponData;
 import de.newrp.main;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -195,6 +196,14 @@ public class Selfstorage implements CommandExecutor, Listener {
                         continue;
                     }
                 }
+
+                if(i.getType().equals(Material.SUGAR)) {
+                    inv.remove(i);
+                    p.getInventory().addItem(i);
+                    p.sendMessage(Messages.ERROR + "Du kannst keine Drogen in deinem Selfstorage-Room lagern.");
+                    continue;
+                }
+
                 if(Equip.Stuff.isEquip(i)) {
                     inv.remove(i);
                     p.getInventory().addItem(i);

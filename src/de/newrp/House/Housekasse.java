@@ -85,6 +85,11 @@ public class Housekasse implements CommandExecutor {
                     return true;
                 }
 
+                if(h.getKasse() + i > 10000) {
+                    p.sendMessage(Messages.ERROR + "Die Hauskasse kann maximal 10.000€ enthalten.");
+                    return true;
+                }
+
                 Script.removeMoney(p, PaymentType.CASH, i);
                 h.addKasse(i);
                 p.sendMessage(PREFIX + "Du hast " + i + "€ in die Hauskasse eingezahlt.");

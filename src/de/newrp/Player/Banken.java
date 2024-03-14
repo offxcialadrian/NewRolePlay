@@ -219,7 +219,6 @@ public class Banken implements CommandExecutor, Listener {
 
             Achievement.BANKKONTO.grant(p);
             p.sendMessage(PREFIX + "Du hast die " + bank.getName() + " als deine Bank ausgewählt.");
-            p.sendMessage(Messages.INFO + "Um deine Bank zu wechseln, nutze /bank change");
             Script.removeMoney(p, PaymentType.CASH, bank.getEinrichtigungsKosten());
         }
     }

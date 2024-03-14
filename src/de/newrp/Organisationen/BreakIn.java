@@ -124,8 +124,8 @@ public class BreakIn implements Listener {
                 int geld = (house.getKasse() / 3);
                 p.sendMessage(PREFIX + "Du hast alles. Verschwinde nun bevor die Polizei eintrifft!");
                 p.getInventory().getItemInMainHand().setAmount(p.getInventory().getItemInMainHand().getAmount() - 1);
-                Script.addMoney(p, PaymentType.CASH, (int) (geld * 0.8));
-                house.setKasse(house.getKasse() - (int) (geld * 0.8));
+                Script.addMoney(p, PaymentType.CASH, (int) (geld));
+                house.setKasse(house.getKasse() - (int) (geld));
                 COOLDOWNS.remove(p.getName());
                 HOUSES.remove(p.getName());
                 TOTAL_COOLDOWN.put(p.getName(), System.currentTimeMillis());

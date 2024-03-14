@@ -2,11 +2,11 @@ package de.newrp.House;
 
 public enum HouseAddon {
 
-    ALARM(1, "Alarmanlage", 9800),
-    HAUSKASSE(2, "Hauskasse", 8250),
-    SLOT(4, "Mieterslot", 2750),
-    KUEHLSCHRANK(5, "Kühlschrank", 4950),
-    WAFFENSCHRANK(6, "Waffenschrank", 10000);
+    ALARM(1, "Alarmanlage", 6000),
+    HAUSKASSE(2, "Hauskasse", 3000),
+    SLOT(4, "Mieterslot", 5000),
+    KUEHLSCHRANK(5, "Kühlschrank", 600),
+    WAFFENSCHRANK(6, "Waffenschrank", 7000);
 
     private final int id;
     private final String name;

@@ -61,11 +61,12 @@ public class Boxen implements Listener {
 
         LAST_CLICK.put(p.getName(), time);
         LEVEL.replace(p.getName(), level + 1);
-        progressBar(501, p);
+        progressBar(250, p);
 
-        if (level >= 500) {
+        if (level >= 250) {
             p.sendMessage(PREFIX + "§6Du hast dein Boxtraining beendet.");
             Health.MUSCLES.add(Script.getNRPID(p), (onTesto.containsKey(p.getName()) && onTesto.get(p.getName())>System.currentTimeMillis()?Script.getRandomFloat(.1F, .15F):Script.getRandomFloat(.05F, .1F)));
+            Health.FAT.remove(Script.getNRPID(p), Script.getRandomFloat(1F, 2F));
             LAST_CLICK.remove(p.getName());
             LEVEL.remove(p.getName());
         }

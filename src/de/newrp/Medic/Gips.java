@@ -259,6 +259,11 @@ public class Gips implements Listener {
             p.sendMessage(Messages.INFO + "Du kannst während dieses Jobs nichts trinken.");
             return;
         }
+
+        if(e.getItem().getType() == Material.COOKED_BEEF || e.getItem().getType() == Material.BAKED_POTATO || e.getItem().getType() == Material.COOKED_CHICKEN) {
+            Health.FAT.add(Script.getNRPID(p), Script.getRandomFloat(2F, 4F));
+        }
+
         if (e.getItem().getType().equals(Material.POTION)) {
             p.getInventory().setItemInMainHand(Script.Pfandflasche());
             Health.THIRST.add(Script.getNRPID(p), Script.getRandomFloat(2.5F, 3F));

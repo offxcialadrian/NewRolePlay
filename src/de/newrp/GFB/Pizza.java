@@ -64,7 +64,7 @@ public class Pizza implements CommandExecutor, Listener {
         cooldown.put(p.getName(), System.currentTimeMillis() + 10 * 60 * 2000L);
         p.sendMessage(PREFIX + "Du hast den Job als §6Pizzalieferant §7angenommen.");
         p.sendMessage(Messages.INFO + "Gehe nun in die Küche und nehme die Pizza aus dem Ofen (Rechtsklick).");
-        int total = GFB.PIZZALIEFERANT.getLevel(p) * Script.getRandom(3,4);
+        int total = GFB.PIZZALIEFERANT.getLevel(p) + Script.getRandom(3,4);
         pizza.put(p.getName(), total);
         TOTAL_SCORE.put(p.getName(), total);
 
@@ -144,12 +144,12 @@ public class Pizza implements CommandExecutor, Listener {
 
         if(pizza.get(p.getName()) == 0) {
             p.sendMessage(PREFIX + "Du hast alle Pizzen erfolgreich ausgeliefert.");
-            GFB.PIZZALIEFERANT.addExp(p, GFB.PIZZALIEFERANT.getLevel(p) * Script.getRandom(5, 7));
-            PayDay.addPayDay(p, (GFB.PIZZALIEFERANT.getLevel(p) * Script.getRandom(2, 3) + TOTAL_SCORE.get(p.getName())));
+            GFB.PIZZALIEFERANT.addExp(p, GFB.PIZZALIEFERANT.getLevel(p) + (TOTAL_SCORE.get(p.getName()))/2);
+            PayDay.addPayDay(p, (GFB.PIZZALIEFERANT.getLevel(p) + (TOTAL_SCORE.get(p.getName()))*2));
+            Script.addEXP(p, GFB.PIZZALIEFERANT.getLevel(p) + (TOTAL_SCORE.get(p.getName())));
             pizza.remove(p.getName());
             GFB.CURRENT.remove(p.getName());
             TOTAL_SCORE.remove(p.getName());
-            Script.addEXP(p, GFB.PIZZALIEFERANT.getLevel(p) * Script.getRandom(2, 3));
             return;
         }
 

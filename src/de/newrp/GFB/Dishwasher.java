@@ -64,7 +64,7 @@ public class Dishwasher implements CommandExecutor, Listener {
         GFB.CURRENT.put(p.getName(), GFB.DISHWASHER);
         cooldown.put(p.getName(), System.currentTimeMillis() + 10 * 60 * 2000L);
         p.sendMessage(PREFIX + "Du hast den Job angenommen!");
-        int dish = GFB.DISHWASHER.getLevel(p) * Script.getRandom(10, 20);
+        int dish = GFB.DISHWASHER.getLevel(p) + Script.getRandom(8, 11);
         dishes.put(p.getName(), dish);
         TOTAL_SCORE.put(p.getName(), dish);
         p.sendMessage(PREFIX + "Du musst " + dish + " Teller waschen.");
@@ -160,9 +160,9 @@ public class Dishwasher implements CommandExecutor, Listener {
             p.sendMessage(PREFIX + "Du hast alle Teller gewaschen.");
             GFB.CURRENT.remove(p.getName());
             dishes.remove(p.getName());
-            GFB.DISHWASHER.addExp(p, TOTAL_SCORE.get(p.getName()));
-            Script.addEXP(p, GFB.DISHWASHER.getLevel(p) * TOTAL_SCORE.get(p.getName()));
-            PayDay.addPayDay(p, GFB.DISHWASHER.getLevel(p) * TOTAL_SCORE.get(p.getName())/2);
+            GFB.DISHWASHER.addExp(p, GFB.DISHWASHER.getLevel(p) + TOTAL_SCORE.get(p.getName())/2);
+            Script.addEXP(p, GFB.DISHWASHER.getLevel(p) + TOTAL_SCORE.get(p.getName()));
+            PayDay.addPayDay(p, GFB.DISHWASHER.getLevel(p) + TOTAL_SCORE.get(p.getName()));
             TOTAL_SCORE.remove(p.getName());
             return;
         }

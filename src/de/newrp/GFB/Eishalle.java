@@ -101,9 +101,9 @@ public class Eishalle implements CommandExecutor, Listener {
         CURRENT = null;
         p.sendMessage(PREFIX + "Du hast das Eis wieder befahrbar gemacht.");
         GFB.CURRENT.remove(p.getName());
-        GFB.EISHALLE.addExp(p, GFB.EISHALLE.getLevel(p) * Script.getRandom(5, 7));
-        PayDay.addPayDay(p, GFB.EISHALLE.getLevel(p) * Script.getRandom(5, 7));
-        Script.addEXP(p, GFB.EISHALLE.getLevel(p) * Script.getRandom(5, 7));
+        GFB.EISHALLE.addExp(p, GFB.EISHALLE.getLevel(p) + Script.getRandom(5, 7)/2);
+        PayDay.addPayDay(p, GFB.EISHALLE.getLevel(p) + Script.getRandom(5, 7));
+        Script.addEXP(p, GFB.EISHALLE.getLevel(p)+ Script.getRandom(5, 7));
     }
 
     @EventHandler

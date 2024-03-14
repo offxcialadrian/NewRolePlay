@@ -47,7 +47,32 @@ public enum HologramList {
     DUTY_GOVERNMENT(41, "§8/§6duty", new Location(Script.WORLD, 555, 77, 972)),
     BOOT_JAIL(42, "§8/§6boot", new Location(Script.WORLD, 997, 62, 568, 89.792786f, 7.7781887f)),
     BOOT_LAND(43, "§8/§6boot", new Location(Script.WORLD, 791, 62, 549, 182.14655f, 9.560561f)),
-    GEFÄNGNISARBEIT(44, "§8/§6gefängnisarbeit", new Location(Script.WORLD, 1034, 60, 573, 273.69238f, 5.6780663f));
+    GEFÄNGNISARBEIT(44, "§8/§6gefängnisarbeit", new Location(Script.WORLD, 1034, 60, 573, 273.69238f, 5.6780663f)),
+    SHOE_MALL(45, "§8/§6buy", new Location(Script.WORLD, 843, 7, 962, -226.53546f, 41.1285f)),
+    BUY_1(46, "§8/§6buy", new Location(Script.WORLD, 329, 76, 997, 148.47311f, 16.413198f)),
+    BUY_2(47, "§8/§6buy", new Location(Script.WORLD, 843, 73, 952, -179.79156f, 28.396084f)),
+    BUY_3(48, "§8/§6buy", new Location(Script.WORLD, 534, 64, 1314, -269.9749f, 90.0f)),
+    BUY_4(49, "§8/§6buy", new Location(Script.WORLD, 842, 73, 918, -356.24542f, 9.236951f)),
+    BUY_5(50, "§8/§6buy", new Location(Script.WORLD, 841, 73, 907, -1.7087402f, 20.008091f)),
+    BUY_6(51, "§8/§6buy", new Location(Script.WORLD, 794, 71, 951, -271.5559f, 7.0643415f)),
+    BUY_7(52, "§8/§6buy", new Location(Script.WORLD, 604, 64, 689, -358.99744f, 16.507566f)),
+    BUY_8(53, "§8/§6buy", new Location(Script.WORLD, 275, 64, 892, -1.6918945f, 6.6413584f)),
+    BUY_9(54, "§8/§6buy", new Location(Script.WORLD, 336, 51, 1143, -269.4386f, 12.283148f)),
+    BUY_10(55, "§8/§6buy", new Location(Script.WORLD, 449, 64, 665, -270.5968f, 8.693133f)),
+    BUY_11(56, "§8/§6buy", new Location(Script.WORLD, 449, 65, 644, -269.53955f, 13.067986f)),
+    BUY_12(57, "§8/§6buy", new Location(Script.WORLD, 557, 63, 1270, -0.9939575f, 90.0f)),
+    BUY_13(58, "§8/§6buy",new Location(Script.WORLD, 446, 66, 810, -359.55176f, -2.2893412f)),
+    BUY_14(59, "§8/§6buy", new Location(Script.WORLD, 411, 76, 1081, -180.1416f, 90.0f)),
+    BUY_15(60, "§8/§6buy", new Location(Script.WORLD, 517, 65, 774, -1.5904541f, 90.0f)),
+    BUY_16(61, "§8/§6buy", new Location(Script.WORLD, 545, 65, 755, -0.9003906f, 90.0f)),
+    BUY_17(62, "§8/§6buy", new Location(Script.WORLD, 304, 51, 1148, -179.80176f, 6.610959f)),
+    BUY_18(63, "§8/§6buy", new Location(Script.WORLD, 304, 51, 1148, -179.80176f, 6.610959f)),
+    BUY_19(64, "§8/§6buy", new Location(Script.WORLD, 704, 68, 859, 1.0923897f, 80.32427f)),
+    BUY_20(65, "§8/§6buy", new Location(Script.WORLD, 557, 63, 1270, -359.05908f, 12.675349f)),
+    BUY_21(66, "§8/§6buy", new Location(Script.WORLD, 476, 69, 1186, 89.78363f, 89.33273f)),
+    BUY_22(67, "§8/§6buy", new Location(Script.WORLD, 663, 66, 824, -270.25092f, 24.689606f)),
+    BUY_23(68, "§8/§6buy", new Location(Script.WORLD, 766, 63, 780, 266.49414f, 89.59964f)),
+    BUY_24(69, "§8/§6buy", new Location(Script.WORLD, 450, 65, 644, 90.62988f, 22.937416f));
 
     private final int id;
     private final String name;

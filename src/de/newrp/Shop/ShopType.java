@@ -12,5 +12,11 @@ public enum ShopType {
     FLOWER(),
     HOTEL(),
     GYM(),
+    JAGDHUETTE(),
+    ANGELSHOP(),
+    SHOE_STORE(),
+    GEMUESE(),
+    FASTFOOD(),
+    CARDEALER(),
     HOUSEADDON();
 }

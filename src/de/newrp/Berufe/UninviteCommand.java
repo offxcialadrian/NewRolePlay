@@ -75,6 +75,9 @@ public class UninviteCommand implements CommandExecutor {
                 Script.addOfflineMessage(tg, PREFIX + "Du wurdest aus der " + Beruf.getBeruf(p).getName() + " entlassen.");
             }
 
+            if(tg.getPlayer() != null && Duty.isInDuty(tg.getPlayer())) {
+                Duty.removeDuty(tg.getPlayer());
+            }
             beruf.removeMember(tg, p);
             Script.removeEXP(tg.getName(), Script.getRandom(50, 100));
             TeamSpeak.sync(Script.getNRPID(tg));

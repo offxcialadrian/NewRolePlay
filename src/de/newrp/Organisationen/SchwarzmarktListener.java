@@ -113,7 +113,7 @@ public class SchwarzmarktListener implements Listener {
                     switch (name) {
                         case "§aKräuter Samen":
                             if (badFrak) {
-                                int price = 80;
+                                int price = 125;
                                 if (Script.getMoney(p, PaymentType.CASH) >= price) {
                                     p.getInventory().addItem(Script.setName(new ItemStack(Material.BEETROOT_SEEDS, is.getAmount()), "§aKräuter Samen"));
                                     p.sendMessage(Schwarzmarkt.PREFIX + TEXT_POST_TRADE[Script.getRandom(0, TEXT_POST_TRADE.length - 1)]);
@@ -141,7 +141,7 @@ public class SchwarzmarktListener implements Listener {
                             break;
                         case "§bSpezial-Dünger":
                             if (badFrak) {
-                                int price = 150;
+                                int price = 55;
                                 if (Script.getMoney(p, PaymentType.CASH) >= price) {
                                     p.getInventory().addItem(Script.setName(new ItemStack(Material.INK_SAC, is.getAmount(), (byte) 15), "§bSpezial-Dünger"));
                                     p.sendMessage(Schwarzmarkt.PREFIX + TEXT_POST_TRADE[Script.getRandom(0, TEXT_POST_TRADE.length - 1)]);
@@ -154,7 +154,7 @@ public class SchwarzmarktListener implements Listener {
                             }
                             break;
                         case "§7Brechstange": {
-                            int price = 600;
+                            int price = 200;
                             if (Script.getMoney(p, PaymentType.CASH) >= price) {
                                 p.getInventory().addItem(Script.brechstange());
                                 p.sendMessage(Schwarzmarkt.PREFIX + TEXT_POST_TRADE[Script.getRandom(0, TEXT_POST_TRADE.length - 1)]);
@@ -165,7 +165,7 @@ public class SchwarzmarktListener implements Listener {
                             break;
                         }
                         case "§7Testosteron-Spritze" : {
-                            int price = 90;
+                            int price = 500;
                             if (Script.getMoney(p, PaymentType.CASH) >= price) {
                                 p.getInventory().addItem(Script.setName(new ItemStack(Material.END_ROD, is.getAmount()), "§7Testosteron-Spritze"));
                                 p.sendMessage(Schwarzmarkt.PREFIX + TEXT_POST_TRADE[Script.getRandom(0, TEXT_POST_TRADE.length - 1)]);
