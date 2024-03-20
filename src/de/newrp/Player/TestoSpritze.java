@@ -95,11 +95,7 @@ public class TestoSpritze implements Listener {
     }
 
     private static boolean interact(Player p) {
-        if (!p.getInventory().contains(new ItemBuilder(Material.END_ROD).setName("§7Testosteron-Spritze").build())) {
-            p.sendMessage(Messages.ERROR + "Du hast keine Testo-Spritze.");
-            return false;
-        }
-        return true;
+        return p.getInventory().contains(new ItemBuilder(Material.END_ROD).setName("§7Testosteron-Spritze").build());
     }
 
     private static void progressBar(double required_progress, Player p) {

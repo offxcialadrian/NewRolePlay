@@ -3,6 +3,7 @@ package de.newrp.News;
 import de.newrp.API.Debug;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
+import de.newrp.Berufe.Abteilung;
 import de.newrp.Berufe.Beruf;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -18,6 +19,8 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
 import org.jetbrains.annotations.NotNull;
+
+import javax.swing.*;
 
 public class Flugblatt implements CommandExecutor, Listener {
 
@@ -57,6 +60,11 @@ public class Flugblatt implements CommandExecutor, Listener {
         int amount = Integer.parseInt(args[0]);
         if(amount < 1) {
             p.sendMessage(Messages.ERROR + "Bitte gib eine Zahl größer als 0 an.");
+            return true;
+        }
+
+        if(Beruf.getAbteilung(p) != Abteilung.Abteilungen.JOURNALIST && Beruf.isLeader(p, false)) {
+            p.sendMessage(Messages.ERROR + "Du bist kein Journalist.");
             return true;
         }
 

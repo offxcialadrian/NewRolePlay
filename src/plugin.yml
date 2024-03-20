@@ -609,3 +609,6 @@ commands:
   sellfisch:
     description: sell a fisch
     aliases: [ fischverkauf, sellfish ]
+  spawncar:
+    description: spawn a car
+    aliases: [ car, auto ]

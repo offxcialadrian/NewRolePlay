@@ -33,7 +33,7 @@ public class Notruf implements Listener {
 
     public static void openGUI(Player p, Questions question) {
         int size = (int) Math.ceil(question.getAnswers().size() / 9.0) * 9;
-        Inventory inv = Bukkit.createInventory(null, size, "§8[§cNotfruf§8] §7" + question.getQuestion());
+        Inventory inv = Bukkit.createInventory(null, size, "§8[§cNotruf§8] §7" + question.getQuestion());
         int i = 0;
         for (Answers answer : Answers.values()) {
             if (answer.question == question) {

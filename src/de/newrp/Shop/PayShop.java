@@ -192,6 +192,12 @@ public class PayShop implements Listener {
                         Stadtkasse.removeStadtkasse(price, "Kostenübernahme durch Krankenversicherung an " + Script.getName(p));
                     }
                     break;
+                case EINZELFAHRASUSWEIS:
+                    p.getInventory().addItem(new ItemBuilder(Material.PAPER).setName("§6UBahn-Ticket [Einzelfahrausweis]").setLore("Verbleibende Fahrten: 1").build());
+                case WOCHENFAHRASUSWEIS:
+                    p.getInventory().addItem(new ItemBuilder(Material.PAPER).setName("§6UBahn-Ticket [7 Fahrten]").setLore("Verbleibende Fahrten: 7").build());
+                case MONATSFAHRASUSWEIS:
+                    p.getInventory().addItem(new ItemBuilder(Material.PAPER).setName("§6UBahn-Ticket [30 Fahrten]").setLore("Verbleibende Fahrten: 30").build());
 
                 case WATER_BUCKET:
                     p.getInventory().addItem(Script.setNameAndLore(new ItemStack(Material.WATER_BUCKET), "§9Wasser", "§65/5"));

@@ -308,7 +308,8 @@ public class Plantage {
         }
 
         for(int i = 0; i < getErtrag(); i++) {
-            p.getInventory().addItem(new ItemBuilder(Material.SUGAR).setName(getType().getName()).setLore("§7Reinheitsgrad: " + purity.getText()).build());
+            if(getType() == PlantageType.PULVER) p.getInventory().addItem(new ItemBuilder(Material.SUGAR).setName(getType().getName()).setLore("§7Reinheitsgrad: " + purity.getText()).build());
+            else p.getInventory().addItem(new ItemBuilder(Material.LARGE_FERN).setName(getType().getName()).setLore("§7Reinheitsgrad: " + purity.getText()).build());
         }
         getLocation().getBlock().setType(Material.AIR);
         getLocation().getBlock().getRelative(BlockFace.DOWN).setType(Material.DIRT);

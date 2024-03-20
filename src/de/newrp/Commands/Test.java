@@ -8,7 +8,10 @@ import net.citizensnpcs.api.event.NPCRightClickEvent;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.trait.SkinTrait;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.block.data.type.Slab;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -20,6 +23,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.scoreboard.Team;
+import org.bukkit.util.Vector;
 
 import java.util.UUID;
 
@@ -41,6 +45,31 @@ public class Test implements CommandExecutor, Listener {
             p.sendMessage(Messages.NO_SDUTY);
             return true;
         }
+
+
+        Block b = p.getLocation().getBlock();
+        Slab slab = (Slab) b.getBlockData();
+
+        Slab.Type type = slab.getType();
+
+        Vector direction = p.getLocation().getDirection().normalize();
+        Debug.debug("Direction: " + direction.toString());
+
+// Berechne die Koordinaten des Blocks hinter dem gegebenen Block basierend auf der Blickrichtung des Spielers
+        int x = (int) Math.round(b.getX() + direction.getX());
+        int y = (int) Math.round(b.getY() + direction.getY());
+        int z = (int) Math.round(b.getZ() + direction.getZ());
+
+        Location loc = new Location(Script.WORLD, x, y, z);
+
+        Debug.debug("X: " + b.getX() + " Y: " + b.getY() + " Z: " + b.getZ());
+        Debug.debug("X: " + x + " Y: " + y + " Z: " + z);
+
+
+
+
+        // Gib den Block an den berechneten Koordinaten zurück
+
 
         /*try {
             Bukkit.getScoreboardManager().getMainScoreboard().getTeam("player").addEntry(p.getName());

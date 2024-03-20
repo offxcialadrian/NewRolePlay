@@ -172,11 +172,22 @@ public class GoTo implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        gp = Navi.getNaviByName(args[0]);
+        gp = Navi.getNaviByName(args[0].replace("-", " "));
 
         if (gp == null) {
-            p.sendMessage(Messages.ERROR + "Punkt nicht gefunden.");
+            GoTo.Points point = GoTo.Points.getPointByName(args[0]);
+            if (point == null) {
+                p.sendMessage(Messages.ERROR + "Punkt nicht gefunden.");
+                return true;
+            }
+
+            p.sendMessage(PREFIX + "Du hast dich zu " + point.getName() + " teleportiert.");
+            Script.sendTeamMessage(p, ChatColor.YELLOW, "hat sich zu " + point.getName() + " teleportiert.", true);
+            Teleport.back.put(p, p.getLocation());
+            p.teleport(point.getLocation());
+            Log.NORMAL.write(p, "teleportierte sich zu " + point.getName() + ".");
             return true;
+
         }
 
         p.sendMessage(PREFIX + "Du hast dich zu " + gp.getName() + " teleportiert.");
@@ -196,7 +207,13 @@ public class GoTo implements CommandExecutor, TabCompleter {
             final List<String> oneArgList = new ArrayList<>();
             final List<String> completions = new ArrayList<>();
             for (Navi point : Navi.values()) {
-                oneArgList.add(point.getName());
+                oneArgList.add(point.getName().replace(" ", "-"));
+            }
+
+            for(GoTo.Points gp : GoTo.Points.values()) {
+                if(!oneArgList.contains(gp.getName())) {
+                    oneArgList.add(gp.getName());
+                }
             }
 
             if (args.length == 1) {

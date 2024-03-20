@@ -348,7 +348,7 @@ public class Bank implements CommandExecutor, TabCompleter {
         Player p = e.getPlayer();
         if(BuildMode.isInBuildMode(p)) return;
         if(e.getClickedBlock() == null) return;
-        if(!(e.getClickedBlock().getBlockData() instanceof Banner)) return;
+        if(!(e.getClickedBlock().getState() instanceof Banner)) return;
         ATM atm = ATM.getNearATM(p);
         if(atm == null) return;
         p.performCommand("bank info");

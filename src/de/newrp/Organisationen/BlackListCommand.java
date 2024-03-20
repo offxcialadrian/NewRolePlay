@@ -205,8 +205,8 @@ public class BlackListCommand implements CommandExecutor, Listener {
                 kills += r.getKills();
             }
 
-            price = Math.max(5000, price*(Math.min(1, o.getLevel()/2)));
-            kills = Math.max(100, kills*(Math.min(1, o.getLevel()/2)));
+            price = Math.min(5000, price*(Math.min(1, o.getLevel()/2)));
+            kills = Math.min(50, kills*(Math.min(1, o.getLevel()/2)));
 
 
             Blacklist.add(tg, o, reasons.toString(), kills, price);

@@ -42,9 +42,9 @@ public class Mobile implements Listener {
 
     public enum Phones {
 
-        APPLE(1, "youPhone 15", 1800, new ItemBuilder(Material.IRON_INGOT).setName("youPhone 15").build(), 20),
-        SAMSUNG(2, "Samstar", 1600, new ItemBuilder(Material.IRON_INGOT).setName("Samstar").build(), 10),
-        HUAWEI(3, "Hawaii P55", 1400, new ItemBuilder(Material.IRON_INGOT).setName("Hawaii P55").build(), 8);
+        APPLE(1, "youPhone 15", 1800, new ItemBuilder(Material.NETHERITE_INGOT).setName("§cyouPhone 15").build(), 20),
+        SAMSUNG(2, "Samstar", 1600, new ItemBuilder(Material.GOLD_INGOT).setName("§cSamstar").build(), 10),
+        HUAWEI(3, "Hawaii P55", 1400, new ItemBuilder(Material.IRON_INGOT).setName("§cHawaii P55").build(), 8);
 
         int id;
         String name;
@@ -135,10 +135,7 @@ public class Mobile implements Listener {
 
         public void removeAkku(Player p, int akku) {
             akku = getAkku(p) - akku;
-            if (akku <= 0) {
-                p.getInventory().removeItem(new ItemStack(Material.IRON_INGOT));
-                p.getInventory().addItem(new ItemBuilder(Material.IRON_INGOT).setName("§c" + p.getName() + "s " + ChatColor.stripColor(Mobile.getPhone(p).getName())).build());
-            }
+            if(akku <= 0) return;
             Script.executeAsyncUpdate("UPDATE phone SET akku = " + akku + " WHERE nrp_id = " + Script.getNRPID(p));
         }
 
@@ -217,7 +214,7 @@ public class Mobile implements Listener {
         for(ItemStack is : p.getInventory().getContents()) {
             if(is == null) continue;
             for(Phones phones : Phones.values()) {
-                if(Objects.requireNonNull(ChatColor.stripColor(is.getItemMeta().getDisplayName())).endsWith(phones.getName())) {
+                if(Objects.requireNonNull(is.getItemMeta().getDisplayName()).endsWith(phones.getName())) {
                     return phones;
                 }
             }

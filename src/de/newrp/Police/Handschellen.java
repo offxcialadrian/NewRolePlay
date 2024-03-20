@@ -71,6 +71,11 @@ public class Handschellen implements Listener {
             return;
         }
 
+        if(SDuty.isSDuty((Player) e.getRightClicked())) {
+            Script.sendActionBar(e.getPlayer(), Messages.ERROR + Script.getName((Player) e.getRightClicked()) + " ist im Supporter-Dienst.");
+            return;
+        }
+
         Player p = e.getPlayer();
         if (!interact(p)) return;
 
@@ -125,6 +130,7 @@ public class Handschellen implements Listener {
 
     public boolean interact(Player p) {
         if (p.getInventory().getItemInMainHand() == null) return false;
+        if (!Duty.isInDuty(p)) return false;
 
         ItemStack is = p.getInventory().getItemInMainHand();
         return is.hasItemMeta() && is.getItemMeta().getDisplayName() != null && is.getItemMeta().getDisplayName().equals("§7Handschellen");

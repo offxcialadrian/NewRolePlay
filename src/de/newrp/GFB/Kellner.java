@@ -188,6 +188,7 @@ public class Kellner implements CommandExecutor, Listener {
                 GFB.KELLNER.addExp(p, GFB.KELLNER.getLevel(p) + Script.getRandom(5, 7));
                 SCORE.remove(p.getName());
                 GFB.CURRENT.remove(p.getName());
+                Script.addEXP(p, GFB.KELLNER.getLevel(p) + Script.getRandom(5, 7));
                 PayDay.addPayDay(p, GFB.KELLNER.getLevel(p) + TOTAL_SCORE.get(p.getName()));
                 TOTAL_SCORE.remove(p.getName());
                 return;

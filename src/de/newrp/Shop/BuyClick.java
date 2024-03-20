@@ -125,8 +125,8 @@ public class BuyClick implements Listener {
             sendMessage(p, "Möchten Sie Bar oder mit Karte bezahlen?");
             int price = (Buy.amount.containsKey(p.getName()) ? si.getPrice(s) * Buy.amount.get(p.getName()) : si.getPrice(s));
             Inventory gui = p.getServer().createInventory(null, InventoryType.HOPPER, "§8[§aZahlungsmethode§8]");
-            ItemStack cash = Script.setNameAndLore(Script.getHead(60078), "§aBar","§8» §c" + (Buy.amount.containsKey(p.getName())?Buy.amount.get(p.getName()) + "x " + si.getPrice(s) + " (" + si.getPrice(s) + " )":si.getPrice(s)) + "€");
-            ItemStack bank = Script.setNameAndLore(Script.getHead(58268), "§aKarte","§8» §c" + (Buy.amount.containsKey(p.getName())?Buy.amount.get(p.getName()) + "x " + si.getPrice(s) + " (" + si.getPrice(s) + " )":si.getPrice(s)) + "€");
+            ItemStack cash = Script.setNameAndLore(Script.getHead(60078), "§aBar","§8» §c" + (Buy.amount.containsKey(p.getName())?Buy.amount.get(p.getName()) + "x" + si.getPrice(s) + " (" + price + ")":si.getPrice(s)) + "€");
+            ItemStack bank = Script.setNameAndLore(Script.getHead(58268), "§aKarte","§8» §c" + (Buy.amount.containsKey(p.getName())?Buy.amount.get(p.getName()) + "x" + si.getPrice(s) + " (" + price + ")":si.getPrice(s)) + "€");
             gui.setItem(1, cash);
             gui.setItem(3, bank);
             Script.fillInv(gui);

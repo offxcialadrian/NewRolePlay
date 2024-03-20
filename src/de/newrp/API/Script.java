@@ -1040,13 +1040,15 @@ public class Script {
     }
 
     public static boolean hasDrugs(Player p) {
-        return (p.getInventory().contains(Material.SUGAR));
+        return (p.getInventory().contains(Material.SUGAR) || p.getItemOnCursor().getType() == Material.SUGAR || p.getInventory().getItemInOffHand().getType() == Material.SUGAR || p.getInventory().contains(Material.LARGE_FERN) || p.getItemOnCursor().getType() == Material.LARGE_FERN || p.getInventory().getItemInOffHand().getType() == Material.LARGE_FERN);
     }
 
     public static void removeDrugs(Player p) {
         p.getInventory().remove(Material.SUGAR);
+        p.getInventory().remove(Material.LARGE_FERN);
         p.getItemOnCursor();
         if(p.getItemOnCursor().getType() == Material.SUGAR) p.setItemOnCursor(new ItemStack(Material.AIR));
+        if(p.getItemOnCursor().getType() == Material.LARGE_FERN) p.setItemOnCursor(new ItemStack(Material.AIR));
     }
 
     public static long getLastDisconnect(OfflinePlayer p) {
@@ -1489,6 +1491,10 @@ public class Script {
             Premium.addPremiumStorage(p, TimeUnit.DAYS.toMillis(3), true);
         }
 
+    }
+
+    public static String getLastChar(String s) {
+        return s.substring(s.length() - 1);
     }
 
     public static void setLevel(Player p, int level) {

@@ -6,10 +6,7 @@ import de.newrp.Commands.Test;
 import de.newrp.Entertainment.Lotto;
 import de.newrp.Government.Wahlen;
 import de.newrp.News.BreakingNews;
-import de.newrp.Player.AFK;
-import de.newrp.Player.Mobile;
-import de.newrp.Player.SMSCommand;
-import de.newrp.Player.UBahn;
+import de.newrp.Player.*;
 import de.newrp.Votifier.VoteShop;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
@@ -54,11 +51,15 @@ public class AsyncMinute extends BukkitRunnable {
 
         for(Player p : Bukkit.getOnlinePlayers()) {
             if(Mobile.hasPhone(p) && Mobile.mobileIsOn(p) && !AFK.isAFK(p)) {
+                assert Mobile.getPhone(p) != null;
                 Mobile.getPhone(p).removeAkku(p, 1);
                 if(Mobile.getPhone(p).getAkku(p) <= 0 && Mobile.mobileIsOn(p)) {
                     p.sendMessage(Mobile.PREFIX + "Dein Handy ist ausgeschaltet, da der Akku leer ist.");
+                    ItemStack is = Mobile.getPhone(p).getItem();
                     p.getInventory().removeItem(new ItemStack(Material.IRON_INGOT));
-                    p.getInventory().addItem(new ItemBuilder(Material.IRON_INGOT).setName("§c" + p.getName() + "s " + ChatColor.stripColor(Mobile.getPhone(p).getName())).build());
+                    p.getInventory().removeItem(new ItemStack(Material.GOLD_INGOT));
+                    p.getInventory().removeItem(new ItemStack(Material.NETHERITE_INGOT));
+                    p.getInventory().addItem(is);
                     continue;
                 }
                 if(Script.getPercentage(Mobile.getPhone(p).getAkku(p), Mobile.getPhone(p).getMaxAkku()) <= 10 && !battery.containsKey(p.getName()) && !battery.get(p.getName()).equals(10)) {
@@ -141,7 +142,7 @@ public class AsyncMinute extends BukkitRunnable {
 
 
         for (Player p : Bukkit.getOnlinePlayers()) {
-            if (!AFK.isAFK(p)) Script.increaseActivePlayTime(p);
+            if (!AFK.isAFK(p) && !Passwort.isLocked(p)) Script.increaseActivePlayTime(p);
             Script.increasePlayTime(p);
             if(Script.getRandom(1, 10) == 1) {
                 if(Krankheit.HUSTEN.isInfected(Script.getNRPID(p))) {

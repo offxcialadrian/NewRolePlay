@@ -25,7 +25,8 @@ public enum Organisation {
     FALCONE(1, "Falcone-Famiglia",  true, false, false, 0, null, null),
     KARTELL(2, "puertoricanisches-Kartell",  true, false, false, 0, null, null),
     GANG(3, "Braterstwo",  false, false, false, 0, null, null),
-    CORLEONE(4, "Corleone-Familie",  true, false, false, 0, null, null);
+    CORLEONE(4, "Corleone-Familie",  true, false, false, 0, null, null),
+    GROVE(5, "Grove-Street",  false, false, false, 0, null, null);
 
     private final String name;
     int id;

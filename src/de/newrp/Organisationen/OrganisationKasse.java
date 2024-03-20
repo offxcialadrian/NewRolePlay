@@ -78,6 +78,7 @@ public class OrganisationKasse implements CommandExecutor {
                         return true;
                     }
 
+                    Organisation.getOrganisation(p).removeExp(amount/1000);
                     atm.removeCash(amount);
                     Organisation.getOrganisation(p).removeKasse(amount);
                     Script.addMoney(p, PaymentType.CASH, amount);
@@ -103,6 +104,8 @@ public class OrganisationKasse implements CommandExecutor {
                         return true;
                     }
 
+
+                    Organisation.getOrganisation(p).addExp(amount/1000);
                     atm.addCash(amount);
                     Organisation.getOrganisation(p).addKasse(amount);
                     Script.removeMoney(p, PaymentType.CASH, amount);

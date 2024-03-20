@@ -3,7 +3,7 @@ package de.newrp.API;
 import org.bukkit.Location;
 
 public enum Navi {
-    AEKI("Aeki", new Location(Script.WORLD, 683, 68, 897, 1.7999525f, 0.6000169f)),
+    AEKI("AEKI", new Location(Script.WORLD, 683, 68, 897, 1.7999525f, 0.6000169f)),
     ARCADE("Arcade", new Location(Script.WORLD, 429, 67, 772, -264.30005f, 1.7999918f)),
     BURGERBRATER("Burgerbrater", new Location(Script.WORLD, 463, 67, 774, 172.30103f, 2.0604906f)),
     CASINO("Casino", new Location(Script.WORLD, 780, 77, 858, 182.31165f, -0.44988146f)),
@@ -42,7 +42,18 @@ public enum Navi {
     APOTHEKE_KH("Apotheke am Krankenhaus", new Location(Script.WORLD, 342, 76, 1078, -89.94908f, 2.8520296f)),
     APOTHEKE_X3("Apotheke am AEKI", new Location(Script.WORLD, 662, 68, 860, -180.32812f, 4.0531044f)),
     GYM("Fitnessstudio", new Location(Script.WORLD, 462, 67, 741, 58.66165f, 86.08832f)),
-    FISCH("Fischhandlung", new Location(Script.WORLD, 424, 68, 917, 0.47094727f, 89.93327f));
+    FISCH("Fischhandlung", new Location(Script.WORLD, 424, 68, 917, 0.47094727f, 89.93327f)),
+    SCHUHLADEN_MALL("Schuhladen", new Location(Script.WORLD, 843, 74, 962, -226.53546f, 41.1285f)),
+    MUSIKLADEN_HAFEN("Musikladen (Hafen)", new Location(Script.WORLD, 329, 77, 997, 148.47311f, 16.413198f)),
+    WAFFENLADEN_GANG("Waffenladen (Gang)", new Location(Script.WORLD, 534, 65, 1314, -269.9749f, 90.0f)),
+    GEMUESELADEN("Gemüseladen", new Location(Script.WORLD, 842, 74, 918, -356.24542f, 9.236951f)),
+    HANKYS_GANG("Hankys (Gang)", new Location(Script.WORLD, 557, 64, 1270, -0.9939575f, 90.0f)),
+    FAHRZEUGHAENDLER("Fahrzeughändler", new Location(Script.WORLD, 411, 77, 1081, -180.1416f, 90.0f)),
+    BLUMENLADEN_STRAND("Blumenladen (Strand)", new Location(Script.WORLD, 517, 66, 774, -1.5904541f, 90.0f)),
+    HANKYS("Hankys", new Location(Script.WORLD, 557, 64, 1270, -359.05908f, 12.675349f)),
+    JAGDHUETTE("Jagdhütte", new Location(Script.WORLD, 476, 70, 1186, 89.78363f, 89.33273f)),
+    ANGELLADEN("Angelladen", new Location(Script.WORLD, 766, 64, 780, 266.49414f, 89.59964f)),
+    BAEKEREI("Bäckerei", new Location(Script.WORLD, 450, 66, 644, 90.62988f, 22.937416f));
 
 
     private final String name;

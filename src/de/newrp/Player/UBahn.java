@@ -1,8 +1,10 @@
 package de.newrp.Player;
 
 import de.newrp.API.*;
+import de.newrp.Chat.Chat;
 import de.newrp.Government.Straftat;
 import de.newrp.Police.Fahndung;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -182,7 +184,8 @@ public class UBahn {
             if(is.getItemMeta().getDisplayName().startsWith("§6UBahn-Ticket")) {
                 if(is.getItemMeta().hasLore()) {
                     assert is.getItemMeta().getLore() != null;
-                    int remaining = Integer.parseInt(is.getItemMeta().getLore().get(0).replace("Verbleibende Fahrten: ", ""));
+                    int remaining = Integer.parseInt(Script.getLastChar(ChatColor.stripColor(is.getItemMeta().getLore().get(0))));
+
                     if(remaining == 1) {
                         p.getInventory().remove(is);
                         return;

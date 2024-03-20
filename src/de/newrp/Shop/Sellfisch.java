@@ -2,6 +2,7 @@ package de.newrp.Shop;
 
 import de.newrp.API.Messages;
 import de.newrp.API.Navi;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -21,7 +22,7 @@ public class Sellfisch implements CommandExecutor {
             return true;
         }
 
-        if(args.length == 0) {
+        if(args.length != 0) {
             p.sendMessage(Messages.ERROR + "/sellfisch");
             return true;
         }
@@ -29,8 +30,7 @@ public class Sellfisch implements CommandExecutor {
         int i = 0;
         for(ItemStack is : p.getInventory().getContents()) {
             if(is==null) continue;
-            Fish fish = (Fish) is.getData();
-            if(fish==null) continue;
+            if(is.getType() != Material.TROPICAL_FISH && is.getType() != Material.COD && is.getType() != Material.SALMON && is.getType() != Material.PUFFERFISH) continue;
             i++;
         }
 
@@ -42,8 +42,7 @@ public class Sellfisch implements CommandExecutor {
         int price = i*2;
         for(ItemStack is : p.getInventory().getContents()) {
             if(is==null) continue;
-            Fish fish = (Fish) is.getData();
-            if(fish==null) continue;
+            if(is.getType() != Material.TROPICAL_FISH && is.getType() != Material.COD && is.getType() != Material.SALMON && is.getType() != Material.PUFFERFISH) continue;
             p.getInventory().remove(is);
         }
 

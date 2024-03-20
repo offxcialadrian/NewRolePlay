@@ -111,6 +111,10 @@ public class Drone implements Listener {
             if(e.getPlayer().getLocation().getBlock().getType().equals(Material.WATER)) {
                 crash(e.getPlayer());
             }
+            if(e.getPlayer().getLocation().distance(location.get(e.getPlayer().getName())) > 150) {
+                crash(e.getPlayer());
+                e.getPlayer().sendMessage(Messages.INFO + "Du hast dich zu weit mit deiner Drohne entfernt und den Empfang verloren.");
+            }
         }
     }
 

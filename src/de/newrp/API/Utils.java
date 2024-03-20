@@ -65,9 +65,9 @@ public class Utils implements Listener {
 
 
     public static final HashMap<String, Long> cooldowns = new HashMap<>();
-    public static final int WORLD_BORDER_MIN_X = 180;
+    public static final int WORLD_BORDER_MIN_X = 0;
     public static final int WORLD_BORDER_MAX_X = 1055;
-    public static final int WORLD_BORDER_MIN_Z = 500;
+    public static final int WORLD_BORDER_MIN_Z = 420;
     public static final int WORLD_BORDER_MAX_Z = 1362;
 
 
@@ -663,7 +663,7 @@ public class Utils implements Listener {
         try (Statement stmt = main.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM birthday WHERE id=" + Script.getNRPID(p))) {
             if (rs.next()) {
-                return rs.getInt("present")==1;
+                return rs.getInt("geschenk")==1;
             }
         } catch (Exception e) {
             e.printStackTrace();

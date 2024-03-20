@@ -15,6 +15,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class TakeShop implements CommandExecutor {
@@ -70,11 +71,9 @@ public class TakeShop implements CommandExecutor {
         shop.setOwner(0);
         Script.executeAsyncUpdate("DELETE FROM shopprice WHERE shopID=" + shop.getID());
         for(ShopItem si : ShopItem.values()) {
-            for(ShopType st : si.getShopTypes()) {
-                if(st == shop.getType()) {
-                    Script.executeAsyncUpdate("INSERT INTO shopprice (amount, price, itemID, shopID) VALUES (" + si.getSize() + ", " + (si.getBuyPrice()+(int) Script.getPercent(70, si.getBuyPrice())) + ", " + si.getID() + ", " + shop.getID() + ")");
-                    break;
-                }
+            ArrayList<ShopType> types = new ArrayList<>(Arrays.asList(si.getShopTypes()));
+            if(types.contains(shop.getType())) {
+                Script.executeAsyncUpdate("INSERT INTO shopprice (amount, price, itemID, shopID) VALUES (" + si.getSize() + ", " + Math.max(si.getBuyPrice()+(int) Script.getPercent(70, si.getBuyPrice()), 5) + ", " + si.getID() + ", " + shop.getID() + ")");
             }
         }
 

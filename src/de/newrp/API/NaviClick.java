@@ -32,7 +32,7 @@ public class NaviClick implements Listener {
                         inv.setItem(0, Script.setName(Material.GHAST_TEAR, "§6" + Navi.KRANKENHAUS.getName()));
                         inv.setItem(1, Script.setName(Material.WRITABLE_BOOK, "§6" + Navi.NEWS.getName()));
                         inv.setItem(2, Script.setName(Material.LEAD, "§6" + Navi.POLIZEIREVIER.getName()));
-                        inv.setItem(3, Script.setName(Script.getGermanyFlag(), "§6" + Navi.STADTHALLE.getName()));
+                        inv.setItem(3, Script.setNameAndLore(Script.getGermanyFlag(), "§6" + Navi.STADTHALLE.getName()));
                         inv.setItem(13, Script.setName(Material.REDSTONE, "§cZurück"));
                         Script.fillInv(inv);
                         p.openInventory(inv);
@@ -88,7 +88,7 @@ public class NaviClick implements Listener {
                         inv.setItem(1, Script.setName(Material.QUARTZ_PILLAR, "§6" + Navi.GERICHT.getName()));
                         inv.setItem(2, Script.setName(Material.WRITTEN_BOOK, "§6" + Navi.SCHULE.getName()));
                         inv.setItem(3, Script.setName(Material.CHEST, "§6" + Navi.SELFSTORAGE.getName()));
-                        inv.setItem(4, Script.setName(Script.getGermanyFlag(), "§6" + Navi.STADTHALLE.getName()));
+                        inv.setItem(4, Script.setNameAndLore(Script.getGermanyFlag(), "§6" + Navi.STADTHALLE.getName()));
                         inv.setItem(5, Script.setName(Material.GOLD_INGOT, "§6" + Navi.STAATSBANK.getName()));
                         inv.setItem(6, Script.setName(Material.OAK_BOAT, "§6" + Navi.TAXI.getName()));
                         inv.setItem(13, Script.setName(Material.REDSTONE, "§cZurück"));
@@ -110,7 +110,7 @@ public class NaviClick implements Listener {
 
                     }
                     case "§6Shops": {
-                        Inventory inv = Bukkit.createInventory(null, 18, "§e§lNavi");
+                        Inventory inv = Bukkit.createInventory(null, 9*3, "§e§lNavi");
                         inv.setItem(0, Script.setName(Material.GLASS, "§6" + Navi.MALL.getName()));
                         inv.setItem(1, Script.setName(Material.BREAD, "§6" + Navi.SUPERMARKT.getName()));
                         inv.setItem(2, Script.setName(Material.IRON_INGOT, "§6" + Navi.ELEKTROLADEN.getName()));
@@ -118,7 +118,18 @@ public class NaviClick implements Listener {
                         inv.setItem(4, Script.setName(Material.GHAST_TEAR, "§6" + Navi.APOTHEKE_KH.getName()));
                         inv.setItem(5, Script.setName(Material.GHAST_TEAR, "§6" + Navi.APOTHEKE_X3.getName()));
                         inv.setItem(6, Script.setName(Material.TROPICAL_FISH, "§6" + Navi.FISCH.getName()));
-                        inv.setItem(13, Script.setName(Material.REDSTONE, "§cZurück"));
+                        inv.setItem(7, Script.setName(Material.LEATHER_BOOTS, "§6" + Navi.SCHUHLADEN_MALL.getName()));
+                        inv.setItem(8, Script.setName(Material.MUSIC_DISC_13, "§6" + Navi.MUSIKLADEN_HAFEN.getName()));
+                        inv.setItem(9, Script.setName(Material.GOLDEN_HOE, "§6" + Navi.WAFFENLADEN_GANG.getName()));
+                        inv.setItem(10, Script.setName(Material.CARROT, "§6" + Navi.GEMUESELADEN.getName()));
+                        inv.setItem(11, Script.setName(Material.IRON_INGOT, "§6" + Navi.HANKYS_GANG.getName()));
+                        inv.setItem(12, Script.setName(Material.OAK_BOAT, "§6" + Navi.FAHRZEUGHAENDLER.getName()));
+                        inv.setItem(13, Script.setName(Material.DANDELION, "§6" + Navi.BLUMENLADEN_STRAND.getName()));
+                        inv.setItem(14, Script.setName(Material.IRON_INGOT, "§6" + Navi.HANKYS.getName()));
+                        inv.setItem(15, Script.setName(Material.DIAMOND_HOE, "§6" + Navi.JAGDHUETTE.getName()));
+                        inv.setItem(16, Script.setName(Material.FISHING_ROD, "§6" + Navi.ANGELLADEN.getName()));
+                        inv.setItem(17, Script.setName(Material.CAKE, "§6" + Navi.BAEKEREI.getName()));
+                        inv.setItem(22, Script.setName(Material.REDSTONE, "§cZurück"));
                         Script.fillInv(inv);
                         p.openInventory(inv);
                         break;
@@ -126,8 +137,8 @@ public class NaviClick implements Listener {
                     }
                     case "§6Tankstelle": {
                         Inventory inv = Bukkit.createInventory(null, 18, "§e§lNavi");
-                        inv.setItem(0, Script.setName(Material.WATER_BUCKET, "§6" + Navi.TANKSTELLE_GANG.getName()));
-                        inv.setItem(1, Script.setName(Material.WATER_BUCKET, "§6" + Navi.TANKSTELLE_KH.getName()));
+                        inv.setItem(0, Script.setName(Material.COAL, "§6" + Navi.TANKSTELLE_GANG.getName()));
+                        inv.setItem(1, Script.setName(Material.COAL, "§6" + Navi.TANKSTELLE_KH.getName()));
                         inv.setItem(13, Script.setName(Material.REDSTONE, "§cZurück"));
                         Script.fillInv(inv);
                         p.openInventory(inv);

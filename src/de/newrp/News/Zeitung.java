@@ -5,6 +5,7 @@ import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.Administrator.SDuty;
 import de.newrp.Berufe.Beruf;
+import de.newrp.Shop.Shops;
 import de.newrp.main;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;

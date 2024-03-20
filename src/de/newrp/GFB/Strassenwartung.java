@@ -74,7 +74,7 @@ public class Strassenwartung implements CommandExecutor, Listener {
         p.sendMessage(PREFIX + "Du musst " + count + " Straßen reparieren.");
         p.sendMessage(PREFIX + "Nächste Baustelle: " + construction.get(p.getName()).getName());
         p.sendMessage(Messages.INFO + "Begebe dich zur Baustelle die auf deinem Navi markiert ist und repariere die Straße.");
-        p.sendMessage(Messages.INFO + "Du hast insgesamt " + 10 * GFB.STRASSENWARTUNG.getLevel(p) + " Minuten Zeit.");
+        p.sendMessage(Messages.INFO + "Du hast insgesamt " + 15 * GFB.STRASSENWARTUNG.getLevel(p) + " Minuten Zeit.");
         Cache.saveInventory(p);
         p.getInventory().clear();
         p.getInventory().addItem(new ItemBuilder(Material.ANDESITE_SLAB).setAmount(construction.get(p.getName()).getLocations().length).setName("§7Straßenblock").build());
@@ -107,7 +107,7 @@ public class Strassenwartung implements CommandExecutor, Listener {
                     TOTAL_SCORE.remove(p.getName());
                 }
             }
-        }.runTaskLater(main.getInstance(), (10L * GFB.STRASSENWARTUNG.getLevel(p)) * 60 * 20L);
+        }.runTaskLater(main.getInstance(), (15L * GFB.STRASSENWARTUNG.getLevel(p)) * 60 * 20L);
 
         return false;
     }
@@ -148,9 +148,9 @@ public class Strassenwartung implements CommandExecutor, Listener {
         if (SCORE.get(p.getName()) == 1) {
             int repaired_total = TOTAL_SCORE.get(p.getName()) - SCORE.get(p.getName());
             p.sendMessage(PREFIX + "Du hast alle Straßen repariert.");
-            PayDay.addPayDay(p, GFB.STRASSENWARTUNG.getLevel(p) + (repaired_total*3));
-            Script.addEXP(p, GFB.STRASSENWARTUNG.getLevel(p) + (repaired_total*3));
-            GFB.STRASSENWARTUNG.addExp(p, GFB.STRASSENWARTUNG.getLevel(p) + (repaired_total*2));
+            PayDay.addPayDay(p, GFB.STRASSENWARTUNG.getLevel(p) + (repaired_total*6));
+            Script.addEXP(p, GFB.STRASSENWARTUNG.getLevel(p) + (repaired_total*6));
+            GFB.STRASSENWARTUNG.addExp(p, GFB.STRASSENWARTUNG.getLevel(p) + (repaired_total*4));
             Cache.loadInventory(p);
             GFB.CURRENT.remove(p.getName());
             construction.remove(p.getName());

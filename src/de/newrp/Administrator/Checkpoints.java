@@ -233,7 +233,7 @@ public class Checkpoints implements Listener {
     public static void clear(Player p) {
         clearCheckpoints(p);
         Script.executeAsyncUpdate("DELETE FROM checkpoints WHERE id = " + Script.getNRPID(p));
-        Cache.resetScoreboard(p);
+        Cache.loadScoreboard(p);
         p.teleport(new Location(Script.WORLD, 587, 69, 991, -268.28235f, -3.7367816f));
         CHECKPOINTS.remove(p.getName());
     }
@@ -246,6 +246,7 @@ public class Checkpoints implements Listener {
 
     public static void clearCheckpoints(Player p) {
         if (!hasCheckpoints(p)) return;
+        Cache.loadScoreboard(p);
 
         Iterator<Map.Entry<Location, String>> it = CHECKPOINT_LOCATION.entrySet().iterator();
         while (it.hasNext()) {

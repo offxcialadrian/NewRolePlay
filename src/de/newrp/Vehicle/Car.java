@@ -1,19 +1,19 @@
 package de.newrp.Vehicle;
 
+import de.newrp.API.Cache;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.API.SlotLimit;
 import de.newrp.main;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Boat;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.bukkit.scoreboard.DisplaySlot;
-import org.bukkit.scoreboard.Objective;
-import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.*;
 import org.bukkit.util.NumberConversions;
 import org.bukkit.util.Vector;
 
@@ -22,6 +22,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.*;
+
+import static de.newrp.API.Script.df;
 
 public class Car {
 
@@ -209,37 +211,88 @@ public class Car {
     }
 
     public static void setCarSidebar(Player p, Car car) {
-        Scoreboard sb = Bukkit.getScoreboardManager().getNewScoreboard();
-        Objective obj = sb.registerNewObjective("Vehicle", "dummy");
-        obj.setDisplaySlot(DisplaySlot.SIDEBAR);
-        if (car.getCarType() == null) return;
-        obj.setDisplayName("§6" + car.getCarType().getName());
-        obj.getScore("§aTank§8:").setScore(car.getFuel());
-        obj.getScore("§aTacho§8:").setScore(0);
-        obj.getScore("§aZustand§8:").setScore(car.getCarheal());
-        obj.getScore("§aKilometer§8:").setScore(car.getMileage());
-        obj.getScore("§aGang§8:").setScore(0);
-        p.setScoreboard(sb);
+        ScoreboardManager m = Bukkit.getScoreboardManager();
+        Scoreboard b = m.getNewScoreboard();
+        Objective o = b.registerNewObjective("Silver", "");
+        o.setDisplaySlot(DisplaySlot.SIDEBAR);
+        o.setDisplayName(ChatColor.BLUE + "" + ChatColor.BOLD + "§cNRP × Fahrzeug");
+        Score platzhalter1 = o.getScore(ChatColor.RED + "");
+        Score platzhalter2 = o.getScore(ChatColor.YELLOW + "");
+        Score score1 = o.getScore(ChatColor.GRAY + "§bAuto§8:");
+        Score score2 = o.getScore(ChatColor.DARK_AQUA + " §8» §e" + car.getCarType().getName());
+        Score score3 = o.getScore(ChatColor.GRAY + "§bGang§8:");
+        Score score4 = o.getScore(ChatColor.DARK_AQUA + " §8» §e" + getGear(car.getBoatEntity()));
+        Score score5 = o.getScore(ChatColor.GRAY + "§bTank§8:");
+        Score score6 = o.getScore(ChatColor.DARK_AQUA + " §8» §e" + car.getFuel() + "%");
+        Score score7 = o.getScore(ChatColor.GRAY + "§bKilometer§8:");
+        Score score8 = o.getScore(ChatColor.DARK_AQUA + " §8» §e" + car.getMileage() + " km");
+        Score score9 = o.getScore(ChatColor.GRAY + "");
+        Score score10 = o.getScore(ChatColor.GRAY + "§bTacho§8:");
+        Score score11 = o.getScore(ChatColor.DARK_AQUA + " §8» §e" + getCurrentSpeed(car.getBoatEntity()) + " km/h");
+        Score space = o.getScore("§8");
+        Score space1 = o.getScore("§4");
+
+
+        platzhalter1.setScore(14);
+        score1.setScore(13);
+        score2.setScore(12);
+        platzhalter2.setScore(11);
+        score3.setScore(10);
+        score4.setScore(9);
+        space.setScore(8);
+        score5.setScore(7);
+        score6.setScore(6);
+        space1.setScore(5);
+        score7.setScore(4);
+        score8.setScore(3);
+        score9.setScore(2);
+        score10.setScore(1);
+        score11.setScore(0);
+
+        Cache.saveScoreboard(p);
+        p.setScoreboard(b);
     }
 
     public static void updateCarSidebar(Player p, Car car, Boat mc) {
-        Scoreboard board = p.getScoreboard();
-        Objective obj = board.getObjective(DisplaySlot.SIDEBAR);
+        ScoreboardManager m = Bukkit.getScoreboardManager();
+        Scoreboard b = m.getNewScoreboard();
+        Objective o = b.registerNewObjective("Silver", "");
+        o.setDisplaySlot(DisplaySlot.SIDEBAR);
+        o.setDisplayName(ChatColor.BLUE + "" + ChatColor.BOLD + "§cNRP × Fahrzeug");
+        Score platzhalter1 = o.getScore(ChatColor.RED + "");
+        Score platzhalter2 = o.getScore(ChatColor.YELLOW + "");
+        Score score1 = o.getScore(ChatColor.GRAY + "§bAuto§8:");
+        Score score2 = o.getScore(ChatColor.DARK_AQUA + " §8» §e" + car.getCarType().getName());
+        Score score3 = o.getScore(ChatColor.GRAY + "§bGang§8:");
+        Score score4 = o.getScore(ChatColor.DARK_AQUA + " §8» §e" + getGear(car.getBoatEntity()));
+        Score score5 = o.getScore(ChatColor.GRAY + "§bTank§8:");
+        Score score6 = o.getScore(ChatColor.DARK_AQUA + " §8» §e" + car.getFuel() + "%");
+        Score score7 = o.getScore(ChatColor.GRAY + "§bKilometer§8:");
+        Score score8 = o.getScore(ChatColor.DARK_AQUA + " §8» §e" + car.getMileage() + " km");
+        Score score9 = o.getScore(ChatColor.GRAY + "");
+        Score score10 = o.getScore(ChatColor.GRAY + "§bTacho§8:");
+        Score score11 = o.getScore(ChatColor.DARK_AQUA + " §8» §e" + getCurrentSpeed(car.getBoatEntity()) + " km/h");
+        Score space = o.getScore("§8");
+        Score space1 = o.getScore("§4");
 
-        if (p.getVehicle().getCustomName() != null) {
-            obj.getScore("§aTacho§8:").setScore(getCurrentSpeed(mc));
-            obj.getScore("§aTank§8:").setScore(100);
-            obj.getScore("§aKilometer§8:").setScore(0);
-            obj.getScore("§aZustand§8:").setScore(1000);
-        } else {
-            obj.getScore("§aTacho§8:").setScore(getCurrentSpeed(mc));
-            obj.getScore("§aTank§8:").setScore(car.getFuel());
-            obj.getScore("§aKilometer§8:").setScore(car.getMileage());
-            obj.getScore("§aZustand§8:").setScore(car.getCarheal());
-            obj.getScore("§aGang§8:").setScore(getGear(mc));
-        }
 
-        p.setScoreboard(board);
+        platzhalter1.setScore(14);
+        score1.setScore(13);
+        score2.setScore(12);
+        platzhalter2.setScore(11);
+        score3.setScore(10);
+        score4.setScore(9);
+        space.setScore(8);
+        score5.setScore(7);
+        score6.setScore(6);
+        space1.setScore(5);
+        score7.setScore(4);
+        score8.setScore(3);
+        score9.setScore(2);
+        score10.setScore(1);
+        score11.setScore(0);
+
+        p.setScoreboard(b);
     }
 
     public static int getGear(Boat mc) {

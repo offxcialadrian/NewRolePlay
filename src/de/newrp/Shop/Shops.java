@@ -142,7 +142,6 @@ public enum Shops {
 
     public void removeKasse(int i) {
         int n = (getKasse() - i);
-        if (n < 0) n = 0;
         Script.executeUpdate("UPDATE shops SET kasse=" + n + " WHERE shopID=" + this.id);
     }
 

@@ -14,6 +14,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.jetbrains.annotations.NotNull;
@@ -84,6 +85,14 @@ public class TV implements CommandExecutor, Listener {
         if(tvs.containsKey(p.getName())) {
             e.setCancelled(true);
             p.setSpectatorTarget(KameraCommand.camera);
+        }
+    }
+
+    @EventHandler
+    public void onMove(PlayerMoveEvent e) {
+        Player p = e.getPlayer();
+        if(tvs.containsKey(p.getName())) {
+            e.setCancelled(true);
         }
     }
 

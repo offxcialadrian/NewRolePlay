@@ -388,6 +388,7 @@ public enum Votekiste {
                         item.setItemMeta(fm);
                         p.sendMessage(VoteShop.PREFIX + "Du hast Feuerwerkskörper gewonnen!");
                         p.getInventory().addItem(item);
+                        p.closeInventory();
                         break;
                     default:
                         break;
@@ -401,6 +402,7 @@ public enum Votekiste {
                     p.sendMessage(VoteShop.PREFIX + "Du hast Trinkwasser gewonnen!");
                 }
             }
+            p.closeInventory();
 
         }, 10 * 20L);
 

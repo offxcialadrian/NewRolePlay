@@ -28,6 +28,7 @@ import de.newrp.Runnable.*;
 import de.newrp.Shop.*;
 import de.newrp.TeamSpeak.*;
 import de.newrp.Ticket.*;
+import de.newrp.Vehicle.DriveCar;
 import de.newrp.Votifier.VoteCommand;
 import de.newrp.Votifier.VoteListener;
 import de.newrp.Votifier.VoteShop;
@@ -357,6 +358,7 @@ public class main extends JavaPlugin {
         getCommand("slap").setExecutor(new SlapCommand());
         getCommand("raffle").setExecutor(new RaffleCommand());
         getCommand("sellfisch").setExecutor(new Sellfisch());
+        getCommand("spawncar").setExecutor(new SpawnCar());
 
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new SDuty(), this);
@@ -469,6 +471,7 @@ public class main extends JavaPlugin {
         pm.registerEvents(new KameraCommand(), this);
         pm.registerEvents(new TV(), this);
         pm.registerEvents(new TestoSpritze(), this);
+        pm.registerEvents(new DriveCar(), this);
 
 
         new AsyncHealth().runTaskTimerAsynchronously(this, 120 * 20L, 120 * 20L);

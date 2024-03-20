@@ -4,6 +4,8 @@ import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.Berufe.Abteilung;
 import de.newrp.Berufe.Beruf;
+import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -43,6 +45,17 @@ public class KameraCommand implements CommandExecutor, Listener {
         }
 
         if(camera == p) {
+
+            for(Player all : Bukkit.getOnlinePlayers()) {
+                if(TV.tvs.containsKey(all.getName())) {
+                    all.sendMessage(PREFIX + "Die Sendung wurde abgebrochen.");
+                    all.teleport(TV.tvs.get(all.getName()));
+                    TV.tvs.remove(all.getName());
+                    all.setSpectatorTarget(null);
+                    all.setGameMode(GameMode.SURVIVAL);
+                }
+            }
+
             camera = null;
             p.sendMessage(PREFIX + "Du hast nun nicht mehr die Kamera-Steuerung.");
             Beruf.Berufe.NEWS.sendMessage(PREFIX + Script.getName(p) + " hat die Kamera-Steuerung verlassen.");
@@ -65,6 +78,15 @@ public class KameraCommand implements CommandExecutor, Listener {
         if(camera == e.getPlayer()) {
             camera = null;
             Beruf.Berufe.NEWS.sendMessage(PREFIX + Script.getName(e.getPlayer()) + " hat die Kamera-Steuerung verlassen.");
+            for(Player all : Bukkit.getOnlinePlayers()) {
+                if(TV.tvs.containsKey(all.getName())) {
+                    all.sendMessage(PREFIX + "Die Sendung wurde abgebrochen.");
+                    all.teleport(TV.tvs.get(all.getName()));
+                    TV.tvs.remove(all.getName());
+                    all.setSpectatorTarget(null);
+                    all.setGameMode(GameMode.SURVIVAL);
+                }
+            }
         }
     }
 
