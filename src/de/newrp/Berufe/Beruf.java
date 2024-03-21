@@ -248,7 +248,7 @@ public class Beruf {
             }
             Script.executeUpdate("DELETE FROM berufe WHERE nrp_id = '" + Script.getNRPID(p) + "'");
             for (Player members : getPlayersFromBeruf(this)) {
-                members.sendMessage("§8[§6" + getName() + "§8] §6» §7" + p.getName() + " §ehat den Beruf verlassen.");
+                members.sendMessage("§8[§6" + getName() + "§8] §6» §7" + p.getName() + "  hat den Beruf verlassen.");
             }
             sendLeaderMessage("§8[§6" + getName() + "§8] §6» §7" + Script.getName(leader) + " hat " + p.getName() + " aus dem Beruf geworfen.");
             Script.sendTeamMessage("§8[§6BC§8] §6» §7" + Script.getName(leader) + " hat " + p.getName() + " aus dem Beruf " + getName() + " geworfen.");
@@ -257,7 +257,7 @@ public class Beruf {
         public void removeMember(OfflinePlayer p) {
             Script.executeUpdate("DELETE FROM berufe WHERE nrp_id = '" + Script.getNRPID(p) + "'");
             for (Player members : getPlayersFromBeruf(this)) {
-                members.sendMessage("§8[§6" + getName() + "§8] §6» §7" + p.getName() + " §ehat den Beruf verlassen.");
+                members.sendMessage("§8[§6" + getName() + "§8] §6» §7" + p.getName() + " hat den Beruf verlassen.");
             }
         }
 

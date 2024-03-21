@@ -39,7 +39,7 @@ public class Tragen implements CommandExecutor, Listener {
             p.sendMessage(PREFIX + "Du hast " + Script.getName(tg) + " abgesetzt.");
             tg.sendMessage(PREFIX + "Du wurdest von " + Script.getName(p) + " abgesetzt.");
             Me.sendMessage(p, "hat " + Script.getName(tg) + " abgesetzt.");
-            tg.sendMessage(Messages.INFO + "Sneake nun um von " + Script.getName(p) + " abgesetzt zu werden.");
+            tg.sendMessage(Messages.INFO + "Sneake nun, um von " + Script.getName(p) + " abgesetzt zu werden.");
             p.getPassenger().eject();
             tragen.remove(p);
             return true;

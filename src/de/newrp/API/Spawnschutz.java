@@ -144,10 +144,10 @@ public class Spawnschutz implements Listener {
 
         e.setCancelled(true);
         if (damager.getType() == EntityType.PLAYER) {
-            damager.sendMessage("§8[§cNeulingsschutz§8] §c "+ Messages.ARROW + " Die Aktion wurde aufgrund des Neulingsschutzes abgebrochen.");
+            damager.sendMessage("§8[§cNeulingsschutz§8] §c"+ Messages.ARROW + " Die Aktion wurde aufgrund des Neulingsschutzes abgebrochen.");
         } else if (damager.getType() == EntityType.ARROW) {
             Arrow a = (Arrow) damager;
-            ((Player) a.getShooter()).sendMessage("§8[§cNeulingsschutz§8] §c "+ Messages.ARROW + " Die Aktion wurde aufgrund des Neulingsschutzes abgebrochen.");
+            ((Player) a.getShooter()).sendMessage("§8[§cNeulingsschutz§8] §c"+ Messages.ARROW + " Die Aktion wurde aufgrund des Neulingsschutzes abgebrochen.");
         }
     }
 
@@ -161,10 +161,10 @@ public class Spawnschutz implements Listener {
         if(!TicketCommand.isInTicket(p)) return;
 
         if (damager.getType() == EntityType.PLAYER) {
-            damager.sendMessage("§8[§cTicket§8] §c "+ Messages.ARROW + " Der Spieler ist im Ticket.");
+            damager.sendMessage("§8[§cTicket§8] §c"+ Messages.ARROW + " Der Spieler ist im Ticket.");
         } else if (damager.getType() == EntityType.ARROW) {
             Arrow a = (Arrow) damager;
-            ((Player) a.getShooter()).sendMessage("§8[§cTicket§8] §c "+ Messages.ARROW + " Der Spieler ist im Ticket.");
+            ((Player) a.getShooter()).sendMessage("§8[§cTicket§8] §c"+ Messages.ARROW + " Der Spieler ist im Ticket.");
         }
     }
 

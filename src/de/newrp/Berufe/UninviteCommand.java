@@ -77,6 +77,7 @@ public class UninviteCommand implements CommandExecutor {
 
             if(tg.getPlayer() != null && Duty.isInDuty(tg.getPlayer())) {
                 Duty.removeDuty(tg.getPlayer());
+                Script.updateListname(tg.getPlayer());
             }
             beruf.removeMember(tg, p);
             Script.removeEXP(tg.getName(), Script.getRandom(50, 100));

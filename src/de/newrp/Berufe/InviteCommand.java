@@ -1,7 +1,9 @@
 package de.newrp.Berufe;
 
+import de.newrp.API.Licenses;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
+import de.newrp.Administrator.SDuty;
 import de.newrp.Organisationen.Organisation;
 import de.newrp.Player.Annehmen;
 import org.bukkit.command.Command;
@@ -50,6 +52,16 @@ public class InviteCommand implements CommandExecutor {
 
         if (Beruf.hasBeruf(tg) || Organisation.hasOrganisation(tg)) {
             p.sendMessage(Messages.ERROR + "Der Spieler hat bereits einen Beruf oder ist bereits in einer Organisation.");
+            return true;
+        }
+
+        if(!Licenses.PERSONALAUSWEIS.hasLicense(Script.getNRPID(tg))) {
+            p.sendMessage(Messages.ERROR + "Der Spieler hat keinen Personalausweis.");
+            return true;
+        }
+
+        if(Script.getActivePlayTime(p, true) < 1 && !SDuty.isSDuty(p)) {
+            p.sendMessage(Messages.ERROR + "Der Spieler hat noch keine 60 Minuten aktive Spielzeit.");
             return true;
         }
 

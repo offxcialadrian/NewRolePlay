@@ -42,6 +42,14 @@ public class TeamspeakCommand implements CommandExecutor {
             Script.sendTeamMessage(TeamSpeak.PREFIX + "§c" + Script.getName(p) + " hat den Teamspeak neu verbunden.");
             return true;
         }
+        if(args.length == 1 && argument.equalsIgnoreCase("delete")) {
+            if(!TeamSpeak.isVerified(Script.getNRPID(p))) {
+                p.sendMessage(Messages.ERROR + "§cDu hast dich noch nicht verifiziert.");
+                return true;
+            }
+            p.sendMessage(TeamSpeak.PREFIX + "§cDu hast deine Teamspeak-Verfikation gelöscht.");
+            TeamSpeak.deleteVerfify(Script.getNRPID(p));
+        }
 
         if(args.length == 1 && argument.equalsIgnoreCase("sync")) {
             if(!TeamSpeak.isVerified(Script.getNRPID(p))) {

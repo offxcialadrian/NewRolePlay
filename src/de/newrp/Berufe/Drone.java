@@ -108,6 +108,7 @@ public class Drone implements Listener {
     @EventHandler
     public void onMove(PlayerMoveEvent e) {
         if(isDrone(e.getPlayer())) {
+            Script.sendActionBar(e.getPlayer(), Messages.INFO + "Distanz zur Drohne: " + (int) e.getPlayer().getLocation().distance(location.get(e.getPlayer().getName())) + " Meter");
             if(e.getPlayer().getLocation().getBlock().getType().equals(Material.WATER)) {
                 crash(e.getPlayer());
             }

@@ -115,6 +115,11 @@ public class UmfragenCommand implements CommandExecutor, Listener {
             return;
         }
 
+        if(antwort.isEmpty() || !u.getAntworten().containsKey(antwort)) {
+            Script.sendBugReport(p, "Umfrage -> Antwort: \"" + antwort + "\" ist nicht vorhanden.");
+            return;
+        }
+
         u.vote(antwort);
         e.getWhoClicked().sendMessage(PREFIX + "§7Du hast für §6" + antwort + " §7gestimmt.");
         p.sendMessage(PREFIX + "§7Danke für deine Stimme.");

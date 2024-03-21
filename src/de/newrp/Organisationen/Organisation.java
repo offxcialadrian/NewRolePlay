@@ -91,6 +91,12 @@ public enum Organisation {
     }
 
     public void addExp(int amount) {
+        if(this.getLevel()==10) {
+            for(Player all : getMembers()) {
+                Script.sendActionBar(all, PREFIX + "Deine Organisation hat das maximale Level erreicht.");
+            }
+            return;
+        }
         if(getExp() + amount >= getLevelCost()) {
             sendMessage(PREFIX + "Deine Organisation hat Level " + (getLevel() + 1) + " erreicht.");
             Script.executeUpdate("UPDATE organisation_level SET level='" + (getLevel() + 1) + "', exp='" + 0 + "' WHERE organisationID='" + this.id + "'");

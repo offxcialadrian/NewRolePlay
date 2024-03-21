@@ -112,7 +112,21 @@ public class Elevator implements Listener {
                 new Location(Script.WORLD, 703, 104, 876, 179.66064f, 1.4999795f), // 4
                 new Location(Script.WORLD, 703, 113, 876, 178.53809f, 3.149921f),  // 5
                 new Location(Script.WORLD, 703, 121, 876, 178.55615f, 1.9500295f) // 6
-        });
+        }),
+        HRVAEKI_LINKS(17, "HGVAEKI", new Location[]{
+                new Location(Script.WORLD, 726, 71, 910, 179.56348f, 5.569856f), // 0
+                new Location(Script.WORLD, 725, 80, 910, 180.45325f, 1.9698969f), // 1
+                new Location(Script.WORLD, 725, 87, 910, 180.72632f, 0.17004855f), // 2
+                new Location(Script.WORLD, 725, 94, 910, 180.27002f, 0.6200295f), // 3
+                new Location(Script.WORLD, 725, 101, 910, 180.9331f, 0.17029364f)}),
+        // 4
+        HRVAEKI_RECHTS(17, "HGVAEKI", new Location[]{
+                new Location(Script.WORLD, 721, 71, 910, 180.46631f, 1.5199046f), // 0
+                new Location(Script.WORLD, 720, 80, 910, 180.14966f, 0.6199065f), // 1
+                new Location(Script.WORLD, 720, 87, 910, 180.74292f, 1.8199842f), // 2
+                new Location(Script.WORLD, 721, 94, 910, 180.35693f, 0.17027745f), // 3
+                new Location(Script.WORLD, 721, 101, 910, 180.13672f, 1.2202556f)
+        });// 4
 
         int id;
         String name;
@@ -173,7 +187,7 @@ public class Elevator implements Listener {
             return getetage - 1;
         }
 
-    }
+        }
 
     public static ElevatorAPI getElevatorByDriveLoc(Location loc) {
         for (ElevatorDoor.ElevatorDoors elevator : ElevatorDoor.ElevatorDoors.values()) {
@@ -190,7 +204,7 @@ public class Elevator implements Listener {
         if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
             if (e.getClickedBlock().getType().equals(Material.STONE_BUTTON)) {
                 if (ElevatorDoor.ElevatorDoors.getDoorByDriveLoc(e.getClickedBlock().getLocation()) == null) return;
-                if(progress.containsKey(p.getName())) return;
+                if (progress.containsKey(p.getName())) return;
                 ElevatorAPI elevator = Elevator.getElevatorByDriveLoc(e.getClickedBlock().getLocation());
                 if (elevator != null) {
                     openGUI(p);
@@ -203,9 +217,9 @@ public class Elevator implements Listener {
 
     @EventHandler
     public void onDamage(EntityDamageEvent e) {
-        if(e.getEntity() instanceof Player) {
+        if (e.getEntity() instanceof Player) {
             Player p = (Player) e.getEntity();
-            if(progress.containsKey(p.getName()) && !e.isCancelled()) {
+            if (progress.containsKey(p.getName()) && !e.isCancelled()) {
                 progress.remove(p.getName());
                 p.closeInventory();
                 p.sendMessage("§cDie Fahrt wurde abgebrochen, da du Schaden erlitten hast.");
@@ -219,9 +233,9 @@ public class Elevator implements Listener {
         if (!e.getCurrentItem().hasItemMeta()) return;
         Player p = (Player) e.getWhoClicked();
         ElevatorAPI elevator = ElevatorAPI.getNearestElevator(3, p.getLocation());
-        if(!e.getView().getTitle().contains("Fahrstuhl")) return;
+        if (!e.getView().getTitle().contains("Fahrstuhl")) return;
         e.setCancelled(true);
-        if(elevator == null) {
+        if (elevator == null) {
             p.closeInventory();
             return;
         }
@@ -233,13 +247,13 @@ public class Elevator implements Listener {
             return;
         }
 
-        if(!p.getPassengers().isEmpty()) {
+        if (!p.getPassengers().isEmpty()) {
             p.sendMessage(Messages.ERROR + "Du kannst nicht mit einem Fahrstuhl fahren, wenn du jemanden trägst.");
             p.closeInventory();
             return;
         }
 
-        if(p.getVehicle() != null) {
+        if (p.getVehicle() != null) {
             p.sendMessage(Messages.ERROR + "Du kannst nicht mit einem Fahrstuhl fahren, wenn du getragen wirst.");
             p.closeInventory();
             return;
@@ -255,13 +269,13 @@ public class Elevator implements Listener {
             } else if (e.getCurrentItem().getType().equals(Material.CHEST) && e.getCurrentItem().hasItemMeta()) {
                 int current_etage = elevator.getEtageByLoc(p.getLocation());
                 int ziel_etage = 0;
-                if(e.getCurrentItem().getItemMeta().getDisplayName().equals("§6EG")) {
+                if (e.getCurrentItem().getItemMeta().getDisplayName().equals("§6EG")) {
                     ziel_etage = 0;
                 } else {
                     ziel_etage = Integer.parseInt(e.getCurrentItem().getItemMeta().getDisplayName().replace("§6", "").replace(". Etage", ""));
                 }
                 final int Ziel_etage = ziel_etage;
-                int way = Math.abs(Math.abs(etage) - Math.abs(Ziel_etage)) *3;
+                int way = Math.abs(Math.abs(etage) - Math.abs(Ziel_etage)) * 3;
                 progress.put(p.getName(), 0.0);
                 p.sendMessage("§8[§c" + elevator.getName() + "§8] " + "§6Du fährst nun " + (Ziel_etage > 0 ? "in die " + Ziel_etage + ". Etage" : "ins EG") + "...");
                 p.closeInventory();
@@ -306,7 +320,7 @@ public class Elevator implements Listener {
         if (etagen_amount <= 5) {
             inv = Bukkit.createInventory(null, InventoryType.HOPPER, "§cFahrstuhl");
         } else {
-            inv = Bukkit.createInventory(null, (etagen_amount<=9?9:18), "§cFahrstuhl");
+            inv = Bukkit.createInventory(null, (etagen_amount <= 9 ? 9 : 18), "§cFahrstuhl");
         }
         int i = 0;
         String etage;

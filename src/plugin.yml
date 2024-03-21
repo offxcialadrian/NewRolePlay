@@ -559,7 +559,7 @@ commands:
     description: view the memberactivity
     aliases: [ memberactivities ]
   flugblatt:
-    description: view the flugblatt
+    description: create flublätter
     aliases: [ flugblätter ]
   togglewhisper:
     description: toggle whisper
@@ -569,7 +569,7 @@ commands:
   spawnchange:
     description: change the spawn
   boot:
-    description: boot a player
+    description: drive the boat
   timer:
     description: view the timer
   calculator:
@@ -612,3 +612,6 @@ commands:
   spawncar:
     description: spawn a car
     aliases: [ car, auto ]
+  dice:
+    description: roll a dice
+    aliases: [ würfel, roll ]
