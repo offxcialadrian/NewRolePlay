@@ -4,6 +4,7 @@ import de.newrp.API.Health;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.Administrator.SDuty;
+import de.newrp.Berufe.Drone;
 import de.newrp.Chat.Me;
 import de.newrp.Police.Handschellen;
 import org.bukkit.Material;
@@ -69,7 +70,12 @@ public class Fesseln implements Listener {
         }
 
         if(AFK.isAFK(rightClicked)) {
-            Script.sendActionBar(p, Messages.ERROR + "Der Spieler ist AFK.");
+            Script.sendActionBar(p, Messages.ERROR + Script.getName(rightClicked) + " ist AFK.");
+            return;
+        }
+
+        if(Drone.isDrone(rightClicked)) {
+            Script.sendActionBar(p, Messages.ERROR + "Du kannst keine Drohne fesseln.");
             return;
         }
 

@@ -7,6 +7,7 @@ import de.newrp.API.Script;
 import de.newrp.Administrator.SDuty;
 import de.newrp.Berufe.Abteilung;
 import de.newrp.Berufe.Beruf;
+import de.newrp.Berufe.Drone;
 import de.newrp.Berufe.Duty;
 import de.newrp.Chat.Me;
 import de.newrp.Player.AFK;
@@ -66,6 +67,10 @@ public class Handschellen implements Listener {
         if (e.getHand() == EquipmentSlot.OFF_HAND) return;
         if (!(e.getRightClicked() instanceof Player)) return;
 
+
+        Player p = e.getPlayer();
+        if (!interact(p)) return;
+
         if(AFK.isAFK((Player) e.getRightClicked())) {
             Script.sendActionBar(e.getPlayer(), Messages.ERROR + Script.getName((Player) e.getRightClicked()) + " ist AFK.");
             return;
@@ -76,8 +81,11 @@ public class Handschellen implements Listener {
             return;
         }
 
-        Player p = e.getPlayer();
-        if (!interact(p)) return;
+        if(Drone.isDrone((Player) e.getRightClicked())) {
+            Script.sendActionBar(e.getPlayer(), Messages.ERROR + "Du kannst keine Drohne fesseln.");
+            return;
+        }
+
 
         long time = System.currentTimeMillis();
         Player rightClicked = (Player) e.getRightClicked();

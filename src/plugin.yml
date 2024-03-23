@@ -1,6 +1,6 @@
 name: NewRolePlay
 main: de.newrp.main
-version: EARLY-ACCESS
+version: 1.0
 description: NewRP Serversystem
 author: NewRP Entwicklungs-Team
 api-version: 1.16
@@ -615,3 +615,8 @@ commands:
   dice:
     description: roll a dice
     aliases: [ würfel, roll ]
+  flipcoin:
+    description: flip a coin
+    aliases: [ münze, coin ]
+  registerbanner:
+    description: register a banner

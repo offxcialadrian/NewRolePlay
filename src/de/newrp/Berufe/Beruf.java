@@ -22,7 +22,7 @@ import java.util.UUID;
 public class Beruf {
 
     public enum Berufe {
-        GOVERNMENT(1, "Regierung", new Location(Script.WORLD, 557, 88, 991, 89.61847f, 0.46322706f),false, true, false, 56, TeamspeakServerGroup.GOVERNMENT, new ForumGroup[]{ForumGroup.GOVERNMENT, ForumGroup.GOVERNMENT_LEADER}),
+        GOVERNMENT(1, "Regierung", new Location(Script.WORLD, 557, 88, 991, 89.61847f, 0.46322706f),false, true, true, 56, TeamspeakServerGroup.GOVERNMENT, new ForumGroup[]{ForumGroup.GOVERNMENT, ForumGroup.GOVERNMENT_LEADER}),
         NEWS(2, "News", new Location(Script.WORLD, 294, 67, 789, 204.75023f, 5.849994f), true, true, true, 95, TeamspeakServerGroup.NEWS, new ForumGroup[]{ForumGroup.NEWS, ForumGroup.NEWS_LEADER}),
         POLICE(3, "Polizei", new Location(Script.WORLD, 413, 71, 825, 37.74829f, 2.2104692f),false, true, true, 70, TeamspeakServerGroup.POLICE, new ForumGroup[]{ForumGroup.POLICE, ForumGroup.POLICE_LEADER}),
         RETTUNGSDIENST(4, "Rettungsdienst", new Location(Script.WORLD, 267, 75, 1254, 245.1552f, 8.946896f),false, true,true, 83, TeamspeakServerGroup.RETTUNGSDIENST, new ForumGroup[]{ForumGroup.RETTUNGSDIENST, ForumGroup.RETTUNGSDIENST_LEADER});

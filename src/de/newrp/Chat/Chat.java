@@ -14,6 +14,7 @@ import de.newrp.Ticket.Ticket;
 import de.newrp.Ticket.TicketCommand;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -148,8 +149,8 @@ public class Chat implements Listener {
         Player p = e.getPlayer();
         e.setCancelled(true);
 
-        if (ToggleWhisper.whisper.contains(p.getName())) {
-            p.performCommand("w " + e.getMessage());
+        if (Punish.isMuted(p)) {
+            p.sendMessage(Messages.ERROR + "Du bist gemutet!");
             return;
         }
 
@@ -158,20 +159,7 @@ public class Chat implements Listener {
             return;
         }
 
-        if (TicketCommand.getTicket(p) != null) {
-            handleTicket(p, e.getMessage());
-            return;
-        }
 
-        if (Punish.isMuted(p)) {
-            p.sendMessage(Messages.ERROR + "Du bist gemutet!");
-            return;
-        }
-
-        if(Friedhof.isDead(p)) {
-            p.sendMessage(Messages.ERROR + "Tote können nicht reden!");
-            return;
-        }
 
         for(String arg : e.getMessage().split(" ")) {
             if(arg.contains("ChatCraft")) {
@@ -180,7 +168,7 @@ public class Chat implements Listener {
                 return;
             }
 
-            if(arg.startsWith("http://") || arg.startsWith("https://") || arg.startsWith("www.") || arg.startsWith(".de")  || arg.startsWith(".eu") || arg.startsWith("germanrp") || arg.startsWith("grp") || arg.startsWith("unicacity") || arg.startsWith("turniptales") || arg.toLowerCase().startsWith("turnip")) {
+            if(arg.startsWith("http://") || arg.startsWith("https://") || arg.startsWith("www.") || arg.endsWith(".de")  || arg.endsWith(".eu") || arg.startsWith("germanrp") || arg.startsWith("grp") || arg.startsWith("unicacity") || arg.startsWith("turniptales") || arg.toLowerCase().startsWith("turnip")) {
                 Script.sendTeamMessage(AntiCheatSystem.PREFIX + "Verdacht auf Fremdwerbung bei " + Script.getName(p) + " (Level " + p.getLevel() + ") §8» §c" + e.getMessage());
                 p.sendMessage(AntiCheatSystem.PREFIX + "Es liegt ein Verdacht auf Fremdwerbung vor oder deine Nachricht enthält einen Link. Die Nachricht wurde nicht gesendet. Wenn du denkst, dass es sich um einen Fehler handelt, melde ihn bitte im Forum.");
                 return;
@@ -190,6 +178,35 @@ public class Chat implements Listener {
                 p.sendMessage(Messages.ERROR + "Du darfst keine IPs in den RolePlay-Chat senden!");
                 return;
             }
+        }
+
+        if (ToggleWhisper.whisper.contains(p.getName())) {
+            Chat.handleChatFilter(p, e.getMessage());
+
+            Set<String> foundNames = Chat.getMentionedNames(e.getMessage());
+            Location pLoc = p.getLocation();
+            String speakWord = "flüstert";
+            Notifications.sendMessage(Notifications.NotificationType.CHAT, "§8[§c" + p.getLevel() + "§8] §7" + Script.getName(p) + " flüstert: §7" + e.getMessage());
+            for (Player online : Bukkit.getOnlinePlayers()) {
+                double distance = pLoc.distance(online.getLocation());
+                if (distance > 8.0D) {
+                    continue;
+                }
+                online.sendMessage(Chat.constructMessage(p, e.getMessage(), speakWord, foundNames, distance, Chat.ChatType.WHISPER));
+            }
+
+            Log.CHAT.write(p, "[Flüstern]" +  e.getMessage());
+            return;
+        }
+
+        if (TicketCommand.getTicket(p) != null) {
+            handleTicket(p, e.getMessage());
+            return;
+        }
+
+        if(Friedhof.isDead(p)) {
+            p.sendMessage(Messages.ERROR + "Tote können nicht reden!");
+            return;
         }
 
         handleChatFilter(p, e.getMessage());

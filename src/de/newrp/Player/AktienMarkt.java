@@ -27,14 +27,19 @@ public class AktienMarkt implements CommandExecutor, Listener {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
         Player p = (Player) cs;
-        if (p.getLocation().distance(new Location(Script.WORLD, 942, 77, 941)) < 5) {
+
+        p.sendMessage(Messages.ERROR + "Der Aktienmarkt ist derzeit nicht verfügbar.");
+        p.sendMessage(Messages.INFO + "Dadurch, dass wir erst beobachten müssen, wie sich die Wirtschaft verhält, wird der Aktienmarkt erst später verfügbar sein.");
+        return true;
+
+        /*if (p.getLocation().distance(new Location(Script.WORLD, 942, 77, 941)) < 5) {
             if (!cooldown.containsKey(p.getName())) {
                 Aktie.openGUI(p);
             } else
                 p.sendMessage(Messages.ERROR + "Die Bank bearbeitet noch deine Anfrage.");
         } else
             p.sendMessage(Messages.ERROR + "Du kannst nur am Schalter der Bank mit Aktien handeln.");
-        return false;
+        return false;*/
     }
 
     @EventHandler

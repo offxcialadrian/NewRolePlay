@@ -1,9 +1,7 @@
 package de.newrp.Organisationen;
 
-import de.newrp.API.ATM;
-import de.newrp.API.Messages;
-import de.newrp.API.PaymentType;
-import de.newrp.API.Script;
+import de.newrp.API.*;
+import de.newrp.Administrator.Notifications;
 import de.newrp.Berufe.Beruf;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -83,7 +81,8 @@ public class OrganisationKasse implements CommandExecutor {
                     Organisation.getOrganisation(p).removeKasse(amount);
                     Script.addMoney(p, PaymentType.CASH, amount);
                     Organisation.getOrganisation(p).sendMessage(PREFIX + "§6" + Script.getName(p) + " §7hat §6" + amount + "€ §7aus der Kasse ausgezahlt.");
-                    Script.sendTeamMessage(PREFIX + "§6" + Script.getName(p) + " §7hat §6" + amount + "€ §7aus der " + Organisation.getOrganisation(p).getName() + "-Kasse ausgezahlt.");
+                    Notifications.sendMessage(Notifications.NotificationType.PAYMENT, Script.getName(p) + " hat " + amount + "€ aus der " + Organisation.getOrganisation(p).getName() + "-Kasse ausgezahlt.");
+                    Log.HIGH.write(Script.getName(p) + " hat " + amount + "€ aus der " + Organisation.getOrganisation(p).getName() + "-Kasse ausgezahlt.");
                     return true;
                 } catch (NumberFormatException e) {
                     p.sendMessage(Messages.ERROR + "Der Betrag muss eine Zahl sein.");
@@ -110,7 +109,8 @@ public class OrganisationKasse implements CommandExecutor {
                     Organisation.getOrganisation(p).addKasse(amount);
                     Script.removeMoney(p, PaymentType.CASH, amount);
                     Organisation.getOrganisation(p).sendMessage(PREFIX + "§6" + Script.getName(p) + " §7hat §6" + amount + "€ §7in die Kasse eingezahlt.");
-                    Script.sendTeamMessage(PREFIX + "§6" + Script.getName(p) + " §7hat §6" + amount + "€ §7in die " + Organisation.getOrganisation(p).getName() + "-Kasse eingezahlt.");
+                    Notifications.sendMessage(Notifications.NotificationType.PAYMENT, Script.getName(p) + " hat " + amount + "€ in die " + Organisation.getOrganisation(p).getName() + "-Kasse eingezahlt.");
+                    Log.NORMAL.write(Script.getName(p) + " hat " + amount + "€ in die " + Organisation.getOrganisation(p).getName() + "-Kasse eingezahlt.");
                     return true;
                 } catch (NumberFormatException e) {
                     p.sendMessage(Messages.ERROR + "Der Betrag muss eine Zahl sein.");

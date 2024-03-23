@@ -16,7 +16,12 @@ public enum TeamspeakServerGroup {
     EVENTTEAM(23),
     BAUTEAM(21),
     EARLYACCESSTEAM(42),
-    RETTUNGSDIENST(26);
+    RETTUNGSDIENST(26),
+    KARTELL(43),
+    FALCONE(46),
+    CORLEONE(44),
+    GROVE(48),
+    BRATERSTWO(45);
 
     private final int groupID;
 

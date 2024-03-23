@@ -62,6 +62,11 @@ public class CallCommand implements CommandExecutor, Listener {
             return true;
         }
 
+        if(Mobile.getPhone(tg) == null) {
+            p.sendMessage(Messages.ERROR + "Der Spieler hat kein Handy.");
+            return true;
+        }
+
         if(!Mobile.hasPhone(tg)) {
             p.sendMessage(Messages.ERROR + "Der Spieler hat kein Handy.");
             return true;

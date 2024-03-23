@@ -8,6 +8,7 @@ import de.newrp.Berufe.Beruf;
 import de.newrp.Berufe.Duty;
 import de.newrp.Chat.Me;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -57,8 +58,8 @@ public class Notruf implements Listener {
             } else if (e.getCurrentItem().getItemMeta().getDisplayName().equals("Rettungsdienst")) {
                 call3.put(p, Type.RETTUNG);
             }
-            questions.put(p, Questions.FRAGE1);
-            openGUI(p, Questions.FRAGE1);
+            questions.put(p, Questions.FRAGE2);
+            openGUI(p, Questions.FRAGE2);
         }
     }
 
@@ -66,14 +67,14 @@ public class Notruf implements Listener {
     @EventHandler
     public void onClick(InventoryClickEvent e) {
         Player p = (Player) e.getWhoClicked();
-        if (e.getView().getTitle().startsWith("§8[§cNotruf§8]")) {
+        if (e.getView().getTitle().startsWith("§8[§cNotruf§8] §7")) {
             e.setCancelled(true);
             if (e.getCurrentItem() == null || e.getCurrentItem().getType() == Material.AIR) return;
             for (Answers answer : Answers.values()) {
-                if (answer.answer.equals(e.getCurrentItem().getItemMeta().getDisplayName())) {
+                if (answer.answer.equals(ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName()))) {
                     int questionID = answer.question.getID();
                     answers.put(p.getName() + questionID, answer.answer);
-                    if (Questions.FRAGE3.getID() == questionID) {
+                    if (Questions.FRAGE2.getID() == questionID) {
                         p.sendMessage(PREFIX + "Vielen Dank für Ihren Anruf. Die Polizei und/oder der Rettungsdienst werden sich umgehend um Ihr Anliegen kümmern.");
                         Me.sendMessage(p, "wählt den Notruf auf seinem Handy.");
 
@@ -135,9 +136,7 @@ public class Notruf implements Listener {
     }
     public enum Questions {
         FRAGE1(1, "Polizei oder Rettungsdienst?"),
-        FRAGE2(2, "Was ist passiert?"),
-        FRAGE3(3, "Wie viele Verletzte gibt es?"),
-        FRAGE4(4, "Liegt eine Straftat vor?");
+        FRAGE2(2, "Was ist passiert?");
 
         private final int id;
         private final String question;
@@ -183,7 +182,8 @@ public class Notruf implements Listener {
         FRAGE_2_POLICE(5, Questions.FRAGE2, null, "Mord"),
         FRAGE_3_POLICE(6, Questions.FRAGE2, null, "Körperverletzung"),
         FRAGE_4_POLICE(7, Questions.FRAGE2, Type.POLICE, "Raubüberfall"),
-        FRAGE_5_POLICE(8, Questions.FRAGE2, Type.POLICE, "Diebstahl");
+        FRAGE_5_POLICE(8, Questions.FRAGE2, Type.POLICE, "Diebstahl"),
+        SONSTIGES(9, Questions.FRAGE2, null, "Sonstiges");
 
 
         private final int id;
@@ -227,7 +227,7 @@ public class Notruf implements Listener {
         if(stringJoiner.toString().isEmpty()) {
             return PREFIX + "§6Es ist niemand in der Nähe.";
         }
-        return PREFIX + "§6Am nächsten sind: " + stringJoiner.toString() + "";
+        return PREFIX + "§6Am nächsten sind: " + stringJoiner.toString();
     }
 
     public static Map<Player, Double> getNearestPlayers(Beruf.Berufe b, Location loc) {

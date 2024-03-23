@@ -17,6 +17,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -37,10 +38,15 @@ public class TV implements CommandExecutor, Listener {
 
         if (tvs.containsKey(p.getName())) {
             p.sendMessage(PREFIX + "Du hast den Fernseher ausgeschaltet.");
-            p.teleport(tvs.get(p.getName()));
-            tvs.remove(p.getName());
-            p.setSpectatorTarget(null);
-            p.setGameMode(GameMode.SURVIVAL);
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    p.teleport(tvs.get(p.getName()));
+                    tvs.remove(p.getName());
+                    p.setSpectatorTarget(null);
+                    p.setGameMode(GameMode.SURVIVAL);
+                }
+            }.runTaskLater(main.getInstance(), 5L);
             return true;
         }
 
@@ -83,8 +89,8 @@ public class TV implements CommandExecutor, Listener {
     public void onTeleport(PlayerTeleportEvent e) {
         Player p = e.getPlayer();
         if(tvs.containsKey(p.getName())) {
-            e.setCancelled(true);
             p.setSpectatorTarget(KameraCommand.camera);
+            e.setCancelled(true);
         }
     }
 

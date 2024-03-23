@@ -24,109 +24,109 @@ public class Arbeitslosengeld implements CommandExecutor {
         Player p = (Player) cs;
 
         if (Beruf.getBeruf(p) == Beruf.Berufe.GOVERNMENT) {
-            if (args.length == 0) {
-                if(Beruf.getAbteilung(p) == Abteilung.Abteilungen.ARBEITSAMT) {
+            if (Beruf.getAbteilung(p) == Abteilung.Abteilungen.INNENMINISTERIUM) {
+                if (args.length == 0) {
                     sendApplications(p);
                     return true;
-                }
-            }
 
-
-            if (args.length == 1) {
-                if (args[0].equalsIgnoreCase("accept")) {
-                    p.sendMessage(PREFIX + "Bitte gib eine ID an.");
-                    return true;
                 }
 
-                if (args[0].equalsIgnoreCase("deny")) {
-                    p.sendMessage(PREFIX + "Bitte gib eine ID an.");
-                    return true;
+
+                if (args.length == 1) {
+                    if (args[0].equalsIgnoreCase("accept")) {
+                        p.sendMessage(PREFIX + "Bitte gib eine ID an.");
+                        return true;
+                    }
+
+                    if (args[0].equalsIgnoreCase("deny")) {
+                        p.sendMessage(PREFIX + "Bitte gib eine ID an.");
+                        return true;
+                    }
+
+                    if (args[0].equalsIgnoreCase("list")) {
+                        sendApplications(p);
+                        return true;
+                    }
                 }
 
-                if (args[0].equalsIgnoreCase("list")) {
-                    sendApplications(p);
-                    return true;
-                }
-            }
+                if (args.length == 2) {
+                    if (args[0].equalsIgnoreCase("accept")) {
+                        try {
+                            int id = Integer.parseInt(args[1]);
+                            if (isAccepted(p)) {
+                                p.sendMessage(PREFIX + "Du hast diesen Antrag bereits angenommen.");
+                                return true;
+                            }
 
-            if (args.length == 2) {
-                if (args[0].equalsIgnoreCase("accept")) {
-                    try {
-                        int id = Integer.parseInt(args[1]);
-                        if (isAccepted(p)) {
-                            p.sendMessage(PREFIX + "Du hast diesen Antrag bereits angenommen.");
-                            return true;
-                        }
+                            if (id <= 0) {
+                                p.sendMessage(PREFIX + "Bitte gib eine gültige ID an.");
+                                return true;
+                            }
 
-                        if (id <= 0) {
+                            if (!arbeitslosengeldExists(id)) {
+                                p.sendMessage(PREFIX + "Dieser Antrag existiert nicht.");
+                                return true;
+                            }
+
+                            acceptApplication(id);
+                            p.sendMessage(PREFIX + "Du hast den Antrag angenommen.");
+                            OfflinePlayer player = getPlayerByArbeitslosengeldID(id);
+                            Beruf.Berufe.GOVERNMENT.sendMessage(PREFIX + Script.getName(p) + " hat den Antrag #" + id + " angenommen.");
+                        } catch (Exception e) {
                             p.sendMessage(PREFIX + "Bitte gib eine gültige ID an.");
                             return true;
                         }
-
-                        if (!arbeitslosengeldExists(id)) {
-                            p.sendMessage(PREFIX + "Dieser Antrag existiert nicht.");
-                            return true;
-                        }
-
-                        acceptApplication(id);
-                        p.sendMessage(PREFIX + "Du hast den Antrag angenommen.");
-                        OfflinePlayer player = getPlayerByArbeitslosengeldID(id);
-                        Beruf.Berufe.GOVERNMENT.sendMessage(PREFIX + Script.getName(p) + " hat den Antrag #" + id + " angenommen.");
-                    } catch (Exception e) {
-                        p.sendMessage(PREFIX + "Bitte gib eine gültige ID an.");
                         return true;
                     }
-                    return true;
-                }
 
-                if (args[0].equalsIgnoreCase("deny")) {
-                    try {
-                        int id = Integer.parseInt(args[1]);
-                        if (id <= 0) {
+                    if (args[0].equalsIgnoreCase("deny")) {
+                        try {
+                            int id = Integer.parseInt(args[1]);
+                            if (id <= 0) {
+                                p.sendMessage(PREFIX + "Bitte gib eine gültige ID an.");
+                                return true;
+                            }
+
+                            if (!arbeitslosengeldExists(id)) {
+                                p.sendMessage(PREFIX + "Dieser Antrag existiert nicht.");
+                                return true;
+                            }
+
+                            denyApplication(id);
+                            p.sendMessage(PREFIX + "Du hast den Antrag abgelehnt.");
+                            OfflinePlayer player = getPlayerByArbeitslosengeldID(id);
+                            Beruf.Berufe.GOVERNMENT.sendMessage(PREFIX + Script.getName(p) + " hat den Antrag #" + id + " abgelehnt.");
+                        } catch (Exception e) {
                             p.sendMessage(PREFIX + "Bitte gib eine gültige ID an.");
                             return true;
                         }
+                        return true;
+                    }
 
-                        if (!arbeitslosengeldExists(id)) {
-                            p.sendMessage(PREFIX + "Dieser Antrag existiert nicht.");
+                    if (args[0].equals("set")) {
+                        if (!Beruf.isLeader(p, true)) {
+                            p.sendMessage(Messages.ERROR + "Nur das Staatsoberhaupt kann die Höhe des Arbeitslosengeldes ändern.");
                             return true;
                         }
 
-                        denyApplication(id);
-                        p.sendMessage(PREFIX + "Du hast den Antrag abgelehnt.");
-                        OfflinePlayer player = getPlayerByArbeitslosengeldID(id);
-                        Beruf.Berufe.GOVERNMENT.sendMessage(PREFIX + Script.getName(p) + " hat den Antrag #" + id + " abgelehnt.");
-                    } catch (Exception e) {
-                        p.sendMessage(PREFIX + "Bitte gib eine gültige ID an.");
-                        return true;
-                    }
-                    return true;
-                }
-
-                if (args[0].equals("set")) {
-                    if (!Beruf.isLeader(p, true)) {
-                        p.sendMessage(Messages.ERROR + "Nur das Staatsoberhaupt kann die Höhe des Arbeitslosengeldes ändern.");
-                        return true;
-                    }
-
-                    try {
-                        int money = Integer.parseInt(args[1]);
-                        if (money < 0) {
+                        try {
+                            int money = Integer.parseInt(args[1]);
+                            if (money < 0) {
+                                p.sendMessage(Messages.ERROR + "Bitte gib eine gültige Zahl an.");
+                                return true;
+                            }
+                            Script.executeAsyncUpdate("UPDATE city SET arbeitslosengeld='" + money + "'");
+                            p.sendMessage(PREFIX + "Du hast das Arbeitslosengeld auf §6" + money + "€ §egesetzt.");
+                            Beruf.Berufe.GOVERNMENT.sendMessage(PREFIX + Script.getName(p) + " hat das Arbeitslosengeld auf §6" + money + "€ §egesetzt.");
+                            Bukkit.broadcastMessage("§8[§6NEWS§8] §6" + Messages.ARROW + " Die Regierung hat beschlossen das Arbeitslosengeld auf §6" + money + "€ §6zu setzen.");
+                            Log.WARNING.write(p, "hat das Arbeitslosengeld auf " + money + "€ gesetzt.");
+                            return true;
+                        } catch (Exception e) {
                             p.sendMessage(Messages.ERROR + "Bitte gib eine gültige Zahl an.");
                             return true;
                         }
-                        Script.executeAsyncUpdate("UPDATE city SET arbeitslosengeld='" + money + "'");
-                        p.sendMessage(PREFIX + "Du hast das Arbeitslosengeld auf §6" + money + "€ §egesetzt.");
-                        Beruf.Berufe.GOVERNMENT.sendMessage(PREFIX + Script.getName(p) + " hat das Arbeitslosengeld auf §6" + money + "€ §egesetzt.");
-                        Bukkit.broadcastMessage("§8[§6NEWS§8] §6" + Messages.ARROW + " Die Regierung hat beschlossen das Arbeitslosengeld auf §6" + money + "€ §6zu setzen.");
-                        Log.WARNING.write(p, "hat das Arbeitslosengeld auf " + money + "€ gesetzt.");
-                        return true;
-                    } catch (Exception e) {
-                        p.sendMessage(Messages.ERROR + "Bitte gib eine gültige Zahl an.");
-                        return true;
                     }
                 }
-
             }
 
         }
@@ -139,12 +139,12 @@ public class Arbeitslosengeld implements CommandExecutor {
             return true;
         }
 
-        if(p.getLocation().distance(new Location(Script.WORLD, 552, 70, 966, 266.23996f, 65.03321f)) > 5) {
+        if (p.getLocation().distance(new Location(Script.WORLD, 552, 70, 966, 266.23996f, 65.03321f)) > 5) {
             p.sendMessage(Messages.ERROR + "Du bist nicht am Arbeitsamt.");
             return true;
         }
 
-        if(!Licenses.PERSONALAUSWEIS.hasLicense(Script.getNRPID(p))) {
+        if (!Licenses.PERSONALAUSWEIS.hasLicense(Script.getNRPID(p))) {
             p.sendMessage(Messages.ERROR + "Du benötigst einen Personalausweis.");
             return true;
         }
@@ -159,7 +159,7 @@ public class Arbeitslosengeld implements CommandExecutor {
             return true;
         }
 
-        if(hasApplied(p)) {
+        if (hasApplied(p)) {
             p.sendMessage(Messages.ERROR + "Du kannst nur alle zwei Wochen Arbeitslosengeld beantragen.");
             return true;
         }
@@ -269,7 +269,7 @@ public class Arbeitslosengeld implements CommandExecutor {
     }
 
     public static void deleteArbeitslosengeld(Player p) {
-        if(hasArbeitslosengeld(p)) {
+        if (hasArbeitslosengeld(p)) {
             Script.executeAsyncUpdate("DELETE FROM arbeitslosengeld WHERE nrp_id='" + Script.getNRPID(p) + "'");
             Beruf.Berufe.GOVERNMENT.sendMessage(PREFIX + Script.getName(p) + "s Arbeitslosengeld wurde gekündigt.");
         }

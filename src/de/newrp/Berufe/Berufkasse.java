@@ -1,9 +1,7 @@
 package de.newrp.Berufe;
 
-import de.newrp.API.ATM;
-import de.newrp.API.Messages;
-import de.newrp.API.PaymentType;
-import de.newrp.API.Script;
+import de.newrp.API.*;
+import de.newrp.Administrator.Notifications;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -91,7 +89,8 @@ public class Berufkasse implements CommandExecutor {
                     Beruf.getBeruf(p).removeKasse(amount);
                     Script.addMoney(p, PaymentType.CASH, amount);
                     Beruf.getBeruf(p).sendMessage(PREFIX + "§6" + Script.getName(p) + " §7hat §6" + amount + "€ §7aus der Kasse ausgezahlt.");
-                    Script.sendTeamMessage(PREFIX + "§6" + Script.getName(p) + " §7hat §6" + amount + "€ §7aus der "+ Beruf.getBeruf(p).getName() + "-Kasse ausgezahlt.");
+                    Notifications.sendMessage(Notifications.NotificationType.PAYMENT, Script.getName(p) + " hat " + amount + "€ aus der " + Beruf.getBeruf(p).getName() + "-Kasse ausgezahlt.");
+                    Log.HIGH.write(Script.getName(p) + " hat " + amount + "€ aus der " + Beruf.getBeruf(p).getName() + "-Kasse ausgezahlt.");
                     return true;
                 } catch (NumberFormatException e) {
                     p.sendMessage(Messages.ERROR + "Der Betrag muss eine Zahl sein.");
@@ -116,7 +115,8 @@ public class Berufkasse implements CommandExecutor {
                     Beruf.getBeruf(p).addKasse(amount);
                     Script.removeMoney(p, PaymentType.CASH, amount);
                     Beruf.getBeruf(p).sendMessage(PREFIX + "§6" + Script.getName(p) + " §7hat §6" + amount + "€ §7in die Kasse eingezahlt.");
-                    Script.sendTeamMessage(PREFIX + "§6" + Script.getName(p) + " §7hat §6" + amount + "€ §7in die "+ Beruf.getBeruf(p).getName() + "-Kasse eingezahlt.");
+                    Notifications.sendMessage(Notifications.NotificationType.PAYMENT, Script.getName(p) + " hat " + amount + "€ in die " + Beruf.getBeruf(p).getName() + "-Kasse eingezahlt.");
+                    Log.NORMAL.write(Script.getName(p) + " hat " + amount + "€ in die " + Beruf.getBeruf(p).getName() + "-Kasse eingezahlt.");
                     return true;
                 } catch (NumberFormatException e) {
                     p.sendMessage(Messages.ERROR + "Der Betrag muss eine Zahl sein.");

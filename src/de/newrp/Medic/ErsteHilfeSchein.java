@@ -3,6 +3,7 @@ package de.newrp.Medic;
 import de.newrp.API.Licenses;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
+import de.newrp.Berufe.Abteilung;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Berufe.Duty;
 import de.newrp.Player.Annehmen;
@@ -25,6 +26,11 @@ public class ErsteHilfeSchein implements CommandExecutor {
 
         if(!Beruf.getBeruf(p).equals(Beruf.Berufe.RETTUNGSDIENST)) {
             p.sendMessage(Messages.NO_PERMISSION);
+            return true;
+        }
+
+        if(Beruf.getAbteilung(p) == Abteilung.Abteilungen.MEDIZINSTUDENT || Beruf.getAbteilung(p) == Abteilung.Abteilungen.ASSISTENZARZT) {
+            p.sendMessage(Messages.ERROR + "Du kannst keine Erste-Hilfe-Scheine ausstellen.");
             return true;
         }
 

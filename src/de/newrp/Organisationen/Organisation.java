@@ -6,7 +6,6 @@ import de.newrp.API.Script;
 import de.newrp.Berufe.Duty;
 import de.newrp.Berufe.Equip;
 import de.newrp.Forum.ForumGroup;
-import de.newrp.Government.Arbeitslosengeld;
 import de.newrp.TeamSpeak.TeamspeakServerGroup;
 import de.newrp.main;
 import org.bukkit.Bukkit;
@@ -22,11 +21,11 @@ import java.util.List;
 
 public enum Organisation {
 
-    FALCONE(1, "Falcone-Famiglia",  true, false, false, 0, null, null),
-    KARTELL(2, "puertoricanisches-Kartell",  true, false, false, 0, null, null),
-    GANG(3, "Braterstwo",  false, false, false, 0, null, null),
-    CORLEONE(4, "Corleone-Familie",  true, false, false, 0, null, null),
-    GROVE(5, "Grove-Street",  false, false, false, 0, null, null);
+    FALCONE(1, "Falcone-Famiglia",  true, false, false, 158, TeamspeakServerGroup.FALCONE,  new ForumGroup[]{ForumGroup.FALCONE, ForumGroup.FALCONE_LEADER}, OrgSpray.FraktionSpray.FALCONE),
+    KARTELL(2, "puertoricanisches-Kartell",  true, false, false, 119, TeamspeakServerGroup.KARTELL,  new ForumGroup[]{ForumGroup.KARTELL, ForumGroup.KARTELL_LEADER}, OrgSpray.FraktionSpray.KARTELL),
+    BRATERSTWO(3, "Braterstwo",  false, false, false, 143, TeamspeakServerGroup.BRATERSTWO,  new ForumGroup[]{ForumGroup.BRATERSTWO, ForumGroup.BRATERSTWO_LEADER}, OrgSpray.FraktionSpray.BRATERSTWO),
+    CORLEONE(4, "Corleone-Familie",  true, false, false, 131, TeamspeakServerGroup.CORLEONE,  new ForumGroup[]{ForumGroup.CORLEONE, ForumGroup.CORLEONE_LEADER}, OrgSpray.FraktionSpray.CORLEONE),
+    GROVE(5, "Grove-Street",  false, false, false, 170, TeamspeakServerGroup.GROVE,  new ForumGroup[]{ForumGroup.GROVE, ForumGroup.GROVE_LEADER}, OrgSpray.FraktionSpray.GROVE);
 
     private final String name;
     int id;
@@ -36,8 +35,9 @@ public enum Organisation {
     int channelid;
     TeamspeakServerGroup serverGroup;
     ForumGroup[] forumGroup;
+    OrgSpray.FraktionSpray fraktionSpray;
 
-    Organisation(int id, String name, boolean kasse, boolean duty, boolean equip, int channelid, TeamspeakServerGroup serverGroup, ForumGroup[] forumGroup) {
+    Organisation(int id, String name, boolean kasse, boolean duty, boolean equip, int channelid, TeamspeakServerGroup serverGroup, ForumGroup[] forumGroup, OrgSpray.FraktionSpray fraktionSpray) {
         this.id = id;
         this.name = name;
         this.kasse = kasse;
@@ -46,6 +46,7 @@ public enum Organisation {
         this.channelid = channelid;
         this.serverGroup = serverGroup;
         this.forumGroup = forumGroup;
+        this.fraktionSpray = fraktionSpray;
     }
 
     public static String PREFIX = "§8[§eOrganisation§8] §e" + Messages.ARROW + " §7";
@@ -113,6 +114,10 @@ public enum Organisation {
             level_cost += 173;
         }
         return level_cost;
+    }
+
+    public OrgSpray.FraktionSpray getFraktionSpray() {
+        return fraktionSpray;
     }
 
     public void removeExp(int amount) {

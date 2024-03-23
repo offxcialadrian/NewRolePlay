@@ -6,6 +6,7 @@ import de.newrp.API.Script;
 import de.newrp.Administrator.AntiCheatSystem;
 import de.newrp.Administrator.Notifications;
 import de.newrp.Administrator.Punish;
+import de.newrp.Player.Passwort;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -32,8 +33,13 @@ public class Whisper implements CommandExecutor {
             return true;
         }
 
+        if (Passwort.isLocked(p)) {
+            p.sendMessage(Messages.ERROR + "Du musst dein Passwort eingeben!");
+            return true;
+        }
+
         for(String arg : args) {
-            if(arg.startsWith("http://") || arg.startsWith("https://") || arg.startsWith("www.") || arg.startsWith(".de")  || arg.startsWith(".eu") || arg.startsWith("germanrp") || arg.startsWith("grp") || arg.startsWith("unicacity") || arg.startsWith("turniptales") || arg.toLowerCase().startsWith("turnip")) {
+            if(arg.startsWith("http://") || arg.startsWith("https://") || arg.startsWith("www.") || arg.endsWith(".de")  || arg.endsWith(".eu") || arg.startsWith("germanrp") || arg.startsWith("grp") || arg.startsWith("unicacity") || arg.startsWith("turniptales") || arg.toLowerCase().startsWith("turnip")) {
                 Script.sendTeamMessage(AntiCheatSystem.PREFIX + "Verdacht auf Fremdwerbung bei " + Script.getName(p) + " (Level " + p.getLevel() + ") §8» §c" + message);
                 if(Script.getNRPTeam().isEmpty()) {
                     p.sendMessage(AntiCheatSystem.PREFIX + "Es liegt ein Verdacht auf Fremdwerbung vor oder deine Nachricht enthält einen Link. Die Nachricht wurde nicht gesendet. Wenn du denkst, dass es sich um einen Fehler handelt, melde ihn bitte im Forum.");

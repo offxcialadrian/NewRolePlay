@@ -97,12 +97,18 @@ public class Reinforcement implements CommandExecutor {
                     p.sendMessage(Messages.PLAYER_NOT_FOUND);
                     return true;
                 }
+
+                if(!new_reinforcement.containsKey(tg.getName())) {
+                    p.sendMessage(Messages.ERROR + "Es wurde kein Verstärkungsruf von " + Script.getName(tg) + " gesendet.");
+                    return true;
+                }
+
                 new Route(p.getName(), Script.getNRPID(p), p.getLocation(), new_reinforcement.get(tg.getName())).start();
                 if(Organisation.hasOrganisation(tg)) {
                     Organisation org = Organisation.getOrganisation(tg);
                     if(org.getMembers().contains(tg)) {
                         for (Player member : org.getMembers()) {
-                            member.sendMessage("§7➲ §3" + org.getName() + " " + Script.getName(p) + " kommt zum Verstärkungsruf von " + Script.getName(tg) + "! §7" + "(ETA: " + calcETA(p.getLocation().distance(new_reinforcement.get(tg.getName()))) + " Sekunden)");
+                            member.sendMessage("§7➲ §3" + Organisation.getRankName(p) + " " + Script.getName(p) + " kommt zum Verstärkungsruf von " + Script.getName(tg) + "! §7" + "(ETA: " + calcETA(p.getLocation().distance(new_reinforcement.get(tg.getName()))) + " Sekunden)");
                         }
                     }
                     return true;
@@ -113,7 +119,7 @@ public class Reinforcement implements CommandExecutor {
                     for (Beruf.Berufe berufe : Beruf.Berufe.values()) {
                         if(berufe != Beruf.Berufe.RETTUNGSDIENST && berufe != Beruf.Berufe.POLICE && berufe != Beruf.Berufe.GOVERNMENT) continue;
                         for (Player member : berufe.getMembers()) {
-                            member.sendMessage("§7➲ §3" + Beruf.getAbteilung(p).getName() + " " + Script.getName(p) + " kommt zum Verstärkungsruf von " + Script.getName(tg) + "! §7" + "(ETA: " + calcETA(p.getLocation().distance(new_reinforcement.get(tg.getName()))) + " Sekunden)");
+                            member.sendMessage("§7➲ §3" + Beruf.getBeruf(p).getName() + " " + Script.getName(p) + " kommt zum Verstärkungsruf von " + Script.getName(tg) + "! §7" + "(ETA: " + calcETA(p.getLocation().distance(new_reinforcement.get(tg.getName()))) + " Sekunden)");
                         }
                     }
                 } else {

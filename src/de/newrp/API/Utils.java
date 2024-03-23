@@ -113,7 +113,7 @@ public class Utils implements Listener {
     @EventHandler
     public void onPing(ServerListPingEvent e) {
         if(Script.isInTestMode()) {
-            e.setMotd("§5§lNew RolePlay §8┃ §5Reallife §8× §5RolePlay §8┃ §c1.16.5\n§8» §a§l" + "RELEASE" + " §8- §6§l23.03.2024 18 Uhr!");
+            e.setMotd("§5§lNew RolePlay §8┃ §5Reallife §8× §5RolePlay §8┃ §c1.16.5\n§8» §a§l" + "RELEASE" + " §8- §6§lHEUTE!");
         } else {
             e.setMotd("§5§lNew RolePlay §8┃ §5Reallife §8× §5RolePlay §8┃ §c1.16.5\n§8» §a§l" + main.getInstance().getDescription().getVersion() + " §8- §5Werde Teil einer neuen Ära!");
         }
@@ -177,9 +177,10 @@ public class Utils implements Listener {
     @EventHandler
     public void onFish(PlayerFishEvent e) {
         e.setExpToDrop(0);
-        if(e.getState() == PlayerFishEvent.State.CAUGHT_ENTITY) {
+        if(e.getState() == PlayerFishEvent.State.CAUGHT_FISH) {
             e.setCancelled(true);
             e.getPlayer().getInventory().addItem(getRandomFish());
+            Script.addEXP(e.getPlayer(), 1);
         }
     }
 
@@ -231,12 +232,13 @@ public class Utils implements Listener {
                 Script.sendTeamMessage(AntiCheatSystem.PREFIX + Script.getName(p) + " wurde der Zugriff auf den Server verweigert, da er nicht aus Deutschland, Österreich oder der Schweiz kommt.");
                 return;
             }*/
+            p.teleport(new Location(Script.WORLD, 935, 66, 1198, 179.92924f, 0.32957163f));
             new BukkitRunnable() {
                 @Override
                 public void run() {
                     p.teleport(new Location(Script.WORLD, 935, 66, 1198, 179.92924f, 0.32957163f));
                 }
-            }.runTaskLaterAsynchronously(main.getInstance(), 20L);
+            }.runTaskLater(main.getInstance(), 20L);
             Script.registerPlayer(e.getPlayer());
             Script.sendActionBar(e.getPlayer(), "§7Willkommen auf §eNewRP§7!");
             e.getPlayer().sendMessage("§eNew RolePlay" + "§rWillkommen auf §eNewRP§7!");
@@ -493,6 +495,7 @@ public class Utils implements Listener {
                     e.getClickedBlock().getType() == Material.SMOKER ||
                     e.getClickedBlock().getType() == Material.BREWING_STAND ||
                     e.getClickedBlock().getType() == Material.ANVIL ||
+                    e.getClickedBlock().getState() instanceof ShulkerBox ||
                     e.getClickedBlock().getType() == Material.COMMAND_BLOCK ||
                     e.getClickedBlock().getType() == Material.COMMAND_BLOCK_MINECART ||
                     e.getClickedBlock().getType() == Material.CHIPPED_ANVIL ||

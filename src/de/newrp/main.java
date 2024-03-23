@@ -360,6 +360,8 @@ public class main extends JavaPlugin {
         getCommand("sellfisch").setExecutor(new Sellfisch());
         getCommand("spawncar").setExecutor(new SpawnCar());
         getCommand("dice").setExecutor(new Dice());
+        getCommand("flipcoin").setExecutor(new Flipcoin());
+        getCommand("registerbanner").setExecutor(new RegisterBanner());
 
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new SDuty(), this);
@@ -473,7 +475,8 @@ public class main extends JavaPlugin {
         pm.registerEvents(new TV(), this);
         pm.registerEvents(new TestoSpritze(), this);
         pm.registerEvents(new DriveCar(), this);
-
+        pm.registerEvents(new RegisterBanner(), this);
+        pm.registerEvents(new OrgSpray(), this);
 
         new AsyncHealth().runTaskTimerAsynchronously(this, 120 * 20L, 120 * 20L);
         new PayDay().runTaskTimerAsynchronously(this, 60 * 20L, 60 * 20L);
@@ -495,6 +498,7 @@ public class main extends JavaPlugin {
         Plantage.loadAll();
         Schwarzmarkt.spawnRandom();
         Zeitung.restoreZeitung();
+        OrgSpray.FraktionSpray.init();
 
         Script.executeUpdate("UPDATE birthday SET geschenk = 0");
 

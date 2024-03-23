@@ -5,6 +5,7 @@ import de.newrp.API.Script;
 import de.newrp.Administrator.BuildMode;
 import de.newrp.Administrator.GoTo;
 import de.newrp.Administrator.SDuty;
+import de.newrp.Berufe.Abteilung;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Berufe.Duty;
 import de.newrp.Player.Annehmen;
@@ -40,6 +41,11 @@ public class Rezept implements CommandExecutor, TabCompleter {
             return true;
         }
 
+        if(Beruf.getAbteilung(p) == Abteilung.Abteilungen.MEDIZINSTUDENT) {
+            p.sendMessage(Messages.ERROR + "Du kannst keine Rezepte ausstellen.");
+            return true;
+        }
+
         if(!Duty.isInDuty(p)) {
             p.sendMessage(Messages.ERROR + "Du musst im Dienst sein.");
             return true;
@@ -53,6 +59,11 @@ public class Rezept implements CommandExecutor, TabCompleter {
         Player tg = Script.getPlayer(args[0]);
         if(tg == null) {
             p.sendMessage(Messages.PLAYER_NOT_FOUND);
+            return true;
+        }
+
+        if(p == tg && !Beruf.isLeader(p, true)) {
+            p.sendMessage(Messages.ERROR + "Du kannst dir selbst kein Rezept ausstellen.");
             return true;
         }
 
@@ -115,7 +126,7 @@ public class Rezept implements CommandExecutor, TabCompleter {
     @Override
     public List<String> onTabComplete(CommandSender cs, Command cmd, String alias, String[] args) {
         Player p = (Player) cs;
-        if (cmd.getName().equalsIgnoreCase("rezept")) {
+        if (cmd.getName().equalsIgnoreCase("rezept") || cmd.getName().equalsIgnoreCase("rezepte")) {
             final List<String> oneArgList = new ArrayList<>();
             final List<String> completions = new ArrayList<>();
             for (Medikamente medikamente : Medikamente.values()) {

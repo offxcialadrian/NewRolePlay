@@ -33,7 +33,7 @@ public class Equip implements CommandExecutor, Listener {
         HANDSCHELLEN(3, "Handschellen", Script.setName(new ItemStack(Material.LEAD, 2), "§7Handschellen"), 50, 0, null, Beruf.Berufe.POLICE, true),
         TAZER(4, "Tazer", Script.tazer(), 1000, 0, null, Beruf.Berufe.POLICE, true),
         DONUT(5, "Donut", new ItemBuilder(Material.COOKIE).setAmount(16).setName("§7Donut").build(), 1, 0, null, Beruf.Berufe.POLICE, false),
-        MP7(6, "Striker", new ItemBuilder(Material.GOLDEN_HORSE_ARMOR).setName("§7Striker").build(), 1200, 0, null, Beruf.Berufe.POLICE, false),
+        MP7(6, "Striker", new ItemBuilder(Material.GOLDEN_HORSE_ARMOR).setName("§7Striker").build(), 1200, 0, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE, false),
         EINSATZSCHILD(7, "Einsatzschild", Script.einsatzschild(1), 1000, 0, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE, true),
         EINSAZTZSCHILD_2(8, "Schweres Einsatzschild", Script.einsatzschild(2), 1700, 0, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE, true),
         RAUCHGRANATE(9, "Rauchgranate", Script.rauchgranate(), 300, 0, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE, true),
@@ -49,12 +49,15 @@ public class Equip implements CommandExecutor, Listener {
         BROT(19, "Brot", new ItemBuilder(Material.BREAD).setAmount(16).setName("§7Brot").build(), 3, 0, null, Beruf.Berufe.RETTUNGSDIENST, false),
         KEKSE(20, "Kekse",new ItemBuilder(Material.COOKIE).setAmount(16).setName("§7Kekse").build(), 1, 0, null, Beruf.Berufe.NEWS, false),
         SNIPER(21, Weapon.SNIPER.getName(), Weapon.SNIPER.getWeapon(), 4500, 30, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE, true),
-        DROHNE_COPS(22, "Drohne [Polizei]", new ItemBuilder(Material.WITHER_SKELETON_SKULL).setName("§7Drohne [Polizei]").build(), 1000, 0, null, Beruf.Berufe.POLICE, true),
+        DROHNE_COPS(22, "Drohne [Polizei]", new ItemBuilder(Material.WITHER_SKELETON_SKULL).setName("§7Drohne [Polizei]").build(), 1000, 0, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE, true),
         DROHNE_NEWS(23, "Drohne [News]", new ItemBuilder(Material.WITHER_SKELETON_SKULL).setName("§7Drohne [News]").build(), 1500, 0, Abteilung.Abteilungen.CHEFREDAKTION, Beruf.Berufe.NEWS, true),
         DROHNE_RETTUNGSDIENST(24, "Drohne [Rettungsdienst]", new ItemBuilder(Material.WITHER_SKELETON_SKULL).setName("§7Drohne [Rettungsdienst]").build(), 1000, 0, Abteilung.Abteilungen.NOTFALLMEDIZIN, Beruf.Berufe.RETTUNGSDIENST, true),
 
         MUNITION_PISTOLE(25, Weapon.PISTOLE.getAmmoType().getName(), new ItemBuilder(Material.ARROW).setName(Weapon.PISTOLE.getAmmoType().getName()).setAmount(Weapon.PISTOLE.getMagazineSize()).build(), 10, 0, null, Beruf.Berufe.POLICE, true),
-        MUNITION_MP7(26, Weapon.MP7.getAmmoType().getName(), new ItemBuilder(Material.ARROW).setName(Weapon.MP7.getAmmoType().getName()).setAmount(Weapon.MP7.getMagazineSize()).build(), 15, 0, null, Beruf.Berufe.POLICE, true);
+        MUNITION_MP7(26, Weapon.MP7.getAmmoType().getName(), new ItemBuilder(Material.ARROW).setName(Weapon.MP7.getAmmoType().getName()).setAmount(Weapon.MP7.getMagazineSize()).build(), 15, 0, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE, true),
+        BROT_2(27, "Brot", new ItemBuilder(Material.BREAD).setAmount(16).setName("§7Brot").build(), 3, 0, null, Beruf.Berufe.GOVERNMENT, false),
+        TRINKWASSER(28, "Trinkwasser", new ItemBuilder(Material.POTION).setName("§7Trinkwasser").build(), 2, 0, null, Beruf.Berufe.GOVERNMENT, false),
+        KEVLAR(29, "Kevlar", Script.kevlar(1), 2900, 0, null, Beruf.Berufe.GOVERNMENT, false);
 
         private String name;
         private int id;
@@ -186,6 +189,11 @@ public class Equip implements CommandExecutor, Listener {
         }
 
         if(Beruf.getBeruf(p) == Beruf.Berufe.NEWS && p.getLocation().distance(new Location(Script.WORLD,289, 67, 788)) > 5) {
+            p.sendMessage(Messages.ERROR + "Du musst dich in der Nähe des Equip-Punktes befinden.");
+            return true;
+        }
+
+        if(Beruf.getBeruf(p) == Beruf.Berufe.GOVERNMENT && p.getLocation().distance(new Location(Script.WORLD, 540, 88, 981, -91.613525f, 5.674797f))>10) {
             p.sendMessage(Messages.ERROR + "Du musst dich in der Nähe des Equip-Punktes befinden.");
             return true;
         }

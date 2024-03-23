@@ -16,7 +16,17 @@ public enum ForumGroup {
     GOVERNMENT_LEADER(15, "Regierung Leader"),
     NEWS(16, "News"),
     NEWS_LEADER(17, "News Leader"),
-    VERIFIED(18, "Verifiziert");
+    VERIFIED(18, "Verifiziert"),
+    KARTELL(24, "Kartell"),
+    KARTELL_LEADER(19, "Kartell Leader"),
+    FALCONE(25, "Falcone"),
+    FALCONE_LEADER(22, "Falcone Leader"),
+    CORLEONE(27, "Corleone"),
+    CORLEONE_LEADER(21, "Corleone Leader"),
+    BRATERSTWO(28, "Braterstwo"),
+    BRATERSTWO_LEADER(20, "Braterstwo Leader"),
+    GROVE(26, "Grove"),
+    GROVE_LEADER(23, "Grove Leader");
 
     private final int id;
     private final String name;

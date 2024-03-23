@@ -1040,15 +1040,27 @@ public class Script {
     }
 
     public static boolean hasDrugs(Player p) {
-        return (p.getInventory().contains(Material.SUGAR) || p.getItemOnCursor().getType() == Material.SUGAR || p.getInventory().getItemInOffHand().getType() == Material.SUGAR || p.getInventory().contains(Material.LARGE_FERN) || p.getItemOnCursor().getType() == Material.LARGE_FERN || p.getInventory().getItemInOffHand().getType() == Material.LARGE_FERN);
+        return (p.getInventory().contains(Material.SUGAR) || p.getItemOnCursor().getType() == Material.SUGAR || p.getInventory().getItemInOffHand().getType() == Material.SUGAR || p.getInventory().contains(Material.GREEN_DYE) || p.getItemOnCursor().getType() == Material.GREEN_DYE || p.getInventory().getItemInOffHand().getType() == Material.GREEN_DYE);
+    }
+
+    public static int getDrugAmount(Player p) {
+        int i = 0;
+        for(ItemStack is : p.getInventory().getContents()) {
+            if(is != null) {
+                if(is.getType() == Material.SUGAR || is.getType() == Material.GREEN_DYE) {
+                    i += is.getAmount();
+                }
+            }
+        }
+        return i;
     }
 
     public static void removeDrugs(Player p) {
         p.getInventory().remove(Material.SUGAR);
-        p.getInventory().remove(Material.LARGE_FERN);
+        p.getInventory().remove(Material.GREEN_DYE);
         p.getItemOnCursor();
         if(p.getItemOnCursor().getType() == Material.SUGAR) p.setItemOnCursor(new ItemStack(Material.AIR));
-        if(p.getItemOnCursor().getType() == Material.LARGE_FERN) p.setItemOnCursor(new ItemStack(Material.AIR));
+        if(p.getItemOnCursor().getType() == Material.GREEN_DYE) p.setItemOnCursor(new ItemStack(Material.AIR));
     }
 
     public static long getLastDisconnect(OfflinePlayer p) {
@@ -1126,20 +1138,20 @@ public class Script {
         if(paymentType == PaymentType.CASH) p.sendMessage(Messages.INFO + "Du hast " + amount + "€ Bargeld erhalten.");
         amount = Math.abs(amount);
         executeUpdate("UPDATE money SET " + paymentType.getName() + "=" + (getMoney(p, paymentType) + amount) + " WHERE nrp_id=" + getNRPID(p));
-        if(Script.getLevel(p) == 1 && getMoney(p, paymentType) >= 100000) Script.sendTeamMessage(AntiCheatSystem.PREFIX + "Verdächtige Geldmenge: " + Script.getName(p) + " (" + getMoney(p, paymentType) + "€)");
+        if(Script.getLevel(p) == 1 && getMoney(p, paymentType) >= 50000) Script.sendTeamMessage(AntiCheatSystem.PREFIX + "Verdächtige Geldmenge: " + Script.getName(p) + " (" + getMoney(p, paymentType) + "€)");
     }
 
     public static void addMoney(int id, PaymentType paymentType, int amount) {
         amount = Math.abs(amount);
         executeUpdate("UPDATE money SET " + paymentType.getName() + "=" + (getMoney(id, paymentType) + amount) + " WHERE nrp_id=" + id);
 
-        if(Script.getLevel(Script.getOfflinePlayer(id)) == 1 && getMoney(id, paymentType) >= 100000) Script.sendTeamMessage(AntiCheatSystem.PREFIX + "Verdächtige Geldmenge: " + Script.getOfflinePlayer(id).getName() + " (" + getMoney(id, paymentType) + "€)");
+        if(Script.getLevel(Script.getOfflinePlayer(id)) == 1 && getMoney(id, paymentType) >= 50000) Script.sendTeamMessage(AntiCheatSystem.PREFIX + "Verdächtige Geldmenge: " + Script.getOfflinePlayer(id).getName() + " (" + getMoney(id, paymentType) + "€)");
     }
 
     public static void addMoney(OfflinePlayer p, PaymentType paymentType, int amount) {
         amount = Math.abs(amount);
         executeUpdate("UPDATE money SET " + paymentType.getName() + "=" + (getMoney(p, paymentType) + amount) + " WHERE nrp_id=" + getNRPID(p));
-        if(Script.getLevel(p) == 1 && getMoney(p, paymentType) >= 100000) Script.sendTeamMessage(AntiCheatSystem.PREFIX + "Verdächtige Geldmenge: " + p.getName() + " (" + getMoney(p, paymentType) + "€)");
+        if(Script.getLevel(p) == 1 && getMoney(p, paymentType) >= 50000) Script.sendTeamMessage(AntiCheatSystem.PREFIX + "Verdächtige Geldmenge: " + p.getName() + " (" + getMoney(p, paymentType) + "€)");
     }
 
     public static void removeMoney(Player p, PaymentType paymentType, int amount) {

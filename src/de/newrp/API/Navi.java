@@ -53,7 +53,14 @@ public enum Navi {
     HANKYS("Hankys", new Location(Script.WORLD, 557, 64, 1270, -359.05908f, 12.675349f)),
     JAGDHUETTE("Jagdhütte", new Location(Script.WORLD, 476, 70, 1186, 89.78363f, 89.33273f)),
     ANGELLADEN("Angelladen", new Location(Script.WORLD, 766, 64, 780, 266.49414f, 89.59964f)),
-    BAEKEREI("Bäckerei", new Location(Script.WORLD, 450, 66, 644, 90.62988f, 22.937416f));
+    BAEKEREI("Bäckerei", new Location(Script.WORLD, 450, 66, 644, 90.62988f, 22.937416f)),
+    GROVE("Grove",new Location(Script.WORLD, 775, 64, 1242, 90.474365f, 5.4431314f)),
+    BRATERSTWO("Braterstwo", new Location(Script.WORLD, 548, 65, 1262, 0.4248047f, 1.9345249f)),
+    CORLEONE("Corleone-Familie", new Location(Script.WORLD, 125, 105, 487, 270.77173f, -1.7501303f)),
+    FALCONE("Falcone-Famiglia", new Location(Script.WORLD, 796, 109, 846, 270.17065f, 1.4442922f)),
+    KARTELL("Puertoricanisches Kartell", new Location(Script.WORLD, 198, 66, 1120, -90.13266f, 0.2703893f)),
+    JVA("Justizvollzugsanstalt", new Location(Script.WORLD, 999, 63, 573, -90.138885f, 2.3394775f)),
+    BLUMENHANDLUNG("Blumenhandlung", new Location(Script.WORLD, 316, 76, 932, -181.94073f, 90.0f));
 
 
     private final String name;

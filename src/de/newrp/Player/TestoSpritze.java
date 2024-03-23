@@ -95,7 +95,7 @@ public class TestoSpritze implements Listener {
     }
 
     private static boolean interact(Player p) {
-        return p.getInventory().contains(new ItemBuilder(Material.END_ROD).setName("§7Testosteron-Spritze").build());
+        return p.getInventory().getItemInMainHand().equals(new ItemBuilder(Material.END_ROD).setName("§7Testosteron-Spritze").build());
     }
 
     private static void progressBar(double required_progress, Player p) {

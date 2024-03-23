@@ -13,7 +13,7 @@ import org.bukkit.entity.Player;
 
 public class FlyCommand implements CommandExecutor {
 
-    private static final String PREFIX = "§8[§cFly§8] §c" + Messages.ARROW + " ";
+    private static final String PREFIX = "§8[§cFly§8] §c" + Messages.ARROW + " §7";
 
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {

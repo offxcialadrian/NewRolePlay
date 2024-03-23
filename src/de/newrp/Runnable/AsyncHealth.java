@@ -7,6 +7,7 @@ import de.newrp.API.Script;
 import de.newrp.Administrator.BuildMode;
 import de.newrp.Administrator.Checkpoints;
 import de.newrp.Administrator.SDuty;
+import de.newrp.Berufe.Drone;
 import de.newrp.Player.AFK;
 import de.newrp.Police.Jail;
 import de.newrp.main;
@@ -36,7 +37,7 @@ public class AsyncHealth extends BukkitRunnable {
             } else {
                 Health.BLOOD.add(Script.getNRPID(p), Script.getRandomFloat(.2F, .3F));
             }
-            if (!AFK.isAFK(p) && !Jail.isInJail(p) && !Friedhof.isDead(p) && !SDuty.isSDuty(p) && !BuildMode.isInBuildMode(p) || Checkpoints.hasCheckpoints(p)) {
+            if (!AFK.isAFK(p) && !Jail.isInJail(p) && !Friedhof.isDead(p) && !SDuty.isSDuty(p) && !BuildMode.isInBuildMode(p) && !Checkpoints.hasCheckpoints(p) && !Drone.isDrone(p)) {
                 Health.THIRST.remove(Script.getNRPID(p), Script.getRandomFloat(.09F, .12F));
             }
         }

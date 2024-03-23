@@ -73,7 +73,7 @@ public class BuyShop implements CommandExecutor {
                 Script.removeMoney(p, PaymentType.BANK, shop.getPrice());
                 Stadtkasse.addStadtkasse(shop.getPrice(), "Verkauf von Shop " + shop.getPublicName() + " an " + Script.getName(p) + " (Shop: " + shop.getPublicName() + ")", null);
                 shop.setOwner(Script.getNRPID(p));
-                p.sendMessage(PREFIX + "Du hast den Shop erfolgreich gekauft.");
+                p.sendMessage(PREFIX + "Du hast den Shop erfolgreich für " + shop.getPrice() + "€ gekauft.");
                 Achievement.SHOP_OWNER.grant(p);
                 Log.HIGH.write(p.getName() + " hat den Shop " + shop.getPublicName() + " gekauft.");
                 Notifications.sendMessage(Notifications.NotificationType.SHOP, Script.getName(p) + " hat den Shop " + shop.getPublicName() + " gekauft.");

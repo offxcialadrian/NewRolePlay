@@ -203,7 +203,7 @@ public class PayShop implements Listener {
                     p.getInventory().addItem(Script.setNameAndLore(new ItemStack(Material.WATER_BUCKET), "§9Wasser", "§65/5"));
                     break;
                 case DUENGER:
-                    p.getInventory().addItem(Script.setNameAndLore(new ItemStack(Material.INK_SAC, 1, (short) 15), "§7Dünger", "§65/5"));
+                    p.getInventory().addItem(Script.setNameAndLore(new ItemStack(Material.INK_SAC), "§7Dünger", "§65/5"));
                     break;
             }
 
@@ -231,6 +231,9 @@ public class PayShop implements Listener {
             if (type == PaymentType.BANK) {
                 Cashflow.addEntry(p, -price, "Einkauf: " + si.getName());
             }
+
+            s.removeLager(si.getSize());
+
         }
 
         Script.removeMoney(p, type, price);
@@ -248,7 +251,6 @@ public class PayShop implements Listener {
             Log.NORMAL.write(p, "hat " + si.getName() + " für " + price + "€ gekauft.");
         }
         BuyClick.sendMessage(p, "Vielen Dank für Ihren Einkauf!");
-        s.removeLager(si.getSize());
         Stadtkasse.addStadtkasse((int) Script.getPercent(mwst, price), "Mehrwertsteuer aus dem Verkauf von " + si.getName() + " (Shop: " + s.getPublicName() + ")", Steuern.Steuer.MEHRWERTSTEUER);
 
         Achievement.EINKAUFEN.grant(p);

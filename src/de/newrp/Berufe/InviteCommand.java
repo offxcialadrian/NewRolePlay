@@ -4,8 +4,10 @@ import de.newrp.API.Licenses;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.Administrator.SDuty;
+import de.newrp.Forum.Forum;
 import de.newrp.Organisationen.Organisation;
 import de.newrp.Player.Annehmen;
+import de.newrp.TeamSpeak.TeamSpeak;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -62,6 +64,16 @@ public class InviteCommand implements CommandExecutor {
 
         if(Script.getActivePlayTime(p, true) < 1 && !SDuty.isSDuty(p)) {
             p.sendMessage(Messages.ERROR + "Der Spieler hat noch keine 60 Minuten aktive Spielzeit.");
+            return true;
+        }
+
+        if(!TeamSpeak.isVerified(Script.getNRPID(tg))) {
+            p.sendMessage(Messages.ERROR + "Der Spieler muss erst seinen TeamSpeak-Account verknüpfen.");
+            return true;
+        }
+
+        if(Forum.getForumID(Script.getNRPID(tg)) == 0) {
+            p.sendMessage(Messages.ERROR + "Der Spieler hat keinen Forum-Account.");
             return true;
         }
 

@@ -155,9 +155,26 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
         SUPPORTER_VERWEIGERUNG(22, Punishment.CHECKPOINTS, null, 0, 50, "Supporter-Verweigerung", "Das Missachten von Anweisungen eines Supporters oder das Belügen eines Supporters, welches im administrativen Zusammenhang geschieht."),
         EROTIK_ROLEPLAY(23, Punishment.CHECKPOINTS, null, 0, 50, "Erotik-Roleplay", "Das Ausleben von sexuellen Handlungen im Roleplay."),
         FOLTER_ROLEPLAY(24, Punishment.CHECKPOINTS, null, 0, 50, "Folter-Roleplay", "Das Ausleben von Folterhandlungen im Roleplay."),
-        RECHTE_AUSNUTZUNG(25, Punishment.BAN, null, TimeUnit.DAYS.toMillis(7), 0, "Rechte-Ausnutzung", "Das Ausnutzen von Rechten, die einem Spieler zustehen."),
-
+        RECHTE_AUSNUTZUNG(25, Punishment.CHECKPOINTS, Punishment.WARN, 0, 100, "Rechte-Ausnutzung", "Das Ausnutzen von Rechten, die einem Spieler zustehen."),
+        SUPPORT_AUSNUTZUNG(26, Punishment.BAN, null, TimeUnit.DAYS.toMillis(1), 0, "Support-Ausnutzung", "Das Ausnutzen von Supportern, um sich einen Vorteil zu verschaffen."),
+        BAD_GOV(27, Punishment.CHECKPOINTS, null, 0, 50, "Bad /gov", "Unkooperatives oder unanständiges Verhalten im /gov, aber auch das vorsätzliche Erstellen überflüssiger /govs."),
+        BUENDNIS(28, Punishment.CHECKPOINTS, null, 0, 50, "Unerlaubtes Bündnis", "Das Eingehen eines Bündnisses mit einer anderen Organisation, ohne dies im Forum zu melden."),
+        FRAKTIONSFLUCHT(29, Punishment.CHECKPOINTS, null, 0, 50, "Fraktionsflucht", "Das Flüchten in das HQ um einer RolePlay-Situation zu entgehen."),
+        REPEATING_FRAKTIONSFLUCHT(30, Punishment.CHECKPOINTS, Punishment.WARN, 0, 75, "Fraktionsflucht (Wiederholt)", "Wiederholtes Flüchten in das HQ um einer RolePlay-Situation zu entgehen."),
+        MISSACHTEN_DER_PLANTAGENREGELN(31, Punishment.CHECKPOINTS, null, 0, 50, "Missachten der Plantagenregel", "Das Missachten der Plantagenregel."),
+        MISSACHTEN_ÜBERFALLREGEL(32, Punishment.CHECKPOINTS, null, 0, 100, "Missachten der Überfallregel", "Das Missachten der Überfallregel."),
+        UNREALISTISCHES_SPIELVERHALTEN(33, Punishment.CHECKPOINTS, null, 0, 100, "Unrealistisches Spielverhalten", "Das Ausleben von unrealistischen Handlungen im Roleplay."),
+        REPEATING_UNREALISTISCHES_SPIELVERHALTEN(34, Punishment.CHECKPOINTS, Punishment.WARN, 0, 200, "Unrealistisches Spielverhalten (Wiederholt)", "Wiederholtes Ausleben von unrealistischen Handlungen im Roleplay."),
+        MISSACHTEN_KABELBINDERREGEL(35, Punishment.CHECKPOINTS, null, 0, 50, "Missachten der Kabelbinderregel", "Das Missachten der Kabelbinderregel."),
+        OFFLINE_FLUCHT(36, Punishment.CHECKPOINTS, null, 0, 50, "Offline-Flucht", "Das Flüchten in den Offline-Modus um einer RolePlay-Situation zu entgehen."),
+        AFK_FLUCHT(37, Punishment.CHECKPOINTS, null, 0, 50, "AFK-Flucht", "Das Flüchten in den AFK-Modus um einer RolePlay-Situation zu entgehen."),
+        TELEPORT_FLUCHT(38, Punishment.CHECKPOINTS, null, 0, 50, "Teleport-Flucht", "Das Flüchten durch einen Teleport um einer RolePlay-Situation zu entgehen."),
+        POWERGAMING(39, Punishment.CHECKPOINTS, null, 0, 50, "Powergaming", "Das Ausnutzen von Mechaniken, die im Roleplay nicht möglich wären."),
+        MISSACHTEN_DER_ROLEPLAYCHATREGEL(40, Punishment.KICK, null, 0, 0, "Missachten der Roleplaychatregel", "Das Missachten der Roleplaychatregel."),
+        REPEATING_MISSACHTEN_DER_ROLEPLAYCHATREGEL(41, Punishment.CHECKPOINTS, null, 0, 25, "Missachten der Roleplaychatregel (Wiederholt)", "Wiederholtes Missachten der Roleplaychatregel."),
+        UMVERTEILUNG_DER_PERSÖNLICHKEITSRECHTE(42, Punishment.CHECKPOINTS, null, 0, 50, "Umverteilung der Persönlichkeitsrechte", "Umverteilung der Persönlichkeitsrechte."),
         SICHERHEITSBANN(98 ,Punishment.BAN, null,0,0,"Sicherheitsbann","Du wurdest zur Sicherheit gebannt. Sollte dir der Grund nicht bekannt sein, melde dich bei uns im Support."),
+        RDM_SCHWERWIEGEND(43, Punishment.BAN, Punishment.WARN, TimeUnit.DAYS.toMillis(3),0,"Schwerwiegender Random Deathmatch","Das Töten eines Spielers ohne einen RP-Grund."),
 
         UNZUREICHENDE_EIGNUNG(99,Punishment.BAN, null,0,0,"Unzureichende Eignung","Du hast unzureichende Eignung gezeigt.");
 
@@ -270,6 +287,14 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
         Punishment secondaryPunishment = v.getSecondaryPunishment();
         Date until = new Date(new Date().getTime() + v.getDuration());
         long untilLong = new Date().getTime() + v.getDuration();
+
+        if(v == Violation.RDM) {
+            Sperre.WAFFENSPERRE.setSperre(Script.getNRPID(tg), (60*24*3));
+        }
+        if(v == Violation.RDM_SCHWERWIEGEND) {
+            Sperre.WAFFENSPERRE.setSperre(Script.getNRPID(tg), (60*24*7));
+        }
+
         if (punishment == Punishment.BAN || secondaryPunishment == Punishment.BAN) {
             if (v.getDuration() == 0) {
                 p.sendMessage(PREFIX + "Du hast " + Script.getName(tg) + " für " + v.getName() + " gebannt.");

@@ -275,6 +275,9 @@ public class BurgerFryer implements CommandExecutor, Listener {
                 p.sendMessage("§8[§c" + "NPC" + "§8] §f" + "Kunde" + " sagt: §f" + TEXT[Script.getRandom(0, TEXT.length - 1)] + burger.getName());
                 BURGER.replace(p.getName(), burger);
                 NEEDED.remove(p.getName());
+                ArrayList<Ingredients> ingredients = new ArrayList<>();
+                Collections.addAll(ingredients, burger.getIngredients());
+                NEEDED.put(p.getName(), ingredients);
                 SCORE.replace(p.getName(), SCORE.get(p.getName()) - 1);
                 if(GFB.BURGERFRYER.getLevel(p) == 1) {
                     p.sendMessage(Messages.INFO + "Du brauchst dafür folgende Zutaten:");
