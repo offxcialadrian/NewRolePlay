@@ -37,7 +37,7 @@ public class TicketListener implements Listener {
             for (Player players : conv) {
                 if(Script.hasRank(players, Rank.SUPPORTER, false)) {
                     if(players != p)
-                        players.sendMessage("§b§lTICKET §8× §b" + Script.getName(p) + " hat einen Befehl ausgeführt§8: §6" + e.getMessage());
+                        players.sendMessage("§d§lTICKET §8× §d" + Script.getName(p) + " hat einen Befehl ausgeführt§8: §6" + e.getMessage());
                 }
             }
         }

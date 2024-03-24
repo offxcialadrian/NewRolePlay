@@ -27,7 +27,7 @@ public class TicketCommand implements CommandExecutor {
     public static final HashMap<Integer, ArrayList<Player>> conversation = new HashMap<>();
     public static final HashMap<Integer, Integer> added_player = new HashMap<>();
 
-    public static final String PREFIX = "§8[§5Ticket§8] §5" + Messages.ARROW + " ";
+    public static final String PREFIX = "§8[§dTicket§8] §d" + Messages.ARROW + " ";
 
     public static void openTicket(Player p) {
         Inventory inv = Bukkit.createInventory(null, InventoryType.HOPPER, "§b§lTicket");
@@ -85,7 +85,7 @@ public class TicketCommand implements CommandExecutor {
 
         for (Player team : Script.getNRPTeam()) {
             team.playSound(team.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
-            Script.sendClickableMessage(team, PREFIX + "Es liegt ein neues Ticket §8[§6#" + i + "§8]§b von §6" + sender.getName() + " §bvor! Thema: §6" + topic.getName(), "/acceptticket " + i, "§6Ticket annehmen.");
+            Script.sendClickableMessage(team, PREFIX + "Es liegt ein neues Ticket §8[§6#" + i + "§8]§d von §6" + sender.getName() + " §dvor! Thema: §6" + topic.getName(), "/acceptticket " + i, "§6Ticket annehmen.");
         }
     }
 
@@ -199,7 +199,7 @@ public class TicketCommand implements CommandExecutor {
     }
 
     public static void sendTicketTitle(Player p) {
-        Title.sendTitle(p, 20, 50, 20, "§bDein Ticket wurde angenommen!");
+        Title.sendTitle(p, 20, 50, 20, "§dDein Ticket wurde angenommen!");
     }
 
     public static void reset() {

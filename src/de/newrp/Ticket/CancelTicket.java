@@ -42,9 +42,9 @@ public class CancelTicket implements CommandExecutor {
             int id = t.getID();
             Player tg = t.getTicketer();
             if(TicketCommand.getFarewell(p) != null) {
-                p.sendMessage("§b§lTICKET §8× §b" + Script.getName(p) + ": " + TicketCommand.getFarewell(p));
+                p.sendMessage("§d§lTICKET §8× §d" + Script.getName(p) + ": " + TicketCommand.getFarewell(p));
                 p.sendMessage(Messages.INFO + "Das Ticket wird in " + 2 + " Sekunden beendet.");
-                if(p != tg) tg.sendMessage("§b§lTICKET §8× §b" + Script.getName(p) + ": " + TicketCommand.getFarewell(p));
+                if(p != tg) tg.sendMessage("§d§lTICKET §8× §d" + Script.getName(p) + ": " + TicketCommand.getFarewell(p));
                 Script.executeAsyncUpdate("INSERT INTO ticket_conv (ticketID, sender, message, time) VALUES(" + t.getID() + ", " + Script.getNRPID(p) + ", '" + TicketCommand.getFarewell(p) + "', " + System.currentTimeMillis() + ")");
                 p.sendMessage(TicketCommand.PREFIX + "Du hast das Ticket mit " + Script.getName(tg) + " beendet! §7(§6#" + id + "§7)");
                 tg.sendMessage(TicketCommand.PREFIX + Script.getRank(p).getName(p) + " " + Script.getName(p) + " hat das Ticket beendet! §7(§6#" + id + "§7)");
