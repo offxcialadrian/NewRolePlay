@@ -23,9 +23,9 @@ public enum Organisation {
 
     FALCONE(1, "Falcone-Famiglia",  true, false, false, 158, TeamspeakServerGroup.FALCONE,  new ForumGroup[]{ForumGroup.FALCONE, ForumGroup.FALCONE_LEADER}, OrgSpray.FraktionSpray.FALCONE),
     KARTELL(2, "puertoricanisches-Kartell",  true, false, false, 119, TeamspeakServerGroup.KARTELL,  new ForumGroup[]{ForumGroup.KARTELL, ForumGroup.KARTELL_LEADER}, OrgSpray.FraktionSpray.KARTELL),
-    BRATERSTWO(3, "Braterstwo",  false, false, false, 143, TeamspeakServerGroup.BRATERSTWO,  new ForumGroup[]{ForumGroup.BRATERSTWO, ForumGroup.BRATERSTWO_LEADER}, OrgSpray.FraktionSpray.BRATERSTWO),
+    BRATERSTWO(3, "Braterstwo",  true, false, false, 143, TeamspeakServerGroup.BRATERSTWO,  new ForumGroup[]{ForumGroup.BRATERSTWO, ForumGroup.BRATERSTWO_LEADER}, OrgSpray.FraktionSpray.BRATERSTWO),
     CORLEONE(4, "Corleone-Familie",  true, false, false, 131, TeamspeakServerGroup.CORLEONE,  new ForumGroup[]{ForumGroup.CORLEONE, ForumGroup.CORLEONE_LEADER}, OrgSpray.FraktionSpray.CORLEONE),
-    GROVE(5, "Grove-Street",  false, false, false, 170, TeamspeakServerGroup.GROVE,  new ForumGroup[]{ForumGroup.GROVE, ForumGroup.GROVE_LEADER}, OrgSpray.FraktionSpray.GROVE);
+    GROVE(5, "Grove-Street",  true, false, false, 170, TeamspeakServerGroup.GROVE,  new ForumGroup[]{ForumGroup.GROVE, ForumGroup.GROVE_LEADER}, OrgSpray.FraktionSpray.GROVE);
 
     private final String name;
     int id;
@@ -102,8 +102,8 @@ public enum Organisation {
             sendMessage(PREFIX + "Deine Organisation hat Level " + (getLevel() + 1) + " erreicht.");
             Script.executeUpdate("UPDATE organisation_level SET level='" + (getLevel() + 1) + "', exp='" + 0 + "' WHERE organisationID='" + this.id + "'");
         } else {
-            sendMessage(PREFIX + "Deine Organisation hat " + amount + " Erfahrungspunkte erhalten §8(§e" + getExp() + "§7/§e" + getLevelCost() + "§8)§7.");
             Script.executeUpdate("UPDATE organisation_level SET exp='" + (getExp() + amount) + "' WHERE organisationID='" + this.id + "'");
+            sendMessage(PREFIX + "Deine Organisation hat " + amount + " Erfahrungspunkte erhalten §8(§e" + getExp() + "§7/§e" + getLevelCost() + "§8)§7.");
         }
     }
 
@@ -123,10 +123,11 @@ public enum Organisation {
     public void removeExp(int amount) {
         if(getExp() - amount < 0) {
             sendMessage(PREFIX + "Deine Organisation hat Level " + (getLevel() - 1) + " erreicht.");
-            Script.executeUpdate("UPDATE organisation_level SET level='" + (getLevel() - 1) + "', exp='" + (getLevelCost()-amount) + "' WHERE organisationID='" + this.id + "'");
+            Script.executeUpdate("UPDATE organisation_level SET level='" + (getLevel() - 1) + "' WHERE organisationID='" + this.id + "'");
+            Script.executeUpdate("UPDATE organisation_level SET exp='" + (getLevelCost() - (getLevelCost() - amount)) + "' WHERE organisationID='" + this.id + "'");
         } else {
-            sendMessage(PREFIX + "Deine Organisation hat " + amount + " Erfahrungspunkte verloren §8(§e" + getExp() + "§7/§e" + getLevelCost() + "§8)§7.");
             Script.executeUpdate("UPDATE organisation_level SET exp='" + (getExp() - amount) + "' WHERE organisationID='" + this.id + "'");
+            sendMessage(PREFIX + "Deine Organisation hat " + amount + " Erfahrungspunkte verloren §8(§e" + getExp() + "§7/§e" + getLevelCost() + "§8)§7.");
         }
     }
 

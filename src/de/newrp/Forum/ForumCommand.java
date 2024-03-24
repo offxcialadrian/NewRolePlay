@@ -19,6 +19,17 @@ public class ForumCommand implements CommandExecutor {
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         Player p = (Player) cs;
 
+        if(args.length == 1 && args[0].equalsIgnoreCase("delete")) {
+            if(Forum.getForumID(Script.getNRPID(p)) != 0) {
+                p.sendMessage(Forum.prefix + "§cDu bist bereits mit dem Forum verbunden.");
+                return true;
+            }
+
+            Script.executeUpdate("DELETE FROM forum WHERE id=" + Script.getNRPID(p));
+            p.sendMessage(Forum.prefix + "Deine Verbindung zum Forum wurde gelöscht.");
+            return true;
+        }
+
         if(args.length == 1 && args[0].equalsIgnoreCase("sync")) {
             if(Forum.getForumID(Script.getNRPID(p)) == 0) {
                 p.sendMessage(Messages.ERROR + "Du bist nicht mit dem Forum verbunden.");

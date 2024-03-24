@@ -178,7 +178,7 @@ public enum Votekiste {
                     break;
                 }
             }
-            if (i != null) {
+            /*if (i != null) {
                 int id = Script.getNRPID(p);
                 switch (i) {
                     case PREMIUM_1:
@@ -241,26 +241,10 @@ public enum Votekiste {
                         p.sendMessage(VoteShop.PREFIX + "Du hast eine schwere Kevlar gewonnen!");
                         p.getInventory().addItem(Script.kevlar(2));
                         break;
-                    /*case LOTTOSCHEIN:
+                    case LOTTOSCHEIN:
                         p.sendMessage(VoteShop.PREFIX + "Du hast einen Lottoschein gewonnen!");
                         p.sendMessage(Messages.INFO + "Du kannst den Lottoschein mit \"/lotto\" einlösen.");
                         p.getInventory().addItem(Script.setName(Material.PAPER, "§7Lottoschein"));
-                        break;*/
-                    case SONNENBLUMENKERNE:
-                        p.sendMessage(VoteShop.PREFIX + "Du hast Sonnenblumenkerne gewonnen!");
-                        p.getInventory().addItem(price);
-                        break;
-                    case PISTOLE_MUNITION_50:
-                        p.sendMessage(VoteShop.PREFIX + "Du hast 50 Munition für die Glory gewonnen!");
-                        Weapon.PISTOLE.addMunition(id, 50);
-                        break;
-                    case PISTOLE_MUNITION_75:
-                        p.sendMessage(VoteShop.PREFIX + "Du hast 75 Munition für die Glory gewonnen!");
-                        Weapon.PISTOLE.addMunition(id, 75);
-                        break;
-                    case PISTOLE_MUNITION_100:
-                        p.sendMessage(VoteShop.PREFIX + "Du hast 100 Munition für die Glory gewonnen!");
-                        Weapon.PISTOLE.addMunition(id, 100);
                         break;
                     case MP5_MUNITION_50:
                         p.sendMessage(VoteShop.PREFIX + "Du hast 50 Munition für die Peacekeeper gewonnen!");
@@ -401,7 +385,7 @@ public enum Votekiste {
                     p.getInventory().addItem(price);
                     p.sendMessage(VoteShop.PREFIX + "Du hast Trinkwasser gewonnen!");
                 }
-            }
+            }*/
             p.closeInventory();
 
         }, 10 * 20L);

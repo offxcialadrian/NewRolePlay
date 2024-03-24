@@ -125,11 +125,22 @@ public class Pizza implements CommandExecutor, Listener {
             pizza.replace(p.getName(), pizza.get(p.getName()) - 1);
             p.sendMessage(PREFIX + "Du hast die Pizza nicht rechtzeitig ausgeliefert und erhältst kein Gehalt für diese Auslieferung.");
             p.sendMessage(Messages.INFO + "Gehe nun in die Küche und nehme die nächste Pizza aus dem Ofen (Rechtsklick).");
-            p.sendMessage(PREFIX + "Du hast noch " + pizza.get(p.getName()) + " Pizzen zu liefern.");
-            p.sendMessage(Messages.INFO + "Gehe nun in die Küche und nehme die nächste Pizza aus dem Ofen (Rechtsklick).");
-            p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
-            house.remove(p.getName());
-            TOTAL_SCORE.replace(p.getName(), TOTAL_SCORE.get(p.getName()) - 1);
+            if(pizza.get(p.getName()) <= 0) {
+                p.sendMessage(PREFIX + "Du hast alle Pizzen erfolgreich ausgeliefert.");
+                GFB.PIZZALIEFERANT.addExp(p, GFB.PIZZALIEFERANT.getLevel(p) + (TOTAL_SCORE.get(p.getName()))*2);
+                PayDay.addPayDay(p, (GFB.PIZZALIEFERANT.getLevel(p) + (TOTAL_SCORE.get(p.getName()))*8));
+                Script.addEXP(p, GFB.PIZZALIEFERANT.getLevel(p) + (TOTAL_SCORE.get(p.getName()))*4);
+                pizza.remove(p.getName());
+                GFB.CURRENT.remove(p.getName());
+                TOTAL_SCORE.remove(p.getName());
+                return;
+            } else {
+                p.sendMessage(PREFIX + "Du hast noch " + pizza.get(p.getName()) + " Pizzen zu liefern.");
+                p.sendMessage(Messages.INFO + "Gehe nun in die Küche und nehme die nächste Pizza aus dem Ofen (Rechtsklick).");
+                p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
+                house.remove(p.getName());
+                TOTAL_SCORE.replace(p.getName(), TOTAL_SCORE.get(p.getName()) - 1);
+            }
             return;
         }
 
@@ -142,10 +153,10 @@ public class Pizza implements CommandExecutor, Listener {
             Script.addMoney(p, PaymentType.CASH, Script.getRandom(1, 3));
         }
 
-        if(pizza.get(p.getName()) == 0) {
+        if(pizza.get(p.getName()) <= 0) {
             p.sendMessage(PREFIX + "Du hast alle Pizzen erfolgreich ausgeliefert.");
             GFB.PIZZALIEFERANT.addExp(p, GFB.PIZZALIEFERANT.getLevel(p) + (TOTAL_SCORE.get(p.getName()))*2);
-            PayDay.addPayDay(p, (GFB.PIZZALIEFERANT.getLevel(p) + (TOTAL_SCORE.get(p.getName()))*4));
+            PayDay.addPayDay(p, (GFB.PIZZALIEFERANT.getLevel(p) + (TOTAL_SCORE.get(p.getName()))*8));
             Script.addEXP(p, GFB.PIZZALIEFERANT.getLevel(p) + (TOTAL_SCORE.get(p.getName()))*4);
             pizza.remove(p.getName());
             GFB.CURRENT.remove(p.getName());

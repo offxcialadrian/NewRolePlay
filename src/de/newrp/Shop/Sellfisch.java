@@ -2,6 +2,8 @@ package de.newrp.Shop;
 
 import de.newrp.API.Messages;
 import de.newrp.API.Navi;
+import de.newrp.API.PaymentType;
+import de.newrp.API.Script;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -31,7 +33,7 @@ public class Sellfisch implements CommandExecutor {
         for(ItemStack is : p.getInventory().getContents()) {
             if(is==null) continue;
             if(is.getType() != Material.TROPICAL_FISH && is.getType() != Material.COD && is.getType() != Material.SALMON && is.getType() != Material.PUFFERFISH) continue;
-            i++;
+            i = i + is.getAmount();
         }
 
         if(i==0) {
@@ -47,6 +49,7 @@ public class Sellfisch implements CommandExecutor {
         }
 
         p.sendMessage(Messages.INFO + "Du hast " + i + " Fische für " + price + "€ verkauft.");
+        Script.addMoney(p, PaymentType.CASH, price);
 
 
         return false;

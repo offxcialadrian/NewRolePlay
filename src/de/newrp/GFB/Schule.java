@@ -54,6 +54,7 @@ public class Schule implements CommandExecutor, Listener {
                 long diff = time - started;
                 long mins;
                 long secs;
+
                 if(STUDIYING.get(p)==null) {
                     mins = (30 * 60 * 1000 - diff) / 1000 / 60;
                     secs = (30 * 60 * 1000 - diff) / 1000 % 60;
@@ -61,6 +62,7 @@ public class Schule implements CommandExecutor, Listener {
                     mins = (15 * 60 * 1000 - diff) / 1000 / 60;
                     secs = (15 * 60 * 1000 - diff) / 1000 % 60;
                 }
+
                 p.sendMessage(Messages.INFO + "Du musst noch " + mins + " Minuten und " + secs + " Sekunden lernen.");
                 return true;
             }
@@ -103,12 +105,12 @@ public class Schule implements CommandExecutor, Listener {
                     return;
                 }
 
-                if(Script.getMoney(p, PaymentType.BANK) < e.getInventory().getSize()*100) {
+                if(Script.getMoney(p, PaymentType.BANK) < GFB.values().length*100) {
                     p.sendMessage(Messages.ERROR + "Du hast nicht genug Geld auf der Bank.");
                     return;
                 }
 
-                Script.removeMoney(p, PaymentType.BANK, GFB.values().length*100+100);
+                Script.removeMoney(p, PaymentType.BANK, GFB.values().length*100);
                 STUDIYING.put(p, null);
                 STARTED.put(p, System.currentTimeMillis());
                 p.sendMessage(PREFIX + "Du lernst nun für alle GFB-Jobs.");
@@ -156,7 +158,7 @@ public class Schule implements CommandExecutor, Listener {
                 public void run() {
                     if(STUDIYING.containsKey(p) && taskID.containsKey(p)) {
                         p.sendMessage(PREFIX + "§aDu hast den Kurs bestanden.");
-                        gfb.addExp(p, gfb.getLevel(p) * Script.getRandom(100, 200));
+                        STUDIYING.get(p).addExp(p, STUDIYING.get(p).getLevel(p) * Script.getRandom(100, 200));
                         STUDIYING.remove(p);
                         STARTED.remove(p);
                         taskID.remove(p);

@@ -302,7 +302,7 @@ public class Lagerarbeiter implements CommandExecutor, Listener {
                 p.sendMessage(PREFIX + "§aFertig");
                 SCORE.remove(p.getName());
                 GFB.LAGERARBEITER.addExp(p, GFB.LAGERARBEITER.getLevel(p) + TOTAL_SCORE.get(p.getName())/2);
-                PayDay.addPayDay(p, GFB.LAGERARBEITER.getLevel(p) + (TOTAL_SCORE.get(p.getName())));
+                PayDay.addPayDay(p, (GFB.LAGERARBEITER.getLevel(p) + (TOTAL_SCORE.get(p.getName())))*2);
                 Script.addEXP(p, GFB.LAGERARBEITER.getLevel(p) + TOTAL_SCORE.get(p.getName()));
             } else {
                 SCORE.replace(p.getName(), amount - 1);

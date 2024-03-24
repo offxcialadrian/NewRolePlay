@@ -46,7 +46,11 @@ public class OrgSpray implements Listener {
             assert b != null;
             if (b.getType().equals(Material.WHITE_WALL_BANNER)) {
                 boolean valid = C_SPRAY.containsKey(b.getLocation());
-                if (valid) {
+
+                Script.sendActionBar(e.getPlayer(), Messages.ERROR + "Graffitis sind ab dem 24.03.2024 verfügbar.");
+                return;
+
+                /*if (valid) {
                     if (Organisation.hasOrganisation(p)) {
                         long time = System.currentTimeMillis();
                         if (spray_cooldown.containsKey(b.getLocation())) {
@@ -74,7 +78,7 @@ public class OrgSpray implements Listener {
                             LEVEL.remove(p.getName());
                         }
                     }
-                }
+                }*/
             }
         }
     }
@@ -288,43 +292,49 @@ public class OrgSpray implements Listener {
         public List<Pattern> getPattern() {
             if (this == GROVE) {
                 List<Pattern> patterns = new ArrayList<>();
-                patterns.add(new Pattern(DyeColor.WHITE, PatternType.BASE));
-                patterns.add(new Pattern(DyeColor.PURPLE, PatternType.MOJANG));
-                patterns.add(new Pattern(DyeColor.WHITE, PatternType.STRIPE_RIGHT));
-                patterns.add(new Pattern(DyeColor.PURPLE, PatternType.CURLY_BORDER));
-                patterns.add(new Pattern(DyeColor.WHITE, PatternType.STRIPE_LEFT));
-                patterns.add(new Pattern(DyeColor.PURPLE, PatternType.BORDER));
-                return patterns;
-            } else if (this == FALCONE) {
-                List<Pattern> patterns = new ArrayList<>();
-                patterns.add(new Pattern(DyeColor.WHITE, PatternType.BASE));
-                patterns.add(new Pattern(DyeColor.BLACK, PatternType.GRADIENT_UP));
+                patterns.add(new Pattern(DyeColor.GREEN, PatternType.BASE));
                 patterns.add(new Pattern(DyeColor.BLACK, PatternType.GRADIENT));
-                patterns.add(new Pattern(DyeColor.RED, PatternType.TRIANGLES_TOP));
-                patterns.add(new Pattern(DyeColor.RED, PatternType.TRIANGLES_BOTTOM));
-                patterns.add(new Pattern(DyeColor.RED, PatternType.SKULL));
+                patterns.add(new Pattern(DyeColor.WHITE, PatternType.FLOWER));
+                patterns.add(new Pattern(DyeColor.WHITE, PatternType.CROSS)); //Bitte überprüfen, ob es das diagonale ist
+                patterns.add(new Pattern(DyeColor.LIME, PatternType.RHOMBUS_MIDDLE));
+                patterns.add(new Pattern(DyeColor.WHITE, PatternType.GLOBE));
                 return patterns;
             } else if (this == CORLEONE) {
                 List<Pattern> patterns = new ArrayList<>();
                 patterns.add(new Pattern(DyeColor.WHITE, PatternType.BASE));
-                patterns.add(new Pattern(DyeColor.GREEN, PatternType.STRIPE_LEFT));
-                patterns.add(new Pattern(DyeColor.RED, PatternType.STRIPE_RIGHT));
-                patterns.add(new Pattern(DyeColor.BROWN, PatternType.CIRCLE_MIDDLE));
+                patterns.add(new Pattern(DyeColor.LIGHT_GRAY, PatternType.FLOWER));
+                patterns.add(new Pattern(DyeColor.BLACK, PatternType.GRADIENT));
+                patterns.add(new Pattern(DyeColor.RED, PatternType.RHOMBUS_MIDDLE));
+                patterns.add(new Pattern(DyeColor.BLACK, PatternType.SKULL));
+                return patterns;
+            } else if (this == FALCONE) {
+                List<Pattern> patterns = new ArrayList<>();
+                patterns.add(new Pattern(DyeColor.WHITE, PatternType.BASE));
+                patterns.add(new Pattern(DyeColor.GREEN, PatternType.CROSS));  //Bitte überprüfen, ob es das diagonale ist
+                patterns.add(new Pattern(DyeColor.GREEN, PatternType.RHOMBUS_MIDDLE));
+                patterns.add(new Pattern(DyeColor.WHITE, PatternType.CIRCLE_MIDDLE));
+                patterns.add(new Pattern(DyeColor.RED, PatternType.DIAGONAL_RIGHT));
+                patterns.add(new Pattern(DyeColor.WHITE, PatternType.STRIPE_DOWNLEFT));
                 return patterns;
             } else if (this == KARTELL) {
                 List<Pattern> patterns = new ArrayList<>();
-                patterns.add(new Pattern(DyeColor.BLUE, PatternType.BASE));
-                patterns.add(new Pattern(DyeColor.WHITE, PatternType.STRIPE_TOP));
-                patterns.add(new Pattern(DyeColor.BLUE, PatternType.STRIPE_MIDDLE));
-                patterns.add(new Pattern(DyeColor.RED, PatternType.STRIPE_BOTTOM));
+                patterns.add(new Pattern(DyeColor.WHITE, PatternType.BASE));
+                patterns.add(new Pattern(DyeColor.RED, PatternType.BORDER));
+                patterns.add(new Pattern(DyeColor.WHITE, PatternType.TRIANGLE_BOTTOM));
+                patterns.add(new Pattern(DyeColor.RED, PatternType.STRIPE_CENTER));
+                patterns.add(new Pattern(DyeColor.BLUE, PatternType.TRIANGLE_TOP));
+                patterns.add(new Pattern(DyeColor.WHITE, PatternType.TRIANGLES_TOP));
+                patterns.add(new Pattern(DyeColor.BLUE, PatternType.TRIANGLES_TOP));
                 return patterns;
             } else if (this == BRATERSTWO) {
                 List<Pattern> patterns = new ArrayList<>();
                 patterns.add(new Pattern(DyeColor.WHITE, PatternType.BASE));
-                patterns.add(new Pattern(DyeColor.BLUE, PatternType.STRIPE_LEFT));
-                patterns.add(new Pattern(DyeColor.RED, PatternType.STRIPE_RIGHT));
-                patterns.add(new Pattern(DyeColor.WHITE, PatternType.STRIPE_CENTER));
-                patterns.add(new Pattern(DyeColor.BLACK, PatternType.SKULL));
+                patterns.add(new Pattern(DyeColor.RED, PatternType.CURLY_BORDER));
+                patterns.add(new Pattern(DyeColor.YELLOW, PatternType.CIRCLE_MIDDLE));
+                patterns.add(new Pattern(DyeColor.RED, PatternType.GRADIENT));
+                patterns.add(new Pattern(DyeColor.RED, PatternType.CROSS)); //Bitte überprüfen, ob es das diagonale ist
+                patterns.add(new Pattern(DyeColor.WHITE, PatternType.FLOWER));
+                patterns.add(new Pattern(DyeColor.WHITE, PatternType.TRIANGLE_TOP));
                 return patterns;
             } else if (this == POLICE) {
                 List<Pattern> patterns = new ArrayList<>();

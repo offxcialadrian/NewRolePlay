@@ -145,36 +145,36 @@ public class Gips implements Listener {
     public void onJoin(PlayerJoinEvent e) {
         Player p = e.getPlayer();
         if (Krankheit.GEBROCHENES_BEIN.isInfected(Script.getNRPID(p)) && !p.hasPotionEffect(PotionEffectType.HEAL)) {
-            p.setWalkSpeed(0.1F);
+            /*p.setWalkSpeed(0.1F);
             p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 280, 1, false, false));
-            p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20, 1, false, false));
+            p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20, 1, false, false));*/
         }
     }
 
     @EventHandler
     public void onJump(PlayerMoveEvent e) {
         Player p = e.getPlayer();
-        if (SDuty.isSDuty(p)) return;
+        /*if (SDuty.isSDuty(p)) return;
         if (BuildMode.isInBuildMode(p)) return;
         if (e.getFrom().getY() < e.getTo().getY()) {
             if (Krankheit.GEBROCHENES_BEIN.isInfected(Script.getNRPID(p))) {
                 p.damage(1D);
                 //p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20, 1, false, false));
             }
-        }
+        }*/
     }
 
     @EventHandler
     public void onSprint(PlayerToggleSprintEvent e) {
         Player p = e.getPlayer();
-        if (e.isSprinting()) {
+        /*if (e.isSprinting()) {
             if (SDuty.isSDuty(p)) return;
             if (BuildMode.isInBuildMode(p)) return;
             if (Krankheit.GEBROCHENES_BEIN.isInfected(Script.getNRPID(p))) {
                 p.damage(1D);
                 p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20, 1, false, false));
             }
-        }
+        }*/
     }
 
     @EventHandler

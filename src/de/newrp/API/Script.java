@@ -72,20 +72,21 @@ public class Script {
 
     public static World WORLD = Bukkit.getServer().getWorld("World");
     public static String PREFIX = "§8[§cNew RolePlay§8] §8" + Messages.ARROW + " §c";
+    public static ArrayList<Player> team = new ArrayList<>();
     public static final ArrayList<String> FREEZE = new ArrayList<>();
     public static SimpleDateFormat dateFormat = new SimpleDateFormat("d.M.y HH:mm:ss", Locale.GERMANY);
     public static SimpleDateFormat dateFormat2 = new SimpleDateFormat("d.M.y", Locale.GERMANY);
     public static DecimalFormat df = new DecimalFormat("#,###");
+    public static final HashMap<String, Long> level_cooldown = new HashMap<>();
 
     public static List<Player> getNRPTeam() {
-        List<Player> list = new ArrayList<>();
-        for (Player all : Bukkit.getOnlinePlayers()) {
-            if (isNRPTeam(all)) {
-                list.add(all);
-            }
+        //select all nrp_ids from ranks
+        List<Player> players = new ArrayList<>();
+        for(Player p : team) {
+            players.add(p);
         }
         //sort list by rank
-        list.sort((o1, o2) -> {
+        players.sort((o1, o2) -> {
             if (getRank(o1).getWeight() > getRank(o2).getWeight()) {
                 return -1;
             } else if (getRank(o1).getWeight() < getRank(o2).getWeight()) {
@@ -93,7 +94,7 @@ public class Script {
             }
             return 0;
         });
-        return list;
+        return players;
     }
 
     public static ItemStack tazer() {
@@ -360,7 +361,7 @@ public class Script {
 
     public static int getLevel(Player name) {
         try (Statement stmt = main.getConnection().createStatement();
-             ResultSet rs = stmt.executeQuery("SELECT level FROM level WHERE id=" + getNRPID(name))) {
+             ResultSet rs = stmt.executeQuery("SELECT level FROM level WHERE nrp_id=" + getNRPID(name))) {
             if (rs.next()) {
                 return rs.getInt("level");
             }
@@ -372,7 +373,7 @@ public class Script {
 
     public static int getLevel(OfflinePlayer name) {
         try (Statement stmt = main.getConnection().createStatement();
-             ResultSet rs = stmt.executeQuery("SELECT level FROM level WHERE id=" + getNRPID(name))) {
+             ResultSet rs = stmt.executeQuery("SELECT level FROM level WHERE nrp_id=" + getNRPID(name))) {
             if (rs.next()) {
                 return rs.getInt("level");
             }
@@ -597,14 +598,14 @@ public class Script {
 
     public static void sendTeamMessage(Player p, ChatColor cc, String msg, Boolean skipPlayer) {
         if (skipPlayer) {
-            for (Player all : Bukkit.getOnlinePlayers()) {
+            for (Player all : Script.getNRPTeam()) {
                 if (isNRPTeam(all)) {
                     if (all != p)
                         all.sendMessage("§8[" + cc + "§lT§8] " + cc + "» " + cc + getRank(p).getName(p) + " " + getName(p) + " " + msg);
                 }
             }
         } else {
-            for (Player all : Bukkit.getOnlinePlayers()) {
+            for (Player all : Script.getNRPTeam()) {
                 if (isNRPTeam(all)) {
                     all.sendMessage("§8[" + cc + "§lT§8] " + cc + "» " + cc + getRank(p).getName(p) + " " + getName(p) + " " + msg);
                 }
@@ -613,7 +614,7 @@ public class Script {
     }
 
     public static void sendTeamMessage(String msg) {
-        for (Player all : Bukkit.getOnlinePlayers()) {
+        for (Player all : Script.getNRPTeam()) {
             if (isNRPTeam(all)) {
                 all.sendMessage(msg);
             }
@@ -1189,13 +1190,7 @@ public class Script {
     }
 
     public static boolean isValidPassword(String password) {
-        String regex = "^(?=.*[0-9])"
-                + "(?=.*[a-z])(?=.*[A-Z])"
-                + "(?=.*[@#$%^&+=])"
-                + "(?=\\S+$).{8,20}$";
-        java.util.regex.Pattern p = java.util.regex.Pattern.compile(regex);
-        java.util.regex.Matcher m = p.matcher(password);
-        return m.matches();
+        return password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$");
     }
 
     public static Player getPlayer(String name) {
@@ -1354,6 +1349,9 @@ public class Script {
                 if (message)
                     Bukkit.broadcastMessage("§8[§6Event§8]§6 Es hat eine §lFriend-Week §r§6begonnen!");
                 executeAsyncUpdate("UPDATE serversettings SET event='" + e.getName() + "'");
+            } else if(e.equals(Event.TRIPPLE_XP)) {
+                if (message)
+                    Bukkit.broadcastMessage("§8[§6Event§8]§6 Es hat ein §lTripple XP-Event §r§6begonnen!");
             }
         }
     }
@@ -1575,12 +1573,27 @@ public class Script {
     }
 
     public static void addEXP(Player p, int exp) {
+        if(level_cooldown.containsKey(p.getName())) return;
+        level_cooldown.put(p.getName(), System.currentTimeMillis());
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                level_cooldown.remove(p.getName());
+            }
+        }.runTaskLater(main.getInstance(), 20 * 5);
         if(exp > 200) {
             Script.sendTeamMessage(AntiCheatSystem.PREFIX + "Verdacht auf Exp-Cheat bei " + Script.getName(p) + " (+" + exp + " Exp)");
         }
         int id = getNRPID(p);
-        if (main.event == Event.DOUBLE_XP_WEEKEND || main.event == Event.DOUBLE_XP) exp *= 2;
-        p.sendMessage("  §a+" + exp + " Exp!" + (main.event == Event.DOUBLE_XP_WEEKEND || main.event == Event.DOUBLE_XP ? " §7(§6§lDOUBLE EXP§7)" : ""));
+        if (main.event == Event.TRIPPLE_XP) {
+            exp *= 3;
+            p.sendMessage(" §a+" + exp + " Exp! §7(§6§lTRIPPLE EXP§7)");
+        } else if(main.event == Event.DOUBLE_XP || main.event == Event.DOUBLE_XP_WEEKEND) {
+            exp *= 2;
+            p.sendMessage(" §a+" + exp + " Exp! §7(§6§lDOUBLE EXP§7)");
+        } else {
+            p.sendMessage(" §a+" + exp + " Exp!");
+        }
         sendActionBar(p, "§a+ " + exp + " Exp!");
         executeUpdate("UPDATE level SET exp=" + (getExp(p) + exp) + " WHERE nrp_id=" + id);
         p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1F, 1F);

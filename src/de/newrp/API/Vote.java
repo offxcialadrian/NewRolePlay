@@ -15,8 +15,8 @@ import java.util.concurrent.TimeUnit;
 
 public class Vote {
 
-    public static final int VOTE_AMOUNT_WEEK = 150;
-    public static final int VOTE_AMOUNT_WEEKEND = 200;
+    public static final int VOTE_AMOUNT_WEEK = 450;
+    public static final int VOTE_AMOUNT_WEEKEND = 600;
 
     public static int getVotesToday(int id) {
         try (Statement stmt = main.getConnection().createStatement();

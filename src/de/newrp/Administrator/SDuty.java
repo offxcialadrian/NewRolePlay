@@ -151,7 +151,7 @@ public class SDuty implements CommandExecutor, Listener {
     }
 
     public static void updateScoreboard() {
-        for (Player p : Bukkit.getOnlinePlayers()) {
+        for (Player p : Script.getNRPTeam()) {
             if (isSDuty(p)) {
                 int stadtkasse = Stadtkasse.getStadtkasse();
                 DecimalFormat df = new DecimalFormat("#,###");

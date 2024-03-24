@@ -246,7 +246,7 @@ public class BurgerFryer implements CommandExecutor, Listener {
                 if(NEEDED.get(p.getName()).isEmpty()) {
                     p.sendMessage(PREFIX + "Du hast nun alle Burger zubereitet.");
                     GFB.BURGERFRYER.addExp(p, GFB.BURGERFRYER.getLevel(p) + Script.getRandom(5, 7)/2);
-                    PayDay.addPayDay(p, GFB.BURGERFRYER.getLevel(p) + (TOTAL_SCORE.get(p.getName())));
+                    PayDay.addPayDay(p, (GFB.BURGERFRYER.getLevel(p) + (TOTAL_SCORE.get(p.getName())))*2);
                     BURGER.remove(p.getName());
                     SCORE.remove(p.getName());
                     NEEDED.remove(p.getName());

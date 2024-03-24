@@ -44,7 +44,7 @@ import java.sql.Connection;
 public class main extends JavaPlugin {
 
     private static Plugin instance;
-    public static Event event = null;
+    public static Event event;
     private static MySQL mysql;
     private static MySQL mysql2;
     private static Connection con;
@@ -82,6 +82,7 @@ public class main extends JavaPlugin {
         Bukkit.getConsoleSender().sendMessage("§cNRP §8× §astarting with version " + this.getDescription().getVersion() + "..");
         instance = this;
         test = getServer().getMaxPlayers() == 20;
+        event = null;
 
 
         //new C05(this);
@@ -362,6 +363,7 @@ public class main extends JavaPlugin {
         getCommand("dice").setExecutor(new Dice());
         getCommand("flipcoin").setExecutor(new Flipcoin());
         getCommand("registerbanner").setExecutor(new RegisterBanner());
+        getCommand("startevent").setExecutor(new StartEventCommand());
 
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new SDuty(), this);
@@ -403,7 +405,7 @@ public class main extends JavaPlugin {
         pm.registerEvents(new WaffenDamage(), this);
         pm.registerEvents(new GetGun(), this);
         pm.registerEvents(new AntiCheatSystem(), this);
-        pm.registerEvents(new AntiCheatFly(), this);
+        //pm.registerEvents(new AntiCheatFly(), this);
         pm.registerEvents(new AntiOfflineFlucht(), this);
         pm.registerEvents(new Spawnschutz(), this);
         pm.registerEvents(new Equip(), this);
@@ -477,6 +479,7 @@ public class main extends JavaPlugin {
         pm.registerEvents(new DriveCar(), this);
         pm.registerEvents(new RegisterBanner(), this);
         pm.registerEvents(new OrgSpray(), this);
+        pm.registerEvents(new StartEventCommand(), this);
 
         new AsyncHealth().runTaskTimerAsynchronously(this, 120 * 20L, 120 * 20L);
         new PayDay().runTaskTimerAsynchronously(this, 60 * 20L, 60 * 20L);
@@ -500,7 +503,6 @@ public class main extends JavaPlugin {
         Zeitung.restoreZeitung();
         OrgSpray.FraktionSpray.init();
 
-        Script.executeUpdate("UPDATE birthday SET geschenk = 0");
 
         Bukkit.getConsoleSender().sendMessage("§cNRP §8× §astarting complete..");
         Bukkit.getConsoleSender().sendMessage("§cNRP §8× §aViel Erfolg heute..");

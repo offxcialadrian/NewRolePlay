@@ -18,7 +18,7 @@ public class TicketListener implements Listener {
         Ticket t = TicketCommand.getTicket(p);
         if (t == null) return;
         TicketCommand.close(t);
-        p.sendMessage(TicketCommand.PREFIX + "Der Spieler hat das Ticket verlassen (Quit)!");
+        t.getSupporter().sendMessage(TicketCommand.PREFIX + "Der Spieler hat das Ticket verlassen (Quit)!");
     }
 
     @EventHandler
@@ -26,6 +26,7 @@ public class TicketListener implements Listener {
         Player p = e.getPlayer();
         if (TicketCommand.getTicket(p) != null) {
             Ticket t = TicketCommand.getTicket(p);
+            assert t != null;
             ArrayList<Player> conv = TicketCommand.getConversation(t);
             if (conv.size() < 2 && !Script.isInTestMode()) {
                 TicketCommand.close(t);

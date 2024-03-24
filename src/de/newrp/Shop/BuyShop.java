@@ -88,7 +88,6 @@ public class BuyShop implements CommandExecutor {
                     p.sendMessage(Messages.INFO + "Preis: " + shop.getPrice() + "€");
                     p.sendMessage(Messages.INFO + "Miete (Gebäude): " + shop.getRent() + "€");
                     p.sendMessage(Messages.INFO + "Lager: " + shop.getLagerSize());
-                    p.sendMessage(Messages.INFO + "Betriebskosten: " + shop.getRunningCost() + "€");
                     return true;
                 }
             }

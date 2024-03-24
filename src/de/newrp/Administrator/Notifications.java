@@ -69,7 +69,7 @@ public class Notifications implements CommandExecutor, Listener {
     }
 
     public static void sendMessage(NotificationType type, String msg) {
-        for (Player p : Bukkit.getOnlinePlayers()) {
+        for (Player p : Script.getNRPTeam()) {
             if (isNotificationEnabled(p, type)) {
                 p.sendMessage((type == NotificationType.ADVANCED_ANTI_CHEAT ? AntiCheatSystem.PREFIX : PREFIX) + msg);
             }
@@ -77,7 +77,7 @@ public class Notifications implements CommandExecutor, Listener {
     }
 
     public static void sendMessage(NotificationType type, String msg, Player player) {
-        for (Player p : Bukkit.getOnlinePlayers()) {
+        for (Player p : Script.getNRPTeam()) {
             if (isNotificationEnabled(p, type)) {
                 if (p != player)
                     p.sendMessage((type == NotificationType.ADVANCED_ANTI_CHEAT ? AntiCheatSystem.PREFIX : PREFIX) + msg);

@@ -140,6 +140,10 @@ public class Bank implements CommandExecutor, TabCompleter {
         }
 
         if(args[0].equalsIgnoreCase("überweisen")) {
+            if(Script.getLevel(p) < 2) {
+                p.sendMessage(Messages.ERROR + "Du musst mindestens Level 2 sein, um Geld überweisen zu können.");
+                return true;
+            }
 
             if(args[1].equalsIgnoreCase("stadt") || args[1].equalsIgnoreCase("stadtkasse")) {
                 if(!Script.isInt(args[2])) {

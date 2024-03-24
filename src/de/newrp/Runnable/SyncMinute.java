@@ -74,6 +74,7 @@ public class SyncMinute extends BukkitRunnable {
                                     Bukkit.getScheduler().runTaskLater(main.getInstance(), () -> {
                                         Bukkit.broadcastMessage(Script.PREFIX + "§4§lACHTUNG: §cDer Server startet in 1 Sekunde neu!");
                                         Bukkit.getScheduler().runTaskLater(main.getInstance(), () -> {
+                                            Script.executeUpdate("UPDATE birthday SET geschenk = 0");
                                             Bukkit.broadcastMessage(Script.PREFIX + "§4§lACHTUNG: §cDer Server startet jetzt neu!");
                                             for(Player all : Bukkit.getOnlinePlayers()) {
                                                 all.kickPlayer("§8» §cNRP × New RolePlay §8┃ §cKICK §8« \n\n§8§m------------------------------\n\n§7Der Server startet neu§8.\n\n§7Grund §8× §eAutomatischer Restart" + "\n\n§8§m------------------------------");

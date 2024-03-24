@@ -145,7 +145,7 @@ public class Imker implements CommandExecutor, Listener {
             honeys.remove(p.getName());
             GFB.IMKER.addExp(p, TOTAL_SCORE.get(p.getName())*Script.getRandom(2,3));
             Script.addEXP(p, GFB.IMKER.getLevel(p) + TOTAL_SCORE.get(p.getName())*Script.getRandom(1, 2));
-            PayDay.addPayDay(p, GFB.IMKER.getLevel(p) + TOTAL_SCORE.get(p.getName()));
+            PayDay.addPayDay(p, (GFB.IMKER.getLevel(p) + TOTAL_SCORE.get(p.getName())*2));
             TOTAL_SCORE.remove(p.getName());
             return;
         }

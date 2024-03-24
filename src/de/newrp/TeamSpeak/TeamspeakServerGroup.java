@@ -34,11 +34,11 @@ public enum TeamspeakServerGroup {
     }
 
     public enum TeamspeakChannelGroup {
-        GUEST(58),
-        MEMBER(59),
-        CHANNEL_ERSTELLER(63),
-        LEADER(60),
-        TEAMMITGLIED(62);
+        GUEST(10),
+        MEMBER(11),
+        CHANNEL_ERSTELLER(15),
+        LEADER(12),
+        TEAMMITGLIED(14);
 
         private final int groupID;
 

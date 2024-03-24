@@ -45,6 +45,7 @@ public class BurnPlant implements CommandExecutor {
                 .stream()
                 .filter(ent -> ent instanceof Player)
                 .map(ent -> (Player) ent)
+                .filter(Beruf::hasBeruf)
                 .filter(nearbyPlayer -> Beruf.getBeruf(nearbyPlayer).equals(Beruf.Berufe.POLICE))
                 .filter(Duty::isInDuty)
                 .filter(nearbyPlayer -> !AFK.isAFK(nearbyPlayer)).collect(Collectors.toList());

@@ -57,6 +57,7 @@ public class Fahndung implements CommandExecutor, TabCompleter {
                 for(int i : getStraftatIDs(all)) {
                     wanteds += Straftat.getWanteds(i);
                 }
+                if(wanteds == 0) continue;
                 p.sendMessage("§8» §6" + Script.getName(all) + " §8× §6" + wanteds + " WantedPunkte");
             }
             return true;
@@ -129,7 +130,7 @@ public class Fahndung implements CommandExecutor, TabCompleter {
         String substring = sb.toString().substring(0, sb.toString().length() - 3);
         Log.NORMAL.write(p, "hat eine Fahdung auf " + Script.getName(tg) + " ausgeschrieben (" + substring + ")");
         Log.NORMAL.write(tg, "hat von " + Script.getName(p) + " eine Fahndung ausgeschrieben bekommen (" + substring + ")");
-        p.sendMessage(PREFIX + "Der Spieler §e" + Script.getName(tg) + " §7wird nun wegen §e" + substring + " §7gefahndet.");
+        Beruf.Berufe.POLICE.sendMessage(PREFIX + "Der Spieler §e" + Script.getName(tg) + " §7wird nun wegen §e" + substring + " §7gefahndet.");
         Beruf.Berufe.POLICE.sendMessage(PREFIX + "Beamter: §e" + Script.getName(p) + " §8(§7WantedPunkte: " + Fahndung.getWanteds(tg) + "§8)");
         tg.sendMessage(PREFIX + "Du wirst nun wegen §e" + substring + " §7gefahndet.");
 

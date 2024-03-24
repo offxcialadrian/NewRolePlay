@@ -37,6 +37,7 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 import static de.newrp.API.Rank.PLAYER;
+import static de.newrp.API.Rank.SUPPORTER;
 
 public class Utils implements Listener {
 
@@ -69,6 +70,7 @@ public class Utils implements Listener {
     public static final int WORLD_BORDER_MAX_X = 1055;
     public static final int WORLD_BORDER_MIN_Z = 420;
     public static final int WORLD_BORDER_MAX_Z = 1362;
+    public static HashMap<String, Long> fishCooldown = new HashMap<>();
 
 
 
@@ -97,7 +99,10 @@ public class Utils implements Listener {
     public void onLogin(PlayerLoginEvent e) {
         if (e.getResult() == PlayerLoginEvent.Result.KICK_WHITELIST) {
             e.disallow(PlayerLoginEvent.Result.KICK_WHITELIST, "§8» §cNRP × New RolePlay §8┃ §cKick §8« \n\n§8§m------------------------------\n\n§7Du wurdest vom Server gekickt§8.\n\n§7Grund §8× §e" + "Wartungsarbeiten");
-            Bukkit.broadcastMessage(Script.PREFIX + "Dem Spieler " + e.getPlayer().getName() + " wurde der Zutritt verweigert, da der Server im Wartungsmodus ist.");
+            Notifications.sendMessage(Notifications.NotificationType.ADVANCED_ANTI_CHEAT, Script.PREFIX + "Dem Spieler " + e.getPlayer().getName() + " wurde der Zutritt verweigert, da der Server im Wartungsmodus ist.");
+        }
+        if(e.getResult() == PlayerLoginEvent.Result.KICK_FULL) {
+            e.disallow(PlayerLoginEvent.Result.KICK_FULL, "§8» §cNRP × New RolePlay §8┃ §cKick §8« \n\n§8§m------------------------------\n\n§7Der Server ist voll. Versuche es später erneut.\n\n§8§m------------------------------");
         }
     }
 
@@ -177,8 +182,15 @@ public class Utils implements Listener {
     @EventHandler
     public void onFish(PlayerFishEvent e) {
         e.setExpToDrop(0);
+
         if(e.getState() == PlayerFishEvent.State.CAUGHT_FISH) {
+            if(fishCooldown.containsKey(e.getPlayer().getName()) && fishCooldown.get(e.getPlayer().getName()) > System.currentTimeMillis()) {
+                Notifications.sendMessage(Notifications.NotificationType.ADVANCED_ANTI_CHEAT, "Verdacht auf Angelmissbrauch bei " + Script.getName(e.getPlayer()));
+                e.setCancelled(true);
+                return;
+            }
             e.setCancelled(true);
+            fishCooldown.put(e.getPlayer().getName(), System.currentTimeMillis() + 1000);
             e.getPlayer().getInventory().addItem(getRandomFish());
             Script.addEXP(e.getPlayer(), 1);
         }
@@ -199,6 +211,9 @@ public class Utils implements Listener {
         Script.sendOfflineMessages(p);
         Script.updateExpBar(p);
         Corpse.reloadNPC(p);
+        if(Script.hasRank(p, Rank.SUPPORTER, false)) {
+            Script.team.add(p);
+        }
         for (Player online : Bukkit.getOnlinePlayers()) {
             if (BuildMode.isInBuildMode(online)) {
                 if (Team.getTeam(p) != Team.Teams.BAU && !Script.hasRank(p, Rank.SUPPORTER, false)) {
@@ -256,6 +271,13 @@ public class Utils implements Listener {
                         public void run() {
                             p.sendMessage(Messages.INFO + "Die wichtigsten Chatbefehle sind §8/§6s §r(Schreien) und §8/§6w §r(Flüstern).");
                             p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1.0F, 1.0F);
+                            new BukkitRunnable() {
+                                @Override
+                                public void run() {
+                                    p.sendMessage(Messages.INFO + "Dein erster Schritt sollte die Beantragung eines Personalausweises sein. Nutze dafür §8/§6navi Stadthalle§r.");
+                                    p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1.0F, 1.0F);
+                                }
+                            }.runTaskLater(main.getInstance(), 20L);
                         }
                     }.runTaskLater(main.getInstance(), 60*20L);
                 }
@@ -536,7 +558,7 @@ public class Utils implements Listener {
             }
             e.getPlayer().setVelocity(e.getPlayer().getLocation().getDirection().multiply(-8));
             cooldowns.put(e.getPlayer().getName(), time);
-            e.getPlayer().damage(2D);
+            e.getPlayer().damage(1D);
             e.getPlayer().sendMessage(Script.PREFIX + "§c§lDu hast das Ende der Welt erreicht.");
         }
     }
@@ -547,6 +569,10 @@ public class Utils implements Listener {
         Bukkit.getScoreboardManager().getMainScoreboard().getTeam("player").removeEntry(p.getName());
         if (SDuty.isSDuty(p)) {
             SDuty.removeSDuty(p);
+        }
+
+        if(Script.hasRank(p, SUPPORTER, false)) {
+            Script.team.remove(p);
         }
 
         if(BuildMode.isInBuildMode(p) && !Script.isInTestMode()) {

@@ -159,7 +159,10 @@ public class Chat implements Listener {
             return;
         }
 
-
+        if (TicketCommand.getTicket(p) != null) {
+            handleTicket(p, e.getMessage());
+            return;
+        }
 
         for(String arg : e.getMessage().split(" ")) {
             if(arg.contains("ChatCraft")) {
@@ -199,10 +202,7 @@ public class Chat implements Listener {
             return;
         }
 
-        if (TicketCommand.getTicket(p) != null) {
-            handleTicket(p, e.getMessage());
-            return;
-        }
+
 
         if(Friedhof.isDead(p)) {
             p.sendMessage(Messages.ERROR + "Tote können nicht reden!");

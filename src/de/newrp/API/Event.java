@@ -8,7 +8,8 @@ public enum Event {
     DOUBLE_XP_WEEKEND("doublexp_weekend", null),
     VOTE("vote_event", null),
     PURGE("purge", null),
-    FRIEND_WEEK("friend_week", null);
+    FRIEND_WEEK("friend_week", null),
+    TRIPPLE_XP("tripplexp", null);
 
     private final String name;
     private final Location loc;

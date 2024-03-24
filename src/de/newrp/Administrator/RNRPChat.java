@@ -31,7 +31,7 @@ public class RNRPChat implements CommandExecutor {
 
         if(Script.hasRank(p, Rank.OWNER, false)) {
             if(args[0].equalsIgnoreCase("-a")) {
-                for (Player all : Bukkit.getOnlinePlayers()) {
+                for (Player all : Script.getNRPTeam()) {
                     if (isNRPTeam(all) && Script.hasRank(all, Rank.ADMINISTRATOR, false)) {
                         all.sendMessage("§c§lR§5§lNRP » §5" + Messages.RANK_PREFIX(p) + ": §3" + msg.replace("-a", ""));
                     }
@@ -40,7 +40,7 @@ public class RNRPChat implements CommandExecutor {
             }
         }
 
-        for (Player all : Bukkit.getOnlinePlayers()) {
+        for (Player all : Script.getNRPTeam()) {
             if (isNRPTeam(all) && Script.hasRank(all, Script.getRank(p), false)) {
                 all.sendMessage("§c§lR§5§lNRP » §5" + Messages.RANK_PREFIX(p) + ": §3" + msg);
             }
