@@ -110,7 +110,7 @@ public class Jail {
 
         if(Organisation.hasOrganisation(p)) {
             Organisation o = Organisation.getOrganisation(p);
-            int add = (time / 60);
+            int add = (time / 180);
             o.addExp(add);
         }
         if (msg) p.sendMessage(PREFIX + "Du bist nun für " + (time / 60) + " Minuten im Gefängnis.");

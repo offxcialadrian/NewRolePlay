@@ -140,6 +140,7 @@ public class Rezept implements CommandExecutor, TabCompleter {
             if (args.length == 2) {
                 StringUtil.copyPartialMatches(args[0], oneArgList, completions);
             }
+
             Collections.sort(completions);
             return completions;
         }

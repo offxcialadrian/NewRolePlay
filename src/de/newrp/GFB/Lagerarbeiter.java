@@ -2,6 +2,7 @@ package de.newrp.GFB;
 
 import de.newrp.API.*;
 import de.newrp.Administrator.BuildMode;
+import de.newrp.main;
 import org.bukkit.*;
 import org.bukkit.block.Sign;
 import org.bukkit.command.Command;
@@ -21,6 +22,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
 import java.util.Objects;
@@ -295,7 +297,6 @@ public class Lagerarbeiter implements CommandExecutor, Listener {
             p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
             ON_JOB.remove(p.getName());
             p.getInventory().clear();
-            Cache.loadInventory(p);
             int amount = SCORE.get(p.getName());
             if (amount == 0) {
                 GFB.CURRENT.remove(p.getName());
@@ -304,6 +305,13 @@ public class Lagerarbeiter implements CommandExecutor, Listener {
                 GFB.LAGERARBEITER.addExp(p, GFB.LAGERARBEITER.getLevel(p) + TOTAL_SCORE.get(p.getName())/2);
                 PayDay.addPayDay(p, (GFB.LAGERARBEITER.getLevel(p) + (TOTAL_SCORE.get(p.getName())))*2);
                 Script.addEXP(p, GFB.LAGERARBEITER.getLevel(p) + TOTAL_SCORE.get(p.getName()));
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        p.getInventory().clear();
+                        Cache.loadInventory(p);
+                    }
+                }.runTaskLater(main.getInstance(), 5L);
             } else {
                 SCORE.replace(p.getName(), amount - 1);
                 p.sendMessage(PREFIX + "§aRichtig! §6Hole nun das nächste Produkt aus \"Ware\" und sortiere es ein (" + (TOTAL_SCORE.get(p.getName())-SCORE.get(p.getName())) + "/" + (TOTAL_SCORE.get(p.getName())+1) + ")");

@@ -6,6 +6,7 @@ import de.newrp.API.Rank;
 import de.newrp.API.Script;
 import de.newrp.main;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -50,7 +51,7 @@ public class StartEventCommand implements CommandExecutor, Listener {
             e.setCancelled(true);
             if((e.getCurrentItem() != null) && (e.getCurrentItem().getType() != Material.AIR)) {
                 e.getView().close();
-                Event event = Event.valueOf(e.getCurrentItem().getItemMeta().getDisplayName());
+                Event event = Event.getEvent(ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName()));
                 Script.startEvent(event, true);
             }
         }

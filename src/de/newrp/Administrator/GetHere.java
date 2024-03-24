@@ -4,11 +4,17 @@ import de.newrp.API.Friedhof;
 import de.newrp.API.Messages;
 import de.newrp.API.Rank;
 import de.newrp.API.Script;
+import de.newrp.main;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import java.sql.ResultSet;
+import java.sql.Statement;
 
 public class GetHere implements CommandExecutor {
 
@@ -34,7 +40,19 @@ public class GetHere implements CommandExecutor {
 
         Player tg = Script.getPlayer(args[0]);
         if (tg == null) {
-            p.sendMessage(Messages.PLAYER_NOT_FOUND);
+
+            OfflinePlayer offtg = Script.getOfflinePlayer(args[0]);
+            if(Script.getNRPID(offtg) == 0) {
+                p.sendMessage(Messages.PLAYER_NOT_FOUND);
+                return true;
+            }
+
+            if(hasOfflineTP(offtg)) {
+                Script.executeUpdate("DELETE FROM offline_tp WHERE nrp_id=" + Script.getNRPID(offtg) + " ORDER BY id DESC LIMIT 1;");
+            }
+
+            Script.executeUpdate("INSERT INTO offline_tp (nrp_id, x, y, z) VALUES (" + Script.getNRPID(offtg) + ", " + (int) p.getLocation().getY() + ", " + (int) p.getLocation().getX() + ", " + (int) p.getLocation().getY() + ");");
+
             return true;
         }
 
@@ -54,6 +72,34 @@ public class GetHere implements CommandExecutor {
         tg.sendMessage(PREFIX + Script.getRank(p).getName(p) + " " + Script.getName(p) + " hat dich zu sich teleportiert.");
         Script.sendTeamMessage(p, ChatColor.YELLOW, "hat " + Script.getName(tg) + " zu sich teleportiert.", true);
 
+        return false;
+    }
+
+    public static Location getOfflineTP(Player p) {
+        try (Statement stmt = main.getConnection().createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT * FROM offline_tp WHERE nrp_id=" + Script.getNRPID(p) + " ORDER BY id DESC LIMIT 1;")) {
+            if (rs.next()) {
+                return new Location(Script.WORLD, rs.getInt("x"), rs.getInt("y"), rs.getInt("z"));
+            } else {
+                return null;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+       }
+        return null;
+    }
+
+    public static boolean hasOfflineTP(OfflinePlayer p) {
+        try (Statement stmt = main.getConnection().createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT * FROM offline_tp WHERE nrp_id=" + Script.getNRPID(p) + " ORDER BY id DESC LIMIT 1;")) {
+            if (rs.next()) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return false;
     }
 

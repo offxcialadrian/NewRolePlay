@@ -54,13 +54,35 @@ public class Schule implements CommandExecutor, Listener {
                 long diff = time - started;
                 long mins;
                 long secs;
-
                 if(STUDIYING.get(p)==null) {
                     mins = (30 * 60 * 1000 - diff) / 1000 / 60;
                     secs = (30 * 60 * 1000 - diff) / 1000 % 60;
                 } else {
                     mins = (15 * 60 * 1000 - diff) / 1000 / 60;
                     secs = (15 * 60 * 1000 - diff) / 1000 % 60;
+                }
+                if(diff < 0) {
+                    if (STUDIYING.get(p) == null) {
+                        if (STUDIYING.containsKey(p) && taskID.containsKey(p)) {
+                            p.sendMessage(PREFIX + "§aDu hast den Kurs bestanden.");
+                            for (GFB gfb : GFB.values()) {
+                                gfb.addExp(p, gfb.getLevel(p) * Script.getRandom(35, 50));
+                            }
+                            STUDIYING.remove(p);
+                            STARTED.remove(p);
+                            taskID.remove(p);
+                        }
+                        return true;
+
+                    } else {
+                        GFB gfb = STUDIYING.get(p);
+                        p.sendMessage(PREFIX + "§aDu hast den Kurs bestanden.");
+                        gfb.addExp(p, gfb.getLevel(p) * Script.getRandom(100, 200));
+                        STUDIYING.remove(p);
+                        STARTED.remove(p);
+                        taskID.remove(p);
+                    }
+                    return true;
                 }
 
                 p.sendMessage(Messages.INFO + "Du musst noch " + mins + " Minuten und " + secs + " Sekunden lernen.");

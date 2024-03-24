@@ -47,10 +47,7 @@ public class OrgSpray implements Listener {
             if (b.getType().equals(Material.WHITE_WALL_BANNER)) {
                 boolean valid = C_SPRAY.containsKey(b.getLocation());
 
-                Script.sendActionBar(e.getPlayer(), Messages.ERROR + "Graffitis sind ab dem 24.03.2024 verfügbar.");
-                return;
-
-                /*if (valid) {
+                if (valid) {
                     if (Organisation.hasOrganisation(p)) {
                         long time = System.currentTimeMillis();
                         if (spray_cooldown.containsKey(b.getLocation())) {
@@ -78,7 +75,7 @@ public class OrgSpray implements Listener {
                             LEVEL.remove(p.getName());
                         }
                     }
-                }*/
+                }
             }
         }
     }

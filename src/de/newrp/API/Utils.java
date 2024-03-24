@@ -190,7 +190,7 @@ public class Utils implements Listener {
                 return;
             }
             e.setCancelled(true);
-            fishCooldown.put(e.getPlayer().getName(), System.currentTimeMillis() + 1000);
+            fishCooldown.put(e.getPlayer().getName(), System.currentTimeMillis() + 2000);
             e.getPlayer().getInventory().addItem(getRandomFish());
             Script.addEXP(e.getPlayer(), 1);
         }
@@ -308,7 +308,12 @@ public class Utils implements Listener {
         Script.updateListname(p);
         Script.sendTabTitle(e.getPlayer());
         if(Friedhof.isDead(p)) Corpse.spawnNPC(p, Friedhof.getDead(p).getDeathLocation());
-
+        if(GetHere.getOfflineTP(p) != null) {
+            if(GetHere.getOfflineTP(p) == null) return;
+            p.teleport(GetHere.getOfflineTP(p));
+            p.sendMessage(Script.PREFIX + "Du wurdest während du offline warst teleportiert.");
+            Script.executeUpdate("DELETE FROM offline_tp WHERE nrp_id = " + Script.getNRPID(p));
+        }
 
     }
 

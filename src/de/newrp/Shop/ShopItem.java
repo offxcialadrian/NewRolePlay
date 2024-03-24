@@ -3,6 +3,7 @@ package de.newrp.Shop;
 import de.newrp.API.ItemBuilder;
 import de.newrp.API.Script;
 import de.newrp.House.HouseAddon;
+import de.newrp.Medic.Medikamente;
 import de.newrp.News.Zeitung;
 import de.newrp.Waffen.Weapon;
 import de.newrp.main;
@@ -45,10 +46,10 @@ public enum ShopItem {
     TRINKWASSER(58, "§7Trinkwasser", new ItemStack(Material.POTION), 3, 1, 1, 2, 500, false, true, false, new ShopType[] {ShopType.SUPERMARKET, ShopType.CAFE, ShopType.NEWS}),
     AMMO_762MM(59, "§7.762mm Munition (" + Weapon.AK47.getName() + ")", new ItemBuilder(Material.ARROW).setAmount(Weapon.AK47.getMagazineSize()).build(), 1, 1, 1, 30, 3000, false, false, false, new ShopType[] {ShopType.GUNSHOP}),
     KEVLAR(51, "§7Schutzweste", Script.kevlar(1), 20, 1, 1, 2900, 14900, false, true, false, new ShopType[] {ShopType.GUNSHOP}),
-    SCHMERZMITTEL_HIGH(60, "§fSchmerzmittel (High)", new ItemStack(Material.PAPER), 2, 2, 25, 65, 6100, true, true, false, new ShopType[] {ShopType.PHARMACY}),
-    ANTIBIOTIKA(61, "§fAntibiotika", new ItemStack(Material.PAPER), 5, 2, 25, 75, 4900, true, true, false, new ShopType[] {ShopType.PHARMACY}),
-    HUSTENSAFT(62, "§fHustensaft", new ItemStack(Material.PAPER), 5, 2, 25, 60, 3400, true, true, false, new ShopType[] {ShopType.PHARMACY}),
-    ENTZUENDUNGSHEMMENDE_SALBE(63, "§fEntzündungshemmende Salbe", new ItemStack(Material.PAPER), 5, 2, 25, 30, 2600, true, true, false, new ShopType[] {ShopType.PHARMACY}),
+    SCHMERZMITTEL_HIGH(60, "§fSchmerzmittel (High)", new ItemBuilder(Material.PAPER).setName("§fSchmerzmittel (High)").setAmount(Medikamente.SCHMERZMITTEL_HIGH.getNeeded()).build(), 2, 2, 25, 65, 6100, true, true, false, new ShopType[] {ShopType.PHARMACY}),
+    ANTIBIOTIKA(61, "§fAntibiotika", new ItemBuilder(Material.PAPER).setName("§fAntibiotika").setAmount(Medikamente.ANTIBIOTIKA.getNeeded()).build(), 5, 2, 25, 75, 4900, true, true, false, new ShopType[] {ShopType.PHARMACY}),
+    HUSTENSAFT(62, "§fHustensaft", new ItemBuilder(Material.PAPER).setName("§fHustensaft").setAmount(Medikamente.HUSTENSAFT.getNeeded()).build(), 5, 2, 25, 60, 3400, true, true, false, new ShopType[] {ShopType.PHARMACY}),
+    ENTZUENDUNGSHEMMENDE_SALBE(63, "§fEntzündungshemmende Salbe", new ItemBuilder(Material.PAPER).setName("§fEntzündungshemmende Salbe").setAmount(Medikamente.ENTZUENDUNGSHEMMENDE_SALBE.getNeeded()).build(), 5, 2, 25, 30, 2600, true, true, false, new ShopType[] {ShopType.PHARMACY}),
     CD_1(65, "§6Gold", new ItemStack(Material.MUSIC_DISC_11), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.MUSIC}),
     CD_2(66, "§6Green", new ItemStack(Material.MUSIC_DISC_13), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.MUSIC}),
     CD_3(67, "§6Blocks", new ItemStack(Material.MUSIC_DISC_BLOCKS), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.MUSIC}),

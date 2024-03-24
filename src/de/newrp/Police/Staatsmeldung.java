@@ -38,7 +38,7 @@ public class Staatsmeldung implements CommandExecutor {
             return true;
         }
 
-        if(Beruf.getAbteilung(p) != Abteilung.Abteilungen.PRESSE) {
+        if(Beruf.getAbteilung(p) != Abteilung.Abteilungen.PRESSE && Beruf.isLeader(p, true)) {
             p.sendMessage(Messages.ERROR + "Du bist nicht in der Presseabteilung!");
             return true;
         }

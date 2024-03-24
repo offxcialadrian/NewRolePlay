@@ -81,7 +81,7 @@ public class Notruf implements Listener {
                         StringBuilder sb = new StringBuilder();
                         sb.append(PREFIX + "§6Achtung! Ein Notruf von " + Script.getName(p) + " ist eingegangen.")
                                 .append("\n")
-                                .append(PREFIX + "§6Vorfall§8:§6 " + answers.get(p.getName() + Questions.FRAGE1.getID()))
+                                .append(PREFIX + "§6Vorfall§8:§6 " + answers.get(p.getName() + Questions.FRAGE2.getID()))
                                 .append("\n");
 
 

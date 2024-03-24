@@ -39,7 +39,7 @@ public class Equip implements CommandExecutor, Listener {
         RAUCHGRANATE(9, "Rauchgranate", Script.rauchgranate(), 300, 0, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE, true),
         FLASHBANG(10, "Flashbang", Script.flashbang(), 250, 0, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE, true),
         FALLSCHIRM(11,"Fallschirm", Script.fallschirm(), 500, 0, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE, false),
-        ZEITUNG(12, "Buch und Stift", Script.setName(new ItemStack(Material.WRITABLE_BOOK), "§7Buch und Stift"), 500, 0, Abteilung.Abteilungen.JOURNALIST, Beruf.Berufe.NEWS, false),
+        ZEITUNG(12, "Buch und Stift", Script.setName(new ItemStack(Material.WRITABLE_BOOK), "§7Buch und Stift"), 175, 0, Abteilung.Abteilungen.JOURNALIST, Beruf.Berufe.NEWS, false),
         VERBAND(13, "Verband", new ItemBuilder(Material.PAPER).setName("§7Verband").setAmount(5).build(), 50, 0, null, Beruf.Berufe.RETTUNGSDIENST, true),
         GIPS(14, "Gips", Script.setName(new ItemStack(Material.PAPER), "§7Gips"), 50, 0, null, Beruf.Berufe.RETTUNGSDIENST, true),
         SCHWERE_SCHUTZWESTE(15,"Schwere Schutzweste", Script.kevlar(2), 4000, 0, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE, true),
@@ -57,6 +57,7 @@ public class Equip implements CommandExecutor, Listener {
         MUNITION_MP7(26, Weapon.MP7.getAmmoType().getName(), new ItemBuilder(Material.ARROW).setName(Weapon.MP7.getAmmoType().getName()).setAmount(Weapon.MP7.getMagazineSize()).build(), 15, 0, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE, true),
         BROT_2(27, "Brot", new ItemBuilder(Material.BREAD).setAmount(16).setName("§7Brot").build(), 3, 0, null, Beruf.Berufe.GOVERNMENT, false),
         TRINKWASSER(28, "Trinkwasser", new ItemBuilder(Material.POTION).setName("§7Trinkwasser").build(), 2, 0, null, Beruf.Berufe.GOVERNMENT, false),
+        TRINKWASSER_MEDIC(29, "Trinkwasser", new ItemBuilder(Material.POTION).setName("§7Trinkwasser").build(), 2, 0, null, Beruf.Berufe.RETTUNGSDIENST, false),
         KEVLAR(29, "Kevlar", Script.kevlar(1), 2900, 0, null, Beruf.Berufe.GOVERNMENT, false);
 
         private String name;

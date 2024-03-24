@@ -9,6 +9,7 @@ import de.newrp.House.House;
 import de.newrp.House.HouseAddon;
 import de.newrp.Medic.Medikamente;
 import de.newrp.Medic.Rezept;
+import de.newrp.Player.Banken;
 import de.newrp.Player.Mobile;
 import de.newrp.Waffen.Waffen;
 import de.newrp.Waffen.Weapon;
@@ -40,6 +41,12 @@ public class PayShop implements Listener {
         ItemMeta meta = i.getItemMeta();
         meta.setLore(Collections.emptyList());
         i.setItemMeta(meta);
+
+        if(!Banken.hasBank(p)) {
+            p.sendMessage(Messages.ERROR + "Du hast kein Bankkonto.");
+            p.sendMessage(Messages.INFO + "Erstelle ein Bankkonto mit §8/§6bankkonto §rin der Zentralbank");
+            return;
+        }
 
         if (Script.getMoney(p, type) < price) {
             BuyClick.sendMessage(p, "Die Zahlung ist fehlgeschlagen, haben Sie überhaupt genug Geld!?");

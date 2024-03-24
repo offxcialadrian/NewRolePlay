@@ -620,3 +620,5 @@ commands:
     aliases: [ münze, coin ]
   registerbanner:
     description: register a banner
+  startevent:
+    description: start an event

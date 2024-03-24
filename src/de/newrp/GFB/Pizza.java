@@ -64,7 +64,7 @@ public class Pizza implements CommandExecutor, Listener {
         cooldown.put(p.getName(), System.currentTimeMillis() + 10 * 60 * 2000L);
         p.sendMessage(PREFIX + "Du hast den Job als §6Pizzalieferant §7angenommen.");
         p.sendMessage(Messages.INFO + "Gehe nun in die Küche und nehme die Pizza aus dem Ofen (Rechtsklick).");
-        int total = GFB.PIZZALIEFERANT.getLevel(p) + Script.getRandom(3,4);
+        int total = GFB.PIZZALIEFERANT.getLevel(p) + Script.getRandom(2,3);
         pizza.put(p.getName(), total);
         TOTAL_SCORE.put(p.getName(), total);
 
@@ -99,6 +99,8 @@ public class Pizza implements CommandExecutor, Listener {
             p.sendMessage(Messages.ERROR + "Liefere erstmal die aktuelle Pizza aus.");
             return;
         }
+
+        Route.invalidate(p);
 
         p.sendMessage(PREFIX + "Du hast eine Pizza aus dem Ofen genommen.");
         house.put(p.getName(), House.getRandomHouse());
@@ -140,6 +142,7 @@ public class Pizza implements CommandExecutor, Listener {
                 p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
                 house.remove(p.getName());
                 TOTAL_SCORE.replace(p.getName(), TOTAL_SCORE.get(p.getName()) - 1);
+                new Route(p.getName(), Script.getNRPID(p), p.getLocation(),new Location(Script.WORLD, 637, 69, 884)).start();
             }
             return;
         }

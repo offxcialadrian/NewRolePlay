@@ -1,5 +1,6 @@
 package de.newrp.Shop;
 
+import de.newrp.API.ItemBuilder;
 import de.newrp.API.Script;
 import de.newrp.main;
 import org.bukkit.Location;
@@ -251,10 +252,11 @@ public enum Shops {
                 ArrayList<String> lore = new ArrayList<>();
                 lore.add("§8× §6" + a[1] + "€");
                 im.setLore(lore);
+                i.setAmount(bi.getItemStack().getAmount());
                 i.setItemMeta(im);
                 l.put(bi.getID(), i);
             } else {
-                l.put(bi.getID(), Script.setNameAndLore(i, bi.getName(), "§8× §6" + a[1] + "€"));
+                l.put(bi.getID(), new ItemBuilder(i.getType()).setName(bi.getName()).setLore("§8× §6" + a[1] + "€").setAmount(bi.getItemStack().getAmount()).build());
             }
         }
         return l;

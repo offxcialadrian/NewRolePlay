@@ -26,4 +26,13 @@ public enum Event {
     public Location getLocation() {
         return this.loc;
     }
+
+    public static Event getEvent(String name) {
+        for(Event e : Event.values()) {
+            if(e.getName().equalsIgnoreCase(name)) {
+                return e;
+            }
+        }
+        return null;
+    }
 }

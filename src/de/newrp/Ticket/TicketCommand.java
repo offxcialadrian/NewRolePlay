@@ -27,7 +27,7 @@ public class TicketCommand implements CommandExecutor {
     public static final HashMap<Integer, ArrayList<Player>> conversation = new HashMap<>();
     public static final HashMap<Integer, Integer> added_player = new HashMap<>();
 
-    public static final String PREFIX = "§8[§bTicket§8] §b" + Messages.ARROW + " ";
+    public static final String PREFIX = "§8[§5Ticket§8] §5" + Messages.ARROW + " ";
 
     public static void openTicket(Player p) {
         Inventory inv = Bukkit.createInventory(null, InventoryType.HOPPER, "§b§lTicket");

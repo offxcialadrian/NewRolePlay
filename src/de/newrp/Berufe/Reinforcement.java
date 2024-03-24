@@ -90,6 +90,11 @@ public class Reinforcement implements CommandExecutor {
             return true;
         }
 
+        if(!Duty.isInDuty(p)) {
+            p.sendMessage(Messages.ERROR + "Du musst im Dienst sein.");
+            return true;
+        }
+
         if (args.length == 2) {
             if (args[0].equals("omw")) {
                 Player tg = Bukkit.getPlayer(args[1]);

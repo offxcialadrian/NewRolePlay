@@ -162,7 +162,7 @@ public class Fahndung implements CommandExecutor, TabCompleter {
         for(int i : getStraftatIDs(p)) {
             wanteds += Straftat.getWanteds(i);
         }
-        return wanteds;
+        return Math.min(wanteds, 100);
     }
 
     public static int getWanteds(OfflinePlayer p) {
@@ -170,7 +170,7 @@ public class Fahndung implements CommandExecutor, TabCompleter {
         for(int i : getStraftatIDs(p)) {
             wanteds += Straftat.getWanteds(i);
         }
-        return wanteds;
+        return Math.min(wanteds, 100);
     }
 
     @Override

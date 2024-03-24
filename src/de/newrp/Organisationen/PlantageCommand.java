@@ -93,13 +93,13 @@ public class PlantageCommand implements CommandExecutor, Listener, TabCompleter 
                             Plantage.PlantageType type = getPlantageType(p);
                             if (type != null) {
                                 int count = Plantage.getPlantageCount(f);
-                                if (count == Organisation.getOrganisation(p).getLevel()) {
+                                if (count == Organisation.getOrganisation(p).getLevel()+1) {
                                     p.sendMessage(Plantage.PREFIX + "Deine Organisation hat bereits das Limit an Plantagen erreicht.");
                                     return true;
                                 }
                                 p.getInventory().getItemInMainHand().setAmount(p.getInventory().getItemInMainHand().getAmount() - 1);
-                                if (count < Organisation.getOrganisation(p).getLevel()) {
-                                    f.sendMessage(Plantage.PREFIX + Script.getName(p) + " hat eine " + type.getItem().getName() + " Plantage gelegt. §8[§6" + (count + 1) + "/" + Organisation.getOrganisation(p).getLevel() + "§8]");
+                                if (count < Organisation.getOrganisation(p).getLevel()+1) {
+                                    f.sendMessage(Plantage.PREFIX + Script.getName(p) + " hat eine " + type.getItem().getName() + " Plantage gelegt. §8[§6" + (count + 1) + "/" + (Organisation.getOrganisation(p).getLevel()+1) + "§8]");
                                     final Organisation final_f = f;
                                     final Plantage.PlantageType final_type = type;
                                     Bukkit.getScheduler().runTaskAsynchronously(main.getInstance(), () -> {

@@ -15,7 +15,8 @@ public enum ATM {
     ATM_8(8, new Location(Script.WORLD, 808, 67, 713), 0),
     ATM_9(9, new Location(Script.WORLD, 929, 77, 920, -181.79962f, 17.700035f), 0),
     ATM_10(10, new Location(Script.WORLD, 933, 77, 920, -94.64969f, 16.05004f), 0),
-    ATM_11(11, new Location(Script.WORLD, 936, 77, 920, -62.699703f, 18.750032f), 0);
+    ATM_11(11, new Location(Script.WORLD, 936, 77, 920, -62.699703f, 18.750032f), 0),
+    ATM_12(12, new Location(Script.WORLD, 802, 64, 1217, -103.067116f, 25.628996f), 0);
 
     private final int id;
     private final Location loc;

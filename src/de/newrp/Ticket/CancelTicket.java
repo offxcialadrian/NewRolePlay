@@ -51,11 +51,11 @@ public class CancelTicket implements CommandExecutor {
                 Script.sendTeamMessage(p, ChatColor.AQUA, "hat das Ticket mit " + Script.getName(tg) + " beendet! §7(§6#" + id + "§7)", true);TicketCommand.close(t);
                 Script.updateListname(p);
                 Script.updateListname(tg);
-                /*new BukkitRunnable() {
+                new BukkitRunnable() {
                     @Override
                     public void run() {
                     }
-                }.runTaskLater(main.getInstance(), 2 * 20L);*/
+                }.runTaskLater(main.getInstance(), 2 * 20L);
                 return true;
             }
             p.sendMessage(TicketCommand.PREFIX + "Du hast das Ticket mit " + Script.getName(tg) + " beendet! §7(§6#" + id + "§7)");
