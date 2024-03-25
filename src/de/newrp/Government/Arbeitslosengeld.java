@@ -190,8 +190,10 @@ public class Arbeitslosengeld implements CommandExecutor {
     public static void sendApplications(Player p) {
         try (Statement stmt = main.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM arbeitslosengeld WHERE accepted='0'")) {
+
             if (rs.next()) {
-                p.sendMessage(PREFIX + "Es gibt " + (rs.getRow()-1) + " Anträge auf Arbeitslosengeld.");
+                p.sendMessage(PREFIX + "Es gibt " + rs.getRow() + " Anträge auf Arbeitslosengeld.");
+                rs.beforeFirst();
                 while (rs.next()) {
                     Script.sendClickableMessage(p, PREFIX + "Antrag von §6" + Script.getName(Script.getPlayer(rs.getInt("nrp_id"))) + " §8× §6" + rs.getInt("money") + "€ §8× §6" + Script.dateFormat.format(Script.getDate(rs.getLong("date"))) + " Uhr §8× §6§l#" + rs.getInt("id") + "§7.", "/arbeitslosengeld accept " + rs.getInt("id"), "§a§lAnnehmen");
                 }
@@ -202,6 +204,7 @@ public class Arbeitslosengeld implements CommandExecutor {
             e.printStackTrace();
         }
     }
+
 
     public static void acceptApplication(int id) {
         try (Statement stmt = main.getConnection().createStatement();

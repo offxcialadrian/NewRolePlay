@@ -47,7 +47,7 @@ public class Sellfisch implements CommandExecutor {
             return true;
         }
 
-        int price = i*2;
+        int price = i;
         for(ItemStack is : p.getInventory().getContents()) {
             if(is==null) continue;
             if(is.getType() != Material.TROPICAL_FISH && is.getType() != Material.COD && is.getType() != Material.SALMON && is.getType() != Material.PUFFERFISH) continue;

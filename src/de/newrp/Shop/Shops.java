@@ -51,7 +51,7 @@ public enum Shops {
     ANGELLADEN(37, "Angelladen", "Angelladen", 7500, new Location(Script.WORLD, 766, 64, 780, 266.49414f, 89.59964f), 5, 600, true, ShopType.ANGELSHOP),
     BAECKERI(38, "Bäckerei", "Bäckerei", 5000, new Location(Script.WORLD, 450, 66, 644, 90.62988f, 22.937416f), 3, 600, true, ShopType.CAFE),
     BURGERBRATER_SHOP(39, "Burgerladen", "Burgerladen", 30000, new Location(Script.WORLD, 460, 67, 771, -191.7402f, 6.5769224f), 10, 600, true, ShopType.FASTFOOD),
-    BLUMENLADEN(40, "Blumenhandlung", "Blumenhandlung", 5000, new Location(Script.WORLD, 316, 76, 932, -181.94073f, 90.0f), 3, 600, true, ShopType.FLOWER);
+    BLUMENLADEN(40, "Blumenhandlung", "Blumenhandlung", 50000, new Location(Script.WORLD, 316, 76, 932, -181.94073f, 90.0f), 3, 600, true, ShopType.FLOWER);
 
 
     private final int id;

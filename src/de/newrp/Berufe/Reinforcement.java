@@ -90,9 +90,11 @@ public class Reinforcement implements CommandExecutor {
             return true;
         }
 
-        if(!Duty.isInDuty(p)) {
-            p.sendMessage(Messages.ERROR + "Du musst im Dienst sein.");
-            return true;
+        if(Beruf.hasBeruf(p)) {
+            if(!Duty.isInDuty(p)) {
+                p.sendMessage(Messages.ERROR + "Du musst im Dienst sein.");
+                return true;
+            }
         }
 
         if (args.length == 2) {
