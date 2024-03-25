@@ -72,7 +72,7 @@ public class AcceptTicket implements CommandExecutor {
                 int seconds = (int) ((System.currentTimeMillis() - q.getCreateTime()) / 1000);
                 p.sendMessage(TicketCommand.PREFIX + "Du hast das Ticket von " + Script.getName(tg) + " §8[§6Level " + tg.getLevel() + "§8]§d angenommen! Thema: " + tt.getName());
                 tg.sendMessage(TicketCommand.PREFIX + Script.getRank(p).getName(p) + " " + Script.getName(p) + " hat dein Ticket angenommen! Thema: " + tt.getName());
-                Script.sendTeamMessage(p, ChatColor.AQUA, "hat das Ticket von " + Script.getName(tg) + " angenommen! Thema: " + tt.getName(), true);
+                Script.sendTeamMessage(p, ChatColor.LIGHT_PURPLE, "hat das Ticket von " + Script.getName(tg) + " angenommen! Thema: " + tt.getName(), true);
                 Script.sendTeamMessage(Messages.INFO + "Angenommen nach " + seconds + " Sekunden.");
                 if(TicketCommand.getGreeting(p) != null) {
                     p.sendMessage("§d§lTICKET §8× §d" + Script.getName(p) + ": " + TicketCommand.getGreeting(p));

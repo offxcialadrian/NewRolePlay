@@ -242,7 +242,7 @@ public class Chat implements Listener {
         }
 
         for (Player players : conv) {
-            players.sendMessage("§b§lTICKET §8× §b" + Script.getName(p) + ": " + message);
+            players.sendMessage("§d§lTICKET §8× §d" + Script.getName(p) + ": " + message);
         }
         Script.executeAsyncUpdate("INSERT INTO ticket_conv (ticketID, sender, message, time) VALUES(" + t.getID() + ", " + Script.getNRPID(p) + ", '" + message + "', " + System.currentTimeMillis() + ")");
     }

@@ -4,6 +4,7 @@ import de.newrp.API.Messages;
 import de.newrp.API.Navi;
 import de.newrp.API.PaymentType;
 import de.newrp.API.Script;
+import de.newrp.GFB.GFB;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -26,6 +27,11 @@ public class Sellfisch implements CommandExecutor {
 
         if(args.length != 0) {
             p.sendMessage(Messages.ERROR + "/sellfisch");
+            return true;
+        }
+
+        if(GFB.CURRENT.containsKey(p)) {
+            p.sendMessage(Messages.ERROR + "Du kannst nicht verkaufen, während du einen GFB-Job hast.");
             return true;
         }
 

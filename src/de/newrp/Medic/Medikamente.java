@@ -3,6 +3,7 @@ package de.newrp.Medic;
 import de.newrp.API.ItemBuilder;
 import de.newrp.API.Krankheit;
 import de.newrp.Shop.ShopItem;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
@@ -18,15 +19,15 @@ public enum Medikamente {
     ANTIBIOTIKA(4, "Antibiotika", ShopItem.ANTIBIOTIKA, new ItemBuilder(Material.PAPER).setName("§fAntibiotika").build(), new ItemBuilder(Material.PAPER).setName("Rezept für Antibiotika").build(), Krankheit.CHOLERA, 10, true, true),
     ENTZUENDUNGSHEMMENDE_SALBE(5, "Entzündungshemmende Salbe", ShopItem.ENTZUENDUNGSHEMMENDE_SALBE, new ItemBuilder(Material.PAPER).setName("§fEntzündungshemmende Salbe").build(), new ItemBuilder(Material.PAPER).setName("Rezept für Entzündungshemmende Salbe").build(), null, 10, true, true);
 
-    int id;
-    String name;
-    ShopItem item;
-    ItemStack is;
-    ItemStack rezept;
-    Krankheit k;
-    int needed;
-    boolean rezeptneeded;
-    boolean insurancepay;
+    private int id;
+    private String name;
+    private ShopItem item;
+    private ItemStack is;
+    private ItemStack rezept;
+    private Krankheit k;
+    private int needed;
+    private boolean rezeptneeded;
+    private boolean insurancepay;
 
     Medikamente(int id, String name, ShopItem item, ItemStack is, ItemStack rezept, Krankheit k, int needed, boolean rezeptneeded, boolean insurancepay) {
         this.id = id;
@@ -123,6 +124,7 @@ public enum Medikamente {
 
     public static Medikamente getMedikamentByShopItem(ShopItem item) {
         for (Medikamente m : Medikamente.values()) {
+            Bukkit.broadcastMessage(m.getShopItem().toString() + " " + item.toString());
             if (m.getShopItem().equals(item)) {
                 return m;
             }

@@ -185,12 +185,17 @@ public class PayShop implements Listener {
                 case ENTZUENDUNGSHEMMENDE_SALBE:
                 case SCHMERZMITTEL_HIGH:
                 case ANTIBIOTIKA:
-                    Medikamente m = Medikamente.getMedikamentByShopItem(si);
-                    if (m == null) return;
+                    Medikamente m = Medikamente.getMedikament(ChatColor.stripColor(si.getName()));
+                    if (m == null) {
+                        Script.sendBugReport(p, "medikament is null in PayShop.java and si = " + si.getName());
+                        return;
+                    }
                     if (!Rezept.hasRezept(p, m) && m.isRezeptNeeded()) {
+                        Rezept.removeRezept(p, m);
                         p.sendMessage(Messages.ERROR + "Du hast kein Rezept für " + si.getName() + "§c.");
                         return;
                     }
+
 
                     if (Rezept.hasRezept(p, m) && m.insurancePays()) {
                         Rezept.removeRezept(p, m);
@@ -198,6 +203,8 @@ public class PayShop implements Listener {
                         Script.addMoney(p, PaymentType.BANK, price);
                         Stadtkasse.removeStadtkasse(price, "Kostenübernahme durch Krankenversicherung an " + Script.getName(p));
                     }
+
+                    if(Rezept.hasRezept(p, m)) Rezept.removeRezept(p, m);
                     break;
                 case EINZELFAHRASUSWEIS:
                     p.getInventory().addItem(new ItemBuilder(Material.PAPER).setName("§6UBahn-Ticket [Einzelfahrausweis]").setLore("Verbleibende Fahrten: 1").build());

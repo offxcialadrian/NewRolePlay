@@ -111,16 +111,12 @@ public class Rezept implements CommandExecutor, TabCompleter {
     }
 
     public static void removeRezept(Player p, Medikamente m) {
-        int amount = 0;
         for(ItemStack is : p.getInventory().getContents()) {
-            if(is != null && is.isSimilar(m.getRezept())) {
-                amount = is.getAmount()-1;
+            if(is != null && is.getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.stripColor(m.getRezept().getItemMeta().getDisplayName()))) {
+                is.setAmount(is.getAmount() - 1);
+                return;
             }
         }
-        p.getInventory().remove(m.getRezept());
-        ItemStack is = m.getRezept();
-        is.setAmount(amount);
-        p.getInventory().addItem(is);
     }
 
     @Override

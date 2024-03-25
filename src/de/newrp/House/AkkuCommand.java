@@ -42,9 +42,16 @@ public class AkkuCommand implements CommandExecutor {
             return true;
         }
 
-        if(!Hotel.isInHotelRoom(p) && !h.isInside(p)) {
-            p.sendMessage(Messages.ERROR + "Du bist nicht in diesem Haus.");
-            return true;
+        if(h != null) {
+            if(!h.isInside(p)) {
+                p.sendMessage(Messages.ERROR + "Du bist nicht in diesem Haus.");
+                return true;
+            }
+        } else {
+            if(!Hotel.isInHotelRoom(p)) {
+                p.sendMessage(Messages.ERROR + "Du bist nicht in diesem Haus.");
+                return true;
+            }
         }
 
         p.sendMessage(AKKU + "Du hast begonnen, dein Handy aufzuladen.");
@@ -70,10 +77,18 @@ public class AkkuCommand implements CommandExecutor {
                     return;
                 }
 
-                if(!h.isInside(p) && !Hotel.isInHotelRoom(p)) {
-                    p.sendMessage(AKKU + "Du hast aufgehört, dein Handy aufzuladen.");
-                    cancel();
-                    return;
+                if(h != null) {
+                    if(!h.isInside(p)) {
+                        p.sendMessage(AKKU + "Du hast aufgehört, dein Handy aufzuladen.");
+                        cancel();
+                        return;
+                    }
+                } else {
+                    if(!Hotel.isInHotelRoom(p)) {
+                        p.sendMessage(AKKU + "Du hast aufgehört, dein Handy aufzuladen.");
+                        cancel();
+                        return;
+                    }
                 }
 
                 if(Mobile.getPhone(p).getAkku(p) >= Mobile.getPhone(p).getMaxAkku()) {

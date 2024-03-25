@@ -100,6 +100,9 @@ public class Pizza implements CommandExecutor, Listener {
             return;
         }
 
+        house.remove(p.getName());
+        timer.remove(p.getName());
+
         Route.invalidate(p);
 
         p.sendMessage(PREFIX + "Du hast eine Pizza aus dem Ofen genommen.");
@@ -107,7 +110,7 @@ public class Pizza implements CommandExecutor, Listener {
         timer.put(p.getName(), System.currentTimeMillis() + TimeUnit.SECONDS.toMillis((int) p.getLocation().distance(house.get(p.getName()).getSignLocation())));
         p.sendMessage(PREFIX + "§8=== §6Pizza §8===\n" +
                 PREFIX + "§8» §7Adresse: §6Haus " + house.get(p.getName()).getID() + "\n" +
-                PREFIX + "§8» §7Kunde: §6" +getRandomPlayer(house.get(p.getName())).getName() + "\n" +
+                PREFIX + "§8» §7Kunde: §6" + getRandomPlayer(house.get(p.getName())).getName() + "\n" +
                 PREFIX + "§8» §7Zeit: §6" + Script.getRemainingTime(timer.get(p.getName())) + "\n" +
                 PREFIX + "§8» §7Preis: §6" + Script.getRandom(10, 20) + "€");
         p.sendMessage(Messages.INFO + "Klicke Rechtsklick auf das Hausschild, sobald du vor dem Haus bist.");
@@ -133,6 +136,7 @@ public class Pizza implements CommandExecutor, Listener {
                 PayDay.addPayDay(p, (GFB.PIZZALIEFERANT.getLevel(p) + (TOTAL_SCORE.get(p.getName()))*8));
                 Script.addEXP(p, GFB.PIZZALIEFERANT.getLevel(p) + (TOTAL_SCORE.get(p.getName()))*4);
                 pizza.remove(p.getName());
+                timer.remove(p.getName());
                 GFB.CURRENT.remove(p.getName());
                 TOTAL_SCORE.remove(p.getName());
                 return;
@@ -141,6 +145,7 @@ public class Pizza implements CommandExecutor, Listener {
                 p.sendMessage(Messages.INFO + "Gehe nun in die Küche und nehme die nächste Pizza aus dem Ofen (Rechtsklick).");
                 p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
                 house.remove(p.getName());
+                timer.remove(p.getName());
                 TOTAL_SCORE.replace(p.getName(), TOTAL_SCORE.get(p.getName()) - 1);
                 new Route(p.getName(), Script.getNRPID(p), p.getLocation(),new Location(Script.WORLD, 637, 69, 884)).start();
             }
@@ -149,6 +154,7 @@ public class Pizza implements CommandExecutor, Listener {
 
         p.sendMessage(PREFIX + "Du hast die Pizza erfolgreich ausgeliefert.");
         house.remove(p.getName());
+        timer.remove(p.getName());
         pizza.replace(p.getName(), pizza.get(p.getName()) - 1);
 
         if(Script.getRandom(1, 100) <= 20) {
@@ -162,6 +168,7 @@ public class Pizza implements CommandExecutor, Listener {
             PayDay.addPayDay(p, (GFB.PIZZALIEFERANT.getLevel(p) + (TOTAL_SCORE.get(p.getName()))*8));
             Script.addEXP(p, GFB.PIZZALIEFERANT.getLevel(p) + (TOTAL_SCORE.get(p.getName()))*4);
             pizza.remove(p.getName());
+            timer.remove(p.getName());
             GFB.CURRENT.remove(p.getName());
             TOTAL_SCORE.remove(p.getName());
             return;
