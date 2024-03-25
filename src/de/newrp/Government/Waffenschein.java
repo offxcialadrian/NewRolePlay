@@ -129,7 +129,7 @@ public class Waffenschein implements CommandExecutor {
             return true;
         }
 
-        if(Script.getLevel(p) < 5) {
+        if(Script.getLevel(p) < 3) {
             p.sendMessage(Messages.ERROR + "Du benötigst mindestens Level 5 um einen Waffenschein zu beantragen.");
             return true;
         }
