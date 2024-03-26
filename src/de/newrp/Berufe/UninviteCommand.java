@@ -116,7 +116,6 @@ public class UninviteCommand implements CommandExecutor {
         TeamSpeak.sync(Script.getNRPID(tg));
         Forum.syncPermission(tg);
 
-
         return false;
     }
 }

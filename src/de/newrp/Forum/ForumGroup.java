@@ -25,8 +25,8 @@ public enum ForumGroup {
     CORLEONE_LEADER(21, "Corleone Leader"),
     BRATERSTWO(28, "Braterstwo"),
     BRATERSTWO_LEADER(20, "Braterstwo Leader"),
-    GROVE(26, "Grove"),
-    GROVE_LEADER(23, "Grove Leader");
+    GROVE(26, "Groves Street"),
+    GROVE_LEADER(23, "Groves Street Leader");
 
     private final int id;
     private final String name;

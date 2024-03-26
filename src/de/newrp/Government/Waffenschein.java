@@ -1,10 +1,12 @@
 package de.newrp.Government;
 
-import de.newrp.API.*;
+import de.newrp.API.Licenses;
+import de.newrp.API.Messages;
+import de.newrp.API.PaymentType;
+import de.newrp.API.Script;
 import de.newrp.Berufe.Abteilung;
 import de.newrp.Berufe.Beruf;
 import de.newrp.main;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -25,8 +27,8 @@ public class Waffenschein implements CommandExecutor {
 
         if (Beruf.getBeruf(p) == Beruf.Berufe.GOVERNMENT) {
             if (args.length == 0) {
-                if(Beruf.getAbteilung(p) == Abteilung.Abteilungen.JUSTIZMINISTERIUM || Beruf.isLeader(p, true)) {
-                    if(getApplicationAmount() == 0) {
+                if (Beruf.getAbteilung(p) == Abteilung.Abteilungen.JUSTIZMINISTERIUM || Beruf.isLeader(p, true)) {
+                    if (getApplicationAmount() == 0) {
                         p.sendMessage(PREFIX + "Es gibt keine Anträge.");
                         return true;
                     }
@@ -70,7 +72,7 @@ public class Waffenschein implements CommandExecutor {
                             return true;
                         }
 
-                        if(Script.getMoney(tg, PaymentType.BANK) < Script.getLevel(tg) * 1000) {
+                        if (Script.getMoney(tg, PaymentType.BANK) < Script.getLevel(tg) * 1000) {
                             p.sendMessage(PREFIX + "Der Spieler hat nicht genug Geld.");
                             return true;
                         }
@@ -124,21 +126,20 @@ public class Waffenschein implements CommandExecutor {
             return true;
         }
 
-        if(p.getLocation().distance(new Location(Script.WORLD, 552, 69, 967, -253.474f, 4.7215652f)) > 5) {
+        if (p.getLocation().distance(new Location(Script.WORLD, 552, 69, 967, -253.474f, 4.7215652f)) > 5) {
             p.sendMessage(Messages.ERROR + "Du bist nicht an der Stelle zur Beantragung.");
             return true;
         }
 
-        if(Script.getLevel(p) < 3) {
-            p.sendMessage(Messages.ERROR + "Du benötigst mindestens Level 5 um einen Waffenschein zu beantragen.");
+        if (Script.getLevel(p) < 3) {
+            p.sendMessage(Messages.ERROR + "Du benötigst mindestens Level 3 um einen Waffenschein zu beantragen.");
             return true;
         }
 
-        if(!Licenses.PERSONALAUSWEIS.hasLicense(Script.getNRPID(p))) {
+        if (!Licenses.PERSONALAUSWEIS.hasLicense(Script.getNRPID(p))) {
             p.sendMessage(Messages.ERROR + "Du benötigst einen Personalausweis.");
             return true;
         }
-
 
         if (hasApplied(p)) {
             Script.executeUpdate("DELETE FROM waffenschein WHERE nrp_id=" + Script.getNRPID(p));
@@ -146,7 +147,7 @@ public class Waffenschein implements CommandExecutor {
             return true;
         }
 
-        if(Script.getMoney(p, PaymentType.BANK) < Script.getLevel(p) * 1000) {
+        if (Script.getMoney(p, PaymentType.BANK) < Script.getLevel(p) * 1000) {
             p.sendMessage(Messages.ERROR + "Du hast nicht genug Geld.");
             p.sendMessage(Messages.INFO + "Du benötigst " + Script.getLevel(p) * 1000 + "€.");
             return true;
@@ -181,7 +182,7 @@ public class Waffenschein implements CommandExecutor {
     public static void sendApplications(Player p) {
         try (Statement stmt = main.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM waffenschein WHERE accepted='0'")) {
-                p.sendMessage(PREFIX + "Anträge gefunden:");
+            p.sendMessage(PREFIX + "Anträge gefunden:");
             while (rs.next()) {
                 Script.sendClickableMessage(p, PREFIX + "Antrag von §6" + Script.getOfflinePlayer(rs.getInt("nrp_id")).getName() + " §8× §6" + Script.dateFormat.format(rs.getLong("date")) + " Uhr §8× §6§l#" + rs.getInt("id") + "§7.", "/waffenschein accept " + rs.getInt("id"), "§a§lAnnehmen");
             }

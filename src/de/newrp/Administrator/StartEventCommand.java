@@ -4,7 +4,6 @@ import de.newrp.API.Event;
 import de.newrp.API.Messages;
 import de.newrp.API.Rank;
 import de.newrp.API.Script;
-import de.newrp.main;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -24,18 +23,18 @@ public class StartEventCommand implements CommandExecutor, Listener {
     public boolean onCommand(@NotNull CommandSender cs, @NotNull Command cmd, @NotNull String s, @NotNull String[] args) {
         Player p = (Player) cs;
 
-        if(!Script.hasRank(p, Rank.ADMINISTRATOR, false)) {
+        if (!Script.hasRank(p, Rank.ADMINISTRATOR, false)) {
             p.sendMessage(Messages.NO_PERMISSION);
             return true;
         }
 
-        if(!SDuty.isSDuty(p)) {
+        if (!SDuty.isSDuty(p)) {
             p.sendMessage(Messages.NO_SDUTY);
             return true;
         }
 
         Inventory inv = Bukkit.createInventory(null, 9, "§l§6Event");
-        for(Event e : Event.values()) {
+        for (Event e : Event.values()) {
             inv.addItem(Script.setName(Material.NETHER_STAR, e.getName()));
         }
 
@@ -47,9 +46,9 @@ public class StartEventCommand implements CommandExecutor, Listener {
     @EventHandler
     public void onClick(InventoryClickEvent e) {
         Player p = (Player) e.getWhoClicked();
-        if(e.getView().getTitle().equalsIgnoreCase("§l§6Event")) {
+        if (e.getView().getTitle().equalsIgnoreCase("§l§6Event")) {
             e.setCancelled(true);
-            if((e.getCurrentItem() != null) && (e.getCurrentItem().getType() != Material.AIR)) {
+            if ((e.getCurrentItem() != null) && (e.getCurrentItem().getType() != Material.AIR)) {
                 e.getView().close();
                 Event event = Event.getEvent(ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName()));
                 Script.startEvent(event, true);

@@ -41,8 +41,6 @@ public class Chat implements Listener {
             "endsieg",
             "Hitler",
             "hitler",
-            "Heil",
-            "heil",
             "Jude",
             "jude",
             "Ritzen",

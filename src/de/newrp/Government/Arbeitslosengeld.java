@@ -105,7 +105,7 @@ public class Arbeitslosengeld implements CommandExecutor {
 
                     if (args[0].equals("set")) {
                         if (!Beruf.isLeader(p, true)) {
-                            p.sendMessage(Messages.ERROR + "Nur das Staatsoberhaupt kann die Höhe des Arbeitslosengeldes ändern.");
+                            p.sendMessage(Messages.ERROR + "Nur der Bundeskanzler kann die Höhe des Arbeitslosengeldes ändern.");
                             return true;
                         }
 
@@ -284,6 +284,4 @@ public class Arbeitslosengeld implements CommandExecutor {
             Beruf.Berufe.GOVERNMENT.sendMessage(PREFIX + p.getName() + "s Arbeitslosengeld wurde gekündigt.");
         }
     }
-
-
 }

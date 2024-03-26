@@ -134,7 +134,7 @@ public class BreakIn implements Listener {
                     Beruf.Berufe.POLICE.sendMessage(Notruf.PREFIX + "Ein Einbruch bei Haus " + house.getID() + " wurde gemeldet.");
                 }
                 if(Organisation.hasOrganisation(p)) {
-                    Organisation.getOrganisation(p).addExp(Script.getRandom(1, 10));
+                    Organisation.getOrganisation(p).addExp(Script.getRandom(5, 7));
                 }
                 this.cancel();
                 return;

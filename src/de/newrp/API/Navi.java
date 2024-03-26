@@ -60,7 +60,8 @@ public enum Navi {
     FALCONE("Falcone-Famiglia", new Location(Script.WORLD, 796, 109, 846, 270.17065f, 1.4442922f)),
     KARTELL("Puertoricanisches Kartell", new Location(Script.WORLD, 198, 66, 1120, -90.13266f, 0.2703893f)),
     JVA("Justizvollzugsanstalt", new Location(Script.WORLD, 999, 63, 573, -90.138885f, 2.3394775f)),
-    BLUMENHANDLUNG("Blumenhandlung", new Location(Script.WORLD, 316, 76, 932, -181.94073f, 90.0f));
+    BLUMENHANDLUNG("Blumenhandlung", new Location(Script.WORLD, 316, 76, 932, -181.94073f, 90.0f)),
+    HOTEL("Hotel", new Location(Script.WORLD, 316, 76, 932, -181.94073f, 90.0f));
 
 
     private final String name;

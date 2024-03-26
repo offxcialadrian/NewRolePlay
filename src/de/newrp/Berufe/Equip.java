@@ -56,8 +56,8 @@ public class Equip implements CommandExecutor, Listener {
         MUNITION_PISTOLE(25, Weapon.PISTOLE.getAmmoType().getName(), new ItemBuilder(Material.ARROW).setName(Weapon.PISTOLE.getAmmoType().getName()).setAmount(Weapon.PISTOLE.getMagazineSize()).build(), 10, 0, null, Beruf.Berufe.POLICE, true),
         MUNITION_MP7(26, Weapon.MP7.getAmmoType().getName(), new ItemBuilder(Material.ARROW).setName(Weapon.MP7.getAmmoType().getName()).setAmount(Weapon.MP7.getMagazineSize()).build(), 15, 0, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE, true),
         BROT_2(27, "Brot", new ItemBuilder(Material.BREAD).setAmount(16).setName("§7Brot").build(), 3, 0, null, Beruf.Berufe.GOVERNMENT, false),
-        TRINKWASSER(28, "Trinkwasser", new ItemBuilder(Material.POTION).setName("§7Trinkwasser").build(), 2, 0, null, Beruf.Berufe.GOVERNMENT, false),
-        TRINKWASSER_MEDIC(29, "Trinkwasser", new ItemBuilder(Material.POTION).setName("§7Trinkwasser").build(), 2, 0, null, Beruf.Berufe.RETTUNGSDIENST, false),
+        TRINKWASSER(28, "Trinkwasser", new ItemBuilder(Material.POTION).setName("§7Trinkwasser").build(), 2, 0, null, Beruf.Berufe.RETTUNGSDIENST, false),
+        //TRINKWASSER_MEDIC(29, "Trinkwasser", new ItemBuilder(Material.POTION).setName("§7Trinkwasser").build(), 2, 0, null, Beruf.Berufe.RETTUNGSDIENST, false),
         KEVLAR(29, "Kevlar", Script.kevlar(1), 2900, 0, null, Beruf.Berufe.GOVERNMENT, false);
 
         private String name;
