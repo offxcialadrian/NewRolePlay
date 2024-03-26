@@ -20,7 +20,31 @@ import java.util.List;
 public class BlackListCommand implements CommandExecutor, Listener {
 
     public enum Reasons {
-        LEADERMORD("Leadermord", 100, 5, new Organisation[] {Organisation.FALCONE});
+        GANGZONE("Gangzones", 500, 50, new Organisation[] {Organisation.CORLEONE}),
+        ORGASCHÄDIGUNG("Organisationsschädigung", 800, 60, new Organisation[] {Organisation.CORLEONE}),
+        LEADERMORD("Leadermord", 1000, 65, new Organisation[] {Organisation.CORLEONE}),
+        BLUTRACHE("Blutrache", 300, 25, new Organisation[] {Organisation.CORLEONE}),
+        LEICHENBEWACHUNG("Leichenbewachung", 400, 20, new Organisation[] {Organisation.CORLEONE}),
+        LEADERMORD_KARTELL("Leadermord", 300, 50, new Organisation[] {Organisation.KARTELL}),
+        GANGZONE_KARTELL("Gangzone", 750, 35, new Organisation[] {Organisation.KARTELL}),
+        FRAK_KARTELL("Fraktionsschädigung", 300, 50, new Organisation[] {Organisation.KARTELL}),
+        PROVOKATION_KARTELL("Provokation", 250, 10, new Organisation[] {Organisation.KARTELL}),
+        LB_KARTELL("Leichenbewachung", 500, 25, new Organisation[] {Organisation.KARTELL}),
+        GANGZONE_BRATERS("Gangzone", 500, 30, new Organisation[] {Organisation.BRATERSTWO}),
+        FRAK_BRATERS("Fraktionsschädigung", 670, 40, new Organisation[] {Organisation.BRATERSTWO}),
+        VERRAT_BRATERS("Verrat", 800, 25, new Organisation[] {Organisation.BRATERSTWO}),
+        LEADER_BRATERS("Leadermord", 950, 50, new Organisation[] {Organisation.BRATERSTWO}),
+        LB_BRATERS("Leichenbewachung", 250, 15, new Organisation[] {Organisation.BRATERSTWO}),
+        BFB_GS("Blood for Blood", 1000, 50, new Organisation[] {Organisation.GROVE}),
+        SGS_GS("Snitches get stitches", 800, 50, new Organisation[] {Organisation.GROVE}),
+        DAF_GS("Disrespect against the fam'", 300, 25, new Organisation[] {Organisation.GROVE}),
+        GANGZONE_GS("Private Property", 500, 15, new Organisation[] {Organisation.GROVE}),
+        Vendetta_FALCONE("Vendetta", 600, 50, new Organisation[] {Organisation.FALCONE}),
+        Tradimento_FALCONE("Tradimento", 500, 50, new Organisation[] {Organisation.FALCONE}),
+        Diffamazione_FALCONE("Diffamazione", 200, 20, new Organisation[] {Organisation.FALCONE}),
+        Invasione_FALCONE("Invasione", 300, 30, new Organisation[] {Organisation.FALCONE}),
+        Vergogna_FALCONE("Vergogna", 1, 1, new Organisation[] {Organisation.FALCONE}),
+        Inganno_FALCONE("Inganno", 200, 20, new Organisation[] {Organisation.FALCONE});
 
         private final String name;
         private final int price;
