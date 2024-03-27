@@ -114,6 +114,10 @@ public class TeamSpeak {
                     removeFromChannelGroup(cID, dbID);
                 }
             }
+            for(Organisation o : Organisation.values()) {
+                if(o.getTeamspeakServerGroup() == null) continue;
+                removeFromChannelGroup(o.getChannelID(), dbID);
+            }
             for(Team.Teams t : Team.Teams.values()) {
                 if(t.getTeamspeakServerGroup() == null) continue;
                 removeFromChannelGroup(t.getChannelID(), dbID);
@@ -187,6 +191,10 @@ public class TeamSpeak {
                 if (cID != 0) {
                     removeFromChannelGroup(cID, dbID);
                 }
+            }
+            for(Organisation o : Organisation.values()) {
+                if(o.getTeamspeakServerGroup() == null) continue;
+                removeFromChannelGroup(o.getChannelID(), dbID);
             }
             for(Team.Teams t : Team.Teams.values()) {
                 if(t.getTeamspeakServerGroup() == null) continue;

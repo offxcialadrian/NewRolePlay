@@ -39,6 +39,7 @@ public class Personalausweis implements CommandExecutor, Listener {
         Player p = (Player) cs;
         int id = Script.getNRPID(p);
         if (Licenses.PERSONALAUSWEIS.hasLicense(id)) {
+            Achievement.PERSONALAUSWEIS.grant(p);
             if (args.length == 1 && args[0].equalsIgnoreCase("info")) {
                 p.sendMessage(PREFIX + "Deine Personalien:");
                 p.sendMessage(PREFIX + " §8- §6Name: " + Script.getName(p));
@@ -47,6 +48,9 @@ public class Personalausweis implements CommandExecutor, Listener {
                     p.sendMessage(PREFIX + " §8- §6Geschlecht: §cMännlich");
                 } else if (Script.getGender(p).equals(Gender.FEMALE)) {
                     p.sendMessage(PREFIX +" §8- §6Geschlecht: §cWeiblich");
+                }
+                if(BeziehungCommand.isMarried(p)) {
+                    p.sendMessage(PREFIX + " §8- §6Verheiratet mit: §c" + BeziehungCommand.getPartner(p).getName());
                 }
                 if (House.hasHouse(id)) {
                     StringBuilder houses = new StringBuilder();

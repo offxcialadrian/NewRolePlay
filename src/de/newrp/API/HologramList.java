@@ -72,7 +72,12 @@ public enum HologramList {
     BURGERBRATER_BUY(70, "§8/§6buy", new Location(Script.WORLD, 460, 66, 771, -191.7402f, 6.5769224f)),
     BLUMENHANDLUNG(71, "§8/§6buy", new Location(Script.WORLD, 316, 76, 932, -181.94073f, 90.0f)),
     EQUIP_REGIERUNG(72, "§8/§6equip", new Location(Script.WORLD, 540, 87, 981, -91.613525f, 5.674797f)),
-    BUY_SHOE(73, "§8/§6buy", new Location(Script.WORLD, 843, 73, 962, 273.4159f, 36.14754f));
+    BUY_SHOE(73, "§8/§6buy", new Location(Script.WORLD, 843, 73, 962, 273.4159f, 36.14754f)),
+    DBANK_KARTELL(74, "§8/§6dbank", new Location(Script.WORLD, 230, 67, 1110, 1.5193672f, 16.320272f)),
+    DBANK_CORLEONE(75, "§8/§6dbank",new Location(Script.WORLD, 183, 103, 479, -268.55347f, 14.808363f)),
+    DBANK_GROVE(76, "§8/§6dbank", new Location(Script.WORLD, 752, 53, 1266, 193.52417f, 13.093105f)),
+    DBANK_BRATERSTWO(77, "§8/§6dbank", new Location(Script.WORLD, 556, 77, 1268, -263.88275f, 10.649914f)),
+    DBANK_FALCONE(78, "§8/§6dbank", new Location(Script.WORLD, 761, 118, 847, 258.50473f, 17.865908f));
 
     private final int id;
     private final String name;

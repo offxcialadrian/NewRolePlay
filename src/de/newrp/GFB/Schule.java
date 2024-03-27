@@ -45,6 +45,11 @@ public class Schule implements CommandExecutor, Listener {
             return true;
         }
 
+        if(Calendar.getInstance().get(Calendar.HOUR_OF_DAY) == 23 && Calendar.getInstance().get(Calendar.MINUTE) >= 30) {
+            p.sendMessage(Messages.ERROR + "Du kannst die Schule nicht mehr betreten, da es bereits nach 23:30 Uhr ist.");
+            return true;
+        }
+
 
         if(STUDIYING.containsKey(p) ) {
             p.sendMessage(Messages.ERROR + "Du lernst bereits.");

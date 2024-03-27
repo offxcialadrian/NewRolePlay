@@ -26,6 +26,7 @@ public class Arbeitslosengeld implements CommandExecutor {
         if (Beruf.getBeruf(p) == Beruf.Berufe.GOVERNMENT) {
             if (Beruf.getAbteilung(p) == Abteilung.Abteilungen.INNENMINISTERIUM || Beruf.isLeader(p, true)) {
                 if (args.length == 0) {
+                    p.sendMessage(PREFIX + "Es gibt " + getArbeitslosengeldApplicationAmount() + " Anträge.");
                     sendApplications(p);
                     return true;
 
@@ -190,19 +191,27 @@ public class Arbeitslosengeld implements CommandExecutor {
     public static void sendApplications(Player p) {
         try (Statement stmt = main.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM arbeitslosengeld WHERE accepted='0'")) {
+            while (rs.next()) {
 
-            if (rs.next()) {
-                p.sendMessage(PREFIX + "Es gibt " + rs.getRow() + " Anträge auf Arbeitslosengeld.");
-                rs.beforeFirst();
-                while (rs.next()) {
-                    Script.sendClickableMessage(p, PREFIX + "Antrag von §6" + Script.getName(Script.getPlayer(rs.getInt("nrp_id"))) + " §8× §6" + rs.getInt("money") + "€ §8× §6" + Script.dateFormat.format(Script.getDate(rs.getLong("date"))) + " Uhr §8× §6§l#" + rs.getInt("id") + "§7.", "/arbeitslosengeld accept " + rs.getInt("id"), "§a§lAnnehmen");
-                }
-            } else {
-                p.sendMessage(PREFIX + "Es gibt derzeit keine Anträge auf Arbeitslosengeld.");
+                Script.sendClickableMessage(p, PREFIX + "Antrag von §6" + Script.getNameInDB(rs.getInt("nrp_id")) + " §8× §6" + rs.getInt("money") + "€ §8× §6" + Script.dateFormat.format(Script.getDate(rs.getLong("date"))) + " Uhr §8× §6§l#" + rs.getInt("id") + "§7.", "/arbeitslosengeld accept " + rs.getInt("id"), "§a§lAnnehmen");
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public static int getArbeitslosengeldApplicationAmount() {
+        try (Statement stmt = main.getConnection().createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT * FROM arbeitslosengeld WHERE accepted='0'")) {
+            int i = 0;
+            while (rs.next()) {
+                i++;
+            }
+            return i;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 
 

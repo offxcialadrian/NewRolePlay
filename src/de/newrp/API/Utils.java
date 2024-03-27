@@ -43,7 +43,7 @@ public class Utils implements Listener {
 
     private static final Material[] DROP_BLACKLIST = new Material[]{ Material.WOODEN_HOE, Material.LEAD, Material.ANDESITE_SLAB, Material.SHIELD, Material.LEATHER_CHESTPLATE, Material.WITHER_SKELETON_SKULL };
     private static final String[] BLOCKED_COMMANDS = new String[]{
-            "/minecraft", "/spi", "/protocol", "/rl", "/restart", "/bukkit", "/version", "/icanhasbukkit", "/xp", "/tell",
+            "/minecraft", "/spi", "/protocol", "/rl", "/restart", "/bukkit", "/version", "/icanhasbukkit", "/xp",
             "/toggledownfall", "/testfor", "/recipe", "/effect", "/enchant", "/deop", "/defaultgamemode", "/ban-ip",
             "/banlist", "/advancement", "/?", "/gamemode", "/gamerule", "/kill", "/list", "/about",
             "/ability", "/advancement", "/alwaysday", "/attribute", "/ban-ip", "/banlist", "/bossbar", "/camera", "/camerashake",
@@ -55,13 +55,13 @@ public class Utils implements Listener {
             "/random", "/recipe", "/reload", "/replaceitem", "/return", "/ride", "/save", "/save-all", "/save-off", "/save-on",
             "/say", "/schedule", "/scoreboard", "/script", "/scriptevent", "/seed", "/setblock", "/setidletimeout", "/setmaxplayers",
             "/setworldspawn", "/spawnpoint", "/spreadplayers", "/stop", "/stopsound", "/structure", "/summon", "/tag",
-            "/teammsg", "/tell", "/tellraw", "/testfor", "/testforblock", "/testforblocks", "/tickingarea", "/title",
+            "/teammsg", "/tellraw", "/testfor", "/testforblock", "/testforblocks", "/tickingarea", "/title",
             "/titleraw", "/tm", "/toggledownfall", "/trigger", "/volumearea", "/wb", "/worldborder",
             "/worldborder", "/wsserver", "/xp", "/citizens", "/npc", "/vehicle", "/garage", "/tebex", "/buycraft", "/paper", "/addpremiumtoplayer", "/dynmap"
     };
 
     private static final String[] BLOCKED_COMMANDS_SPECIFIC = new String[]{
-            "/pl", "/plugins", "/give", "/whitelist", "/ver", "/version", "/time"
+            "/pl", "/plugins", "/give", "/whitelist", "/ver", "/version", "/time", "/tell"
     };
 
 
@@ -71,6 +71,7 @@ public class Utils implements Listener {
     public static final int WORLD_BORDER_MIN_Z = 420;
     public static final int WORLD_BORDER_MAX_Z = 1362;
     public static HashMap<String, Long> fishCooldown = new HashMap<>();
+    public static HashMap<String, Integer> fishCount = new HashMap<>();
 
 
 
@@ -185,7 +186,13 @@ public class Utils implements Listener {
 
         if(e.getState() == PlayerFishEvent.State.CAUGHT_FISH) {
             if(fishCooldown.containsKey(e.getPlayer().getName()) && fishCooldown.get(e.getPlayer().getName()) > System.currentTimeMillis()) {
-                Notifications.sendMessage(Notifications.NotificationType.ADVANCED_ANTI_CHEAT, "Verdacht auf Angelmissbrauch bei " + Script.getName(e.getPlayer()));
+                fishCount.put(e.getPlayer().getName(), fishCount.computeIfAbsent(e.getPlayer().getName(), k -> 0)+1);
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        if(fishCount.get(e.getPlayer().getName())>2) Notifications.sendMessage(Notifications.NotificationType.ADVANCED_ANTI_CHEAT, "Verdacht auf Angelmissbrauch bei " + e.getPlayer().getName() + " (" + Script.getPercentage(fishCount.get(e.getPlayer().getName()),6) + "%)");
+                    }
+                }.runTaskLaterAsynchronously(main.getInstance(), 20*5);
                 e.setCancelled(true);
                 return;
             }

@@ -144,6 +144,9 @@ public class InteractMenu implements Listener {
                 } else if (Script.getGender(p).equals(Gender.FEMALE)) {
                     tg.sendMessage(PREFIX + " §8× §6Geschlecht: §cWeiblich");
                 }
+                if(BeziehungCommand.isMarried(p)) {
+                    tg.sendMessage(PREFIX + " §8- §6Verheiratet mit: §c" + BeziehungCommand.getPartner(p).getName());
+                }
                 if (House.hasHouse(Script.getNRPID(p))) {
                     StringBuilder houses = new StringBuilder();
                     for (House h : House.getHouses(Script.getNRPID(p))) {

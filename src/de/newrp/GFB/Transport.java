@@ -53,6 +53,8 @@ public class Transport implements CommandExecutor, Listener {
             if(invSize == 0) {
                 p.sendMessage(GFB.PREFIX + "Es gibt keine Shops, die Ware benötigen.");
                 p.sendMessage(Messages.INFO + "Der Job wurde automatisch beendet. Du hast keinen Cooldown erhalten.");
+                cooldown.remove(p.getName());
+                cooldown2.remove(p.getName());
                 GFB.CURRENT.remove(p.getName());
                 return true;
             }
@@ -203,7 +205,7 @@ public class Transport implements CommandExecutor, Listener {
             int add = GFB.TRANSPORT.getLevel(p) + SAFE_SCORE.get(p.getName());
             GFB.TRANSPORT.addExp(p, add);
             PayDay.addPayDay(p, add*4);
-            Script.addEXP(p, add*2);
+            Script.addEXP(p, add*4);
             GFB.CURRENT.remove(p.getName());
             SCORE.remove(p.getName());
             STARTED.remove(p.getName());

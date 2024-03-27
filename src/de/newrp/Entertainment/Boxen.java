@@ -55,7 +55,7 @@ public class Boxen implements Listener {
         }
 
         long difference = time - lastClick;
-        if (difference >= 600) LEVEL.remove(p.getName());
+        if (difference >= 900) LEVEL.remove(p.getName());
 
         int level = LEVEL.computeIfAbsent(p.getName(), k -> 0);
 

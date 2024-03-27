@@ -251,7 +251,7 @@ public class BurgerFryer implements CommandExecutor, Listener {
                     SCORE.remove(p.getName());
                     NEEDED.remove(p.getName());
                     GFB.CURRENT.remove(p.getName());
-                    Script.addEXP(p, GFB.BURGERFRYER.getLevel(p) + Script.getRandom(5, 7));
+                    Script.addEXP(p, GFB.BURGERFRYER.getLevel(p) + Script.getRandom(5, 7)*2);
                     TOTAL_SCORE.remove(p.getName());
                 } else {
                     p.sendMessage(Messages.ERROR + "Du hast noch nicht alle Zutaten hinzugefügt.");

@@ -1,6 +1,6 @@
 name: NewRolePlay
 main: de.newrp.main
-version: 1.0
+version: 1.0.1
 description: NewRP Serversystem
 author: NewRP Entwicklungs-Team
 api-version: 1.16
@@ -626,3 +626,15 @@ commands:
     description: set a players money
   stopevent:
     description: stop the event
+  marry:
+    description: marry a player
+    aliases: [ heiraten ]
+  trennen:
+    description: trenne dich
+    aliases: [ divorce ]
+  beziehung:
+    description: view the beziehung
+    aliases: [ relationship ]
+  drogenbank:
+    description: view the drogenbank
+    aliases: [ drogenkasse, drogenkassen, dbank, dkasse ]

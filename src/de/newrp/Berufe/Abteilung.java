@@ -31,6 +31,7 @@ public class Abteilung implements CommandExecutor, TabCompleter {
         JUSTIZMINISTERIUM(4, GOVERNMENT, "Justizministerium"),
         VIZEKANZLER(5, GOVERNMENT, "Vizekanzler"),
         STAATSOBERHAUPT(6, GOVERNMENT, "Bundeskanzler"),
+        STANDESAMT(7, GOVERNMENT, "Standesamt"),
         STREIFENDIENST(0, POLICE, "Streifendienst"),
         SEK(1, POLICE, "SEK"),
         PRESSE(2, POLICE, "Presse"),

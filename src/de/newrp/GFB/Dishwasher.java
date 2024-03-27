@@ -161,7 +161,7 @@ public class Dishwasher implements CommandExecutor, Listener {
             GFB.CURRENT.remove(p.getName());
             dishes.remove(p.getName());
             GFB.DISHWASHER.addExp(p, GFB.DISHWASHER.getLevel(p) + TOTAL_SCORE.get(p.getName())/2);
-            Script.addEXP(p, GFB.DISHWASHER.getLevel(p) + TOTAL_SCORE.get(p.getName()));
+            Script.addEXP(p, GFB.DISHWASHER.getLevel(p) + TOTAL_SCORE.get(p.getName())*2);
             PayDay.addPayDay(p, (GFB.DISHWASHER.getLevel(p) + TOTAL_SCORE.get(p.getName())*2));
             TOTAL_SCORE.remove(p.getName());
             return;

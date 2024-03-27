@@ -7,6 +7,8 @@ import de.newrp.API.Script;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Berufe.Duty;
 import de.newrp.Government.Straftat;
+import de.newrp.Organisationen.Organisation;
+import de.newrp.Player.Mobile;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -105,6 +107,19 @@ public class Arrest implements CommandExecutor {
             for(int i : Fahndung.getStraftatIDs(tg)) {
                 Beruf.Berufe.POLICE.sendMessage(Fahndung.PREFIX + "Fahndungsgrund: " + Straftat.getReason(i) + " | WantedPunkte: " + Straftat.getWanteds(i));
             }
+        }
+        if(Organisation.hasOrganisation(tg)) {
+            Organisation o = Organisation.getOrganisation(tg);
+            int add = Fahndung.getWanteds(tg) / 2;
+            o.addExp(add);
+        }
+
+        if(Mobile.hasPhone(tg)) {
+            ItemStack is = Mobile.getPhone(tg).getItem();
+            tg.getInventory().removeItem(new ItemStack(Material.IRON_INGOT));
+            tg.getInventory().removeItem(new ItemStack(Material.GOLD_INGOT));
+            tg.getInventory().removeItem(new ItemStack(Material.NETHERITE_INGOT));
+            tg.getInventory().addItem(is);
         }
 
         Log.NORMAL.write(p, "hat " + Script.getName(tg) + " verhaftet (" + wanteds + ")");

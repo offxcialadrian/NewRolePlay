@@ -29,6 +29,7 @@ public class JailTime implements CommandExecutor, Listener {
             if (time > 0 && !Friedhof.isDead(p)) {
                 p.sendMessage(Jail.PREFIX + "Deine Gefängnisstrafe ist noch nicht vorbei.");
                 Bukkit.getScheduler().runTask(main.getInstance(), () -> Jail.arrest(p, time, false));
+                Script.executeAsyncUpdate("DELETE FROM jail WHERE nrp_id=" + Script.getNRPID(p));
             }
         });
     }

@@ -9,10 +9,12 @@ import de.newrp.House.House;
 import de.newrp.House.HouseAddon;
 import de.newrp.Medic.Medikamente;
 import de.newrp.Medic.Rezept;
+import de.newrp.News.Zeitung;
 import de.newrp.Player.Banken;
 import de.newrp.Player.Mobile;
 import de.newrp.Waffen.Waffen;
 import de.newrp.Waffen.Weapon;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -41,6 +43,11 @@ public class PayShop implements Listener {
         ItemMeta meta = i.getItemMeta();
         meta.setLore(Collections.emptyList());
         i.setItemMeta(meta);
+
+        if(type == PaymentType.BANK && !s.acceptCard()) {
+            BuyClick.sendMessage(p, "Wir akzeptieren leider keine Kartenzahlung.");
+            return;
+        }
 
         if(!Banken.hasBank(p)) {
             p.sendMessage(Messages.ERROR + "Du hast kein Bankkonto.");
@@ -179,7 +186,24 @@ public class PayShop implements Listener {
                     Weapon.PISTOLE.addMunition(Script.getNRPID(p), Weapon.PISTOLE.getMagazineSize());
                     break;
                 case Zeitung:
+                    p.getInventory().addItem(Zeitung.zeitung);
                     Beruf.Berufe.NEWS.addKasse(si.getBuyPrice());
+                    break;
+                case SAMSUNG_HANDY:
+                case APPLE_HANDY:
+                case HUAWEI_HANDY:
+                    if (Mobile.hasPhone(p)) {
+                        p.sendMessage(Messages.ERROR + "Du hast bereits ein Handy.");
+                        return;
+                    }
+                    if (si == ShopItem.SAMSUNG_HANDY) {
+                        Mobile.addPhone(p, Mobile.Phones.SAMSUNG);
+                    } else if (si == ShopItem.APPLE_HANDY) {
+                        Mobile.addPhone(p, Mobile.Phones.APPLE);
+                    } else if (si == ShopItem.HUAWEI_HANDY) {
+                        Mobile.addPhone(p, Mobile.Phones.HUAWEI);
+                    }
+                    Mobile.getPhone(p).setAkku(p, Mobile.getPhone(p).getMaxAkku());
                     break;
                 case SCHMERZMITTEL:
                 case ENTZUENDUNGSHEMMENDE_SALBE:
@@ -221,11 +245,6 @@ public class PayShop implements Listener {
                     break;
             }
 
-            if (Mobile.isPhone(i) && Mobile.hasPhone(p)) {
-                p.sendMessage(Messages.ERROR + "Du hast bereits ein Handy.");
-                return;
-            }
-
             if (Mobile.isPhone(i) && !Mobile.hasCloud(p)) {
                 p.sendMessage(Messages.ERROR + "Du hast deine Daten nicht in der Cloud gespeichert.");
                 Script.executeAsyncUpdate("DELETE FROM handy_settings WHERE nrp_id = " + Script.getNRPID(p));
@@ -235,12 +254,6 @@ public class PayShop implements Listener {
             }
 
             if (si.addToInventory()) p.getInventory().addItem(i);
-
-            if (Mobile.isPhone(i)) {
-                p.getInventory().addItem(new ItemBuilder(Material.IRON_INGOT).setName("§c" + p.getName() + "s " + ChatColor.stripColor(si.getName())).build());
-                Mobile.hasCloud(p);
-                Mobile.getPhone(p).setAkku(p, Mobile.getPhone(p).getMaxAkku());
-            }
 
             if (type == PaymentType.BANK) {
                 Cashflow.addEntry(p, -price, "Einkauf: " + si.getName());

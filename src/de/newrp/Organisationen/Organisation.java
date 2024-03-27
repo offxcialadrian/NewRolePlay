@@ -21,11 +21,11 @@ import java.util.List;
 
 public enum Organisation {
 
-    FALCONE(1, "Falcone-Famiglia",  true, false, false, 158, TeamspeakServerGroup.FALCONE,  new ForumGroup[]{ForumGroup.FALCONE, ForumGroup.FALCONE_LEADER}, OrgSpray.FraktionSpray.FALCONE),
-    KARTELL(2, "puertoricanisches-Kartell",  true, false, false, 119, TeamspeakServerGroup.KARTELL,  new ForumGroup[]{ForumGroup.KARTELL, ForumGroup.KARTELL_LEADER}, OrgSpray.FraktionSpray.KARTELL),
-    BRATERSTWO(3, "Braterstwo",  true, false, false, 143, TeamspeakServerGroup.BRATERSTWO,  new ForumGroup[]{ForumGroup.BRATERSTWO, ForumGroup.BRATERSTWO_LEADER}, OrgSpray.FraktionSpray.BRATERSTWO),
-    CORLEONE(4, "Corleone-Familie",  true, false, false, 131, TeamspeakServerGroup.CORLEONE,  new ForumGroup[]{ForumGroup.CORLEONE, ForumGroup.CORLEONE_LEADER}, OrgSpray.FraktionSpray.CORLEONE),
-    GROVE(5, "Grove-Street",  true, false, false, 170, TeamspeakServerGroup.GROVE,  new ForumGroup[]{ForumGroup.GROVE, ForumGroup.GROVE_LEADER}, OrgSpray.FraktionSpray.GROVE);
+    FALCONE(1, "Falcone-Famiglia",  true, false, false, 158, new Location(Script.WORLD, 761, 119, 847, 258.50473f, 17.865908f), TeamspeakServerGroup.FALCONE,  new ForumGroup[]{ForumGroup.FALCONE, ForumGroup.FALCONE_LEADER}, OrgSpray.FraktionSpray.FALCONE),
+    KARTELL(2, "puertoricanisches-Kartell",  true, false, false, 119, new Location(Script.WORLD, 230, 68, 1110, 1.5193672f, 16.320272f), TeamspeakServerGroup.KARTELL,  new ForumGroup[]{ForumGroup.KARTELL, ForumGroup.KARTELL_LEADER}, OrgSpray.FraktionSpray.KARTELL),
+    BRATERSTWO(3, "Braterstwo",  true, false, false, 143, new Location(Script.WORLD, 556, 77, 1268, -263.88275f, 10.649914f), TeamspeakServerGroup.BRATERSTWO,  new ForumGroup[]{ForumGroup.BRATERSTWO, ForumGroup.BRATERSTWO_LEADER}, OrgSpray.FraktionSpray.BRATERSTWO),
+    CORLEONE(4, "Corleone-Familie",  true, false, false, 131, new Location(Script.WORLD, 183, 104, 479, -268.55347f, 14.808363f), TeamspeakServerGroup.CORLEONE,  new ForumGroup[]{ForumGroup.CORLEONE, ForumGroup.CORLEONE_LEADER}, OrgSpray.FraktionSpray.CORLEONE),
+    GROVE(5, "Grove-Street",  true, false, false, 170, new Location(Script.WORLD, 752, 54, 1266, 193.52417f, 13.093105f), TeamspeakServerGroup.GROVE,  new ForumGroup[]{ForumGroup.GROVE, ForumGroup.GROVE_LEADER}, OrgSpray.FraktionSpray.GROVE);
 
     private final String name;
     int id;
@@ -33,17 +33,19 @@ public enum Organisation {
     boolean duty;
     boolean equip;
     int channelid;
+    Location dbank;
     TeamspeakServerGroup serverGroup;
     ForumGroup[] forumGroup;
     OrgSpray.FraktionSpray fraktionSpray;
 
-    Organisation(int id, String name, boolean kasse, boolean duty, boolean equip, int channelid, TeamspeakServerGroup serverGroup, ForumGroup[] forumGroup, OrgSpray.FraktionSpray fraktionSpray) {
+    Organisation(int id, String name, boolean kasse, boolean duty, boolean equip, int channelid, Location dbank, TeamspeakServerGroup serverGroup, ForumGroup[] forumGroup, OrgSpray.FraktionSpray fraktionSpray) {
         this.id = id;
         this.name = name;
         this.kasse = kasse;
         this.duty = duty;
         this.equip = equip;
         this.channelid = channelid;
+        this.dbank = dbank;
         this.serverGroup = serverGroup;
         this.forumGroup = forumGroup;
         this.fraktionSpray = fraktionSpray;
@@ -114,6 +116,24 @@ public enum Organisation {
             level_cost += 173;
         }
         return level_cost;
+    }
+
+    public ArrayList<Location> getDoors() {
+        ArrayList<Location> locs = new ArrayList<>();
+        try (Statement stmt = main.getConnection().createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT orgID, x, y, z FROM orgadoor WHERE orgID=" + this.id)) {
+            while (rs.next()) {
+                int x = rs.getInt("x");
+                int y = rs.getInt("y");
+                int z = rs.getInt("z");
+                Location loc = new Location(Script.WORLD, x, y, z);
+                if (!locs.contains(loc)) locs.add(loc);
+            }
+            return locs;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return locs;
     }
 
     public OrgSpray.FraktionSpray getFraktionSpray() {
@@ -209,7 +229,7 @@ public enum Organisation {
     }
 
     public boolean hasBlacklist() {
-        return getLevel() >= 2;
+        return getLevel() >= 1;
     }
 
     public static List<Player> getPlayersFromOrganisation(Organisation organisation) {
@@ -254,23 +274,6 @@ public enum Organisation {
         return kasse;
     }
 
-    public ArrayList<Location> getDoors() {
-        ArrayList<Location> locs = new ArrayList<>();
-        try (Statement stmt = main.getConnection().createStatement();
-             ResultSet rs = stmt.executeQuery("SELECT organisationID, x, y, z FROM Organisationsdoor WHERE organisationID=" + this.id)) {
-            while (rs.next()) {
-                int x = rs.getInt("x");
-                int y = rs.getInt("y");
-                int z = rs.getInt("z");
-                Location loc = new Location(Script.WORLD, x, y, z);
-                if (!locs.contains(loc)) locs.add(loc);
-            }
-            return locs;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return locs;
-    }
 
     public int getKasse() {
         try (Statement stmt = main.getConnection().createStatement();

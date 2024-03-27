@@ -6,6 +6,7 @@ import de.newrp.Chat.Me;
 import de.newrp.Police.Handschellen;
 import de.newrp.main;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
@@ -18,12 +19,12 @@ import java.util.concurrent.TimeUnit;
 
 public enum Drogen {
 
-    /*KOKAIN*/PULVER(0, true, "Pulver", new String[]{"Koks", "Kokain", "Pulver"}, null, "g", true),
-    /*MARIHUANA*/KRÄUTER(1, true, "Kräuter", new String[]{"Kräuter", "Kraut", "Marihuana", "Gras", "Weed", "Hanf", "Ott"}, null, "g", true),
-    /*METHAMPHETAMIN*/KRISTALLE(2, true, "Kristalle", new String[]{"Kristalle", "Kristall", "Methamphetamin", "Meth", "Speed", "Chystal"}, null, "g", true),
-    ANTIBIOTIKA(6, false, "Antibiotika", null, DrugPurity.HIGH, " Päckchen", true),
-    SCHWARZPULVER(8, false, "Schwarzpulver", null, DrugPurity.HIGH, " Kisten", false),
-    EISEN(9, false, "Eisen", null, DrugPurity.HIGH, " Stück", false);
+    /*KOKAIN*/PULVER(0, true, "Pulver", new String[]{"Koks", "Kokain", "Pulver"}, null, "g", true, Material.SUGAR),
+    /*MARIHUANA*/KRÄUTER(1, true, "Kräuter", new String[]{"Kräuter", "Kraut", "Marihuana", "Gras", "Weed", "Hanf", "Ott"}, null, "g", true, Material.GREEN_DYE),
+    /*METHAMPHETAMIN*/KRISTALLE(2, true, "Kristalle", new String[]{"Kristalle", "Kristall", "Methamphetamin", "Meth", "Speed", "Chystal"}, null, "g", true, null),
+    ANTIBIOTIKA(6, false, "Antibiotika", null, DrugPurity.HIGH, " Päckchen", true, null),
+    SCHWARZPULVER(8, false, "Schwarzpulver", null, DrugPurity.HIGH, " Kisten", false, null),
+    EISEN(9, false, "Eisen", null, DrugPurity.HIGH, " Stück", false, null);
 
     private final int id;
     private final boolean drug;
@@ -32,12 +33,13 @@ public enum Drogen {
     private final DrugPurity defaultPurity;
     private final String suffix;
     private final boolean consumable;
+    private Material material;
 
 
 
     public static HashMap<String, Integer> taskID = new HashMap<>();
     public static HashMap<String, Drogen> test  = new HashMap<>();
-    Drogen(int id, boolean drug, String name, String[] alternativeNames, DrugPurity defaultPurity, String suffix, boolean consumable) {
+    Drogen(int id, boolean drug, String name, String[] alternativeNames, DrugPurity defaultPurity, String suffix, boolean consumable, Material material) {
         this.id = id;
         this.drug = drug;
         this.name = name;
@@ -45,6 +47,7 @@ public enum Drogen {
         this.defaultPurity = defaultPurity;
         this.suffix = suffix;
         this.consumable = consumable;
+        this.material = material;
     }
 
     public static Drogen getItemByID(int id) {
@@ -95,6 +98,10 @@ public enum Drogen {
 
     public boolean isConsumable() {
         return this.consumable;
+    }
+
+    public Material getMaterial() {
+        return material;
     }
 
     public static int getAddiction(Player p) {

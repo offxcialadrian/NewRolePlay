@@ -304,7 +304,7 @@ public class Lagerarbeiter implements CommandExecutor, Listener {
                 SCORE.remove(p.getName());
                 GFB.LAGERARBEITER.addExp(p, GFB.LAGERARBEITER.getLevel(p) + TOTAL_SCORE.get(p.getName())/2);
                 PayDay.addPayDay(p, (GFB.LAGERARBEITER.getLevel(p) + (TOTAL_SCORE.get(p.getName())))*2);
-                Script.addEXP(p, GFB.LAGERARBEITER.getLevel(p) + TOTAL_SCORE.get(p.getName()));
+                Script.addEXP(p, GFB.LAGERARBEITER.getLevel(p) + TOTAL_SCORE.get(p.getName())*2);
                 new BukkitRunnable() {
                     @Override
                     public void run() {

@@ -41,11 +41,15 @@ public class PayDay extends BukkitRunnable {
 
             int payday = 0;
             int interest = (Script.getMoney(p, PaymentType.BANK) > 0 ? (int) (Banken.getBankByPlayer(p).getInterest() * Script.getMoney(p, PaymentType.BANK)) : (int) (0.2 * Script.getMoney(p, PaymentType.BANK)));
+            if(Script.getMoney(p, PaymentType.BANK)>50000) interest = interest/2;
+            if(Script.getMoney(p, PaymentType.BANK)>100000) interest = interest/3;
             double einkommenssteuer = Steuern.Steuer.EINKOMMENSSTEUER.getPercentage();
             double arbeitslosenversicherung = Steuern.Steuer.ARBEITSLOSENVERSICHERUNG.getPercentage();
             double lohnsteuer = Steuern.Steuer.LOHNSTEUER.getPercentage();
             double gfb_lohnsteuer = Steuern.Steuer.GFB_LOHNSTEUER.getPercentage();
             double krankenversicherung = Steuern.Steuer.KRANKENVERSICHERUNG.getPercentage();
+            if(BeziehungCommand.isMarried(p)) lohnsteuer = lohnsteuer-2.0;
+            if(BeziehungCommand.isMarried(p)) gfb_lohnsteuer = gfb_lohnsteuer-2.0;
             p.sendMessage("§9=== §l§ePayDay §9===");
             p.sendMessage("§8" + Messages.ARROW + " §7Kontostand: " + (Script.getMoney(p, PaymentType.BANK) >= 0 ? "§a" : "§c") + Script.getMoney(p, PaymentType.BANK) + "€");
             p.sendMessage("§8" + Messages.ARROW + " §7Kontoführungsgebühr: §c-" + Banken.getBankByPlayer(p).getKontoKosten() + "€");

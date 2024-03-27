@@ -4,6 +4,7 @@ import de.newrp.API.Messages;
 import de.newrp.API.Navi;
 import de.newrp.API.PaymentType;
 import de.newrp.API.Script;
+import de.newrp.Administrator.Notifications;
 import de.newrp.GFB.GFB;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -29,7 +30,7 @@ public class Sellfisch implements CommandExecutor {
             return true;
         }
 
-        if (GFB.CURRENT.containsKey(p)) {
+        if (GFB.CURRENT.containsKey(p.getName())) {
             p.sendMessage(Messages.ERROR + "Du kannst nicht verkaufen, während du einen GFB-Job hast.");
             return true;
         }
@@ -53,6 +54,10 @@ public class Sellfisch implements CommandExecutor {
             if (is.getType() != Material.TROPICAL_FISH && is.getType() != Material.COD && is.getType() != Material.SALMON && is.getType() != Material.PUFFERFISH)
                 continue;
             p.getInventory().remove(is);
+            if(p.getInventory().getItemInOffHand().getType() != Material.AIR) {
+                Notifications.sendMessage(Notifications.NotificationType.ADVANCED_ANTI_CHEAT, "Verdacht auf SellFisch Buguse bei " + Script.getName(p) + " (Wahrscheinlichkeit: 100%)");
+            }
+            p.getInventory().getItemInOffHand().setType(Material.AIR);
         }
 
         p.sendMessage(Messages.INFO + "Du hast " + i + " Fische für " + price + "€ verkauft.");

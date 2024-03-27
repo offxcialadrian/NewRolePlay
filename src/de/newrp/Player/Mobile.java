@@ -7,6 +7,7 @@ import de.newrp.Government.Stadtkasse;
 import de.newrp.News.BreakingNews;
 import de.newrp.News.Umfrage;
 import de.newrp.Police.Handschellen;
+import de.newrp.Police.Jail;
 import de.newrp.main;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -21,6 +22,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -81,9 +83,9 @@ public class Mobile implements Listener {
             return connection;
         }
 
-        public static Phones getPhone(String s) {
+        public static Phones getPhoneByName(String s) {
             for (Phones phones : Phones.values()) {
-                if (phones.getName().equalsIgnoreCase(s)) {
+                if (phones.getName().contains(s)) {
                     return phones;
                 }
             }
@@ -225,7 +227,7 @@ public class Mobile implements Listener {
     public static boolean isPhone(ItemStack is) {
         if(is == null || is.getType() == Material.AIR) return false;
         for(Phones phones : Phones.values()) {
-            if(Objects.requireNonNull(ChatColor.stripColor(is.getItemMeta().getDisplayName())).endsWith(phones.getName())) {
+            if(Objects.requireNonNull(ChatColor.stripColor(is.getItemMeta().getDisplayName())).contains(phones.getName())) {
                 return true;
             }
         }
@@ -237,7 +239,11 @@ public class Mobile implements Listener {
     }
 
     public static void addPhone(Player p, Phones phone) {
-        p.getInventory().addItem(phone.getItem());
+        ItemStack is = phone.getItem();
+        ItemMeta im = is.getItemMeta();
+        im.setDisplayName("§c" + p.getName() + "s " + phone.getName());
+        is.setItemMeta(im);
+        p.getInventory().addItem(is);
     }
 
     public static void setPhone(Player p, Phones phone) {
@@ -309,6 +315,11 @@ public class Mobile implements Listener {
 
         if(Fesseln.isTiedUp(p) || Handschellen.isCuffed(p)) {
             p.sendMessage(PREFIX + "Du kannst dein Handy nicht benutzen, wenn du gefesselt bist.");
+            return;
+        }
+
+        if(Jail.isInJail(p)) {
+            p.sendMessage(PREFIX + "Du kannst dein Handy nicht benutzen, wenn du im Gefängnis bist.");
             return;
         }
 

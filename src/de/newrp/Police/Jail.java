@@ -108,11 +108,7 @@ public class Jail {
         p.getInventory().setChestplate(new ItemStack(Material.AIR));
         p.teleport(new Location(Script.WORLD, 1032, 69, 556, -180.42438f, 6.574746f));
 
-        if(Organisation.hasOrganisation(p)) {
-            Organisation o = Organisation.getOrganisation(p);
-            int add = (time / 180);
-            o.addExp(add);
-        }
+
         if (msg) p.sendMessage(PREFIX + "Du bist nun für " + (time / 60) + " Minuten im Gefängnis.");
         p.sendMessage(Messages.INFO + "Mit \"/jailtime\" kannst du sehen, wie lange du noch im Gefängnis bist.");
         Script.unfreeze(p);

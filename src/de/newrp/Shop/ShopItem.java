@@ -27,17 +27,17 @@ public enum ShopItem {
     WAFFENSCHRANK(5, "§7Waffenschrank", new ItemStack(Material.CHEST), 10, 1, 20, HouseAddon.WAFFENSCHRANK.getPrice(), 14000, false, false, false, new ShopType[] {ShopType.HOUSEADDON}),
     ALARMANLAGE(7, "§7Alarmanlage", new ItemStack(Material.REDSTONE), 10, 1, 20, HouseAddon.ALARM.getPrice(), 12000, false, false, false, new ShopType[] {ShopType.HOUSEADDON}),
     KUEHLSCHRANK(9, "§7Kühlschrank", new ItemStack(Material.CHEST), 10, 1, 20, HouseAddon.KUEHLSCHRANK.getPrice(), 1200, false, false, false, new ShopType[] {ShopType.HOUSEADDON}),
-    PISTOLE(10, "§7Glory", new ItemStack(Material.IRON_HORSE_ARMOR), 15, 1, 1, 6000, 12000, false, false, false, new ShopType[] {ShopType.GUNSHOP}),
+    PISTOLE(10, "§7Glory", new ItemStack(Material.IRON_HORSE_ARMOR), 15, 1, 1, 2000, 12000, false, false, false, new ShopType[] {ShopType.GUNSHOP}),
     AMMO_9MM(11, "§79mm Munition (" + Weapon.PISTOLE.getName() + ")", new ItemBuilder(Material.ARROW).setAmount(Weapon.PISTOLE.getMagazineSize()).build(), 1, 1, 1, 15, 6000, false, false, false, new ShopType[] {ShopType.GUNSHOP}),
-    AK47(12, "§7Peacekeeper", new ItemStack(Material.DIAMOND_HORSE_ARMOR), 20, 1, 1, 11000, 22000, false, false, false, new ShopType[] {ShopType.GUNSHOP}),
+    AK47(12, "§7Peacekeeper", new ItemStack(Material.DIAMOND_HORSE_ARMOR), 20, 1, 1, 5000, 22000, false, false, false, new ShopType[] {ShopType.GUNSHOP}),
     HEISSE_SCHOKOLADE(43, "§rHeiße Schokolade", new ItemStack(Material.FLOWER_POT), 3, 2, 25, 3, 1800, true, true, false, new ShopType[] {ShopType.CAFE}),
     FILTERKAFFEE(44, "§rFilterkaffee", new ItemStack(Material.FLOWER_POT), 3, 2, 25, 3, 1800, true, true, false, new ShopType[] {ShopType.CAFE}),
     LATTE_MACCHIATO(45, "§rLatte Macchiato", new ItemStack(Material.FLOWER_POT), 3, 2, 25, 3, 1800, true, true, false, new ShopType[] {ShopType.CAFE}),
     ESPRESSO(46, "§rEspresso", new ItemStack(Material.FLOWER_POT), 3, 2, 25, 4, 2100, true, true, false, new ShopType[] {ShopType.CAFE}),
     CRAPPUCHINO(47, "§rCrappuchino", new ItemStack(Material.FLOWER_POT), 3, 2, 25, 3, 1800, true, true, false, new ShopType[] {ShopType.CAFE}),
-    Zeitung(48, "§9Zeitung", de.newrp.News.Zeitung.zeitung, 3, 2, 25, de.newrp.News.Zeitung.getBuyPrice(), 1800, true, true, false, new ShopType[] {ShopType.CAFE, ShopType.SUPERMARKET, ShopType.NEWS}),
-    SCHMERZMITTEL(49, "§fSchmerzmittel", new ItemStack(Material.PAPER), 2, 2, 25, 45, 4900, true, true, false, new ShopType[] {ShopType.PHARMACY, ShopType.SUPERMARKET}),
-    BASEBALLSCHLAEGER(50, "§7Baseballschläger", new ItemStack(Material.BONE), 5, 1, 1, 750, 4500, false, true, false, new ShopType[] {ShopType.GUNSHOP}),
+    Zeitung(48, de.newrp.News.Zeitung.zeitung.getItemMeta().getDisplayName(), de.newrp.News.Zeitung.zeitung, 3, 2, 25, de.newrp.News.Zeitung.getBuyPrice(), 1800, true, false, false, new ShopType[] {ShopType.CAFE, ShopType.SUPERMARKET, ShopType.NEWS}),
+    SCHMERZMITTEL(49, "§fSchmerzmittel", new ItemBuilder(Material.PAPER).setName("§fSchmerzmittel").setAmount(Medikamente.SCHMERZMITTEL_HIGH.getNeeded()).build(), 2, 2, 25, 45, 4900, true, true, false, new ShopType[] {ShopType.PHARMACY, ShopType.SUPERMARKET}),
+    BASEBALLSCHLAEGER(50, "§7Baseballschläger", new ItemBuilder(Material.BONE).setName("§7Baseballschläger").build(), 5, 1, 1, 750, 4500, false, true, false, new ShopType[] {ShopType.GUNSHOP}),
     SAMSUNG_HANDY(52, "§cSamstar", new ItemStack(Material.GOLD_INGOT), 5, 1, 1, 100, 3500, false, false, false, new ShopType[] {ShopType.ELECTRONIC}),
     HUAWEI_HANDY(53, "§cHawaii P55", new ItemStack(Material.IRON_INGOT), 5, 1, 1, 50, 600, false, false, false, new ShopType[] {ShopType.ELECTRONIC}),
     APPLE_HANDY(55, "§cyouPhone 15", new ItemStack(Material.NETHERITE_INGOT), 5, 1, 1, 300, 11000, false, false, false, new ShopType[] {ShopType.ELECTRONIC}),
@@ -83,7 +83,7 @@ public enum ShopItem {
     KABELBINDER(95, "§7Kabelbinder", new ItemBuilder(Material.STRING).setName("§7Kabelbinder").build(), 3, 1, 1, 100, 1900, false, true, false, new ShopType[] {ShopType.GUNSHOP, ShopType.SUPERMARKET}),
     JAGDFLINTE(96, "§7Guardian", new ItemStack(Material.DIAMOND_HOE), 5, 1, 1, 5500, 10000, false, false, false, new ShopType[] {ShopType.JAGDHUETTE}),
     SCHROT(97, "§7Schrot (" + Weapon.JAGDFLINTE.getName() + ")", new ItemBuilder(Material.ARROW).setAmount(Weapon.JAGDFLINTE.getMagazineSize()).build(), 2, 1, 1, 50, 4500, false, false, false, new ShopType[] {ShopType.GUNSHOP}),
-    DEAGLE(98, "§7Ivory", new ItemStack(Material.GOLDEN_HOE), 15, 1, 1, 8300, 16600, false, false, false, new ShopType[] {ShopType.GUNSHOP}),
+    DEAGLE(98, "§7Ivory", new ItemStack(Material.GOLDEN_HOE), 15, 1, 1, 4000, 16600, false, false, false, new ShopType[] {ShopType.GUNSHOP}),
     AMMO_50AE(99, "§7.50AE Munition (" + Weapon.DESERT_EAGLE.getName() + ")", new ItemBuilder(Material.ARROW).setAmount(Weapon.DESERT_EAGLE.getMagazineSize()).build(), 2, 1, 1, 25, 4500, false, false, false, new ShopType[] {ShopType.GUNSHOP}),
     ANGELRUTE(100, "§7Angelrute", new ItemStack(Material.FISHING_ROD), 10, 1, 1, 150, 1590, false, true, false, new ShopType[] {ShopType.ANGELSHOP}),
     STEAK(101, "§fSteak", new ItemBuilder(Material.COOKED_BEEF).setAmount(8).build(), 2, 1, 20, 2, 2000, false, true, false, new ShopType[] {ShopType.FASTFOOD}),
@@ -99,7 +99,7 @@ public enum ShopItem {
     SHOE_8(111, "§7Schuh", Shoe(Color.ORANGE), 1, 1, 1, 50, 500, false, true, false, new ShopType[] {ShopType.SHOE_STORE}),
     SHOE_9(112, "§7Schuh", Shoe(Color.FUCHSIA), 1, 1, 1, 50, 500, false, true, false, new ShopType[] {ShopType.SHOE_STORE}),
     CARROTT(113, "§fKarotte", new ItemBuilder(Material.CARROT).setAmount(16).build(), 2, 1, 20, 1, 2000, false, true, false, new ShopType[] {ShopType.GEMUESE}),
-    POTATO(114, "§fBereren", new ItemBuilder(Material.SWEET_BERRIES).setAmount(16).build(), 2, 1, 20, 1, 2000, false, true, false, new ShopType[] {ShopType.GEMUESE}),
+    POTATO(114, "§fBeeren", new ItemBuilder(Material.SWEET_BERRIES).setAmount(16).build(), 2, 1, 20, 1, 2000, false, true, false, new ShopType[] {ShopType.GEMUESE}),
     APPLE(115, "§fApfel", new ItemBuilder(Material.APPLE).setAmount(8).build(), 2, 1, 20, 3, 2000, false, true, false, new ShopType[] {ShopType.GEMUESE}),
     MELON(116, "§fMelone", new ItemBuilder(Material.MELON_SLICE).setAmount(16).build(), 2, 1, 20, 2, 2000, false, true, false, new ShopType[] {ShopType.GEMUESE});
 
@@ -191,6 +191,12 @@ public enum ShopItem {
     }
 
     public ItemStack getItemStack() {
+        ItemStack is = this.is.clone();
+        ItemMeta im = is.getItemMeta();
+        if(!im.hasDisplayName()) {
+            im.setDisplayName(this.name);
+            is.setItemMeta(im);
+        }
         return this.is;
     }
 

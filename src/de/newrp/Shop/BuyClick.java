@@ -117,11 +117,6 @@ public class BuyClick implements Listener {
             }
 
 
-            if(!s.acceptCard()) {
-                sendMessage(p, "Wir akzeptieren leider keine Kartenzahlung.");
-                PayShop.pay(p, PaymentType.CASH, si, s);
-                return;
-            }
             sendMessage(p, "Möchten Sie Bar oder mit Karte bezahlen?");
             int price = (Buy.amount.containsKey(p.getName()) ? si.getPrice(s) * Buy.amount.get(p.getName()) : si.getPrice(s));
             Inventory gui = p.getServer().createInventory(null, InventoryType.HOPPER, "§8[§aZahlungsmethode§8]");
@@ -161,13 +156,7 @@ public class BuyClick implements Listener {
 
     public static void sendMessage(Player p, String msg) {
         Set<String> foundNames = Chat.getMentionedNames(msg);
-        for (Player online : Bukkit.getOnlinePlayers()) {
-            double distance = p.getLocation().distance(online.getLocation());
-            if (distance > 30.0D) {
-                continue;
-            }
-            online.sendMessage(constructMessage("Verkäufer", msg, "sagt", foundNames, distance, Chat.ChatType.NORMAL));
-        }
+        p.sendMessage(constructMessage("Verkäufer", msg, "sagt", foundNames, 1, Chat.ChatType.NORMAL));
     }
 
 }

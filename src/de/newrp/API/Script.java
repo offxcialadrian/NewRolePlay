@@ -123,10 +123,9 @@ public class Script {
             if(Beruf.getBeruf(p) == Beruf.Berufe.GOVERNMENT) color = "§3";
             if(Beruf.getBeruf(p) == Beruf.Berufe.NEWS) color = "§6";
         }
-        if (SDuty.isSDuty(p)) p.setPlayerListName("§c§lNRP §8× §9" + p.getName());
         if (!SDuty.isSDuty(p)) p.setPlayerListName("§r" + p.getName());
-        if (Duty.isInDuty(p) && Beruf.getAbteilung(p) != Abteilung.Abteilungen.ZIVILPOLICE)
-            p.setPlayerListName(color + p.getPlayerListName());
+        if (SDuty.isSDuty(p)) p.setPlayerListName("§c§lNRP §8× §9" + p.getName());
+        if (Duty.isInDuty(p) && Beruf.getAbteilung(p) != Abteilung.Abteilungen.ZIVILPOLICE)  p.setPlayerListName(color + p.getPlayerListName());
         if (BuildMode.isInBuildMode(p)) p.setPlayerListName("§e§lB §8× §r" + p.getPlayerListName());
         if (TicketCommand.isInTicket(p)) p.setPlayerListName("§b§lT §8× §r" + p.getPlayerListName());
     }
@@ -587,6 +586,30 @@ public class Script {
     public static String getNameInDB(Player p) {
         try (Statement stmt = main.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT name FROM nrp_id WHERE uuid='" + p.getUniqueId() + "'")) {
+            if (rs.next()) {
+                return rs.getString("name");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static String getNameInDB(OfflinePlayer p) {
+        try (Statement stmt = main.getConnection().createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT name FROM nrp_id WHERE uuid='" + p.getUniqueId() + "'")) {
+            if (rs.next()) {
+                return rs.getString("name");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static String getNameInDB(int id) {
+        try (Statement stmt = main.getConnection().createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT name FROM nrp_id WHERE id=" + id)) {
             if (rs.next()) {
                 return rs.getString("name");
             }

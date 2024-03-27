@@ -5,6 +5,7 @@ import de.newrp.Berufe.Beruf;
 import de.newrp.Berufe.Duty;
 import de.newrp.Call.Call;
 import de.newrp.House.House;
+import de.newrp.Player.BeziehungCommand;
 import de.newrp.Player.Mobile;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -95,6 +96,8 @@ public static HashMap<String, Long> cooldown = new HashMap<>();
                         p.sendMessage(PREFIX + " §8- §6Geschlecht: §cMännlich");
                     } else if (Script.getGender(tg).equals(Gender.FEMALE)) {
                         p.sendMessage(PREFIX +" §8- §6Geschlecht: §cWeiblich");
+                    }if(BeziehungCommand.isMarried(tg)) {
+                        p.sendMessage(PREFIX + " §8- §6Verheiratet mit: §c" + BeziehungCommand.getPartner(p).getName());
                     }
                     if (House.hasHouse(Script.getNRPID(tg))) {
                         StringBuilder houses = new StringBuilder();

@@ -5,6 +5,7 @@ import de.newrp.API.Script;
 import de.newrp.Administrator.BuildMode;
 import de.newrp.Administrator.SDuty;
 import de.newrp.Berufe.Beruf;
+import de.newrp.Organisationen.Organisation;
 import de.newrp.Police.Ramm;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -48,6 +49,7 @@ public class HouseOpen implements Listener {
             }
         }
         if (isPlayersDoor(p, b)) return true;
+        if (orgDoor(p, b)) return true;
         return berufsDoor(p, b);
     }
 
@@ -61,6 +63,18 @@ public class HouseOpen implements Listener {
         Beruf.Berufe beruf = Beruf.getBeruf(p);
         if(beruf == null) return false;
         ArrayList<Location> locs = beruf.getDoors();
+        if (locs != null) {
+            for (Location l : locs) {
+                if (b.getLocation().equals(l)) return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean orgDoor(Player p, Block b) {
+        Organisation org = Organisation.getOrganisation(p);
+        if(org == null) return false;
+        ArrayList<Location> locs = org.getDoors();
         if (locs != null) {
             for (Location l : locs) {
                 if (b.getLocation().equals(l)) return true;

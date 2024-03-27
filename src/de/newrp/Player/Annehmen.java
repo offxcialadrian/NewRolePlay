@@ -81,6 +81,35 @@ public class Annehmen implements CommandExecutor {
             TeamSpeak.sync(Script.getNRPID(p));
             Forum.syncPermission(p);
 
+        } else if(offer.containsKey(p.getName() + ".beziehung")) {
+            Player tg = Script.getPlayer(offer.get(p.getName() + ".beziehung"));
+            if (tg == null) {
+                p.sendMessage(Messages.PLAYER_NOT_FOUND);
+                return true;
+            }
+
+            if (BeziehungCommand.hasRelationship(p)) {
+                p.sendMessage(Messages.ERROR + "Du hast bereits eine Beziehung.");
+                return true;
+            }
+
+            if (BeziehungCommand.hasRelationship(tg)) {
+                p.sendMessage(Messages.ERROR + Script.getName(tg) + " ist bereits in einer Beziehung.");
+                return true;
+            }
+
+            if (tg == p) {
+                p.sendMessage(Messages.ERROR + "Du kannst nicht mit dir selbst in einer Beziehung sein.");
+                return true;
+            }
+
+            BeziehungCommand.createRelationship(p, tg);
+            p.sendMessage(ACCEPTED + "Du bist nun mit " + Script.getName(tg) + " in einer Beziehung.");
+            tg.sendMessage(ACCEPTED + "Du bist nun mit " + Script.getName(p) + " in einer Beziehung.");
+            new Particle(org.bukkit.Particle.HEART, p.getEyeLocation(), false, 0.001F, 0.001F, 0.001F, 0.001F, 2).sendAll();
+            new Particle(org.bukkit.Particle.HEART, tg.getEyeLocation(), false, 0.001F, 0.001F, 0.001F, 0.001F, 2).sendAll();
+            offer.remove(p.getName() + ".beziehung");
+
         } else if(offer.containsKey(p.getName() + ".vertrag.from")) {
             Player tg = Script.getPlayer(offer.get(p.getName() + ".vertrag.from"));
             if (tg == null) {
