@@ -1,23 +1,58 @@
 package de.newrp.Organisationen;
 
 import de.newrp.API.Messages;
+import de.newrp.API.Navi;
 import de.newrp.API.Script;
+import de.newrp.Administrator.BuildMode;
+import de.newrp.Administrator.GoTo;
+import de.newrp.Administrator.SDuty;
 import de.newrp.Player.AFK;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.util.StringUtil;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
-public class BlackListCommand implements CommandExecutor, Listener {
+public class BlackListCommand implements CommandExecutor, Listener, TabCompleter {
+
+    @Override
+    public List<String> onTabComplete(CommandSender cs, Command cmd, String alias, String[] args) {
+        Player p = (Player) cs;
+        if (cmd.getName().equalsIgnoreCase("bl") || cmd.getName().equalsIgnoreCase("blacklist")) {
+            if (!Organisation.hasOrganisation(p)) return Collections.EMPTY_LIST;
+            final List<String> oneArgList = new ArrayList<>();
+            final List<String> completions = new ArrayList<>();
+            for (Reasons reason : Reasons.getReasons(Organisation.getOrganisation(p))) {
+                oneArgList.add(reason.getName().replace(" ", "-"));
+            }
+
+            if (args.length == 1) {
+                return null;
+            }
+
+            if (args.length == 2) {
+                return null;
+            }
+
+            if (args.length >= 3) {
+                StringUtil.copyPartialMatches(args[args.length - 1], oneArgList, completions);
+            }
+
+            Collections.sort(completions);
+            return completions;
+        }
+        return Collections.EMPTY_LIST;
+    }
 
     public enum Reasons {
         GANGZONE("Gangzones", 500, 50, new Organisation[] {Organisation.CORLEONE}),
@@ -86,6 +121,14 @@ public class BlackListCommand implements CommandExecutor, Listener {
                 if(r.getName().equalsIgnoreCase(name.replace("-"," "))) return r;
             }
             return null;
+        }
+
+        public static ArrayList<Reasons> getReasons(Organisation o) {
+            ArrayList<Reasons> reasons = new ArrayList<>();
+            for(Reasons r : values()) {
+                if(r.hasReason(o)) reasons.add(r);
+            }
+            return reasons;
         }
 
 
@@ -175,6 +218,12 @@ public class BlackListCommand implements CommandExecutor, Listener {
                 p.sendMessage(Blacklist.PREFIX + "Der Spieler ist nicht auf der Blacklist.");
                 return true;
             }
+
+            if(Organisation.getRank(p) < 4) {
+                p.sendMessage(Messages.NO_PERMISSION);
+                return true;
+            }
+
             Blacklist.remove(tg, o);
             p.sendMessage(Blacklist.PREFIX + "Der Spieler wurde von der Blacklist entfernt.");
             tg.sendMessage(Blacklist.PREFIX + "Du wurdest von der Blacklist der " + o.getName() + " entfernt.");
@@ -199,6 +248,26 @@ public class BlackListCommand implements CommandExecutor, Listener {
                 return true;
             }
 
+            if(tg == p) {
+                p.sendMessage(Blacklist.PREFIX + "Du kannst dich nicht selbst auf die Blacklist setzen.");
+                return true;
+            }
+
+            if(Organisation.hasOrganisation(tg) && Organisation.getOrganisation(tg) == o) {
+                p.sendMessage(Blacklist.PREFIX + "Du kannst keine Mitglieder deiner Organisation auf die Blacklist setzen.");
+                return true;
+            }
+
+            if(Organisation.getRank(p) < 3) {
+                p.sendMessage(Messages.NO_PERMISSION);
+                return true;
+            }
+
+            if(SDuty.isSDuty(tg)) {
+                p.sendMessage(Blacklist.PREFIX + "Der Spieler ist im Supporter-Dienst.");
+                return true;
+            }
+
             ArrayList<Reasons> reason = new ArrayList<>();
 
             for(int i = 2; i < args.length; i++) {
@@ -212,7 +281,7 @@ public class BlackListCommand implements CommandExecutor, Listener {
                     continue;
                 }
 
-                reason.add(Reasons.getReason(args[i]));
+                reason.add(Reasons.getReason(args[i].replace("-"," ")));
             }
 
             if(reason.isEmpty()) {
@@ -224,13 +293,23 @@ public class BlackListCommand implements CommandExecutor, Listener {
             int price = 0;
             int kills = 0;
             for(Reasons r : reason) {
-                reasons.append(r.getName()).append(", ");
                 price += r.getPrice();
                 kills += r.getKills();
+                if(reason.indexOf(r) != reason.size()-1) {
+                    reasons.append(r.getName()).append(", ");
+                } else {
+                    reasons.append(r.getName());
+                }
             }
 
-            price = Math.min(5000, price*(Math.min(1, o.getLevel()/2)));
-            kills = Math.min(50, kills*(Math.min(1, o.getLevel()/2)));
+            int orglevel = o.getLevel();
+            if(orglevel == 1) {
+                price = Math.min(5000, price);
+                kills = Math.min(50, kills);
+            } else {
+                price = Math.min(5000, price*(Math.min(1, o.getLevel()/2)));
+                kills = Math.min(50, kills*(Math.min(1, o.getLevel()/2)));
+            }
 
 
             Blacklist.add(tg, o, reasons.toString(), kills, price);

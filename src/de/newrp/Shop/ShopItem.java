@@ -30,13 +30,13 @@ public enum ShopItem {
     PISTOLE(10, "§7Glory", new ItemStack(Material.IRON_HORSE_ARMOR), 15, 1, 1, 2000, 12000, false, false, false, new ShopType[] {ShopType.GUNSHOP}),
     AMMO_9MM(11, "§79mm Munition (" + Weapon.PISTOLE.getName() + ")", new ItemBuilder(Material.ARROW).setAmount(Weapon.PISTOLE.getMagazineSize()).build(), 1, 1, 1, 15, 6000, false, false, false, new ShopType[] {ShopType.GUNSHOP}),
     AK47(12, "§7Peacekeeper", new ItemStack(Material.DIAMOND_HORSE_ARMOR), 20, 1, 1, 5000, 22000, false, false, false, new ShopType[] {ShopType.GUNSHOP}),
-    HEISSE_SCHOKOLADE(43, "§rHeiße Schokolade", new ItemStack(Material.FLOWER_POT), 3, 2, 25, 3, 1800, true, true, false, new ShopType[] {ShopType.CAFE}),
+    HEISSE_SCHOKOLADE(43, "§rHeiße Schokolade",new ItemBuilder(Material.FLOWER_POT).setName("§rHeiße Schokolade").build(), 3, 2, 25, 3, 1800, true, true, false, new ShopType[] {ShopType.CAFE}),
     FILTERKAFFEE(44, "§rFilterkaffee", new ItemBuilder(Material.FLOWER_POT).setName("§rFilterkaffee").build(), 3, 2, 25, 3, 1800, true, true, false, new ShopType[] {ShopType.CAFE}),
     LATTE_MACCHIATO(45, "§rLatte Macchiato", new ItemBuilder(Material.FLOWER_POT).setName("§rLatte Macchiato").build(), 3, 2, 25, 3, 1800, true, true, false, new ShopType[] {ShopType.CAFE}),
     ESPRESSO(46, "§rEspresso", new ItemBuilder(Material.FLOWER_POT).setName("§rEspresso").build(), 3, 2, 25, 4, 2100, true, true, false, new ShopType[] {ShopType.CAFE}),
     CRAPPUCHINO(47, "§rCrappuchino", new ItemBuilder(Material.FLOWER_POT).setName("§rCrappuchino").build(), 3, 2, 25, 3, 1800, true, true, false, new ShopType[] {ShopType.CAFE}),
     Zeitung(48, de.newrp.News.Zeitung.zeitung.getItemMeta().getDisplayName(), de.newrp.News.Zeitung.zeitung, 3, 2, 25, de.newrp.News.Zeitung.getBuyPrice(), 1800, true, false, false, new ShopType[] {ShopType.CAFE, ShopType.SUPERMARKET, ShopType.NEWS}),
-    SCHMERZMITTEL(49, "§fSchmerzmittel", new ItemBuilder(Material.PAPER).setName("§fSchmerzmittel").setAmount(Medikamente.SCHMERZMITTEL_HIGH.getNeeded()).build(), 2, 2, 25, 45, 4900, true, true, false, new ShopType[] {ShopType.PHARMACY, ShopType.SUPERMARKET}),
+    SCHMERZMITTEL(49, "§fSchmerzmittel", new ItemBuilder(Material.PAPER).setName("§fSchmerzmittel").setAmount(Medikamente.SCHMERZMITTEL.getNeeded()).build(), 2, 2, 25, 45, 4900, true, true, false, new ShopType[] {ShopType.PHARMACY}),
     BASEBALLSCHLAEGER(50, "§7Baseballschläger", new ItemBuilder(Material.BONE).setName("§7Baseballschläger").build(), 5, 1, 1, 750, 4500, false, true, false, new ShopType[] {ShopType.GUNSHOP}),
     SAMSUNG_HANDY(52, "§cSamstar", new ItemBuilder(Material.GOLD_INGOT).setName("§cSamstar").build(), 5, 1, 1, 100, 3500, false, false, false, new ShopType[] {ShopType.ELECTRONIC}),
     HUAWEI_HANDY(53, "§cHawaii P55", new ItemBuilder(Material.IRON_INGOT).setName("§cHawaii P55").build(), 5, 1, 1, 50, 600, false, false, false, new ShopType[] {ShopType.ELECTRONIC}),
@@ -46,7 +46,7 @@ public enum ShopItem {
     TRINKWASSER(58, "§7Trinkwasser", new ItemBuilder(Material.POTION).setName("§7Trinkwasser").build(), 3, 1, 1, 2, 500, false, true, false, new ShopType[] {ShopType.SUPERMARKET, ShopType.CAFE, ShopType.NEWS}),
     AMMO_762MM(59, "§7.762mm Munition (" + Weapon.AK47.getName() + ")", new ItemBuilder(Material.ARROW).setAmount(Weapon.AK47.getMagazineSize()).build(), 1, 1, 1, 30, 3000, false, false, false, new ShopType[] {ShopType.GUNSHOP}),
     KEVLAR(51, "§7Schutzweste", Script.kevlar(1), 20, 1, 1, 2900, 14900, false, true, false, new ShopType[] {ShopType.GUNSHOP}),
-    SCHMERZMITTEL_HIGH(60, "§fSchmerzmittel (High)", new ItemBuilder(Material.PAPER).setName("§fSchmerzmittel (High)").setAmount(Medikamente.SCHMERZMITTEL_HIGH.getNeeded()).build(), 2, 2, 25, 65, 6100, true, true, false, new ShopType[] {ShopType.PHARMACY}),
+    SCHMERZMITTEL_HIGH(60, "§fSchmerzmittel (High)", new ItemBuilder(Material.PAPER).setName("§fSchmerzmittel (High)").setAmount(Medikamente.SCHMERZMITTEL_HIGH.getNeeded()).build(), 2, 2, 25, 65, 6100, true, true, false, new ShopType[] {ShopType.PHARMACY, ShopType.SUPERMARKET}),
     ANTIBIOTIKA(61, "§fAntibiotika", new ItemBuilder(Material.PAPER).setName("§fAntibiotika").setAmount(Medikamente.ANTIBIOTIKA.getNeeded()).build(), 5, 2, 25, 75, 4900, true, true, false, new ShopType[] {ShopType.PHARMACY}),
     HUSTENSAFT(62, "§fHustensaft", new ItemBuilder(Material.PAPER).setName("§fHustensaft").setAmount(Medikamente.HUSTENSAFT.getNeeded()).build(), 5, 2, 25, 60, 3400, true, true, false, new ShopType[] {ShopType.PHARMACY}),
     ENTZUENDUNGSHEMMENDE_SALBE(63, "§fEntzündungshemmende Salbe", new ItemBuilder(Material.PAPER).setName("§fEntzündungshemmende Salbe").setAmount(Medikamente.ENTZUENDUNGSHEMMENDE_SALBE.getNeeded()).build(), 5, 2, 25, 30, 2600, true, true, false, new ShopType[] {ShopType.PHARMACY}),
@@ -76,9 +76,9 @@ public enum ShopItem {
     EXECUTIVE_SUITE(88, "§7Executive Suite", new ItemStack(Material.OAK_DOOR), 1, 1, 1, 1, 1, false, false, false, new ShopType[] {ShopType.HOTEL}),
     DELUXE_ZIMMER(89, "§7Deluxe Zimmer", new ItemStack(Material.OAK_DOOR), 1, 1, 1, 1, 1, false, false, false, new ShopType[] {ShopType.HOTEL}),
     PRAESIDENTEN_SUITE(90, "§7Präsidenten Suite", new ItemStack(Material.OAK_DOOR), 1, 1, 1, 1, 1, false, false, false, new ShopType[] {ShopType.HOTEL}),
-    EINZELFAHRASUSWEIS(91, "§6UBahn-Ticket", new ItemBuilder(Material.PAPER).setName("§6UBahn-Ticket [Einzelfahrausweis]").setLore("Verbleibende Fahrten: 1").build(), 1, 1, 1, 3, 1300, false, false, false, new ShopType[] {ShopType.NEWS}),
-    WOCHENFAHRASUSWEIS(92, "§6UBahn-Ticket", new ItemBuilder(Material.PAPER).setName("§6UBahn-Ticket [7 Fahrten]").setLore("Verbleibende Fahrten: 7").build(), 1, 1, 1, 10, 2400, false, false, false, new ShopType[] {ShopType.NEWS}),
-    MONATSFAHRASUSWEIS(93, "§6UBahn-Ticket", new ItemBuilder(Material.PAPER).setName("§6UBahn-Ticket [30 Fahrten]").setLore("Verbleibende Fahrten: 30").build(), 1, 1, 1, 20, 5100, false, false, false, new ShopType[] {ShopType.NEWS}),
+    EINZELFAHRASUSWEIS(91, "§6UBahn-Ticket [Einzelfahrausweis]", new ItemBuilder(Material.PAPER).setName("§6UBahn-Ticket [Einzelfahrausweis]").setLore("Verbleibende Fahrten: 1").build(), 1, 1, 1, 3, 1300, false, false, false, new ShopType[] {ShopType.NEWS}),
+    WOCHENFAHRASUSWEIS(92, "§6UBahn-Ticket [7 Fahrten]", new ItemBuilder(Material.PAPER).setName("§6UBahn-Ticket [7 Fahrten]").setLore("Verbleibende Fahrten: 7").build(), 1, 1, 1, 10, 2400, false, false, false, new ShopType[] {ShopType.NEWS}),
+    MONATSFAHRASUSWEIS(93, "§6UBahn-Ticket [30 Fahrten]", new ItemBuilder(Material.PAPER).setName("§6UBahn-Ticket [30 Fahrten]").setLore("Verbleibende Fahrten: 30").build(), 1, 1, 1, 20, 5100, false, false, false, new ShopType[] {ShopType.NEWS}),
     FALLSCHIRM(94, "§7Fallschirm", new ItemBuilder(Material.ELYTRA).setName("§7Fallschirm").build(), 5, 1, 1, 600, 4100, false, true, false, new ShopType[] {ShopType.GUNSHOP}),
     KABELBINDER(95, "§7Kabelbinder", new ItemBuilder(Material.STRING).setName("§7Kabelbinder").build(), 3, 1, 1, 100, 1900, false, true, false, new ShopType[] {ShopType.GUNSHOP, ShopType.SUPERMARKET}),
     JAGDFLINTE(96, "§7Guardian", new ItemStack(Material.DIAMOND_HOE), 5, 1, 1, 5500, 10000, false, false, false, new ShopType[] {ShopType.JAGDHUETTE}),
@@ -88,20 +88,21 @@ public enum ShopItem {
     ANGELRUTE(100, "§7Angelrute", new ItemBuilder(Material.FISHING_ROD).setName("§7Angelrute").build(), 10, 1, 1, 150, 1590, false, true, false, new ShopType[] {ShopType.ANGELSHOP}),
     STEAK(101, "§fSteak", new ItemBuilder(Material.COOKED_BEEF).setName("§fSteak").setAmount(8).build(), 2, 1, 20, 2, 2000, false, true, false, new ShopType[] {ShopType.FASTFOOD}),
     POMMES(102, "§fPommes", new ItemBuilder(Material.BAKED_POTATO).setName("§fPommes").setAmount(16).build(), 2, 1, 20, 3, 2400, false, true, false, new ShopType[] {ShopType.FASTFOOD}),
-    CHICKEN(103, "§fHähnchen", new ItemBuilder(Material.COOKED_BEEF).setName("§Hähnchen").setAmount(8).build(), 2, 1, 20, 1, 2400, false, true, false, new ShopType[] {ShopType.FASTFOOD}),
-    SHOE_1(104, "§7Schuh", Shoe(Color.BLACK), 1, 1, 1, 50, 500, false, true, false, new ShopType[] {ShopType.SHOE_STORE}),
-    SHOE_2(105, "§7Schuh", Shoe(Color.BLUE), 1, 1, 1, 50, 500, false, true, false, new ShopType[] {ShopType.SHOE_STORE}),
-    SHOE_3(106, "§7Schuh", Shoe(Color.GREEN), 1, 1, 1, 50, 500, false, true, false, new ShopType[] {ShopType.SHOE_STORE}),
-    SHOE_4(107, "§7Schuh", Shoe(Color.RED), 1, 1, 1, 50, 500, false, true, false, new ShopType[] {ShopType.SHOE_STORE}),
-    SHOE_5(108, "§7Schuh", Shoe(Color.PURPLE), 1, 1, 1, 50, 500, false, true, false, new ShopType[] {ShopType.SHOE_STORE}),
-    SHOE_6(109, "§7Schuh", Shoe(Color.YELLOW), 1, 1, 1, 50, 500, false, true, false, new ShopType[] {ShopType.SHOE_STORE}),
-    SHOE_7(110, "§7Schuh", Shoe(Color.WHITE), 1, 1, 1, 50, 500, false, true, false, new ShopType[] {ShopType.SHOE_STORE}),
-    SHOE_8(111, "§7Schuh", Shoe(Color.ORANGE), 1, 1, 1, 50, 500, false, true, false, new ShopType[] {ShopType.SHOE_STORE}),
-    SHOE_9(112, "§7Schuh", Shoe(Color.FUCHSIA), 1, 1, 1, 50, 500, false, true, false, new ShopType[] {ShopType.SHOE_STORE}),
+    CHICKEN(103, "§fHähnchen", new ItemBuilder(Material.COOKED_BEEF).setName("§fHähnchen").setAmount(8).build(), 2, 1, 20, 1, 2400, false, true, false, new ShopType[] {ShopType.FASTFOOD}),
+    SHOE_1(104, "§7Schuh Schwarz", Shoe(Color.BLACK), 1, 1, 1, 50, 500, false, true, false, new ShopType[] {ShopType.SHOE_STORE}),
+    SHOE_2(105, "§7Schuh Blau", Shoe(Color.BLUE), 1, 1, 1, 50, 500, false, true, false, new ShopType[] {ShopType.SHOE_STORE}),
+    SHOE_3(106, "§7Schuh Grün", Shoe(Color.GREEN), 1, 1, 1, 50, 500, false, true, false, new ShopType[] {ShopType.SHOE_STORE}),
+    SHOE_4(107, "§7Schuh Rot", Shoe(Color.RED), 1, 1, 1, 50, 500, false, true, false, new ShopType[] {ShopType.SHOE_STORE}),
+    SHOE_5(108, "§7Schuh Lila", Shoe(Color.PURPLE), 1, 1, 1, 50, 500, false, true, false, new ShopType[] {ShopType.SHOE_STORE}),
+    SHOE_6(109, "§7Schuh Gelb", Shoe(Color.YELLOW), 1, 1, 1, 50, 500, false, true, false, new ShopType[] {ShopType.SHOE_STORE}),
+    SHOE_7(110, "§7Schuh Weiß", Shoe(Color.WHITE), 1, 1, 1, 50, 500, false, true, false, new ShopType[] {ShopType.SHOE_STORE}),
+    SHOE_8(111, "§7Schuh Orange", Shoe(Color.ORANGE), 1, 1, 1, 50, 500, false, true, false, new ShopType[] {ShopType.SHOE_STORE}),
+    SHOE_9(112, "§7Schuh Fuchisa", Shoe(Color.FUCHSIA), 1, 1, 1, 50, 500, false, true, false, new ShopType[] {ShopType.SHOE_STORE}),
     CARROTT(113, "§fKarotte", new ItemBuilder(Material.CARROT).setName("§fKarotte").setAmount(16).build(), 2, 1, 20, 1, 2000, false, true, false, new ShopType[] {ShopType.GEMUESE}),
     POTATO(114, "§fBeeren", new ItemBuilder(Material.SWEET_BERRIES).setName("§fBeeren").setAmount(16).build(), 2, 1, 20, 1, 2000, false, true, false, new ShopType[] {ShopType.GEMUESE}),
     APPLE(115, "§fApfel", new ItemBuilder(Material.APPLE).setName("§fApfel").setAmount(8).build(), 2, 1, 20, 3, 2000, false, true, false, new ShopType[] {ShopType.GEMUESE}),
-    MELON(116, "§fMelone", new ItemBuilder(Material.MELON_SLICE).setName("§fMelone").setAmount(16).build(), 2, 1, 20, 2, 2000, false, true, false, new ShopType[] {ShopType.GEMUESE});
+    MELON(116, "§fMelone", new ItemBuilder(Material.MELON_SLICE).setName("§fMelone").setAmount(16).build(), 2, 1, 20, 2, 2000, false, true, false, new ShopType[] {ShopType.GEMUESE}),
+    HANDY_REPAIR(117, "§7Handy Reparatur", new ItemBuilder(Material.ANVIL).setName("§7Handy Reparatur").build(), 1, 1, 1, 100, 5000, false, false, false, new ShopType[] {ShopType.ELECTRONIC});
 
 
     private final int id;
@@ -230,18 +231,6 @@ public enum ShopItem {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }
-
-    public int getAmount(Shops b) {
-        try (Statement stmt = main.getConnection().createStatement();
-             ResultSet rs = stmt.executeQuery("SELECT amount FROM shopprice WHERE shopID=" + b.getID() + " AND itemID=" + getID())) {
-            if (rs.next()) {
-                return rs.getInt("amount");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return 0;
     }
 
     public int getPrice(Shops b) {

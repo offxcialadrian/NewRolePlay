@@ -5,6 +5,7 @@ import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.Administrator.BuildMode;
 import de.newrp.Berufe.Equip;
+import de.newrp.GFB.GFB;
 import de.newrp.Waffen.Weapon;
 import de.newrp.Waffen.WeaponData;
 import de.newrp.main;
@@ -119,6 +120,11 @@ public class Selfstorage implements CommandExecutor, Listener {
 
         if(BuildMode.isInBuildMode(p)) {
             p.sendMessage(Messages.ERROR + "Du kannst diesen Befehl nicht im BuildMode nutzen.");
+            return true;
+        }
+
+        if(GFB.CURRENT.containsKey(p)) {
+            p.sendMessage(Messages.ERROR + "Du kannst diesen Befehl nicht während eines GFBs nutzen.");
             return true;
         }
 

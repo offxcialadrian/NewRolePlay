@@ -61,7 +61,7 @@ public enum Navi {
     KARTELL("Puertoricanisches Kartell", new Location(Script.WORLD, 198, 66, 1120, -90.13266f, 0.2703893f)),
     JVA("Justizvollzugsanstalt", new Location(Script.WORLD, 999, 63, 573, -90.138885f, 2.3394775f)),
     BLUMENHANDLUNG("Blumenhandlung", new Location(Script.WORLD, 316, 76, 932, -181.94073f, 90.0f)),
-    HOTEL("Hotel", new Location(Script.WORLD, 316, 76, 932, -181.94073f, 90.0f));
+    HOTEL("Hotel", new Location(Script.WORLD, 246, 66, 971, -89.51709f, 1.3498956f));
 
 
     private final String name;

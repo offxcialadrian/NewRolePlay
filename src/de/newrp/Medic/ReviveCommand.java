@@ -50,9 +50,9 @@ public class ReviveCommand implements CommandExecutor {
             long time = System.currentTimeMillis();
             if (cooldown.containsKey(p.getName()) && !Script.isInTestMode()) {
                 Long lastUsage = cooldown.get(p.getName());
-                if (lastUsage + 300 * 1000 > time) {
-                    p.sendMessage(Messages.ERROR + "Du kannst erst in " + Script.getRemainingTime(lastUsage+300+1000) + " einen Spieler wiederbeleben.");
-                    return true;
+                if (lastUsage + 5 * 60 * 1000 > time) {
+                    p.sendMessage(Messages.ERROR + "Du kannst nur alle 5 Minuten einen Spieler wiederbeleben.");
+                    return false;
                 }
             }
 

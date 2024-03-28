@@ -15,40 +15,9 @@ public class InstallAddon implements CommandExecutor {
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
         Player p = (Player) cs;
 
-        House house = House.getNearHouse(p.getLocation(), 5);
-        if (house == null) {
-            p.sendMessage(Messages.ERROR + " §cDu bist in keinem Haus.");
-            return true;
-        }
+        p.sendMessage(Messages.ERROR + "Das Installieren des Addons funktioniert nun mit Rechtsklick auf das Hausschild.");
 
-        if (house.getOwner() != Script.getNRPID(p)) {
-            p.sendMessage(Messages.ERROR + " §cDu bist nicht der Besitzer dieses Hauses.");
-            return true;
-        }
 
-        HouseAddon addon = PayShop.houseaddon.get(p.getName());
-        if (addon == null) {
-            p.sendMessage(Messages.ERROR + " Du hast kein Addon gekauft.");
-            return true;
-        }
-
-        if (house.hasAddon(addon)) {
-            p.sendMessage(Messages.ERROR + " Dieses Haus hat bereits dieses Addon.");
-            return true;
-        }
-
-        if(addon == HouseAddon.SLOT) {
-            house.setSlots(house.getSlots() + 1);
-            Log.NORMAL.write(p, "hat das Addon " + addon.getName() + " installiert.");
-            p.sendMessage( "§8[§6Haus§8] §6" + Messages.ARROW + " Du hast das Addon " + addon.getName() + " installiert.");
-            PayShop.houseaddon.remove(p.getName());
-            return true;
-        }
-
-        house.addAddon(addon);
-        Log.NORMAL.write(p, "hat das Addon " + addon.getName() + " installiert.");
-        p.sendMessage( "§8[§6Haus§8] §6" + Messages.ARROW + " Du hast das Addon " + addon.getName() + " installiert.");
-        PayShop.houseaddon.remove(p.getName());
 
         return false;
     }

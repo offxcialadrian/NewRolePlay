@@ -58,11 +58,14 @@ public class AcceptNotruf implements CommandExecutor, Listener {
             return true;
         }
 
-        for(Player all : Beruf.getBeruf(p).getMembers()) {
-            if(accept.containsKey(all) && accept.get(all).equals(tg)) {
-                p.sendMessage(Messages.ERROR + "Dieser Notruf wurde bereits angenommen.");
-                return true;
-            }
+        if(accept.containsKey(p)) {
+            p.sendMessage(Messages.ERROR + "Du hast bereits einen Notruf angenommen.");
+            return true;
+        }
+
+        if(accept.containsValue(tg)) {
+            p.sendMessage(Messages.ERROR + "Der Notruf wurde bereits angenommen.");
+            return true;
         }
 
         new Route(p.getName(), Script.getNRPID(p), p.getLocation(), Notruf.call.get(tg)).start();

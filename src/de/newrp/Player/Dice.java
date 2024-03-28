@@ -19,7 +19,7 @@ public class Dice implements CommandExecutor {
             return true;
         }
 
-        Me.sendMessage(p, "hat eine " + Script.getRandom(1, 6) + " gewürfelt.");
+        Script.sendLocalMessage(7, p, "§8[§cDice§8] §c" + Messages.ARROW + " §7" + Script.getName(p) + " hat eine " + Script.getRandom(1, 6) + " gewürfelt.");
 
         return false;
     }

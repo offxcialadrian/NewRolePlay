@@ -115,8 +115,9 @@ public class Call {
     public static int getParticipantsAmount(int i) {
         if(ON_CALL.isEmpty()) return 0;
         if(WAITING_FOR_CALL.isEmpty()) return 0;
-        if(!ON_CALL.containsKey(i) && !WAITING_FOR_CALL.containsKey(i)) return 0;
-        return ON_CALL.get(i).size() + WAITING_FOR_CALL.get(i).size();
+        if(ON_CALL.containsKey(i) && !WAITING_FOR_CALL.containsKey(i)) return ON_CALL.get(i).size();
+        if(!ON_CALL.containsKey(i) && WAITING_FOR_CALL.containsKey(i)) return WAITING_FOR_CALL.get(i).size();
+        return 0;
     }
 
     public static List<Player> getParticipants(int i) {

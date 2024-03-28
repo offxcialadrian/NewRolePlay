@@ -33,10 +33,7 @@ public class Schule implements CommandExecutor, Listener {
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
         Player p = (Player) cs;
 
-        if(p.getLocation().distance(new Location(Script.WORLD, 731, 67, 750, 108.154785f, 36.79814f))>5) {
-            p.sendMessage(Messages.ERROR + "Du bist nicht in der Nähe der Schule.");
-            return true;
-        }
+
 
         Achievement.SCHULE.grant(p);
 
@@ -93,6 +90,11 @@ public class Schule implements CommandExecutor, Listener {
                 p.sendMessage(Messages.INFO + "Du musst noch " + mins + " Minuten und " + secs + " Sekunden lernen.");
                 return true;
             }
+            return true;
+        }
+
+        if(p.getLocation().distance(new Location(Script.WORLD, 731, 67, 750, 108.154785f, 36.79814f))>5) {
+            p.sendMessage(Messages.ERROR + "Du bist nicht in der Nähe der Schule.");
             return true;
         }
 

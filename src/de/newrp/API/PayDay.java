@@ -28,6 +28,7 @@ public class PayDay extends BukkitRunnable {
             if (AFK.isAFK(p)) continue;
             if (SDuty.isSDuty(p)) continue;
             if(Checkpoints.hasCheckpoints(p)) continue;
+            if(Passwort.isLocked(p)) continue;
             if (getPayDayTime(p) < 59) {
                 addPayDayTime(p);
                 continue;
@@ -134,11 +135,11 @@ public class PayDay extends BukkitRunnable {
             } else if(Organisation.hasOrganisation(p)) {
                 Organisation org = Organisation.getOrganisation(p);
                 int salary = Organisation.getSalary(p);
-                p.sendMessage("§8" + Messages.ARROW + " §7Lohn/Gehalt: §a+" + salary + "€");
-                payday += salary;
                 if(org.hasKasse()) {
                     if(org.getKasse() >= salary) {
                         org.removeKasse(salary);
+                        p.sendMessage("§8" + Messages.ARROW + " §7Lohn/Gehalt: §a+" + salary + "€");
+                        payday += salary;
                     } else {
                         org.sendMessage("§8[§eOrganisationskasse§8] §eDie " + org.getName() + " ist Insolvent. Alle Gehälter werden auf 0€ gesetzt");
                         for(OfflinePlayer members : org.getAllMembers()) {

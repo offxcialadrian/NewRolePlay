@@ -30,6 +30,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
@@ -112,9 +113,9 @@ public class Handschellen implements Listener {
 
         LAST_CLICK.put(p.getName(), time);
         LEVEL.put(p.getName(), level + 1);
-        progressBar(30,  p);
+        progressBar(isTazed(p)?15:30,  p);
 
-        if (level >= 30) {
+        if (level >= (isTazed(p)?15:30)) {
             PlayerInventory inv = p.getInventory();
             ItemStack is = inv.getItemInMainHand();
             if (is.getAmount() > 1) {
@@ -180,6 +181,10 @@ public class Handschellen implements Listener {
                 e.setDamage(0);
             }
         }
+    }
+
+    public static boolean isTazed(Player p) {
+        return p.hasPotionEffect(PotionEffectType.JUMP);
     }
 
     @EventHandler

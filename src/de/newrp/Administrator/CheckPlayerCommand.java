@@ -38,7 +38,7 @@ public class CheckPlayerCommand implements CommandExecutor {
             return true;
         }
 
-        if(Script.isInt(args[0])) {
+        if(Script.isInt(args[0]) && Script.getOfflinePlayer(Integer.parseInt(args[0])) != null) {
             OfflinePlayer offtg = Script.getOfflinePlayer(Integer.parseInt(args[0]));
             if(!offtg.isOnline()) {
                 p.sendMessage("§e§l=== §6" + offtg.getName() + " §8(§cOffline§8) §e§l===");

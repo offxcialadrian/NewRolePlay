@@ -9,6 +9,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 
@@ -176,28 +177,37 @@ public class UBahn {
     }
 
     public static void removeTicket(Player p) {
-        for(ItemStack is : p.getInventory().getContents()) {
-            if(is == null) continue;
-            if(is.getType() != Material.PAPER) continue;
-            if(!is.hasItemMeta()) continue;
-            if(!is.getItemMeta().hasDisplayName()) continue;
-            if(is.getItemMeta().getDisplayName().startsWith("§6UBahn-Ticket")) {
-                if(is.getItemMeta().hasLore()) {
+        for (ItemStack is : p.getInventory().getContents()) {
+            if (is == null) continue;
+            if (is.getType() != Material.PAPER) continue;
+            if (!is.hasItemMeta()) continue;
+            if (!is.getItemMeta().hasDisplayName()) continue;
+            if (is.getItemMeta().getDisplayName().startsWith("§6UBahn-Ticket")) {
+                if (is.getItemMeta().hasLore()) {
                     assert is.getItemMeta().getLore() != null;
-                    int remaining = Integer.parseInt(Script.getLastChar(ChatColor.stripColor(is.getItemMeta().getLore().get(0))));
+                    int remaining = Integer.parseInt(ChatColor.stripColor(is.getItemMeta().getLore().get(0).replace("Verbleibende Fahrten: ", "")));
 
-                    if(remaining == 1) {
-                        p.getInventory().remove(is);
-                        return;
+                    if (remaining <= 1) {
+                        // Decrease amount if remaining is 1 or less
+                        if (is.getAmount() > 1) {
+                            is.setAmount(is.getAmount() - 1);
+                        } else {
+                            // Remove the ticket if only one ride is left
+                            p.getInventory().removeItem(is);
+                        }
                     } else {
+                        // Decrease the remaining rides
                         ArrayList<String> lore = new ArrayList<>();
                         lore.add("Verbleibende Fahrten: " + (remaining - 1));
-                        is.getItemMeta().setLore(lore);
+                        ItemMeta meta = is.getItemMeta();
+                        meta.setLore(lore);
+                        is.setItemMeta(meta);
                     }
+                    return;
                 }
-                return;
             }
         }
     }
+
 
 }

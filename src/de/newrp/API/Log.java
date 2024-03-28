@@ -29,7 +29,7 @@ public enum Log {
     }
 
     public void write(Player p, String log) {
-        /*Bukkit.getScheduler().runTaskAsynchronously(main.getInstance(), () -> {
+        Bukkit.getScheduler().runTaskAsynchronously(main.getInstance(), () -> {
             try (PreparedStatement stmt = main.getConnection().prepareStatement("INSERT INTO log (id, nrp_id, log, importance, time) VALUES (NULL, ?, ?, ?, NOW());")) {
                 stmt.setInt(1, Script.getNRPID(p));
                 stmt.setString(2, log);
@@ -38,11 +38,11 @@ public enum Log {
             } catch (SQLException e1) {
                 e1.printStackTrace();
             }
-        });*/
+        });
     }
 
     public void write(OfflinePlayer p, String log) {
-        /*Bukkit.getScheduler().runTaskAsynchronously(main.getInstance(), () -> {
+        Bukkit.getScheduler().runTaskAsynchronously(main.getInstance(), () -> {
             try (PreparedStatement stmt = main.getConnection().prepareStatement("INSERT INTO log (id, nrp_id, log, importance, time) VALUES (NULL, ?, ?, ?, NOW());")) {
                 stmt.setInt(1, Script.getNRPID(p));
                 stmt.setString(2, log);
@@ -51,7 +51,7 @@ public enum Log {
             } catch (SQLException e1) {
                 e1.printStackTrace();
             }
-        });*/
+        });
     }
 
     public void write(String log) {

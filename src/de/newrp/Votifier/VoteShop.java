@@ -19,34 +19,32 @@ public class VoteShop implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         Player p = (Player) cs;
-        p.sendMessage(Messages.ERROR + "Der Voteshop ist derzeit deaktiviert.");
+        Inventory inv = p.getServer().createInventory(null, 18, "§l§6Voteshop");
+        inv.setItem(4, Script.setNameAndLore(Script.addGlow(new ItemStack(Material.NETHER_STAR)), "§3§lVoteshop", "§cDu hast §l" + (VoteListener.getVotepoints(Script.getNRPID(p)) > 0 ? VoteListener.getVotepoints(Script.getNRPID(p)) : "keine") + "§c Votepunkte!"));
+        inv.setItem(11, Script.setNameAndLore(new ItemStack(Material.CHEST, Votekiste.NORMAL.getPrice()), "§6Votekiste §7[§3§lNormal§7]", "§c" + Votekiste.NORMAL.getPrice() + " Votepunkte", "§8=========",
+                "§cPremium 1 Tag",
+                "§6750 Exp",
+                "§6500 Exp",
+                "§7Munition",
+                "§7Baseballschläger",
+                "§8..."));
+        inv.setItem(13, Script.setNameAndLore(new ItemStack(Material.CHEST, Votekiste.SPECIAL.getPrice()), "§6Votekiste §7[§3§lSpecial§7]", "§c" + Votekiste.SPECIAL.getPrice() + " Votepunkte", "§8=========",
+                "§cPremium 7 Tage",
+                "§cPremium 3 Tage",
+                "§61500 Exp",
+                "§61250 Exp",
+                "§61000 Exp",
+                "§8..."));
+        inv.setItem(15, Script.setNameAndLore(new ItemStack(Material.CHEST, Votekiste.ULTIMATE.getPrice()), "§6Votekiste §7[§3§lUltimate§7]", "§c" + Votekiste.ULTIMATE.getPrice() + " Votepunkte", "§8=========",
+                "§cPremium 14 Tage",
+                "§cPremium 7 Tage",
+                "§6ChangeToken (Personalausweis)",
+                "§61500 Exp",
+                "§62000 Exp",
+                "§62500 Exp",
+                "§8..."));
+        p.openInventory(inv);
         return true;
-            /*Inventory inv = p.getServer().createInventory(null, 18, "§l§6Voteshop");
-            inv.setItem(4, Script.setNameAndLore(Script.addGlow(new ItemStack(Material.NETHER_STAR)), "§3§lVoteshop", "§cDu hast §l" + (VoteListener.getVotepoints(Script.getNRPID(p))>0?VoteListener.getVotepoints(Script.getNRPID(p)):"keine") + "§c Votepunkte!"));
-            inv.setItem(11, Script.setNameAndLore(new ItemStack(Material.CHEST, Votekiste.NORMAL.getPrice()), "§6Votekiste §7[§3§lNormal§7]", "§c" + Votekiste.NORMAL.getPrice() + " Votepunkte", "§8=========",
-                    "§cPremium 1 Tag",
-                    "§6750 Exp",
-                    "§6500 Exp",
-                    "§7Munition",
-                    "§7Baseballschläger",
-                    "§8..."));
-            inv.setItem(13, Script.setNameAndLore(new ItemStack(Material.CHEST, Votekiste.SPECIAL.getPrice()), "§6Votekiste §7[§3§lSpecial§7]", "§c" + Votekiste.SPECIAL.getPrice() + " Votepunkte", "§8=========",
-                    "§cPremium 7 Tage",
-                    "§cPremium 3 Tage",
-                    "§61500 Exp",
-                    "§61250 Exp",
-                    "§61000 Exp",
-                    "§8..."));
-            inv.setItem(15, Script.setNameAndLore(new ItemStack(Material.CHEST, Votekiste.ULTIMATE.getPrice()), "§6Votekiste §7[§3§lUltimate§7]", "§c" + Votekiste.ULTIMATE.getPrice() + " Votepunkte", "§8=========",
-                    "§cPremium 14 Tage",
-                    "§cPremium 7 Tage",
-                    "§6ChangeToken (Personalausweis)",
-                    "§61500 Exp",
-                    "§62000 Exp",
-                    "§62500 Exp",
-                    "§8..."));
-            p.openInventory(inv);
-        return true;*/
     }
 
 }

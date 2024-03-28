@@ -200,6 +200,15 @@ public class Utils implements Listener {
             fishCooldown.put(e.getPlayer().getName(), System.currentTimeMillis() + 2000);
             e.getPlayer().getInventory().addItem(getRandomFish());
             Script.addEXP(e.getPlayer(), 1);
+            ItemStack rod = e.getPlayer().getInventory().getItemInMainHand();
+            if(rod.getType() == Material.FISHING_ROD) {
+                if (rod.getDurability() == rod.getType().getMaxDurability()) {
+                    e.getPlayer().getInventory().setItemInMainHand(null);
+                    e.getPlayer().sendMessage(Messages.INFO + "Deine Angel ist kaputt gegangen.");
+                } else {
+                    rod.setDurability((short) (rod.getDurability() + 1));
+                }
+            }
         }
     }
 
@@ -220,6 +229,12 @@ public class Utils implements Listener {
         Corpse.reloadNPC(p);
         if(Script.hasRank(p, Rank.SUPPORTER, false)) {
             Script.team.add(p);
+        }
+        if(!Krankheit.GEBROCHENES_BEIN.isInfected(Script.getNRPID(p))) {
+            p.setWalkSpeed(0.2f);
+            for(PotionEffect effect : p.getActivePotionEffects()) {
+                p.removePotionEffect(effect.getType());
+            }
         }
         for (Player online : Bukkit.getOnlinePlayers()) {
             if (BuildMode.isInBuildMode(online)) {
@@ -303,6 +318,11 @@ public class Utils implements Listener {
                 for(Player all : Bukkit.getOnlinePlayers()) {
                     Script.sendTabTitle(all);
                 }
+                if(GetHere.hasOfflineTP(p)) {
+                    p.teleport(GetHere.getOfflineTP(p));
+                    p.sendMessage(Script.PREFIX + "Du wurdest während du Offline warst teleportiert.");
+                    Script.executeUpdate("DELETE FROM offline_tp WHERE nrp_id = " + Script.getNRPID(p));
+                }
             }
         }.runTaskLater(main.getInstance(), 20L);
         p.setFlySpeed(0.1f);
@@ -315,12 +335,6 @@ public class Utils implements Listener {
         Script.updateListname(p);
         Script.sendTabTitle(e.getPlayer());
         if(Friedhof.isDead(p)) Corpse.spawnNPC(p, Friedhof.getDead(p).getDeathLocation());
-        if(GetHere.getOfflineTP(p) != null) {
-            if(GetHere.getOfflineTP(p) == null) return;
-            p.teleport(GetHere.getOfflineTP(p));
-            p.sendMessage(Script.PREFIX + "Du wurdest während du offline warst teleportiert.");
-            Script.executeUpdate("DELETE FROM offline_tp WHERE nrp_id = " + Script.getNRPID(p));
-        }
 
     }
 
@@ -453,16 +467,6 @@ public class Utils implements Listener {
         }
     }
 
-    @EventHandler
-    public void pickUpItem(EntityPickupItemEvent e) {
-        if(e.getEntity() instanceof Player) {
-            if(e.getItem().getItemStack().getType() == Material.IRON_INGOT) {
-                if(!Mobile.hasPhone((Player) e.getEntity())) return;
-                Script.sendActionBar((Player) e.getEntity(), Messages.ERROR + "Du kannst nicht mehrere Handys aufeinmal besitzen.");
-                e.setCancelled(true);
-            }
-        }
-    }
 
     //stop destroying farms
     @EventHandler

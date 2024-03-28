@@ -47,6 +47,7 @@ public class ServerTeam implements CommandExecutor {
                     color = "§e";
                     break;
             }
+            if(Spectate.isSpectating(nrp)) continue;
             p.sendMessage("§8" + Messages.ARROW + " §6" + Script.getName(nrp) + " §8× " + color + Script.getRank(nrp).getName(nrp) + (AFK.isAFK(nrp) ? " §8× §6AFK" : ""));
         }
 

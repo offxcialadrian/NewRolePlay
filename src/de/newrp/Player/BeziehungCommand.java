@@ -23,6 +23,16 @@ public class BeziehungCommand implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender cs, @NotNull Command cmd, @NotNull String s, @NotNull String[] args) {
         Player p = (Player) cs;
 
+        if(args.length == 0) {
+            if(hasRelationship(p)) {
+                int days = (int) ((System.currentTimeMillis() - getSince(p)) / 86400000);
+                p.sendMessage(PREFIX + "Du bist mit " + Script.getNameInDB(getPartner(p)) + " seit " + days + " Tagen zusammen.");
+                return true;
+            } else {
+                p.sendMessage(Messages.ERROR + "/beziehung [Spieler]");
+            }
+        }
+
         if (args.length != 1) {
             p.sendMessage(Messages.ERROR + "/beziehung [Spieler]");
             return true;
@@ -46,6 +56,11 @@ public class BeziehungCommand implements CommandExecutor {
 
         if (tg == p) {
             p.sendMessage(Messages.ERROR + "Du kannst nicht mit dir selbst in einer Beziehung sein.");
+            return true;
+        }
+
+        if(p.getLocation().distance(tg.getLocation()) > 5) {
+            p.sendMessage(Messages.ERROR + "Du bist zu weit weg von " + Script.getName(tg) + ".");
             return true;
         }
 
@@ -89,6 +104,19 @@ public class BeziehungCommand implements CommandExecutor {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public static long getSince(Player p) {
+        if (!hasRelationship(p)) return 0;
+        try (Statement stmt = main.getConnection().createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT * FROM relationship WHERE person1 = '" + Script.getNRPID(p) + "' OR person2 = '" + Script.getNRPID(p) + "'")) {
+            if (rs.next()) {
+                return rs.getLong("since");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 
     public static OfflinePlayer getPartner(Player p) {
@@ -152,7 +180,7 @@ public class BeziehungCommand implements CommandExecutor {
 
     public static void createRelationship(Player p, OfflinePlayer partner) {
         try (Statement stmt = main.getConnection().createStatement()) {
-            stmt.executeUpdate("INSERT INTO relationship (person1, person2, married) VALUES ('" + Script.getNRPID(p) + "', '" + Script.getNRPID(partner) + "', 0)");
+            stmt.executeUpdate("INSERT INTO relationship (person1, person2, married, since) VALUES ('" + Script.getNRPID(p) + "', '" + Script.getNRPID(partner) + "', 0, " + System.currentTimeMillis() + ")");
         } catch (SQLException e) {
             e.printStackTrace();
         }

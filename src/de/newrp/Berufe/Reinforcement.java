@@ -2,6 +2,7 @@ package de.newrp.Berufe;
 
 import de.newrp.API.*;
 import de.newrp.Organisationen.Organisation;
+import de.newrp.Player.Mobile;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
@@ -95,6 +96,16 @@ public class Reinforcement implements CommandExecutor {
                 p.sendMessage(Messages.ERROR + "Du musst im Dienst sein.");
                 return true;
             }
+        }
+
+        if(!Mobile.hasPhone(p)) {
+            p.sendMessage(Messages.ERROR + "Du benötigst ein Handy.");
+            return true;
+        }
+
+        if(!Mobile.mobileIsOn(p)) {
+            p.sendMessage(Messages.ERROR + "Dein Handy ist ausgeschaltet.");
+            return true;
         }
 
         if (args.length == 2) {
@@ -195,12 +206,12 @@ public class Reinforcement implements CommandExecutor {
             staatler.addAll(Beruf.Berufe.POLICE.getMembers());
             staatler.addAll(Beruf.Berufe.GOVERNMENT.getMembers());
             for (Player member : staatler) {
-                member.sendMessage("§c§l" + type.getName() + " §3" + Beruf.getBeruf(p).getName() + " " + Script.getName(p) + " benötigt Unterstützung! §8➥ §7" + Navi.getNextNaviLocation(p.getLocation()) + " §7(" + (int) member.getLocation().distance(p.getLocation()) + "m)");
+                member.sendMessage("§c§l" + type.getName() + " §3" + Beruf.getBeruf(p).getName() + " " + Script.getName(p) + " benötigt Unterstützung! §8➥ §7" + Navi.getNextNaviLocation(p.getLocation()).getName() + " §7(" + (int) member.getLocation().distance(p.getLocation()) + "m)");
                 OnMyWayLink(member, p);
             }
         } else {
             for(Player member : beruf.getMembers()) {
-                member.sendMessage("§c§l" + type.getName() + " §3" + Beruf.getAbteilung(p).getName() + " " + Script.getName(p) + " benötigt Unterstützung! §8➥ §7" + Navi.getNextNaviLocation(p.getLocation()) + " §7(" + (int) member.getLocation().distance(p.getLocation()) + "m)");
+                member.sendMessage("§c§l" + type.getName() + " §3" + Beruf.getAbteilung(p).getName() + " " + Script.getName(p) + " benötigt Unterstützung! §8➥ §7" + Navi.getNextNaviLocation(p.getLocation()).getName() + " §7(" + (int) member.getLocation().distance(p.getLocation()) + "m)");
                 OnMyWayLink(member, p);
             }
         }

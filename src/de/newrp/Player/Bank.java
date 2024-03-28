@@ -8,6 +8,7 @@ import de.newrp.Administrator.SDuty;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Chat.Me;
 import de.newrp.Government.Stadtkasse;
+import de.newrp.Organisationen.Bankautomaten;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Banner;
 import org.bukkit.command.Command;
@@ -32,6 +33,11 @@ public class Bank implements CommandExecutor, TabCompleter {
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
         Player p = (Player) cs;
         ATM atm = ATM.getNearATM(p);
+
+        if(Bankautomaten.cooldownATM.containsKey(atm) && Bankautomaten.cooldownATM.get(atm) > System.currentTimeMillis()) {
+            p.sendMessage(Messages.ERROR + "Der Automat ist derzeit nicht verfügbar.");
+            return true;
+        }
 
         if(atm == null && (!(args.length >= 2 && args[0].equalsIgnoreCase("überweisen")&&Premium.hasPremium(p)))) {
             p.sendMessage(Messages.ERROR + "Du bist nicht in der Nähe eines Bankautomats.");

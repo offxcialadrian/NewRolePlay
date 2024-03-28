@@ -13,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class MemberActivity implements CommandExecutor {
 
-    private static final String PREFIX = "§8[§eBeruf§8] §e» §7";
+    private static final String PREFIX = "§8[§eAktivität§8] §e» §7";
 
     @Override
     public boolean onCommand(@NotNull CommandSender cs, @NotNull Command cmd, @NotNull String s, @NotNull String[] args) {
@@ -51,7 +51,7 @@ public class MemberActivity implements CommandExecutor {
 
             for(OfflinePlayer members : Organisation.getOrganisation(p).getAllMembers()) {
                 if(members.isOnline()) p.sendMessage(PREFIX + "§6" + members.getName() + " §8× §aOnline");
-                else p.sendMessage(PREFIX + "§6" + members.getName() + " §8× §cOffline seit: " + Script.dateFormat.format(Script.getLastDisconnect(members)) + " Uhr");
+                else p.sendMessage(PREFIX + "§6" + Script.getNameInDB(members) + " §8× §cOffline seit: " + Script.dateFormat.format(Script.getLastDisconnect(members)) + " Uhr");
             }
 
             return true;

@@ -136,7 +136,13 @@ public class Drogenbank implements CommandExecutor, Listener {
             return true;
         }
 
+
         Organisation o = Organisation.getOrganisation(p);
+        if(p.getLocation().distance(o.getDbank())>10) {
+            p.sendMessage(Messages.ERROR + "Du bist nicht in der Nähe der Drogenbank.");
+            return true;
+        }
+
         if(args.length == 1 && (args[0].equalsIgnoreCase("put") || args[0].equalsIgnoreCase("add"))) {
             Inventory inv = Bukkit.createInventory(null, 9, "§eDrogenbank");
             p.openInventory(inv);
@@ -144,7 +150,7 @@ public class Drogenbank implements CommandExecutor, Listener {
         }
 
         if(args.length == 2 && args[0].equalsIgnoreCase("get")) {
-            if(Organisation.getRank(p) <3) {
+            if(Organisation.getRank(p) < 3) {
                 p.sendMessage(Messages.NO_PERMISSION);
                 return true;
             }

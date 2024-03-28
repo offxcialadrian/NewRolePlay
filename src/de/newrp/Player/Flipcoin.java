@@ -1,6 +1,7 @@
 package de.newrp.Player;
 
 import de.newrp.API.Messages;
+import de.newrp.API.Script;
 import de.newrp.Chat.Me;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -18,7 +19,7 @@ public class Flipcoin implements CommandExecutor {
             return true;
         }
 
-        Me.sendMessage(p, "wirft eine Münze... " + (Math.random() < 0.5 ? "Kopf!" : "Zahl!"));
+        Script.sendLocalMessage(7, p, "§8[§cFlipcoin§8] §c" + Messages.ARROW + " §7" + Script.getName(p) + " hat " + (Script.getRandom(0, 1) == 0 ? "Kopf" : "Zahl") + " geworfen.");
 
         return false;
     }

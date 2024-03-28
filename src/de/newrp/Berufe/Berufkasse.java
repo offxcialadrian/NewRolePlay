@@ -2,6 +2,7 @@ package de.newrp.Berufe;
 
 import de.newrp.API.*;
 import de.newrp.Administrator.Notifications;
+import de.newrp.Organisationen.Bankautomaten;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -43,6 +44,11 @@ public class Berufkasse implements CommandExecutor {
         ATM atm = ATM.getNearATM(p);
         if(atm == null) {
             p.sendMessage(Messages.ERROR + "Du bist nicht in der Nähe eines Geldautomaten.");
+            return true;
+        }
+
+        if(Bankautomaten.cooldownATM.containsKey(atm) && Bankautomaten.cooldownATM.get(atm) > System.currentTimeMillis()) {
+            p.sendMessage(Messages.ERROR + "Der Automat ist derzeit nicht verfügbar.");
             return true;
         }
 

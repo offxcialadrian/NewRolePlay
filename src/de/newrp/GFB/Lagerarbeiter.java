@@ -43,7 +43,6 @@ public class Lagerarbeiter implements CommandExecutor, Listener {
         FLEISCH("Fleisch"),
 
         GETRAENKE("Getränke"),
-        FISCH("Fisch"),
         FLOWERS("Blumen"),
         MOEBEL("Möbel"),
         TEPPICH("Teppich"),
@@ -69,7 +68,6 @@ public class Lagerarbeiter implements CommandExecutor, Listener {
         KARTOFFEL(4, "Kartoffel", new ItemBuilder(Material.POTATO).setName("§fKartoffel").build(), Type.GEMUESE),
         BROT(5, "Brot", new ItemBuilder(Material.BREAD).setName("§fBrot").build(), Type.BACKWAREN),
         FLEISCH(6, "Fleisch", new ItemBuilder(Material.PORKCHOP).setName("§fFleisch").build(), Type.FLEISCH),
-        FISCH(7, "Fisch", new ItemBuilder(Material.COD).setName("§fFisch").build(), Type.FISCH),
         WASSER(8, "Wasser", new ItemBuilder(Material.POTION).setName("§fWasser").build(), Type.GETRAENKE),
         LIMO(9, "Limo", new ItemBuilder(Material.POTION).setName("§fLimo").build(), Type.GETRAENKE),
         MILCH(10, "Milch", new ItemBuilder(Material.POTION).setName("§fMilch").build(), Type.GETRAENKE),
@@ -202,7 +200,7 @@ public class Lagerarbeiter implements CommandExecutor, Listener {
         p.sendMessage(PREFIX + "Gehe ins Lager, hole dir eine Palette und fang an deinen Job zu machen.");
         int totalscore = GFB.LAGERARBEITER.getLevel(p) + Script.getRandom(7, 12);
         p.sendMessage(Messages.INFO + "Klicke Rechtsklick auf das Schild \"Ware\".");
-        p.sendMessage(Messages.INFO + "Du musst insgesamt " + totalscore + " Waren verräumen.");
+        p.sendMessage(Messages.INFO + "Du musst insgesamt " + totalscore+1 + " Waren verräumen.");
         SCORE.put(p.getName(), totalscore);
         TOTAL_SCORE.put(p.getName(), totalscore);
         cooldown.put(p.getName(), System.currentTimeMillis() + 10 * 60 * 2000L);

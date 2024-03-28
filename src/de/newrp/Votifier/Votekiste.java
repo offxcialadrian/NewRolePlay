@@ -14,6 +14,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.util.*;
@@ -21,15 +22,15 @@ import java.util.concurrent.TimeUnit;
 
 public enum Votekiste {
     NORMAL(1, "Normale Votekiste", 5, new Items[][]{new Items[]{Items.PREMIUM_1, Items.BASEBALLSCHLAEGER, Items.CHANGE_TOKEN_PERSO,
-            Items.SONNENBLUMENKERNE, Items.PISTOLE_MUNITION_50, Items.MP5_MUNITION_50,Items.FEUERWERK, Items.REZEPT}, new Items[]{Items.EXP_500, Items.EXP_750}}),
+            Items.PISTOLE_MUNITION_50, Items.MP5_MUNITION_50,Items.FEUERWERK}, new Items[]{Items.EXP_500, Items.EXP_750}}),
 
-    SPECIAL(2, "Special Votekiste", 10, new Items[][]{new Items[]{Items.FEUERWERK, Items.REZEPT},
+    SPECIAL(2, "Special Votekiste", 10, new Items[][]{new Items[]{Items.FEUERWERK},
             new Items[]{Items.PREMIUM_3, Items.PREMIUM_7},
             new Items[]{Items.EXP_1000, Items.EXP_1250, Items.EXP_1500},
             new Items[]{Items.KEVLAR_LEICHT, Items.KEVLAR_SCHWER}, new Items[]{Items.PISTOLE_MUNITION_50, Items.PISTOLE_MUNITION_75},
             new Items[]{Items.MP5_MUNITION_50, Items.MP5_MUNITION_75}}),
 
-    ULTIMATE(3, "Ultimate Votekiste", 25, new Items[][]{new Items[]{Items.CHANGE_TOKEN_PERSO, Items.KEVLAR_SCHWER, Items.REZEPT}, new Items[]{Items.PREMIUM_7, Items.PREMIUM_14},
+    ULTIMATE(3, "Ultimate Votekiste", 25, new Items[][]{new Items[]{Items.CHANGE_TOKEN_PERSO, Items.KEVLAR_SCHWER}, new Items[]{Items.PREMIUM_7, Items.PREMIUM_14},
             new Items[]{Items.EXP_1500, Items.EXP_2000, Items.EXP_2500}, new Items[]{Items.PISTOLE_MUNITION_75, Items.PISTOLE_MUNITION_100},
             new Items[]{Items.MP5_MUNITION_75, Items.MP5_MUNITION_100}});
 
@@ -63,7 +64,6 @@ public enum Votekiste {
     }
 
     public void open(Player p) {
-        p.closeInventory();
         VoteListener.removeVotepoints(p, getPrice());
         Debug.debug("opened votekiste");
         ItemStack[] random = new ItemStack[]{
@@ -178,7 +178,7 @@ public enum Votekiste {
                     break;
                 }
             }
-            /*if (i != null) {
+            if (i != null) {
                 int id = Script.getNRPID(p);
                 switch (i) {
                     case PREMIUM_1:
@@ -241,11 +241,6 @@ public enum Votekiste {
                         p.sendMessage(VoteShop.PREFIX + "Du hast eine schwere Kevlar gewonnen!");
                         p.getInventory().addItem(Script.kevlar(2));
                         break;
-                    case LOTTOSCHEIN:
-                        p.sendMessage(VoteShop.PREFIX + "Du hast einen Lottoschein gewonnen!");
-                        p.sendMessage(Messages.INFO + "Du kannst den Lottoschein mit \"/lotto\" einlösen.");
-                        p.getInventory().addItem(Script.setName(Material.PAPER, "§7Lottoschein"));
-                        break;
                     case MP5_MUNITION_50:
                         p.sendMessage(VoteShop.PREFIX + "Du hast 50 Munition für die Peacekeeper gewonnen!");
                         Weapon.AK47.addMunition(id, 50);
@@ -257,6 +252,18 @@ public enum Votekiste {
                     case MP5_MUNITION_100:
                         p.sendMessage(VoteShop.PREFIX + "Du hast 100 Munition für die Peacekeeper gewonnen!");
                         Weapon.AK47.addMunition(id, 100);
+                        break;
+                    case PISTOLE_MUNITION_50:
+                        p.sendMessage(VoteShop.PREFIX + "Du hast 50 Munition für die Glory gewonnen!");
+                        Weapon.PISTOLE.addMunition(id, 50);
+                        break;
+                    case PISTOLE_MUNITION_75:
+                        p.sendMessage(VoteShop.PREFIX + "Du hast 75 Munition für die Glory gewonnen!");
+                        Weapon.PISTOLE.addMunition(id, 75);
+                        break;
+                    case PISTOLE_MUNITION_100:
+                        p.sendMessage(VoteShop.PREFIX + "Du hast 100 Munition für die Glory gewonnen!");
+                        Weapon.PISTOLE.addMunition(id, 100);
                         break;
                     case FEUERWERK:
                         ItemStack item = new ItemStack(Material.FIREWORK_ROCKET, Script.getRandom(3, 10));
@@ -380,12 +387,12 @@ public enum Votekiste {
             } else {
                 if (price.getType().equals(Material.COOKED_BEEF) || price.getType().equals(Material.COOKED_PORKCHOP) || price.getType().equals(Material.COOKED_CHICKEN)) {
                     p.getInventory().addItem(new ItemStack(price.getType(), price.getAmount()));
-                    p.sendMessage(VoteShop.PREFIX + "Du hast etwas zu essen gewonnen!");
+                    p.sendMessage(VoteShop.PREFIX + "Du hast etwas zu Essen gewonnen!");
                 } else if (price.getType().equals(Material.POTION)) {
                     p.getInventory().addItem(price);
                     p.sendMessage(VoteShop.PREFIX + "Du hast Trinkwasser gewonnen!");
                 }
-            }*/
+            }
             p.closeInventory();
 
         }, 10 * 20L);
@@ -413,9 +420,8 @@ public enum Votekiste {
         EXP_2500(18, Script.setName(new ItemStack(Material.EXPERIENCE_BOTTLE), "+ 2500 Exp"), 4F),
         KEVLAR_LEICHT(28, Script.kevlar(1), 10F),
         KEVLAR_SCHWER(29, Script.kevlar(2), 8F),
-        REZEPT(30, Script.setName(new ItemStack(Material.PAPER), "§rRezept"), 5F),
+        //REZEPT(30, Script.setName(new ItemStack(Material.PAPER), "§rRezept"), 5F),
         //LOTTOSCHEIN(31, Script.setName(Material.PAPER, "§7Lottoschein"), 20F),
-        SONNENBLUMENKERNE(32, Script.setName(new ItemStack(Material.PUMPKIN_SEEDS), "Sonnenblumenkerne"), 20F),
         PISTOLE_MUNITION_50(33, Script.setName(Material.ARROW, "50 Munition"), 15F),
         PISTOLE_MUNITION_75(34, Script.setName(Material.ARROW, "75 Munition"), 11F),
         PISTOLE_MUNITION_100(35, Script.setName(Material.ARROW, "100 Munition"), 8F),

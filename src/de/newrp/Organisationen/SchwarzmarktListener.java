@@ -60,7 +60,7 @@ public class SchwarzmarktListener implements Listener {
         inv.setItem(i++, Script.setNameAndLore(new ItemStack(Material.INK_SAC, 1), "§bSpezial-Dünger", "§c55€"));
         inv.setItem(i++, Script.setNameAndLore(new ItemStack(Material.BLAZE_ROD, 1), "§7Brechstange", "§c200€"));
         inv.setItem(i++, Script.setNameAndLore(new ItemStack(Material.END_ROD, 1), "§7Testosteron-Spritze", "§c500€"));
-        inv.setItem(i++, Script.setNameAndLore(new ItemStack(Material.LEVER, 1), "§eGraffiti", "§c100€"));
+        inv.setItem(i++, Script.setNameAndLore(new ItemStack(Material.LEVER, 1), "§eGraffiti", "§c25€"));
         inv.setItem(i++, Script.setNameAndLore(new ItemStack(Material.TNT, 1), "§cSprengstoff", "§c1000€"));
         Script.fillInv(inv);
         p.openInventory(inv);
@@ -180,7 +180,7 @@ public class SchwarzmarktListener implements Listener {
                             break;
                         }
                         case "§eGraffiti" : {
-                            int price = 100;
+                            int price = 25;
                             if (Script.getMoney(p, PaymentType.CASH) >= price) {
                                 p.getInventory().addItem(new ItemBuilder(Material.LEVER).setName("§eGraffiti").build());
                                 p.sendMessage(Schwarzmarkt.PREFIX + TEXT_POST_TRADE[Script.getRandom(0, TEXT_POST_TRADE.length - 1)]);

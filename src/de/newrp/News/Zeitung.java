@@ -53,8 +53,6 @@ public class Zeitung implements CommandExecutor, Listener {
         ItemStack i = new ItemStack(Material.WRITTEN_BOOK);
         i.setItemMeta(item);
         zeitung = i;
-        if(zeitung == null) Debug.debug("zeitung is null");
-        else Debug.debug(zeitung.getItemMeta().getDisplayName());
         StringBuilder text = new StringBuilder();
         for (String seite : item.getPages()) {
             if (seite != null) {

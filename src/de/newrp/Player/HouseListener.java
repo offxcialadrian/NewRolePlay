@@ -4,6 +4,8 @@ import de.newrp.API.*;
 import de.newrp.GFB.GFB;
 import de.newrp.House.House;
 import de.newrp.House.HouseAddon;
+import de.newrp.House.InstallAddon;
+import de.newrp.Shop.PayShop;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Sign;
@@ -27,6 +29,32 @@ public class HouseListener implements Listener {
         if(s.getLine(1).startsWith("==") && s.getLine(1).endsWith("==")) {
             House h = House.getHouseByID(Integer.parseInt(s.getLine(1).replace("==", "").replace(" ", "")));
             if(h == null) return;
+            if(PayShop.houseaddon.containsKey(p.getName())) {
+                if (h.getOwner() != Script.getNRPID(p)) {
+                    p.sendMessage(Messages.ERROR + " §cDu bist nicht der Besitzer dieses Hauses.");
+                    return;
+                }
+
+                HouseAddon addon = PayShop.houseaddon.get(p.getName());
+
+                if (h.hasAddon(addon)) {
+                    p.sendMessage(Messages.ERROR + " Dieses Haus hat bereits dieses Addon.");
+                    return;
+                }
+
+                if(addon == HouseAddon.SLOT) {
+                    h.setSlots(h.getSlots() + 1);
+                    Log.NORMAL.write(p, "hat das Addon " + addon.getName() + " installiert.");
+                    p.sendMessage( "§8[§6Haus§8] §6" + Messages.ARROW + " Du hast das Addon " + addon.getName() + " installiert.");
+                    PayShop.houseaddon.remove(p.getName());
+                    return;
+                }
+
+                h.addAddon(addon);
+                Log.NORMAL.write(p, "hat das Addon " + addon.getName() + " installiert.");
+                p.sendMessage( "§8[§6Haus§8] §6" + Messages.ARROW + " Du hast das Addon " + addon.getName() + " installiert.");
+                PayShop.houseaddon.remove(p.getName());
+            }
             if(h.getSignLocation().distance(e.getClickedBlock().getLocation()) > 1) return;
             Inventory inv = Bukkit.createInventory(null, 4*9, "§6Haus " + h.getID());
             inv.setItem(13, new ItemBuilder(Material.PLAYER_HEAD).setName("§6Besitzer").setLore((h.getOwner()==0?"§8§c» §cKein Besitzer": "§8§c» §6" + Script.getOfflinePlayer(h.getOwner()).getName())).build());

@@ -241,7 +241,6 @@ public class Gips implements Listener {
         for (Krankheit krankheit : Krankheit.getAllKrankheiten(Script.getNRPID(p))) {
             if(krankheit.isFoodIntolerance()) {
                 p.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 10 * 30, 1, false, false));
-                p.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 10 * 30, 1, false, false));
                 p.addPotionEffect(new PotionEffect(PotionEffectType.HUNGER, 48 * 30, 2, false, false));
                 p.sendMessage(Health.PREFIX  + "§7Dir gehts nicht so gut...");
                 Me.sendMessage(p, "hat sich übergeben.");

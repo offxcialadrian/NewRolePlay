@@ -218,6 +218,17 @@ public class BurgerFryer implements CommandExecutor, Listener {
         if(e.getClickedInventory() == null || e.getClickedInventory().getType() == InventoryType.PLAYER) return;
         e.setCancelled(true);
         if(!NEEDED.containsKey(p.getName())) return;
+        if(SCORE.get(p.getName()) < 1) {
+            p.sendMessage(PREFIX + "Du hast nun alle Burger zubereitet.");
+            GFB.BURGERFRYER.addExp(p, GFB.BURGERFRYER.getLevel(p) + Script.getRandom(5, 7)/2);
+            PayDay.addPayDay(p, (GFB.BURGERFRYER.getLevel(p) + (TOTAL_SCORE.get(p.getName())))*2);
+            BURGER.remove(p.getName());
+            SCORE.remove(p.getName());
+            NEEDED.remove(p.getName());
+            GFB.CURRENT.remove(p.getName());
+            Script.addEXP(p, GFB.BURGERFRYER.getLevel(p) + TOTAL_SCORE.get(p.getName())*2);
+            TOTAL_SCORE.remove(p.getName());
+        }
         if(e.getCurrentItem().getType().equals(Material.GREEN_WOOL)) {
             e.getView().close();
             if(SCORE.get(p.getName()) >= 1) {
@@ -279,6 +290,7 @@ public class BurgerFryer implements CommandExecutor, Listener {
                 Collections.addAll(ingredients, burger.getIngredients());
                 NEEDED.put(p.getName(), ingredients);
                 SCORE.replace(p.getName(), SCORE.get(p.getName()) - 1);
+                TOTAL_SCORE.replace(p.getName(), TOTAL_SCORE.get(p.getName()) - 1);
                 if(GFB.BURGERFRYER.getLevel(p) == 1) {
                     p.sendMessage(Messages.INFO + "Du brauchst dafür folgende Zutaten:");
                     for (Ingredients i : burger.getIngredients()) {

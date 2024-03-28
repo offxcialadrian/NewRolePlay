@@ -3,6 +3,7 @@ package de.newrp.House;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.Player.Annehmen;
+import de.newrp.Player.Hotel;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -17,6 +18,7 @@ public class UnrentCommand implements CommandExecutor {
         Player p = (Player) cs;
 
         if(args.length == 0) {
+
             if(House.getHouses(Script.getNRPID(p)).size() > 1) {
                 p.sendMessage(Messages.ERROR + "/unrent [Hausnummer]");
                 return true;
@@ -72,8 +74,17 @@ public class UnrentCommand implements CommandExecutor {
                 return true;
             }
 
-            h.removeMieter(Script.getNRPID(p));
-            p.sendMessage(PREFIX + "Du bist aus Haus " + i + " ausgezogen.");
+            if(!h.isMieter(Script.getNRPID(p))) {
+                p.sendMessage(Messages.ERROR + "Du wohnst nicht in diesem Haus.");
+                return true;
+            }
+
+            try {
+                h.removeMieter(Script.getNRPID(p));
+                p.sendMessage(PREFIX + "Du bist aus Haus " + i + " ausgezogen.");
+            } catch (Exception e) {
+                p.sendMessage(Messages.ERROR + "Du wohnst nicht in diesem Haus.");
+            }
             if(Script.getOfflinePlayer(h.getOwner()).isOnline()) {
                 Script.getPlayer(h.getOwner()).sendMessage(PREFIX + Script.getName(p) + " ist aus Haus "+ i + " ausgezogen.");
             } else {

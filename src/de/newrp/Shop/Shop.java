@@ -193,7 +193,6 @@ public class Shop implements CommandExecutor, Listener {
                 ShopItem bi = ShopItem.getItem(n.getKey());
                 ItemStack i = bi.getItemStack();
                 int[] a = n.getValue();
-                if(i != null) i.setAmount(a[0]);
                 p.sendMessage("  §8× " + "§6" + bi.getName() + "§8: §6" + a[1] + "€ §8[§6Einkaufspreis§8: §6" + bi.getBuyPrice() + "€§8]");
             }
             return true;

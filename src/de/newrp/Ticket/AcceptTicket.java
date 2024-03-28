@@ -4,6 +4,8 @@ import de.newrp.API.Messages;
 import de.newrp.API.Rank;
 import de.newrp.API.Script;
 import de.newrp.Administrator.SDuty;
+import de.newrp.Berufe.Beruf;
+import de.newrp.Organisationen.Organisation;
 import de.newrp.Player.AFK;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
@@ -71,6 +73,9 @@ public class AcceptTicket implements CommandExecutor {
                 TicketClick.created.remove(tg);
                 int seconds = (int) ((System.currentTimeMillis() - q.getCreateTime()) / 1000);
                 p.sendMessage(TicketCommand.PREFIX + "Du hast das Ticket von " + Script.getName(tg) + " §8[§6Level " + tg.getLevel() + "§8]§d angenommen! Thema: " + tt.getName());
+                if(Beruf.hasBeruf(tg) || Organisation.hasOrganisation(tg)) {
+                    p.sendMessage(TicketCommand.PREFIX + (Beruf.hasBeruf(tg) ? "Beruf: " + Beruf.getBeruf(tg).getName() : "Organisation: " + Organisation.getOrganisation(tg).getName()));
+                }
                 tg.sendMessage(TicketCommand.PREFIX + Script.getRank(p).getName(p) + " " + Script.getName(p) + " hat dein Ticket angenommen! Thema: " + tt.getName());
                 Script.sendTeamMessage(p, ChatColor.LIGHT_PURPLE, "hat das Ticket von " + Script.getName(tg) + " angenommen! Thema: " + tt.getName(), true);
                 Script.sendTeamMessage(Messages.INFO + "Angenommen nach " + seconds + " Sekunden.");

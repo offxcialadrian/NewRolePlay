@@ -49,43 +49,6 @@ public class AsyncMinute extends BukkitRunnable {
             }
         }
 
-        for(Player p : Bukkit.getOnlinePlayers()) {
-            if(Mobile.hasPhone(p) && Mobile.mobileIsOn(p) && !AFK.isAFK(p)) {
-                assert Mobile.getPhone(p) != null;
-                Mobile.getPhone(p).removeAkku(p, 1);
-                if(Mobile.getPhone(p).getAkku(p) <= 0 && Mobile.mobileIsOn(p)) {
-                    p.sendMessage(Mobile.PREFIX + "Dein Handy ist ausgeschaltet, da der Akku leer ist.");
-                    ItemStack is = Mobile.getPhone(p).getItem();
-                    p.getInventory().removeItem(new ItemStack(Material.IRON_INGOT));
-                    p.getInventory().removeItem(new ItemStack(Material.GOLD_INGOT));
-                    p.getInventory().removeItem(new ItemStack(Material.NETHERITE_INGOT));
-                    p.getInventory().addItem(is);
-                    continue;
-                }
-                if(Script.getPercentage(Mobile.getPhone(p).getAkku(p), Mobile.getPhone(p).getMaxAkku()) <= 10 && !battery.containsKey(p.getName()) && !battery.get(p.getName()).equals(10)) {
-                    p.sendMessage(Mobile.PREFIX + "Dein Handy hat nur noch " + Mobile.getPhone(p).getAkku(p) + "% Akku.");
-                    battery.put(p.getName(), 10);
-                    continue;
-                }
-                if(Script.getPercentage(Mobile.getPhone(p).getAkku(p), Mobile.getPhone(p).getMaxAkku()) <= 10 && !battery.containsKey(p.getName()) && !battery.get(p.getName()).equals(20)) {
-                    p.sendMessage(Mobile.PREFIX + "Dein Handy hat nur noch " + Mobile.getPhone(p).getAkku(p) + "% Akku.");
-                    battery.put(p.getName(), 20);
-                    continue;
-                }
-            }
-            if(SMSCommand.waitingForMessage.contains(p.getName()) && Mobile.mobileIsOn(p) && Mobile.hasConnection(p)) {
-                p.sendMessage(SMSCommand.PREFIX + "Du hast eine neue Nachricht erhalten.");
-                p.sendMessage(Messages.INFO + "Schaue in deiner Nachrichten App nach.");
-                if(!Mobile.getPhone(p).getLautlos(p)) p.playSound(p.getLocation(), Sound.ENTITY_SHEEP_AMBIENT, 1, 1);
-                SMSCommand.waitingForMessage.remove(p.getName());
-            } else if(BreakingNews.waitingForMessage.contains(p.getName()) && Mobile.mobileIsOn(p) && Mobile.hasConnection(p)) {
-                p.sendMessage(BreakingNews.NEWS + "Es gibt eine neue Breaking News.");
-                p.sendMessage(Messages.INFO + "Schaue in deiner Nachrichten App nach.");
-                if(!Mobile.getPhone(p).getLautlos(p)) p.playSound(p.getLocation(), Sound.ENTITY_SHEEP_AMBIENT, 1, 1);
-                BreakingNews.waitingForMessage.remove(p.getName());
-            }
-        }
-
         if (Calendar.getInstance().get(Calendar.MONTH) == Calendar.JANUARY && Calendar.getInstance().get(Calendar.DAY_OF_MONTH) == 15 && Calendar.getInstance().get(Calendar.HOUR_OF_DAY) == 18 && Calendar.getInstance().get(Calendar.MINUTE) == 0) {
             Wahlen.getWahlResult();
         } else if (Calendar.getInstance().get(Calendar.MONTH) == Calendar.JANUARY && Calendar.getInstance().get(Calendar.DAY_OF_MONTH) == 15 && Calendar.getInstance().get(Calendar.HOUR_OF_DAY) == 20 && Calendar.getInstance().get(Calendar.MINUTE) == 0 && Wahlen.extend) {
@@ -154,6 +117,43 @@ public class AsyncMinute extends BukkitRunnable {
                         }
                     }
                 }
+            }
+        }
+
+        for(Player p : Bukkit.getOnlinePlayers()) {
+            if(Mobile.hasPhone(p) && Mobile.mobileIsOn(p) && !AFK.isAFK(p)) {
+                assert Mobile.getPhone(p) != null;
+                Mobile.getPhone(p).removeAkku(p, 1);
+                if(Mobile.getPhone(p).getAkku(p) <= 0 && Mobile.mobileIsOn(p)) {
+                    p.sendMessage(Mobile.PREFIX + "Dein Handy ist ausgeschaltet, da der Akku leer ist.");
+                    ItemStack is = Mobile.getPhone(p).getItem();
+                    p.getInventory().removeItem(new ItemStack(Material.IRON_INGOT));
+                    p.getInventory().removeItem(new ItemStack(Material.GOLD_INGOT));
+                    p.getInventory().removeItem(new ItemStack(Material.NETHERITE_INGOT));
+                    p.getInventory().addItem(is);
+                    continue;
+                }
+                if(Script.getPercentage(Mobile.getPhone(p).getAkku(p), Mobile.getPhone(p).getMaxAkku()) <= 10 && !battery.containsKey(p.getName()) && !battery.get(p.getName()).equals(10)) {
+                    p.sendMessage(Mobile.PREFIX + "Dein Handy hat nur noch " + Mobile.getPhone(p).getAkku(p) + "% Akku.");
+                    battery.put(p.getName(), 10);
+                    continue;
+                }
+                if(Script.getPercentage(Mobile.getPhone(p).getAkku(p), Mobile.getPhone(p).getMaxAkku()) <= 10 && !battery.containsKey(p.getName()) && !battery.get(p.getName()).equals(20)) {
+                    p.sendMessage(Mobile.PREFIX + "Dein Handy hat nur noch " + Mobile.getPhone(p).getAkku(p) + "% Akku.");
+                    battery.put(p.getName(), 20);
+                    continue;
+                }
+            }
+            if(SMSCommand.waitingForMessage.contains(p.getName()) && Mobile.mobileIsOn(p) && Mobile.hasConnection(p)) {
+                p.sendMessage(SMSCommand.PREFIX + "Du hast eine neue Nachricht erhalten.");
+                p.sendMessage(Messages.INFO + "Schaue in deiner Nachrichten App nach.");
+                if(!Mobile.getPhone(p).getLautlos(p)) p.playSound(p.getLocation(), Sound.ENTITY_SHEEP_AMBIENT, 1, 1);
+                SMSCommand.waitingForMessage.remove(p.getName());
+            } else if(BreakingNews.waitingForMessage.contains(p.getName()) && Mobile.mobileIsOn(p) && Mobile.hasConnection(p)) {
+                p.sendMessage(BreakingNews.NEWS + "Es gibt eine neue Breaking News.");
+                p.sendMessage(Messages.INFO + "Schaue in deiner Nachrichten App nach.");
+                if(!Mobile.getPhone(p).getLautlos(p)) p.playSound(p.getLocation(), Sound.ENTITY_SHEEP_AMBIENT, 1, 1);
+                BreakingNews.waitingForMessage.remove(p.getName());
             }
         }
     }

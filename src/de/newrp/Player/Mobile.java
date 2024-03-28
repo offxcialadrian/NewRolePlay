@@ -117,7 +117,7 @@ public class Mobile implements Listener {
                 if(rs.next()) {
                     return rs.getInt("akku");
                 } else {
-                    Script.executeAsyncUpdate("INSERT INTO phone (nrp_id, akku) VALUES (" + Script.getNRPID(p) + ", " + getMaxAkku() + ")");
+                    Script.executeAsyncUpdate("INSERT INTO phone (nrp_id, akku, destroyed) VALUES (" + Script.getNRPID(p) + ", " + getMaxAkku() + ", FALSE)");
                     return 100;
                 }
             } catch (SQLException e) {
@@ -141,6 +141,26 @@ public class Mobile implements Listener {
             Script.executeAsyncUpdate("UPDATE phone SET akku = " + akku + " WHERE nrp_id = " + Script.getNRPID(p));
         }
 
+        public boolean isDestroyed(Player p) {
+            try(PreparedStatement stmt = main.getConnection().prepareStatement("SELECT destroyed FROM phone WHERE nrp_id = ?")) {
+                stmt.setInt(1, Script.getNRPID(p));
+                ResultSet rs = stmt.executeQuery();
+                if(rs.next()) {
+                    return rs.getBoolean("destroyed");
+                } else {
+                    Script.executeAsyncUpdate("INSERT INTO phone (nrp_id, akku, destroyed) VALUES (" + Script.getNRPID(p) + ", " + getMaxAkku() + ", FALSE)");
+                    return false;
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return false;
+        }
+
+        public void setDestroyed(Player p, boolean destroyed) {
+            Script.executeAsyncUpdate("UPDATE phone SET destroyed = " + destroyed + " WHERE nrp_id = " + Script.getNRPID(p));
+        }
+
         public boolean hasCloud(Player p) {
             try(PreparedStatement stmt = main.getConnection().prepareStatement("SELECT cloud FROM handy_settings WHERE nrp_id = ?")) {
                 stmt.setInt(1, Script.getNRPID(p));
@@ -162,12 +182,15 @@ public class Mobile implements Listener {
         }
 
         public void setOff(Player p) {
-            //check there phone is in players inventory
-            if(!Mobile.hasPhone(p)) return;
-            //remove phone from inventory
-            Mobile.removePhone(p);
-            //set phone to off
-            p.getInventory().addItem(new ItemBuilder(Material.IRON_INGOT).setName("§c" + getName()).build());
+            ItemStack is = Mobile.getPhone(p).getItem();
+            Mobile.Phones phone = Mobile.getPhone(p);
+            p.getInventory().removeItem(new ItemStack(Material.IRON_INGOT));
+            p.getInventory().removeItem(new ItemStack(Material.GOLD_INGOT));
+            p.getInventory().removeItem(new ItemStack(Material.NETHERITE_INGOT));
+            ItemMeta im = is.getItemMeta();
+            im.setDisplayName("§c" + p.getName() + "s " + phone.getName());
+            is.setItemMeta(im);
+            p.getInventory().addItem(is);
         }
 
         public boolean getLautlos(Player p) {
@@ -341,6 +364,11 @@ public class Mobile implements Listener {
                 return;
             }
 
+            if(Mobile.getPhone(p).isDestroyed(p)) {
+                p.sendMessage(PREFIX + "Dein Handy ist kaputt.");
+                return;
+            }
+
             long difference = time - lastClick;
             if (difference >= 800) LEVEL.remove(p.getName());
 
@@ -363,6 +391,11 @@ public class Mobile implements Listener {
                 LAST_CLICK.remove(p.getName());
                 LEVEL.remove(p.getName());
             }
+            return;
+        }
+
+        if(Mobile.getPhone(p).isDestroyed(p)) {
+            p.sendMessage(PREFIX + "Dein Handy ist kaputt.");
             return;
         }
 

@@ -1,6 +1,6 @@
 name: NewRolePlay
 main: de.newrp.main
-version: 1.0.1
+version: 1.0.2
 description: NewRP Serversystem
 author: NewRP Entwicklungs-Team
 api-version: 1.16
@@ -638,3 +638,9 @@ commands:
   drogenbank:
     description: view the drogenbank
     aliases: [ drogenkasse, drogenkassen, dbank, dkasse ]
+  addorgdoor:
+    description: add a door to an organisation
+  destroykoms:
+    description: destroy all koms
+  restorezeitung:
+    description: restore the zeitung

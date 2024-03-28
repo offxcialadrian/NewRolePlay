@@ -168,10 +168,8 @@ public class Beruf {
 
         public List<Player> getMembers() {
             List<Player> list = new ArrayList<>();
-            for (Player all : Bukkit.getOnlinePlayers()) {
-                if (hasBeruf(all, this)) {
-                    list.add(all);
-                }
+            for (OfflinePlayer all : this.getAllMembers()) {
+                if(all.isOnline()) list.add(all.getPlayer());
             }
             return list;
         }
@@ -188,6 +186,13 @@ public class Beruf {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
+            list.sort((o1, o2) -> {
+                long l1 = Script.getLastDisconnect(o1);
+                long l2 = Script.getLastDisconnect(o2);
+                return Long.compare(l2, l1);
+            });
+
             return list;
         }
 

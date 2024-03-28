@@ -52,6 +52,7 @@ public class GetHere implements CommandExecutor {
             }
 
             Script.executeUpdate("INSERT INTO offline_tp (nrp_id, x, y, z) VALUES (" + Script.getNRPID(offtg) + ", " + (int) p.getLocation().getY() + ", " + (int) p.getLocation().getX() + ", " + (int) p.getLocation().getY() + ");");
+            p.sendMessage(PREFIX + "Du hast " + Script.getName(offtg) + " zu dir teleportiert.");
 
             return true;
         }
@@ -92,11 +93,17 @@ public class GetHere implements CommandExecutor {
     public static boolean hasOfflineTP(OfflinePlayer p) {
         try (Statement stmt = main.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM offline_tp WHERE nrp_id=" + Script.getNRPID(p) + " ORDER BY id DESC LIMIT 1;")) {
-            if (rs.next()) {
-                return true;
-            } else {
-                return false;
-            }
+            return rs.next();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static boolean hasOfflineTP(Player p) {
+        try (Statement stmt = main.getConnection().createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT * FROM offline_tp WHERE nrp_id=" + Script.getNRPID(p) + " ORDER BY id DESC LIMIT 1;")) {
+            return rs.next();
         } catch (Exception e) {
             e.printStackTrace();
         }

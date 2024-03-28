@@ -6,6 +6,7 @@ import de.newrp.API.Script;
 import de.newrp.Administrator.SDuty;
 import de.newrp.Berufe.Drone;
 import de.newrp.Chat.Me;
+import de.newrp.GFB.GFB;
 import de.newrp.Police.Handschellen;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -76,6 +77,11 @@ public class Fesseln implements Listener {
 
         if(Drone.isDrone(rightClicked)) {
             Script.sendActionBar(p, Messages.ERROR + "Du kannst keine Drohne fesseln.");
+            return;
+        }
+
+        if(GFB.CURRENT.containsKey(rightClicked.getName()) && rightClicked.getLocation().distance(GFB.CURRENT.get(rightClicked.getName()).getLocation()) < 10) {
+            p.sendMessage(Messages.ERROR + "Du kannst den Spieler nicht tragen.");
             return;
         }
 

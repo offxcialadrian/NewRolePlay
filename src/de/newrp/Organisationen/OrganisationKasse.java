@@ -37,6 +37,11 @@ public class OrganisationKasse implements CommandExecutor {
             return true;
         }
 
+        if(Bankautomaten.cooldownATM.containsKey(atm) && Bankautomaten.cooldownATM.get(atm) > System.currentTimeMillis()) {
+            p.sendMessage(Messages.ERROR + "Der Automat ist derzeit nicht verfügbar.");
+            return true;
+        }
+
         if (args.length == 1) {
             if (args[0].equalsIgnoreCase("info")) {
                 p.sendMessage(PREFIX + "Die Kasse der " + Organisation.getOrganisation(p).getName() + " hat §6" + Organisation.getOrganisation(p).getKasse() + "€");
@@ -76,7 +81,7 @@ public class OrganisationKasse implements CommandExecutor {
                         return true;
                     }
 
-                    Organisation.getOrganisation(p).removeExp(Math.max(5, amount/1000));
+                    Organisation.getOrganisation(p).removeExp(Math.max(10, amount/750));
                     atm.removeCash(amount);
                     Organisation.getOrganisation(p).removeKasse(amount);
                     Script.addMoney(p, PaymentType.CASH, amount);

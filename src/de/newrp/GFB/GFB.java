@@ -15,15 +15,15 @@ import java.util.HashMap;
 
 public enum GFB {
 
-    LAGERARBEITER(1, "Lagerarbeiter", new Location(Script.WORLD, 1, 70, 1)),
-    TRANSPORT(2, "Transport", new Location(Script.WORLD, 1, 70, 1)),
-    KELLNER(3, "Kellner", new Location(Script.WORLD, 1, 70, 1)),
-    EISHALLE(4, "Eishalle", new Location(Script.WORLD, 1, 70, 1)),
-    PIZZALIEFERANT(5, "Pizzalieferant", new Location(Script.WORLD, 1, 70, 1)),
-    DISHWASHER(6, "Tellerwäscher", new Location(Script.WORLD, 1, 70, 1)),
-    BURGERFRYER(7, "Burgerbrater", new Location(Script.WORLD, 1, 70, 1)),
-    STRASSENWARTUNG(8, "Straßenwartung", new Location(Script.WORLD, 1, 70, 1)),
-    IMKER(9, "Imker", new Location(Script.WORLD, 1, 70, 1));
+    LAGERARBEITER(1, "Lagerarbeiter", new Location(Script.WORLD, 995, 68, 1260)),
+    TRANSPORT(2, "Transport", new Location(Script.WORLD, 935, 65, 1079)),
+    KELLNER(3, "Kellner", new Location(Script.WORLD, 425, 68, 934)),
+    EISHALLE(4, "Eishalle",new Location(Script.WORLD, 372, 66, 768)),
+    PIZZALIEFERANT(5, "Pizzalieferant", new Location(Script.WORLD, 637, 68, 884, 66.48648f, 9.386628f)),
+    DISHWASHER(6, "Tellerwäscher", new Location(Script.WORLD, 587, 66, 746, -70.366f, 13.379983f)),
+    BURGERFRYER(7, "Burgerbrater", new Location(Script.WORLD, 459, 66, 765, -11.671753f, 10.054159f)),
+    STRASSENWARTUNG(8, "Straßenwartung",  new Location(Script.WORLD, 475, 65, 1316, -36.769684f, 17.13762f)),
+    IMKER(9, "Imker", new Location(Script.WORLD, 222, 65, 771, 174.1878f, 10.542069f));
 
 
     private int id;

@@ -63,7 +63,7 @@ public class Lotto implements CommandExecutor {
     }
 
     public static void start() {
-        int i = Script.getRandom(1, 999);
+        int i = Script.getRandom(1, 500);
         String day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY ? "Sonntagabend" : "Mittwochabend";
         Bukkit.broadcastMessage(NEWS + "Guten Abend! Herzlich Willkommen zur Lottoziehung am "+ day + "!");
         Bukkit.getServer().getScheduler().runTaskLater(main.getInstance(), () -> Bukkit.broadcastMessage(NEWS + "Der aktuelle Jackpot beträgt §e§l" + getJackpot() + "§r§6€..."), 20 * 20L);
@@ -150,20 +150,20 @@ public class Lotto implements CommandExecutor {
                 ItemStack lotto = Script.setName(Material.PAPER, "§7Lottoschein");
                 if (p.getInventory().contains(lotto)) {
                     if (args.length == 0) {
-                        p.sendMessage(Messages.ERROR + "/lotto [Nummer (1-999)]");
+                        p.sendMessage(Messages.ERROR + "/lotto [Nummer (1-500)]");
                     } else {
                         if (Script.isInt(args[0])) {
                             int nummer = Integer.parseInt(args[0]);
-                            if (nummer >= 1 && nummer <= 999) {
+                            if (nummer >= 1 && nummer <= 500) {
                                 Script.executeUpdate("INSERT INTO lotto (nrp_id, number) VALUES (" + Script.getNRPID(p) + ", " + nummer + ");");
                                 p.getInventory().remove(lotto);
                                 p.sendMessage(PREFIX + "Du hast nun einen Lottoschein mit der Nummer " + nummer + ".");
                                 addLottoJackpot(ShopItem.LOTTOSCHEIN.getBuyPrice());
                             } else {
-                                p.sendMessage(Messages.ERROR + "Es gibt nur Lottonummer zwischen 1 und 999.");
+                                p.sendMessage(Messages.ERROR + "Es gibt nur Lottonummer zwischen 1 und 500.");
                             }
                         } else {
-                            p.sendMessage(Messages.ERROR + "/lotto [Nummer (1-999)]");
+                            p.sendMessage(Messages.ERROR + "/lotto [Nummer (1-500)]");
                         }
                     }
                 } else {

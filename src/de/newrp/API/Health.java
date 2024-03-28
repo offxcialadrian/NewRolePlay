@@ -145,6 +145,7 @@ public enum Health {
         if (f > this.max) f = max;
         HashMap<Health, Float> health = getFull(id);
         health.put(this, f);
+        if(this.get(id) >= this.max) return;
         Script.executeAsyncUpdate("UPDATE health SET " + this.name + "=" + f + " WHERE id=" + id);
     }
 

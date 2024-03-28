@@ -189,6 +189,14 @@ public class PayShop implements Listener {
                     p.getInventory().addItem(Zeitung.zeitung);
                     Beruf.Berufe.NEWS.addKasse(si.getBuyPrice());
                     break;
+                case HANDY_REPAIR:
+                    if (!Mobile.hasPhone(p)) {
+                        p.sendMessage(Messages.ERROR + "Du hast kein Handy.");
+                        return;
+                    }
+                    Mobile.getPhone(p).setDestroyed(p, false);
+                    Mobile.getPhone(p).setAkku(p, Mobile.getPhone(p).getMaxAkku());
+                    break;
                 case SAMSUNG_HANDY:
                 case APPLE_HANDY:
                 case HUAWEI_HANDY:
@@ -200,10 +208,11 @@ public class PayShop implements Listener {
                         Mobile.addPhone(p, Mobile.Phones.SAMSUNG);
                     } else if (si == ShopItem.APPLE_HANDY) {
                         Mobile.addPhone(p, Mobile.Phones.APPLE);
-                    } else if (si == ShopItem.HUAWEI_HANDY) {
+                    } else {
                         Mobile.addPhone(p, Mobile.Phones.HUAWEI);
                     }
                     Mobile.getPhone(p).setAkku(p, Mobile.getPhone(p).getMaxAkku());
+                    Mobile.getPhone(p).setDestroyed(p, false);
                     break;
                 case SCHMERZMITTEL:
                 case ENTZUENDUNGSHEMMENDE_SALBE:
@@ -232,10 +241,13 @@ public class PayShop implements Listener {
                     break;
                 case EINZELFAHRASUSWEIS:
                     p.getInventory().addItem(new ItemBuilder(Material.PAPER).setName("§6UBahn-Ticket [Einzelfahrausweis]").setLore("Verbleibende Fahrten: 1").build());
+                    break;
                 case WOCHENFAHRASUSWEIS:
                     p.getInventory().addItem(new ItemBuilder(Material.PAPER).setName("§6UBahn-Ticket [7 Fahrten]").setLore("Verbleibende Fahrten: 7").build());
+                    break;
                 case MONATSFAHRASUSWEIS:
                     p.getInventory().addItem(new ItemBuilder(Material.PAPER).setName("§6UBahn-Ticket [30 Fahrten]").setLore("Verbleibende Fahrten: 30").build());
+                    break;
 
                 case WATER_BUCKET:
                     p.getInventory().addItem(Script.setNameAndLore(new ItemStack(Material.WATER_BUCKET), "§9Wasser", "§65/5"));

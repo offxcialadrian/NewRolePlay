@@ -62,7 +62,7 @@ public class InviteCommand implements CommandExecutor {
             return true;
         }
 
-        if(Script.getActivePlayTime(tg, true) < 1 && !SDuty.isSDuty(p)) {
+        if(Script.getActivePlayTime(tg, true) < 5 && !SDuty.isSDuty(p)) {
             p.sendMessage(Messages.ERROR + "Der Spieler hat noch keine 60 Minuten aktive Spielzeit.");
             return true;
         }

@@ -53,7 +53,10 @@ public class CancelTicket implements CommandExecutor {
                     public void run() {
                         p.sendMessage(TicketCommand.PREFIX + "Du hast das Ticket mit " + Script.getName(tg) + " beendet! §7(§6#" + id + "§7)");
                         tg.sendMessage(TicketCommand.PREFIX + Script.getRank(p).getName(p) + " " + Script.getName(p) + " hat das Ticket beendet! §7(§6#" + id + "§7)");
-                        Script.sendTeamMessage(p, ChatColor.LIGHT_PURPLE, "hat das Ticket mit " + Script.getName(tg) + " beendet! §7(§6#" + id + "§7)", true);TicketCommand.close(t);
+                        Script.sendTeamMessage(p, ChatColor.LIGHT_PURPLE, "hat das Ticket mit " + Script.getName(tg) + " beendet! §7(§6#" + id + "§7)", true);
+                        TicketCommand.close(t);
+                        Script.updateListname(p);
+                        Script.updateListname(tg);
                     }
                 }.runTaskLater(main.getInstance(), 2 * 20L);
                 return true;
@@ -63,7 +66,6 @@ public class CancelTicket implements CommandExecutor {
             Script.sendTeamMessage(p, ChatColor.LIGHT_PURPLE, "hat das Ticket mit " + Script.getName(tg) + " beendet! §7(§6#" + id + "§7)", true);
 
             TicketCommand.close(t);
-
             Script.updateListname(p);
             Script.updateListname(tg);
             SDuty.updateScoreboard();

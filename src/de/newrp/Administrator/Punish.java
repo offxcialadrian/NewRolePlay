@@ -175,6 +175,7 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
         UMVERTEILUNG_DER_PERSÖNLICHKEITSRECHTE(42, Punishment.CHECKPOINTS, null, 0, 50, "Umverteilung der Persönlichkeitsrechte", "Umverteilung der Persönlichkeitsrechte."),
         SICHERHEITSBANN(98 ,Punishment.BAN, null,0,0,"Sicherheitsbann","Du wurdest zur Sicherheit gebannt. Sollte dir der Grund nicht bekannt sein, melde dich bei uns im Support."),
         RDM_SCHWERWIEGEND(43, Punishment.BAN, Punishment.WARN, TimeUnit.DAYS.toMillis(3),0,"Schwerwiegender Random Deathmatch","Das Töten eines Spielers ohne einen RP-Grund."),
+        MISSBRAUCH_VON_TRAGEN(44, Punishment.TRAGEN_SPERRE, null, 0, 0, "Missbrauch von /tragen", "Das Missbrauchen des Tragens."),
 
         UNZUREICHENDE_EIGNUNG(99,Punishment.BAN, null,0,0,"Unzureichende Eignung","Du hast unzureichende Eignung gezeigt.");
 
@@ -297,7 +298,6 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
 
         if (punishment == Punishment.BAN || secondaryPunishment == Punishment.BAN) {
             if (v.getDuration() == 0) {
-                p.sendMessage(PREFIX + "Du hast " + Script.getName(tg) + " für " + v.getName() + " gebannt.");
                 tg.sendMessage(PREFIX + "Du wurdest von " + Script.getName(p) + " für " + v.getName() + " gebannt.");
                 tg.sendMessage(PREFIX + "Grund: " + v.getDescription());
                 tg.kickPlayer("§8» §cNRP × New RolePlay §8┃ §cBANN §8« \n\n§8§m------------------------------\n\n§7Du wurdest vom Server gebannt§8.\n\n§7Grund §8× §e" + v.getName() + "\n§7Gebannt bis §8× §e" + "Lebenslang" + "\n\n§7Einen Entbannungsantrag kannst du auf der Webseite stellen.\n\n§8§m------------------------------");
@@ -308,7 +308,6 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
                 if (Beruf.hasBeruf(tg)) Beruf.getBeruf(tg).removeMember(tg);
                 if (Organisation.hasOrganisation(tg)) Organisation.getOrganisation(tg).removeMember(tg);
             } else {
-                p.sendMessage(PREFIX + "Du hast " + Script.getName(tg) + " bis zum " + dateFormat.format(until) + " Uhr für " + v.getName() + " gebannt.");
                 tg.sendMessage(PREFIX + "Du wurdest von " + Script.getName(p) + " bis zum " + dateFormat.format(until) + " Uhr für " + v.getName() + " gebannt.");
                 tg.sendMessage(PREFIX + "Grund: " + v.getDescription());
                 tg.kickPlayer("§8» §cNRP × New RolePlay §8┃ §cBANN §8« \n\n§8§m------------------------------\n\n§7Du wurdest vom Server gebannt§8.\n\n§7Grund §8× §e" + v.getName() + "\n§7Gebannt bis §8× §e" + dateFormat.format(until) + "\n\n§7Einen Entbannungsantrag kannst du auf der Webseite stellen.\n\n§8§m------------------------------");
@@ -351,7 +350,6 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
         }
 
         if (punishment == Punishment.KICK || secondaryPunishment == Punishment.KICK) {
-            p.sendMessage(PREFIX + "Du hast " + Script.getName(tg) + " für " + v.getName() + " gekickt.");
             tg.sendMessage(PREFIX + "Du wurdest von " + Script.getName(p) + " für " + v.getName() + " gekickt.");
             tg.sendMessage(PREFIX + "Grund: " + v.getDescription());
             Log.WARNING.write(tg, "wurde von " + Messages.RANK_PREFIX(p) + " für " + v.getName() + " gekickt.");
@@ -375,12 +373,12 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
         }
 
         if (punishment == Punishment.TRAGEN_SPERRE || secondaryPunishment == Punishment.TRAGEN_SPERRE) {
-            p.sendMessage(PREFIX + "Du hast " + tg.getName() + " eine Tragensperre für " + v.getDuration() + " Minuten gegeben.");
-            tg.sendMessage(PREFIX + "Du hast von " + Script.getName(p) + " eine Tragensperre für " + v.getDuration() + " Minuten bekommen.");
-            Script.sendTeamMessage(p, ChatColor.RED, "hat " + tg.getName() + " eine Tragensperre für " + v.getDuration() + " Minuten gegeben.", true);
-            Log.WARNING.write(tg, "hat von " + Messages.RANK_PREFIX(p) + " eine Tragensperre für " + v.getDuration() + " Minuten bekommen.");
-            Log.HIGH.write(p, "hat " + tg.getName() + " eine Tragensperre für " + v.getDuration() + " Minuten gegeben.");
-            Sperre.TRAGENSPERRE.setSperre(Script.getNRPID(tg), v.getDuration());
+            p.sendMessage(PREFIX + "Du hast " + tg.getName() + " eine Tragensperre für " + 180 + " Minuten gegeben.");
+            tg.sendMessage(PREFIX + "Du hast von " + Script.getName(p) + " eine Tragensperre für " + 180 + " Minuten bekommen.");
+            Script.sendTeamMessage(p, ChatColor.RED, "hat " + tg.getName() + " eine Tragensperre für " + 180 + " Minuten gegeben.", true);
+            Log.WARNING.write(tg, "hat von " + Messages.RANK_PREFIX(p) + " eine Tragensperre für " + 180 + " Minuten bekommen.");
+            Log.HIGH.write(p, "hat " + tg.getName() + " eine Tragensperre für " + 180 + " Minuten gegeben.");
+            Sperre.TRAGENSPERRE.setSperre(Script.getNRPID(tg), 180);
         }
 
         if (punishment == Punishment.CHECKPOINTS || secondaryPunishment == Punishment.CHECKPOINTS) {

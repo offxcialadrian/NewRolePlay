@@ -65,6 +65,10 @@ public enum Organisation {
         return 0;
     }
 
+    public Location getDbank() {
+        return dbank;
+    }
+
     public void setLevel(int level) {
         Script.executeUpdate("UPDATE organisation_level SET level='" + level + "' WHERE organisationID='" + this.id + "'");
     }
@@ -330,10 +334,8 @@ public enum Organisation {
 
     public List<Player> getMembers() {
         List<Player> list = new ArrayList<>();
-        for (Player all : Bukkit.getOnlinePlayers()) {
-            if (hasOrganisation(all, this)) {
-                list.add(all);
-            }
+        for (OfflinePlayer all : this.getAllMembers()) {
+            if(all.isOnline()) list.add(all.getPlayer());
         }
         return list;
     }
@@ -350,6 +352,14 @@ public enum Organisation {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        // sort list by last disconnect the longest time ago first
+        list.sort((o1, o2) -> {
+            long l1 = Script.getLastDisconnect(o1);
+            long l2 = Script.getLastDisconnect(o2);
+            return Long.compare(l2, l1);
+        });
+
         return list;
     }
 
@@ -442,7 +452,7 @@ public enum Organisation {
         try(Statement stmt = main.getConnection().createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM organisation_rankname WHERE organisationID='" + Organisation.getOrganisation(p).getID() + "' AND rank='" + Organisation.getRank(p) + "' AND gender='" + Script.getGender(p).getName().charAt(0)+"'")) {
             if(rs.next()) {
-                return rs.getString("name");
+                return rs.getString("name").replace("-"," ");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -454,7 +464,7 @@ public enum Organisation {
         try(Statement stmt = main.getConnection().createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM organisation_rankname WHERE organisationID='" + Organisation.getOrganisation(p).getID() + "' AND rank='" + Organisation.getRank(p) + "' AND gender='" + Script.getGender(p).getName().charAt(0) + "'")) {
             if(rs.next()) {
-                return rs.getString("name");
+                return rs.getString("name").replace("-"," ");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -466,7 +476,7 @@ public enum Organisation {
         try(Statement stmt = main.getConnection().createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM organisation_rankname WHERE organisationID='" + this.id + "' AND rank='" + rank + "' AND gender='" + g.getName().charAt(0) + "'")) {
             if(rs.next()) {
-                return rs.getString("name");
+                return rs.getString("name").replace("-"," ");
             }
         } catch (Exception e) {
             e.printStackTrace();

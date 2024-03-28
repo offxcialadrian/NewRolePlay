@@ -58,13 +58,13 @@ public class Straftat implements CommandExecutor {
 
         int wantedPunkte = Integer.parseInt(args[0]);
 
-        String grund = "";
+        StringBuilder grund = new StringBuilder();
         for(int i = 1; i < args.length; i++) {
-            grund += args[i] + " ";
+            grund.append(args[i]).append(" ");
         }
 
-        grund = grund.trim();
-        if(straftatExists(grund)) {
+        grund = new StringBuilder(grund.toString().trim());
+        if(straftatExists(grund.toString())) {
             p.sendMessage(Messages.ERROR + "Diese Straftat existiert bereits.");
             return true;
         }

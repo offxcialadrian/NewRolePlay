@@ -7,6 +7,7 @@ import de.newrp.Berufe.Drone;
 import de.newrp.Berufe.Duty;
 import de.newrp.Berufe.Equip;
 import de.newrp.Chat.Me;
+import de.newrp.GFB.GFB;
 import de.newrp.House.House;
 import de.newrp.Organisationen.Drogen;
 import de.newrp.Police.Fahndung;
@@ -55,10 +56,6 @@ public class InteractMenu implements Listener {
             return;
         }
 
-        if (Fesseln.isTiedUp(p)) {
-            Script.sendActionBar(p, Messages.ERROR + "Du bist gefesselt.");
-            return;
-        }
 
         if (SDuty.isSDuty(tg)) {
             Script.sendActionBar(p, Messages.ERROR + "Du kannst nicht mit " + Script.getName(tg) + " interagieren, da " + (Script.getGender(tg) == Gender.MALE ? "er" : "sie") + " sich im Supporter-Dienst befindet.");
@@ -187,6 +184,16 @@ public class InteractMenu implements Listener {
                 break;
             case "Tragen":
 
+                if (Fesseln.isTiedUp(p)) {
+                    Script.sendActionBar(p, Messages.ERROR + "Du bist gefesselt.");
+                    return;
+                }
+
+                if(GFB.CURRENT.containsKey(tg.getName()) && tg.getLocation().distance(GFB.CURRENT.get(tg.getName()).getLocation()) < 10) {
+                    p.sendMessage(Messages.ERROR + "Du kannst den Spieler nicht tragen.");
+                    return;
+                }
+
                 if (Tragen.cooldown.containsKey(p)) {
                     if (Tragen.cooldown.get(p) + Tragen.TIMEOUT > System.currentTimeMillis()) {
                         p.sendMessage(Messages.ERROR + "Du kannst nur alle 5 Minuten einen Spieler tragen.");
@@ -229,6 +236,10 @@ public class InteractMenu implements Listener {
                 }.runTaskLater(de.newrp.main.getInstance(), 5L);
                 break;
             case "Handschellen öffnen":
+                if (Fesseln.isTiedUp(p)) {
+                    Script.sendActionBar(p, Messages.ERROR + "Du bist gefesselt.");
+                    return;
+                }
                 if (Handschellen.isCuffed(tg)) {
                     Handschellen.uncuff(tg);
                     Me.sendMessage(p, "nimmt " + Script.getName(tg) + " die Handschellen ab.");
@@ -245,6 +256,11 @@ public class InteractMenu implements Listener {
                 }
                 break;
             case "Durchsuchen":
+                if (Fesseln.isTiedUp(p)) {
+                    Script.sendActionBar(p, Messages.ERROR + "Du bist gefesselt.");
+                    return;
+                }
+
                 if (!Beruf.hasBeruf(p)) {
                     p.sendMessage(Messages.NO_PERMISSION);
                     return;
@@ -336,6 +352,11 @@ public class InteractMenu implements Listener {
                 tg.sendMessage(PREFIX + Script.getName(p) + " ist derzeit im Ticket.");
                 break;
             case "Fesseln öffnen":
+                if (Fesseln.isTiedUp(p)) {
+                    Script.sendActionBar(p, Messages.ERROR + "Du bist gefesselt.");
+                    return;
+                }
+
                 if (!Fesseln.isTiedUp(tg)) {
                     p.sendMessage(Messages.ERROR + "Der Spieler ist nicht gefesselt.");
                     return;
