@@ -227,6 +227,7 @@ public class Utils implements Listener {
         Script.sendOfflineMessages(p);
         Script.updateExpBar(p);
         Corpse.reloadNPC(p);
+        p.getInventory().remove(Material.PLAYER_HEAD);
         if(Script.hasRank(p, Rank.SUPPORTER, false)) {
             Script.team.add(p);
         }

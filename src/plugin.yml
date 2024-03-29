@@ -644,3 +644,5 @@ commands:
     description: destroy all koms
   restorezeitung:
     description: restore the zeitung
+  teamactivity:
+    description: view the teamactivity

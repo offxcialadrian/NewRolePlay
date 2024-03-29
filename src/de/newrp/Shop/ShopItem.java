@@ -102,7 +102,7 @@ public enum ShopItem {
     POTATO(114, "§fBeeren", new ItemBuilder(Material.SWEET_BERRIES).setName("§fBeeren").setAmount(16).build(), 2, 1, 20, 1, 2000, false, true, false, new ShopType[] {ShopType.GEMUESE}),
     APPLE(115, "§fApfel", new ItemBuilder(Material.APPLE).setName("§fApfel").setAmount(8).build(), 2, 1, 20, 3, 2000, false, true, false, new ShopType[] {ShopType.GEMUESE}),
     MELON(116, "§fMelone", new ItemBuilder(Material.MELON_SLICE).setName("§fMelone").setAmount(16).build(), 2, 1, 20, 2, 2000, false, true, false, new ShopType[] {ShopType.GEMUESE}),
-    HANDY_REPAIR(117, "§7Handy Reparatur", new ItemBuilder(Material.ANVIL).setName("§7Handy Reparatur").build(), 1, 1, 1, 100, 5000, false, false, false, new ShopType[] {ShopType.ELECTRONIC});
+    HANDY_REPAIR(117, "§7Handy Reparatur", new ItemBuilder(Material.ANVIL).setName("§7Handy Reparatur").build(), 1, 1, 1, 25, 5000, false, false, false, new ShopType[] {ShopType.ELECTRONIC});
 
 
     private final int id;

@@ -373,6 +373,7 @@ public class main extends JavaPlugin {
         getCommand("addorgdoor").setExecutor(new AddOrgDoor());
         getCommand("destroykoms").setExecutor(new DestroyKoms());
         getCommand("restorezeitung").setExecutor(new RestoreZeitung());
+        getCommand("teamactivity").setExecutor(new TeamActivity());
 
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new SDuty(), this);

@@ -47,7 +47,6 @@ public class Bankautomaten implements Listener {
         }
 
         List<Player> cops = Beruf.Berufe.POLICE.getMembers().stream()
-                .map(ent -> (Player) ent)
                 .filter(Beruf::hasBeruf)
                 .filter(nearbyPlayer -> Beruf.getBeruf(nearbyPlayer).equals(Beruf.Berufe.POLICE))
                 .filter(Duty::isInDuty)

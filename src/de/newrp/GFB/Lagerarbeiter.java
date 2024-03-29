@@ -200,7 +200,7 @@ public class Lagerarbeiter implements CommandExecutor, Listener {
         p.sendMessage(PREFIX + "Gehe ins Lager, hole dir eine Palette und fang an deinen Job zu machen.");
         int totalscore = GFB.LAGERARBEITER.getLevel(p) + Script.getRandom(7, 12);
         p.sendMessage(Messages.INFO + "Klicke Rechtsklick auf das Schild \"Ware\".");
-        p.sendMessage(Messages.INFO + "Du musst insgesamt " + totalscore+1 + " Waren verräumen.");
+        p.sendMessage(Messages.INFO + "Du musst insgesamt " + (totalscore+1) + " Waren verräumen.");
         SCORE.put(p.getName(), totalscore);
         TOTAL_SCORE.put(p.getName(), totalscore);
         cooldown.put(p.getName(), System.currentTimeMillis() + 10 * 60 * 2000L);
@@ -309,7 +309,7 @@ public class Lagerarbeiter implements CommandExecutor, Listener {
                         p.getInventory().clear();
                         Cache.loadInventory(p);
                     }
-                }.runTaskLater(main.getInstance(), 5L);
+                }.runTaskLater(main.getInstance(), 20L);
             } else {
                 SCORE.replace(p.getName(), amount - 1);
                 p.sendMessage(PREFIX + "§aRichtig! §6Hole nun das nächste Produkt aus \"Ware\" und sortiere es ein (" + (TOTAL_SCORE.get(p.getName())-SCORE.get(p.getName())) + "/" + (TOTAL_SCORE.get(p.getName())+1) + ")");

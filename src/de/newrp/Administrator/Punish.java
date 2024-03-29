@@ -66,7 +66,7 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
             if(arg.equalsIgnoreCase(args[0])) continue;
             v = Violation.getViolationByArg(arg);
 
-            if (v != Violation.SICHERHEITSBANN && v != Violation.SPAM && !Script.hasRank(p, Rank.MODERATOR, true)) {
+            if (v != Violation.SICHERHEITSBANN && v != Violation.SPAM && !Script.hasRank(p, Rank.MODERATOR, false)) {
                 p.sendMessage(Messages.NO_PERMISSION);
                 return true;
             }

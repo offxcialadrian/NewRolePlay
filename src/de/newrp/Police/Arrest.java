@@ -71,11 +71,7 @@ public class Arrest implements CommandExecutor {
 
         int fahndungID = Fahndung.getStraftatID(tg);
         long time = Fahndung.getFahndedTime(tg);
-        int wanteds = 0;
-
-        for(int i : Fahndung.getStraftatIDs(tg)) {
-            wanteds += Straftat.getWanteds(i);
-        }
+        int wanteds = Fahndung.getWanteds(p);
 
         if(wanteds < 2) {
             p.sendMessage(Messages.ERROR + "Der Spieler hat zu wenig Wanteds.");

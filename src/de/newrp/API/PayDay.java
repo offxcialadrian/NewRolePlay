@@ -150,14 +150,6 @@ public class PayDay extends BukkitRunnable {
                         }
                     }
                 }
-
-                p.sendMessage("§8" + Messages.ARROW + " §7Lohnsteuer (" + lohnsteuer + "%): §c-" + (int) Script.getPercent(lohnsteuer, salary) + "€");
-                Stadtkasse.addStadtkasse((int) Script.getPercent(lohnsteuer, salary), "Lohnsteuer von " + Script.getName(p) + " erhalten", Steuern.Steuer.LOHNSTEUER);
-                payday -= (int) Script.getPercent(lohnsteuer, salary);
-
-                p.sendMessage("§8" + Messages.ARROW + " §7Arbeitslosenversicherung (" + arbeitslosenversicherung + "%): §c-" + (int) Script.getPercent(arbeitslosenversicherung, salary) + "€");
-                Stadtkasse.addStadtkasse((int) Script.getPercent(arbeitslosenversicherung, salary), "Arbeitslosenversicherung von " + Script.getName(p) + " erhalten", Steuern.Steuer.ARBEITSLOSENVERSICHERUNG);
-                payday -= (int) Script.getPercent(arbeitslosenversicherung, salary);
             }
 
             if (Arbeitslosengeld.hasArbeitslosengeld(p)) {

@@ -1,6 +1,7 @@
 package de.newrp.Runnable;
 
 import de.newrp.API.*;
+import de.newrp.Administrator.BuildMode;
 import de.newrp.Administrator.SDuty;
 import de.newrp.Berufe.Abteilung;
 import de.newrp.Berufe.Beruf;
@@ -14,6 +15,7 @@ import de.newrp.Shop.ShopType;
 import de.newrp.Shop.Shops;
 import de.newrp.main;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -85,6 +87,7 @@ public class AsyncHour extends BukkitRunnable {
 
 
         for(Player all : Bukkit.getOnlinePlayers()) {
+            if(!BuildMode.isInBuildMode(all)) all.getInventory().remove(Material.PLAYER_HEAD);
             if(!Script.WORLD.hasStorm()) return;
             if(AFK.isAFK(all)) continue;
             if(SDuty.isSDuty(all)) continue;

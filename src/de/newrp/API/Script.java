@@ -97,6 +97,31 @@ public class Script {
         return players;
     }
 
+    public static HashMap<String, Integer> sortByValue(HashMap<String, Integer> hm) {
+        List<Map.Entry<String, Integer>> list = new LinkedList<>(hm.entrySet());
+        list.sort(Map.Entry.comparingByValue());
+        HashMap<String, Integer> temp = new LinkedHashMap<>();
+        for (Map.Entry<String, Integer> aa : list) {
+            temp.put(aa.getKey(), aa.getValue());
+        }
+        return temp;
+    }
+
+    public static List<OfflinePlayer> getAllNRPTeam() {
+        //select all nrp_ids from ranks
+        List<OfflinePlayer> players = new ArrayList<>(team);
+        //sort list by rank
+        players.sort((o1, o2) -> {
+            if (getRank(o1).getWeight() > getRank(o2).getWeight()) {
+                return -1;
+            } else if (getRank(o1).getWeight() < getRank(o2).getWeight()) {
+                return 1;
+            }
+            return 0;
+        });
+        return players;
+    }
+
     public static ItemStack tazer() {
         ItemStack i = new ItemStack(Material.WOODEN_HOE);
         ItemMeta meta = i.getItemMeta();
@@ -1082,6 +1107,7 @@ public class Script {
     public static void removeDrugs(Player p) {
         p.getInventory().remove(Material.SUGAR);
         p.getInventory().remove(Material.GREEN_DYE);
+        p.getInventory().remove(Material.BEETROOT_SEEDS);
         p.getItemOnCursor();
         if(p.getItemOnCursor().getType() == Material.SUGAR) p.setItemOnCursor(new ItemStack(Material.AIR));
         if(p.getItemOnCursor().getType() == Material.GREEN_DYE) p.setItemOnCursor(new ItemStack(Material.AIR));

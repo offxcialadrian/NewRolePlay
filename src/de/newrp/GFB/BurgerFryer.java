@@ -255,6 +255,7 @@ public class BurgerFryer implements CommandExecutor, Listener {
                 return;
             } else {
                 if(NEEDED.get(p.getName()).isEmpty()) {
+                    e.getView().close();
                     p.sendMessage(PREFIX + "Du hast nun alle Burger zubereitet.");
                     GFB.BURGERFRYER.addExp(p, GFB.BURGERFRYER.getLevel(p) + Script.getRandom(5, 7)/2);
                     PayDay.addPayDay(p, (GFB.BURGERFRYER.getLevel(p) + (TOTAL_SCORE.get(p.getName())))*2);
@@ -301,7 +302,7 @@ public class BurgerFryer implements CommandExecutor, Listener {
         }
     }
 
-    @EventHandler (priority = EventPriority.LOW)
+    @EventHandler (priority = EventPriority.HIGH)
     public void onClose(InventoryCloseEvent e) {
         Player p = (Player) e.getPlayer();
         if(e.getView().getTitle().startsWith("§8[§6Burger§8] §6» §7")) {
