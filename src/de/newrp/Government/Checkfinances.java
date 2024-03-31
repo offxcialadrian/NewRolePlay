@@ -1,6 +1,5 @@
 package de.newrp.Government;
 
-import de.newrp.API.Debug;
 import de.newrp.API.Messages;
 import de.newrp.API.PaymentType;
 import de.newrp.API.Script;
@@ -36,7 +35,7 @@ public class Checkfinances implements CommandExecutor {
             return true;
         }
 
-        if(Beruf.getAbteilung(p) != Abteilung.Abteilungen.FINANZAMT) {
+        if(Beruf.getAbteilung(p) != Abteilung.Abteilungen.FINANZAMT || Beruf.isLeader(p, true)) {
             p.sendMessage(Messages.ERROR + "§cDu bist nicht im Finanzamt.");
             return true;
         }

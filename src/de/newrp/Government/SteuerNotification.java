@@ -19,22 +19,22 @@ public class SteuerNotification implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender cs, @NotNull Command cmd, @NotNull String s, @NotNull String[] args) {
         Player p = (Player) cs;
 
-        if(!Beruf.hasBeruf(p)) {
+        if (!Beruf.hasBeruf(p)) {
             p.sendMessage(Messages.NO_PERMISSION);
             return true;
         }
 
-        if(!Beruf.getBeruf(p).equals(Beruf.Berufe.GOVERNMENT)) {
+        if (!Beruf.getBeruf(p).equals(Beruf.Berufe.GOVERNMENT)) {
             p.sendMessage(Messages.NO_PERMISSION);
             return true;
         }
 
-        if(Beruf.getAbteilung(p) != Abteilung.Abteilungen.FINANZAMT && !Beruf.isLeader(p, true)) {
+        if (Beruf.getAbteilung(p) != Abteilung.Abteilungen.FINANZAMT && !Beruf.isLeader(p, true)) {
             p.sendMessage(Messages.NO_PERMISSION);
             return true;
         }
 
-        if(activated(p)) {
+        if (activated(p)) {
             Script.executeAsyncUpdate("DELETE from steuerNotification WHERE nrp_id = " + Script.getNRPID(p));
             p.sendMessage(PREFIX + "Die Steuerbenachrichtigung wurde deaktiviert.");
         } else {
@@ -50,9 +50,9 @@ public class SteuerNotification implements CommandExecutor {
     }
 
     public static void sendNotification(String msg) {
-        for(Player player : Bukkit.getOnlinePlayers()) {
-            if(!Beruf.hasBeruf(player)) continue;
-            if(activated(player) && Beruf.getBeruf(player).equals(Beruf.Berufe.GOVERNMENT) && (Beruf.getAbteilung(player) == Abteilung.Abteilungen.FINANZAMT || Beruf.isLeader(player, true))) {
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            if (!Beruf.hasBeruf(player)) continue;
+            if (activated(player) && Beruf.getBeruf(player).equals(Beruf.Berufe.GOVERNMENT) && (Beruf.getAbteilung(player) == Abteilung.Abteilungen.FINANZAMT || Beruf.isLeader(player, true))) {
                 player.sendMessage(PREFIX + msg);
             }
         }

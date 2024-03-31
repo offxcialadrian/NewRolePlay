@@ -18,33 +18,33 @@ public class Staatsmeldung implements CommandExecutor {
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
         Player p = (Player) cs;
 
-        if(!Beruf.hasBeruf(p)) {
+        if (!Beruf.hasBeruf(p)) {
             p.sendMessage(Messages.ERROR + "Du hast keinen Beruf!");
             return true;
         }
 
-        if(Beruf.getBeruf(p) != Beruf.Berufe.POLICE) {
+        if (Beruf.getBeruf(p) != Beruf.Berufe.POLICE) {
             p.sendMessage(Messages.ERROR + "Du bist kein Polizist!");
             return true;
         }
 
-        if(args.length == 0) {
+        if (args.length == 0) {
             p.sendMessage(Messages.ERROR + "Bitte gib eine Nachricht an!");
             return true;
         }
 
-        if(!Duty.isInDuty(p)) {
+        if (!Duty.isInDuty(p)) {
             p.sendMessage(Messages.ERROR + "Du bist nicht im Dienst!");
             return true;
         }
 
-        if(Beruf.getAbteilung(p) != Abteilung.Abteilungen.PRESSE && Beruf.isLeader(p, true)) {
+        if (Beruf.getAbteilung(p) != Abteilung.Abteilungen.PRESSE && Beruf.isLeader(p, true)) {
             p.sendMessage(Messages.ERROR + "Du bist nicht in der Presseabteilung!");
             return true;
         }
 
         StringBuilder sb = new StringBuilder();
-        for(int i = 0; i < args.length; i++) {
+        for (int i = 0; i < args.length; i++) {
             sb.append(args[i]).append(" ");
         }
 
