@@ -16,6 +16,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -29,20 +30,21 @@ public class Bankautomaten implements Listener {
 
     public static String PREFIX = "§8[§6Bankautomat§8] §6" + Messages.ARROW + " §7";
     public static HashMap<Organisation, Long> cooldown = new HashMap<>();
+    public static HashMap<Location, Block> atmBlocks = new HashMap<>();
     public static HashMap<ATM, Long> cooldownATM = new HashMap<>();
 
-    @EventHandler(priority = EventPriority.HIGH)
-    public void onInteract(BlockPlaceEvent e) {
+    @EventHandler
+    public void onInteract(PlayerInteractEvent e) {
         Player p = e.getPlayer();
         if (!Organisation.hasOrganisation(p)) return;
-        if (e.getBlock().getType() != Material.TNT) return;
+        if(e.getClickedBlock() == null) return;
+        if (p.getInventory().getItemInMainHand().getType() != Material.TNT) return;
         ATM atm = ATM.getNearATM(p);
         if (atm == null) return;
         Organisation o = Organisation.getOrganisation(p);
 
         if (cooldown.containsKey(o) && cooldown.get(o) > System.currentTimeMillis()) {
             p.sendMessage(Messages.ERROR + "Du kannst erst in " + Script.getRemainingTime(cooldown.get(o)) + " wieder einen Bankautomaten zerstören.");
-            e.setCancelled(true);
             return;
         }
 
@@ -54,19 +56,20 @@ public class Bankautomaten implements Listener {
 
         if (cops.size() < 3 && !Script.isInTestMode()) {
             p.sendMessage(Messages.ERROR + "Es braucht mindestens 3 Beamte um einen Bankautomaten zu zerstören.");
-            e.setCancelled(true);
             return;
         }
 
 
         cooldown.put(o, System.currentTimeMillis() + 10800000);
         cooldownATM.put(atm, System.currentTimeMillis() + 3600000);
+        atmBlocks.put(e.getClickedBlock().getLocation(), e.getClickedBlock());
         p.getInventory().remove(Material.TNT);
         p.sendMessage(PREFIX + "Der Bankautomat wird in 60 Sekunden zerstört.");
         Beruf.Berufe.POLICE.sendMessage(PREFIX + "ACHTUNG! ES WURDE SPRENGSTOFF AN ATM " + atm.getID() + " GEFUNDEN!");
         Beruf.Berufe.POLICE.sendMessage(Messages.INFO + "In der Nähe von " + Navi.getNextNaviLocation(p.getLocation()).getName());
         Location bombLocation = atm.getLocation();
-        e.setCancelled(false);
+        e.getClickedBlock().setType(Material.TNT);
+        p.getInventory().getItemInMainHand().setAmount(p.getInventory().getItemInMainHand().getAmount() - 1);
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -103,7 +106,8 @@ public class Bankautomaten implements Listener {
                         }
                     }
                 }
-                e.getBlock().setType(Material.AIR);
+                atmBlocks.get(bombLocation).setType(atmBlocks.get(bombLocation).getType());
+                atmBlocks.remove(bombLocation);
                 int remove = (int) Math.min(Script.getRandom(3000,6000),Script.getPercent(20, atm.getCash()));
                 atm.removeCash(remove);
                 o.sendMessage(PREFIX + Script.getName(p) + " hat einen Bankautomaten zerstört und " + remove + "€ gestohlen.");
@@ -112,7 +116,7 @@ public class Bankautomaten implements Listener {
                 new BukkitRunnable() {
                     @Override
                     public void run() {
-                        Stadtkasse.removeStadtkasse(8000, "Wiederherstellung Bankautomat");
+                        Stadtkasse.removeStadtkasse(4000, "Wiederherstellung Bankautomat");
                     }
                 }.runTaskLater(main.getInstance(), 20L * 60 * 60);
             }

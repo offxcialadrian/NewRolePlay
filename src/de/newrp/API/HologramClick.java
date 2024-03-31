@@ -41,6 +41,7 @@ public class HologramClick implements Listener {
             if (!name.startsWith("/")) return;
             Notifications.sendMessage(Notifications.NotificationType.COMMAND, "§e" + Script.getName(e.getPlayer()) + " §7hat den Befehl §e" + name + " §7ausgeführt.", e.getPlayer());
             String cmd = name.replace("/", "");
+            Log.COMMAND.write(e.getPlayer(), "/" + cmd);
             e.getPlayer().performCommand(cmd);
         }
     }

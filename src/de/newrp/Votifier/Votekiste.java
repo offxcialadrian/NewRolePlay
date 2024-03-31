@@ -405,10 +405,10 @@ public enum Votekiste {
 
 
     public enum Items {
-        PREMIUM_1(1, Script.setName(Script.addGlow(new ItemStack(Material.DIAMOND)), "Premium 1 Tag"), 2F),
-        PREMIUM_3(2, Script.setName(Script.addGlow(new ItemStack(Material.DIAMOND)), "Premium 3 Tage"), 1.8F),
-        PREMIUM_7(3, Script.setName(Script.addGlow(new ItemStack(Material.DIAMOND)), "Premium 7 Tage"), 1.5F),
-        PREMIUM_14(4, Script.setName(Script.addGlow(new ItemStack(Material.DIAMOND)), "Premium 14 Tage"), 1F),
+        PREMIUM_1(1, Script.setName(Script.addGlow(new ItemStack(Material.DIAMOND)), "Premium 1 Tag"), 1.5F),
+        PREMIUM_3(2, Script.setName(Script.addGlow(new ItemStack(Material.DIAMOND)), "Premium 3 Tage"), 1.2F),
+        PREMIUM_7(3, Script.setName(Script.addGlow(new ItemStack(Material.DIAMOND)), "Premium 7 Tage"), 0.75F),
+        PREMIUM_14(4, Script.setName(Script.addGlow(new ItemStack(Material.DIAMOND)), "Premium 14 Tage"), 0.25F),
         CHANGE_TOKEN_PERSO(9, Script.setName(Material.BOOK, "ChangeToken (Personalausweis)"), 3F),
         BASEBALLSCHLAEGER(11, Baseballschlaeger.getItem(), 7F),
         EXP_500(12, Script.setName(new ItemStack(Material.EXPERIENCE_BOTTLE), "+ 500 Exp"), 20F),

@@ -374,6 +374,9 @@ public class main extends JavaPlugin {
         getCommand("destroykoms").setExecutor(new DestroyKoms());
         getCommand("restorezeitung").setExecutor(new RestoreZeitung());
         getCommand("teamactivity").setExecutor(new TeamActivity());
+        getCommand("bussgeld").setExecutor(new Bussgeld());
+        getCommand("bankraub").setExecutor(new Bankraub());
+        getCommand("strafregister").setExecutor(new Strafregister());
 
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new SDuty(), this);
@@ -494,6 +497,7 @@ public class main extends JavaPlugin {
         pm.registerEvents(new Drogenbank(), this);
         pm.registerEvents(new AddOrgDoor(), this);
         pm.registerEvents(new Bankautomaten(), this);
+        pm.registerEvents(new Bankraub(), this);
 
         new AsyncHealth().runTaskTimerAsynchronously(this, 120 * 20L, 120 * 20L);
         new PayDay().runTaskTimerAsynchronously(this, 60 * 20L, 60 * 20L);

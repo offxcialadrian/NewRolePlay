@@ -21,6 +21,7 @@ public class AntiLeftHand implements Listener {
             e.setCancelled(true);
             e.getWhoClicked().getInventory().setItemInOffHand(new ItemStack(Material.AIR));
         }
+
     }
 
     @EventHandler

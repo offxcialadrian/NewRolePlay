@@ -30,6 +30,7 @@ public class BeziehungCommand implements CommandExecutor {
                 return true;
             } else {
                 p.sendMessage(Messages.ERROR + "/beziehung [Spieler]");
+                return true;
             }
         }
 
@@ -66,7 +67,7 @@ public class BeziehungCommand implements CommandExecutor {
 
         Annehmen.offer.put(tg.getName() + ".beziehung", p.getName());
         p.sendMessage(PREFIX + "Du hast " + Script.getName(tg) + " gefragt, ob " + (Script.getGender(tg) == Gender.MALE ? "er" : "sie") + " mit dir zusammen sein möchte.");
-        tg.sendMessage(PREFIX + Script.getName(p) + " hat dich ob du mit " + (Script.getGender(p) == Gender.MALE ? "ihm" : "ihr") + " zusammen sein möchtest.");
+        tg.sendMessage(PREFIX + Script.getName(p) + " hat dich gefragt, ob du mit " + (Script.getGender(p) == Gender.MALE ? "ihm" : "ihr") + " zusammen sein möchtest.");
         Script.sendAcceptMessage(tg);
 
 

@@ -163,6 +163,12 @@ public class Chat implements Listener {
         }
 
         for(String arg : e.getMessage().split(" ")) {
+
+            if(arg.equalsIgnoreCase("oos") || arg.equalsIgnoreCase("ooc")) {
+                p.performCommand("ooc " + e.getMessage());
+                return;
+            }
+
             if(arg.contains("ChatCraft")) {
                 p.kickPlayer("§8» §cNRP × New RolePlay §8┃ §cKICK §8« \n\n§8§m------------------------------\n\n§7Du wurdest vom Server gekickt§8.\n\n§7Grund §8× §eVerbindung mit ChatCraft\n\n§8§m------------------------------");
                 Script.sendTeamMessage(AntiCheatSystem.PREFIX + Script.getName(p) + " wurde vom Server gekickt (Verbindung mit ChatCraft).");

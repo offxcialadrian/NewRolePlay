@@ -141,7 +141,7 @@ public class Straftat implements CommandExecutor {
 
     public static int getWanteds(int id) {
         try (Statement stmt = main.getConnection().createStatement();
-             ResultSet rs = stmt.executeQuery("SELECT * FROM wanted_reason WHERE id = '" + id + "'")) {
+             ResultSet rs = stmt.executeQuery("SELECT * FROM wanted_reason WHERE id = '" + id + "' ORDER BY amount DESC")) {
             if (rs.next()) {
                 return rs.getInt("amount");
             }

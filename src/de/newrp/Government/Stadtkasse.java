@@ -2,6 +2,7 @@ package de.newrp.Government;
 
 import de.newrp.API.*;
 import de.newrp.Administrator.SDuty;
+import de.newrp.Berufe.Abteilung;
 import de.newrp.Berufe.Beruf;
 import de.newrp.main;
 import org.bukkit.command.Command;
@@ -36,8 +37,8 @@ public class Stadtkasse implements CommandExecutor {
             return true;
         }
 
-        if(!Beruf.isLeader(p, true) && !Script.hasRank(p, Rank.ADMINISTRATOR, false)) {
-            p.sendMessage(Messages.ERROR + "Du bist kein Leader.");
+        if(!Beruf.isLeader(p, true) && Beruf.getAbteilung(p) != Abteilung.Abteilungen.FINANZAMT && !Script.hasRank(p, Rank.ADMINISTRATOR, false)) {
+            p.sendMessage(Messages.NO_PERMISSION);
             return true;
         }
 

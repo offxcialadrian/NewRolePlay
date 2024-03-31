@@ -206,7 +206,7 @@ public class InteractMenu implements Listener {
                     return;
                 }
 
-                if (Tragen.cooldown.containsKey(tg)) {
+                if (Tragen.cooldown.get(tg) + Tragen.TIMEOUT > System.currentTimeMillis()) {
                     p.sendMessage(Messages.ERROR + "Der Spieler kann derzeit nicht getragen werden.");
                     return;
                 }

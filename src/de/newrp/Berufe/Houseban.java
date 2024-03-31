@@ -148,6 +148,30 @@ public class Houseban implements CommandExecutor, Listener, TabCompleter {
 
             if (isHousebanned(tg, b)) {
                 p.sendMessage(Messages.ERROR + "Der Spieler hat bereits Hausverbot.");
+                long time = getTime(tg, b);
+                try (PreparedStatement statement = main.getConnection().prepareStatement(
+                        "DELETE FROM housebans WHERE userID = ? AND beruf = ?")) {
+                    statement.setInt(1, Script.getNRPID(tg));
+                    statement.setInt(2, b.getID());
+                    statement.executeUpdate();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                time += reason.getDuration();
+                try (PreparedStatement statement = main.getConnection().prepareStatement(
+                        "INSERT INTO housebans(userID, reason, beruf, time) VALUES(?, ?, ?, ?)")) {
+                    statement.setInt(1, Script.getNRPID(tg));
+                    statement.setInt(2, reason.getID());
+                    statement.setInt(3, b.getID());
+                    statement.setLong(4, time);
+                    statement.executeUpdate();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+
+                b.sendMessage(PREFIX + Script.getName(p) + " hat " + Script.getName(tg) + " Hausverbot gegeben.\n" + PREFIX + "§6 " + reason.getName() + " §7»§6 " + DATE_FORMAT.format(new Date(time)) + " Uhr");
+                tg.sendMessage(PREFIX + " Du hast Hausverbot bei " + b.getName() + " bekommen.\n" + PREFIX + " §6 " + reason.getName() + " §7»§6 " + DATE_FORMAT.format(new Date(time)) +  " Uhr");
+
                 return true;
             }
 

@@ -47,7 +47,7 @@ public class Equip implements CommandExecutor, Listener {
         HUSTEN_IMPFUNG(17,"Husten Impfung", Script.setName(new ItemStack(Material.END_ROD), "§7Husten Impfung"), 50, 0, null, Beruf.Berufe.RETTUNGSDIENST, true),
         KAFFEE(18, "Kaffee", Script.setName(new ItemStack(Material.POTION), "§7Kaffee"), 2, 0, null, Beruf.Berufe.NEWS, false),
         BROT(19, "Brot", new ItemBuilder(Material.BREAD).setAmount(16).setName("§7Brot").build(), 3, 0, null, Beruf.Berufe.RETTUNGSDIENST, false),
-        KEKSE(20, "Kekse",new ItemBuilder(Material.COOKIE).setAmount(16).setName("§7Kekse").build(), 1, 0, null, Beruf.Berufe.NEWS, false),
+        KEKSE(20, "Keks",new ItemBuilder(Material.COOKIE).setAmount(16).setName("§7Keks").build(), 1, 0, null, Beruf.Berufe.NEWS, false),
         SNIPER(21, Weapon.SNIPER.getName(), Weapon.SNIPER.getWeapon(), 4500, 30, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE, true),
         DROHNE_COPS(22, "Drohne [Polizei]", new ItemBuilder(Material.WITHER_SKELETON_SKULL).setName("§7Drohne [Polizei]").build(), 1000, 0, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE, true),
         DROHNE_NEWS(23, "Drohne [News]", new ItemBuilder(Material.WITHER_SKELETON_SKULL).setName("§7Drohne [News]").build(), 1500, 0, Abteilung.Abteilungen.CHEFREDAKTION, Beruf.Berufe.NEWS, true),

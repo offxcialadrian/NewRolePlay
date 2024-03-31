@@ -66,7 +66,7 @@ public class Call {
                         sb.append(inCall.getName()).append(".");
                     }
                 }
-                p.sendMessage("Du bist nun in einem Anruf mit: ");
+                p.sendMessage(PREFIX + "Du bist nun in einem Anruf mit: ");
                 p.sendMessage(sb.toString());
                 Script.executeAsyncUpdate("INSERT INTO call_history (nrp_id, participants, time) VALUES ('" + Script.getNRPID(p) + "', '" + sb.toString() + "', '" + System.currentTimeMillis() + "')");
                 sendSystemMessage(p, "§7" + Script.getName(p) + " ist dem Anruf beigetreten.", true);

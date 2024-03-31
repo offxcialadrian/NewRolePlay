@@ -33,8 +33,6 @@ public class Schule implements CommandExecutor, Listener {
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
         Player p = (Player) cs;
 
-
-
         Achievement.SCHULE.grant(p);
 
         if(AFK.isAFK(p)) {

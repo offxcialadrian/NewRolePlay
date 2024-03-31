@@ -35,7 +35,7 @@ public class StatsCommand implements CommandExecutor {
         p.sendMessage("§7Level §8× §e" + Script.getLevel(p));
         p.sendMessage("§7VotePoints §8× §e" + (VoteListener.getVotepoints(Script.getNRPID(p))>0?VoteListener.getVotepoints(Script.getNRPID(p)):"keine"));
         p.sendMessage("§7Exp §8× §e" + Script.getExp(p) + "/" + Script.getLevelCost(p) + " Exp §8(§e" + Script.getPercentage(Script.getExp(p), Script.getLevelCost(p)) + "%§8)");
-        p.sendMessage("§7Beruf §8× §e" + (Beruf.hasBeruf(p) ? Beruf.getBeruf(p).getName() : "Kein Beruf") + (Beruf.isLeader(p, true)&&Beruf.hasBeruf(p) && Beruf.getAbteilung(p) != null ? " §8(§eLeader§8) " + "§8(§e" + Beruf.getSalary(p) + "€§8)" : " "+ (Beruf.getAbteilung(p) != null ? " §8(§e" + Beruf.getAbteilung(p).getName() + "§8)": "") + "§8)") + (Beruf.hasBeruf(p)?" §8(§e" + Beruf.getSalary(p) + "€§8)":""));
+        p.sendMessage("§7Beruf §8× §e" + (Beruf.hasBeruf(p) ? Beruf.getBeruf(p).getName() : "Kein Beruf") + (Beruf.isLeader(p, true)&&Beruf.hasBeruf(p) && Beruf.getAbteilung(p) != null ? " §8(§eLeader§8) " : " "+ (Beruf.getAbteilung(p) != null ? " §8(§e" + Beruf.getAbteilung(p).getName() + "§8)": "")) + (Beruf.hasBeruf(p)?" §8(§e" + Beruf.getSalary(p) + "€§8)":""));
         p.sendMessage("§7Organisation §8× §e" + (Organisation.hasOrganisation(p) ? Organisation.getOrganisation(p).getName() + (Organisation.isLeader(p, true) && Organisation.hasOrganisation(p) ? " §8(§eLeader§8) " + "§8(§e" + Organisation.getSalary(p) + "€§8)" : " §8(§e" + Organisation.getRankName(p) + "§8) " + "§8(§e" + Organisation.getSalary(p) + "€§8)") : ""));
         p.sendMessage("§7Warns §8× §e" + Punish.getWarns(p) + "/3");
         if(!Punish.getWarnsMap(p).isEmpty()) {

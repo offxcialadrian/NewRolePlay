@@ -7,6 +7,10 @@ import de.newrp.Entertainment.Lotto;
 import de.newrp.Government.Wahlen;
 import de.newrp.News.BreakingNews;
 import de.newrp.Player.*;
+import de.newrp.Ticket.AcceptTicket;
+import de.newrp.Ticket.Ticket;
+import de.newrp.Ticket.TicketCommand;
+import de.newrp.Ticket.TicketTopic;
 import de.newrp.Votifier.VoteShop;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
@@ -21,6 +25,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Map;
+
+import static de.newrp.Ticket.TicketCommand.queue;
 
 public class AsyncMinute extends BukkitRunnable {
 
@@ -48,6 +55,8 @@ public class AsyncMinute extends BukkitRunnable {
                 Lotto.start();
             }
         }
+
+
 
         if (Calendar.getInstance().get(Calendar.MONTH) == Calendar.JANUARY && Calendar.getInstance().get(Calendar.DAY_OF_MONTH) == 15 && Calendar.getInstance().get(Calendar.HOUR_OF_DAY) == 18 && Calendar.getInstance().get(Calendar.MINUTE) == 0) {
             Wahlen.getWahlResult();
@@ -82,7 +91,16 @@ public class AsyncMinute extends BukkitRunnable {
         }
 
 
-        if(Calendar.getInstance().get(Calendar.MINUTE) % 5 == 0) {
+        if(Calendar.getInstance().get(Calendar.MINUTE) % 2 == 0) {
+            int amount = 0;
+            for (Map.Entry<Integer, Ticket.Queue> ent : queue.entrySet()) {
+                amount++;
+            }
+            if(amount > 0) {
+                for(Player nrp : Script.getNRPTeam()) {
+                    Title.sendTitle(nrp, 20, 100, 20, "§8[§6Tickets§8] §6" + Messages.ARROW + " §7Es sind noch " + amount + " Tickets offen.");
+                }
+            }
             for(Entity e : Script.WORLD.getEntities()) {
                 if(e instanceof Player) continue;
                 if(e instanceof Item && ((Item) e).getItemStack().getType() == Material.PLAYER_HEAD) continue;

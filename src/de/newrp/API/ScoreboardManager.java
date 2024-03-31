@@ -45,11 +45,11 @@ public class ScoreboardManager {
 
     public enum ScoreboardTeam {
         NO_PUSH("zzznopush", Option.COLLISION_RULE, OptionStatus.NEVER),
-        NRPS("1nrps", Option.COLLISION_RULE, OptionStatus.NEVER),
-        GOVERNMENT("2government", null, null),
-        POLICE("3police", null, null),
-        MEDIC("4medic", null, null),
-        NEWS("5news", null, null),
+        NRPS("anrps", Option.COLLISION_RULE, OptionStatus.NEVER),
+        GOVERNMENT("bgovernment", null, null),
+        POLICE("cpolice", null, null),
+        MEDIC("dmedic", null, null),
+        NEWS("enews", null, null),
         PLAYER("player", null, null);
 
 

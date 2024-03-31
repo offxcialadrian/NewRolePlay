@@ -646,3 +646,12 @@ commands:
     description: restore the zeitung
   teamactivity:
     description: view the teamactivity
+  bussgeld:
+    description: view the bussgeld
+    aliases: [ bussgelder, bußgeld ]
+  strafregister:
+    description: view the strafregister
+    aliases: [ strafregisterauszug, strafregisterauszüge ]
+  bankraub:
+    description: view the bankraub
+    aliases: [ bankraube ]

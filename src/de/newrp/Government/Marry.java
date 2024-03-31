@@ -25,7 +25,7 @@ public class Marry implements CommandExecutor {
             return true;
         }
 
-        if(Beruf.getAbteilung(p) != Abteilung.Abteilungen.STANDESAMT && !Beruf.isLeader(p, true)) {
+        if(Beruf.getAbteilung(p) != Abteilung.Abteilungen.INNENMINISTERIUM && !Beruf.isLeader(p, true)) {
             p.sendMessage(Messages.NO_PERMISSION);
             return true;
         }
@@ -50,6 +50,7 @@ public class Marry implements CommandExecutor {
 
         Script.removeMoney(p1, PaymentType.BANK, 3500);
         Script.removeMoney(p2, PaymentType.BANK, 3500);
+        Stadtkasse.addStadtkasse(7000, "Hochzeit von " + Script.getName(p1) + " und " + Script.getName(p2) + ".", null);
 
         p.sendMessage(BeziehungCommand.PREFIX + "Du hast " + Script.getName(p1) + " und " + Script.getName(p2) + " verheiratet.");
         p1.sendMessage(BeziehungCommand.PREFIX + "Du wurdest von " + Script.getName(p) + " und " + Script.getName(p2) + " verheiratet.");

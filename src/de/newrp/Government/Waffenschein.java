@@ -201,6 +201,7 @@ public class Waffenschein implements CommandExecutor {
                 Licenses.WAFFENSCHEIN.grant(rs.getInt("nrp_id"));
                 OfflinePlayer p = Script.getOfflinePlayer(rs.getInt("nrp_id"));
                 Script.removeMoney(p, PaymentType.BANK, (Script.getLevel(Script.getOfflinePlayer(rs.getInt("nrp_id"))) * 1000));
+                Stadtkasse.addStadtkasse((Script.getLevel(Script.getOfflinePlayer(rs.getInt("nrp_id"))) * 1000), "Waffenschein von " + p.getName() + ".", null);
                 if (p.getPlayer() != null) {
                     p.getPlayer().sendMessage(PREFIX + "Dein Antrag auf einen Waffenschein wurde angenommen.");
                 } else {

@@ -34,6 +34,11 @@ public class SchwarzmarktListener implements Listener {
         e.setCancelled(true);
         Player p = e.getClicker();
 
+        if(!Organisation.hasOrganisation(p)) {
+            p.sendMessage(Schwarzmarkt.PREFIX + "Du musst in einer Organisation sein, um hier einkaufen zu können.");
+            return;
+        }
+
         if (VALID_PLAYER.contains(p.getName())) {
             openGUI(p);
         } else {

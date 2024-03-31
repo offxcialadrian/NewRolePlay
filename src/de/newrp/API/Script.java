@@ -149,7 +149,7 @@ public class Script {
             if(Beruf.getBeruf(p) == Beruf.Berufe.NEWS) color = "§6";
         }
         if (!SDuty.isSDuty(p)) p.setPlayerListName("§r" + p.getName());
-        if (SDuty.isSDuty(p)) p.setPlayerListName("§c§lNRP §8× §9" + p.getName());
+        if (SDuty.isSDuty(p)) p.setPlayerListName("§5§lNRP §8× §c" + p.getName());
         if (Duty.isInDuty(p) && Beruf.getAbteilung(p) != Abteilung.Abteilungen.ZIVILPOLICE)  p.setPlayerListName(color + p.getPlayerListName());
         if (BuildMode.isInBuildMode(p)) p.setPlayerListName("§e§lB §8× §r" + p.getPlayerListName());
         if (TicketCommand.isInTicket(p)) p.setPlayerListName("§b§lT §8× §r" + p.getPlayerListName());

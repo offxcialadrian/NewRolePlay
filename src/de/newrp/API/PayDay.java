@@ -202,7 +202,7 @@ public class PayDay extends BukkitRunnable {
                 Buy.getGym(p).addKasse((int) (price-Script.getPercent(mehrwertsteur, price)));
             }
 
-            if(Hotel.hasHotelRoom(p)) {
+            /*if(Hotel.hasHotelRoom(p)) {
                 int price = Hotel.getHotelRoom(p).getPrice();
                 p.sendMessage("§8" + Messages.ARROW + " §7Hotelzimmer: §c-" + price + "€");
                 payday -= price;
@@ -211,7 +211,7 @@ public class PayDay extends BukkitRunnable {
                 Stadtkasse.addStadtkasse((int) Script.getPercent(mehrwertsteur, price), "Mehrwertsteuer von " + Script.getName(p) + " erhalten", Steuern.Steuer.MEHRWERTSTEUER);
                 Shops shop = hotel.getShop();
                 shop.addKasse((int) (price-Script.getPercent(mehrwertsteur, price)));
-            }
+            }*/
 
             if(Mobile.hasCloud(p)) {
                 int price = (Premium.hasPremium(p) ? 5 : 10);

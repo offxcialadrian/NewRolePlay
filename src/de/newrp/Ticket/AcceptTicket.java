@@ -80,8 +80,8 @@ public class AcceptTicket implements CommandExecutor {
                 Script.sendTeamMessage(p, ChatColor.LIGHT_PURPLE, "hat das Ticket von " + Script.getName(tg) + " angenommen! Thema: " + tt.getName(), true);
                 Script.sendTeamMessage(Messages.INFO + "Angenommen nach " + seconds + " Sekunden.");
                 if(TicketCommand.getGreeting(p) != null) {
-                    p.sendMessage("§d§lTICKET §8× §d" + Script.getName(p) + ": " + TicketCommand.getGreeting(p));
-                    if(p != tg) tg.sendMessage("§d§lTICKET §8× §d" + Script.getName(p) + ": " + TicketCommand.getGreeting(p));
+                    p.sendMessage("§d§lTICKET §8× §d" + Script.getName(p) + ": " + TicketCommand.getGreeting(p).replace("{name}", Script.getName(tg)));
+                    if(p != tg) tg.sendMessage("§d§lTICKET §8× §d" + Script.getName(p) + ": " + TicketCommand.getGreeting(p).replace("{name}", Script.getName(tg)));
                 }
                 tg.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
 

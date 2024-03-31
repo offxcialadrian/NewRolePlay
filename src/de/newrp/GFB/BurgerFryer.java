@@ -212,11 +212,11 @@ public class BurgerFryer implements CommandExecutor, Listener {
     @EventHandler
     public void onInventoryClick(InventoryClickEvent e) {
         Player p = (Player) e.getWhoClicked();
-        if(!BURGER.containsKey(p.getName())) return;
         if(!e.getView().getTitle().startsWith("§8[§6Burger§8] §6» §7")) return;
+        if(!BURGER.containsKey(p.getName())) return;
+        e.setCancelled(true);
         if(e.getCurrentItem() == null || e.getCurrentItem().getType().equals(Material.AIR)) return;
         if(e.getClickedInventory() == null || e.getClickedInventory().getType() == InventoryType.PLAYER) return;
-        e.setCancelled(true);
         if(!NEEDED.containsKey(p.getName())) return;
         if(SCORE.get(p.getName()) < 1) {
             p.sendMessage(PREFIX + "Du hast nun alle Burger zubereitet.");

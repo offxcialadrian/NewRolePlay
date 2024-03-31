@@ -284,6 +284,7 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
     }
 
     public static void punish(Player p, Player tg, Violation v) {
+        new Straflog(tg, p, v);
         Punishment punishment = v.getPunishment();
         Punishment secondaryPunishment = v.getSecondaryPunishment();
         Date until = new Date(new Date().getTime() + v.getDuration());
@@ -389,7 +390,7 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
             Checkpoints.setCheckpoints(tg, checkpoints, true);
             Log.WARNING.write(p, "hat " + Script.getName(tg) + " zu " + checkpoints + " Checkpoints eingesperrt.");
             Log.HIGH.write(tg, "wurde von " + tg.getName() + " zu " + checkpoints + " Checkpoints eingesperrt.");
-            Bukkit.broadcastMessage(Script.PREFIX + "§c" + Script.getName(tg) + " wurde von " + Messages.RANK_PREFIX(p) + " wegen §l" + v.getName() + "§c zu " + v.getCheckpoints() + " Checkpoints eingesperrt.");
+            if(v != Violation.EROTIK_ROLEPLAY) Bukkit.broadcastMessage(Script.PREFIX + "§c" + Script.getName(tg) + " wurde von " + Messages.RANK_PREFIX(p) + " wegen §l" + v.getName() + "§c zu " + v.getCheckpoints() + " Checkpoints eingesperrt.");
             Checkpoints.start(tg, checkpoints);
         }
     }

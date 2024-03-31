@@ -570,7 +570,6 @@ public class Utils implements Listener {
         if (move_x > WORLD_BORDER_MAX_X || move_x < WORLD_BORDER_MIN_X || move_z > WORLD_BORDER_MAX_Z || move_z < WORLD_BORDER_MIN_Z) {
             e.setCancelled(!BuildMode.isInBuildMode(e.getPlayer()));
             if(BuildMode.isInBuildMode(e.getPlayer())) {
-                Script.sendActionBar(e.getPlayer(), Messages.INFO + "Du kannst dieses Gebiet nur betreten, da du im BuildMode bist.");
                 return;
             }
             e.getPlayer().setVelocity(e.getPlayer().getLocation().getDirection().multiply(-8));

@@ -1,9 +1,6 @@
 package de.newrp.Police;
 
-import de.newrp.API.Chair;
-import de.newrp.API.Log;
-import de.newrp.API.Messages;
-import de.newrp.API.Script;
+import de.newrp.API.*;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Berufe.Duty;
 import de.newrp.Government.Straftat;
@@ -71,7 +68,7 @@ public class Arrest implements CommandExecutor {
 
         int fahndungID = Fahndung.getStraftatID(tg);
         long time = Fahndung.getFahndedTime(tg);
-        int wanteds = Fahndung.getWanteds(p);
+        int wanteds = Fahndung.getWanteds(tg);
 
         if(wanteds < 2) {
             p.sendMessage(Messages.ERROR + "Der Spieler hat zu wenig Wanteds.");
@@ -85,6 +82,7 @@ public class Arrest implements CommandExecutor {
 
         p.sendMessage(Fahndung.PREFIX + "Du hast " + Script.getName(tg) + " verhaftet.");
         Jail.arrest(tg, wanteds*15, true);
+        new FahndungLog(tg, p, wanteds);
         Fahndung.removeFahndung(tg);
         int minute = 0;
         int hour = (int) TimeUnit.MILLISECONDS.toHours(time);

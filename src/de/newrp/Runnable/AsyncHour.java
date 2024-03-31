@@ -88,6 +88,7 @@ public class AsyncHour extends BukkitRunnable {
 
         for(Player all : Bukkit.getOnlinePlayers()) {
             if(!BuildMode.isInBuildMode(all)) all.getInventory().remove(Material.PLAYER_HEAD);
+            all.getInventory().getHelmet().setType(Material.AIR);
             if(!Script.WORLD.hasStorm()) return;
             if(AFK.isAFK(all)) continue;
             if(SDuty.isSDuty(all)) continue;

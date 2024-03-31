@@ -55,6 +55,11 @@ public class PayCommand implements CommandExecutor {
 
         money = Math.abs(money);
 
+        if(money < 1) {
+            p.sendMessage(Messages.ERROR + "Bitte gebe eine gültige Zahl an.");
+            return true;
+        }
+
         if (Script.getMoney(p, PaymentType.CASH) < money) {
             p.sendMessage(Messages.ERROR + "Du hast nicht genug Geld.");
             return true;
