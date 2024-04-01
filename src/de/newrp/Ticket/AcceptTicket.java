@@ -34,9 +34,7 @@ public class AcceptTicket implements CommandExecutor {
             return true;
         }
 
-        if (!SDuty.isSDuty(p)) {
-            SDuty.setSDuty(p);
-        }
+
 
         int ticket = 0;
         if (args.length == 1) {
@@ -65,6 +63,10 @@ public class AcceptTicket implements CommandExecutor {
             q = it.hasNext() ? it.next().getValue() : null;
         }
         if (q != null) {
+            if (!SDuty.isSDuty(p)) {
+                SDuty.setSDuty(p);
+            }
+
             Player tg = q.getReporter();
             if (tg != null) {
                 TicketTopic tt = q.getTicketTopic();
