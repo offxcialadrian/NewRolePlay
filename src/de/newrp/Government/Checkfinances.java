@@ -30,30 +30,30 @@ public class Checkfinances implements CommandExecutor {
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
         Player p = (Player) cs;
 
-        if(Beruf.getBeruf(p) != Beruf.Berufe.GOVERNMENT) {
+        if (Beruf.getBeruf(p) != Beruf.Berufe.GOVERNMENT) {
             p.sendMessage(Messages.ERROR + "§cDu bist kein Regierungsmitglied.");
             return true;
         }
 
-        if(Beruf.getAbteilung(p) != Abteilung.Abteilungen.FINANZAMT || Beruf.isLeader(p, true)) {
+        if (Beruf.getAbteilung(p) != Abteilung.Abteilungen.FINANZAMT || Beruf.isLeader(p, true)) {
             p.sendMessage(Messages.ERROR + "§cDu bist nicht im Finanzamt.");
             return true;
         }
 
-        if(args.length != 1) {
+        if (args.length != 1) {
             p.sendMessage(Messages.ERROR + "/checkfinances [Spieler]");
             return true;
         }
 
         OfflinePlayer tg = Script.getOfflinePlayer(args[0]);
-        if(Script.getNRPID(tg) == 0) {
+        if (Script.getNRPID(tg) == 0) {
             p.sendMessage(Messages.PLAYER_NOT_FOUND);
             return true;
         }
 
 
-        if(check.containsKey(tg.getName())) {
-            if(check.get(tg.getName()) > System.currentTimeMillis()) {
+        if (check.containsKey(tg.getName())) {
+            if (check.get(tg.getName()) > System.currentTimeMillis()) {
                 p.sendMessage(PREFIX + "Du hast bereits Daten bei der Bank angefordert.");
                 int seconds = (int) ((check.get(tg.getName()) - System.currentTimeMillis()) / 1000);
                 p.sendMessage(Messages.INFO + "Bitte führe den Befehl in " + seconds + " Sekunden erneut aus.");
@@ -62,13 +62,13 @@ public class Checkfinances implements CommandExecutor {
                 check.remove(p.getName());
                 p.sendMessage(PREFIX + "§6=== " + tg.getName() + " ===");
                 p.sendMessage("§8» " + "§6Kontostand: " + Script.getMoney(tg, PaymentType.BANK) + "€");
-                for(Shops shop : Shops.values()) {
-                    if(shop.getOwner() == Script.getNRPID(tg)) {
-                        p.sendMessage( "§8» " + "§6Shop: " + shop.getPublicName() + " §8(§6" + shop.getKasse() + "€§8)");
+                for (Shops shop : Shops.values()) {
+                    if (shop.getOwner() == Script.getNRPID(tg)) {
+                        p.sendMessage("§8» " + "§6Shop: " + shop.getPublicName() + " §8(§6" + shop.getKasse() + "€§8)");
                     }
                 }
                 p.sendMessage("§8» " + "§6Gehalt: " + Beruf.getSalary(tg) + "€");
-                p.sendMessage("§8» " + "§6Arbeitslosengeld: " + (Arbeitslosengeld.hasArbeitslosengeld(p)?"§cJa":"§aNein"));
+                p.sendMessage("§8» " + "§6Arbeitslosengeld: " + (Arbeitslosengeld.hasArbeitslosengeld(p) ? "§cJa" : "§aNein"));
                 p.sendMessage("§8» " + "§6Letzte Zahlungen:");
                 sendCashFlow(p, tg);
                 p.sendMessage("§6====================");
@@ -78,7 +78,7 @@ public class Checkfinances implements CommandExecutor {
         }
 
 
-        if(lastTime + TIMEOUT2 > System.currentTimeMillis()) {
+        if (lastTime + TIMEOUT2 > System.currentTimeMillis()) {
             p.sendMessage(PREFIX + "Das Finanzamt kann erst in " + ((lastTime + TIMEOUT2 - System.currentTimeMillis()) / 1000 / 60) + " Minuten wieder Daten beantragen.");
             return true;
         }
@@ -87,7 +87,6 @@ public class Checkfinances implements CommandExecutor {
         check.put(tg.getName(), System.currentTimeMillis() + TIMEOUT);
         p.sendMessage(PREFIX + "Du hast die Daten von " + tg.getName() + " angefordert.");
         p.sendMessage(Messages.INFO + "Führe den selben Befehl in " + (TIMEOUT / 1000 / 60) + " Minuten erneut aus um die Daten zu erhalten.");
-
 
 
         return false;
@@ -99,7 +98,7 @@ public class Checkfinances implements CommandExecutor {
             if (rs.next()) {
                 do {
                     int betrag = rs.getInt("money");
-                    p.sendMessage("§8» " + ((betrag>0)?"§a":"§c") + betrag + "€ §8» §6" + rs.getString("reason") + " §8(§6" + Script.dateFormat2.format(rs.getLong("time")) + "§8) §8» §6" + rs.getString("after") + "€");
+                    p.sendMessage("§8» " + ((betrag > 0) ? "§a" : "§c") + betrag + "€ §8» §6" + rs.getString("reason") + " §8(§6" + Script.dateFormat2.format(rs.getLong("time")) + "§8) §8» §6" + rs.getString("after") + "€");
                 } while (rs.next());
             }
         } catch (Exception e) {

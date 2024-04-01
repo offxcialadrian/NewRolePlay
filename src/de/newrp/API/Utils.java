@@ -279,7 +279,7 @@ public class Utils implements Listener {
             }.runTaskLater(main.getInstance(), 20L);
             Script.registerPlayer(e.getPlayer());
             Script.sendActionBar(e.getPlayer(), "§7Willkommen auf §eNewRP§7!");
-            e.getPlayer().sendMessage("§eNew RolePlay" + "§rWillkommen auf §eNewRP§7!");
+            e.getPlayer().sendMessage("§eNew RolePlay" + " §rWillkommen auf §eNewRP§7!");
             Notifications.sendMessage(Notifications.NotificationType.REGISTRATION, "§e" + Script.getName(e.getPlayer()) + " §7hat sich auf dem Server registriert §8[§e#" + Script.getNRPID(e.getPlayer()) + "§8]");
             Title.sendTitle(p, 20, 50, 20, "§6Willkommen!", "§7auf §eNewRP§7!");
             Achievement.FIRST_JOIN.grant(p);
