@@ -23,11 +23,14 @@ import org.bukkit.util.StringUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class Bank implements CommandExecutor, TabCompleter {
 
     private static final String PREFIX = "§8[§bBank§8] §b» ";
+    public static HashMap<Player, Long> cooldown = new HashMap<>();
 
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
@@ -151,6 +154,12 @@ public class Bank implements CommandExecutor, TabCompleter {
                 return true;
             }
 
+
+            if(cooldown.containsKey(p) && cooldown.get(p) > System.currentTimeMillis()) {
+                p.sendMessage(Messages.ERROR + "Du kannst erst in " + Script.getRemainingTime(cooldown.get(p)) + " wieder Geld überweisen.");
+                return true;
+            }
+
             if(args[1].equalsIgnoreCase("stadt") || args[1].equalsIgnoreCase("stadtkasse")) {
                 if(!Script.isInt(args[2])) {
                     p.sendMessage(Messages.ERROR + "Du hast keinen gültigen Betrag angegeben.");
@@ -188,6 +197,7 @@ public class Bank implements CommandExecutor, TabCompleter {
                     return true;
                 }
 
+                cooldown.put(p, (System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(2)));
                 Script.removeMoney(p, PaymentType.BANK, (totalcost));
                 Stadtkasse.addStadtkasse(betrag, "Einzahlung von " + Script.getName(p) + " Verwendungszweck: " + reason, null);
                 p.sendMessage(PREFIX + "Du hast " + betrag + "€ an die Stadtkasse überwiesen. Verwendungszweck: " + reason);
@@ -236,6 +246,7 @@ public class Bank implements CommandExecutor, TabCompleter {
                     return true;
                 }
 
+                cooldown.put(p, (System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(2)));
                 Script.removeMoney(p, PaymentType.BANK, (totalcost));
                 Beruf.Berufe.NEWS.addKasse(betrag);
                 Beruf.Berufe.NEWS.sendMessage(PREFIX + "Die News-Agency hat " + betrag + "€ von " + Script.getName(p) + " erhalten. Verwendungszweck: " + reason);
@@ -299,6 +310,7 @@ public class Bank implements CommandExecutor, TabCompleter {
                 return true;
             }
 
+            cooldown.put(p, (System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(2)));
             Script.removeMoney(p, PaymentType.BANK, (totalcost));
             Script.addMoney(Script.getNRPID(tg), PaymentType.BANK, betrag);
             p.sendMessage(PREFIX + "Du hast " + betrag + "€ an " + tg.getName() + " überwiesen. Verwendungszweck: " + reason);

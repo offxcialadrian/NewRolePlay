@@ -41,6 +41,7 @@ public class CancelTicket implements CommandExecutor {
             }
             int id = t.getID();
             Player tg = t.getTicketer();
+            if(Script.isNRPTeam(p)) Script.addEXP(p, 5);
             if(TicketCommand.getFarewell(p) != null) {
                 p.sendMessage("§d§lTICKET §8× §d" + Script.getName(p) + ": " + TicketCommand.getFarewell(p));
                 p.sendMessage(Messages.INFO + "Das Ticket wird in " + 2 + " Sekunden beendet.");

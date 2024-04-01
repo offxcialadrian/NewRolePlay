@@ -201,13 +201,15 @@ public class InteractMenu implements Listener {
                     }
                 }
 
-                if (Sperre.TRAGENSPERRE.isActive(Script.getNRPID(p))) {
-                    p.sendMessage(Messages.ERROR + "Du darfst derzeit keine Spieler tragen.");
-                    return;
+                if (Tragen.cooldown.containsKey(tg)) {
+                    if (Tragen.cooldown.get(tg) + Tragen.TIMEOUT > System.currentTimeMillis()) {
+                        p.sendMessage(Messages.ERROR + "Der Spieler kann erst in " + Script.getRemainingTime(Tragen.cooldown.get(tg) + Tragen.TIMEOUT) + " wieder getragen werden.");
+                        return;
+                    }
                 }
 
-                if (Tragen.cooldown.get(tg) + Tragen.TIMEOUT > System.currentTimeMillis()) {
-                    p.sendMessage(Messages.ERROR + "Der Spieler kann derzeit nicht getragen werden.");
+                if (Sperre.TRAGENSPERRE.isActive(Script.getNRPID(p))) {
+                    p.sendMessage(Messages.ERROR + "Du darfst derzeit keine Spieler tragen.");
                     return;
                 }
 

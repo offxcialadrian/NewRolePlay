@@ -39,7 +39,7 @@ public class Equip implements CommandExecutor, Listener {
         RAUCHGRANATE(9, "Rauchgranate", Script.rauchgranate(), 300, 0, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE, true),
         FLASHBANG(10, "Flashbang", Script.flashbang(), 250, 0, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE, true),
         FALLSCHIRM(11,"Fallschirm", Script.fallschirm(), 500, 0, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE, false),
-        ZEITUNG(12, "Buch und Stift", Script.setName(new ItemStack(Material.WRITABLE_BOOK), "§7Buch und Stift"), 175, 0, Abteilung.Abteilungen.JOURNALIST, Beruf.Berufe.NEWS, false),
+        ZEITUNG(12, "Buch und Stift", Script.setName(new ItemStack(Material.WRITABLE_BOOK), "§7Buch und Stift"), 20, 0, Abteilung.Abteilungen.JOURNALIST, Beruf.Berufe.NEWS, false),
         VERBAND(13, "Verband", new ItemBuilder(Material.PAPER).setName("§7Verband").setAmount(5).build(), 50, 0, null, Beruf.Berufe.RETTUNGSDIENST, true),
         GIPS(14, "Gips", Script.setName(new ItemStack(Material.PAPER), "§7Gips"), 50, 0, null, Beruf.Berufe.RETTUNGSDIENST, true),
         SCHWERE_SCHUTZWESTE(15,"Schwere Schutzweste", Script.kevlar(2), 4000, 0, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE, true),

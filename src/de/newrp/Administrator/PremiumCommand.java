@@ -143,19 +143,21 @@ public class PremiumCommand implements CommandExecutor {
         int i = 1;
         try (Statement stmt = main.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM premium_storage WHERE nrp_id=" + Script.getNRPID(p) + " ORDER BY id ASC;")) {
-
             while (rs.next()) {
                 long expires = rs.getLong("expires");
 
                 if (expires == 0 || expires > System.currentTimeMillis()) {
-                    String expirationMessage = (expires == 0) ? "(Läuft nicht ab)" : "Läuft in " + Script.getRemainingTime(rs.getLong("expires")) + " ab.";
-                    Script.sendClickableMessage(p, PREFIX + "§l#" + i++ + " §7» §b" + rs.getInt("duration") + " Tage " + expirationMessage, "/premium activate " + (i-1), "§7Klicke hier, um den Premium Rang zu aktivieren.");
+                    String expirationMessage = (expires == 0) ? "(Läuft nicht ab)" : "Läuft in " + Script.getRemainingTime(expires) + " ab.";
+                    Script.sendClickableMessage(p, PREFIX + "§l#" + i + " §7» §b" + rs.getInt("duration") + " Tage " + expirationMessage, "/premium activate " + i, "§7Klicke hier, um den Premium Rang zu aktivieren.");
+                    i++;
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
+
 
     public static OfflinePlayer getOwner(int id) {
         try (Statement stmt = main.getConnection().createStatement();

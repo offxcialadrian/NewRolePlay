@@ -3,6 +3,7 @@ package de.newrp.Police;
 import de.newrp.API.ItemBuilder;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
+import de.newrp.Government.Stadtkasse;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -76,6 +77,7 @@ public class JailWork implements CommandExecutor, Listener {
                     inv.getItem(6).getItemMeta().getDisplayName().equalsIgnoreCase(license.get(p.getName()).substring(6, 7)) &&
                     inv.getItem(7).getItemMeta().getDisplayName().equalsIgnoreCase(license.get(p.getName()).substring(7, 8))) {
                 p.sendMessage(Messages.INFO + "Du hast das Kennzeichen erfolgreich erstellt.");
+                Stadtkasse.addStadtkasse(15, "PrisonIndustries", null);
                 p.playSound(p.getLocation(), Sound.BLOCK_ANVIL_PLACE, 1.0F, 1.0F);
                 p.sendMessage(Messages.INFO + "Deine Haftzeit hat sich um " + (int) (Script.getPercent(5, Jail.getJail(p).getJailtimeLeft())) + " Sekunden verringert.");
                 Jail.removeJailTime(p, (int) Script.getPercent(5, Jail.getJail(p).getJailtimeLeft()));

@@ -260,7 +260,8 @@ public class Bankraub implements CommandExecutor, Listener {
             Beruf.Berufe.RETTUNGSDIENST.sendMessage(PREFIX + "Der Staatsbankraub konnte nicht verhindert werden!");
             faction.sendMessage(PREFIX + "§aDer Bankraub war erfolgreich!");
             Script.sendActionBar(p, "§aDer Bankraub war erfolgreich!");
-            int result = Script.getRandom(10000, 15000);
+            int result = Script.getRandom(8000, 12000);
+            faction.addExp(result / 100);
             Script.addMoney(Script.getNRPID(p), PaymentType.CASH, result);
             Log.HIGH.write(p, "hat einen Bankraub erfolgreich abgeschlossen und " + result + " € erbeutet.");
             Stadtkasse.removeStadtkasse(result, "Bankraub");

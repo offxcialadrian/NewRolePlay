@@ -36,7 +36,7 @@ public class DoneNotruf implements CommandExecutor {
         }
 
         Player tg = AcceptNotruf.accept.get(p);
-        Beruf.getBeruf(p).sendMessage(Notruf.PREFIX + "Der Notruf von " + Script.getName(tg) + " wurde beendet.");
+        Beruf.getBeruf(p).sendMessage(Notruf.PREFIX + Script.getName(p) + " hat den Notruf von " + Script.getName(tg) + " als abgeschlossen deklariert.");
 
         Notruf.call3.remove(tg);
         Notruf.call2.remove(tg);

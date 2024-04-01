@@ -46,6 +46,22 @@ public class Test implements CommandExecutor, Listener {
             return true;
         }
 
+        if(args.length == 2 && args[0].equalsIgnoreCase("drink")) {
+            if(!Script.isInt(args[1])) {
+                p.sendMessage(Messages.ERROR + "Bitte gib eine Zahl an.");
+                return true;
+            }
+
+            int amount = Integer.parseInt(args[1]);
+            if(amount < 1) {
+                p.sendMessage(Messages.ERROR + "Die Anzahl muss größer als 0 sein.");
+                return true;
+            }
+
+            new ItemBuilder(Material.POTION).setName("§7Trinkwasser").setAmount(amount).build();
+
+            return true;
+        }
 
         Block b = p.getLocation().getBlock();
         Slab slab = (Slab) b.getBlockData();

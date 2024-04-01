@@ -88,7 +88,7 @@ public class main extends JavaPlugin {
         //new C05(this);
 
         try {
-            mysql = new MySQL("localhost", "3306", "minecraft", "newrpentwicklung", "TtXf*H&gqkSTC2a2");
+            mysql = new MySQL("localhost", "3306", "minecraft", "newrpentwicklung", "k75y@p@3OpRO4*QOy@DP8gigqSP8F0*ICUBL&6*!!6dDYjf$");
             con = mysql.openConnection();
             Bukkit.getConsoleSender().sendMessage("§cNRP §8× §aVerbindung zur Datenbank hergestellt.");
         } catch (Exception e1) {

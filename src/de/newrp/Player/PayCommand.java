@@ -11,9 +11,13 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
+
 public class PayCommand implements CommandExecutor {
 
     private static final String PREFIX = "§8[§aGeld§8] §a" + Messages.ARROW + " ";
+    public static HashMap<Player, Long> cooldown = new HashMap<>();
 
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
@@ -45,6 +49,11 @@ public class PayCommand implements CommandExecutor {
             return true;
         }
 
+        if(cooldown.containsKey(p) && cooldown.get(p) > System.currentTimeMillis()) {
+            p.sendMessage(Messages.ERROR + "Du kannst erst in " + Script.getRemainingTime(cooldown.get(p)) + " wieder Geld überreichen.");
+            return true;
+        }
+
         int money = 0;
         try {
             money = Integer.parseInt(args[1]);
@@ -67,6 +76,8 @@ public class PayCommand implements CommandExecutor {
 
         Script.removeMoney(p, PaymentType.CASH, money);
         Script.addMoney(tg, PaymentType.CASH, money);
+
+        cooldown.put(p, System.currentTimeMillis() + TimeUnit.SECONDS.toMillis(10));
 
         Me.sendMessage(p, "überreicht " + Script.getName(tg) + " etwas Geld.");
         p.sendMessage(PREFIX + "Du hast " + Script.getName(tg) + " " + money + "€ überreicht.");

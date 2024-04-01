@@ -203,11 +203,7 @@ public class Pizza implements CommandExecutor, Listener {
     }
 
     public static OfflinePlayer getRandomPlayer(House h) {
-        ArrayList<OfflinePlayer> players = new ArrayList<>();
-        for(House.Mieter m : h.getMieter()) {
-            players.add(Script.getOfflinePlayer(m.getID()));
-        }
-        return players.get(Script.getRandom(0, players.size() - 1));
+        return Script.getOfflinePlayer(h.getOwner());
     }
 
 }

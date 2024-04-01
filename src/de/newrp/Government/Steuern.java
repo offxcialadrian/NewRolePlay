@@ -41,7 +41,8 @@ public class Steuern implements CommandExecutor, TabCompleter {
         SHOP_VERKAUFSSTEUER(7, "Shop Verkaufssteuer", "shop_verkaufssteuer", "Die Shop Verkaufssteuer wird auf jeden Verkauf eines Shops erhoben."),
         GRUNDSTEUER(8, "Grundsteuer", "grundsteuer", "Die Grundsteuer wird jeden PayDay auf jedes Haus erhoben."),
         HAUSVERKAUFSSTEUER(9, "Haus Verkaufssteuer", "haus_verkaufssteuer", "Die Haus Verkaufssteuer wird auf jeden Verkauf eines Hauses erhoben."),
-        KRANKENVERSICHERUNG(10, "Krankenversicherung", "krankenversicherung", "Die Krankenversicherung wird auf dein Gehalt am PayDay erhoben.");
+        KRANKENVERSICHERUNG(10, "Krankenversicherung", "krankenversicherung", "Die Krankenversicherung wird auf dein Gehalt am PayDay erhoben."),
+        RUNDFUNKBEITRAG(11, "Rundfunkbeitrag", "rundfunk", "Der Rundfunkbeitrag wird jeden PayDay erhoben.");
 
         private final int id;
         private final String name;
@@ -90,7 +91,7 @@ public class Steuern implements CommandExecutor, TabCompleter {
         if (args.length == 0) {
             p.sendMessage("§8[§eSteuern & Sozialversicherungen§8] §e ");
             for (Steuer steuer : Steuer.values()) {
-                if(steuer == Steuer.GEWERBESTEUER || steuer == Steuer.GRUNDSTEUER) {
+                if(steuer == Steuer.GEWERBESTEUER || steuer == Steuer.GRUNDSTEUER || steuer == Steuer.RUNDFUNKBEITRAG) {
                     p.sendMessage("§8" + Messages.ARROW + " §6" + steuer.getName() + " §8× §6" + steuer.getPercentage() + "€");
                     continue;
                 }
@@ -102,7 +103,7 @@ public class Steuern implements CommandExecutor, TabCompleter {
         if (args.length == 1) {
             for (Steuer steuer : Steuer.values()) {
                 if (steuer.getName().equalsIgnoreCase(args[0]) || steuer.getDBName().equalsIgnoreCase(args[0])) {
-                    if(steuer == Steuer.GEWERBESTEUER || steuer == Steuer.GRUNDSTEUER) {
+                    if(steuer == Steuer.GEWERBESTEUER || steuer == Steuer.GRUNDSTEUER || steuer == Steuer.RUNDFUNKBEITRAG) {
                         p.sendMessage("§8[§eSteuern§8] §e» §7Die " + steuer.getName() + " beträgt §6" + steuer.getPercentage() + "€");
                         p.sendMessage("§8[§eSteuern§8] §e» §7" + steuer.getDescription());
                         continue;
@@ -140,13 +141,13 @@ public class Steuern implements CommandExecutor, TabCompleter {
                     try {
                         double percentage = Double.parseDouble(args[2]);
                         if (percentage < 0 || percentage > 100) {
-                            if (steuer != Steuer.GEWERBESTEUER && steuer != Steuer.GRUNDSTEUER) {
+                            if (steuer != Steuer.GEWERBESTEUER && steuer != Steuer.GRUNDSTEUER && steuer != Steuer.RUNDFUNKBEITRAG) {
                                 p.sendMessage(Messages.ERROR + "Die Prozentzahl muss zwischen 0 und 100 liegen.");
                                 return true;
                             }
                         }
 
-                        if((steuer == Steuer.GEWERBESTEUER || steuer==Steuer.GRUNDSTEUER) && percentage < 0) {
+                        if((steuer == Steuer.GEWERBESTEUER || steuer==Steuer.GRUNDSTEUER) || steuer == Steuer.RUNDFUNKBEITRAG && percentage < 0) {
                             p.sendMessage(Messages.ERROR + "Die Steuer kann kein negativer Betrag sein.");
                             return true;
                         }
@@ -166,7 +167,7 @@ public class Steuern implements CommandExecutor, TabCompleter {
 
                         steuern.put(steuer, System.currentTimeMillis());
                         Log.WARNING.write(p, "hat die " + steuer.getName() + " auf " + percentage + "% gesetzt.");
-                        if(steuer == Steuer.GEWERBESTEUER || steuer == Steuer.GRUNDSTEUER) {
+                        if(steuer == Steuer.GEWERBESTEUER || steuer == Steuer.GRUNDSTEUER || steuer == Steuer.RUNDFUNKBEITRAG) {
                             p.sendMessage(PREFIX + "Du hast die " + steuer.getName() + " von " + steuer.getPercentage() + "€ auf §6" + percentage + "€ §e gesetzt.");
                             Bukkit.broadcastMessage("§8[§6NEWS§8] §6" + Messages.ARROW + " Die Regierung hat beschlossen die " + steuer.getName() + " von " + steuer.getPercentage() + "€ auf §6" + percentage + "€ zu setzen.");
                             return true;

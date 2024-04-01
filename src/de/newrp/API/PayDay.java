@@ -2,7 +2,6 @@ package de.newrp.API;
 
 import de.newrp.Administrator.Checkpoints;
 import de.newrp.Administrator.SDuty;
-import de.newrp.Berufe.Abteilung;
 import de.newrp.Berufe.Beruf;
 import de.newrp.GFB.GFB;
 import de.newrp.Government.Arbeitslosengeld;
@@ -12,7 +11,6 @@ import de.newrp.House.House;
 import de.newrp.Organisationen.Organisation;
 import de.newrp.Player.*;
 import de.newrp.Shop.Buy;
-import de.newrp.Shop.Shop;
 import de.newrp.Shop.Shops;
 import de.newrp.main;
 import org.bukkit.Bukkit;
@@ -26,9 +24,8 @@ public class PayDay extends BukkitRunnable {
     public void run() {
         for (Player p : Bukkit.getOnlinePlayers()) {
             if (AFK.isAFK(p)) continue;
-            if (SDuty.isSDuty(p)) continue;
-            if(Checkpoints.hasCheckpoints(p)) continue;
-            if(Passwort.isLocked(p)) continue;
+            if (Checkpoints.hasCheckpoints(p)) continue;
+            if (Passwort.isLocked(p)) continue;
             if (getPayDayTime(p) < 59) {
                 addPayDayTime(p);
                 continue;
@@ -42,15 +39,16 @@ public class PayDay extends BukkitRunnable {
 
             int payday = 0;
             int interest = (Script.getMoney(p, PaymentType.BANK) > 0 ? (int) (Banken.getBankByPlayer(p).getInterest() * Script.getMoney(p, PaymentType.BANK)) : (int) (0.2 * Script.getMoney(p, PaymentType.BANK)));
-            if(Script.getMoney(p, PaymentType.BANK)>50000) interest = interest/2;
-            if(Script.getMoney(p, PaymentType.BANK)>100000) interest = interest/3;
+            if (Script.getMoney(p, PaymentType.BANK) > 50000) interest = interest / 2;
+            if (Script.getMoney(p, PaymentType.BANK) > 100000) interest = interest / 3;
             double einkommenssteuer = Steuern.Steuer.EINKOMMENSSTEUER.getPercentage();
             double arbeitslosenversicherung = Steuern.Steuer.ARBEITSLOSENVERSICHERUNG.getPercentage();
             double lohnsteuer = Steuern.Steuer.LOHNSTEUER.getPercentage();
             double gfb_lohnsteuer = Steuern.Steuer.GFB_LOHNSTEUER.getPercentage();
             double krankenversicherung = Steuern.Steuer.KRANKENVERSICHERUNG.getPercentage();
-            if(BeziehungCommand.isMarried(p)) lohnsteuer = lohnsteuer-2.0;
-            if(BeziehungCommand.isMarried(p)) gfb_lohnsteuer = gfb_lohnsteuer-2.0;
+            double rundfunkbeitrag = Steuern.Steuer.RUNDFUNKBEITRAG.getPercentage();
+            if (BeziehungCommand.isMarried(p)) lohnsteuer = lohnsteuer - 2.0;
+            if (BeziehungCommand.isMarried(p)) gfb_lohnsteuer = gfb_lohnsteuer - 2.0;
             p.sendMessage("§9=== §l§ePayDay §9===");
             p.sendMessage("§8" + Messages.ARROW + " §7Kontostand: " + (Script.getMoney(p, PaymentType.BANK) >= 0 ? "§a" : "§c") + Script.getMoney(p, PaymentType.BANK) + "€");
             p.sendMessage("§8" + Messages.ARROW + " §7Kontoführungsgebühr: §c-" + Banken.getBankByPlayer(p).getKontoKosten() + "€");
@@ -80,13 +78,13 @@ public class PayDay extends BukkitRunnable {
                 p.sendMessage("§8" + Messages.ARROW + " §7Lohn/Gehalt: §a+" + salary + "€");
                 payday += salary;
                 if (!Beruf.getBeruf(p).hasKasse()) {
-                    if(Stadtkasse.getStadtkasse() < salary) {
+                    if (Stadtkasse.getStadtkasse() < salary) {
                         Beruf.Berufe.NEWS.sendMessage("§8[§eBerufskasse§8] §eDie Stadtkasse ist Insolvent!");
-                        for(Beruf.Berufe beruf : Beruf.Berufe.values()) {
-                            if(!beruf.hasKasse()) {
-                                for(OfflinePlayer members : beruf.getAllMembers()) {
+                        for (Beruf.Berufe beruf : Beruf.Berufe.values()) {
+                            if (!beruf.hasKasse()) {
+                                for (OfflinePlayer members : beruf.getAllMembers()) {
                                     Script.setInt(members, "berufe", "salary", 0);
-                                    if(!members.isOnline()) {
+                                    if (!members.isOnline()) {
                                         Script.addOfflineMessage(members, "§8[§eBerufskasse§8] §eDie Stadtkasse ist Insolvent. Alle Gehälter wurden auf 0€ gesetzt");
                                     } else {
                                         members.getPlayer().sendMessage("§8[§eBerufskasse§8] §eDie Stadtkasse ist Insolvent. Alle Gehälter wurden auf 0€ gesetzt");
@@ -98,22 +96,22 @@ public class PayDay extends BukkitRunnable {
                         Stadtkasse.removeStadtkasse(salary, "Gehaltszahlung an " + Script.getName(p) + " von " + Beruf.getBeruf(p).getName());
                     }
                 }
-                if(Beruf.getBeruf(p).hasKasse()) {
-                    if(Beruf.getBeruf(p).getKasse() >= salary) {
+                if (Beruf.getBeruf(p).hasKasse()) {
+                    if (Beruf.getBeruf(p).getKasse() >= salary) {
                         Beruf.getBeruf(p).removeKasse(salary);
-                    }else {
+                    } else {
                         Beruf.getBeruf(p).sendMessage("§8[§eBerufskasse§8] §eDie " + Beruf.getBeruf(p).getName() + " ist Insolvent. Alle Gehälter werden auf 0€ gesetzt");
                         Beruf.Berufe.GOVERNMENT.sendMessage("§8[§eBerufskasse§8] §eDie " + Beruf.getBeruf(p).getName() + " ist Insolvent. Alle Gehälter werden auf 0€ gesetzt");
-                        for(OfflinePlayer members : Beruf.getBeruf(p).getAllMembers()) {
+                        for (OfflinePlayer members : Beruf.getBeruf(p).getAllMembers()) {
                             Script.setInt(members, "berufe", "salary", 0);
-                            if(!members.isOnline()) {
+                            if (!members.isOnline()) {
                                 Script.addOfflineMessage(members, "§8[§eBerufskasse§8] §eDie " + Beruf.getBeruf(p).getName() + " ist Insolvent. Alle Gehälter wurden auf 0€ gesetzt");
                             }
                         }
                     }
                 }
 
-                if(Beruf.getBeruf(p).hasKasse() || Beruf.getBeruf(p) == Beruf.Berufe.RETTUNGSDIENST) {
+                if (Beruf.getBeruf(p).hasKasse() || Beruf.getBeruf(p) == Beruf.Berufe.RETTUNGSDIENST) {
                     p.sendMessage("§8" + Messages.ARROW + " §7Lohnsteuer (" + lohnsteuer + "%): §c-" + (int) Script.getPercent(lohnsteuer, salary) + "€");
                     Stadtkasse.addStadtkasse((int) Script.getPercent(lohnsteuer, salary), "Lohnsteuer von " + Script.getName(p) + " erhalten", Steuern.Steuer.LOHNSTEUER);
                     payday -= (int) Script.getPercent(lohnsteuer, salary);
@@ -132,19 +130,19 @@ public class PayDay extends BukkitRunnable {
                 }
 
 
-            } else if(Organisation.hasOrganisation(p)) {
+            } else if (Organisation.hasOrganisation(p)) {
                 Organisation org = Organisation.getOrganisation(p);
                 int salary = Organisation.getSalary(p);
-                if(org.hasKasse()) {
-                    if(org.getKasse() >= salary) {
+                if (org.hasKasse()) {
+                    if (org.getKasse() >= salary) {
                         org.removeKasse(salary);
                         p.sendMessage("§8" + Messages.ARROW + " §7Lohn/Gehalt: §a+" + salary + "€");
                         payday += salary;
                     } else {
                         org.sendMessage("§8[§eOrganisationskasse§8] §eDie " + org.getName() + " ist Insolvent. Alle Gehälter werden auf 0€ gesetzt");
-                        for(OfflinePlayer members : org.getAllMembers()) {
+                        for (OfflinePlayer members : org.getAllMembers()) {
                             Script.setInt(members, "organisation", "salary", 0);
-                            if(!members.isOnline()) {
+                            if (!members.isOnline()) {
                                 Script.addOfflineMessage(members, "§8[§eOrganisationskasse§8] §eDie " + org.getName() + " ist Insolvent. Alle Gehälter wurden auf 0€ gesetzt");
                             }
                         }
@@ -165,41 +163,58 @@ public class PayDay extends BukkitRunnable {
                 }
             }
 
+
+            if(!Beruf.hasBeruf(p) || Beruf.getBeruf(p) != Beruf.Berufe.NEWS) {
+                int rundfunk = (int) (Steuern.Steuer.RUNDFUNKBEITRAG.getPercentage());
+                p.sendMessage("§8" + Messages.ARROW + " §7Rundfunkbeitrag: §c-" + rundfunk + "€");
+                int stadtanteil = (int) Script.getPercent(20, rundfunk);
+                int newsanteil = (int) Script.getPercent(80, rundfunk);
+                Stadtkasse.addStadtkasse(stadtanteil, "Rundfunkbeitrag von " + Script.getName(p) + " erhalten", Steuern.Steuer.RUNDFUNKBEITRAG);
+                Beruf.Berufe.NEWS.addKasse(newsanteil);
+                payday -= rundfunk;
+            }
+
+
             if (shops > 0) {
-                int tax = (int) (Steuern.Steuer.GEWERBESTEUER.getPercentage())*shops;
+                int tax = (int) (Steuern.Steuer.GEWERBESTEUER.getPercentage()) * shops;
                 p.sendMessage("§8" + Messages.ARROW + " §7Gewerbesteuer: §c-" + tax + "€");
                 Stadtkasse.addStadtkasse(tax, "Gewerbesteuer von " + Script.getName(p) + " erhalten", Steuern.Steuer.GEWERBESTEUER);
                 payday -= tax;
             }
 
-            for(House house : House.getHouses(Script.getNRPID(p))) {
-                if(house.getOwner() == Script.getNRPID(p)) continue;
-                p.sendMessage("§8" + Messages.ARROW + " §7Miete für Haus " + house.getID() + ": §c-" + house.getMiete(Script.getNRPID(p)) + "€");
-                payday -= house.getMiete(Script.getNRPID(p));
-                house.addKasse(house.getMiete(Script.getNRPID(p)));
+            for (House house : House.getHouses(Script.getNRPID(p))) {
+                if (house.getOwner() == Script.getNRPID(p)) continue;
+                if(Script.getMoney(p, PaymentType.BANK) < house.getMiete(Script.getNRPID(p))) {
+                    p.sendMessage("§8" + Messages.ARROW + " §7Miete für Haus " + house.getID() + ": §c-" + house.getMiete(Script.getNRPID(p)) + "€");
+                    payday -= house.getMiete(Script.getNRPID(p));
+                    house.addKasse(house.getMiete(Script.getNRPID(p)));
+                    continue;
+                } else {
+                    house.removeMieter(Script.getNRPID(p));
+                }
             }
 
-            for(House house : House.getHouses(Script.getNRPID(p))) {
-                if(house.getOwner() != Script.getNRPID(p)) continue;
+            for (House house : House.getHouses(Script.getNRPID(p))) {
+                if (house.getOwner() != Script.getNRPID(p)) continue;
                 int grundsteuer = (int) Steuern.Steuer.GRUNDSTEUER.getPercentage();
                 p.sendMessage("§8" + Messages.ARROW + " §7Grundsteuer für Haus " + house.getID() + ": §c-" + grundsteuer + "€");
                 payday -= grundsteuer;
                 Stadtkasse.addStadtkasse(grundsteuer, "Grundsteuer von " + Script.getName(p) + " erhalten", Steuern.Steuer.GRUNDSTEUER);
             }
 
-            if(Selfstorage.hasSelfstorage(p)) {
+            if (Selfstorage.hasSelfstorage(p)) {
                 int price = 10;
                 p.sendMessage("§8" + Messages.ARROW + " §7Selfstorage-Room: §c-" + price + "€");
                 payday -= price;
             }
 
-            if(Buy.isGymMember(p)) {
+            if (Buy.isGymMember(p)) {
                 int price = 20;
                 p.sendMessage("§8" + Messages.ARROW + " §7Fitnessstudio: §c-" + price + "€");
                 payday -= price;
                 int mehrwertsteur = (int) Steuern.Steuer.MEHRWERTSTEUER.getPercentage();
                 Stadtkasse.addStadtkasse((int) Script.getPercent(mehrwertsteur, price), "Mehrwertsteuer von " + Script.getName(p) + " erhalten", Steuern.Steuer.MEHRWERTSTEUER);
-                Buy.getGym(p).addKasse((int) (price-Script.getPercent(mehrwertsteur, price)));
+                Buy.getGym(p).addKasse((int) (price - Script.getPercent(mehrwertsteur, price)));
             }
 
             /*if(Hotel.hasHotelRoom(p)) {
@@ -213,13 +228,13 @@ public class PayDay extends BukkitRunnable {
                 shop.addKasse((int) (price-Script.getPercent(mehrwertsteur, price)));
             }*/
 
-            if(Mobile.hasCloud(p)) {
+            if (Mobile.hasCloud(p)) {
                 int price = (Premium.hasPremium(p) ? 5 : 10);
                 p.sendMessage("§8" + Messages.ARROW + " §7Handy-Cloud: §c-" + price + "€");
                 payday -= price;
             }
 
-            if(Mobile.hasPhone(p)) {
+            if (Mobile.hasPhone(p)) {
                 int price = 15;
                 p.sendMessage("§8" + Messages.ARROW + " §7Handy-Vertrag: §c-" + price + "€");
                 payday -= price;
@@ -240,17 +255,17 @@ public class PayDay extends BukkitRunnable {
             else Script.removeMoney(p, PaymentType.BANK, payday);
             setPayDayTime(p, 0);
             Script.executeAsyncUpdate("UPDATE payday SET money = 0 WHERE nrp_id = '" + Script.getNRPID(p) + "'");
-            if(Script.getMoney(p, PaymentType.BANK) < 0) {
+            if (Script.getMoney(p, PaymentType.BANK) < 0) {
                 p.sendMessage("§8[§cBank§8] §c" + Messages.ARROW + " §7Dein Konto ist überzogen. Du musst den Betrag innerhalb von 7 Tagen ausgleichen.");
-                if(Hotel.hasHotelRoom(p)) {
+                if (Hotel.hasHotelRoom(p)) {
                     p.sendMessage("§8[§cBank§8] §c" + Messages.ARROW + " §7Dein Hotelzimmer wurde automatisch gekündigt.");
                     Script.executeAsyncUpdate("DELETE FROM hotel WHERE nrp_id = " + Script.getNRPID(p));
                 }
-                if(Mobile.hasCloud(p)) {
+                if (Mobile.hasCloud(p)) {
                     p.sendMessage("§8[§cBank§8] §c" + Messages.ARROW + " §7Deine Handy-Cloud wurde automatisch gekündigt.");
                     Mobile.getPhone(p).setCloud(p, false);
                 }
-                if(Selfstorage.hasSelfstorage(p)) {
+                if (Selfstorage.hasSelfstorage(p)) {
                     p.sendMessage("§8[§cBank§8] §c" + Messages.ARROW + " §7Dein Selfstorage-Room wurde automatisch gekündigt.");
                     Selfstorage.removeSelfstorage(p, false);
                 }

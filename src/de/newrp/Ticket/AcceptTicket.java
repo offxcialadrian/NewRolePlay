@@ -35,8 +35,7 @@ public class AcceptTicket implements CommandExecutor {
         }
 
         if (!SDuty.isSDuty(p)) {
-            p.sendMessage(Messages.NO_SDUTY);
-            return true;
+            SDuty.setSDuty(p);
         }
 
         int ticket = 0;

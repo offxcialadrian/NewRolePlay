@@ -64,7 +64,7 @@ public class Bankautomaten implements Listener {
         cooldownATM.put(atm, System.currentTimeMillis() + 3600000);
         atmBlocks.put(e.getClickedBlock().getLocation(), e.getClickedBlock());
         p.getInventory().remove(Material.TNT);
-        p.sendMessage(PREFIX + "Der Bankautomat wird in 60 Sekunden zerstört.");
+        p.sendMessage(PREFIX + "Der Bankautomat wird in 180 Sekunden zerstört.");
         Beruf.Berufe.POLICE.sendMessage(PREFIX + "ACHTUNG! ES WURDE SPRENGSTOFF AN ATM " + atm.getID() + " GEFUNDEN!");
         Beruf.Berufe.POLICE.sendMessage(Messages.INFO + "In der Nähe von " + Navi.getNextNaviLocation(p.getLocation()).getName());
         Location bombLocation = atm.getLocation();
@@ -106,19 +106,20 @@ public class Bankautomaten implements Listener {
                         }
                     }
                 }
-                atmBlocks.get(bombLocation).setType(atmBlocks.get(bombLocation).getType());
+                e.getClickedBlock().setType(atmBlocks.get(e.getClickedBlock().getLocation()).getType());
                 atmBlocks.remove(bombLocation);
                 int remove = (int) Math.min(Script.getRandom(3000,6000),Script.getPercent(20, atm.getCash()));
                 atm.removeCash(remove);
                 o.sendMessage(PREFIX + Script.getName(p) + " hat einen Bankautomaten zerstört und " + remove + "€ gestohlen.");
+                Beruf.Berufe.POLICE.sendMessage(PREFIX + "Der Bankautomat " + atm.getID() + " wurde zerstört. Es wurden " + remove + "€ gestohlen.");
                 Script.addMoney(p, PaymentType.CASH, remove);
                 o.addExp(remove/100);
                 new BukkitRunnable() {
                     @Override
                     public void run() {
-                        Stadtkasse.removeStadtkasse(4000, "Wiederherstellung Bankautomat");
+                        Stadtkasse.removeStadtkasse(1000, "Wiederherstellung Bankautomat");
                     }
-                }.runTaskLater(main.getInstance(), 20L * 60 * 60);
+                }.runTaskLater(main.getInstance(), 20L * 60 * 90);
             }
         }.runTaskLater(main.getInstance(), 20L * 60);
 
