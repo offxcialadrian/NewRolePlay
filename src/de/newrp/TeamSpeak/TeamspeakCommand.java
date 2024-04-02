@@ -112,8 +112,6 @@ public class TeamspeakCommand implements CommandExecutor {
                         p.sendMessage(TeamSpeak.PREFIX + "§cDiese EindeutigeID ist bereits vergeben.");
                     } else if (getVerification(unicaID) != null) {
                         p.sendMessage(TeamSpeak.PREFIX + "§cDu hast dich bereits verifiziert.");
-                    } else if (!client.getIp().equals(p.getAddress().getAddress().getHostAddress().split(":")[0])) {
-                        p.sendMessage(TeamSpeak.PREFIX + "§cDu kannst dich nicht mit diesem Client verifizieren.");
                     } else {
                         TeamSpeak.verify(unicaID, client);
                         p.sendMessage(TeamSpeak.PREFIX + "Du hast deinen Minecraft Account mit deinem Teamspeak-Account verbunden!");

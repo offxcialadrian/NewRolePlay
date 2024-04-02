@@ -33,7 +33,7 @@ public class Strafregister implements CommandExecutor {
             return true;
         }
 
-        if (Beruf.getAbteilung(p) != Abteilung.Abteilungen.JUSTIZMINISTERIUM || Beruf.isLeader(p, true)) {
+        if (Beruf.getAbteilung(p) != Abteilung.Abteilungen.JUSTIZMINISTERIUM && !Beruf.isLeader(p, true)) {
             p.sendMessage(Messages.ERROR + "§cDu bist nicht im Justizministerium.");
             return true;
         }

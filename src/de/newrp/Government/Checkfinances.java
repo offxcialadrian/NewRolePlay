@@ -35,7 +35,7 @@ public class Checkfinances implements CommandExecutor {
             return true;
         }
 
-        if (Beruf.getAbteilung(p) != Abteilung.Abteilungen.FINANZAMT || Beruf.isLeader(p, true)) {
+        if (Beruf.getAbteilung(p) != Abteilung.Abteilungen.FINANZAMT && !Beruf.isLeader(p, true)) {
             p.sendMessage(Messages.ERROR + "§cDu bist nicht im Finanzamt.");
             return true;
         }

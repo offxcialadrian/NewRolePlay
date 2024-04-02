@@ -1,5 +1,9 @@
 package de.newrp;
 
+import com.comphenix.protocol.PacketType;
+import com.comphenix.protocol.ProtocolLibrary;
+import com.comphenix.protocol.events.PacketAdapter;
+import com.comphenix.protocol.events.PacketEvent;
 import de.newrp.API.*;
 import de.newrp.Administrator.*;
 import de.newrp.Administrator.ServerTeam;
@@ -35,6 +39,7 @@ import de.newrp.Votifier.VoteShop;
 import de.newrp.Votifier.VoteShopListener;
 import de.newrp.Waffen.*;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -77,6 +82,11 @@ public class main extends JavaPlugin {
         return Bukkit.hasWhitelist();
     }
 
+    private int maxPacketsPerSecond = 5; // Maximal erlaubte Pakete pro Sekunde
+    private int packetsReceived = 0; // Anzahl der empfangenen Pakete
+    private long lastCheckTime = System.currentTimeMillis();
+
+
     public void onEnable() {
 
         Bukkit.getConsoleSender().sendMessage("§cNRP §8× §astarting with version " + this.getDescription().getVersion() + "..");
@@ -84,6 +94,25 @@ public class main extends JavaPlugin {
         test = getServer().getMaxPlayers() == 20;
         event = null;
 
+
+        ProtocolLibrary.getProtocolManager().addPacketListener(new PacketAdapter(this, PacketType.Play.Client.SETTINGS) {
+            @Override
+            public void onPacketReceiving(PacketEvent event) {
+                // Überprüfen, ob die maximale Anzahl von Paketen pro Sekunde erreicht wurde
+                long currentTime = System.currentTimeMillis();
+                Player p = event.getPlayer();
+                if (currentTime - lastCheckTime >= 1000) {
+                    packetsReceived = 0;
+                    lastCheckTime = currentTime;
+                }
+                if (packetsReceived >= maxPacketsPerSecond) {
+                    //Notifications.sendMessage(Notifications.NotificationType.ADVANCED_ANTI_CHEAT, "Bitte Spieler " + Script.getName(p) + " überprüfen. (Pakete pro Sekunde: " + packetsReceived + ")");
+                    event.setCancelled(true); // Blockiere das Paket
+                    return;
+                }
+                packetsReceived++;
+            }
+        });
 
         //new C05(this);
 

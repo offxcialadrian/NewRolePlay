@@ -3,6 +3,7 @@ package de.newrp.API;
 import de.newrp.Administrator.*;
 import de.newrp.Government.Wahlen;
 import de.newrp.Player.Mobile;
+import de.newrp.TeamSpeak.TeamSpeak;
 import de.newrp.main;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -98,12 +99,21 @@ public class Utils implements Listener {
 
     @EventHandler
     public void onLogin(PlayerLoginEvent e) {
+        Player p = e.getPlayer();
+        if(Script.getNRPID(p) == 0) {
+            Notifications.sendMessage(Notifications.NotificationType.ADVANCED_ANTI_CHEAT, Script.PREFIX + "Dem Spieler " + p.getName() + " wurde der Zutritt verweigert, da er nicht registriert ist.");
+            e.disallow(PlayerLoginEvent.Result.KICK_FULL, "§cDerzeit können nur bereits registrierte Spieler joinen.");
+        }
+        if(Script.getActivePlayTime(p, true)<3 && !TeamSpeak.isVerified(Script.getNRPID(p))) {
+            e.disallow(PlayerLoginEvent.Result.KICK_FULL, "§8» §cNRP × New RolePlay §8┃ §cKick §8« \n\n§8§m------------------------------\n\n§7§cDu hast noch keine Spielzeit auf dem Server. Bitte versuche es später erneut.\n\n§8§m------------------------------");
+            Notifications.sendMessage(Notifications.NotificationType.ADVANCED_ANTI_CHEAT, Script.PREFIX + "Dem Spieler " + p.getName() + " wurde der Zutritt verweigert, da er noch keine Spielzeit auf dem Server hat.");
+        }
         if (e.getResult() == PlayerLoginEvent.Result.KICK_WHITELIST) {
             e.disallow(PlayerLoginEvent.Result.KICK_WHITELIST, "§8» §cNRP × New RolePlay §8┃ §cKick §8« \n\n§8§m------------------------------\n\n§7Du wurdest vom Server gekickt§8.\n\n§7Grund §8× §e" + "Wartungsarbeiten");
             Notifications.sendMessage(Notifications.NotificationType.ADVANCED_ANTI_CHEAT, Script.PREFIX + "Dem Spieler " + e.getPlayer().getName() + " wurde der Zutritt verweigert, da der Server im Wartungsmodus ist.");
         }
         if(e.getResult() == PlayerLoginEvent.Result.KICK_FULL) {
-            e.disallow(PlayerLoginEvent.Result.KICK_FULL, "§8» §cNRP × New RolePlay §8┃ §cKick §8« \n\n§8§m------------------------------\n\n§7Der Server ist voll. Versuche es später erneut.\n\n§8§m------------------------------");
+            e.disallow(PlayerLoginEvent.Result.KICK_FULL, "§8» §cNRP × New RolePlay §8┃ §cKick §8« \n\n§8§m------------------------------\n\n§7§cDerzeit können nur bereits registrierte Spieler joinen.\n\n§8§m------------------------------");
         }
     }
 
@@ -328,7 +338,7 @@ public class Utils implements Listener {
         }.runTaskLater(main.getInstance(), 20L);
         p.setFlySpeed(0.1f);
         if(Wahlen.wahlenActive()) p.sendMessage(Messages.INFO + "Die Wahlen sind aktiv! Du kannst mit §8/§6wahlen §rdeine Stimme abgeben.");
-        Notifications.sendMessage(Notifications.NotificationType.LEAVE, "§e" + Script.getName(e.getPlayer()) + " §7hat den Server betreten.");
+        Notifications.sendMessage(Notifications.NotificationType.JOIN, "§e" + Script.getName(e.getPlayer()) + " §7hat den Server betreten.");
         if(Licenses.ERSTE_HILFE.hasLicense(Script.getNRPID(p)) && ersteHilfeExpired(p)) {
             Licenses.ERSTE_HILFE.remove(Script.getNRPID(p));
             p.sendMessage(Messages.INFO + "Dein §eErste-Hilfe-Schein §7ist abgelaufen.");
