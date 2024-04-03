@@ -23,7 +23,7 @@ public class Checkfinances implements CommandExecutor {
     private static HashMap<String, Long> check = new HashMap<>();
     private static String PREFIX = "§8[§eFinanzamt§8] §e» §7";
     private static final long TIMEOUT = TimeUnit.MINUTES.toMillis(1);
-    private static final long TIMEOUT2 = TimeUnit.MINUTES.toMillis(6);
+    private static final long TIMEOUT2 = TimeUnit.MINUTES.toMillis(2);
     private static long lastTime;
 
     @Override
@@ -98,7 +98,7 @@ public class Checkfinances implements CommandExecutor {
             if (rs.next()) {
                 do {
                     int betrag = rs.getInt("money");
-                    p.sendMessage("§8» " + ((betrag > 0) ? "§a" : "§c") + betrag + "€ §8» §6" + rs.getString("reason") + " §8(§6" + Script.dateFormat2.format(rs.getLong("time")) + "§8) §8» §6" + rs.getString("after") + "€");
+                    p.sendMessage("§8» " + ((betrag > 0) ? "§a" : "§c") + betrag + "€ §8» §6" + rs.getString("reason") + " §8(§6" + Script.dateFormat.format(rs.getLong("time")) + " Uhr§8) §8» §6" + rs.getString("after") + "€");
                 } while (rs.next());
             }
         } catch (Exception e) {

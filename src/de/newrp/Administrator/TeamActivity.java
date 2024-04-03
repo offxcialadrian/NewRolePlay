@@ -41,7 +41,7 @@ public class TeamActivity implements CommandExecutor {
         HashMap<String, Integer> activity = getActitvity();
         p.sendMessage("§8[§c§lTeamActivity§8] §c»");
         for(String name : activity.keySet()) {
-            p.sendMessage("§8- §c" + name + " §8» §c" + activity.get(name) + " Tickets " + (Script.getPercentage(activity.get(name), getTotalTicket()) + "%"));
+            p.sendMessage("§8- §c" + name + " §8» §c" + activity.get(name) + " Tickets (" + (Script.getPercentage(activity.get(name), getTotalTicket()) + "%)"));
         }
 
         return false;

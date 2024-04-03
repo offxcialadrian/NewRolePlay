@@ -9,9 +9,12 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.HashMap;
+
 public class MSG implements CommandExecutor {
 
-    private static final String PREFIX = "§8[§eMSG§8] §e" + Messages.ARROW + " §7";
+    public static final String PREFIX = "§8[§eMSG§8] §e" + Messages.ARROW + " §7";
+    public static HashMap<String, String> may_reply = new HashMap<>();
 
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
@@ -45,8 +48,10 @@ public class MSG implements CommandExecutor {
 
         String msg = sb.toString().trim();
         p.sendMessage(PREFIX + "Du §7» §e" + tg.getName() + "§7: §f" + msg);
+        may_reply.put(tg.getName(), p.getName());
         if(tg.isOnline()) {
             tg.getPlayer().sendMessage(PREFIX + "§e" + Script.getName(p) + " §7» §7Dir: §f" + msg);
+            Script.sendSuggestMessage(tg.getPlayer(), "§9 "+ Messages.ARROW + " Klicke hier zum Antworten", "/reply " + p.getName(), "§7§oKlicke hier zum Antworten.");
         } else {
             Script.addOfflineMessage(tg, PREFIX + "§e" + Script.getName(p) + " §7» §7Dir: §f" + msg);
         }

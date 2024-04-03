@@ -655,3 +655,12 @@ commands:
   bankraub:
     description: view the bankraub
     aliases: [ bankraube ]
+  gangwar:
+    description: view the gangwar
+    aliases: [ gangwars, gw ]
+  loan:
+    description: take a loan
+    aliases: [ darlehen, kredit ]
+  reply:
+    description: reply to a message
+    aliases: [ antworten ]

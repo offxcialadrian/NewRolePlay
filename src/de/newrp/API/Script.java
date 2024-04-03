@@ -109,7 +109,15 @@ public class Script {
 
     public static List<OfflinePlayer> getAllNRPTeam() {
         //select all nrp_ids from ranks
-        List<OfflinePlayer> players = new ArrayList<>(team);
+        List<OfflinePlayer> players = new ArrayList<>();
+        try (Statement stmt = main.getConnection().createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT nrp_id FROM ranks")) {
+            while (rs.next()) {
+                players.add(Script.getOfflinePlayer(rs.getInt("nrp_id")));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         //sort list by rank
         players.sort((o1, o2) -> {
             if (getRank(o1).getWeight() > getRank(o2).getWeight()) {
@@ -1828,6 +1836,13 @@ public class Script {
     public static void sendClickableMessage(Player p, String msg, String cmd, String hover) {
         TextComponent msg1 = new TextComponent(msg);
         msg1.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, cmd));
+        msg1.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(hover).create()));
+        p.spigot().sendMessage(msg1);
+    }
+
+    public static void sendSuggestMessage(Player p, String msg, String cmd, String hover) {
+        TextComponent msg1 = new TextComponent(msg);
+        msg1.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, cmd));
         msg1.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(hover).create()));
         p.spigot().sendMessage(msg1);
     }

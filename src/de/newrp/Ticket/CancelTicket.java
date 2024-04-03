@@ -41,7 +41,6 @@ public class CancelTicket implements CommandExecutor {
             }
             int id = t.getID();
             Player tg = t.getTicketer();
-            if(Script.isNRPTeam(p)) Script.addEXP(p, 5);
             if(TicketCommand.getFarewell(p) != null) {
                 p.sendMessage("§d§lTICKET §8× §d" + Script.getName(p) + ": " + TicketCommand.getFarewell(p));
                 p.sendMessage(Messages.INFO + "Das Ticket wird in " + 2 + " Sekunden beendet.");
@@ -52,6 +51,7 @@ public class CancelTicket implements CommandExecutor {
                 new BukkitRunnable() {
                     @Override
                     public void run() {
+                        if(Script.isNRPTeam(p)) Script.addEXP(p, 5);
                         p.sendMessage(TicketCommand.PREFIX + "Du hast das Ticket mit " + Script.getName(tg) + " beendet! §7(§6#" + id + "§7)");
                         tg.sendMessage(TicketCommand.PREFIX + Script.getRank(p).getName(p) + " " + Script.getName(p) + " hat das Ticket beendet! §7(§6#" + id + "§7)");
                         Script.sendTeamMessage(p, ChatColor.LIGHT_PURPLE, "hat das Ticket mit " + Script.getName(tg) + " beendet! §7(§6#" + id + "§7)", true);
@@ -62,6 +62,7 @@ public class CancelTicket implements CommandExecutor {
                 }.runTaskLater(main.getInstance(), 2 * 20L);
                 return true;
             }
+            if(Script.isNRPTeam(p)) Script.addEXP(p, 5);
             p.sendMessage(TicketCommand.PREFIX + "Du hast das Ticket mit " + Script.getName(tg) + " beendet! §7(§6#" + id + "§7)");
             tg.sendMessage(TicketCommand.PREFIX + Script.getRank(p).getName(p) + " " + Script.getName(p) + " hat das Ticket beendet! §7(§6#" + id + "§7)");
             Script.sendTeamMessage(p, ChatColor.LIGHT_PURPLE, "hat das Ticket mit " + Script.getName(tg) + " beendet! §7(§6#" + id + "§7)", true);

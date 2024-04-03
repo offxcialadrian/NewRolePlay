@@ -32,6 +32,7 @@ public class Bankautomaten implements Listener {
     public static HashMap<Organisation, Long> cooldown = new HashMap<>();
     public static HashMap<Location, Block> atmBlocks = new HashMap<>();
     public static HashMap<ATM, Long> cooldownATM = new HashMap<>();
+    public static HashMap<String, Integer> progress = new HashMap<>();
 
     @EventHandler
     public void onInteract(PlayerInteractEvent e) {
@@ -64,7 +65,7 @@ public class Bankautomaten implements Listener {
         cooldownATM.put(atm, System.currentTimeMillis() + 3600000);
         atmBlocks.put(e.getClickedBlock().getLocation(), e.getClickedBlock());
         p.getInventory().remove(Material.TNT);
-        p.sendMessage(PREFIX + "Der Bankautomat wird in 180 Sekunden zerstört.");
+        p.sendMessage(PREFIX + "Der Bankautomat wird in 90 Sekunden zerstört.");
         Beruf.Berufe.POLICE.sendMessage(PREFIX + "ACHTUNG! ES WURDE SPRENGSTOFF AN ATM " + atm.getID() + " GEFUNDEN!");
         Beruf.Berufe.POLICE.sendMessage(Messages.INFO + "In der Nähe von " + Navi.getNextNaviLocation(p.getLocation()).getName());
         Location bombLocation = atm.getLocation();
@@ -73,55 +74,77 @@ public class Bankautomaten implements Listener {
         new BukkitRunnable() {
             @Override
             public void run() {
-                if(p.getLocation().distance(bombLocation) > 10) {
+                if (p.getLocation().distance(bombLocation) > 10) {
                     p.sendMessage(PREFIX + "Du bist zu weit entfernt.");
+                    cancel();
                     return;
                 }
-                for (Location l : Script.getBlocksAroundLocation(bombLocation, 5, 5, false, false, -1)) {
-                    Block b = l.getBlock();
-                    if (b.getType().hasGravity()) continue;
-                    if (b.getType() == Material.AIR) continue;
 
-                    FallingBlock block = b.getWorld().spawnFallingBlock(bombLocation, b.getType(), b.getData());
-                    float x = (float) -0.2 + (float) (Math.random() * ((0.2 + 0.3) + 0.3));
-                    float y = (float) -0.5 + (float) (Math.random() * ((0.3 + 0.3) + 1));
-                    float z = (float) -0.2 + (float) (Math.random() * ((0.2 + 0.3) + 0.3));
-                    block.setVelocity(new Vector(x, y, z));
-                    block.setDropItem(false);
-                    block.setGlowing(false);
-                    block.setHurtEntities(false);
-                }
-                Script.WORLD.createExplosion(bombLocation.getX(), bombLocation.getY(), bombLocation.getZ(), 4F, false, false);
+                if (progress.get(p.getName()) >= 90) {
+                    for (Location l : Script.getBlocksAroundLocation(bombLocation, 5, 5, false, false, -1)) {
+                        Block b = l.getBlock();
+                        if (b.getType().hasGravity()) continue;
+                        if (b.getType() == Material.AIR) continue;
 
-                for (Player online : Bukkit.getOnlinePlayers()) {
-                    double distance = online.getLocation().distance(bombLocation);
-                    if (distance < 30D) {
-                        online.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 0, 0, false));
-                        online.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 5 * 20, 1, false));
+                        FallingBlock block = b.getWorld().spawnFallingBlock(bombLocation, b.getType(), b.getData());
+                        float x = (float) -0.2 + (float) (Math.random() * ((0.2 + 0.3) + 0.3));
+                        float y = (float) -0.5 + (float) (Math.random() * ((0.3 + 0.3) + 1));
+                        float z = (float) -0.2 + (float) (Math.random() * ((0.2 + 0.3) + 0.3));
+                        block.setVelocity(new Vector(x, y, z));
+                        block.setDropItem(false);
+                        block.setGlowing(false);
+                        block.setHurtEntities(false);
+                    }
+                    Script.WORLD.createExplosion(bombLocation.getX(), bombLocation.getY(), bombLocation.getZ(), 4F, false, false);
 
-                        if (distance < 10D) {
-                            double damage = ((100D - (distance * 1.5D)) * .2D);
-                            online.damage(damage);
+                    for (Player online : Bukkit.getOnlinePlayers()) {
+                        double distance = online.getLocation().distance(bombLocation);
+                        if (distance < 30D) {
+                            online.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 0, 0, false));
+                            online.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 5 * 20, 1, false));
 
+                            if (distance < 10D) {
+                                double damage = ((100D - (distance * 1.5D)) * .2D);
+                                online.damage(damage);
+
+                            }
                         }
                     }
+                    e.getClickedBlock().setType(atmBlocks.get(e.getClickedBlock().getLocation()).getType());
+                    atmBlocks.remove(bombLocation);
+                    int remove = (int) Math.min(Script.getRandom(3000, 6000), Script.getPercent(20, atm.getCash()));
+                    atm.removeCash(remove);
+                    o.sendMessage(PREFIX + Script.getName(p) + " hat einen Bankautomaten zerstört und " + remove + "€ gestohlen.");
+                    Beruf.Berufe.POLICE.sendMessage(PREFIX + "Der Bankautomat " + atm.getID() + " wurde zerstört. Es wurden " + remove + "€ gestohlen.");
+                    Script.addMoney(p, PaymentType.CASH, remove);
+                    o.addExp(remove / 100);
+                    cancel();
+                    new BukkitRunnable() {
+                        @Override
+                        public void run() {
+                            Stadtkasse.removeStadtkasse(1000, "Wiederherstellung Bankautomat");
+                        }
+                    }.runTaskLater(main.getInstance(), 20L * 60 * 60);
+                } else {
+                    progress.replace(p.getName(), progress.get(p.getName()) + 1);
                 }
-                e.getClickedBlock().setType(atmBlocks.get(e.getClickedBlock().getLocation()).getType());
-                atmBlocks.remove(bombLocation);
-                int remove = (int) Math.min(Script.getRandom(3000,6000),Script.getPercent(20, atm.getCash()));
-                atm.removeCash(remove);
-                o.sendMessage(PREFIX + Script.getName(p) + " hat einen Bankautomaten zerstört und " + remove + "€ gestohlen.");
-                Beruf.Berufe.POLICE.sendMessage(PREFIX + "Der Bankautomat " + atm.getID() + " wurde zerstört. Es wurden " + remove + "€ gestohlen.");
-                Script.addMoney(p, PaymentType.CASH, remove);
-                o.addExp(remove/100);
-                new BukkitRunnable() {
-                    @Override
-                    public void run() {
-                        Stadtkasse.removeStadtkasse(1000, "Wiederherstellung Bankautomat");
-                    }
-                }.runTaskLater(main.getInstance(), 20L * 60 * 90);
             }
-        }.runTaskLater(main.getInstance(), 20L * 60);
-
+        }.runTaskTimer(main.getInstance(), 20L, 20L);
     }
+
+    private static void progressBar(double required_progress, Player p) {
+        double current_progress = progress.get(p.getName());
+        double progress_percentage = current_progress / required_progress;
+        StringBuilder sb = new StringBuilder();
+        int bar_length = 10;
+        for (int i = 0; i < bar_length; i++) {
+            if (i < bar_length * progress_percentage) {
+                sb.append("§c▉");
+            } else {
+                sb.append("§8▉");
+            }
+        }
+        Script.sendActionBar(p, "§cBankautomat sprengen.. §8» §a" + sb.toString());
+    }
+
 }

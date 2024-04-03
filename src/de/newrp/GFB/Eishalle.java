@@ -64,7 +64,7 @@ public class Eishalle implements CommandExecutor, Listener {
         }
 
         p.sendMessage(PREFIX + "Mach das Eis nun wieder Befahrbar.");
-        p.sendMessage(Messages.INFO + "Klicke nun auf Rechtsklick jeden Block auf der Bahn. Du hast maximal 5 Minuten Zeit.");
+        p.sendMessage(Messages.INFO + "Klicke nun auf Rechtsklick jeden Block auf der Bahn. Du hast maximal 3 Minuten Zeit.");
         GFB.CURRENT.put(p.getName(), GFB.EISHALLE);
 
         new BukkitRunnable() {
@@ -78,7 +78,7 @@ public class Eishalle implements CommandExecutor, Listener {
                     }
                 }
             }
-        }.runTaskLater(main.getInstance(), 5 * 60 * 20L);
+        }.runTaskLater(main.getInstance(), 3 * 60 * 20L);
         return false;
     }
 

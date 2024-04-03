@@ -21,6 +21,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
 
 public class Annehmen implements CommandExecutor {
     public static final HashMap<String, String> offer = new HashMap<>();
@@ -109,7 +110,36 @@ public class Annehmen implements CommandExecutor {
             new Particle(org.bukkit.Particle.HEART, p.getEyeLocation(), false, 0.001F, 0.001F, 0.001F, 0.001F, 2).sendAll();
             new Particle(org.bukkit.Particle.HEART, tg.getEyeLocation(), false, 0.001F, 0.001F, 0.001F, 0.001F, 2).sendAll();
             offer.remove(p.getName() + ".beziehung");
+        } else if(offer.containsKey(p.getName() + ".loan")) {
+            Player lender = Script.getPlayer(offer.get(p.getName() + ".loan"));
+            if (lender == null) {
+                p.sendMessage(Messages.PLAYER_NOT_FOUND);
+                return true;
+            }
 
+            int days = Integer.parseInt(offer.get(p.getName() + ".loan.days"));
+            double interest = Double.parseDouble(offer.get(p.getName() + ".loan.interest"));
+            int amount = Integer.parseInt(offer.get(p.getName() + ".loan.amount"));
+
+            if (amount < 1 || amount > Stadtkasse.getStadtkasse()) {
+                p.sendMessage(Messages.ERROR + "Der Betrag muss zwischen 1€ und " + Stadtkasse.getStadtkasse() + "€ liegen.");
+                return true;
+            }
+
+            if (Stadtkasse.getStadtkasse() < amount) {
+                p.sendMessage(Messages.ERROR + "Die Stadtkasse hat nicht genügend Geld.");
+                return true;
+            }
+
+            Stadtkasse.removeStadtkasse(amount, "Kreditvergabe an " + Script.getName(p));
+            Script.addMoney(lender, PaymentType.BANK, amount);
+            Script.executeAsyncUpdate("INSERT INTO loans (userID, amount, zins, time) VALUES (" + Script.getNRPID(p) + ", " + amount + ", " + interest + ", " + (System.currentTimeMillis()+ TimeUnit.DAYS.toMillis(days)) + ");");
+            p.sendMessage(ACCEPTED + "Du hast den Kredit über " + days + " Tage und " + amount + "€ angenommen (Zinssatz: " + interest + "%).");
+            lender.sendMessage(ACCEPTED + "Du hast von " + Script.getName(p) + " ein Kreditangebot über " + days + " Tage und " + amount + "€ erhalten (Zinssatz: " + interest + "%).");
+            offer.remove(p.getName() + ".loan");
+            offer.remove(p.getName() + ".loan.days");
+            offer.remove(p.getName() + ".loan.interest");
+            offer.remove(p.getName() + ".loan.amount");
         } else if(offer.containsKey(p.getName() + ".vertrag.from")) {
             Player tg = Script.getPlayer(offer.get(p.getName() + ".vertrag.from"));
             if (tg == null) {

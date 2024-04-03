@@ -4,9 +4,9 @@ public enum HouseAddon {
 
     ALARM(1, "Alarmanlage", 6000),
     HAUSKASSE(2, "Hauskasse", 3000),
-    SLOT(4, "Mieterslot", 5000),
+    SLOT(4, "Mieterslot", 1250),
     KUEHLSCHRANK(5, "Kühlschrank", 600),
-    WAFFENSCHRANK(6, "Waffenschrank", 7000);
+    WAFFENSCHRANK(6, "Waffenschrank", 2000);
 
     private final int id;
     private final String name;

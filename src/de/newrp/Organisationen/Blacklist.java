@@ -4,6 +4,7 @@ import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.main;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import java.sql.PreparedStatement;
@@ -47,6 +48,15 @@ public class Blacklist {
     }
 
     public static boolean isOnBlacklist(Player p, Organisation f) {
+        if (!BLACKLIST.containsKey(f)) return false;
+        String name = p.getName();
+        for (Blacklist bl : BLACKLIST.get(f)) {
+            if (bl.getUserName().equals(name)) return true;
+        }
+        return false;
+    }
+
+    public static boolean isOnBlacklist(OfflinePlayer p, Organisation f) {
         if (!BLACKLIST.containsKey(f)) return false;
         String name = p.getName();
         for (Blacklist bl : BLACKLIST.get(f)) {

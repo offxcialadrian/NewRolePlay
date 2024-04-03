@@ -8,6 +8,7 @@ import de.newrp.Administrator.GoTo;
 import de.newrp.Administrator.SDuty;
 import de.newrp.Player.AFK;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -17,8 +18,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.util.StringUtil;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Array;
 import java.util.*;
@@ -55,11 +54,11 @@ public class BlackListCommand implements CommandExecutor, Listener, TabCompleter
     }
 
     public enum Reasons {
-        GANGZONE("Gangzones", 500, 50, new Organisation[] {Organisation.CORLEONE}),
-        ORGASCHÄDIGUNG("Organisationsschädigung", 800, 60, new Organisation[] {Organisation.CORLEONE}),
-        LEADERMORD("Leadermord", 1000, 65, new Organisation[] {Organisation.CORLEONE}),
+        GANGZONE("Gangzones", 500, 50, new Organisation[] {Organisation.CORLEONE, Organisation.BRATERSTWO}),
+        ORGASCHÄDIGUNG("Organisationsschädigung", 800, 60, new Organisation[] {Organisation.CORLEONE, Organisation.BRATERSTWO}),
+        LEADERMORD("Leadermord", 1000, 65, new Organisation[] {Organisation.CORLEONE, Organisation.BRATERSTWO}),
         BLUTRACHE("Blutrache", 300, 25, new Organisation[] {Organisation.CORLEONE}),
-        LEICHENBEWACHUNG("Leichenbewachung", 400, 20, new Organisation[] {Organisation.CORLEONE}),
+        LEICHENBEWACHUNG("Leichenbewachung", 400, 20, new Organisation[] {Organisation.CORLEONE, Organisation.BRATERSTWO}),
         LEADERMORD_KARTELL("Leadermord", 300, 50, new Organisation[] {Organisation.KARTELL}),
         GANGZONE_KARTELL("Gangzone", 750, 35, new Organisation[] {Organisation.KARTELL}),
         FRAK_KARTELL("Fraktionsschädigung", 300, 50, new Organisation[] {Organisation.KARTELL}),
@@ -209,9 +208,9 @@ public class BlackListCommand implements CommandExecutor, Listener, TabCompleter
         }
 
         if(args.length == 2 && args[0].equalsIgnoreCase("remove")) {
-            Player tg = Script.getPlayer(args[1]);
-            if(tg == null) {
-                p.sendMessage(Blacklist.PREFIX + "Der Spieler ist nicht online.");
+            OfflinePlayer tg = Script.getOfflinePlayer(args[1]);
+            if(Script.getNRPID(tg) == 0) {
+                p.sendMessage(Blacklist.PREFIX + "Der Spieler wurde nicht gefunden.");
                 return true;
             }
             if(!Blacklist.isOnBlacklist(tg, o)) {
@@ -224,9 +223,9 @@ public class BlackListCommand implements CommandExecutor, Listener, TabCompleter
                 return true;
             }
 
-            Blacklist.remove(tg, o);
+            Blacklist.remove(Script.getNRPID(tg), o);
             p.sendMessage(Blacklist.PREFIX + "Der Spieler wurde von der Blacklist entfernt.");
-            tg.sendMessage(Blacklist.PREFIX + "Du wurdest von der Blacklist der " + o.getName() + " entfernt.");
+            if(tg.getPlayer() != null) tg.getPlayer().sendMessage(Blacklist.PREFIX + "Du wurdest von der Blacklist der " + o.getName() + " entfernt.");
             o.sendMessage(Blacklist.PREFIX + Script.getName(p) + " hat " + Script.getName(tg) + " von der Blacklist entfernt.");
             return true;
         }
@@ -361,6 +360,7 @@ public class BlackListCommand implements CommandExecutor, Listener, TabCompleter
         int kills = bl.getKills();
         Script.addEXP(killer, Script.getRandom(3, 7));
         f.addExp(Script.getRandom(5, 15));
+        f.sendMessage(Blacklist.PREFIX + Script.getName(killer) + " hat " + Script.getName(killed) + " getötet." + (bl.getKills()-1) + "/" + bl.getKills() + " Kills");
         if (kills == 1) {
             f.sendMessage(Blacklist.PREFIX + Script.getName(killed) + " wurde automatisch von der Blacklist entfernt.");
             killed.sendMessage(Blacklist.PREFIX + "Du wurdest automatisch von der Blacklist der " + f.getName() + " entfernt.");

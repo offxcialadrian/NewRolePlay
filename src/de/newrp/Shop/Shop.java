@@ -5,6 +5,7 @@ import de.newrp.API.PaymentType;
 import de.newrp.API.Script;
 import de.newrp.API.SlotLimit;
 import de.newrp.Administrator.Notifications;
+import de.newrp.Berufe.Abteilung;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Government.Stadtkasse;
 import de.newrp.Government.Steuern;
@@ -394,6 +395,7 @@ public class Shop implements CommandExecutor, Listener {
             si.setPrice(s, price);
             p.sendMessage(PREFIX + "Du hast den Preis von " + si.getName() + " §7auf " + price + "€ gesetzt.");
             Notifications.sendMessage(Notifications.NotificationType.SHOP,Script.getName(p) + " hat den Preis von " + si.getName() + " §aauf " + price + "€ gesetzt. [Shop: " + s.getPublicName() + "]");
+            Abteilung.Abteilungen.FINANZAMT.sendMessage(PREFIX + "Der Preis von " + si.getName() + " §7wurde von " + Script.getName(p) + " auf " + price + "€ gesetzt. [Shop: " + s.getPublicName() + "]");
             p.closeInventory();
             return;
         }

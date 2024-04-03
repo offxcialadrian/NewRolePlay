@@ -40,7 +40,7 @@ public class BreakIn implements Listener {
 
         long time = System.currentTimeMillis();
         Long lastUsage = TOTAL_COOLDOWN.get(p.getName());
-        if (TOTAL_COOLDOWN.containsKey(p.getName()) && lastUsage + 10800 * 1000 > time && HOUSES.containsKey(p.getName())) {
+        if (HOUSES.containsKey(p.getName()) || TOTAL_COOLDOWN.containsKey(p.getName()) && lastUsage + 10800 * 1000 > time) {
             p.sendMessage(Messages.ERROR + "Du kannst nur alle 3 Stunden in ein Haus einbrechen.");
             return;
         }

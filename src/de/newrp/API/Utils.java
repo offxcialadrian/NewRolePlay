@@ -100,14 +100,10 @@ public class Utils implements Listener {
     @EventHandler
     public void onLogin(PlayerLoginEvent e) {
         Player p = e.getPlayer();
-        if(Script.getNRPID(p) == 0) {
+        /*if(Script.getNRPID(p) == 0) {
             Notifications.sendMessage(Notifications.NotificationType.ADVANCED_ANTI_CHEAT, Script.PREFIX + "Dem Spieler " + p.getName() + " wurde der Zutritt verweigert, da er nicht registriert ist.");
             e.disallow(PlayerLoginEvent.Result.KICK_FULL, "§cDerzeit können nur bereits registrierte Spieler joinen.");
-        }
-        if(Script.getActivePlayTime(p, true)<3 && !TeamSpeak.isVerified(Script.getNRPID(p))) {
-            e.disallow(PlayerLoginEvent.Result.KICK_FULL, "§8» §cNRP × New RolePlay §8┃ §cKick §8« \n\n§8§m------------------------------\n\n§7§cDu hast noch keine Spielzeit auf dem Server. Bitte versuche es später erneut.\n\n§8§m------------------------------");
-            Notifications.sendMessage(Notifications.NotificationType.ADVANCED_ANTI_CHEAT, Script.PREFIX + "Dem Spieler " + p.getName() + " wurde der Zutritt verweigert, da er noch keine Spielzeit auf dem Server hat.");
-        }
+        }*/
         if (e.getResult() == PlayerLoginEvent.Result.KICK_WHITELIST) {
             e.disallow(PlayerLoginEvent.Result.KICK_WHITELIST, "§8» §cNRP × New RolePlay §8┃ §cKick §8« \n\n§8§m------------------------------\n\n§7Du wurdest vom Server gekickt§8.\n\n§7Grund §8× §e" + "Wartungsarbeiten");
             Notifications.sendMessage(Notifications.NotificationType.ADVANCED_ANTI_CHEAT, Script.PREFIX + "Dem Spieler " + e.getPlayer().getName() + " wurde der Zutritt verweigert, da der Server im Wartungsmodus ist.");

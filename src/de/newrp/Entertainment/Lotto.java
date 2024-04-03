@@ -139,7 +139,15 @@ public class Lotto implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         Player p = (Player) cs;
-        if (args.length >= 1 && args[0].equalsIgnoreCase("info")) {
+        if(args.length == 2 && args[0].equalsIgnoreCase("spende")) {
+            if(!Script.isInt(args[1])) {
+                p.sendMessage(Messages.ERROR + "/lotto spende [Zahl]");
+                return true;
+            }
+
+            int i = Integer.parseInt(args[0]);
+
+        } else if (args.length >= 1 && args[0].equalsIgnoreCase("info")) {
             Bukkit.getScheduler().runTaskAsynchronously(main.getInstance(), () -> p.sendMessage(PREFIX + "Es befinden sich " + getJackpot() + "€ im Jackpot."));
         } else if (haveLottoschein(p)) {
             p.sendMessage(PREFIX + "Du hast einen Lottoschein mit der Nummer " + getLottoNummer(Script.getNRPID(p)) + ".");

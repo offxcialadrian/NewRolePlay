@@ -21,6 +21,7 @@ import de.newrp.Entertainment.Lotto;
 import de.newrp.Forum.ForumCommand;
 import de.newrp.Berufe.Tazer;
 import de.newrp.GFB.*;
+import de.newrp.Gangwar.GangwarCommand;
 import de.newrp.Government.*;
 import de.newrp.House.*;
 import de.newrp.Medic.*;
@@ -406,6 +407,9 @@ public class main extends JavaPlugin {
         getCommand("bussgeld").setExecutor(new Bussgeld());
         getCommand("bankraub").setExecutor(new Bankraub());
         getCommand("strafregister").setExecutor(new Strafregister());
+        getCommand("gangwar").setExecutor(new GangwarCommand());
+        getCommand("loan").setExecutor(new Loan());
+        getCommand("reply").setExecutor(new Reply());
 
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new SDuty(), this);

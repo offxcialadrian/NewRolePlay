@@ -5,6 +5,7 @@ import de.newrp.Administrator.BuildMode;
 import de.newrp.Administrator.SDuty;
 import de.newrp.Berufe.Abteilung;
 import de.newrp.Berufe.Beruf;
+import de.newrp.Government.Loan;
 import de.newrp.Government.Stadtkasse;
 import de.newrp.Organisationen.Organisation;
 import de.newrp.Player.AFK;
@@ -16,6 +17,7 @@ import de.newrp.Shop.Shops;
 import de.newrp.main;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -25,6 +27,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
@@ -34,9 +37,36 @@ public class AsyncHour extends BukkitRunnable {
 
     @Override
     public void run() {
-        Aktie.update();
+        //Aktie.update();
         Schwarzmarkt.spawnRandom();
         Hologram.reload();
+
+        try (Statement stmt = main.getConnection().createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT * FROM loans WHERE time>" + System.currentTimeMillis())) {
+            while (rs.next()) {
+                OfflinePlayer p = Script.getOfflinePlayer(rs.getInt("userID"));
+                int amount = rs.getInt("amount");
+                double interest = rs.getDouble("interest");
+                int id = rs.getInt("id");
+
+                int sum = (int) (amount + Script.getPercent(interest, amount));
+
+                Stadtkasse.addStadtkasse(sum, "Kredit von " + p.getName(), null);
+                Beruf.Berufe.GOVERNMENT.sendMessage(Loan.PREFIX + "Der Kredit von " + p.getName() + " wurde abbezahlt.");
+                Script.removeMoney(p, PaymentType.BANK, sum);
+
+                Script.executeAsyncUpdate("DELETE FROM loans WHERE id=" + id);
+                if(p.isOnline()) {
+                    Player player = p.getPlayer();
+                    player.sendMessage(Loan.PREFIX + "Dein Kredit wurde abbezahlt.");
+                } else {
+                    Script.addOfflineMessage(p, Loan.PREFIX + "Dein Kredit wurde abbezahlt.");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         for(Shops shop : Shops.values()) {
             if (shop.getOwner() == 0) return;
             int runningcost = 0;

@@ -10,7 +10,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,7 +19,7 @@ public class AddPremiumToPlayer implements CommandExecutor {
     public static HashMap<String, Integer> awaitFeedback = new HashMap<>();
 
     @Override
-    public boolean onCommand(@NotNull CommandSender cs, @NotNull Command cmd, @NotNull String s, @NotNull String[] args) {
+    public boolean onCommand(CommandSender cs,Command cmd,String s, String[] args) {
         if (!(cs instanceof ConsoleCommandSender)) return true;
 
         OfflinePlayer player = Script.getOfflinePlayer(args[0]);
