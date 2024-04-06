@@ -186,7 +186,7 @@ public class BlackListCommand implements CommandExecutor, Listener, TabCompleter
                 } else {
                     String time = getTime(bl);
                     sb.append(" §7» §a").append(Script.getName(p1)).append(" §7|§a ").append(bl.getReason()).append(" §7|§a ").append(time)
-                            .append(" §7|§a ").append(bl.getKills()).append(" Kills §7|§a ").append(bl.getPrice()).append("€").append((AFK.isAFK(p1) ? " (AFK seit " + AFK.getAFKTime(p) +  " Uhr)\n" : "\n"));
+                            .append(" §7|§a ").append(bl.getKills()).append(" Kills §7|§a ").append(bl.getPrice()).append("€").append((AFK.isAFK(p1) ? " (AFK seit " + AFK.getAFKTime(p1) +  " Uhr)\n" : "\n"));
                 }
             }
             for (Blacklist bl : offline) {
@@ -356,7 +356,7 @@ public class BlackListCommand implements CommandExecutor, Listener, TabCompleter
         int kills = bl.getKills();
         Script.addEXP(killer, Script.getRandom(3, 7));
         f.addExp(Script.getRandom(5, 15));
-        f.sendMessage(Blacklist.PREFIX + Script.getName(killer) + " hat " + Script.getName(killed) + " getötet." + (bl.getKills()-1) + "/" + bl.getKills() + " Kills");
+        f.sendMessage(Blacklist.PREFIX + Script.getName(killer) + " hat " + Script.getName(killed) + " getötet. (" + (bl.getKills()-1) + "/" + bl.getKills() + " Kills)");
         if (kills == 1) {
             f.sendMessage(Blacklist.PREFIX + Script.getName(killed) + " wurde automatisch von der Blacklist entfernt.");
             killed.sendMessage(Blacklist.PREFIX + "Du wurdest automatisch von der Blacklist der " + f.getName() + " entfernt.");

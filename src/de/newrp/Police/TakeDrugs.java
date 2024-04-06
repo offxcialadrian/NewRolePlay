@@ -41,6 +41,11 @@ public class TakeDrugs implements CommandExecutor {
             return true;
         }
 
+        if(p.getLocation().distance(tg.getLocation()) > 5) {
+            p.sendMessage(Messages.ERROR + "Du bist zu weit entfernt.");
+            return true;
+        }
+
         Stadtkasse.addStadtkasse(2*Script.getDrugAmount(tg), "Drogenkonfiszierung", null);
         Script.removeDrugs(tg);
         p.sendMessage(Messages.INFO + "Du hast " + tg.getName() + " die Drogen abgenommen.");

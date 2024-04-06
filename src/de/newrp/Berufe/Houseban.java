@@ -147,7 +147,6 @@ public class Houseban implements CommandExecutor, Listener, TabCompleter {
             }
 
             if (isHousebanned(tg, b)) {
-                p.sendMessage(Messages.ERROR + "Der Spieler hat bereits Hausverbot.");
                 long time = getTime(tg, b);
                 try (PreparedStatement statement = main.getConnection().prepareStatement(
                         "DELETE FROM housebans WHERE userID = ? AND beruf = ?")) {

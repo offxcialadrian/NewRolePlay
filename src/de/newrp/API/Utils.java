@@ -1,7 +1,9 @@
 package de.newrp.API;
 
 import de.newrp.Administrator.*;
+import de.newrp.Berufe.Beruf;
 import de.newrp.Government.Wahlen;
+import de.newrp.Organisationen.Organisation;
 import de.newrp.Player.Mobile;
 import de.newrp.TeamSpeak.TeamSpeak;
 import de.newrp.main;
@@ -125,7 +127,7 @@ public class Utils implements Listener {
     @EventHandler
     public void onPing(ServerListPingEvent e) {
         if(Script.isInTestMode()) {
-            e.setMotd("§5§lNew RolePlay §8┃ §5Reallife §8× §5RolePlay §8┃ §c1.16.5\n§8» §a§l" + "RELEASE" + " §8- §6§lHEUTE!");
+            e.setMotd("§5§lNew RolePlay §8┃ §5Reallife §8× §5RolePlay §8┃ §c1.16.5\n§8» §a§l" + "§e§lWartungsarbeiten!");
         } else {
             e.setMotd("§5§lNew RolePlay §8┃ §5Reallife §8× §5RolePlay §8┃ §c1.16.5\n§8» §a§l" + main.getInstance().getDescription().getVersion() + " §8- §5Werde Teil einer neuen Ära!");
         }
@@ -233,6 +235,9 @@ public class Utils implements Listener {
         Script.sendOfflineMessages(p);
         Script.updateExpBar(p);
         Corpse.reloadNPC(p);
+
+
+
         p.getInventory().remove(Material.PLAYER_HEAD);
         if(Script.hasRank(p, Rank.SUPPORTER, false)) {
             Script.team.add(p);
@@ -342,6 +347,17 @@ public class Utils implements Listener {
         Script.updateListname(p);
         Script.sendTabTitle(e.getPlayer());
         if(Friedhof.isDead(p)) Corpse.spawnNPC(p, Friedhof.getDead(p).getDeathLocation());
+        if(Beruf.hasBeruf(p)) {
+            if(Beruf.getBeruf(p).getMOTD() != null) {
+                p.sendMessage(Beruf.PREFIX + Beruf.getBeruf(p).getMOTD());
+            }
+        }
+
+        if(Organisation.hasOrganisation(p)) {
+            if(Organisation.getOrganisation(p).getMOTD() != null) {
+                p.sendMessage(Organisation.PREFIX + Organisation.getOrganisation(p).getMOTD());
+            }
+        }
 
     }
 

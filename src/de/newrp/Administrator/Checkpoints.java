@@ -343,6 +343,11 @@ public class Checkpoints implements Listener {
         Player p = e.getPlayer();
         Checkpoints.clearCheckpoints(p);
         Checkpoints.CHECKPOINTS.remove(p.getName());
+        for(Map.Entry<Location, String> entry : Checkpoints.CHECKPOINT_LOCATION.entrySet()) {
+            if(entry.getValue().equals(p.getName())) {
+                entry.getKey().getBlock().setType(Material.AIR);
+            }
+        }
 
         String name = p.getName();
         Checkpoints.CHECKPOINT_LOCATION.values().removeIf(entry -> entry.equals(name));

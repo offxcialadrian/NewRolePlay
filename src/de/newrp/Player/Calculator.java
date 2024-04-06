@@ -28,15 +28,20 @@ public class Calculator implements CommandExecutor {
             return true;
         }
 
-        Expressions expr = new Expressions(String.join(" ", args).replace(" ", ""));
+        StringBuilder sb = new StringBuilder();
+        for(String arg : args) {
+            sb.append(arg);
+        }
+        String input = sb.toString();
+
+        Expressions expr = new Expressions(input);
         try {
             expr.evaluate();
+            p.sendMessage(PREFIX + input + " §f= §b" + expr.parse());
         } catch (Expressions.ExpressionException e) {
-            p.sendMessage(Messages.ERROR + "Ungültiger Ausdruck.");
+            p.sendMessage(Messages.ERROR + "Deine Rechnung war ungültig: " + e.getMessage());
             return true;
         }
-
-        p.sendMessage(PREFIX + String.join(" ", args) + " = " + expr.evaluate());
 
         return false;
     }

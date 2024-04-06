@@ -165,7 +165,7 @@ public class Chat implements Listener {
         for(String arg : e.getMessage().split(" ")) {
 
             if(arg.equalsIgnoreCase("oos") || arg.equalsIgnoreCase("ooc")) {
-                p.performCommand("ooc " + e.getMessage());
+                Script.performCommand(p, "ooc " + e.getMessage());
                 return;
             }
 

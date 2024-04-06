@@ -285,7 +285,7 @@ public class PayShop implements Listener {
 
         Script.removeMoney(p, type, price);
         double mwst = Steuern.Steuer.MEHRWERTSTEUER.getPercentage();
-        int add = price - (int) Script.getPercent(mwst, price) + (type == PaymentType.BANK ? -(int) Script.getPercent(2, price) : 0);
+        int add = price - (int) Script.getPercent(mwst, price-(si.getBuyPrice()*amount)) + (type == PaymentType.BANK ? -(int) Script.getPercent(2, price) : 0);
         if (s.getOwner() > 0) {
             s.addKasse(add);
             s.removeKasse(si.getBuyPrice());
@@ -298,7 +298,7 @@ public class PayShop implements Listener {
             Log.NORMAL.write(p, "hat " + si.getName() + " für " + price + "€ gekauft.");
         }
         BuyClick.sendMessage(p, "Vielen Dank für Ihren Einkauf!");
-        Stadtkasse.addStadtkasse((int) Script.getPercent(mwst, price), "Mehrwertsteuer aus dem Verkauf von " + si.getName() + " (Shop: " + s.getPublicName() + ")", Steuern.Steuer.MEHRWERTSTEUER);
+        Stadtkasse.addStadtkasse((int) Script.getPercent(mwst, price-si.getBuyPrice()*amount), "Mehrwertsteuer aus dem Verkauf von " + si.getName() + " (Shop: " + s.getPublicName() + ")", Steuern.Steuer.MEHRWERTSTEUER);
 
         Achievement.EINKAUFEN.grant(p);
         Buy.amount.remove(p.getName());

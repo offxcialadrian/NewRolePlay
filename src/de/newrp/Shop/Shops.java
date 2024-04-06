@@ -104,6 +104,15 @@ public enum Shops {
         return this.lager;
     }
 
+    public static Shops getShopByLocation(Location loc) {
+        for(Shops shop : Shops.values()) {
+            if(shop.getLocation().distance(loc)<5) {
+                return shop;
+            }
+        }
+        return null;
+    }
+
     public int getKasse() {
         try (Statement stmt = main.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT kasse FROM shops WHERE shopID=" + this.id)) {

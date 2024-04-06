@@ -1,5 +1,6 @@
 package de.newrp.Player;
 
+import de.newrp.API.FrakChatColor;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.Berufe.Beruf;
@@ -32,9 +33,9 @@ public class LeaderChat implements CommandExecutor {
         }
 
         if(Beruf.isLeader(p, true)) {
-            Beruf.getBeruf(p).sendLeaderMessage("§3§l" + Beruf.getAbteilung(p).getName() + " " + Script.getName(p) + "§8: §b§l" + message.toString());
+            Beruf.getBeruf(p).sendLeaderMessage("§" + FrakChatColor.getNameColor(Beruf.getBeruf(p)) + "§l" + Beruf.getAbteilung(p).getName() + " " + Script.getName(p) + "§8: §" + FrakChatColor.getTextColor(Beruf.getBeruf(p)) + "§l" + message.toString());
         } else {
-            Organisation.getOrganisation(p).sendLeaderMessage("§3§l" + Organisation.getRankName(p) + " " + Script.getName(p) + "§8: §b§l" + message.toString());
+            Organisation.getOrganisation(p).sendLeaderMessage("§" + FrakChatColor.getNameColor(Organisation.getOrganisation(p)) + "§l" + Organisation.getRankName(p) + " " + Script.getName(p) + "§8: §" + FrakChatColor.getTextColor(Organisation.getOrganisation(p)) + "§l" + message.toString());
         }
 
         return false;

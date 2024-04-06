@@ -146,6 +146,23 @@ public class Lotto implements CommandExecutor {
             }
 
             int i = Integer.parseInt(args[0]);
+            if(i < 1) {
+                p.sendMessage(Messages.ERROR + "Du kannst nicht weniger als 1€ spenden.");
+                return true;
+            }
+
+            if(Script.getMoney(p, PaymentType.BANK) < i) {
+                p.sendMessage(Messages.ERROR + "Du hast nicht genug Geld.");
+                return true;
+            }
+
+            Script.removeMoney(p, PaymentType.BANK, i);
+            addLottoJackpot(i);
+            p.sendMessage(PREFIX + "Du hast " + i + "€ in den Jackpot gespendet.");
+            if(i>5000) {
+                Bukkit.broadcastMessage(NEWS + Script.getName(p) + " hat " + i + "€ in den Lotto-Jackpot gespendet!");
+            }
+            return true;
 
         } else if (args.length >= 1 && args[0].equalsIgnoreCase("info")) {
             Bukkit.getScheduler().runTaskAsynchronously(main.getInstance(), () -> p.sendMessage(PREFIX + "Es befinden sich " + getJackpot() + "€ im Jackpot."));

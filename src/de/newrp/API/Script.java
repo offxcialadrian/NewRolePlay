@@ -1097,14 +1097,16 @@ public class Script {
     }
 
     public static boolean hasDrugs(Player p) {
-        return (p.getInventory().contains(Material.SUGAR) || p.getItemOnCursor().getType() == Material.SUGAR || p.getInventory().getItemInOffHand().getType() == Material.SUGAR || p.getInventory().contains(Material.GREEN_DYE) || p.getItemOnCursor().getType() == Material.GREEN_DYE || p.getInventory().getItemInOffHand().getType() == Material.GREEN_DYE);
+        return (p.getInventory().contains(Material.SUGAR) || p.getItemOnCursor().getType() == Material.SUGAR || p.getInventory().getItemInOffHand().getType() == Material.SUGAR ||
+                p.getInventory().contains(Material.GREEN_DYE) || p.getItemOnCursor().getType() == Material.GREEN_DYE || p.getInventory().getItemInOffHand().getType() == Material.GREEN_DYE ||
+                p.getInventory().contains(Material.WARPED_BUTTON) || p.getItemOnCursor().getType() == Material.WARPED_BUTTON || p.getInventory().getItemInOffHand().getType() == Material.WARPED_BUTTON);
     }
 
     public static int getDrugAmount(Player p) {
         int i = 0;
         for(ItemStack is : p.getInventory().getContents()) {
             if(is != null) {
-                if(is.getType() == Material.SUGAR || is.getType() == Material.GREEN_DYE) {
+                if(is.getType() == Material.SUGAR || is.getType() == Material.GREEN_DYE || is.getType() == Material.WARPED_BUTTON) {
                     i += is.getAmount();
                 }
             }
@@ -1116,9 +1118,11 @@ public class Script {
         p.getInventory().remove(Material.SUGAR);
         p.getInventory().remove(Material.GREEN_DYE);
         p.getInventory().remove(Material.BEETROOT_SEEDS);
+        p.getInventory().remove(Material.WARPED_BUTTON);
         p.getItemOnCursor();
         if(p.getItemOnCursor().getType() == Material.SUGAR) p.setItemOnCursor(new ItemStack(Material.AIR));
         if(p.getItemOnCursor().getType() == Material.GREEN_DYE) p.setItemOnCursor(new ItemStack(Material.AIR));
+        if(p.getItemOnCursor().getType() == Material.BEETROOT_SEEDS) p.setItemOnCursor(new ItemStack(Material.AIR));
     }
 
     public static long getLastDisconnect(OfflinePlayer p) {
@@ -1143,6 +1147,10 @@ public class Script {
             e.printStackTrace();
         }
         return 0;
+    }
+
+    public static void performCommand(Player p, String command) {
+        Bukkit.getScheduler().runTask(main.getInstance(), () -> p.performCommand(command));
     }
 
     public static boolean haveBirthDay(Player p) {
@@ -1588,7 +1596,7 @@ public class Script {
 
     public static int getExp(String name) {
         try (Statement stmt = main.getConnection().createStatement();
-             ResultSet rs = stmt.executeQuery("SELECT exp FROM level WHERE id=" + getNRPID(name))) {
+             ResultSet rs = stmt.executeQuery("SELECT exp FROM level WHERE nrp_id=" + getNRPID(name))) {
             if (rs.next()) {
                 return rs.getInt("exp");
             }
@@ -1791,6 +1799,25 @@ public class Script {
         meta.setDisplayName("§7Pfandflasche");
         is.setItemMeta(meta);
         return is;
+    }
+
+    public static boolean isBlock(Location loc, Location[] locs) {
+        for (Location l : locs) {
+            if (l.getBlockX() == loc.getBlockX() && l.getBlockY() == loc.getBlockY() && l.getBlockZ() == loc.getBlockZ()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean checkIfEntryExists(String table, String column, String value) {
+        try (Statement stmt = main.getConnection().createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT * FROM " + table + " WHERE " + column + "='" + value + "'")) {
+            return rs.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     public static String getRemainingTime(long time) {

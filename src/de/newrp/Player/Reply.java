@@ -2,6 +2,7 @@ package de.newrp.Player;
 
 import com.github.theholywaffle.teamspeak3.commands.CMessageAdd;
 import de.newrp.API.Messages;
+import de.newrp.API.Script;
 import de.newrp.Administrator.MSG;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -37,8 +38,8 @@ public class Reply implements CommandExecutor {
         }
 
         String msg = sb.toString().trim();
-        p.sendMessage(MSG.PREFIX + "Du §7» §e" + tg.getName() + "§7: §f" + msg);
-        tg.sendMessage(MSG.PREFIX + "§e" + p.getName() + " §7» §7Dir: §f" + msg);
+        p.sendMessage(MSG.PREFIX + "Du §7» §e" + Script.getName(tg) + "§7: §f" + msg);
+        tg.sendMessage(MSG.PREFIX + "§e" + Script.getName(p) + " §7» §7Dir: §f" + msg);
         MSG.may_reply.remove(p.getName());
 
 

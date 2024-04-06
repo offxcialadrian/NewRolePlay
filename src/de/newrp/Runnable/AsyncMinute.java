@@ -101,7 +101,7 @@ public class AsyncMinute extends BukkitRunnable {
                     Title.sendTitle(nrp, 20, 100, 20, "§8[§6Tickets§8] §6" + Messages.ARROW + " §7Es sind noch " + amount + " Tickets offen.");
                 }
             }
-            for(Entity e : Script.WORLD.getEntities()) {
+            /*for(Entity e : Script.WORLD.getEntities()) {
                 if(e instanceof Player) continue;
                 if(e instanceof Item && ((Item) e).getItemStack().getType() == Material.PLAYER_HEAD) continue;
                 if(e instanceof ItemFrame) continue;
@@ -110,7 +110,7 @@ public class AsyncMinute extends BukkitRunnable {
                 if(e instanceof Boat) continue;
                 if(e.getEntityId() == CitizensAPI.getNPCRegistry().getById(Schwarzmarkt.SCHWARZMARKT_ID).getEntity().getEntityId()) continue;
                 e.remove();
-            }
+            }*/
         }
 
         if(Calendar.getInstance().get(Calendar.MINUTE) % 10 == 0) {

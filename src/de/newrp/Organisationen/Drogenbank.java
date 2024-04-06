@@ -146,12 +146,13 @@ public class Drogenbank implements CommandExecutor, Listener {
         if(args.length == 1 && args[0].equalsIgnoreCase("info")) {
             p.sendMessage(Organisation.PREFIX + "Drogenbank:");
             for(Drogen drug : Drogen.values()) {
-                StringBuilder sb = new StringBuilder(Organisation.PREFIX + drug.getName());
+                StringBuilder sb = new StringBuilder(Organisation.PREFIX + drug.getName() + ":");
                 for(Drogen.DrugPurity purity : Drogen.DrugPurity.values()) {
-                    sb.append("\n§6" + purity.getText() + "§8: §6" + getDrogenAmount(o, drug, purity) + " g");
+                    sb.append("\n§6" + purity.getText() + "§8: §6" + getDrogenAmount(o, drug, purity) + drug.getSuffix());
                 }
                 p.sendMessage(sb.toString());
             }
+            return true;
         }
 
         if(args.length == 1 && (args[0].equalsIgnoreCase("put") || args[0].equalsIgnoreCase("add"))) {
@@ -176,7 +177,7 @@ public class Drogenbank implements CommandExecutor, Listener {
             Inventory inv = Bukkit.createInventory(null, 9, "§eDrogenbank (Inhalt)");
             for(Drogen droge : Drogen.values()) {
                 if(getDrogenAmount(o, droge) == 0) continue;
-                inv.addItem(new ItemBuilder(Material.PAPER).setName("§9" + droge.getName()).setLore("§7Menge: " + getDrogenAmount(o, droge) + "g").build());
+                inv.addItem(new ItemBuilder(Material.PAPER).setName("§9" + droge.getName()).setLore("§7Menge: " + getDrogenAmount(o, droge) + droge.getSuffix()).build());
             }
             p.openInventory(inv);
             return true;

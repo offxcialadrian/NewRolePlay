@@ -77,8 +77,6 @@ public class SDuty implements CommandExecutor, Listener {
         Bukkit.getScoreboardManager().getMainScoreboard().getTeam("player").addEntry(p.getName());
         Log.NORMAL.write(p, "hat den Supporter-Dienst verlassen.");
         if (BuildMode.isInBuildMode(p)) {;
-            p.getInventory().clear();
-            Cache.loadInventory(p);
             BuildMode.removeBuildMode(p);
             p.sendMessage(BuildMode.PREFIX + "Du hast den BuildMode verlassen.");
             Script.sendTeamMessage(p, ChatColor.YELLOW, "hat den BuildMode verlassen.", true);

@@ -10,7 +10,9 @@ import de.newrp.Player.Notruf;
 import de.newrp.Police.Handschellen;
 import de.newrp.main;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.data.type.Door;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -32,6 +34,8 @@ public class BreakIn implements Listener {
     private static final Map<String, Long> TOTAL_COOLDOWN = new HashMap<>();
     private static final Map<String, House> HOUSES = new HashMap<>();
     private static final HashMap<String, Double> progress = new HashMap<>();
+
+    Location[] labor = new Location[] { new Location(Script.WORLD, 374, 76, 1312), new Location(Script.WORLD, 374, 75, 1312), new Location(Script.WORLD, 375, 76, 1312), new Location(Script.WORLD, 375, 75, 1312)};
 
     @EventHandler
     public void onInteract(PlayerInteractEvent e) {

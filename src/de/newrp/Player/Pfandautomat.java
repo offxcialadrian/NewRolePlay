@@ -4,6 +4,7 @@ import de.newrp.API.Health;
 import de.newrp.API.Messages;
 import de.newrp.API.PaymentType;
 import de.newrp.API.Script;
+import de.newrp.Administrator.BuildMode;
 import de.newrp.Chat.Me;
 import org.bukkit.Material;
 import org.bukkit.block.Sign;
@@ -29,6 +30,9 @@ public class Pfandautomat implements Listener {
 
     @EventHandler
     public void onInteract(PlayerInteractEvent e) {
+
+        if(BuildMode.isInBuildMode(e.getPlayer())) return;
+
         if (e.getHand() == EquipmentSlot.OFF_HAND) return;
         Player p = e.getPlayer();
 

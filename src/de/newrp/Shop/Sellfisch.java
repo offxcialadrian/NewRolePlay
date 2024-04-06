@@ -1,6 +1,7 @@
 package de.newrp.Shop;
 
 import de.newrp.API.*;
+import de.newrp.Administrator.BuildMode;
 import de.newrp.Administrator.Notifications;
 import de.newrp.Administrator.Punish;
 import de.newrp.GFB.GFB;
@@ -36,6 +37,11 @@ public class Sellfisch implements CommandExecutor {
 
         if (args.length != 0) {
             p.sendMessage(Messages.ERROR + "/sellfisch");
+            return true;
+        }
+
+        if(BuildMode.isInBuildMode(p)) {
+            p.sendMessage(Messages.ERROR + "Du kannst im Baumodus keine Fische verkaufen.");
             return true;
         }
 
@@ -83,6 +89,7 @@ public class Sellfisch implements CommandExecutor {
             if(p.getInventory().getItemInOffHand().getType() != Material.AIR) {
                 Notifications.sendMessage(Notifications.NotificationType.ADVANCED_ANTI_CHEAT, "Verdacht auf SellFisch Buguse bei " + Script.getName(p) + " (Wahrscheinlichkeit: 100%)");
             }
+            p.getInventory().getItemInOffHand().setType(Material.AIR);
 
         }
 

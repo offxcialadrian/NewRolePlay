@@ -39,36 +39,36 @@ public class Selfstorage implements CommandExecutor, Listener {
         ROOMA8(8, "A8", new Location(Script.WORLD, 1025, 68, 1214, 90.57263f, 1.8001455f)),
         ROOMA9(9, "A9", new Location(Script.WORLD, 1026, 68, 1224, 89.37109f, -1.7998089f)),
         ROOMA10(10, "A10", new Location(Script.WORLD, 1024, 68, 1234, 88.02136f, -1.6498097f)),
-        ROOMB1(1, "B1", new Location(Script.WORLD, 1009, 60, 1234, 269.6538f, -0.44971186f)),
-        ROOMB2(2, "B2", new Location(Script.WORLD, 1009, 60, 1224, 269.8015f, 0.3003056f)),
-        ROOMB3(3, "B3", new Location(Script.WORLD, 1007, 60, 1214, 268.4707f, -1.6494827f)),
-        ROOMB4(4, "B4", new Location(Script.WORLD, 1010, 60, 1193, 269.84497f, 5.678311E-4f)),
-        ROOMB5(5, "B5", new Location(Script.WORLD, 1009, 60, 1183, 269.4121f, -1.2001898f)),
-        ROOMB6(6, "B6", new Location(Script.WORLD, 1026, 60, 1182, 89.0957f, -1.8001564f)),
-        ROOMB7(7, "B7", new Location(Script.WORLD, 1026, 60, 1193, 89.71118f, 5.549921f)),
-        ROOMB8(8, "B8", new Location(Script.WORLD, 1026, 60, 1214, 88.21533f, 0.4498805f)),
-        ROOMB9(9, "B9", new Location(Script.WORLD, 1025, 60, 1224, 88.19946f, 0.44995156f)),
-        ROOMB10(10, "B10", new Location(Script.WORLD, 1025, 60, 1233, 87.778564f, 0.59995085f)),
-        ROOMC1(1, "C1", new Location(Script.WORLD, 1009, 51, 1234, 268.7954f, 0.14995451f)),
-        ROOMC2(2, "C2", new Location(Script.WORLD, 1009, 51, 1224, 269.26245f, 0.74996996f)),
-        ROOMC3(3, "C3", new Location(Script.WORLD, 1008, 51, 1214, 269.40967f, 0.7499815f)),
-        ROOMC4(4, "C4", new Location(Script.WORLD, 1009, 51, 1193, 270.3015f, 0.90000147f)),
-        ROOMC5(5, "C5", new Location(Script.WORLD, 1010, 51, 1183, 271.36377f, 1.0500015f)),
-        ROOMC6(6, "C6", new Location(Script.WORLD, 1025, 51, 1183, 90.90161f, 1.5000602f)),
-        ROOMC7(7, "C7", new Location(Script.WORLD, 1026, 51, 1193, 87.90527f, 0.30003476f)),
-        ROOMC8(8, "C8", new Location(Script.WORLD, 1025, 51, 1214, 88.96057f, 4.3191016E-5f)),
-        ROOMC9(9, "C9", new Location(Script.WORLD, 1027, 51, 1225, 88.21023f, 3.3000488f)),
-        ROOMC10(10, "C10", new Location(Script.WORLD, 1024, 51, 1234, 88.21046f, 1.6500586f)),
-        ROOMD1(1, "D1", new Location(Script.WORLD, 1010, 42, 1234, 269.4132f, 1.4999636f)),
-        ROOMD2(2, "D2", new Location(Script.WORLD, 1009, 42, 1224, 270.7688f, 1.3501364f)),
-        ROOMD3(3, "D3", new Location(Script.WORLD, 1009, 42, 1214, 271.0515f, 4.0501876f)),
-        ROOMD4(4, "D4", new Location(Script.WORLD, 1009, 42, 1193, 271.20923f, -0.44978526f)),
-        ROOMD5(5, "D5", new Location(Script.WORLD, 1008, 42, 1183, 271.0652f, 5.400547f)),
-        ROOMD6(6, "D6", new Location(Script.WORLD, 1026, 42, 1183, 90.01367f, 2.2505493f)),
-        ROOMD7(7, "D7", new Location(Script.WORLD, 1026, 42, 1193, 88.96631f, 6.000555f)),
-        ROOMD8(8, "D8", new Location(Script.WORLD, 1026, 42, 1212, 91.22461f, -0.44940072f)),
-        ROOMD9(9, "D9", new Location(Script.WORLD, 1025, 42, 1224, 89.11792f, 0.4506046f)),
-        ROOMD10(10, "D10", new Location(Script.WORLD, 1025, 42, 1234, 89.26221f, 0.45061412f));
+        ROOMB1(11, "B1", new Location(Script.WORLD, 1009, 60, 1234, 269.6538f, -0.44971186f)),
+        ROOMB2(12, "B2", new Location(Script.WORLD, 1009, 60, 1224, 269.8015f, 0.3003056f)),
+        ROOMB3(13, "B3", new Location(Script.WORLD, 1007, 60, 1214, 268.4707f, -1.6494827f)),
+        ROOMB4(14, "B4", new Location(Script.WORLD, 1010, 60, 1193, 269.84497f, 5.678311E-4f)),
+        ROOMB5(15, "B5", new Location(Script.WORLD, 1009, 60, 1183, 269.4121f, -1.2001898f)),
+        ROOMB6(16, "B6", new Location(Script.WORLD, 1026, 60, 1182, 89.0957f, -1.8001564f)),
+        ROOMB7(17, "B7", new Location(Script.WORLD, 1026, 60, 1193, 89.71118f, 5.549921f)),
+        ROOMB8(18, "B8", new Location(Script.WORLD, 1026, 60, 1214, 88.21533f, 0.4498805f)),
+        ROOMB9(19, "B9", new Location(Script.WORLD, 1025, 60, 1224, 88.19946f, 0.44995156f)),
+        ROOMB10(20, "B10", new Location(Script.WORLD, 1025, 60, 1233, 87.778564f, 0.59995085f)),
+        ROOMC1(21, "C1", new Location(Script.WORLD, 1009, 51, 1234, 268.7954f, 0.14995451f)),
+        ROOMC2(22, "C2", new Location(Script.WORLD, 1009, 51, 1224, 269.26245f, 0.74996996f)),
+        ROOMC3(23, "C3", new Location(Script.WORLD, 1008, 51, 1214, 269.40967f, 0.7499815f)),
+        ROOMC4(24, "C4", new Location(Script.WORLD, 1009, 51, 1193, 270.3015f, 0.90000147f)),
+        ROOMC5(25, "C5", new Location(Script.WORLD, 1010, 51, 1183, 271.36377f, 1.0500015f)),
+        ROOMC6(26, "C6", new Location(Script.WORLD, 1025, 51, 1183, 90.90161f, 1.5000602f)),
+        ROOMC7(27, "C7", new Location(Script.WORLD, 1026, 51, 1193, 87.90527f, 0.30003476f)),
+        ROOMC8(28, "C8", new Location(Script.WORLD, 1025, 51, 1214, 88.96057f, 4.3191016E-5f)),
+        ROOMC9(29, "C9", new Location(Script.WORLD, 1027, 51, 1225, 88.21023f, 3.3000488f)),
+        ROOMC10(30, "C10", new Location(Script.WORLD, 1024, 51, 1234, 88.21046f, 1.6500586f)),
+        ROOMD1(31, "D1", new Location(Script.WORLD, 1010, 42, 1234, 269.4132f, 1.4999636f)),
+        ROOMD2(32, "D2", new Location(Script.WORLD, 1009, 42, 1224, 270.7688f, 1.3501364f)),
+        ROOMD3(33, "D3", new Location(Script.WORLD, 1009, 42, 1214, 271.0515f, 4.0501876f)),
+        ROOMD4(34, "D4", new Location(Script.WORLD, 1009, 42, 1193, 271.20923f, -0.44978526f)),
+        ROOMD5(35, "D5", new Location(Script.WORLD, 1008, 42, 1183, 271.0652f, 5.400547f)),
+        ROOMD6(36, "D6", new Location(Script.WORLD, 1026, 42, 1183, 90.01367f, 2.2505493f)),
+        ROOMD7(37, "D7", new Location(Script.WORLD, 1026, 42, 1193, 88.96631f, 6.000555f)),
+        ROOMD8(38, "D8", new Location(Script.WORLD, 1026, 42, 1212, 91.22461f, -0.44940072f)),
+        ROOMD9(39, "D9", new Location(Script.WORLD, 1025, 42, 1224, 89.11792f, 0.4506046f)),
+        ROOMD10(40, "D10", new Location(Script.WORLD, 1025, 42, 1234, 89.26221f, 0.45061412f));
 
         private final int id;
         private final String name;
@@ -203,7 +203,7 @@ public class Selfstorage implements CommandExecutor, Listener {
                     }
                 }
 
-                if(i.getType().equals(Material.SUGAR)) {
+                if(i.getType().equals(Material.SUGAR) || i.getType().equals(Material.GREEN_DYE) || i.getType().equals(Material.WARPED_BUTTON)) {
                     inv.remove(i);
                     p.getInventory().addItem(i);
                     p.sendMessage(Messages.ERROR + "Du kannst keine Drogen in deinem Selfstorage-Room lagern.");

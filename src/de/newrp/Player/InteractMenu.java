@@ -96,7 +96,7 @@ public class InteractMenu implements Listener {
         if (Beruf.hasBeruf(p)) {
             if (Beruf.getBeruf(p).equals(Beruf.Berufe.POLICE) && Duty.isInDuty(p)) {
                 inv.setItem(39, new ItemBuilder(Material.IRON_DOOR).setName("§6Durchsuchen").setLore("§8× §7Durchsuche §6" + Script.getName(tg) + "§7.").build());
-                inv.setItem(41, new ItemBuilder(Material.NETHER_STAR).setName("§6Polizeicomputer").setLore("§8× §7Öffne den Polizeicomputer.").build());
+                inv.setItem(41, new ItemBuilder(Material.NETHER_STAR).setName("§6Marke zeigen").setLore("§8× §7Zeige deine Marke").build());
             }
 
             if (Beruf.getBeruf(p).equals(Beruf.Berufe.RETTUNGSDIENST) && Duty.isInDuty(p)) {
@@ -297,15 +297,11 @@ public class InteractMenu implements Listener {
                 Me.sendMessage(p, "durchsucht " + Script.getName(tg) + ".");
                 p.sendMessage(Messages.INFO + "Du hast " + Script.getMoney(tg, PaymentType.CASH) + "€ Bargeld gefunden.");
                 break;
-            case "Polizeicomputer":
-                Inventory inventory = Bukkit.createInventory(null, 9, "§8[§9Polizeicomputer§8] §9" + Script.getName(tg));
-                inventory.setItem(0, new ItemBuilder(Material.OAK_SIGN).setName("Personendaten").setLore("§8» §7Klicke um die Personendaten von " + Script.getName(tg) + " zu sehen.").build());
-                inventory.setItem(1, new ItemBuilder(Material.OAK_SIGN).setName("Lizenzen").setLore("§8» §7Klicke um die Lizenzen von " + Script.getName(tg) + " zu sehen.").build());
-                inventory.setItem(2, new ItemBuilder(Material.OAK_SIGN).setName("Gefährlichkeitsstufe").setLore("§8» §7Gefährlichkeitsstufe von " + Script.getName(tg) + "§8: §7" + Policecomputer.getDangerLevel(tg)).build());
-                inventory.setItem(3, new ItemBuilder(Material.OAK_SIGN).setName("Orten").setLore("§8» §7Klicke um " + Script.getName(tg) + " zu orten.").build());
-                inventory.setItem(4, new ItemBuilder(Material.OAK_SIGN).setName("Gesucht?").setLore("§8» " + (Fahndung.isFahnded(tg) ? "§cGesucht" : "§aNicht gesucht")).build());
-                p.openInventory(inventory);
-                Beruf.Berufe.POLICE.sendMessage(PREFIX + Script.getName(p) + " fragt die Daten von " + Script.getName(tg) + " ab.");
+            case "Marke zeigen":
+                Me.sendMessage(p, "zeigt " + Script.getName(tg) + " seine Marke.");
+                tg.sendMessage(PREFIX + "Marke von " + Script.getName(p) + ":");
+                tg.sendMessage(PREFIX + " §8× §6" + Beruf.getAbteilung(p).getName());
+                p.sendMessage(PREFIX + "Du hast " + Script.getName(tg) + " deine Marke gezeigt.");
                 break;
             case "Finanzen zeigen":
                 ATM atm = ATM.getNearATM(p);

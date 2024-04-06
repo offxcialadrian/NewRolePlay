@@ -1,5 +1,6 @@
 package de.newrp.Organisationen;
 
+import de.newrp.API.FrakChatColor;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.Administrator.Punish;
@@ -40,7 +41,7 @@ public class OrganisationsChat implements CommandExecutor {
 
         String nachricht = sb.toString();
         for (Player all : Organisation.getPlayersFromOrganisation(Organisation.getOrganisation(p))) {
-            all.sendMessage("§b" + Organisation.getRankName(p) + " " + Script.getName(p) + "§8: §3" + nachricht);
+            all.sendMessage("§" + FrakChatColor.getNameColor(Organisation.getOrganisation(p)) + Organisation.getRankName(p) + " " + Script.getName(p) + "§8: §" + FrakChatColor.getTextColor(Organisation.getOrganisation(p)) + nachricht);
         }
 
         return false;

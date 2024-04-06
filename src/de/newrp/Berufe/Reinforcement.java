@@ -17,8 +17,8 @@ import java.util.List;
 
 public class Reinforcement implements CommandExecutor {
 
-    HashMap<String, Types> reinf_type = new HashMap<>();
-    HashMap<String, Location> new_reinforcement = new HashMap<>();
+    private HashMap<String, Types> reinf_type = new HashMap<>();
+    private static HashMap<String, Location> new_reinforcement = new HashMap<>();
 
     enum Types {
         NORMAL(0, "Unterstützung benötigt!", "", false),
@@ -164,6 +164,7 @@ public class Reinforcement implements CommandExecutor {
                     for (Player member : org.getMembers()) {
                         member.sendMessage("§c§l" + type.getName() + " §3" + Organisation.getRankName(p) + " " + Script.getName(p) + " benötigt Unterstützung! §8➥ §7" + Navi.getNextNaviLocation(p.getLocation()).getName() + " §7(" + (int) member.getLocation().distance(p.getLocation()) + "m)");
                         OnMyWayLink(member, p);
+                        showRoute(member, p);
                     }
                     return true;
                 }
@@ -171,6 +172,7 @@ public class Reinforcement implements CommandExecutor {
             for (Player member : beruf.getMembers()) {
                 member.sendMessage("§c§l" + type.getName() + " §3" + Beruf.getAbteilung(p).getName() + " " + Script.getName(p) + " benötigt Unterstützung! §8➥ §7" + Navi.getNextNaviLocation(p.getLocation()).getName() + " §7(" + (int) member.getLocation().distance(p.getLocation()) + "m)");
                 OnMyWayLink(member, p);
+                showRoute(member, p);
             }
             return true;
         }
@@ -190,7 +192,8 @@ public class Reinforcement implements CommandExecutor {
             if(org.getMembers().contains(p)) {
                 for (Player member : org.getMembers()) {
                     member.sendMessage("§c§l" + type.getName() + " §3" + org.getName() + " " + Script.getName(p) + " benötigt Unterstützung! §8➥ §7" + Navi.getNextNaviLocation(p.getLocation()).getName() + " §7(" + (int) member.getLocation().distance(p.getLocation()) + "m)");
-                      OnMyWayLink(member, p);
+                    OnMyWayLink(member, p);
+                    showRoute(member, p);
                 }
                 return true;
             }
@@ -208,11 +211,13 @@ public class Reinforcement implements CommandExecutor {
             for (Player member : staatler) {
                 member.sendMessage("§c§l" + type.getName() + " §3" + Beruf.getBeruf(p).getName() + " " + Script.getName(p) + " benötigt Unterstützung! §8➥ §7" + Navi.getNextNaviLocation(p.getLocation()).getName() + " §7(" + (int) member.getLocation().distance(p.getLocation()) + "m)");
                 OnMyWayLink(member, p);
+                showRoute(member, p);
             }
         } else {
             for(Player member : beruf.getMembers()) {
                 member.sendMessage("§c§l" + type.getName() + " §3" + Beruf.getAbteilung(p).getName() + " " + Script.getName(p) + " benötigt Unterstützung! §8➥ §7" + Navi.getNextNaviLocation(p.getLocation()).getName() + " §7(" + (int) member.getLocation().distance(p.getLocation()) + "m)");
                 OnMyWayLink(member, p);
+                showRoute(member, p);
             }
         }
         return true;
@@ -222,6 +227,14 @@ public class Reinforcement implements CommandExecutor {
         TextComponent x = new TextComponent("Kommen");
         x.setText("   §9§l➤ Zum Verstärkungsruf kommen!");
         ClickEvent clickEvent = new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/reinforcement omw " + tg.getName());
+        x.setClickEvent(clickEvent);
+        p.spigot().sendMessage(x);
+    }
+
+    private static void showRoute(Player p, Player tg) {
+        TextComponent x = new TextComponent("Route anzeigen!");
+        x.setText("   §9§l➤ Route anzeigen!");
+        ClickEvent clickEvent = new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/navi " + new_reinforcement.get(tg.getName()).getBlockX() + "/" + new_reinforcement.get(tg.getName()).getBlockY() + "/" + new_reinforcement.get(tg.getName()).getBlockZ());
         x.setClickEvent(clickEvent);
         p.spigot().sendMessage(x);
     }

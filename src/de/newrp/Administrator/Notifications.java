@@ -22,7 +22,7 @@ public class Notifications implements CommandExecutor, Listener {
 
     public enum NotificationType {
         JOIN(1, "join", "Join-Notification"),
-        LEAVE(2, "leave", "Leave-Notification"),
+        LEAVE(2, "leave", "Quit-Notification"),
         PAYMENT(3, "payment", "Payment-Notification"),
         COMMAND(4, "command", "Command-Spy"),
         CHAT(5, "chat", "Chat-Spy"),

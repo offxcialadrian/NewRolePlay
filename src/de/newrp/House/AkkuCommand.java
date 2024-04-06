@@ -93,11 +93,11 @@ public class AkkuCommand implements CommandExecutor {
 
                 if(Mobile.getPhone(p).getAkku(p) >= Mobile.getPhone(p).getMaxAkku()) {
                     p.sendMessage(AKKU + "Dein Handy ist vollständig aufgeladen.");
+                    cancel();
                     if (h != null){
                         House.Mieter m = h.getMieterByID(h.getOwner());
                         m.setNebenkosten(h, m.getNebenkosten() + Script.getRandom(5, 10));
                     }
-                    cancel();
                     return;
                 }
 

@@ -86,6 +86,10 @@ public class Banken implements CommandExecutor, Listener {
             return null;
         }
 
+        public double interestToPercent() {
+            return interest * 100;
+        }
+
         public static Bank getBankByPlayer(Player p) {
             try (PreparedStatement preparedStatement = main.getConnection().prepareStatement("SELECT * FROM banks WHERE nrp_id=" + Script.getNRPID(p))) {
                 ResultSet rs = preparedStatement.executeQuery();
@@ -140,6 +144,8 @@ public class Banken implements CommandExecutor, Listener {
 
 
 
+
+
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
         Player p = (Player) cs;
@@ -157,9 +163,11 @@ public class Banken implements CommandExecutor, Listener {
         Inventory inv = Bukkit.createInventory(null, 9, "§aBanken");
         int i = 0;
         for (Bank bank : Bank.values()) {
-            inv.setItem(i, new ItemBuilder(Material.CHEST).setName("§9" + bank.getName()).setLore(" §7 " + Messages.ARROW + " Einrichtungsgebühr: §e" + bank.getEinrichtigungsKosten() + "€",
+            inv.setItem(i, new ItemBuilder(Material.CHEST).setName("§9" + bank.getName()).setLore(
+                    " §7 " + Messages.ARROW + " Einrichtungsgebühr: §e" + bank.getEinrichtigungsKosten() + "€",
                     " §7 " + Messages.ARROW + " Transaktionsgebühr: §e" + bank.getTransactionKosten() + "€",
                     " §7 " + Messages.ARROW + " Transaktionslimit: §e" + bank.getTransactionLimit() + "€",
+                    " §7 " + Messages.ARROW + " Zinsen: §e" + bank.interestToPercent() + "%",
                     " §7 " + Messages.ARROW + " Kontoführungsgebühr: §e" + bank.getKontoKosten() + "€").build());
             i++;
         }

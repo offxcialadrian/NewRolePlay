@@ -3,12 +3,22 @@ package de.newrp.Waffen;
 import de.newrp.API.*;
 import de.newrp.Administrator.AimBot;
 import de.newrp.Administrator.SDuty;
+import de.newrp.Berufe.Beruf;
+import de.newrp.Berufe.Duty;
+import de.newrp.Government.Stadtkasse;
+import de.newrp.Organisationen.Bankautomaten;
+import de.newrp.Organisationen.Organisation;
+import de.newrp.Player.AFK;
 import de.newrp.Player.Fesseln;
 import de.newrp.Police.Handschellen;
+import de.newrp.Shop.Shop;
+import de.newrp.Shop.Shops;
 import de.newrp.main;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.block.Block;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -22,16 +32,25 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 public class Waffen implements Listener {
 
     public static final HashMap<String, Long> REVIVE_COOLDOWN = new HashMap<>();
-    public static final HashMap<String, Long> cooldown = new HashMap<>();
+    public static final ConcurrentHashMap<String, Long> cooldown = new ConcurrentHashMap<>();
+    public static final HashMap<Organisation, Long> robcooldown = new HashMap<>();
+    public static String PREFIX = "§8[§6Waffe§8] §6" + Messages.ARROW + " §7";
+    public static HashMap<String, Integer> progress = new HashMap<>();
+
     public static int getAmmo(ItemStack is) {
         if (!is.hasItemMeta() || is.getItemMeta().getLore() == null) return 0;
         String s = is.getItemMeta().getLore().toString();
@@ -132,6 +151,83 @@ public class Waffen implements Listener {
         }
 
         fire(p, weapon, hand);
+
+        Shops shop = Shops.getShopByLocation(p.getLocation());
+        if(shop != null) {
+            if(!Organisation.hasOrganisation(p)) return;
+            Organisation org = Organisation.getOrganisation(p);
+            if(robcooldown.containsKey(org) && robcooldown.get(org) > System.currentTimeMillis()) {
+                Script.sendActionBar(p, Messages.ERROR + "Du kannst nicht so schnell hintereinander einen Shop überfallen (" + Script.getRemainingTime(robcooldown.get(org)) + ")");
+                return;
+            }
+
+            List<Player> cops = Beruf.Berufe.POLICE.getMembers().stream()
+                    .filter(Beruf::hasBeruf)
+                    .filter(nearbyPlayer -> Beruf.getBeruf(nearbyPlayer).equals(Beruf.Berufe.POLICE))
+                    .filter(Duty::isInDuty)
+                    .filter(nearbyPlayer -> !SDuty.isSDuty(nearbyPlayer))
+                    .filter(nearbyPlayer -> !AFK.isAFK(nearbyPlayer)).collect(Collectors.toList());
+
+            if (cops.size() < 3 && !Script.isInTestMode()) {
+                p.sendMessage(Messages.ERROR + "Es braucht mindestens 3 Beamte um einen Shop zu überfallen.");
+                return;
+            }
+
+            robcooldown.put(org, System.currentTimeMillis() + 10800000);p.getInventory().remove(Material.TNT);
+            p.sendMessage(PREFIX + "Der Shop ist in 360 Sekunden überfallen.");
+            Beruf.Berufe.POLICE.sendMessage(PREFIX + "ACHTUNG! ES WURDE EIN STILLER ALARM IM SHOP " + shop.getPublicName() + " AUSGELÖST!");
+            Beruf.Berufe.POLICE.sendMessage(Messages.INFO + "In der Nähe von " + Navi.getNextNaviLocation(p.getLocation()).getName());
+            progress.put(p.getName(), 0);
+            Location loc = shop.getBuyLocation();
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    if (p.getLocation().distance(loc) > 10) {
+                        p.sendMessage(PREFIX + "Du bist zu weit entfernt.");
+                        cancel();
+                        return;
+                    }
+
+                    if (progress.get(p.getName()) >= 360) {
+                        int remove = (int) Script.getPercent(20, shop.getKasse());
+                        shop.removeKasse(remove);
+                        org.sendMessage(PREFIX + Script.getName(p) + " hat einen Shop überfallen und " + remove + "€ gestohlen.");
+                        Beruf.Berufe.POLICE.sendMessage(PREFIX + "Der Shop " + shop.getName() + " wurde überfallen. Es wurden " + remove + "€ gestohlen.");
+                        Script.addMoney(p, PaymentType.CASH, remove);
+                        org.addExp(remove / 50);
+                        Bankautomaten.win.put(p, remove);
+                        progress.remove(p.getName());
+                        cancel();
+                        new BukkitRunnable() {
+                            @Override
+                            public void run() {
+                                Bankautomaten.win.remove(p);
+                            }
+                        }.runTaskLater(main.getInstance(), 20L * 60 * 15);
+                    } else {
+                        progressBar(360, p);
+                        progress.replace(p.getName(), progress.get(p.getName()) + 1);
+                    }
+                }
+            }.runTaskTimer(main.getInstance(), 20L, 20L);
+
+        }
+
+    }
+
+    private static void progressBar(double required_progress, Player p) {
+        double current_progress = progress.get(p.getName());
+        double progress_percentage = current_progress / required_progress;
+        StringBuilder sb = new StringBuilder();
+        int bar_length = 10;
+        for (int i = 0; i < bar_length; i++) {
+            if (i < bar_length * progress_percentage) {
+                sb.append("§c▉");
+            } else {
+                sb.append("§8▉");
+            }
+        }
+        Script.sendActionBar(p, "§cÜberfall.. §8» §a" + sb.toString());
     }
 
     @EventHandler

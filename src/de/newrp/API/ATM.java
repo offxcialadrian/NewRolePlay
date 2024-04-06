@@ -59,7 +59,7 @@ public enum ATM {
     public static ATM getNearATM(Player p) {
         ATM a = null;
         for (ATM atm : ATM.values()) {
-            if (atm.getLocation().distance(p.getLocation()) < 9) {
+            if (atm.getLocation().distance(p.getLocation()) < 3) {
                 a = atm;
                 break;
             }

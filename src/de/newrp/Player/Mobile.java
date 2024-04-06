@@ -184,9 +184,9 @@ public class Mobile implements Listener {
         public void setOff(Player p) {
             ItemStack is = Mobile.getPhone(p).getItem();
             Mobile.Phones phone = Mobile.getPhone(p);
-            p.getInventory().removeItem(new ItemStack(Material.IRON_INGOT));
-            p.getInventory().removeItem(new ItemStack(Material.GOLD_INGOT));
-            p.getInventory().removeItem(new ItemStack(Material.NETHERITE_INGOT));
+            p.getInventory().remove(Material.IRON_INGOT);
+            p.getInventory().remove(Material.GOLD_INGOT);
+            p.getInventory().remove(Material.NETHERITE_INGOT);
             ItemMeta im = is.getItemMeta();
             im.setDisplayName("§c" + p.getName() + "s " + phone.getName());
             is.setItemMeta(im);

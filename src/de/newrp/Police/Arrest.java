@@ -14,6 +14,7 @@ import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Mob;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -109,11 +110,7 @@ public class Arrest implements CommandExecutor {
         }
 
         if(Mobile.hasPhone(tg)) {
-            ItemStack is = Mobile.getPhone(tg).getItem();
-            tg.getInventory().removeItem(new ItemStack(Material.IRON_INGOT));
-            tg.getInventory().removeItem(new ItemStack(Material.GOLD_INGOT));
-            tg.getInventory().removeItem(new ItemStack(Material.NETHERITE_INGOT));
-            tg.getInventory().addItem(is);
+            Mobile.getPhone(tg).setOff(tg);
         }
 
         Log.NORMAL.write(p, "hat " + Script.getName(tg) + " verhaftet (" + wanteds + ")");

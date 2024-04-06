@@ -22,6 +22,11 @@ public class Loan implements CommandExecutor {
             return true;
         }
 
+        if(Beruf.getBeruf(p) != Beruf.Berufe.GOVERNMENT) {
+            p.sendMessage(Messages.NO_PERMISSION);
+            return true;
+        }
+
         if(!Beruf.isLeader(p, true)) {
             p.sendMessage(Messages.NO_PERMISSION);
             return true;
@@ -71,13 +76,18 @@ public class Loan implements CommandExecutor {
             return true;
         }
 
+        if(p.getLocation().distance(tg.getLocation()) > 5) {
+            p.sendMessage(Messages.ERROR + "Du bist zu weit entfernt.");
+            return true;
+        }
+
         Annehmen.offer.put(tg.getName() + ".loan", p.getName());
         Annehmen.offer.put(tg.getName() + ".loan.days", String.valueOf(days));
         Annehmen.offer.put(tg.getName() + ".loan.interest", String.valueOf(interest));
         Annehmen.offer.put(tg.getName() + ".loan.amount", String.valueOf(amount));
 
-        p.sendMessage(PREFIX + "Du hast " + Script.getNRPID(tg) + " einen Kredit über " + days + " Tage und " + amount + "€ angeboten (Zinssatz: " + interest + "%).");
-        tg.sendMessage(PREFIX + "Du hast von " + Script.getNRPID(p) + " ein Kreditangebot über " + days + " Tage und " + amount + "€ erhalten (Zinssatz: " + interest + "%).");
+        p.sendMessage(PREFIX + "Du hast " + Script.getName(tg) + " einen Kredit über " + days + " Tage und " + amount + "€ angeboten (Zinssatz: " + interest + "%).");
+        tg.sendMessage(PREFIX + "Du hast von " + Script.getName(p) + " ein Kreditangebot über " + days + " Tage und " + amount + "€ erhalten (Zinssatz: " + interest + "%).");
         Script.sendAcceptMessage(tg);
 
 

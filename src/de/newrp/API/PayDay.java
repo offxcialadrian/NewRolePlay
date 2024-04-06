@@ -38,7 +38,7 @@ public class PayDay extends BukkitRunnable {
             }
 
             int payday = 0;
-            int interest = (Script.getMoney(p, PaymentType.BANK) > 0 ? (int) (Banken.getBankByPlayer(p).getInterest() * Script.getMoney(p, PaymentType.BANK)) : (int) (0.2 * Script.getMoney(p, PaymentType.BANK)));
+            int interest = (Script.getMoney(p, PaymentType.BANK) > 0 ? (int) (Banken.getBankByPlayer(p).getInterest() * Script.getMoney(p, PaymentType.BANK)) : (int) (0.02 * Script.getMoney(p, PaymentType.BANK)));
             if (Script.getMoney(p, PaymentType.BANK) > 50000) interest = interest / 2;
             if (Script.getMoney(p, PaymentType.BANK) > 100000) interest = interest / 3;
             double einkommenssteuer = Steuern.Steuer.EINKOMMENSSTEUER.getPercentage();
@@ -46,7 +46,6 @@ public class PayDay extends BukkitRunnable {
             double lohnsteuer = Steuern.Steuer.LOHNSTEUER.getPercentage();
             double gfb_lohnsteuer = Steuern.Steuer.GFB_LOHNSTEUER.getPercentage();
             double krankenversicherung = Steuern.Steuer.KRANKENVERSICHERUNG.getPercentage();
-            double rundfunkbeitrag = Steuern.Steuer.RUNDFUNKBEITRAG.getPercentage();
             if (BeziehungCommand.isMarried(p)) lohnsteuer = lohnsteuer - 2.0;
             if (BeziehungCommand.isMarried(p)) gfb_lohnsteuer = gfb_lohnsteuer - 2.0;
             p.sendMessage("§9=== §l§ePayDay §9===");
@@ -234,12 +233,6 @@ public class PayDay extends BukkitRunnable {
                 payday -= price;
             }
 
-            if (Mobile.hasPhone(p)) {
-                int price = 15;
-                p.sendMessage("§8" + Messages.ARROW + " §7Handy-Vertrag: §c-" + price + "€");
-                payday -= price;
-            }
-
             if (payday > 0) {
                 p.sendMessage("§8" + Messages.ARROW + " §7Einkommenssteuer (" + einkommenssteuer + "%): §c-" + (int) Script.getPercent(einkommenssteuer, payday) + "€");
                 Stadtkasse.addStadtkasse((int) Script.getPercent(einkommenssteuer, payday), "Einkommenssteuer von " + Script.getName(p) + " erhalten", Steuern.Steuer.EINKOMMENSSTEUER);
@@ -250,7 +243,7 @@ public class PayDay extends BukkitRunnable {
             p.sendMessage("§8" + Messages.ARROW + " §7Bilanz: " + (payday >= 0 ? "§a+" : "§c") + payday + "€");
             p.sendMessage("§8" + Messages.ARROW + " §7Neuer Kontostand: " + (Script.getMoney(p, PaymentType.BANK) + payday >= 0 ? "§a" : "§c") + (Script.getMoney(p, PaymentType.BANK) + payday) + "€");
             p.sendMessage("§9================");
-            Script.addEXP(p, Script.getRandom(1, 5));
+            Script.addEXP(p, Script.getRandom(5, 10));
             if (payday >= 0) Script.addMoney(p, PaymentType.BANK, payday);
             else Script.removeMoney(p, PaymentType.BANK, payday);
             setPayDayTime(p, 0);
@@ -297,7 +290,7 @@ public class PayDay extends BukkitRunnable {
 
     public static void addPayDay(Player p, int money) {
         Script.setInt(p, "payday", "money", getPayDayPay(p) + money);
-        p.sendMessage(GFB.PREFIX + "Du erhältst dein Gehalt von " + money + "€ am PayDay.");
+        p.sendMessage(GFB.PREFIX + "Du bekommst dein Gehalt von " + money + "€ am PayDay.");
     }
 
 

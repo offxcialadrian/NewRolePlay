@@ -85,7 +85,7 @@ public enum ShopItem {
     SCHROT(97, "§7Schrot (" + Weapon.JAGDFLINTE.getName() + ")", new ItemBuilder(Material.ARROW).setAmount(Weapon.JAGDFLINTE.getMagazineSize()).build(), 2, 1, 1, 50, 4500, false, false, false, new ShopType[] {ShopType.GUNSHOP}),
     DEAGLE(98, "§7Ivory", new ItemStack(Material.GOLDEN_HOE), 15, 1, 1, 4000, 16600, false, false, false, new ShopType[] {ShopType.GUNSHOP}),
     AMMO_50AE(99, "§7.50AE Munition (" + Weapon.DESERT_EAGLE.getName() + ")", new ItemBuilder(Material.ARROW).setAmount(Weapon.DESERT_EAGLE.getMagazineSize()).build(), 2, 1, 1, 25, 4500, false, false, false, new ShopType[] {ShopType.GUNSHOP}),
-    ANGELRUTE(100, "§7Angelrute", new ItemBuilder(Material.FISHING_ROD).setName("§7Angelrute").build(), 10, 1, 1, 150, 1590, false, true, false, new ShopType[] {ShopType.ANGELSHOP}),
+    ANGELRUTE(100, "§7Angelrute", new ItemBuilder(Material.FISHING_ROD).setName("§7Angelrute").build(), 10, 1, 1, 25, 1590, false, true, false, new ShopType[] {ShopType.ANGELSHOP}),
     STEAK(101, "§fSteak", new ItemBuilder(Material.COOKED_BEEF).setName("§fSteak").setAmount(8).build(), 2, 1, 20, 2, 2000, false, true, false, new ShopType[] {ShopType.FASTFOOD}),
     POMMES(102, "§fPommes", new ItemBuilder(Material.BAKED_POTATO).setName("§fPommes").setAmount(16).build(), 2, 1, 20, 3, 2400, false, true, false, new ShopType[] {ShopType.FASTFOOD}),
     CHICKEN(103, "§fHähnchen", new ItemBuilder(Material.COOKED_BEEF).setName("§fHähnchen").setAmount(8).build(), 2, 1, 20, 1, 2400, false, true, false, new ShopType[] {ShopType.FASTFOOD}),

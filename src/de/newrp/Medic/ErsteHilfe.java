@@ -71,6 +71,8 @@ public class ErsteHilfe implements CommandExecutor, Listener {
             }
         }
 
+        p.sendMessage(ErsteHilfe.PREFIX + "Du hast Erste-Hilfe angeboten.");
+
         Inventory inv = Bukkit.getServer().createInventory(null, InventoryType.HOPPER, "§7Erste-Hilfe annehmen?");
         inv.setItem(1, Script.setName(new ItemStack(Material.GREEN_STAINED_GLASS_PANE), "§aErste-Hilfe von " + Script.getName(p) + " annehmen."));
         inv.setItem(3, Script.setName(new ItemStack(Material.RED_STAINED_GLASS_PANE), "§cErste-Hilfe von " + Script.getName(p) + " ablehnen."));

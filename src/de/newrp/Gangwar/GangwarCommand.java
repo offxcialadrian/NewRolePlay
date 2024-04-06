@@ -26,7 +26,7 @@ public class GangwarCommand implements CommandExecutor {
             return true;
         }
 
-        if(args.length != 1) {
+        if(args.length != 0) {
             p.sendMessage(Messages.ERROR + "/gangwar");
             return true;
         }

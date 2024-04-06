@@ -133,6 +133,7 @@ public class Imker implements CommandExecutor, Listener {
         p.sendMessage(PREFIX + "Du hast einmal Honig entnommen.");
         if(Script.getRandom(1, 100) <=20) {
             p.sendMessage(PREFIX + "Du wurdest von einer Biene gestochen, passe das nächste mal etwas besser auf.");
+            Achievement.BIENENSTICH.grant(p);
             p.damage(2D);
         }
         p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
@@ -144,7 +145,7 @@ public class Imker implements CommandExecutor, Listener {
             GFB.CURRENT.remove(p.getName());
             honeys.remove(p.getName());
             GFB.IMKER.addExp(p, TOTAL_SCORE.get(p.getName())*Script.getRandom(2,3));
-            Script.addEXP(p, GFB.IMKER.getLevel(p) + TOTAL_SCORE.get(p.getName())*Script.getRandom(1, 2)*2);
+            Script.addEXP(p, GFB.IMKER.getLevel(p) + TOTAL_SCORE.get(p.getName())*Script.getRandom(1, 2)*3);
             PayDay.addPayDay(p, (GFB.IMKER.getLevel(p) + TOTAL_SCORE.get(p.getName())*2));
             TOTAL_SCORE.remove(p.getName());
             return;

@@ -173,7 +173,7 @@ public class Kellner implements CommandExecutor, Listener {
             if(System.currentTimeMillis() - time.get(p.getName()) < 20 * 1000) {
                 if(Script.getRandom(1,100)<=20) {
                     p.sendMessage(PREFIX + "Du warst sehr schnell und hast ein Trinkgeld erhalten.");
-                    Script.addMoney(p, PaymentType.CASH, Script.getRandom(1, 2));
+                    Script.addMoney(p, PaymentType.CASH, Script.getRandom(3, 4));
                     time.remove(p.getName());
                 }
             } else if(System.currentTimeMillis() - time.get(p.getName()) > 60 * 1000) {
@@ -189,7 +189,7 @@ public class Kellner implements CommandExecutor, Listener {
                 SCORE.remove(p.getName());
                 GFB.CURRENT.remove(p.getName());
                 Script.addEXP(p, GFB.KELLNER.getLevel(p) + Script.getRandom(5, 7)*2);
-                PayDay.addPayDay(p, (GFB.KELLNER.getLevel(p) + TOTAL_SCORE.get(p.getName()))*2);
+                PayDay.addPayDay(p, (GFB.KELLNER.getLevel(p) + TOTAL_SCORE.get(p.getName()))*3);
                 TOTAL_SCORE.remove(p.getName());
                 return;
             }

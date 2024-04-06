@@ -22,9 +22,10 @@ public enum Drogen {
     /*KOKAIN*/PULVER(0, true, "Pulver", new String[]{"Koks", "Kokain", "Pulver"}, null, "g", true, Material.SUGAR),
     /*MARIHUANA*/KRÄUTER(1, true, "Kräuter", new String[]{"Kräuter", "Kraut", "Marihuana", "Gras", "Weed", "Hanf", "Ott"}, null, "g", true, Material.GREEN_DYE),
     /*METHAMPHETAMIN*/KRISTALLE(2, true, "Kristalle", new String[]{"Kristalle", "Kristall", "Methamphetamin", "Meth", "Speed", "Chystal"}, null, "g", true, null),
-    ANTIBIOTIKA(6, false, "Antibiotika", null, DrugPurity.HIGH, " Päckchen", true, null),
-    SCHWARZPULVER(8, false, "Schwarzpulver", null, DrugPurity.HIGH, " Kisten", false, null),
-    EISEN(9, false, "Eisen", null, DrugPurity.HIGH, " Stück", false, null);
+    /*MDMA*/ECSTASY(3, true, "Exiyty", new String[]{"Ecstasy", "XTC", "Pille", "Tablette"}, null, " Pillen", true, Material.WARPED_BUTTON),
+    ANTIBIOTIKA(6, false, "Antibiotika", null, DrugPurity.HIGH, " Päckchen", true, null);
+    //SCHWARZPULVER(8, false, "Schwarzpulver", null, DrugPurity.HIGH, " Kisten", false, null),
+    //EISEN(9, false, "Eisen", null, DrugPurity.HIGH, " Stück", false, null);
 
     private final int id;
     private final boolean drug;
@@ -185,6 +186,15 @@ public enum Drogen {
         Drogen.addToAdiction(p);
 
         switch (this) {
+            case ECSTASY:
+                if(!p.hasPotionEffect(PotionEffectType.ABSORPTION)) p.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 400 * 20, 6 - purity.getID(), false, false));
+                if (purity.getID() >= 2) {
+                    p.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 20 * (5 + purity.getID()), 0, false, false));
+                }
+                p.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 2 * 20 * (8 - 2 * purity.getID()), 1, false, false));
+                p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 20 * (10 - purity.getID()), 1, false, false));
+                break;
+
             case PULVER:
                 if(!p.hasPotionEffect(PotionEffectType.ABSORPTION)) p.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 220 * 20, 4 - purity.getID(), false, false));
                 if (purity.getID() >= 2) {
@@ -215,10 +225,10 @@ public enum Drogen {
                 p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 20 * (10 - purity.getID()), 1, false, false));
                 p.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 20 * (30 - purity.getID() * 5), 0, false, false));
                 break;
-            case SCHWARZPULVER:
+            /*case SCHWARZPULVER:
             case EISEN:
                 p.sendMessage("§7Du kannst dieses Item nicht konsumieren.");
-                break;
+                break;*/
         }
     }
 

@@ -3,6 +3,7 @@ package de.newrp.Police;
 import de.newrp.API.Messages;
 import de.newrp.API.PaymentType;
 import de.newrp.API.Script;
+import de.newrp.Administrator.SDuty;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Government.Stadtkasse;
 import org.bukkit.command.Command;
@@ -58,6 +59,16 @@ public class Bussgeld implements CommandExecutor {
 
         if(Script.getMoney(tg, PaymentType.CASH) < amount) {
             p.sendMessage(Messages.ERROR + "Der Spieler hat nicht genug Geld.");
+            return true;
+        }
+
+        if(!SDuty.isSDuty(tg)) {
+            p.sendMessage(Messages.ERROR + "Der Spieler ist im Supporter-Dienst.");
+            return true;
+        }
+
+        if(p == tg) {
+            p.sendMessage(Messages.ERROR + "Du kannst dir selbst kein Bussgeld ausstellen.");
             return true;
         }
 

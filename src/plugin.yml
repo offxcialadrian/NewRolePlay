@@ -1,6 +1,6 @@
 name: NewRolePlay
 main: de.newrp.main
-version: 1.0.2
+version: 1.0.3
 description: NewRP Serversystem
 author: NewRP Entwicklungs-Team
 api-version: 1.16
@@ -664,3 +664,16 @@ commands:
   reply:
     description: reply to a message
     aliases: [ antworten ]
+  takemoney:
+    description: take money
+    aliases: [ moneytake ]
+  mixingredients:
+    description: view the mixingredients
+    aliases: [ mischzutaten ]
+  hackpolicecomputer:
+    description: hack the policecomputer
+    aliases: [ hackpc ]
+  chatcolor:
+    description: set your chatcolor
+  motd:
+    description: view the motd

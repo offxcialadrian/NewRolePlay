@@ -96,7 +96,7 @@ public class Strassenwartung implements CommandExecutor, Listener {
                     }
                     p.sendMessage(PREFIX + "Du hast zu lange gebraucht.");
                     p.sendMessage(PREFIX + "Du hast " + repaired_total + " Straßen repariert.");
-                    PayDay.addPayDay(p, (GFB.STRASSENWARTUNG.getLevel(p) + Script.getRandom(1, 2) * repaired_total) *2);
+                    PayDay.addPayDay(p, (GFB.STRASSENWARTUNG.getLevel(p) + Script.getRandom(1, 2) * repaired_total) *3);
                     GFB.STRASSENWARTUNG.addExp(p, GFB.STRASSENWARTUNG.getLevel(p) + Script.getRandom(3, 4) * repaired_total);
                     Script.addEXP(p, GFB.STRASSENWARTUNG.getLevel(p) + Script.getRandom(1, 2) * repaired_total*2);
                     Cache.loadInventory(p);

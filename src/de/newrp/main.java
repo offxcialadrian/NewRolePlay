@@ -410,6 +410,11 @@ public class main extends JavaPlugin {
         getCommand("gangwar").setExecutor(new GangwarCommand());
         getCommand("loan").setExecutor(new Loan());
         getCommand("reply").setExecutor(new Reply());
+        getCommand("takemoney").setExecutor(new TakeMoney());
+        getCommand("mixingredients").setExecutor(new LabBreakIn());
+        getCommand("hackpolicecomputer").setExecutor(new HackPoliceComputer());
+        getCommand("chatcolor").setExecutor(new FrakChatColor());
+        getCommand("motd").setExecutor(new FMOTD());
 
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new SDuty(), this);
@@ -531,6 +536,9 @@ public class main extends JavaPlugin {
         pm.registerEvents(new AddOrgDoor(), this);
         pm.registerEvents(new Bankautomaten(), this);
         pm.registerEvents(new Bankraub(), this);
+        pm.registerEvents(new LabBreakIn(), this);
+        pm.registerEvents(new HackPoliceComputer(), this);
+        pm.registerEvents(new FrakChatColor(), this);
 
         new AsyncHealth().runTaskTimerAsynchronously(this, 120 * 20L, 120 * 20L);
         new PayDay().runTaskTimerAsynchronously(this, 60 * 20L, 60 * 20L);

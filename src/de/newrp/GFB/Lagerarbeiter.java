@@ -259,19 +259,26 @@ public class Lagerarbeiter implements CommandExecutor, Listener {
     @EventHandler
     public void onClick(InventoryClickEvent e) {
         Player p = (Player) e.getWhoClicked();
-        if (e.getCurrentItem() == null) return;
+        if (e.getCurrentItem() == null || e.getClickedInventory() == null) return;
+
+        Inventory inv = e.getClickedInventory();
+
         if (e.getView().getTitle().equalsIgnoreCase("Produkt einsortieren")) {
-            if(e.getCurrentItem().getType() == Material.GREEN_WOOL) {
+            if (e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§aBestätigen")) {
                 e.setCancelled(true);
+                return;
             }
-            Inventory inv = e.getClickedInventory();
-            for (int i = 0; i < inv.getSize() - 1; i++) {
-                if (inv.getItem(i) == null)
+
+            for (int i = 0; i < inv.getSize(); i++) {
+                if (inv.getItem(i) == null || inv.getItem(i).getType() == Material.AIR) {
                     return;
+                }
             }
+
             p.closeInventory();
         }
     }
+
 
     @EventHandler
     public void onDrop(PlayerDropItemEvent e) {

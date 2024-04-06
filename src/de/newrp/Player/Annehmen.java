@@ -7,6 +7,7 @@ import de.newrp.Forum.Forum;
 import de.newrp.Government.Stadtkasse;
 import de.newrp.Government.Steuern;
 import de.newrp.House.House;
+import de.newrp.House.HouseAddon;
 import de.newrp.Medic.Medikamente;
 import de.newrp.Medic.Rezept;
 import de.newrp.Organisationen.Organisation;
@@ -244,6 +245,10 @@ public class Annehmen implements CommandExecutor {
             Script.addMoney(seller, PaymentType.BANK, add);
             house.setOwner(Script.getNRPID(p));
             house.updateSign();
+            for(HouseAddon addon : house.getAddons()) {
+                house.removeAddon(addon);
+            }
+            house.setSlots(1);
             Script.executeAsyncUpdate("INSERT INTO house_bewohner (houseID, mieterID, vermieter, miete, nebenkosten, immobilienmarkt) VALUES (" + houseID + ", " + Script.getNRPID(p) + ", " + true + ", " + 0 + ", 0, FALSE);");
             p.sendMessage(ACCEPTED + "Du hast das Haus erfolgreich gekauft.");
             seller.sendMessage(PREFIX + Script.getName(p) + " hat dein Haus " + house.getID() + " gekauft.");

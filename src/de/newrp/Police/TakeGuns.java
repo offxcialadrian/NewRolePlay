@@ -41,6 +41,11 @@ public class TakeGuns implements CommandExecutor {
             return true;
         }
 
+        if(p.getLocation().distance(tg.getLocation()) > 5) {
+            p.sendMessage(Messages.ERROR + "Du bist zu weit entfernt.");
+            return true;
+        }
+
         Script.removeWeapons(tg);
         p.sendMessage(Messages.INFO + "Du hast " + tg.getName() + " entwaffnet.");
         tg.sendMessage(Messages.INFO + "Polizist " + p.getName() + " hat dich entwaffnet.");

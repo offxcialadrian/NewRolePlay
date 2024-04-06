@@ -21,6 +21,8 @@ import java.util.UUID;
 
 public class Beruf {
 
+    public static String PREFIX = "§8[§eBeruf§8] §e" + Messages.ARROW + " §7";
+
     public enum Berufe {
         GOVERNMENT(1, "Regierung", new Location(Script.WORLD, 557, 88, 991, 89.61847f, 0.46322706f),false, true, true, 56, TeamspeakServerGroup.GOVERNMENT, new ForumGroup[]{ForumGroup.GOVERNMENT, ForumGroup.GOVERNMENT_LEADER}),
         NEWS(2, "News", new Location(Script.WORLD, 294, 67, 789, 204.75023f, 5.849994f), true, true, true, 95, TeamspeakServerGroup.NEWS, new ForumGroup[]{ForumGroup.NEWS, ForumGroup.NEWS_LEADER}),
@@ -134,6 +136,26 @@ public class Beruf {
 
         public void removeKasse(int amount) {
             Script.executeUpdate("UPDATE berufe_kasse SET kasse='" + (getKasse() - amount) + "' WHERE berufID='" + this.id + "'");
+        }
+
+        public String getMOTD() {
+            try (Statement stmt = main.getConnection().createStatement();
+                 ResultSet rs = stmt.executeQuery("SELECT * FROM berufe_motd WHERE berufID='" + this.id + "'")) {
+                if (rs.next()) {
+                    return rs.getString("motd");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        public void setMOTD(String motd) {
+            if(getMOTD() == null) {
+                Script.executeUpdate("INSERT INTO berufe_motd (berufID, motd) VALUES ('" + this.id + "', '" + motd + "')");
+            } else {
+                Script.executeUpdate("UPDATE berufe_motd SET motd='" + motd + "' WHERE berufID='" + this.id + "'");
+            }
         }
 
 

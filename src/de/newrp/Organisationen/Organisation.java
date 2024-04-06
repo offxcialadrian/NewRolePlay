@@ -85,6 +85,26 @@ public enum Organisation {
         Script.executeUpdate("UPDATE organisation SET rank='" + rank + "' WHERE nrp_id='" + Script.getNRPID(p) + "'");
     }
 
+    public String getMOTD() {
+        try(Statement stmt = main.getConnection().createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM organisation_motd WHERE organisationID='" + this.id + "'")) {
+            if(rs.next()) {
+                return rs.getString("motd");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public void setMOTD(String motd) {
+        if(getMOTD() == null) {
+            Script.executeUpdate("INSERT INTO organisation_motd (organisationID, motd) VALUES ('" + this.id + "', '" + motd + "')");
+            return;
+        }
+        Script.executeUpdate("UPDATE organisation_motd SET motd = '" + motd + "' WHERE organisationID = " + this.id);
+    }
+
     public int getExp() {
         try(Statement stmt = main.getConnection().createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM organisation_level WHERE organisationID='" + this.id + "'")) {

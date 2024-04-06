@@ -51,21 +51,21 @@ public class CancelTicket implements CommandExecutor {
                 new BukkitRunnable() {
                     @Override
                     public void run() {
-                        if(Script.isNRPTeam(p)) Script.addEXP(p, 5);
                         p.sendMessage(TicketCommand.PREFIX + "Du hast das Ticket mit " + Script.getName(tg) + " beendet! §7(§6#" + id + "§7)");
                         tg.sendMessage(TicketCommand.PREFIX + Script.getRank(p).getName(p) + " " + Script.getName(p) + " hat das Ticket beendet! §7(§6#" + id + "§7)");
                         Script.sendTeamMessage(p, ChatColor.LIGHT_PURPLE, "hat das Ticket mit " + Script.getName(tg) + " beendet! §7(§6#" + id + "§7)", true);
                         TicketCommand.close(t);
                         Script.updateListname(p);
                         Script.updateListname(tg);
+                        if(Script.isNRPTeam(p)) Script.addEXP(p, 5);
                     }
                 }.runTaskLater(main.getInstance(), 2 * 20L);
                 return true;
             }
-            if(Script.isNRPTeam(p)) Script.addEXP(p, 5);
             p.sendMessage(TicketCommand.PREFIX + "Du hast das Ticket mit " + Script.getName(tg) + " beendet! §7(§6#" + id + "§7)");
             tg.sendMessage(TicketCommand.PREFIX + Script.getRank(p).getName(p) + " " + Script.getName(p) + " hat das Ticket beendet! §7(§6#" + id + "§7)");
             Script.sendTeamMessage(p, ChatColor.LIGHT_PURPLE, "hat das Ticket mit " + Script.getName(tg) + " beendet! §7(§6#" + id + "§7)", true);
+            if(Script.isNRPTeam(p)) Script.addEXP(p, 5);
 
             TicketCommand.close(t);
             Script.updateListname(p);

@@ -1,6 +1,7 @@
 package de.newrp.Organisationen;
 
 import de.newrp.API.*;
+import de.newrp.Administrator.SDuty;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Berufe.Duty;
 import de.newrp.Government.Stadtkasse;
@@ -34,6 +35,8 @@ public class Bankautomaten implements Listener {
     public static HashMap<ATM, Long> cooldownATM = new HashMap<>();
     public static HashMap<String, Integer> progress = new HashMap<>();
 
+    public static HashMap<Player, Integer> win = new HashMap<>();
+
     @EventHandler
     public void onInteract(PlayerInteractEvent e) {
         Player p = e.getPlayer();
@@ -53,6 +56,7 @@ public class Bankautomaten implements Listener {
                 .filter(Beruf::hasBeruf)
                 .filter(nearbyPlayer -> Beruf.getBeruf(nearbyPlayer).equals(Beruf.Berufe.POLICE))
                 .filter(Duty::isInDuty)
+                .filter(nearbyPlayer -> !SDuty.isSDuty(nearbyPlayer))
                 .filter(nearbyPlayer -> !AFK.isAFK(nearbyPlayer)).collect(Collectors.toList());
 
         if (cops.size() < 3 && !Script.isInTestMode()) {
@@ -70,6 +74,7 @@ public class Bankautomaten implements Listener {
         Beruf.Berufe.POLICE.sendMessage(Messages.INFO + "In der Nähe von " + Navi.getNextNaviLocation(p.getLocation()).getName());
         Location bombLocation = atm.getLocation();
         e.getClickedBlock().setType(Material.TNT);
+        progress.put(p.getName(), 0);
         p.getInventory().getItemInMainHand().setAmount(p.getInventory().getItemInMainHand().getAmount() - 1);
         new BukkitRunnable() {
             @Override
@@ -111,21 +116,25 @@ public class Bankautomaten implements Listener {
                         }
                     }
                     e.getClickedBlock().setType(atmBlocks.get(e.getClickedBlock().getLocation()).getType());
-                    atmBlocks.remove(bombLocation);
+                    atmBlocks.remove(e.getClickedBlock().getLocation());
                     int remove = (int) Math.min(Script.getRandom(3000, 6000), Script.getPercent(20, atm.getCash()));
                     atm.removeCash(remove);
                     o.sendMessage(PREFIX + Script.getName(p) + " hat einen Bankautomaten zerstört und " + remove + "€ gestohlen.");
                     Beruf.Berufe.POLICE.sendMessage(PREFIX + "Der Bankautomat " + atm.getID() + " wurde zerstört. Es wurden " + remove + "€ gestohlen.");
                     Script.addMoney(p, PaymentType.CASH, remove);
                     o.addExp(remove / 100);
+                    win.put(p, remove);
+                    progress.remove(p.getName());
                     cancel();
                     new BukkitRunnable() {
                         @Override
                         public void run() {
+                            win.remove(p);
                             Stadtkasse.removeStadtkasse(1000, "Wiederherstellung Bankautomat");
                         }
                     }.runTaskLater(main.getInstance(), 20L * 60 * 60);
                 } else {
+                    progressBar(90, p);
                     progress.replace(p.getName(), progress.get(p.getName()) + 1);
                 }
             }
