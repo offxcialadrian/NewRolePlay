@@ -70,7 +70,7 @@ public class Utils implements Listener {
 
     public static final HashMap<String, Long> cooldowns = new HashMap<>();
     public static final int WORLD_BORDER_MIN_X = 0;
-    public static final int WORLD_BORDER_MAX_X = 1055;
+    public static final int WORLD_BORDER_MAX_X = 1100;
     public static final int WORLD_BORDER_MIN_Z = 420;
     public static final int WORLD_BORDER_MAX_Z = 1362;
     public static HashMap<String, Long> fishCooldown = new HashMap<>();

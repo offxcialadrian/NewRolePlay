@@ -4,6 +4,7 @@ import de.newrp.Administrator.Checkpoints;
 import de.newrp.Berufe.AcceptNotruf;
 import de.newrp.Berufe.Beruf;
 import de.newrp.GFB.Schule;
+import de.newrp.Gangwar.GangwarCommand;
 import de.newrp.Player.Notruf;
 import de.newrp.Player.Spawnchange;
 import de.newrp.main;
@@ -158,7 +159,11 @@ public class Friedhof {
                 p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 12 * 20, 2, false, false));
                 p.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 15 * 20, 2, false, false));
             } else {
-                if(Spawnchange.getSpawnLoc(p) != null) {
+                if(GangwarCommand.isInGangwar(p)) {
+                    p.teleport(GangwarCommand.getRandomSpawnLocFromGangwar(p));
+                    GangwarCommand.giveGangwarEquip(p);
+                    p.sendMessage(Messages.INFO + "Du wurdest automatisch zum Gangwar teleportiert.");
+                } else if(Spawnchange.getSpawnLoc(p) != null) {
                     p.teleport(Spawnchange.getSpawnLoc(p));
                 } else {
                     p.teleport(new Location(p.getWorld(), 278,75,1232,270.05463f,0.84689033f));

@@ -84,6 +84,11 @@ public class Arrest implements CommandExecutor {
         p.sendMessage(Fahndung.PREFIX + "Du hast " + Script.getName(tg) + " verhaftet.");
         Jail.arrest(tg, wanteds*15, true);
         new FahndungLog(tg, p, wanteds);
+        if(Organisation.hasOrganisation(tg)) {
+            Organisation o = Organisation.getOrganisation(tg);
+            int add = Fahndung.getWanteds(tg) / 4;
+            o.addExp(add);
+        }
         Fahndung.removeFahndung(tg);
         int minute = 0;
         int hour = (int) TimeUnit.MILLISECONDS.toHours(time);
@@ -103,11 +108,7 @@ public class Arrest implements CommandExecutor {
                 Beruf.Berufe.POLICE.sendMessage(Fahndung.PREFIX + "Fahndungsgrund: " + Straftat.getReason(i) + " | WantedPunkte: " + Straftat.getWanteds(i));
             }
         }
-        if(Organisation.hasOrganisation(tg)) {
-            Organisation o = Organisation.getOrganisation(tg);
-            int add = Fahndung.getWanteds(tg) / 2;
-            o.addExp(add);
-        }
+
 
         if(Mobile.hasPhone(tg)) {
             Mobile.getPhone(tg).setOff(tg);
