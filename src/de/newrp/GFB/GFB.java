@@ -23,7 +23,8 @@ public enum GFB {
     DISHWASHER(6, "Tellerwäscher", new Location(Script.WORLD, 587, 66, 746, -70.366f, 13.379983f)),
     BURGERFRYER(7, "Burgerbrater", new Location(Script.WORLD, 459, 66, 765, -11.671753f, 10.054159f)),
     STRASSENWARTUNG(8, "Straßenwartung",  new Location(Script.WORLD, 475, 65, 1316, -36.769684f, 17.13762f)),
-    IMKER(9, "Imker", new Location(Script.WORLD, 222, 65, 771, 174.1878f, 10.542069f));
+    IMKER(9, "Imker", new Location(Script.WORLD, 222, 65, 771, 174.1878f, 10.542069f)),
+    DOENERMANN(10, "Dönermann", new Location(Script.WORLD, 445, 65, 664, -59.75107f, 7.6497645f));
 
 
     private int id;

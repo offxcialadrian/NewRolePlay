@@ -4,6 +4,7 @@ import de.newrp.API.Log;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.Administrator.BuildMode;
+import de.newrp.Gangwar.GangwarCommand;
 import de.newrp.House.House;
 import de.newrp.House.HouseAddon;
 import net.md_5.bungee.api.ChatColor;
@@ -20,6 +21,12 @@ public class DropAmmo implements CommandExecutor {
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         Player p = (Player) cs;
         House h = House.getInsideHouse(p);
+
+        if(GangwarCommand.isInGangwar(p)) {
+            p.sendMessage(Messages.ERROR + "Du kannst im Gangwar keine Munition droppen.");
+            return true;
+        }
+
         if (h != null) {
             if (h.hasAddon(HouseAddon.WAFFENSCHRANK)) {
                 if (args.length != 2) {

@@ -92,9 +92,6 @@ public class Lagerarbeiter implements CommandExecutor, Listener {
         WOLLE_GRUEN(31, "Wolle", new ItemBuilder(Material.GREEN_WOOL).setName("§fWolle").build(), Type.WOLLE);
 
 
-
-
-
         int id;
         String name;
         ItemStack is;
@@ -164,17 +161,17 @@ public class Lagerarbeiter implements CommandExecutor, Listener {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
         Player p = (Player) cs;
-        if(GFB.CURRENT.containsKey(p.getName())) {
+        if (GFB.CURRENT.containsKey(p.getName())) {
             p.sendMessage(Messages.ERROR + "Du hast bereits einen Job.");
             return true;
         }
 
-        if(ON_JOB.containsKey(p.getName())) {
+        if (ON_JOB.containsKey(p.getName())) {
             p.sendMessage(Messages.ERROR + "Du bist bereits im Job.");
             return true;
         }
 
-        if(SCORE.containsKey(p.getName())) {
+        if (SCORE.containsKey(p.getName())) {
             p.sendMessage(Messages.ERROR + "Du bist bereits im Job.");
             return true;
         }
@@ -186,12 +183,12 @@ public class Lagerarbeiter implements CommandExecutor, Listener {
             }
         }
 
-        if(p.getLocation().distance(new Location(Script.WORLD, 995, 69, 1260, 176.5424f, 15.150127f)) > 5) {
+        if (p.getLocation().distance(new Location(Script.WORLD, 995, 69, 1260, 176.5424f, 15.150127f)) > 5) {
             p.sendMessage(Messages.ERROR + "Du musst dich im Lager befinden.");
             return true;
         }
 
-        if(BuildMode.isInBuildMode(p)) {
+        if (BuildMode.isInBuildMode(p)) {
             p.sendMessage(Messages.ERROR + "Du kannst diesen Befehl nicht im BuildMode nutzen.");
             return true;
         }
@@ -200,7 +197,7 @@ public class Lagerarbeiter implements CommandExecutor, Listener {
         p.sendMessage(PREFIX + "Gehe ins Lager, hole dir eine Palette und fang an deinen Job zu machen.");
         int totalscore = GFB.LAGERARBEITER.getLevel(p) + Script.getRandom(7, 12);
         p.sendMessage(Messages.INFO + "Klicke Rechtsklick auf das Schild \"Ware\".");
-        p.sendMessage(Messages.INFO + "Du musst insgesamt " + (totalscore+1) + " Waren verräumen.");
+        p.sendMessage(Messages.INFO + "Du musst insgesamt " + (totalscore + 1) + " Waren verräumen.");
         SCORE.put(p.getName(), totalscore);
         TOTAL_SCORE.put(p.getName(), totalscore);
         cooldown.put(p.getName(), System.currentTimeMillis() + 10 * 60 * 2000L);
@@ -211,49 +208,49 @@ public class Lagerarbeiter implements CommandExecutor, Listener {
     @EventHandler
     public void onRightClick(PlayerInteractEvent e) {
         Player p = e.getPlayer();
-            if (e.getAction() == Action.RIGHT_CLICK_BLOCK) {
-                if (e.getClickedBlock().getType() == Material.OAK_WALL_SIGN) {
-                    Sign s = (Sign) e.getClickedBlock().getState();
-                    if(s.getLine(2).equalsIgnoreCase("§lWare")) {
-                        if(!SCORE.containsKey(p.getName())) {
-                            p.sendMessage(PREFIX + "Nimm erstmal den Job an!");
+        if (e.getAction() == Action.RIGHT_CLICK_BLOCK) {
+            if (e.getClickedBlock().getType() == Material.OAK_WALL_SIGN) {
+                Sign s = (Sign) e.getClickedBlock().getState();
+                if(s.getLine(2).equalsIgnoreCase("§lWare")) {
+                    if(!SCORE.containsKey(p.getName())) {
+                        p.sendMessage(PREFIX + "Nimm erstmal den Job an!");
+                        return;
+                    }
+
+                    if(ON_JOB.containsKey(p.getName())) {
+                        p.sendMessage(PREFIX + "Bring erstmal " + ON_JOB.get(p.getName()).getName() + " weg.");
+                        return;
+                    }
+
+                    Waren ware = Waren.getWareByID(Script.getRandom(1, Waren.values().length));
+                    p.sendMessage(PREFIX + "Sortiere nun " + ware.getName() + " ein.");
+                    ON_JOB.put(p.getName(), ware);
+                } else {
+                    if(!ON_JOB.containsKey(p.getName())) return;
+                    if(s.getLine(2).equalsIgnoreCase("§l" + ON_JOB.get(p.getName()).getType().getName())) {
+                        if(!ON_JOB.containsKey(p.getName())) {
+                            p.sendMessage(PREFIX + "Du hast keine Ware zum einordnen.");
                             return;
                         }
 
-                        if(ON_JOB.containsKey(p.getName())) {
-                            p.sendMessage(PREFIX + "Bring erstmal " + ON_JOB.get(p.getName()).getName() + " weg.");
-                            return;
-                        }
 
-                        Waren ware = Waren.getWareByID(Script.getRandom(1, Waren.values().length));
-                        p.sendMessage(PREFIX + "Sortiere nun " + ware.getName() + " ein.");
-                        ON_JOB.put(p.getName(), ware);
-                    } else {
-                        if(!ON_JOB.containsKey(p.getName())) return;
-                        if(s.getLine(2).equalsIgnoreCase("§l" + ON_JOB.get(p.getName()).getType().getName())) {
-                            if(!ON_JOB.containsKey(p.getName())) {
-                                p.sendMessage(PREFIX + "Du hast keine Ware zum einordnen.");
-                                return;
-                            }
-
-
-                            Inventory inv = Bukkit.createInventory(null, 9*5, "Produkt einsortieren");
-                            inv.setItem(inv.getSize() - 1, new ItemBuilder(Material.GREEN_WOOL).setName("§aBestätigen").build());
-                            if(small_cooldown.containsKey(p.getName())) {
-                                if (small_cooldown.get(p.getName()) < System.currentTimeMillis()) Cache.saveInventory(p);
-                            } else {
-                                Cache.saveInventory(p);
-                            }
-                            small_cooldown.put(p.getName(), System.currentTimeMillis() + 5L);
-                            p.getInventory().clear();
-                            p.openInventory(inv);
-                            p.setItemOnCursor(new ItemBuilder(ON_JOB.get(p.getName()).getMaterial().getType()).setAmount(inv.getSize() - 1).build());
+                        Inventory inv = Bukkit.createInventory(null, 9*5, "Produkt einsortieren");
+                        inv.setItem(inv.getSize() - 1, new ItemBuilder(Material.GREEN_WOOL).setName("§aBestätigen").build());
+                        if(small_cooldown.containsKey(p.getName())) {
+                            if (small_cooldown.get(p.getName()) < System.currentTimeMillis()) Cache.saveInventory(p);
                         } else {
-                            p.sendMessage(PREFIX + "Du musst erstmal " + ON_JOB.get(p.getName()).getType().getName() + " wegbringen.");
+                            Cache.saveInventory(p);
                         }
+                        small_cooldown.put(p.getName(), System.currentTimeMillis() + 5L);
+                        p.getInventory().clear();
+                        p.openInventory(inv);
+                        p.setItemOnCursor(new ItemBuilder(ON_JOB.get(p.getName()).getMaterial().getType()).setAmount(inv.getSize() - 1).build());
+                    } else {
+                        p.sendMessage(PREFIX + "Du musst erstmal " + ON_JOB.get(p.getName()).getType().getName() + " wegbringen.");
                     }
                 }
             }
+        }
     }
 
     @EventHandler
@@ -264,13 +261,9 @@ public class Lagerarbeiter implements CommandExecutor, Listener {
         Inventory inv = e.getClickedInventory();
 
         if (e.getView().getTitle().equalsIgnoreCase("Produkt einsortieren")) {
-            if (e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§aBestätigen")) {
-                e.setCancelled(true);
-                return;
-            }
-
-            for (int i = 0; i < inv.getSize(); i++) {
-                if (inv.getItem(i) == null || inv.getItem(i).getType() == Material.AIR) {
+            e.setCancelled(true);
+            for (int i = 0; i < inv.getSize() - 1; i++) {
+                if (inv.getItem(i) == null) {
                     return;
                 }
             }
@@ -283,16 +276,16 @@ public class Lagerarbeiter implements CommandExecutor, Listener {
     @EventHandler
     public void onDrop(PlayerDropItemEvent e) {
         Player p = e.getPlayer();
-        if(ON_JOB.containsKey(p.getName())) {
+        if (ON_JOB.containsKey(p.getName())) {
             e.setCancelled(true);
             p.sendMessage(PREFIX + "Du kannst gerade keine Items droppen.");
         }
     }
 
-    @EventHandler (priority = EventPriority.LOW)
+    @EventHandler(priority = EventPriority.LOW)
     public void onInventoryClose(InventoryCloseEvent e) {
         Player p = (Player) e.getPlayer();
-        if(!SCORE.containsKey(p.getName())) return;
+        if (!SCORE.containsKey(p.getName())) return;
         if (e.getView().getTitle().equalsIgnoreCase("Produkt einsortieren")) {
             Inventory inv = e.getInventory();
             for (int i = 0; i < inv.getSize() - 1; i++) {
@@ -307,9 +300,9 @@ public class Lagerarbeiter implements CommandExecutor, Listener {
                 GFB.CURRENT.remove(p.getName());
                 p.sendMessage(PREFIX + "§aFertig");
                 SCORE.remove(p.getName());
-                GFB.LAGERARBEITER.addExp(p, GFB.LAGERARBEITER.getLevel(p) + TOTAL_SCORE.get(p.getName())/2);
-                PayDay.addPayDay(p, (GFB.LAGERARBEITER.getLevel(p) + (TOTAL_SCORE.get(p.getName())))*2);
-                Script.addEXP(p, GFB.LAGERARBEITER.getLevel(p) + TOTAL_SCORE.get(p.getName())*2);
+                GFB.LAGERARBEITER.addExp(p, GFB.LAGERARBEITER.getLevel(p) + TOTAL_SCORE.get(p.getName()) / 2);
+                PayDay.addPayDay(p, (GFB.LAGERARBEITER.getLevel(p) + (TOTAL_SCORE.get(p.getName()))) * 2);
+                Script.addEXP(p, GFB.LAGERARBEITER.getLevel(p) + TOTAL_SCORE.get(p.getName()) * 2);
                 new BukkitRunnable() {
                     @Override
                     public void run() {
@@ -319,7 +312,7 @@ public class Lagerarbeiter implements CommandExecutor, Listener {
                 }.runTaskLater(main.getInstance(), 20L);
             } else {
                 SCORE.replace(p.getName(), amount - 1);
-                p.sendMessage(PREFIX + "§aRichtig! §6Hole nun das nächste Produkt aus \"Ware\" und sortiere es ein (" + (TOTAL_SCORE.get(p.getName())-SCORE.get(p.getName())) + "/" + (TOTAL_SCORE.get(p.getName())+1) + ")");
+                p.sendMessage(PREFIX + "§aRichtig! §6Hole nun das nächste Produkt aus \"Ware\" und sortiere es ein (" + (TOTAL_SCORE.get(p.getName()) - SCORE.get(p.getName())) + "/" + (TOTAL_SCORE.get(p.getName()) + 1) + ")");
             }
         }
     }
@@ -327,7 +320,7 @@ public class Lagerarbeiter implements CommandExecutor, Listener {
     @EventHandler
     public void onQuit(PlayerQuitEvent e) {
         Player p = e.getPlayer();
-        if(!SCORE.containsKey(p.getName())) return;
+        if (!SCORE.containsKey(p.getName())) return;
         ON_JOB.remove(p.getName());
         SCORE.remove(p.getName());
         GFB.CURRENT.remove(p.getName());

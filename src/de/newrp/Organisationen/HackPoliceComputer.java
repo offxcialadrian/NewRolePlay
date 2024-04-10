@@ -111,9 +111,7 @@ public class HackPoliceComputer implements CommandExecutor, Listener {
 
         p.sendMessage(prefix + "Du hast einen Hackversuch gestartet. Geschätzte Dauer: " + lengthInSeconds + " Sekunden.");
         p.sendMessage(Messages.INFO + "Bewege dich nicht mehr als 10 Meter vom Computer weg.");
-
-
-
+        Beruf.Berufe.POLICE.sendMessage(prefix + "Der Polizeicomputer wird gehackt! Überprüfe die Personen in der Nähe.");
         hacker = p;
 
         BukkitTask task = new BukkitRunnable() {

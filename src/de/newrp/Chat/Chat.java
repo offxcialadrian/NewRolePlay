@@ -33,7 +33,6 @@ public class Chat implements Listener {
             "reallife",
             "Admin",
             "admin",
-            "oos",
             "Suppe",
             "Huan",
             "huan",

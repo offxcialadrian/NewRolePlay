@@ -90,7 +90,13 @@ public class Dishwasher implements CommandExecutor, Listener {
         Player p = e.getPlayer();
         if(!ON_JOB.contains(p.getName())) return;
         if(e.getAction() != Action.RIGHT_CLICK_BLOCK) return;
-        if(!(e.getClickedBlock().getLocation().equals(new Location(Script.WORLD, 586, 67, 749))) && !(e.getClickedBlock().getLocation().equals(new Location(Script.WORLD, 585, 67, 749)))) return;
+        if (!(e.getClickedBlock().getLocation().equals(new Location(Script.WORLD, 586, 67, 749))) &&
+                !(e.getClickedBlock().getLocation().equals(new Location(Script.WORLD, 585, 67, 749))) &&
+                !(e.getClickedBlock().getLocation().equals(new Location(Script.WORLD, 583, 67, 749))) &&
+                !(e.getClickedBlock().getLocation().equals(new Location(Script.WORLD, 582, 67, 749))) &&
+                !(e.getClickedBlock().getLocation().equals(new Location(Script.WORLD, 581, 67, 749)))) {
+            return;
+        }
         if(small_cooldown.containsKey(p.getName())) {
             if (small_cooldown.get(p.getName()) < System.currentTimeMillis()) Cache.saveInventory(p);
         } else {
@@ -119,6 +125,13 @@ public class Dishwasher implements CommandExecutor, Listener {
         if(!e.getView().getTitle().equals("§6Tellerwäscher")) return;
         e.setCancelled(true);
         if(e.getCurrentItem() == null || e.getCurrentItem().getType().equals(Material.AIR)) return;
+        Inventory inv = e.getInventory();
+        if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("§8Dreck")) {
+            inv.setItem(e.getSlot(), new ItemBuilder(Material.BOWL).setName("§aTeller").build());
+            p.openInventory(inv);
+            return;
+        }
+
         if(e.getCurrentItem().getType() == Material.BOWL) {
             p.closeInventory();
             p.sendMessage(PREFIX + "Du hast den Teller zerbrochen.");
@@ -131,12 +144,7 @@ public class Dishwasher implements CommandExecutor, Listener {
             Cache.loadInventory(p);
             return;
         }
-        Inventory inv = e.getInventory();
-        if(e.getCurrentItem().getType() == Material.DIRT) {
-            inv.setItem(e.getSlot(), new ItemBuilder(Material.BOWL).setName("§aTeller").build());
-            p.openInventory(inv);
-            return;
-        }
+
 
         if(e.getCurrentItem().getType() == Material.SPONGE) {
             for(ItemStack is : inv.getContents()) {

@@ -33,6 +33,8 @@ public class BuyClick implements Listener {
         Inventory inv = e.getInventory();
         if (!e.getView().getTitle().startsWith("§6")) return;
         if(e.getView().getTitle().startsWith("§6Vote")) return;
+        if(e.getView().getTitle().startsWith("§6Tellerwäscher")) return;
+
 
         ItemStack is = e.getCurrentItem();
         if (is == null || is.getType().equals(Material.AIR) || !is.hasItemMeta()) return;

@@ -21,6 +21,7 @@ import de.newrp.Entertainment.Lotto;
 import de.newrp.Forum.ForumCommand;
 import de.newrp.Berufe.Tazer;
 import de.newrp.GFB.*;
+import de.newrp.Gangwar.Capture;
 import de.newrp.Gangwar.GangwarCommand;
 import de.newrp.Government.*;
 import de.newrp.House.*;
@@ -415,6 +416,9 @@ public class main extends JavaPlugin {
         getCommand("hackpolicecomputer").setExecutor(new HackPoliceComputer());
         getCommand("chatcolor").setExecutor(new FrakChatColor());
         getCommand("motd").setExecutor(new FMOTD());
+        getCommand("capture").setExecutor(new Capture());
+        getCommand("kebap").setExecutor(new Kebap());
+        
 
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new SDuty(), this);
@@ -539,6 +543,9 @@ public class main extends JavaPlugin {
         pm.registerEvents(new LabBreakIn(), this);
         pm.registerEvents(new HackPoliceComputer(), this);
         pm.registerEvents(new FrakChatColor(), this);
+        pm.registerEvents(new GangwarCommand(), this);
+        pm.registerEvents(new Capture(), this);
+        pm.registerEvents(new Kebap(), this);
 
         new AsyncHealth().runTaskTimerAsynchronously(this, 120 * 20L, 120 * 20L);
         new PayDay().runTaskTimerAsynchronously(this, 60 * 20L, 60 * 20L);
@@ -551,6 +558,7 @@ public class main extends JavaPlugin {
         //new Async15Sek().runTaskTimerAsynchronously(this, 15* 20L, 15 * 20L);
         new Sync15Sek().runTaskTimer(this, 15 * 20L, 15 * 20L);
         new Async2Min().runTaskTimer(this, 120 * 20L, 120 * 20L);
+        //new AsyncSecond().runTaskTimerAsynchronously(this, 20L, 20L);
 
         ScoreboardManager.initMainScoreboard();
         Hologram.reload();

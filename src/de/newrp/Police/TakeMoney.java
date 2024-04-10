@@ -53,6 +53,12 @@ public class TakeMoney implements CommandExecutor {
         }
 
         int money = Bankautomaten.win.get(tg);
+
+        if(money > Script.getMoney(tg, PaymentType.CASH)) {
+            p.sendMessage(Messages.ERROR + "Der Spieler hat nicht genug Geld.");
+            return true;
+        }
+
         Bankautomaten.win.remove(tg);
         Script.removeMoney(tg, PaymentType.CASH, money);
         p.sendMessage(PREFIX + "Du hast " + Script.getName(tg) + " §6" + money + "§7 abgenommen.");

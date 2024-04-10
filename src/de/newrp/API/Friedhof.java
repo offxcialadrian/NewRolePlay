@@ -5,6 +5,7 @@ import de.newrp.Berufe.AcceptNotruf;
 import de.newrp.Berufe.Beruf;
 import de.newrp.GFB.Schule;
 import de.newrp.Gangwar.GangwarCommand;
+import de.newrp.Organisationen.Organisation;
 import de.newrp.Player.Notruf;
 import de.newrp.Player.Spawnchange;
 import de.newrp.main;
@@ -92,6 +93,15 @@ public class Friedhof {
         Debug.debug("loc: " + loc);
         p.teleport(loc);
 
+        p.getKiller().sendMessage(Messages.INFO + "§c§lKILL! §6" + Script.getName(p) + " §fdu hast getötet!");
+
+        if (Organisation.hasOrganisation(p) && Organisation.hasOrganisation(p.getKiller()) && Organisation.getOrganisation(p) == Organisation.getOrganisation(p.getKiller())) {
+            Organisation.getOrganisation(p).sendMessage(Messages.INFO + "§c§lMATEKILL! §6" + Script.getName(p.getKiller()) + " §fhat §6" + Script.getName(p) + " §fgetötet.");
+        }
+        if (Beruf.hasBeruf(p) && Beruf.hasBeruf(p.getKiller()) && Beruf.getBeruf(p) == Beruf.getBeruf(p.getKiller())) {
+            Beruf.getBeruf(p).sendMessage(Messages.INFO + "§c§lMATEKILL! §6" + Script.getName(p.getKiller()) + " §fhat §6" + Script.getName(p) + " §fgetötet.");
+        }
+
         p.setPlayerWeather(WeatherType.DOWNFALL);
         Script.resetPotionEffects(p);
         p.setFireTicks(0);
@@ -119,7 +129,7 @@ public class Friedhof {
             public void run() {
                 if (isDead(p)) {
                     progress.replace(p.getName(), progress.get(p.getName()) + 1);
-                    progressBar(16*60, p, f);
+                    progressBar((GangwarCommand.isInGangwar(p)?4*60:16*60), p, f);
                 } else {
                     progress.remove(p.getName());
                     cancel();

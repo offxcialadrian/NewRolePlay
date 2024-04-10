@@ -198,7 +198,11 @@ public class Annehmen implements CommandExecutor {
             }
 
             Licenses.ERSTE_HILFE.grant(Script.getNRPID(medic));
+            p.sendMessage(ACCEPTED + "Du hast den Erste-Hilfe-Schein erfolgreich erworben.");
+            Beruf.Berufe.RETTUNGSDIENST.sendMessage(Beruf.PREFIX + Script.getName(medic) + " hat " + Script.getName(p) + " einen Erste-Hilfe-Schein ausgestellt.");
             Script.executeAsyncUpdate("INSERT INTO erste_hilfe (nrp_id, awarded) VALUES (" + Script.getNRPID(medic) + ", " + System.currentTimeMillis() + ");");
+            Script.removeMoney(p, PaymentType.CASH, 250);
+            Stadtkasse.addStadtkasse(250, "Erste-Hilfe-Kurs von " + Script.getName(p), null);
             offer.remove(p.getName() + ".erstehilfeschein");
 
         } else if(offer.containsKey(p.getName() + ".sellhouse")) {

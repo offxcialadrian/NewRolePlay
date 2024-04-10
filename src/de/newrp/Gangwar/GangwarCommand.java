@@ -1,26 +1,33 @@
 package de.newrp.Gangwar;
 
-import de.newrp.API.Messages;
-import de.newrp.API.Script;
+import de.newrp.API.*;
 import de.newrp.Organisationen.Organisation;
 import de.newrp.Waffen.Waffen;
 import de.newrp.Waffen.Weapon;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 
-public class GangwarCommand implements CommandExecutor {
+public class GangwarCommand implements CommandExecutor, Listener {
 
     public static String PREFIX = "§8[§cGangwar§8] §c» §7";
     public static HashMap<GangwarZones, Organisation[]> gangwar = new HashMap<>();
     public static HashMap<Organisation, Integer> points = new HashMap<>();
-    public static HashMap<Organisation, Location[]> captures = new HashMap<>();
+    public static HashMap<Organisation, ArrayList<Location>> captures = new HashMap<>();
+    public static HashMap<Location, Long> cooldown = new HashMap<>();
 
     @Override
     public boolean onCommand(@NotNull CommandSender cs, @NotNull Command cmd, @NotNull String s, @NotNull String[] args) {
@@ -82,16 +89,65 @@ public class GangwarCommand implements CommandExecutor {
             return true;
         }
 
+        if(isInGangwar(Organisation.getOrganisation(p))) {
+            p.sendMessage(Messages.ERROR + "Deine Organisation ist bereits im Gangwar.");
+            return true;
+        }
+
+        if(isInGangwar(zone.getOwner())) {
+            p.sendMessage(Messages.ERROR + "Die Organisation, die diese Zone besitzt, ist bereits im Gangwar.");
+            return true;
+        }
+
         Organisation org = Organisation.getOrganisation(p);
         Organisation enemy = zone.getOwner();
 
+        gangwar.put(zone, new Organisation[]{org, enemy});
+        points.put(org, 0);
+        points.put(enemy, 0);
+        captures.put(org, new ArrayList<>());
+        captures.put(enemy, new ArrayList<>());
+
+        org.sendMessage(PREFIX + "Deine Organisation hat den Gangwar in der Zone " + zone.getName() + " gestartet.");
+        enemy.sendMessage(PREFIX + "Deine Organisation wurde von " + org.getName() + " zum Gangwar in der Zone " + zone.getName() + " herausgefordert.");
+        for(Player org1member: org.getMembers()) {
+            Title.sendTitle(org1member, 2, 50, 2, "§cDer Gangwar hat begonnen!", "§6" + zone.getName());
+        }
+        for(Player org2member: enemy.getMembers()) {
+            Title.sendTitle(org2member, 2, 50, 2, "§cDer Gangwar hat begonnen!", "§6" + zone.getName());
+        }
+
+        for(Player member : getMember(zone)) {
+            Cache.saveInventory(member);
+            giveGangwarEquip(member);
+        }
 
 
         return false;
     }
 
+    public static boolean isInGangwar(Organisation org) {
+        for(Organisation[] orgs : gangwar.values()) {
+            for(Organisation o : orgs) {
+                if(o == org) return true;
+            }
+        }
+        return false;
+    }
+
+
     public static boolean gangwarIsActive() {
         return !gangwar.isEmpty();
+    }
+
+    public static Organisation getOpponent(Organisation org) {
+        for(GangwarZones zone : gangwar.keySet()) {
+            Organisation[] orgs = gangwar.get(zone);
+            for(Organisation o : orgs) {
+                if(o != org) return o;
+            }
+        }
+        return null;
     }
 
     public static boolean gangwarIsActive(GangwarZones zone) {
@@ -143,6 +199,11 @@ public class GangwarCommand implements CommandExecutor {
 
     public static void win(Organisation o, GangwarZones zone) {
         Organisation other = null;
+
+        for(Player member : getMember(zone)) {
+            Cache.loadInventory(member);
+        }
+
         for(Organisation org : gangwar.get(zone)) {
             if(org != o) {
                 other = org;
@@ -223,21 +284,30 @@ public class GangwarCommand implements CommandExecutor {
         p.getInventory().clear();
         p.getInventory().setArmorContents(null);
         for(Weapon w : Weapon.values()) {
-            if(w != Weapon.AK47 && w != Weapon.DESERT_EAGLE && w != Weapon.JAGDFLINTE) continue;
-            int ammunitionInWeapon = Waffen.getAmmo(w.getWeapon()) + Waffen.getAmmoTotal(w.getWeapon());
+            if(w == Weapon.SNIPER) continue;
 
-            int magazine;
-            int total;
-            if (ammunitionInWeapon > w.getMagazineSize()) {
-                magazine = w.getMagazineSize();
-                total = ammunitionInWeapon - w.getMagazineSize();
-            } else {
-                magazine = ammunitionInWeapon;
-                total = 0;
-            }
-
-            p.getInventory().addItem(Waffen.setAmmo(w.getWeapon(), magazine, total));
+            p.getInventory().addItem(Waffen.setAmmo(w.getWeapon(), w.getMagazineSize(), 500));
         }
+        p.getInventory().addItem(new ItemBuilder(Material.BREAD).setAmount(32).build());
+    }
+
+    @EventHandler
+    public void onJoin(PlayerJoinEvent e) {
+        Player p = e.getPlayer();
+        Organisation o = Organisation.getOrganisation(p);
+        if (o == null) return;
+        if (!isInGangwar(p)) return;
+        giveGangwarEquip(p);
+        p.sendMessage(PREFIX + "Deine Organisation befindet sich im Gangwar!");
+    }
+
+    public static ArrayList<Player> getMember(GangwarZones zone) {
+        Organisation[] orgs = gangwar.get(zone);
+        ArrayList<Player> players = new ArrayList<>();
+        for(Organisation org : orgs) {
+            players.addAll(org.getMembers());
+        }
+        return players;
     }
 
 }

@@ -145,7 +145,7 @@ public class Lotto implements CommandExecutor {
                 return true;
             }
 
-            int i = Integer.parseInt(args[0]);
+            int i = Integer.parseInt(args[1]);
             if(i < 1) {
                 p.sendMessage(Messages.ERROR + "Du kannst nicht weniger als 1€ spenden.");
                 return true;

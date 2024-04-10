@@ -258,12 +258,6 @@ public class Equip implements CommandExecutor, Listener {
             }
 
 
-
-            if (p.getInventory().firstEmpty() == -1) {
-                p.sendMessage(Messages.ERROR + "Dein Inventar ist voll.");
-                return;
-            }
-
             if(stuff == Stuff.SCHUTZWESTE || stuff == Stuff.SCHWERE_SCHUTZWESTE) {
                 if(p.getInventory().contains(Material.LEATHER_CHESTPLATE)) {
                     p.sendMessage(Messages.ERROR + "Du kannst nur eine Schutzweste tragen.");

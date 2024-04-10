@@ -12,6 +12,8 @@ import de.newrp.Ticket.AcceptTicket;
 import de.newrp.Ticket.Ticket;
 import de.newrp.Ticket.TicketCommand;
 import de.newrp.Ticket.TicketTopic;
+import de.newrp.Votifier.VoteCommand;
+import de.newrp.Votifier.VoteListener;
 import de.newrp.Votifier.VoteShop;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
@@ -123,7 +125,7 @@ public class AsyncMinute extends BukkitRunnable {
 
         if (Calendar.getInstance().get(Calendar.MINUTE) % 10 == 0) {
             for (Player p : Bukkit.getOnlinePlayers()) {
-                if (Vote.hasVotedToday(Script.getNRPID(p))) continue;
+                if(VoteListener.max_votes.containsKey(Script.getNRPID(p))) continue;
                 p.sendMessage("§8[§6VoteShop§8]§6 " + Messages.ARROW + " §7Vote für uns und erhalte tolle Belohnungen: §8/§6vote");
                 Script.sendActionBar(p, "§8[§6VoteShop§8]§6 " + Messages.ARROW + " §7Vote für uns und erhalte tolle Belohnungen: §8/§6vote");
             }

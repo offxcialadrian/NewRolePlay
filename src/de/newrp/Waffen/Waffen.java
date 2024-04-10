@@ -5,6 +5,7 @@ import de.newrp.Administrator.AimBot;
 import de.newrp.Administrator.SDuty;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Berufe.Duty;
+import de.newrp.Gangwar.GangwarCommand;
 import de.newrp.Government.Stadtkasse;
 import de.newrp.Organisationen.Bankautomaten;
 import de.newrp.Organisationen.Organisation;
@@ -152,67 +153,70 @@ public class Waffen implements Listener {
 
         fire(p, weapon, hand);
 
-        Shops shop = Shops.getShopByLocation(p.getLocation());
-        if(shop != null) {
-            if(!Organisation.hasOrganisation(p)) return;
-            Organisation org = Organisation.getOrganisation(p);
-            if(robcooldown.containsKey(org) && robcooldown.get(org) > System.currentTimeMillis()) {
-                Script.sendActionBar(p, Messages.ERROR + "Du kannst nicht so schnell hintereinander einen Shop überfallen (" + Script.getRemainingTime(robcooldown.get(org)) + ")");
-                return;
-            }
+        if(!GangwarCommand.isInGangwar(p)) {
 
-            List<Player> cops = Beruf.Berufe.POLICE.getMembers().stream()
-                    .filter(Beruf::hasBeruf)
-                    .filter(nearbyPlayer -> Beruf.getBeruf(nearbyPlayer).equals(Beruf.Berufe.POLICE))
-                    .filter(Duty::isInDuty)
-                    .filter(nearbyPlayer -> !SDuty.isSDuty(nearbyPlayer))
-                    .filter(nearbyPlayer -> !AFK.isAFK(nearbyPlayer)).collect(Collectors.toList());
-
-            if (cops.size() < 3 && !Script.isInTestMode()) {
-                p.sendMessage(Messages.ERROR + "Es braucht mindestens 3 Beamte um einen Shop zu überfallen.");
-                return;
-            }
-
-            robcooldown.put(org, System.currentTimeMillis() + 10800000);p.getInventory().remove(Material.TNT);
-            p.sendMessage(PREFIX + "Der Shop ist in 360 Sekunden überfallen.");
-            Beruf.Berufe.POLICE.sendMessage(PREFIX + "ACHTUNG! ES WURDE EIN STILLER ALARM IM SHOP " + shop.getPublicName() + " AUSGELÖST!");
-            Beruf.Berufe.POLICE.sendMessage(Messages.INFO + "In der Nähe von " + Navi.getNextNaviLocation(p.getLocation()).getName());
-            progress.put(p.getName(), 0);
-            Location loc = shop.getBuyLocation();
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    if (p.getLocation().distance(loc) > 10) {
-                        p.sendMessage(PREFIX + "Du bist zu weit entfernt.");
-                        cancel();
-                        return;
-                    }
-
-                    if (progress.get(p.getName()) >= 360) {
-                        int remove = (int) Script.getPercent(20, shop.getKasse());
-                        shop.removeKasse(remove);
-                        org.sendMessage(PREFIX + Script.getName(p) + " hat einen Shop überfallen und " + remove + "€ gestohlen.");
-                        Beruf.Berufe.POLICE.sendMessage(PREFIX + "Der Shop " + shop.getName() + " wurde überfallen. Es wurden " + remove + "€ gestohlen.");
-                        Script.addMoney(p, PaymentType.CASH, remove);
-                        org.addExp(remove / 50);
-                        Bankautomaten.win.put(p, remove);
-                        progress.remove(p.getName());
-                        cancel();
-                        new BukkitRunnable() {
-                            @Override
-                            public void run() {
-                                Bankautomaten.win.remove(p);
-                            }
-                        }.runTaskLater(main.getInstance(), 20L * 60 * 15);
-                    } else {
-                        progressBar(360, p);
-                        progress.replace(p.getName(), progress.get(p.getName()) + 1);
-                    }
+            Shops shop = Shops.getShopByLocation(p.getLocation());
+            if (shop != null) {
+                if (!Organisation.hasOrganisation(p)) return;
+                Organisation org = Organisation.getOrganisation(p);
+                if (robcooldown.containsKey(org) && robcooldown.get(org) > System.currentTimeMillis()) {
+                    Script.sendActionBar(p, Messages.ERROR + "Du kannst nicht so schnell hintereinander einen Shop überfallen (" + Script.getRemainingTime(robcooldown.get(org)) + ")");
+                    return;
                 }
-            }.runTaskTimer(main.getInstance(), 20L, 20L);
 
+                List<Player> cops = Beruf.Berufe.POLICE.getMembers().stream()
+                        .filter(Beruf::hasBeruf)
+                        .filter(nearbyPlayer -> Beruf.getBeruf(nearbyPlayer).equals(Beruf.Berufe.POLICE))
+                        .filter(Duty::isInDuty)
+                        .filter(nearbyPlayer -> !SDuty.isSDuty(nearbyPlayer))
+                        .filter(nearbyPlayer -> !AFK.isAFK(nearbyPlayer)).collect(Collectors.toList());
+
+                if (cops.size() < 3 && !Script.isInTestMode()) {
+                    p.sendMessage(Messages.ERROR + "Es braucht mindestens 3 Beamte um einen Shop zu überfallen.");
+                    return;
+                }
+
+                robcooldown.put(org, System.currentTimeMillis() + 10800000);
+                p.getInventory().remove(Material.TNT);
+                p.sendMessage(PREFIX + "Der Shop ist in 360 Sekunden überfallen.");
+                Beruf.Berufe.POLICE.sendMessage(PREFIX + "ACHTUNG! ES WURDE EIN STILLER ALARM IM SHOP " + shop.getPublicName() + " AUSGELÖST!");
+                Beruf.Berufe.POLICE.sendMessage(Messages.INFO + "In der Nähe von " + Navi.getNextNaviLocation(p.getLocation()).getName());
+                progress.put(p.getName(), 0);
+                Location loc = shop.getBuyLocation();
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        if (p.getLocation().distance(loc) > 10) {
+                            p.sendMessage(PREFIX + "Du bist zu weit entfernt.");
+                            cancel();
+                            return;
+                        }
+
+                        if (progress.get(p.getName()) >= 360) {
+                            int remove = (int) Script.getPercent(20, shop.getKasse());
+                            shop.removeKasse(remove);
+                            org.sendMessage(PREFIX + Script.getName(p) + " hat einen Shop überfallen und " + remove + "€ gestohlen.");
+                            Beruf.Berufe.POLICE.sendMessage(PREFIX + "Der Shop " + shop.getName() + " wurde überfallen. Es wurden " + remove + "€ gestohlen.");
+                            Script.addMoney(p, PaymentType.CASH, remove);
+                            org.addExp(remove / 50);
+                            Bankautomaten.win.put(p, remove);
+                            progress.remove(p.getName());
+                            cancel();
+                            new BukkitRunnable() {
+                                @Override
+                                public void run() {
+                                    Bankautomaten.win.remove(p);
+                                }
+                            }.runTaskLater(main.getInstance(), 20L * 60 * 15);
+                        } else {
+                            progressBar(360, p);
+                            progress.replace(p.getName(), progress.get(p.getName()) + 1);
+                        }
+                    }
+                }.runTaskTimer(main.getInstance(), 20L, 20L);
+
+            }
         }
-
     }
 
     private static void progressBar(double required_progress, Player p) {

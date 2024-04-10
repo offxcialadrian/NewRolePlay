@@ -41,7 +41,7 @@ public class LabBreakIn implements CommandExecutor, Listener {
                                                 new Location(Script.WORLD, 363, 70, 1305), new Location(Script.WORLD, 364, 70, 1305), new Location(Script.WORLD, 365, 70, 1305),
                                                 new Location(Script.WORLD, 366, 70, 1305), new Location(Script.WORLD, 366, 70, 1304), new Location(Script.WORLD, 366, 70, 1303),
                                                 new Location(Script.WORLD, 365, 70, 1303), new Location(Script.WORLD, 364, 70, 1303)};
-    private static final int NEEDED_PROGRESS = 100;
+    private static final int NEEDED_PROGRESS = 30;
     private static final ItemStack POTION;
     public static int progress = 0;
     static int schedulerID;
@@ -91,14 +91,16 @@ public class LabBreakIn implements CommandExecutor, Listener {
             return;
         }
         removePotion(brewingStand.getInventory());
+        p.sendMessage(PREFIX + "Du hast die Zutat in den Braustand gefüllt.");
+        p.sendMessage(PREFIX + progress + "/" + NEEDED_PROGRESS);
         if (++progress == NEEDED_PROGRESS) {
 
             Drogen.DrugPurity purity;
-            if (timeDifference > 0 && timeDifference <= 10 * 1000L) {
+            if (timeDifference > 0 && timeDifference <= 20 * 1000L) {
                 purity = Drogen.DrugPurity.HIGH;
-            } else if (timeDifference > 10 * 1000L && timeDifference <= 20 * 1000L) {
+            } else if (timeDifference > 10 * 1000L && timeDifference <= 30 * 1000L) {
                 purity = Drogen.DrugPurity.GOOD;
-            } else if (timeDifference > 20 * 1000L && timeDifference <= 30 * 1000L) {
+            } else if (timeDifference > 20 * 1000L && timeDifference <= 40 * 1000L) {
                 purity = Drogen.DrugPurity.MEDIUM;
             } else {
                 purity = Drogen.DrugPurity.BAD;
@@ -182,6 +184,8 @@ public class LabBreakIn implements CommandExecutor, Listener {
         ItemStack item = new ItemStack(Material.WARPED_BUTTON, i);
         p.getInventory().addItem(new ItemBuilder(Material.WARPED_BUTTON).setAmount(i).setName(Drogen.ECSTASY.getName()).setLore("§7Reinheitsgrad: " + purity.getText()).build());
         p.sendMessage(PREFIX + "Du konntest " + i + " Pillen Exiyty herstellen.");
+        Organisation.getOrganisation(p).sendMessage(PREFIX + "§6" + Script.getName(p) + " §7hat " + i + " Pillen Exiyty hergestellt.");
+        Beruf.Berufe.POLICE.sendMessage(PREFIX + "Es wurde Exiyty hergestellt.");
     }
 
     @Override
@@ -191,7 +195,7 @@ public class LabBreakIn implements CommandExecutor, Listener {
             p.sendMessage(Messages.ERROR + "Du bist nicht die Person, die eingebrochen ist.");
             return true;
         }
-        if (p.getLocation().distance(new Location(p.getWorld(), 1, 62, 604.5)) > 5) return true;
+        if (p.getLocation().distance(new Location(Script.WORLD, 364, 69, 1310, -182.26685f, 27.894108f)) > 5) return true;
         if(!Organisation.hasOrganisation(p)) {
             p.sendMessage(Messages.ERROR + "Du bist in keiner Organisation.");
             return true;
@@ -218,14 +222,14 @@ public class LabBreakIn implements CommandExecutor, Listener {
         toggleDoorState(doorOneLocation.getBlock(), true, true);
         toggleDoorState(doorTwoLocation.getBlock(), true, false);
 
-        new Route(p.getName(), Script.getNRPID(p), p.getLocation(), new Location(p.getWorld(), 1, 62, 604.5), PREFIX + "Schütte nun die Chemikalien zusammen um Exiyty zu bekommen.", () -> Script.performCommand(p, "mixingredients")).start();
+        new Route(p.getName(), Script.getNRPID(p), p.getLocation(), new Location(Script.WORLD, 364, 69, 1310, -182.26685f, 27.894108f), PREFIX + "Schütte nun die Chemikalien zusammen um Exiyty zu bekommen.", () -> Script.performCommand(p, "mixingredients")).start();
         p.sendMessage(PREFIX + "Du bist in das Labor eingebrochen.");
         Beruf.Berufe.POLICE.sendMessage(PREFIX + "Es wurde ein Einbruch im Labor gemeldet!");
         Organisation.getOrganisation(p).sendMessage(PREFIX + "§6" + Script.getName(p) + " §7ist in das Labor eingebrochen.");
     }
 
     public static void repairDoors(boolean complete) {
-        toggleDoorState(doorOneLocation.getBlock(), false, true);
+        toggleDoorState(doorOneLocation.getBlock(), false, false);
         toggleDoorState(doorTwoLocation.getBlock(), false, false);
         for (Location loc : locations) {
             BrewingStand brewingStand = (BrewingStand) loc.getBlock().getState();
@@ -235,8 +239,9 @@ public class LabBreakIn implements CommandExecutor, Listener {
 
     public static void toggleDoorState(Block block, boolean open, boolean playSound) {
         BlockState state = block.getState();
-        Door door = (Door) state.getData();
+        Door door = (Door) state.getBlockData();
         door.setOpen(open);
+        state.setBlockData(door);
         state.update();
         if (playSound) {
             block.getWorld().playSound(block.getLocation(), Sound.BLOCK_IRON_DOOR_OPEN, 1, 1);
@@ -292,7 +297,7 @@ public class LabBreakIn implements CommandExecutor, Listener {
             }
         }
         long timeDifference = Math.abs(doorOneBrokeTime - doorTwoBrokeTime);
-        if (timeDifference > 400) return false;
+        if (timeDifference > 30000) return false;
         breakDoors(p);
         return true;
     }

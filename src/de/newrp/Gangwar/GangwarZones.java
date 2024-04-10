@@ -109,7 +109,7 @@ public enum GangwarZones {
     }
 
     public int getPointsToWin() {
-        return capturePoints.length * 25;
+        return capturePoints.length * (Script.isInTestMode()?5:25);
     }
 
 

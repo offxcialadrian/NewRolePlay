@@ -217,6 +217,7 @@ public class OrgSpray implements Listener {
         }
         p.playSound(p.getLocation(), Sound.BLOCK_FIRE_EXTINGUISH, .5F, 6F);
         Location loc = p.getEyeLocation();
+        Organisation f = Organisation.getOrganisation(p);
         for (double d = 0; d <= 2; d += 0.1) {
             loc.add(loc.getDirection().multiply(.1D));
             new de.newrp.API.Particle(org.bukkit.Particle.CLOUD, loc, false, .05F, .05F, .05F, 0.01F, 4).sendAll();
@@ -228,15 +229,14 @@ public class OrgSpray implements Listener {
             banner.setPatterns(Organisation.getOrganisation(p).getFraktionSpray().getPattern());
             m.remove(p.getName());
             p.sendMessage(PREFIX + "Du hast das Graffiti mit deiner Organisationsflagge übersprayt.");
+            f.addExp(Script.getRandom(5, 10));
             Script.addEXP(p, Script.getRandom(3, 5));
         } else {
             m.put(p.getName(), map);
         }
         banner.update();
 
-        Organisation f = Organisation.getOrganisation(p);
         f.sendMessage(PREFIX + p.getName() + " hat das Graffiti mit der Flagge der Organisation übersprayt.");
-        f.addExp(Script.getRandom(5, 10));
 
         Script.executeAsyncUpdate("UPDATE graffiti SET fraktion = " + f.getID() + " WHERE x = " + b.getLocation().getBlockX() + " AND y = " + b.getLocation().getBlockY() + " AND z = " + b.getLocation().getBlockZ());
         C_SPRAY.put(b.getLocation(), f);

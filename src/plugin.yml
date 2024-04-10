@@ -677,3 +677,8 @@ commands:
     description: set your chatcolor
   motd:
     description: view the motd
+  capture:
+    description: capture a player
+  kebap:
+    description: view the kebap
+    aliases: [ dönermann ]

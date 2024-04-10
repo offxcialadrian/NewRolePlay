@@ -187,7 +187,7 @@ public enum Drogen {
 
         switch (this) {
             case ECSTASY:
-                if(!p.hasPotionEffect(PotionEffectType.ABSORPTION)) p.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 400 * 20, 6 - purity.getID(), false, false));
+                if(!p.hasPotionEffect(PotionEffectType.ABSORPTION)) p.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 300 * 20, 6 - purity.getID(), false, false));
                 if (purity.getID() >= 2) {
                     p.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 20 * (5 + purity.getID()), 0, false, false));
                 }
@@ -213,7 +213,7 @@ public enum Drogen {
                     p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, 20 * (15 + purity.getID()), 0, false, false));
                 }
 
-                p.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 270 * 20 ,4 - purity.getID(), false, false));
+                if(!p.hasPotionEffect(PotionEffectType.ABSORPTION)) p.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 270 * 20 ,4 - purity.getID(), false, false));
                 p.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 2 * 20 * (14 - 2 * purity.getID()), 1, false, false));
                 break;
             case KRISTALLE:

@@ -32,12 +32,30 @@ public class TeamActivity implements CommandExecutor {
             return true;
         }
 
+        if(args.length == 1) {
+            try {
+                int days = Integer.parseInt(args[0]);
+                if(days < 1) {
+                    p.sendMessage(Messages.ERROR + "Die Anzahl der Tage muss mindestens 1 sein.");
+                    return true;
+                }
+
+                HashMap<String, Integer> activity = getActitvity(days);
+                p.sendMessage("§8[§c§lTeamActivity§8] §c»");
+                for(String name : activity.keySet()) {
+                    p.sendMessage("§8- §c" + name + " §8» §c" + activity.get(name) + " Tickets (" + (Script.getPercentage(activity.get(name), getTotalTicket(days)) + "%)"));
+                }
+            } catch (NumberFormatException e) {
+                p.sendMessage(Messages.ERROR + "Ungültige Anzahl an Tagen.");
+            }
+            return true;
+        }
+
         if(args.length != 0) {
             p.sendMessage(Messages.ERROR + "/teamactivity");
             return true;
         }
 
-        //print activity
         HashMap<String, Integer> activity = getActitvity();
         p.sendMessage("§8[§c§lTeamActivity§8] §c»");
         for(String name : activity.keySet()) {
@@ -65,10 +83,41 @@ public class TeamActivity implements CommandExecutor {
         return activity;
     }
 
+    public static HashMap<String, Integer> getActitvity(int days) {
+        HashMap<String, Integer> activity = new HashMap<>();
+        for(OfflinePlayer op : Script.getAllNRPTeam()) {
+            try (Statement stmt = main.getConnection().createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT COUNT(*) AS total FROM ticket WHERE supporterID=" + Script.getNRPID(op) + " AND closed > " + (System.currentTimeMillis() - ((long) days * 24 * 60 * 60 * 1000)))) {
+                if(rs.next()) {
+                    activity.put(Script.getNameInDB(op), rs.getInt("total"));
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        //sort by value
+        activity = Script.sortByValue(activity);
+        return activity;
+    }
+
     public static int getTotalTicket() {
         int total = 0;
         try (Statement stmt = main.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT COUNT(*) AS total FROM ticket")) {
+            if (rs.next()) {
+                total = rs.getInt("total");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return total;
+    }
+
+    public static int getTotalTicket(int days) {
+        int total = 0;
+        try (Statement stmt = main.getConnection().createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT COUNT(*) AS total FROM ticket WHERE closed > " + (System.currentTimeMillis() - ((long) days * 24 * 60 * 60 * 1000)))) {
             if (rs.next()) {
                 total = rs.getInt("total");
             }

@@ -78,7 +78,10 @@ public enum HologramList {
     DBANK_GROVE(76, "§8/§6dbank", new Location(Script.WORLD, 752, 53, 1266, 193.52417f, 13.093105f)),
     DBANK_BRATERSTWO(77, "§8/§6dbank", new Location(Script.WORLD, 556, 77, 1268, -263.88275f, 10.649914f)),
     DBANK_FALCONE(78, "§8/§6dbank", new Location(Script.WORLD, 761, 118, 847, 258.50473f, 17.865908f)),
-    HACKPOLICE(79, "§8/§6hackpolicecomputer", new Location(Script.WORLD, 448, 31, 855, -88.80542f, 24.899044f));
+    HACKPOLICE(79, "§8/§6hackpolicecomputer", new Location(Script.WORLD, 448, 31, 855, -88.80542f, 24.899044f)),
+    DOENERMANN(80, "§8/§6dönermann", new Location(Script.WORLD, 445, 64, 664, -59.75107f, 7.6497645f)),
+    DBANK_KARTELL2(81, "§8/§6dbank", new Location(Script.WORLD, 653, 69, 1122, 100.18604f, 22.990175f)),
+    BLUMEN_GANG(82, "§8/§6buy", new Location(Script.WORLD, 617, 64, 1277, 174.60092f, 15.899984f));
 
     private final int id;
     private final String name;

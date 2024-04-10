@@ -92,7 +92,7 @@ public class GetHere implements CommandExecutor {
 
     public static boolean hasOfflineTP(OfflinePlayer p) {
         try (Statement stmt = main.getConnection().createStatement();
-             ResultSet rs = stmt.executeQuery("SELECT * FROM offline_tp WHERE nrp_id=" + Script.getNRPID(p) + " ORDER BY id DESC LIMIT 1;")) {
+             ResultSet rs = stmt.executeQuery("SELECT * FROM offline_tp WHERE nrp_id=" + Script.getNRPID(p))) {
             return rs.next();
         } catch (Exception e) {
             e.printStackTrace();
@@ -102,7 +102,7 @@ public class GetHere implements CommandExecutor {
 
     public static boolean hasOfflineTP(Player p) {
         try (Statement stmt = main.getConnection().createStatement();
-             ResultSet rs = stmt.executeQuery("SELECT * FROM offline_tp WHERE nrp_id=" + Script.getNRPID(p) + " ORDER BY id DESC LIMIT 1;")) {
+             ResultSet rs = stmt.executeQuery("SELECT * FROM offline_tp WHERE nrp_id=" + Script.getNRPID(p))) {
             return rs.next();
         } catch (Exception e) {
             e.printStackTrace();

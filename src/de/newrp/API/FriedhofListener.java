@@ -2,7 +2,10 @@ package de.newrp.API;
 
 import de.newrp.Administrator.Notifications;
 import de.newrp.Administrator.SDuty;
+import de.newrp.Berufe.Beruf;
 import de.newrp.Call.Call;
+import de.newrp.Gangwar.GangwarCommand;
+import de.newrp.Organisationen.Organisation;
 import de.newrp.Player.Fesseln;
 import de.newrp.main;
 import org.bukkit.*;
@@ -41,7 +44,7 @@ public class FriedhofListener implements Listener {
 
 
         //Sekunden
-        int deathtime = 480;
+        int deathtime = (GangwarCommand.isInGangwar(p)?120:480);
 
         boolean explosion = p.getLastDamageCause().getCause() == EntityDamageEvent.DamageCause.BLOCK_EXPLOSION ||
                 p.getLastDamageCause().getCause() == EntityDamageEvent.DamageCause.ENTITY_EXPLOSION;

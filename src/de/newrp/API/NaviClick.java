@@ -55,7 +55,7 @@ public class NaviClick implements Listener {
 
                     }
                     case "§6GFB-Jobs": {
-                        Inventory inv = Bukkit.createInventory(null, 18, "§e§lNavi");
+                        Inventory inv = Bukkit.createInventory(null, 9*3, "§e§lNavi");
                         inv.setItem(0, Script.setNameAndLore(Material.COOKED_BEEF, "§6" + Navi.BURGERBRATER.getName(), (BurgerFryer.cooldown.containsKey(p.getName()) && BurgerFryer.cooldown.get(p.getName())>System.currentTimeMillis() ? "§cDu musst noch " + Script.getRemainingTime(BurgerFryer.cooldown.get(p.getName())) + " warten." :"§aDu hast derzeit keinen Cooldown")));
                         inv.setItem(1, Script.setNameAndLore(Material.ICE, "§6" + Navi.EISHALLE.getName(), (Eishalle.cooldown.containsKey(p.getName()) && Eishalle.cooldown.get(p.getName())>System.currentTimeMillis() ? "§cDu musst noch " + Script.getRemainingTime(Eishalle.cooldown.get(p.getName())) + " warten." :"§aDu hast derzeit keinen Cooldown")));
                         inv.setItem(2, Script.setNameAndLore(Material.GLASS_BOTTLE, "§6" + Navi.KELLNER.getName(), (Kellner.cooldown.containsKey(p.getName()) && Kellner.cooldown.get(p.getName())>System.currentTimeMillis() ? "§cDu musst noch " + Script.getRemainingTime(Kellner.cooldown.get(p.getName())) + " warten." :"§aDu hast derzeit keinen Cooldown")));
@@ -65,7 +65,8 @@ public class NaviClick implements Listener {
                         inv.setItem(6, Script.setNameAndLore(Material.BOWL, "§6" + Navi.TELLERWÄSCHER.getName(), (Dishwasher.cooldown.containsKey(p.getName()) && Dishwasher.cooldown.get(p.getName())>System.currentTimeMillis() ? "§cDu musst noch " + Script.getRemainingTime(Dishwasher.cooldown.get(p.getName())) + " warten." :"§aDu hast derzeit keinen Cooldown")));
                         inv.setItem(7, Script.setNameAndLore(Material.SADDLE, "§6" + Navi.TRANSPORT.getName(), (Transport.cooldown.containsKey(p.getName()) && Transport.cooldown.get(p.getName())>System.currentTimeMillis() ? "§cDu musst noch " + Script.getRemainingTime(Transport.cooldown.get(p.getName())) + " warten." :"§aDu hast derzeit keinen Cooldown")));
                         inv.setItem(8, Script.setNameAndLore(Material.BEEHIVE, "§6" + Navi.IMKER.getName(), (Imker.cooldown.containsKey(p.getName()) && Imker.cooldown.get(p.getName())>System.currentTimeMillis() ? "§cDu musst noch " + Script.getRemainingTime(Imker.cooldown.get(p.getName())) + " warten." :"§aDu hast derzeit keinen Cooldown")));
-                        inv.setItem(13, Script.setName(Material.REDSTONE, "§cZurück"));
+                        inv.setItem(9, Script.setNameAndLore(Material.COOKED_COD, "§6" + Navi.DOENERBUDE.getName(), (Kebap.cooldown.containsKey(p.getName()) && Kebap.cooldown.get(p.getName())>System.currentTimeMillis() ? "§cDu musst noch " + Script.getRemainingTime(Kebap.cooldown.get(p.getName())) + " warten." :"§aDu hast derzeit keinen Cooldown")));
+                        inv.setItem(22, Script.setName(Material.REDSTONE, "§cZurück"));
                         Script.fillInv(inv);
                         p.openInventory(inv);
                         break;

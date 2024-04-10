@@ -1,9 +1,8 @@
 package de.newrp.Waffen;
 
-import de.newrp.API.Debug;
-import de.newrp.API.Friedhof;
-import de.newrp.API.Health;
-import de.newrp.API.Script;
+import de.newrp.API.*;
+import de.newrp.Berufe.Beruf;
+import de.newrp.Organisationen.Organisation;
 import de.newrp.Player.AFK;
 import org.bukkit.Material;
 import org.bukkit.entity.Arrow;
@@ -45,6 +44,12 @@ public class WaffenDamage implements Listener {
 
         if (arrow.getShooter() != null) {
             Player p1 = (Player) arrow.getShooter();
+            if (Organisation.hasOrganisation(p) && Organisation.hasOrganisation(p1) && Organisation.getOrganisation(p) == Organisation.getOrganisation(p1)) {
+                Organisation.getOrganisation(p).sendMessage(Messages.INFO + "§c§lMATESHOT! §6" + Script.getName(p1) + " §fhat §6" + Script.getName(p) + " §fgetötet.");
+            }
+            if (Beruf.hasBeruf(p) && Beruf.hasBeruf(p1) && Beruf.getBeruf(p) == Beruf.getBeruf(p1)) {
+                Beruf.getBeruf(p).sendMessage(Messages.INFO + "§c§lMATESHOT! §6" + Script.getName(p1) + " §fhat §6" + Script.getName(p) + " §fgetötet.");
+            }
         }
     }
 
