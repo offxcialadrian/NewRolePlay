@@ -546,6 +546,7 @@ public class main extends JavaPlugin {
         pm.registerEvents(new GangwarCommand(), this);
         pm.registerEvents(new Capture(), this);
         pm.registerEvents(new Kebap(), this);
+        //pm.registerEvents(new MuscleDamage(), this);
 
         new AsyncHealth().runTaskTimerAsynchronously(this, 120 * 20L, 120 * 20L);
         new PayDay().runTaskTimerAsynchronously(this, 60 * 20L, 60 * 20L);

@@ -17,7 +17,7 @@ public class Loan implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender cs, @NotNull Command cmd, @NotNull String s, @NotNull String[] args) {
         Player p = (Player) cs;
-        if(!Beruf.hasBeruf(p)) {
+        if (!Beruf.hasBeruf(p)) {
             p.sendMessage(Messages.NO_PERMISSION);
             return true;
         }
@@ -27,18 +27,18 @@ public class Loan implements CommandExecutor {
             return true;
         }
 
-        if(!Beruf.isLeader(p, true)) {
+        if (!Beruf.isLeader(p, true)) {
             p.sendMessage(Messages.NO_PERMISSION);
             return true;
         }
 
-        if(args.length != 4) {
+        if (args.length != 4) {
             p.sendMessage(Messages.ERROR + "/kredit [Name] [Dauer in Tagen] [Zinssatz] [Summe]");
             return true;
         }
 
         Player tg = Script.getPlayer(args[0]);
-        if(tg == null) {
+        if (tg == null) {
             p.sendMessage(Messages.PLAYER_NOT_FOUND);
             return true;
         }
@@ -56,22 +56,22 @@ public class Loan implements CommandExecutor {
             return true;
         }
 
-        if(days < 1 || days > 365) {
+        if (days < 1 || days > 365) {
             p.sendMessage(Messages.ERROR + "Die Dauer muss zwischen 1 und 365 Tagen liegen.");
             return true;
         }
 
-        if(interest < 0 || interest > 100) {
+        if (interest < 0 || interest > 100) {
             p.sendMessage(Messages.ERROR + "Der Zinssatz muss zwischen 0 und 100 liegen.");
             return true;
         }
 
-        if(amount < 1 || amount > Stadtkasse.getStadtkasse()) {
+        if (amount < 1 || amount > Stadtkasse.getStadtkasse()) {
             p.sendMessage(Messages.ERROR + "Der Betrag muss zwischen 1€ und " + Stadtkasse.getStadtkasse() + "€ liegen.");
             return true;
         }
 
-        if(Stadtkasse.getStadtkasse() < amount) {
+        if (Stadtkasse.getStadtkasse() < amount) {
             p.sendMessage(Messages.ERROR + "Die Stadtkasse hat nicht genügend Geld.");
             return true;
         }

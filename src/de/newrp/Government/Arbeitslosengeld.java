@@ -3,6 +3,8 @@ package de.newrp.Government;
 import de.newrp.API.*;
 import de.newrp.Berufe.Abteilung;
 import de.newrp.Berufe.Beruf;
+import de.newrp.Player.Bank;
+import de.newrp.Player.Banken;
 import de.newrp.main;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -147,6 +149,11 @@ public class Arbeitslosengeld implements CommandExecutor {
 
         if (!Licenses.PERSONALAUSWEIS.hasLicense(Script.getNRPID(p))) {
             p.sendMessage(Messages.ERROR + "Du benötigst einen Personalausweis.");
+            return true;
+        }
+
+        if (!Banken.hasBank(p)) {
+            p.sendMessage(Messages.ERROR + "Du benötigst ein Bankkonto.");
             return true;
         }
 

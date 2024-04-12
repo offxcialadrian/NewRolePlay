@@ -93,14 +93,14 @@ public class Friedhof {
         Debug.debug("loc: " + loc);
         p.teleport(loc);
 
-        p.getKiller().sendMessage(Messages.INFO + "§c§lKILL! §6" + Script.getName(p) + " §fdu hast getötet!");
+        /*p.getKiller().sendMessage(Messages.INFO + "§c§lKILL! §6" + Script.getName(p) + " §fdu hast getötet!");
 
         if (Organisation.hasOrganisation(p) && Organisation.hasOrganisation(p.getKiller()) && Organisation.getOrganisation(p) == Organisation.getOrganisation(p.getKiller())) {
             Organisation.getOrganisation(p).sendMessage(Messages.INFO + "§c§lMATEKILL! §6" + Script.getName(p.getKiller()) + " §fhat §6" + Script.getName(p) + " §fgetötet.");
         }
         if (Beruf.hasBeruf(p) && Beruf.hasBeruf(p.getKiller()) && Beruf.getBeruf(p) == Beruf.getBeruf(p.getKiller())) {
             Beruf.getBeruf(p).sendMessage(Messages.INFO + "§c§lMATEKILL! §6" + Script.getName(p.getKiller()) + " §fhat §6" + Script.getName(p) + " §fgetötet.");
-        }
+        }*/
 
         p.setPlayerWeather(WeatherType.DOWNFALL);
         Script.resetPotionEffects(p);

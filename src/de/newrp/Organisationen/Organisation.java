@@ -26,7 +26,7 @@ public enum Organisation {
     BRATERSTWO(3, "Braterstwo",  true, false, false, 143, new Location(Script.WORLD, 556, 77, 1268, -263.88275f, 10.649914f), TeamspeakServerGroup.BRATERSTWO,  new ForumGroup[]{ForumGroup.BRATERSTWO, ForumGroup.BRATERSTWO_LEADER}, OrgSpray.FraktionSpray.BRATERSTWO),
     CORLEONE(4, "Corleone-Familie",  true, false, false, 131, new Location(Script.WORLD, 183, 104, 479, -268.55347f, 14.808363f), TeamspeakServerGroup.CORLEONE,  new ForumGroup[]{ForumGroup.CORLEONE, ForumGroup.CORLEONE_LEADER}, OrgSpray.FraktionSpray.CORLEONE),
     GROVE(5, "Grove-Street",  true, false, false, 170, new Location(Script.WORLD, 752, 54, 1266, 193.52417f, 13.093105f), TeamspeakServerGroup.GROVE,  new ForumGroup[]{ForumGroup.GROVE, ForumGroup.GROVE_LEADER}, OrgSpray.FraktionSpray.GROVE),
-    TEST(6, "Sinaloa-Kartell",  true, false, false, 406, new Location(Script.WORLD, 653, 70, 1122, 100.18604f, 22.990175f), TeamspeakServerGroup.SINOLA_KARTELL, new ForumGroup[]{ForumGroup.SINOLA_MEMBER,ForumGroup.SINOLA_LEADER}, null);
+    SINALOA(6, "Sinaloa-Kartell",  true, false, false, 406, new Location(Script.WORLD, 653, 70, 1122, 100.18604f, 22.990175f), TeamspeakServerGroup.SINOLA_KARTELL, new ForumGroup[]{ForumGroup.SINOLA_MEMBER,ForumGroup.SINOLA_LEADER}, null);
 
     private final String name;
     int id;
