@@ -1,6 +1,7 @@
 package de.newrp.Forum;
 
 
+import de.newrp.API.Debug;
 import de.newrp.API.Messages;
 import de.newrp.API.Rank;
 import de.newrp.API.Script;

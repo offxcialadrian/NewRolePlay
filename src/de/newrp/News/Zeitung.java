@@ -173,10 +173,10 @@ public class Zeitung implements CommandExecutor, Listener {
                 cache = e.getNewBookMeta();
             }
             if (e.getNewBookMeta().getPageCount() > 5) {
-                    Inventory inv = p.getServer().createInventory(null, 9, "§6Zeitung");
-                    inv.setItem(3, Script.setName(new ItemStack(Material.EMERALD_BLOCK), "§aFertig"));
-                    inv.setItem(5, Script.setName(new ItemStack(Material.REDSTONE_BLOCK), "§cNicht fertig"));
-                    p.openInventory(inv);
+                Inventory inv = p.getServer().createInventory(null, 9, "§6Zeitung");
+                inv.setItem(3, Script.setName(new ItemStack(Material.EMERALD_BLOCK), "§aFertig"));
+                inv.setItem(5, Script.setName(new ItemStack(Material.REDSTONE_BLOCK), "§cNicht fertig"));
+                p.openInventory(inv);
             } else {
                 e.setSigning(false);
                 p.sendMessage(prefix + "Die Zeitung ist zu kurz.");
@@ -218,8 +218,6 @@ public class Zeitung implements CommandExecutor, Listener {
             e.printStackTrace();
         }
     }
-
-
 
     @EventHandler
     public void onClick(InventoryClickEvent e) {

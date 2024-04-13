@@ -1255,7 +1255,10 @@ public class Script {
     }
 
     public static boolean isValidPassword(String password) {
-        return password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$");
+        String ePattern = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!])(?=\\S+$).{8,}$";
+        java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);
+        java.util.regex.Matcher m = p.matcher(password);
+        return m.matches();
     }
 
     public static Player getPlayer(String name) {

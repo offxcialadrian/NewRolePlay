@@ -403,7 +403,7 @@ public class main extends JavaPlugin {
         getCommand("drogenbank").setExecutor(new Drogenbank());
         getCommand("addorgdoor").setExecutor(new AddOrgDoor());
         getCommand("destroykoms").setExecutor(new DestroyKoms());
-        getCommand("restorezeitung").setExecutor(new RestoreZeitung());
+        //getCommand("restorezeitung").setExecutor(new RestoreZeitung());
         getCommand("teamactivity").setExecutor(new TeamActivity());
         getCommand("bussgeld").setExecutor(new Bussgeld());
         getCommand("bankraub").setExecutor(new Bankraub());

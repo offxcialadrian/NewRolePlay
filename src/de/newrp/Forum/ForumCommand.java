@@ -1,7 +1,6 @@
 package de.newrp.Forum;
 
 import de.newrp.API.Achievement;
-import de.newrp.API.Debug;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.main;
@@ -19,8 +18,8 @@ public class ForumCommand implements CommandExecutor {
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         Player p = (Player) cs;
 
-        if(args.length == 1 && args[0].equalsIgnoreCase("delete")) {
-            if(Forum.getForumID(Script.getNRPID(p)) != 0) {
+        if (args.length == 1 && args[0].equalsIgnoreCase("delete")) {
+            if (Forum.getForumID(Script.getNRPID(p)) != 0) {
                 p.sendMessage(Forum.prefix + "§cDu bist bereits mit dem Forum verbunden.");
                 return true;
             }
@@ -30,8 +29,8 @@ public class ForumCommand implements CommandExecutor {
             return true;
         }
 
-        if(args.length == 1 && args[0].equalsIgnoreCase("sync")) {
-            if(Forum.getForumID(Script.getNRPID(p)) == 0) {
+        if (args.length == 1 && args[0].equalsIgnoreCase("sync")) {
+            if (Forum.getForumID(Script.getNRPID(p)) == 0) {
                 p.sendMessage(Messages.ERROR + "Du bist nicht mit dem Forum verbunden.");
                 return true;
             }

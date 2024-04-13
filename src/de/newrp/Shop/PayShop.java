@@ -9,12 +9,11 @@ import de.newrp.House.House;
 import de.newrp.House.HouseAddon;
 import de.newrp.Medic.Medikamente;
 import de.newrp.Medic.Rezept;
-import de.newrp.News.Zeitung;
 import de.newrp.Player.Banken;
 import de.newrp.Player.Mobile;
 import de.newrp.Waffen.Waffen;
 import de.newrp.Waffen.Weapon;
-import org.bukkit.Bukkit;
+import de.newrp.main;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -22,11 +21,16 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Collections;
 import java.util.HashMap;
 
+import static de.newrp.News.Zeitung.getLatestZeitungID;
 import static de.newrp.Waffen.GetGun.haveGun;
 
 public class PayShop implements Listener {
@@ -44,12 +48,12 @@ public class PayShop implements Listener {
         meta.setLore(Collections.emptyList());
         i.setItemMeta(meta);
 
-        if(type == PaymentType.BANK && !s.acceptCard()) {
+        if (type == PaymentType.BANK && !s.acceptCard()) {
             BuyClick.sendMessage(p, "Wir akzeptieren leider keine Kartenzahlung.");
             return;
         }
 
-        if(!Banken.hasBank(p)) {
+        if (!Banken.hasBank(p)) {
             p.sendMessage(Messages.ERROR + "Du hast kein Bankkonto.");
             p.sendMessage(Messages.INFO + "Erstelle ein Bankkonto mit §8/§6bankkonto §rin der Zentralbank");
             return;
@@ -66,7 +70,7 @@ public class PayShop implements Listener {
         }
 
         HouseAddon addon = HouseAddon.getHausAddonByName(ChatColor.stripColor(si.getName()));
-        if(addon != null && !House.hasHouse(Script.getNRPID(p))) {
+        if (addon != null && !House.hasHouse(Script.getNRPID(p))) {
             p.sendMessage(Messages.ERROR + "Du hast kein Haus.");
             return;
         }
@@ -194,7 +198,8 @@ public class PayShop implements Listener {
                     Weapon.PISTOLE.addMunition(Script.getNRPID(p), Weapon.PISTOLE.getMagazineSize());
                     break;
                 case Zeitung:
-                    p.getInventory().addItem(Zeitung.zeitung);
+                    //p.getInventory().addItem(Zeitung.zeitung);
+                    Zeitung(p);
                     Beruf.Berufe.NEWS.addKasse(si.getBuyPrice());
                     break;
                 case HANDY_REPAIR:
@@ -245,7 +250,7 @@ public class PayShop implements Listener {
                         Stadtkasse.removeStadtkasse(price, "Kostenübernahme durch Krankenversicherung an " + Script.getName(p));
                     }
 
-                    if(Rezept.hasRezept(p, m)) Rezept.removeRezept(p, m);
+                    if (Rezept.hasRezept(p, m)) Rezept.removeRezept(p, m);
                     break;
                 case EINZELFAHRASUSWEIS:
                     p.getInventory().addItem(new ItemBuilder(Material.PAPER).setName("§6UBahn-Ticket [Einzelfahrausweis]").setLore("Verbleibende Fahrten: 1").build());
@@ -285,7 +290,7 @@ public class PayShop implements Listener {
 
         Script.removeMoney(p, type, price);
         double mwst = Steuern.Steuer.MEHRWERTSTEUER.getPercentage();
-        int add = price - (int) Script.getPercent(mwst, price-(si.getBuyPrice()*amount)) + (type == PaymentType.BANK ? -(int) Script.getPercent(2, price) : 0);
+        int add = price - (int) Script.getPercent(mwst, price - (si.getBuyPrice() * amount)) + (type == PaymentType.BANK ? -(int) Script.getPercent(2, price) : 0);
         if (s.getOwner() > 0) {
             s.addKasse(add);
             s.removeKasse(si.getBuyPrice());
@@ -298,7 +303,7 @@ public class PayShop implements Listener {
             Log.NORMAL.write(p, "hat " + si.getName() + " für " + price + "€ gekauft.");
         }
         BuyClick.sendMessage(p, "Vielen Dank für Ihren Einkauf!");
-        Stadtkasse.addStadtkasse((int) Script.getPercent(mwst, price-si.getBuyPrice()*amount), "Mehrwertsteuer aus dem Verkauf von " + si.getName() + " (Shop: " + s.getPublicName() + ")", Steuern.Steuer.MEHRWERTSTEUER);
+        Stadtkasse.addStadtkasse((int) Script.getPercent(mwst, price - si.getBuyPrice() * amount), "Mehrwertsteuer aus dem Verkauf von " + si.getName() + " (Shop: " + s.getPublicName() + ")", Steuern.Steuer.MEHRWERTSTEUER);
 
         Achievement.EINKAUFEN.grant(p);
         Buy.amount.remove(p.getName());
@@ -330,6 +335,26 @@ public class PayShop implements Listener {
             return;
         }
 
+    }
+
+    private static void Zeitung(Player p) {
+        try (Statement stmt = main.getConnection().createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT * FROM zeitung WHERE id=" + getLatestZeitungID())) {
+            if (rs.next()) {
+                String[] pages = rs.getString("content").split("/\\{new_page}/");
+                ItemStack book = new ItemStack(Material.WRITTEN_BOOK);
+                BookMeta bm = (BookMeta) book.getItemMeta();
+                bm.setGeneration(null);
+                bm.setAuthor("News Redaktion");
+                bm.setDisplayName("Zeitung [" + getLatestZeitungID() + ". Auflage]");
+                bm.setTitle("Zeitung [" + getLatestZeitungID() + ". Auflage]");
+                bm.setPages(pages);
+                book.setItemMeta(bm);
+                p.getInventory().addItem(book);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
 
