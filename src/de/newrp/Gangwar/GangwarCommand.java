@@ -15,6 +15,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -299,6 +300,11 @@ public class GangwarCommand implements CommandExecutor, Listener {
         if (!isInGangwar(p)) return;
         giveGangwarEquip(p);
         p.sendMessage(PREFIX + "Deine Organisation befindet sich im Gangwar!");
+    }
+
+    @EventHandler
+    public void onQuit(PlayerQuitEvent e) {
+        Cache.loadInventory(e.getPlayer());
     }
 
     public static ArrayList<Player> getMember(GangwarZones zone) {

@@ -91,40 +91,40 @@ public class Reinforcement implements CommandExecutor {
             return true;
         }
 
-        if(Beruf.hasBeruf(p)) {
-            if(!Duty.isInDuty(p)) {
+        if (Beruf.hasBeruf(p)) {
+            if (!Duty.isInDuty(p)) {
                 p.sendMessage(Messages.ERROR + "Du musst im Dienst sein.");
                 return true;
             }
         }
 
-        if(!Mobile.hasPhone(p)) {
+        if (!Mobile.hasPhone(p)) {
             p.sendMessage(Messages.ERROR + "Du benötigst ein Handy.");
             return true;
         }
 
-        if(!Mobile.mobileIsOn(p)) {
+        if (!Mobile.mobileIsOn(p)) {
             p.sendMessage(Messages.ERROR + "Dein Handy ist ausgeschaltet.");
             return true;
         }
 
         if (args.length == 2) {
             if (args[0].equals("omw")) {
-                Player tg = Bukkit.getPlayer(args[1]);
-                if(tg == null) {
+                Player tg = Script.getPlayer(args[1]);
+                if (tg == null) {
                     p.sendMessage(Messages.PLAYER_NOT_FOUND);
                     return true;
                 }
 
-                if(!new_reinforcement.containsKey(tg.getName())) {
+                if (!new_reinforcement.containsKey(tg.getName())) {
                     p.sendMessage(Messages.ERROR + "Es wurde kein Verstärkungsruf von " + Script.getName(tg) + " gesendet.");
                     return true;
                 }
 
                 new Route(p.getName(), Script.getNRPID(p), p.getLocation(), new_reinforcement.get(tg.getName())).start();
-                if(Organisation.hasOrganisation(tg)) {
+                if (Organisation.hasOrganisation(tg)) {
                     Organisation org = Organisation.getOrganisation(tg);
-                    if(org.getMembers().contains(tg)) {
+                    if (org.getMembers().contains(tg)) {
                         for (Player member : org.getMembers()) {
                             member.sendMessage("§7➲ §3" + Organisation.getRankName(p) + " " + Script.getName(p) + " kommt zum Verstärkungsruf von " + Script.getName(tg) + "! §7" + "(ETA: " + calcETA(p.getLocation().distance(new_reinforcement.get(tg.getName()))) + " Sekunden)");
                         }
@@ -135,15 +135,12 @@ public class Reinforcement implements CommandExecutor {
                 if (reinf_type.get(tg.getName()).isDChat()) {
 
                     for (Beruf.Berufe berufe : Beruf.Berufe.values()) {
-                        if(berufe != Beruf.Berufe.RETTUNGSDIENST && berufe != Beruf.Berufe.POLICE && berufe != Beruf.Berufe.GOVERNMENT) continue;
-                        for (Player member : berufe.getMembers()) {
-                            member.sendMessage("§7➲ §3" + Beruf.getBeruf(p).getName() + " " + Script.getName(p) + " kommt zum Verstärkungsruf von " + Script.getName(tg) + "! §7" + "(ETA: " + calcETA(p.getLocation().distance(new_reinforcement.get(tg.getName()))) + " Sekunden)");
-                        }
+                        if (berufe != Beruf.Berufe.RETTUNGSDIENST && berufe != Beruf.Berufe.POLICE && berufe != Beruf.Berufe.GOVERNMENT)
+                            continue;
+                        berufe.sendMessage("§7➲ §3" + Beruf.getBeruf(p).getName() + " " + Script.getName(p) + " kommt zum Verstärkungsruf von " + Script.getName(tg) + "! §7" + "(ETA: " + calcETA(p.getLocation().distance(new_reinforcement.get(tg.getName()))) + " Sekunden)");
                     }
                 } else {
-                    for (Player member : beruf.getMembers()) {
-                        member.sendMessage("§7➲ §3" + Beruf.getAbteilung(p).getName() + " " + Script.getName(p) + " kommt zum Verstärkungsruf von " + Script.getName(tg) + "! §7" + "(ETA: " + calcETA(p.getLocation().distance(new_reinforcement.get(tg.getName()))) + " Sekunden)");
-                    }
+                    beruf.sendMessage("§7➲ §3" + Beruf.getAbteilung(p).getName() + " " + Script.getName(p) + " kommt zum Verstärkungsruf von " + Script.getName(tg) + "! §7" + "(ETA: " + calcETA(p.getLocation().distance(new_reinforcement.get(tg.getName()))) + " Sekunden)");
                 }
             }
             return true;
@@ -158,9 +155,9 @@ public class Reinforcement implements CommandExecutor {
             Types type = Types.NORMAL;
             new_reinforcement.put(p.getName(), p.getLocation());
             reinf_type.put(p.getName(), type);
-            if(Organisation.hasOrganisation(p)) {
+            if (Organisation.hasOrganisation(p)) {
                 Organisation org = Organisation.getOrganisation(p);
-                if(org.getMembers().contains(p)) {
+                if (org.getMembers().contains(p)) {
                     for (Player member : org.getMembers()) {
                         member.sendMessage("§c§l" + type.getName() + " §3" + Organisation.getRankName(p) + " " + Script.getName(p) + " benötigt Unterstützung! §8➥ §7" + Navi.getNextNaviLocation(p.getLocation()).getName() + " §7(" + (int) member.getLocation().distance(p.getLocation()) + "m)");
                         OnMyWayLink(member, p);
@@ -187,9 +184,9 @@ public class Reinforcement implements CommandExecutor {
         new_reinforcement.put(p.getName(), p.getLocation());
         reinf_type.put(p.getName(), type);
 
-        if(Organisation.hasOrganisation(p)) {
+        if (Organisation.hasOrganisation(p)) {
             Organisation org = Organisation.getOrganisation(p);
-            if(org.getMembers().contains(p)) {
+            if (org.getMembers().contains(p)) {
                 for (Player member : org.getMembers()) {
                     member.sendMessage("§c§l" + type.getName() + " §3" + org.getName() + " " + Script.getName(p) + " benötigt Unterstützung! §8➥ §7" + Navi.getNextNaviLocation(p.getLocation()).getName() + " §7(" + (int) member.getLocation().distance(p.getLocation()) + "m)");
                     OnMyWayLink(member, p);
@@ -214,7 +211,7 @@ public class Reinforcement implements CommandExecutor {
                 showRoute(member, p);
             }
         } else {
-            for(Player member : beruf.getMembers()) {
+            for (Player member : beruf.getMembers()) {
                 member.sendMessage("§c§l" + type.getName() + " §3" + Beruf.getAbteilung(p).getName() + " " + Script.getName(p) + " benötigt Unterstützung! §8➥ §7" + Navi.getNextNaviLocation(p.getLocation()).getName() + " §7(" + (int) member.getLocation().distance(p.getLocation()) + "m)");
                 OnMyWayLink(member, p);
                 showRoute(member, p);

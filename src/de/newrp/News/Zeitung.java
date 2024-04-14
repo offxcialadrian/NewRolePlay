@@ -56,7 +56,7 @@ public class Zeitung implements CommandExecutor, Listener {
         StringBuilder text = new StringBuilder();
         for (String seite : item.getPages()) {
             if (seite != null) {
-                text.append(ChatColor.stripColor(seite)).append("/{new_page}/");
+                text.append(seite).append("/{new_page}/");
             }
         }
         Debug.debug("text: " + text.toString());

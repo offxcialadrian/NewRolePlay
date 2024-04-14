@@ -7,6 +7,7 @@ import de.newrp.Berufe.Abteilung;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Government.Loan;
 import de.newrp.Government.Stadtkasse;
+import de.newrp.Organisationen.LabBreakIn;
 import de.newrp.Organisationen.Organisation;
 import de.newrp.Player.AFK;
 import de.newrp.Player.Hotel;
@@ -40,6 +41,7 @@ public class AsyncHour extends BukkitRunnable {
         //Aktie.update();
         Schwarzmarkt.spawnRandom();
         Hologram.reload();
+        LabBreakIn.repairDoors(false);
 
         try (Statement stmt = main.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM loans WHERE time>" + System.currentTimeMillis())) {
