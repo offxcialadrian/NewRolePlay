@@ -62,7 +62,7 @@ public class Bussgeld implements CommandExecutor {
             return true;
         }
 
-        if(!SDuty.isSDuty(tg)) {
+        if(SDuty.isSDuty(tg)) {
             p.sendMessage(Messages.ERROR + "Der Spieler ist im Supporter-Dienst.");
             return true;
         }

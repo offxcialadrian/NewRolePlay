@@ -33,28 +33,28 @@ public class Equip implements CommandExecutor, Listener {
         HANDSCHELLEN(3, "Handschellen", Script.setName(new ItemStack(Material.LEAD, 2), "§7Handschellen"), 50, 0, null, Beruf.Berufe.POLICE, true),
         TAZER(4, "Tazer", Script.tazer(), 250, 0, null, Beruf.Berufe.POLICE, true),
         DONUT(5, "Donut", new ItemBuilder(Material.COOKIE).setAmount(16).setName("§7Donut").build(), 1, 0, null, Beruf.Berufe.POLICE, false),
-        MP7(6, "Striker", new ItemBuilder(Material.GOLDEN_HORSE_ARMOR).setName("§7Striker").build(), 800, 0, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE, false),
-        EINSATZSCHILD(7, "Einsatzschild", Script.einsatzschild(1), 1000, 0, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE, true),
-        EINSAZTZSCHILD_2(8, "Schweres Einsatzschild", Script.einsatzschild(2), 1700, 0, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE, true),
-        RAUCHGRANATE(9, "Rauchgranate", Script.rauchgranate(), 300, 0, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE, true),
-        FLASHBANG(10, "Flashbang", Script.flashbang(), 250, 0, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE, true),
-        FALLSCHIRM(11,"Fallschirm", Script.fallschirm(), 500, 0, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE, false),
+        MP7(6, "Striker", new ItemBuilder(Material.GOLDEN_HORSE_ARMOR).setName("§7Striker").build(), 800, 0, Abteilung.Abteilungen.POLIZEIDIREKTOR, Beruf.Berufe.POLICE, false),
+        EINSATZSCHILD(7, "Einsatzschild", Script.einsatzschild(1), 1000, 0, Abteilung.Abteilungen.POLIZEIDIREKTOR, Beruf.Berufe.POLICE, true),
+        EINSAZTZSCHILD_2(8, "Schweres Einsatzschild", Script.einsatzschild(2), 1700, 0, Abteilung.Abteilungen.POLIZEIDIREKTOR, Beruf.Berufe.POLICE, true),
+        RAUCHGRANATE(9, "Rauchgranate", Script.rauchgranate(), 300, 0, Abteilung.Abteilungen.POLIZEIDIREKTOR, Beruf.Berufe.POLICE, true),
+        FLASHBANG(10, "Flashbang", Script.flashbang(), 250, 0, Abteilung.Abteilungen.POLIZEIDIREKTOR, Beruf.Berufe.POLICE, true),
+        FALLSCHIRM(11,"Fallschirm", Script.fallschirm(), 500, 0, Abteilung.Abteilungen.POLIZEIDIREKTOR, Beruf.Berufe.POLICE, false),
         ZEITUNG(12, "Buch und Stift", Script.setName(new ItemStack(Material.WRITABLE_BOOK), "§7Buch und Stift"), 20, 0, Abteilung.Abteilungen.JOURNALIST, Beruf.Berufe.NEWS, false),
         VERBAND(13, "Verband", new ItemBuilder(Material.PAPER).setName("§7Verband").setAmount(5).build(), 50, 0, null, Beruf.Berufe.RETTUNGSDIENST, true),
         GIPS(14, "Gips", Script.setName(new ItemStack(Material.PAPER), "§7Gips"), 50, 0, null, Beruf.Berufe.RETTUNGSDIENST, true),
-        SCHWERE_SCHUTZWESTE(15,"Schwere Schutzweste", Script.kevlar(2), 2490, 0, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE, true),
+        SCHWERE_SCHUTZWESTE(15,"Schwere Schutzweste", Script.kevlar(2), 2490, 0, Abteilung.Abteilungen.POLIZEIDIREKTOR, Beruf.Berufe.POLICE, true),
         SPRITZE(16, "Spritze", Script.setName(new ItemStack(Material.END_ROD), "§7Spritze"), 10, 0, null, Beruf.Berufe.RETTUNGSDIENST, true),
         HUSTEN_IMPFUNG(17,"Husten Impfung", Script.setName(new ItemStack(Material.END_ROD), "§7Husten Impfung"), 50, 0, null, Beruf.Berufe.RETTUNGSDIENST, true),
         KAFFEE(18, "Kaffee", Script.setName(new ItemStack(Material.POTION), "§7Kaffee"), 2, 0, null, Beruf.Berufe.NEWS, false),
         BROT(19, "Brot", new ItemBuilder(Material.BREAD).setAmount(16).setName("§7Brot").build(), 3, 0, null, Beruf.Berufe.RETTUNGSDIENST, false),
         KEKSE(20, "Keks",new ItemBuilder(Material.COOKIE).setAmount(16).setName("§7Keks").build(), 1, 0, null, Beruf.Berufe.NEWS, false),
-        SNIPER(21, Weapon.SNIPER.getName(), Weapon.SNIPER.getWeapon(), 2900, 30, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE, true),
-        DROHNE_COPS(22, "Drohne [Polizei]", new ItemBuilder(Material.WITHER_SKELETON_SKULL).setName("§7Drohne [Polizei]").build(), 1000, 0, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE, true),
+        SNIPER(21, Weapon.SNIPER.getName(), Weapon.SNIPER.getWeapon(), 2900, 30, Abteilung.Abteilungen.POLIZEIDIREKTOR, Beruf.Berufe.POLICE, true),
+        DROHNE_COPS(22, "Drohne [Polizei]", new ItemBuilder(Material.WITHER_SKELETON_SKULL).setName("§7Drohne [Polizei]").build(), 1000, 0, Abteilung.Abteilungen.POLIZEIDIREKTOR, Beruf.Berufe.POLICE, true),
         DROHNE_NEWS(23, "Drohne [News]", new ItemBuilder(Material.WITHER_SKELETON_SKULL).setName("§7Drohne [News]").build(), 1500, 0, Abteilung.Abteilungen.CHEFREDAKTION, Beruf.Berufe.NEWS, true),
         DROHNE_RETTUNGSDIENST(24, "Drohne [Rettungsdienst]", new ItemBuilder(Material.WITHER_SKELETON_SKULL).setName("§7Drohne [Rettungsdienst]").build(), 1000, 0, Abteilung.Abteilungen.NOTFALLMEDIZIN, Beruf.Berufe.RETTUNGSDIENST, true),
 
         MUNITION_PISTOLE(25, Weapon.PISTOLE.getAmmoType().getName(), new ItemBuilder(Material.ARROW).setName(Weapon.PISTOLE.getAmmoType().getName()).setAmount(Weapon.PISTOLE.getMagazineSize()).build(), 10, 0, null, Beruf.Berufe.POLICE, true),
-        MUNITION_MP7(26, Weapon.MP7.getAmmoType().getName(), new ItemBuilder(Material.ARROW).setName(Weapon.MP7.getAmmoType().getName()).setAmount(Weapon.MP7.getMagazineSize()).build(), 15, 0, Abteilung.Abteilungen.SEK, Beruf.Berufe.POLICE, true),
+        MUNITION_MP7(26, Weapon.MP7.getAmmoType().getName(), new ItemBuilder(Material.ARROW).setName(Weapon.MP7.getAmmoType().getName()).setAmount(Weapon.MP7.getMagazineSize()).build(), 15, 0, Abteilung.Abteilungen.POLIZEIDIREKTOR, Beruf.Berufe.POLICE, true),
         //BROT_2(27, "Brot", new ItemBuilder(Material.BREAD).setAmount(16).setName("§7Brot").build(), 3, 0, null, Beruf.Berufe.GOVERNMENT, false),
         TRINKWASSER(28, "Trinkwasser", new ItemBuilder(Material.POTION).setName("§7Trinkwasser").build(), 2, 0, null, Beruf.Berufe.RETTUNGSDIENST, false),
         //TRINKWASSER_MEDIC(29, "Trinkwasser", new ItemBuilder(Material.POTION).setName("§7Trinkwasser").build(), 2, 0, null, Beruf.Berufe.RETTUNGSDIENST, false),
@@ -169,7 +169,7 @@ public class Equip implements CommandExecutor, Listener {
         }
 
         Beruf.Berufe beruf = Beruf.getBeruf(p);
-        Inventory inv = Bukkit.createInventory(null, (beruf == Beruf.Berufe.POLICE && Beruf.getAbteilung(p) == Abteilung.Abteilungen.SEK ? 18 : 9), "§8» §7Equip");
+        Inventory inv = Bukkit.createInventory(null, (beruf == Beruf.Berufe.POLICE && Beruf.getAbteilung(p) == Abteilung.Abteilungen.POLIZEIDIREKTOR ? 18 : 9), "§8» §7Equip");
 
         if (!beruf.hasEquip()) {
             p.sendMessage(Messages.ERROR + "Dein Beruf hat kein Equip.");

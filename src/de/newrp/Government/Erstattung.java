@@ -94,8 +94,8 @@ public class Erstattung implements CommandExecutor {
         }
 
         if (Beruf.getBeruf(p) == Beruf.Berufe.POLICE) {
-            if (Beruf.getAbteilung(p) != Abteilung.Abteilungen.KRIPO) {
-                p.sendMessage(Messages.ERROR + "Nur die Kriminalpolizei kann Erstattungen aufnehmen.");
+            if (Beruf.getAbteilung(p) != Abteilung.Abteilungen.L_POLIZEIDIREKTOR) {
+                p.sendMessage(Messages.ERROR + "Nur der Leitende Polizeidirektor kann Erstattungen aufnehmen.");
                 return true;
             }
 

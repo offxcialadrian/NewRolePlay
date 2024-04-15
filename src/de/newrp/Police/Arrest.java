@@ -1,20 +1,19 @@
 package de.newrp.Police;
 
-import de.newrp.API.*;
+import de.newrp.API.FahndungLog;
+import de.newrp.API.Log;
+import de.newrp.API.Messages;
+import de.newrp.API.Script;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Berufe.Duty;
+import de.newrp.Government.Stadtkasse;
 import de.newrp.Government.Straftat;
 import de.newrp.Organisationen.Organisation;
 import de.newrp.Player.Mobile;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.World;
-import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Mob;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -26,43 +25,43 @@ public class Arrest implements CommandExecutor {
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
         Player p = (Player) cs;
 
-        if(!Beruf.hasBeruf(p)) {
+        if (!Beruf.hasBeruf(p)) {
             p.sendMessage(Messages.ERROR + "Du bist kein Polizist.");
             return true;
         }
 
-        if(!Beruf.getBeruf(p).equals(Beruf.Berufe.POLICE)) {
+        if (!Beruf.getBeruf(p).equals(Beruf.Berufe.POLICE)) {
             p.sendMessage(Messages.ERROR + "Du bist kein Polizist.");
             return true;
         }
 
-        if(!Duty.isInDuty(p)) {
+        if (!Duty.isInDuty(p)) {
             p.sendMessage(Messages.ERROR + "Du musst im Dienst sein, um jemanden zu verhaften.");
             return true;
         }
 
-        if(args.length != 1) {
+        if (args.length != 1) {
             p.sendMessage(Messages.ERROR + "/arrest [Spieler]");
             return true;
         }
 
         Player tg = Script.getPlayer(args[0]);
-        if(tg == null) {
+        if (tg == null) {
             p.sendMessage(Messages.PLAYER_NOT_FOUND);
             return true;
         }
 
-        if(!Fahndung.isFahnded(tg)) {
+        if (!Fahndung.isFahnded(tg)) {
             p.sendMessage(Messages.ERROR + "Dieser Spieler ist nicht gefahndet.");
             return true;
         }
 
-        if(!Script.isInRange(p.getLocation(), tg.getLocation(), 5)) {
+        if (!Script.isInRange(p.getLocation(), tg.getLocation(), 5)) {
             p.sendMessage(Messages.ERROR + "Der Spieler ist zu weit entfernt.");
             return true;
         }
 
-        if(!Handschellen.isCuffed(tg)) {
+        if (!Handschellen.isCuffed(tg)) {
             p.sendMessage(Messages.ERROR + "Der Spieler ist nicht in Handschellen.");
             return true;
         }
@@ -71,20 +70,21 @@ public class Arrest implements CommandExecutor {
         long time = Fahndung.getFahndedTime(tg);
         int wanteds = Fahndung.getWanteds(tg);
 
-        if(wanteds < 2) {
+        if (wanteds < 2) {
             p.sendMessage(Messages.ERROR + "Der Spieler hat zu wenig Wanteds.");
             return true;
         }
 
-        if(!Straftat.isStraftat(fahndungID)) {
+        if (!Straftat.isStraftat(fahndungID)) {
             p.sendMessage(Messages.ERROR + "Diese Straftat existiert nicht.");
             return true;
         }
 
         p.sendMessage(Fahndung.PREFIX + "Du hast " + Script.getName(tg) + " verhaftet.");
-        Jail.arrest(tg, wanteds*15, true);
+        Stadtkasse.addStadtkasse(wanteds * 15, "Verhaftung von " + Script.getName(tg), null);
+        Jail.arrest(tg, wanteds * 15, true);
         new FahndungLog(tg, p, wanteds);
-        if(Organisation.hasOrganisation(tg)) {
+        if (Organisation.hasOrganisation(tg)) {
             Organisation o = Organisation.getOrganisation(tg);
             int add = Fahndung.getWanteds(tg) / 4;
             o.addExp(add);
@@ -99,18 +99,18 @@ public class Arrest implements CommandExecutor {
         String message;
         if (hour > 0) {
             Beruf.Berufe.POLICE.sendMessage(Fahndung.PREFIX + Script.getName(tg) + " wurde von " + Script.getName(p) + " eingesperrt. Fahndungszeit: " + hour + " Stunden.");
-            for(int i : Fahndung.getStraftatIDs(tg)) {
+            for (int i : Fahndung.getStraftatIDs(tg)) {
                 Beruf.Berufe.POLICE.sendMessage(Fahndung.PREFIX + "Fahndungsgrund: " + Straftat.getReason(i) + " | WantedPunkte: " + Straftat.getWanteds(i));
             }
         } else {
             Beruf.Berufe.POLICE.sendMessage(Fahndung.PREFIX + Script.getName(tg) + " wurde von " + Script.getName(p) + " eingesperrt. Fahndungszeit: " + minute + " Minuten.");
-            for(int i : Fahndung.getStraftatIDs(tg)) {
+            for (int i : Fahndung.getStraftatIDs(tg)) {
                 Beruf.Berufe.POLICE.sendMessage(Fahndung.PREFIX + "Fahndungsgrund: " + Straftat.getReason(i) + " | WantedPunkte: " + Straftat.getWanteds(i));
             }
         }
 
 
-        if(Mobile.hasPhone(tg)) {
+        if (Mobile.hasPhone(tg)) {
             Mobile.getPhone(tg).setOff(tg);
         }
 
@@ -122,7 +122,6 @@ public class Arrest implements CommandExecutor {
         p.getInventory().addItem(Script.setName(new ItemStack(Material.LEAD), "§7Handschellen"));
         return false;
     }
-
 
 
 }

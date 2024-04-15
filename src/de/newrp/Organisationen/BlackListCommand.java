@@ -74,7 +74,12 @@ public class BlackListCommand implements CommandExecutor, Listener, TabCompleter
         Diffamazione_FALCONE("Diffamazione", 200, 20, new Organisation[] {Organisation.FALCONE}),
         Invasione_FALCONE("Invasione", 300, 30, new Organisation[] {Organisation.FALCONE}),
         Vergogna_FALCONE("Vergogna", 1, 1, new Organisation[] {Organisation.FALCONE}),
-        Inganno_FALCONE("Inganno", 200, 20, new Organisation[] {Organisation.FALCONE});
+        Inganno_FALCONE("Inganno", 200, 20, new Organisation[] {Organisation.FALCONE}),
+        ADM("Asesinato de Miembros", 1000, 3, new Organisation[] {Organisation.SINALOA}),
+        FDR("Falta de Respeto", 1000, 1, new Organisation[] {Organisation.SINALOA}),
+        FDRG("Falta de Respeto Grave", 1000, 5, new Organisation[] {Organisation.SINALOA}),
+        TRAICION("Traición", 2000, 15, new Organisation[] {Organisation.SINALOA}),
+        ESPIONAJE("Espionaje", 3000, 15, new Organisation[] {Organisation.SINALOA});
 
         private final String name;
         private final int price;

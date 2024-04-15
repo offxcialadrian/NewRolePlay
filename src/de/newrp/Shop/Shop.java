@@ -9,6 +9,7 @@ import de.newrp.Berufe.Abteilung;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Government.Stadtkasse;
 import de.newrp.Government.Steuern;
+import de.newrp.Organisationen.Organisation;
 import de.newrp.Player.Annehmen;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -26,6 +27,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class Shop implements CommandExecutor, Listener {
 
@@ -35,6 +37,7 @@ public class Shop implements CommandExecutor, Listener {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
         Player p = (Player) cs;
+        long time = System.currentTimeMillis();
 
         Shops shop = null;
         for(Shops shops : Shops.values()) {

@@ -88,6 +88,14 @@ public enum GangwarZones {
         return null;
     }
 
+    public static int getGangwarZoneAmount(Organisation org) {
+        int amount = 0;
+        for (GangwarZones zone : GangwarZones.values()) {
+            if (zone.getOwner() == org) amount++;
+        }
+        return amount;
+    }
+
     public Organisation getOwner() {
         try(Statement stmt = main.getConnection().createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM gangwarzone WHERE zoneID='" + this.id + "'")) {

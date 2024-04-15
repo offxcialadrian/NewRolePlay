@@ -5,10 +5,12 @@ import de.newrp.Administrator.BuildMode;
 import de.newrp.Administrator.SDuty;
 import de.newrp.Berufe.Abteilung;
 import de.newrp.Berufe.Beruf;
+import de.newrp.Gangwar.GangwarZones;
 import de.newrp.Government.Loan;
 import de.newrp.Government.Stadtkasse;
 import de.newrp.Organisationen.LabBreakIn;
 import de.newrp.Organisationen.Organisation;
+import de.newrp.Organisationen.OrganisationKasse;
 import de.newrp.Player.AFK;
 import de.newrp.Player.Hotel;
 import de.newrp.Shop.Shop;
@@ -116,7 +118,6 @@ public class AsyncHour extends BukkitRunnable {
             if(i == 0) continue;
             o.addExp(i);
         }
-
 
         for(Player all : Bukkit.getOnlinePlayers()) {
             if(!BuildMode.isInBuildMode(all)) all.getInventory().remove(Material.PLAYER_HEAD);
