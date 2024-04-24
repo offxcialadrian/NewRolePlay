@@ -226,6 +226,7 @@ public class BurgerFryer implements CommandExecutor, Listener {
             GFB.CURRENT.remove(p.getName());
             Script.addEXP(p, GFB.BURGERFRYER.getLevel(p) + TOTAL_SCORE.get(p.getName()) * 2);
             TOTAL_SCORE.remove(p.getName());
+            p.closeInventory();
         }
         if (e.getCurrentItem().getType().equals(Material.GREEN_WOOL)) {
             e.getView().close();

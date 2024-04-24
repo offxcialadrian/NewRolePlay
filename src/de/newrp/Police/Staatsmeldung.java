@@ -38,7 +38,7 @@ public class Staatsmeldung implements CommandExecutor {
             return true;
         }
 
-        if (Beruf.getAbteilung(p) != Abteilung.Abteilungen.POLIZEIDIREKTOR && Beruf.getAbteilung(p) != Abteilung.Abteilungen.L_POLIZEIDIREKTOR && Beruf.isLeader(p, true)) {
+        if (!Beruf.hasAbteilung(p, Abteilung.Abteilungen.ABTEILUNGSLEITUNG)) {
             p.sendMessage(Messages.ERROR + "Du bist kein Polizeidirektor!");
             return true;
         }

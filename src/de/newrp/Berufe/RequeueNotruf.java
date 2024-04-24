@@ -27,7 +27,8 @@ public class RequeueNotruf implements CommandExecutor {
             return true;
         }
 
-        AcceptNotruf.reOpenNotruf(p);
+        Player tg = AcceptNotruf.accept.get(p);
+        AcceptNotruf.reOpenNotruf(tg);
 
         return false;
     }

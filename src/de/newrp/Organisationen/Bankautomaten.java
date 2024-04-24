@@ -53,8 +53,6 @@ public class Bankautomaten implements Listener {
         }
 
         List<Player> cops = Beruf.Berufe.POLICE.getMembers().stream()
-                .filter(Beruf::hasBeruf)
-                .filter(nearbyPlayer -> Beruf.getBeruf(nearbyPlayer).equals(Beruf.Berufe.POLICE))
                 .filter(Duty::isInDuty)
                 .filter(nearbyPlayer -> !SDuty.isSDuty(nearbyPlayer))
                 .filter(nearbyPlayer -> !AFK.isAFK(nearbyPlayer)).collect(Collectors.toList());
@@ -115,7 +113,7 @@ public class Bankautomaten implements Listener {
                             }
                         }
                     }
-                    e.getClickedBlock().setType(atmBlocks.get(e.getClickedBlock().getLocation()).getType());
+                    e.getClickedBlock().getLocation().getBlock().setType(atmBlocks.get(e.getClickedBlock().getLocation()).getType());
                     atmBlocks.remove(e.getClickedBlock().getLocation());
                     int remove = (int) Math.min(Script.getRandom(3000, 6000), Script.getPercent(20, atm.getCash()));
                     atm.removeCash(remove);

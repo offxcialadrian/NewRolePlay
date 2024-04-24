@@ -73,7 +73,8 @@ public class FriedhofListener implements Listener {
         ItemStack[] inventoryContent = p.getInventory().getContents();
         p.getInventory().clear();
 
-        if (p.getItemOnCursor() != null) p.getItemOnCursor().setType(Material.AIR);
+        p.getItemOnCursor();
+        p.getItemOnCursor().setType(Material.AIR);
 
 
         if(Call.isOnCall(p)) {
@@ -94,9 +95,9 @@ public class FriedhofListener implements Listener {
             Health.THIRST.add(Script.getNRPID(p), (Health.THIRST.getMax()/2));
         }
         Player killer = p.getKiller();
-        Notifications.sendMessage(Notifications.NotificationType.DEAD, Script.getName(p) + " ist gestorben " + (killer!=null ? Messages.ARROW + " " + Script.getName(killer):Messages.ARROW + " " + p.getLastDamageCause().getCause().name()));
         Friedhof friedhof = new Friedhof(Script.getNRPID(p), p.getName(), deathLocation, System.currentTimeMillis(), deathtime, cash, inventoryContent);
         Friedhof.setDead(p, friedhof);
+        Notifications.sendMessage(Notifications.NotificationType.DEAD, Script.getName(p) + " ist gestorben " + (killer!=null ? Messages.ARROW + " " + Script.getName(killer):Messages.ARROW + " " + p.getLastDamageCause().getCause().name()));
     }
 
     @EventHandler

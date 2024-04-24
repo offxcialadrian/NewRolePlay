@@ -146,6 +146,7 @@ public class ReviveCommand implements CommandExecutor {
                 return;
             }
             Friedhof.revive(tg, loc);
+            p.sendMessage("§7Du hast " + Script.getName(tg) + " erfolgreich wiederbelebt.");
 
             tg.resetPlayerWeather();
             Log.LOW.write(tg, "wurde von " + Script.getName(p) + " wiederbelebt.");

@@ -1,20 +1,25 @@
 package de.newrp.Ticket;
 
-import de.newrp.API.Messages;
-import de.newrp.API.Rank;
-import de.newrp.API.Script;
+import de.newrp.API.*;
 import de.newrp.Administrator.SDuty;
 import de.newrp.main;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
 
-public class CancelTicket implements CommandExecutor {
+public class CancelTicket implements CommandExecutor, Listener {
     static final HashMap<Player, Long> cooldown = new HashMap<>();
 
     @Override
@@ -57,6 +62,7 @@ public class CancelTicket implements CommandExecutor {
                         TicketCommand.close(t);
                         Script.updateListname(p);
                         Script.updateListname(tg);
+                        sendRatingGUI(tg, t);
                         if(Script.isNRPTeam(p)) Script.addEXP(p, 5);
                     }
                 }.runTaskLater(main.getInstance(), 2 * 20L);
@@ -66,7 +72,7 @@ public class CancelTicket implements CommandExecutor {
             tg.sendMessage(TicketCommand.PREFIX + Script.getRank(p).getName(p) + " " + Script.getName(p) + " hat das Ticket beendet! §7(§6#" + id + "§7)");
             Script.sendTeamMessage(p, ChatColor.LIGHT_PURPLE, "hat das Ticket mit " + Script.getName(tg) + " beendet! §7(§6#" + id + "§7)", true);
             if(Script.isNRPTeam(p)) Script.addEXP(p, 5);
-
+            sendRatingGUI(tg, t);
             TicketCommand.close(t);
             Script.updateListname(p);
             Script.updateListname(tg);
@@ -76,4 +82,54 @@ public class CancelTicket implements CommandExecutor {
         }
         return true;
     }
+
+    public static void sendRatingGUI(Player p, Ticket t) {
+        Inventory inv = Bukkit.createInventory(null, InventoryType.HOPPER, "§dTicket bewerten [#" + t.getID() + "]");
+        inv.setItem(0, new ItemBuilder(Material.PURPLE_STAINED_GLASS_PANE).setName("§dSehr gut").build());
+        inv.setItem(1, new ItemBuilder(Material.LIME_STAINED_GLASS_PANE).setName("§aGut").build());
+        inv.setItem(2, new ItemBuilder(Material.YELLOW_STAINED_GLASS_PANE).setName("§eMittel").build());
+        inv.setItem(3, new ItemBuilder(Material.ORANGE_STAINED_GLASS_PANE).setName("§6Schlecht").build());
+        inv.setItem(4, new ItemBuilder(Material.RED_STAINED_GLASS_PANE).setName("§cSehr schlecht").build());
+        p.openInventory(inv);
+    }
+
+    @EventHandler
+    public void onClick(InventoryClickEvent e) {
+        Player p = (Player) e.getWhoClicked();
+        if(e.getView().getTitle().contains("§dTicket bewerten")) {
+            e.setCancelled(true);
+            if(e.getCurrentItem() == null || e.getCurrentItem().getType() == Material.AIR) return;
+            int rating = 0;
+            switch(e.getCurrentItem().getType()) {
+                case PURPLE_STAINED_GLASS_PANE:
+                    rating = 5;
+                    break;
+                case LIME_STAINED_GLASS_PANE:
+                    rating = 4;
+                    break;
+                case YELLOW_STAINED_GLASS_PANE:
+                    rating = 3;
+                    break;
+                case ORANGE_STAINED_GLASS_PANE:
+                    rating = 2;
+                    break;
+                case RED_STAINED_GLASS_PANE:
+                    rating = 1;
+                    break;
+            }
+            int ticketID = e.getView().getTitle().contains("#") ? Integer.parseInt(e.getView().getTitle().split("#")[1].replace("]", "")) : -1;
+            int supporterID = TicketCommand.getSupporterID(ticketID);
+            Script.executeUpdate("INSERT INTO supporter_rating = (supporterID, rating, time) VALUES (" + supporterID + ", " + rating + ", " + System.currentTimeMillis() + ")");
+            p.sendMessage(TicketCommand.PREFIX + "Vielen Dank für deine Bewertung!");
+            p.sendMessage(Messages.INFO + "Du hilfst uns damit, unseren Support zu verbessern.");
+            if(rating < 3) {
+                p.sendMessage(Script.PREFIX + "Es tut uns leid, dass du mit unserem Support nicht zufrieden warst.");
+                p.sendMessage(Messages.INFO + "Bitte melde dich bei einem Teammitglied, damit wir das Problem klären können.");
+                p.sendMessage(Messages.INFO + "Als Entschädigung erhältst du 3 Tage Premium.");
+                Premium.addPremiumStorage(p, 3);
+            }
+            p.closeInventory();
+        }
+    }
+
 }

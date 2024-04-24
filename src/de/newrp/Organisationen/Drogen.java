@@ -137,7 +137,7 @@ public enum Drogen {
 
     public static void addToAdiction(Player p) {
         Script.executeAsyncUpdate("INSERT INTO drug_addiction (nrp_id, time, heal) VALUES (" + Script.getNRPID(p) + ", " + System.currentTimeMillis() + ", false)");
-        if(getAddiction(p) >= Script.getRandom(20, 30) && !Krankheit.ABHAENGIGKEIT.isInfected(Script.getNRPID(p))) {
+        if(getAddiction(p) >= Script.getRandom(40, 50) && !Krankheit.ABHAENGIGKEIT.isInfected(Script.getNRPID(p))) {
             Krankheit.ABHAENGIGKEIT.add(Script.getNRPID(p));
             p.sendMessage(Messages.INFO + "Du hast eine Abhängigkeit entwickelt. Lasse dich von einem Arzt behandeln.");
         }

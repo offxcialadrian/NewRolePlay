@@ -64,7 +64,7 @@ public class Imker implements CommandExecutor, Listener {
         GFB.CURRENT.put(p.getName(), GFB.IMKER);
         cooldown.put(p.getName(), System.currentTimeMillis() + 10 * 60 * 2000L);
         p.sendMessage(PREFIX + "Du hast den Job angenommen!");
-        int honey = GFB.IMKER.getLevel(p) + Script.getRandom(3, 5);
+        int honey = GFB.IMKER.getLevel(p) + Script.getRandom(7, 9);
         honeys.put(p.getName(), honey);
         TOTAL_SCORE.put(p.getName(), honey);
         p.sendMessage(PREFIX + "Du musst " + honey + "x Honig besorgen.");

@@ -7,6 +7,7 @@ import de.newrp.Administrator.SDuty;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Berufe.Duty;
 import de.newrp.Government.Straftat;
+import de.newrp.Player.AFK;
 import de.newrp.main;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -58,7 +59,7 @@ public class Fahndung implements CommandExecutor, TabCompleter {
                     wanteds += Straftat.getWanteds(i);
                 }
                 if(wanteds == 0) continue;
-                p.sendMessage("§8» §6" + Script.getName(all) + " §8× §6" + wanteds + " WantedPunkte");
+                p.sendMessage("§8» §6" + Script.getName(all) + " §8× §6" + wanteds + " WantedPunkte" + (AFK.isAFK(all) ? " §8× §6AFK" : ""));
             }
             return true;
         }
@@ -133,6 +134,7 @@ public class Fahndung implements CommandExecutor, TabCompleter {
         Beruf.Berufe.POLICE.sendMessage(PREFIX + "Der Spieler §e" + Script.getName(tg) + " §7wird nun wegen §e" + substring + " §7gefahndet.");
         Beruf.Berufe.POLICE.sendMessage(PREFIX + "Beamter: §e" + Script.getName(p) + " §8(§7WantedPunkte: " + Fahndung.getWanteds(tg) + "§8)");
         tg.sendMessage(PREFIX + "Du wirst nun wegen §e" + substring + " §7gefahndet.");
+        Script.updateFahndungSubtitle(tg);
 
         return false;
     }

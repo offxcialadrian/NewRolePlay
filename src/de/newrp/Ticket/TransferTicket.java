@@ -49,7 +49,7 @@ public class TransferTicket implements CommandExecutor {
         }
 
         if(AFK.isAFK(tg)) {
-
+            p.sendMessage(Messages.ERROR + "Der Spieler ist AFK.");
             return true;
         }
 
@@ -71,6 +71,11 @@ public class TransferTicket implements CommandExecutor {
         reporter.sendMessage(TicketCommand.PREFIX + "Dein Ticket wurde an " + Messages.RANK_PREFIX(tg) + " übergeben.");
         TicketCommand.removeFromConversation(t.getID(), p);
         TicketCommand.addToConversation(t.getID(), tg);
+        if(TicketCommand.getGreeting(p) != null) {
+            Player ticket = TicketCommand.getTicket(p).getTicketer();
+            tg.sendMessage("§d§lTICKET §8× §d" + Script.getName(tg) + ": " + TicketCommand.getGreeting(tg).replace("{name}", Script.getName(ticket)));
+            if(p != ticket) ticket.sendMessage("§d§lTICKET §8× §d" + Script.getName(tg) + ": " + TicketCommand.getGreeting(tg).replace("{name}", Script.getName(ticket)));
+        }
         SDuty.updateScoreboard();
         Script.updateListname(p);
         Script.updateListname(tg);

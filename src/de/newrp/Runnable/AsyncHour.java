@@ -5,9 +5,12 @@ import de.newrp.Administrator.BuildMode;
 import de.newrp.Administrator.SDuty;
 import de.newrp.Berufe.Abteilung;
 import de.newrp.Berufe.Beruf;
+import de.newrp.Gangwar.GangwarCommand;
 import de.newrp.Gangwar.GangwarZones;
 import de.newrp.Government.Loan;
 import de.newrp.Government.Stadtkasse;
+import de.newrp.House.House;
+import de.newrp.Medic.FeuerwehrEinsatz;
 import de.newrp.Organisationen.LabBreakIn;
 import de.newrp.Organisationen.Organisation;
 import de.newrp.Organisationen.OrganisationKasse;
@@ -45,6 +48,25 @@ public class AsyncHour extends BukkitRunnable {
         Hologram.reload();
         LabBreakIn.repairDoors(false);
 
+        for(GangwarZones zone : GangwarZones.values()) {
+            zone.getOwner().sendMessage(GangwarCommand.PREFIX + "Die Organisation hat 100€ durch die Zone §e" + zone.getName() + " §7erhalten.");
+            zone.getOwner().addKasse(100);
+        }
+
+        if (Abteilung.Abteilungen.FEUERWEHR.getOnlineMembers().size() >= 2) {
+            if (Script.getRandom(1, 7) == Script.getRandom(1, 7)) {
+                if (Script.getRandom(1, 3) == Script.getRandom(1, 3)) {
+                    Shops[] b = new Shops[]{Shops.GUNSHOP, Shops.ANGELLADEN, Shops.DOENER, Shops.SUPERMARKT, Shops.APOTHEKE, Shops.APOTHEKE_AEKI,
+                            Shops.BLUMENLADEN, Shops.SHOE_MALL, Shops.JAGDHUETTE, Shops.HANKYS, Shops.CAFE, Shops.FLOWER,
+                            Shops.GEMUESE, Shops.BAECKERI, Shops.IKEA};
+                    new FeuerwehrEinsatz(null).start(b[Script.getRandom(0, (b.length - 1))]);
+                } else {
+                    House h = House.HOUSES.get(Script.getRandom(0, House.HOUSES.size() - 1));
+                    new FeuerwehrEinsatz(h).start();
+                }
+            }
+        }
+
         try (Statement stmt = main.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM loans WHERE time>" + System.currentTimeMillis())) {
             while (rs.next()) {
@@ -55,8 +77,8 @@ public class AsyncHour extends BukkitRunnable {
 
                 int sum = (int) (amount + Script.getPercent(interest, amount));
 
-                Stadtkasse.addStadtkasse(sum, "Kredit von " + p.getName(), null);
-                Beruf.Berufe.GOVERNMENT.sendMessage(Loan.PREFIX + "Der Kredit von " + p.getName() + " wurde abbezahlt.");
+                Stadtkasse.addStadtkasse(sum, "Kredit von " + Script.getNameInDB(p), null);
+                Beruf.Berufe.GOVERNMENT.sendMessage(Loan.PREFIX + "Der Kredit von " + Script.getNameInDB(p) + " wurde abbezahlt.");
                 Script.removeMoney(p, PaymentType.BANK, sum);
 
                 Script.executeAsyncUpdate("DELETE FROM loans WHERE id=" + id);

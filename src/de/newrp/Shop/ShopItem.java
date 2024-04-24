@@ -2,6 +2,7 @@ package de.newrp.Shop;
 
 import de.newrp.API.ItemBuilder;
 import de.newrp.API.Script;
+import de.newrp.API.ShishaType;
 import de.newrp.House.HouseAddon;
 import de.newrp.Medic.Medikamente;
 import de.newrp.News.Zeitung;
@@ -104,7 +105,16 @@ public enum ShopItem {
     POTATO(114, "§fBeeren", new ItemBuilder(Material.SWEET_BERRIES).setName("§fBeeren").setAmount(16).build(), 2, 1, 20, 1, 2000, false, true, false, new ShopType[] {ShopType.GEMUESE}),
     APPLE(115, "§fApfel", new ItemBuilder(Material.APPLE).setName("§fApfel").setAmount(8).build(), 2, 1, 20, 3, 2000, false, true, false, new ShopType[] {ShopType.GEMUESE}),
     MELON(116, "§fMelone", new ItemBuilder(Material.MELON_SLICE).setName("§fMelone").setAmount(16).build(), 2, 1, 20, 2, 2000, false, true, false, new ShopType[] {ShopType.GEMUESE}),
-    HANDY_REPAIR(117, "§7Handy Reparatur", new ItemBuilder(Material.ANVIL).setName("§7Handy Reparatur").build(), 1, 1, 1, 25, 5000, false, false, false, new ShopType[] {ShopType.ELECTRONIC});
+    HANDY_REPAIR(117, "§7Handy Reparatur", new ItemBuilder(Material.ANVIL).setName("§7Handy Reparatur").build(), 1, 1, 1, 25, 5000, false, false, false, new ShopType[] {ShopType.ELECTRONIC}),
+    POWERBANK(118, "§3Powerbank", Script.setNameAndLore(Material.NAME_TAG, "§3Powerbank", "§c5§7/§c5"), 1, 1, 1, 10, 5000, false, true, false, new ShopType[] {ShopType.ELECTRONIC}),
+    MEHL(119, "§fMehl", new ItemBuilder(Material.WHITE_DYE).setName("§fMehl").build(), 2, 1, 20, 20, 2000, false, true, false, new ShopType[] {ShopType.SUPERMARKET}),
+    MASK(120, "§7Maske", new ItemBuilder(Material.CARVED_PUMPKIN).setName("§7Maske").build(), 1, 1, 1, 10, 500, false, true, false, new ShopType[] {ShopType.SUPERMARKET}),
+    SHISHA_1(121, "§6Shisha " + ShishaType.DOPPELAPFEL, Script.setNameAndLore(Material.STICK, "§6Shisha " + ShishaType.DOPPELAPFEL.getName(), "§c" + ShishaType.DOPPELAPFEL.getName(), "§7" + ShishaType.DOPPELAPFEL.getDuration() + "/" + ShishaType.DOPPELAPFEL.getDuration()), 1, 1, 1, 10, 500, false, true, false, new ShopType[] {ShopType.SHISHA}),
+    SHISHA_2(122, "§6Shisha " + ShishaType.PFIRSICH_MINZE, Script.setNameAndLore(Material.STICK, "§6Shisha " + ShishaType.PFIRSICH_MINZE.getName(), "§c" + ShishaType.PFIRSICH_MINZE.getName(), "§7" + ShishaType.PFIRSICH_MINZE.getDuration() + "/" + ShishaType.PFIRSICH_MINZE.getDuration()), 1, 1, 1, 10, 500, false, true, false, new ShopType[] {ShopType.SHISHA}),
+    SHISHA_3(123, "§6Shisha " + ShishaType.WASSERMELONE, Script.setNameAndLore(Material.STICK, "§6Shisha " + ShishaType.WASSERMELONE.getName(), "§c" + ShishaType.WASSERMELONE.getName(), "§7" + ShishaType.WASSERMELONE.getDuration() + "/" + ShishaType.WASSERMELONE.getDuration()), 1, 1, 1, 10, 500, false, true, false, new ShopType[] {ShopType.SHISHA}),
+    SHISHA_4(124, "§6Shisha " + ShishaType.ZITRONE, Script.setNameAndLore(Material.STICK, "§6Shisha " + ShishaType.ZITRONE.getName(), "§c" + ShishaType.ZITRONE.getName(), "§7" + ShishaType.ZITRONE.getDuration() + "/" + ShishaType.ZITRONE.getDuration()), 1, 1, 1, 10, 500, false, true, false, new ShopType[] {ShopType.SHISHA}),
+    SHISHA_5(125, "§6Shisha " + ShishaType.SPECIAL, Script.setNameAndLore(Material.STICK, "§6Shisha " + ShishaType.SPECIAL.getName(), "§c" + ShishaType.SPECIAL.getName(), "§7" + ShishaType.SPECIAL.getDuration() + "/" + ShishaType.SPECIAL.getDuration()), 1, 1, 1, 10, 500, false, true, false, new ShopType[] {ShopType.SHISHA}),
+    SHISHA_6(126, "§6Shisha " + ShishaType.TRAUBE, Script.setNameAndLore(Material.STICK, "§6Shisha " + ShishaType.TRAUBE.getName(), "§c" + ShishaType.TRAUBE.getName(), "§7" + ShishaType.TRAUBE.getDuration() + "/" + ShishaType.TRAUBE.getDuration()), 1, 1, 1, 10, 500, false, true, false, new ShopType[] {ShopType.SHISHA});
 
 
     private final int id;

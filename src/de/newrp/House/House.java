@@ -174,11 +174,11 @@ public class House {
     }
 
     public static int getHouseAmount(int id) {
-        return getHouses(id).size();
+        return getHouses(id).size()-1;
     }
 
     public static boolean hasHouse(int id) {
-        return getHouses(id).size() > 0;
+        return !getHouses(id).isEmpty();
     }
 
     public static House getHouseByID(int id) {

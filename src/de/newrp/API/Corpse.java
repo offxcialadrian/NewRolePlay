@@ -50,7 +50,7 @@ public class Corpse {
 
 
 
-        Location bedLocation = loc.subtract(1, 0, 0);
+        Location bedLocation = loc.add(1, 0, 0);
 
 
         //TODO Hier sind zwei Möglichkeiten... Eine wo der Kopf, naja überall hindrehen könnte, wo der Spieler hingeguckt hat
@@ -130,6 +130,17 @@ public class Corpse {
             playerConnection.sendPacket(new PacketPlayOutNamedEntitySpawn(entityPlayerCorps));
             playerConnection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER, entityPlayerCorps));
             playerConnection.sendPacket(new PacketPlayOutEntityMetadata(entityPlayerCorps.getId(), entityPlayerCorps.getDataWatcher(), true));
+        }
+    }
+
+    public static void reloadNPCAll() {
+        for (EntityPlayer entityPlayerCorps : npcMap.values()) {
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                PlayerConnection playerConnection = ((CraftPlayer) player).getHandle().playerConnection;
+                playerConnection.sendPacket(new PacketPlayOutNamedEntitySpawn(entityPlayerCorps));
+                playerConnection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER, entityPlayerCorps));
+                playerConnection.sendPacket(new PacketPlayOutEntityMetadata(entityPlayerCorps.getId(), entityPlayerCorps.getDataWatcher(), true));
+            }
         }
     }
 }

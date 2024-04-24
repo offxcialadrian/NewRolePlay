@@ -32,15 +32,20 @@ public class BroadcastCommand implements CommandExecutor {
 
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < args.length; i++) {
-            sb.append(args[i]).append(" ");
+            if (i > 0) {
+                sb.append(" ");
+            }
+            sb.append(args[i]);
         }
 
         String msg = sb.toString().trim();
-        Bukkit.broadcastMessage(" ");
-        Bukkit.broadcastMessage(" §7§m--------- §8[§c§lANKÜNDIGUNG§8] §7§m---------");
-        Bukkit.broadcastMessage("   §c" + Script.getName(p) + " §8» §c" + msg);
-        Bukkit.broadcastMessage(" §7§m-------------------------------------");
-        Bukkit.broadcastMessage(" ");
+        for(Player all : Bukkit.getOnlinePlayers()) {
+            all.sendMessage(" ");
+            all.sendMessage(" §7§m--------- §8[§c§lANKÜNDIGUNG§8] §7§m---------");
+            all.sendMessage("   §c" + Script.getName(p) + " §8» §c" + msg);
+            all.sendMessage(" §7§m-------------------------------------");
+            all.sendMessage(" ");
+        }
         Log.HIGH.write(p, "hat einen Broadcast gesendet (" + msg + ")");
 
 

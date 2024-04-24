@@ -62,9 +62,9 @@ public class TakeMoney implements CommandExecutor {
         Bankautomaten.win.remove(tg);
         Script.removeMoney(tg, PaymentType.CASH, money);
         p.sendMessage(PREFIX + "Du hast " + Script.getName(tg) + " §6" + money + "§7 abgenommen.");
-        Beruf.Berufe.POLICE.sendMessage(PREFIX + "§6" + Script.getName(p) + " §7hat " + Script.getName(tg) + " §6" + money + "§7 abgenommen.");
-        tg.sendMessage(PREFIX + "§6" + Script.getName(p) + " §7hat dir §6" + money + "§7 abgenommen.");
-        Organisation.getOrganisation(tg).sendMessage(PREFIX + "§6" + Script.getName(p) + " §7hat " + Script.getName(tg) + " §6" + money + "§7 abgenommen.");
+        Beruf.Berufe.POLICE.sendMessage(PREFIX + "§6" + Script.getName(p) + " §7hat §6" + Script.getName(tg) + " §6" + money + "€§7 abgenommen.");
+        tg.sendMessage(PREFIX + "§6" + Script.getName(p) + " §7hat dir §6" + money + "€§7 abgenommen.");
+        Organisation.getOrganisation(tg).sendMessage(PREFIX + "§6" + Script.getName(p) + " §7hat " + Script.getName(tg) + " §6" + money + "€§7 abgenommen.");
 
 
         return false;

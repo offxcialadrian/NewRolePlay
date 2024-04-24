@@ -64,6 +64,25 @@ public class NaviCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
+        if(args.length == 1 && Script.isInt(args[0])) {
+            int id = Integer.parseInt(args[0]);
+            House house = House.getHouseByID(id);
+            if(house == null) {
+                p.sendMessage(Messages.ERROR + "Das Haus wurde nicht gefunden.");
+                return true;
+            }
+
+            Location sign = house.getSignLocation();
+            if(sign == null) {
+                p.sendMessage(Messages.ERROR + "Das Haus wurde nicht gefunden.");
+                return true;
+            }
+
+            new Route(p.getName(), Script.getNRPID(p), p.getLocation(), sign).start();
+            p.sendMessage(Navi.PREFIX + "Dir wird nun die Route zum Haus §6§l" + id + "§r§6 angezeigt.");
+            return true;
+        }
+
         if(args.length == 2) {
             if(args[0].equalsIgnoreCase("haus") || args[0].equalsIgnoreCase("house")) {
                 if(Script.isInt(args[1])) {
@@ -82,6 +101,19 @@ public class NaviCommand implements CommandExecutor, TabCompleter {
 
                     new Route(p.getName(), Script.getNRPID(p), p.getLocation(), sign).start();
                     p.sendMessage(Navi.PREFIX + "Dir wird nun die Route zum Haus §6§l" + id + "§r§6 angezeigt.");
+                    return true;
+                }
+            } else if(args[0].equalsIgnoreCase("atm") || args[0].equalsIgnoreCase("bankautomat")) {
+                if(Script.isInt(args[1])) {
+                    int id = Integer.parseInt(args[1]);
+                    ATM atm = ATM.getATMByID(id);
+                    if(atm == null) {
+                        p.sendMessage(Messages.ERROR + "Der Bankautomat wurde nicht gefunden.");
+                        return true;
+                    }
+
+                    new Route(p.getName(), Script.getNRPID(p), p.getLocation(), atm.getLocation()).start();
+                    p.sendMessage(Navi.PREFIX + "Dir wird nun die Route zum Bankautomaten §6§l" + id + "§r§6 angezeigt.");
                     return true;
                 }
             }
@@ -130,6 +162,27 @@ public class NaviCommand implements CommandExecutor, TabCompleter {
                 }
             } else {
                 p.sendMessage(Messages.ERROR + "Ungültige Koordinate.");
+            }
+        } else if(arguments.toLowerCase().contains("atm:") || arguments.toLowerCase().contains("bankautomat:")) {
+            if(arguments.split(":").length >= 2) {
+                String s = arguments.split(":")[1];
+                if(!Script.isInt(s)) {
+                    p.sendMessage(Messages.ERROR + "Bankautomat wurde nicht gefunden.");
+                    return true;
+                }
+
+                int index = Integer.parseInt(s);
+                ATM atm = ATM.getATMByID(index);
+
+                if(atm == null) {
+                    p.sendMessage(Messages.ERROR + "Bankautomat wurde nicht gefunden.");
+                    return true;
+                }
+
+                new Route(p.getName(), Script.getNRPID(p), p.getLocation(), atm.getLocation()).start();
+                p.sendMessage(Navi.PREFIX + "Dir wird nun die Route zum Bankautomaten §6§l" + index + "§r§6 angezeigt.");
+            } else {
+                p.sendMessage(Messages.ERROR + "Bankautomat wurde nicht gefunden.");
             }
         } else {
             Navi n = null;

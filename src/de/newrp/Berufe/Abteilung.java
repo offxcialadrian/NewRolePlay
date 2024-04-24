@@ -30,13 +30,14 @@ public class Abteilung implements CommandExecutor, TabCompleter {
         JUSTIZMINISTERIUM(4, GOVERNMENT, "Justizministerium"),
         VIZEKANZLER(5, GOVERNMENT, "Vizekanzler"),
         STAATSOBERHAUPT(6, GOVERNMENT, "Bundeskanzler"),
-        POLIZEIKOMMISSAR(0, POLICE, "Polizeikommissar"),
-        POLIZEIOBERKOMMISSAR(1, POLICE, "Polizeioberkommissar"),
-        POLIZEIOFFIZIER(2, POLICE, "Polizeioffizier"),
-        POLIZEIDIREKTOR(3, POLICE, "Polizeidirektor"),
-        L_POLIZEIDIREKTOR(4, POLICE, "Leitender Polizeidirektor"),
-        VIZEPRÄSIDENT(5, POLICE, "Polizeivizepräsident"),
-        POLIZEIPRÄSIDENT(6, POLICE, "Polizeipräsident"),
+        STREIFENPOLIZEI(0, POLICE, "Streifenpolizist"),
+        ZIVILPOLIZEI(1, POLICE, "Zivilpolizei "),
+        KRIMINALPOLIZEI(2, POLICE, "Kriminalpolizei"),
+        SEK(3, POLICE, "SEK"),
+        AUSBILDER(4, POLICE, "Ausbilder"),
+        ABTEILUNGSLEITUNG(5, POLICE, "Abteilungsleitung"),
+        POLIZEIVIZE(6, POLICE, "Polizeivizepräsident"),
+        POLIZEIPRÄSIDENT(7, POLICE, "Polizeipräsident"),
         VOLONTAER(0, NEWS, "Volontäre"),
         JOURNALIST(1, NEWS, "Journalismus"),
         TV(2, NEWS, "TV-Moderation"),
@@ -49,7 +50,8 @@ public class Abteilung implements CommandExecutor, TabCompleter {
         ALLGEMEINMEDIZIN(5, RETTUNGSDIENST, "Allgemeinmedizin"),
         OBERARZT(6, RETTUNGSDIENST, "Oberarzt"),
         CHEFARZT(7, RETTUNGSDIENST, "Chefarzt"),
-        DIREKTOR(8, RETTUNGSDIENST, "Ärztliches-Direktorium");
+        DIREKTOR(8, RETTUNGSDIENST, "Ärztliches-Direktorium"),
+        FEUERWEHR(9, RETTUNGSDIENST, "Feuerwehr");
 
 
         private final int id;

@@ -17,33 +17,35 @@ public class RemoveFahndung implements CommandExecutor {
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
         Player p = (Player) cs;
 
-        if(!Beruf.hasBeruf(p) && !SDuty.isSDuty(p)) {
+        if (!Beruf.hasBeruf(p) && !SDuty.isSDuty(p)) {
             p.sendMessage(Messages.NO_PERMISSION);
             return true;
         }
 
-        if(!Beruf.getBeruf(p).equals(Beruf.Berufe.GOVERNMENT) && !Beruf.getBeruf(p).equals(Beruf.Berufe.POLICE) && !SDuty.isSDuty(p)) {
-            p.sendMessage(Messages.NO_PERMISSION);
-            return true;
+        if (!SDuty.isSDuty(p)) {
+            if (!Beruf.getBeruf(p).equals(Beruf.Berufe.GOVERNMENT) && !Beruf.getBeruf(p).equals(Beruf.Berufe.POLICE) && !SDuty.isSDuty(p)) {
+                p.sendMessage(Messages.NO_PERMISSION);
+                return true;
+            }
+
+            if (!Beruf.hasAbteilung(p, Abteilung.Abteilungen.ABTEILUNGSLEITUNG)) {
+                p.sendMessage(Messages.NO_PERMISSION);
+                return true;
+            }
         }
 
-        if(Beruf.getAbteilung(p) != Abteilung.Abteilungen.JUSTIZMINISTERIUM && Beruf.getAbteilung(p) != Abteilung.Abteilungen.L_POLIZEIDIREKTOR && !Beruf.isLeader(p, true) && !SDuty.isSDuty(p) && Beruf.getAbteilung(p) != Abteilung.Abteilungen.POLIZEIDIREKTOR) {
-            p.sendMessage(Messages.NO_PERMISSION);
-            return true;
-        }
-
-        if(args.length != 1) {
+        if (args.length != 1) {
             p.sendMessage(Messages.ERROR + "/removefahndung [Spieler]");
             return true;
         }
 
         Player tg = Script.getPlayer(args[0]);
-        if(tg == null) {
+        if (tg == null) {
             p.sendMessage(Messages.PLAYER_NOT_FOUND);
             return true;
         }
 
-        if(!Fahndung.isFahnded(tg)) {
+        if (!Fahndung.isFahnded(tg)) {
             p.sendMessage(Messages.ERROR + "Dieser Spieler ist nicht gefahndet.");
             return true;
         }
@@ -53,6 +55,7 @@ public class RemoveFahndung implements CommandExecutor {
         Beruf.Berufe.POLICE.sendMessage(Fahndung.PREFIX + "Die Fahndung von §6" + Script.getName(tg) + " §7wurde von §6" + Script.getName(p) + " §7entfernt.");
         Beruf.Berufe.GOVERNMENT.sendMessage(Fahndung.PREFIX + "Die Fahndung von §6" + Script.getName(tg) + " §7wurde von §6" + Script.getName(p) + " §7entfernt.");
         tg.sendMessage(Fahndung.PREFIX + "Deine Fahndung wurde von §6" + Script.getName(p) + " §7entfernt.");
+        Script.updateFahndungSubtitle(tg);
 
         return false;
     }

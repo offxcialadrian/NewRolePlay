@@ -43,7 +43,7 @@ public class TeamActivity implements CommandExecutor {
                 HashMap<String, Integer> activity = getActitvity(days);
                 p.sendMessage("§8[§c§lTeamActivity§8] §c»");
                 for(String name : activity.keySet()) {
-                    p.sendMessage("§8- §c" + name + " §8» §c" + activity.get(name) + " Tickets (" + (Script.getPercentage(activity.get(name), getTotalTicket(days)) + "%)"));
+                    p.sendMessage("§8- §c" + name + " §8» §c" + activity.get(name) + " Tickets (" + (Script.getPercentage(activity.get(name), getTotalTicket(days)) + "%)" + " §8» §c" + getRating(days, Script.getNRPID(Script.getPlayer(name))) + " Sterne"));
                 }
             } catch (NumberFormatException e) {
                 p.sendMessage(Messages.ERROR + "Ungültige Anzahl an Tagen.");
@@ -59,7 +59,7 @@ public class TeamActivity implements CommandExecutor {
         HashMap<String, Integer> activity = getActitvity();
         p.sendMessage("§8[§c§lTeamActivity§8] §c»");
         for(String name : activity.keySet()) {
-            p.sendMessage("§8- §c" + name + " §8» §c" + activity.get(name) + " Tickets (" + (Script.getPercentage(activity.get(name), getTotalTicket()) + "%)"));
+            p.sendMessage("§8- §c" + name + " §8» §c" + activity.get(name) + " Tickets (" + (Script.getPercentage(activity.get(name), getTotalTicket()) + "%) " + "§8» §c" + getRating(Script.getNRPID(Script.getPlayer(name))) + " Sterne"));
         }
 
         return false;
@@ -78,9 +78,35 @@ public class TeamActivity implements CommandExecutor {
             }
         }
 
-        //sort by value
-        activity = Script.sortByValue(activity);
+        //sort by value but
+        activity = Script.sortByValue(activity, true);
         return activity;
+    }
+
+    public static double getRating(int nrpid) {
+        double rating = 0;
+        try (Statement stmt = main.getConnection().createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT AVG(rating) AS total FROM supporter_rating WHERE rating > 0 AND supporterID=" + nrpid)) {
+            if (rs.next()) {
+                rating = rs.getDouble("total");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rating;
+    }
+
+    public static double getRating(int days, int nrpid) {
+        double rating = 0;
+        try (Statement stmt = main.getConnection().createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT AVG(rating) AS supporter_rating FROM supporter_rating WHERE rating > 0 AND time > " + (System.currentTimeMillis() - ((long) days * 24 * 60 * 60 * 1000)) + " AND supporterID=" + nrpid) ) {
+            if (rs.next()) {
+                rating = rs.getDouble("total");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rating;
     }
 
     public static HashMap<String, Integer> getActitvity(int days) {
@@ -97,7 +123,7 @@ public class TeamActivity implements CommandExecutor {
         }
 
         //sort by value
-        activity = Script.sortByValue(activity);
+        activity = Script.sortByValue(activity, true);
         return activity;
     }
 

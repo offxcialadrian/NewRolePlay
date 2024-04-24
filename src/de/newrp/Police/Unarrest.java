@@ -81,6 +81,7 @@ public class Unarrest implements CommandExecutor {
         p.sendMessage(Jail.PREFIX + "Du hast §6" + Script.getName(tg) + " §7aus dem Gefängnis entlassen.");
         Beruf.Berufe.POLICE.sendMessage(Jail.PREFIX + "§6" + Script.getName(p) + " §7hat §6" + Script.getName(tg) + " §7aus dem Gefängnis entlassen.");
         Beruf.Berufe.GOVERNMENT.sendMessage(Jail.PREFIX + "§6" + Script.getName(p) + " §7hat §6" + Script.getName(tg) + " §7aus dem Gefängnis entlassen.");
+        Script.updateFahndungSubtitle(tg);
 
         return false;
     }

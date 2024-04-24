@@ -1,19 +1,21 @@
 package de.newrp.API;
 
 import com.github.theholywaffle.teamspeak3.api.wrapper.Client;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import de.newrp.Administrator.AntiCheatSystem;
 import de.newrp.Administrator.BuildMode;
 import de.newrp.Administrator.SDuty;
-import de.newrp.Berufe.Abteilung;
-import de.newrp.Berufe.Beruf;
-import de.newrp.Berufe.Duty;
-import de.newrp.Berufe.Equip;
+import de.newrp.Berufe.*;
 import de.newrp.Forum.Forum;
 import de.newrp.House.House;
+import de.newrp.Organisationen.Blacklist;
 import de.newrp.Organisationen.Drogen;
+import de.newrp.Organisationen.Organisation;
 import de.newrp.Player.AFK;
 import de.newrp.Player.Mobile;
 import de.newrp.Player.Passwort;
+import de.newrp.Police.Fahndung;
 import de.newrp.TeamSpeak.TeamSpeak;
 import de.newrp.Ticket.TicketCommand;
 import de.newrp.Votifier.VoteListener;
@@ -97,14 +99,31 @@ public class Script {
         return players;
     }
 
-    public static HashMap<String, Integer> sortByValue(HashMap<String, Integer> hm) {
+    public static HashMap<String, Integer> sortByValue(HashMap<String, Integer> hm, boolean highestfirst) {
         List<Map.Entry<String, Integer>> list = new LinkedList<>(hm.entrySet());
-        list.sort(Map.Entry.comparingByValue());
+        list.sort((o1, o2) -> {
+            if (highestfirst) {
+                return (o2.getValue()).compareTo(o1.getValue());
+            } else {
+                return (o1.getValue()).compareTo(o2.getValue());
+            }
+        });
+
         HashMap<String, Integer> temp = new LinkedHashMap<>();
         for (Map.Entry<String, Integer> aa : list) {
             temp.put(aa.getKey(), aa.getValue());
         }
         return temp;
+    }
+
+    public static void disableVoiceChat(Player player) {
+        JsonObject object = new JsonObject();
+
+        // Disable the voice chat for this player
+        object.addProperty( "allowed", false );
+
+        // Send to LabyMod using the API
+        LabyModProtocol.sendLabyModMessage( player, "voicechat", object );
     }
 
     public static List<OfflinePlayer> getAllNRPTeam() {
@@ -155,12 +174,13 @@ public class Script {
             if(Beruf.getBeruf(p) == Beruf.Berufe.RETTUNGSDIENST) color = "§4";
             if(Beruf.getBeruf(p) == Beruf.Berufe.GOVERNMENT) color = "§3";
             if(Beruf.getBeruf(p) == Beruf.Berufe.NEWS) color = "§6";
+            if(Beruf.getAbteilung(p) == Abteilung.Abteilungen.ZIVILPOLIZEI) color = "§r";
         }
         if (!SDuty.isSDuty(p)) p.setPlayerListName("§r" + p.getName());
         if (SDuty.isSDuty(p)) p.setPlayerListName("§5§lNRP §8× §c" + p.getName());
         if (Duty.isInDuty(p))  p.setPlayerListName(color + p.getPlayerListName());
         if (BuildMode.isInBuildMode(p)) p.setPlayerListName("§e§lB §8× §r" + p.getPlayerListName());
-        if (TicketCommand.isInTicket(p)) p.setPlayerListName("§b§lT §8× §r" + p.getPlayerListName());
+        if (TicketCommand.isInTicket(p)) p.setPlayerListName("§d§lT §8× §r" + p.getPlayerListName());
     }
 
     public static Inventory fillInv(Inventory inv) {
@@ -464,12 +484,95 @@ public class Script {
     }
 
     public static String getName(OfflinePlayer p) {
-        if(p.isOnline() && p.getPlayer() != null) {
+        if(p.getPlayer() != null && p.isOnline()) {
             if (isNRPTeam(p) && SDuty.isSDuty(p.getPlayer())) return "NRP × " + p.getName();
         }
         return p.getName();
     }
 
+    public static ItemStack feuerloescher() {
+        ItemStack is = new ItemStack(Material.LEVER);
+        ItemMeta meta = is.getItemMeta();
+        meta.setDisplayName("§7Feuerlöscher");
+        meta.setLore(Collections.singletonList("§7" + 0 + "/800"));
+        is.setItemMeta(meta);
+        return is;
+    }
+
+    public static ItemStack feuerloescher(ItemStack is, int amount) {
+        ItemMeta meta = is.getItemMeta();
+        meta.setLore(Collections.singletonList("§7" + amount + "/800"));
+        is.setItemMeta(meta);
+        return is;
+    }
+
+    public static int getFeuerloescher(ItemStack is) {
+        String s = is.getItemMeta().getLore().toString();
+        s = s.substring(3, s.length() - 5);
+        if (!isInt(s)) return 0;
+        return Integer.parseInt(s);
+    }
+
+    public static void setSubtitle( Player receiver, UUID subtitlePlayer, String value ) {
+        // List of all subtitles
+        JsonArray array = new JsonArray();
+
+        // Add subtitle
+        JsonObject subtitle = new JsonObject();
+        subtitle.addProperty( "uuid", subtitlePlayer.toString() );
+
+        // Optional: Size of the subtitle
+        subtitle.addProperty( "size", 0.8d ); // Range is 0.8 - 1.6 (1.6 is Minecraft default)
+
+        // no value = remove the subtitle
+        if(value != null)
+            subtitle.addProperty( "value", value );
+
+        // If you want to use the new text format in 1.16+
+        // subtitle.add("raw_json_text", textObject );
+
+        // You can set multiple subtitles in one packet
+        array.add(subtitle);
+
+        // Send to LabyMod using the API
+        LabyModProtocol.sendLabyModMessage( receiver, "account_subtitle", array );
+    }
+
+    public static void updateBlackListSubtitle(Player p) {
+        for(Organisation o : Organisation.values()) {
+            if(Blacklist.isOnBlacklist(p, o)) {
+                for(Player members : o.getMembers()) {
+                    Script.setSubtitle(members, p.getUniqueId(), "§c" + Blacklist.getBlacklistObject(Script.getNRPID(p), o).getReason());
+                }
+            }
+        }
+    }
+
+    public static void removeSubtitle(Player p) {
+        for(Organisation o : Organisation.values()) {
+            if(Blacklist.isOnBlacklist(p, o)) {
+                for(Player members : o.getMembers()) {
+                    Script.setSubtitle(members, p.getUniqueId(), null);
+                }
+            }
+        }
+    }
+
+    public static void updateFahndungSubtitle(Player p) {
+        if(Fahndung.isFahnded(p)) {
+            for(Player cops : Beruf.Berufe.POLICE.getMembers()) {
+                Script.setSubtitle(cops, p.getUniqueId(), "§cFahndung: " + Fahndung.getWanteds(p) + " Wanted(s)");
+            }
+        }
+    }
+
+    public static void updateHousebanSubtitle(Player p) {
+        if(Houseban.isHousebanned(p, Beruf.Berufe.RETTUNGSDIENST)) {
+            for(Player medics : Beruf.Berufe.RETTUNGSDIENST.getMembers()) {
+                Script.setSubtitle(medics, p.getUniqueId(), "§cHausverbot: " + Houseban.getReason(p, Beruf.Berufe.RETTUNGSDIENST));
+            }
+        }
+    }
 
     public static Boolean isNRPTeam(Player p) {
         return getRank(p).getWeight() >= SUPPORTER.getWeight();
@@ -1022,6 +1125,10 @@ public class Script {
         return 0;
     }
 
+    public static String getAPIKey(OfflinePlayer p) {
+        return getString(p, "api_key", "personal_key");
+    }
+
     public static int getInt(OfflinePlayer p, String dbName, String s) {
         try (Statement stmt = main.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM " + dbName + " WHERE nrp_id='" + getNRPID(p) + "'")) {
@@ -1282,6 +1389,7 @@ public class Script {
         }
         return null;
     }
+
 
     public static OfflinePlayer getOfflinePlayer(int id) {
         if (id == 0) return null;
@@ -1576,9 +1684,17 @@ public class Script {
         return s.substring(s.length() - 1);
     }
 
-    public static void setLevel(Player p, int level) {
+    public static void setLevel(Player p, int level, int addedexp) {
+        if(!Premium.hasPremium(p)) {
+            executeUpdate("UPDATE level SET exp=" + 0 + " WHERE nrp_id=" + getNRPID(p));
+            p.sendMessage(Messages.INFO + "Nur mit einem Premium-Account werden deine überschüssigen Exp übernommen.");
+        } else {
+            int needed = getLevelCost(p);
+            int exp = getExp(p);
+            int more = (exp+addedexp) - needed;
+            executeUpdate("UPDATE level SET exp=" + more + " WHERE nrp_id=" + getNRPID(p));
+        }
         executeUpdate("UPDATE level SET level=" + level + " WHERE nrp_id=" + getNRPID(p));
-        executeUpdate("UPDATE level SET exp=" + 0 + " WHERE nrp_id=" + getNRPID(p));
         p.setLevel(level);
         p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1F, 1F);
         Log.NORMAL.write(p, "hat Level " + level + " erreicht.");
@@ -1623,7 +1739,7 @@ public class Script {
         int level_cost = getLevelCost(p);
         int lvl = getLevel(p) + 1;
         int id = getNRPID(p);
-        setLevel(p, lvl);
+        setLevel(p, lvl, 0);
         p.sendMessage(Script.PREFIX + "§aDu bist nun Level §6" + lvl + "§a!");
         setExpbarPercentage(p, 0);
         resetHealth(p);
@@ -1704,6 +1820,10 @@ public class Script {
         executeUpdate("UPDATE level SET exp=" + (getExp(id) + exp) + " WHERE nrp_id=" + id);
     }
 
+
+    public static void setEXP(int id, int exp) {
+        executeUpdate("UPDATE level SET exp=" + exp + " WHERE nrp_id=" + id);
+    }
     public static ArrayList<Integer> getRandomNumbers(int min, int max, int amount) {
         ArrayList<Integer> numbers = new ArrayList<>();
         for(int i = 0; i < amount; i++) {

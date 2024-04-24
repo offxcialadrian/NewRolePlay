@@ -34,6 +34,7 @@ public class OrgSpray implements Listener {
     private static final Map<String, Long> LAST_CLICK = new HashMap<>();
     public static HashMap<String, Integer> LEVEL = new HashMap<>();
     public final HashMap<Location, Long> spray_cooldown = new HashMap<>();
+    public final HashMap<String, Long> small_cooldown = new HashMap<>();
     public final HashMap<String, HashMap<Location, Integer>> m = new HashMap<>();
 
     @EventHandler
@@ -42,11 +43,16 @@ public class OrgSpray implements Listener {
             if (e.getHand() == EquipmentSlot.OFF_HAND) return;
             Player p = e.getPlayer();
             Block b = e.getClickedBlock();
-            if(!p.getInventory().getItemInMainHand().equals(new ItemBuilder(Material.LEVER).setName("§eGraffiti").build())) return;
+            if (!p.getInventory().getItemInMainHand().equals(new ItemBuilder(Material.LEVER).setName("§eGraffiti").build()))
+                return;
             assert b != null;
             if (b.getType().equals(Material.WHITE_WALL_BANNER)) {
                 boolean valid = C_SPRAY.containsKey(b.getLocation());
-
+                if (small_cooldown.containsKey(p.getName())) {
+                    if (small_cooldown.get(p.getName()) > System.currentTimeMillis()) {
+                        return;
+                    }
+                }
                 if (valid) {
                     if (Organisation.hasOrganisation(p)) {
                         long time = System.currentTimeMillis();
@@ -67,9 +73,10 @@ public class OrgSpray implements Listener {
                         int level = LEVEL.computeIfAbsent(p.getName(), k -> 0);
                         LAST_CLICK.put(p.getName(), time);
                         LEVEL.replace(p.getName(), level + 1);
-                        progressBar(11,  p);
-                        if (level >= 10) {
-                            addSpray(p, b);
+                        progressBar(8, p);
+                        addSpray(p, b);
+                        small_cooldown.put(p.getName(), System.currentTimeMillis() + 1500);
+                        if (level >= 7) {
                             p.getInventory().getItemInMainHand().setAmount(p.getInventory().getItemInMainHand().getAmount() - 1);
                             LAST_CLICK.remove(p.getName());
                             LEVEL.remove(p.getName());
@@ -157,6 +164,7 @@ public class OrgSpray implements Listener {
             banner.setPatterns(Organisation.getOrganisation(p).getFraktionSpray().getPattern());
             m.remove(p.getName());
             p.sendMessage(PREFIX + "Du hast das Graffiti entfernt.");
+            p.getInventory().getItemInMainHand().setAmount(p.getInventory().getItemInMainHand().getAmount() - 1);
             Script.addEXP(p, Script.getRandom(3, 5));
         } else {
             m.put(p.getName(), map);
@@ -229,6 +237,7 @@ public class OrgSpray implements Listener {
             banner.setPatterns(Organisation.getOrganisation(p).getFraktionSpray().getPattern());
             m.remove(p.getName());
             p.sendMessage(PREFIX + "Du hast das Graffiti mit deiner Organisationsflagge übersprayt.");
+            f.sendMessage(PREFIX + p.getName() + " hat das Graffiti mit der Flagge der Organisation übersprayt.");
             f.addExp(Script.getRandom(5, 10));
             Script.addEXP(p, Script.getRandom(3, 5));
         } else {
@@ -236,7 +245,6 @@ public class OrgSpray implements Listener {
         }
         banner.update();
 
-        f.sendMessage(PREFIX + p.getName() + " hat das Graffiti mit der Flagge der Organisation übersprayt.");
 
         Script.executeAsyncUpdate("UPDATE graffiti SET fraktion = " + f.getID() + " WHERE x = " + b.getLocation().getBlockX() + " AND y = " + b.getLocation().getBlockY() + " AND z = " + b.getLocation().getBlockZ());
         C_SPRAY.put(b.getLocation(), f);

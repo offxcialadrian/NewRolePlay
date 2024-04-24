@@ -50,7 +50,7 @@ public class MemberCommand implements CommandExecutor, TabCompleter {
             Beruf.Berufe beruf = Beruf.getBeruf(p);
             p.sendMessage(PREFIX + "Mitglieder von " + beruf.getName() + ":");
             int i = 0;
-            for(OfflinePlayer player : beruf.getAllMembers()) {
+            for(OfflinePlayer player : beruf.getMembers()) {
                 p.sendMessage("§8" + Messages.ARROW + " §6" + player.getName() + " §8(§6" + Beruf.getAbteilung(player).getName()+ "§8)" + (player.isOnline()? " §8[§aOnline§8] " + (AFK.isAFK(Script.getPlayer(Script.getNRPID(player)))?"§8[§6AFK§8]":"" ) : ""));
                 i++;
             }
@@ -116,7 +116,7 @@ public class MemberCommand implements CommandExecutor, TabCompleter {
                 return true;
             }
 
-            p.sendMessage(PREFIX + tg.getName() + " befindet sich in der " + (Beruf.hasBeruf(tg)? Beruf.getBeruf(tg).getName() : Organisation.getOrganisation(tg).getName()) + ".");
+            p.sendMessage(PREFIX + tg.getName() + " befindet sich in " + (Beruf.hasBeruf(tg)? Beruf.getBeruf(tg).getName() : Organisation.getOrganisation(tg).getName()) + ".");
             return true;
         }
 

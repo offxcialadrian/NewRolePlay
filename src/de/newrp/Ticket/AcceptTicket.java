@@ -13,6 +13,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -73,6 +74,7 @@ public class AcceptTicket implements CommandExecutor {
                 SDuty.updateScoreboard();
                 TicketClick.created.remove(tg);
                 int seconds = (int) ((System.currentTimeMillis() - q.getCreateTime()) / 1000);
+                p.removePotionEffect(PotionEffectType.BLINDNESS);
                 p.sendMessage(TicketCommand.PREFIX + "Du hast das Ticket von " + Script.getName(tg) + " §8[§6Level " + tg.getLevel() + "§8]§d angenommen! Thema: " + tt.getName());
                 if(Beruf.hasBeruf(tg) || Organisation.hasOrganisation(tg)) {
                     p.sendMessage(TicketCommand.PREFIX + (Beruf.hasBeruf(tg) ? "Beruf: " + Beruf.getBeruf(tg).getName() : "Organisation: " + Organisation.getOrganisation(tg).getName()));

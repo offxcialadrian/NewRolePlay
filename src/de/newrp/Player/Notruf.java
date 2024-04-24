@@ -5,6 +5,7 @@ import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.Berufe.AcceptNotruf;
 import de.newrp.Berufe.Beruf;
+import de.newrp.Berufe.BlockNotruf;
 import de.newrp.Berufe.Duty;
 import de.newrp.Chat.Me;
 import org.bukkit.Bukkit;
@@ -75,6 +76,18 @@ public class Notruf implements Listener {
                     int questionID = answer.question.getID();
                     answers.put(p.getName() + questionID, answer.answer);
                     if (Questions.FRAGE2.getID() == questionID) {
+
+                        if(call3.get(p) == null && (BlockNotruf.isBlocked(Beruf.Berufe.POLICE, p) || BlockNotruf.isBlocked(Beruf.Berufe.RETTUNGSDIENST, p))) {
+                            p.sendMessage(PREFIX + "Deine Notrufe sind blockiert. Bitte wende dich an die Leitung.");
+                            return;
+                        } else if(call3.get(p) != null && call3.get(p) == Type.RETTUNG && BlockNotruf.isBlocked(Beruf.Berufe.RETTUNGSDIENST, p)) {
+                            p.sendMessage(PREFIX + "Deine Notrufe sind blockiert. Bitte wende dich an die Leitung.");
+                            return;
+                        } else if(call3.get(p) != null && call3.get(p) == Type.POLICE && BlockNotruf.isBlocked(Beruf.Berufe.POLICE, p)) {
+                            p.sendMessage(PREFIX + "Deine Notrufe sind blockiert. Bitte wende dich an die Leitung.");
+                            return;
+                        }
+
                         p.sendMessage(PREFIX + "Vielen Dank für Ihren Anruf. Die Polizei und/oder der Rettungsdienst werden sich umgehend um Ihr Anliegen kümmern.");
                         Me.sendMessage(p, "wählt den Notruf auf seinem Handy.");
 

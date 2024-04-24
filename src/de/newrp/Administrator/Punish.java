@@ -470,11 +470,11 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
         }
 
         if (punishment == Punishment.TRAGEN_SPERRE || secondaryPunishment == Punishment.TRAGEN_SPERRE) {
-            p.sendMessage(PREFIX + "Du hast " + tg.getName() + " eine Tragensperre für " + v.getDuration() + " Minuten gegeben.");
-            Script.sendTeamMessage(p, ChatColor.RED, "hat " + tg.getName() + " eine Tragensperre für " + v.getDuration() + " Minuten gegeben.", true);
-            Log.WARNING.write(tg, "hat von " + Messages.RANK_PREFIX(p) + " eine Tragensperre für " + v.getDuration() + " Minuten bekommen.");
-            Log.HIGH.write(p, "hat " + tg.getName() + " eine Tragensperre für " + v.getDuration() + " Minuten gegeben.");
-            Sperre.TRAGENSPERRE.setSperre(Script.getNRPID(tg), v.getDuration());
+            p.sendMessage(PREFIX + "Du hast " + tg.getName() + " eine Tragensperre für " + 180 + " Minuten gegeben.");
+            Script.sendTeamMessage(p, ChatColor.RED, "hat " + tg.getName() + " eine Tragensperre für " + 180 + " Minuten gegeben.", true);
+            Log.WARNING.write(tg, "hat von " + Messages.RANK_PREFIX(p) + " eine Tragensperre für " + 180 + " Minuten bekommen.");
+            Log.HIGH.write(p, "hat " + tg.getName() + " eine Tragensperre für " + 180 + " Minuten gegeben.");
+            Sperre.TRAGENSPERRE.setSperre(Script.getNRPID(tg), 180);
         }
 
 

@@ -5,8 +5,11 @@ import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.Administrator.SDuty;
 import de.newrp.Forum.Forum;
+import de.newrp.Gangwar.GangwarCommand;
+import de.newrp.Organisationen.Blacklist;
 import de.newrp.Organisationen.Organisation;
 import de.newrp.Player.Annehmen;
+import de.newrp.Police.Fahndung;
 import de.newrp.TeamSpeak.TeamSpeak;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -62,11 +65,6 @@ public class InviteCommand implements CommandExecutor {
             return true;
         }
 
-        if(Script.getActivePlayTime(tg, true) < 3 && !SDuty.isSDuty(p)) {
-            p.sendMessage(Messages.ERROR + "Der Spieler hat noch keine 3 Stunden aktive Spielzeit.");
-            return true;
-        }
-
         if(!TeamSpeak.isVerified(Script.getNRPID(tg))) {
             p.sendMessage(Messages.ERROR + "Der Spieler muss erst seinen TeamSpeak-Account verknüpfen.");
             return true;
@@ -78,6 +76,12 @@ public class InviteCommand implements CommandExecutor {
         }
 
         if (Beruf.hasBeruf(p)) {
+
+            if(Beruf.getBeruf(p) == Beruf.Berufe.POLICE && Fahndung.isFahnded(tg)) {
+                p.sendMessage(Messages.ERROR + "Der Spieler wird derzeit gefahndet.");
+                return true;
+            }
+
             Annehmen.offer.put(tg.getName() + ".joinberuf", p.getName());
             p.sendMessage(PREFIX + "Du hast " + Script.getName(tg) + " in " + Beruf.getBeruf(p).getName() + " eingeladen.");
             tg.sendMessage(PREFIX + "Du wurdest von " + Script.getName(p) + " in " + Beruf.getBeruf(p).getName() + " eingeladen.");
@@ -91,6 +95,17 @@ public class InviteCommand implements CommandExecutor {
             return true;
         }
 
+
+        if(Blacklist.isOnBlacklist(tg, Organisation.getOrganisation(p))) {
+            Blacklist.remove(tg, Organisation.getOrganisation(p));
+            Organisation.getOrganisation(p).sendMessage(Messages.ERROR + "Der Spieler " + Script.getName(tg) + " wurde von der Blacklist entfernt.");
+            p.sendMessage(Messages.INFO + "Der Spieler " + Script.getName(tg) + " wurde von der Blacklist entfernt, da du ihn in deine Organisation einlädst.");
+        }
+
+        if(GangwarCommand.isInGangwar(p)) {
+            p.sendMessage(Messages.ERROR + "Du kannst während eines Gangwars keine Spieler einladen.");
+            return true;
+        }
 
         Annehmen.offer.put(tg.getName() + ".joinorganisation", p.getName());
         p.sendMessage(PREFIX + "Du hast " + Script.getName(tg) + " in deine Organisation " + Organisation.getOrganisation(p).getName() + " eingeladen.");

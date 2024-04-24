@@ -1,9 +1,6 @@
 package de.newrp.Administrator;
 
-import de.newrp.API.Messages;
-import de.newrp.API.Premium;
-import de.newrp.API.Rank;
-import de.newrp.API.Script;
+import de.newrp.API.*;
 import de.newrp.TeamSpeak.TeamSpeak;
 import de.newrp.main;
 import org.bukkit.ChatColor;
@@ -77,7 +74,6 @@ public class PremiumCommand implements CommandExecutor {
                 p.sendMessage(Messages.ERROR + "Du hast keinen Premium Rang.");
                 p.sendMessage(Messages.INFO + "Du kannst dir einen Premium Rang auf https://shop.newrp.de/ kaufen.");
                 if(hasPremiumStored(p)) {
-                    p.sendMessage(PREFIX);
                     p.sendMessage(PREFIX + "Du kannst noch Premium aktivieren.");
                     sendPremiumStorage(p);
                 }
@@ -129,7 +125,7 @@ public class PremiumCommand implements CommandExecutor {
         try (Statement stmt = main.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM premium_storage WHERE nrp_id=" + Script.getNRPID(p))) {
             if (rs.next()) {
-                if (rs.getLong("expires") < System.currentTimeMillis()) {
+                if (rs.getLong("expires") > System.currentTimeMillis()) {
                     return true;
                 }
             }
@@ -145,9 +141,15 @@ public class PremiumCommand implements CommandExecutor {
              ResultSet rs = stmt.executeQuery("SELECT * FROM premium_storage WHERE nrp_id=" + Script.getNRPID(p) + " ORDER BY id ASC;")) {
             while (rs.next()) {
                 long expires = rs.getLong("expires");
+                if(expires == 0) {
+                    String expirationMessage = "× Permanent";
+                    Script.sendClickableMessage(p, PREFIX + "§l#" + i + " §7» §b" + rs.getInt("duration") + " Tage " + expirationMessage, "/premium activate " + i, "§7Klicke hier, um den Premium Rang zu aktivieren.");
+                    i++;
+                    continue;
+                }
 
-                if (expires == 0 || expires > System.currentTimeMillis()) {
-                    String expirationMessage = (expires == 0) ? "(Läuft nicht ab)" : "Läuft in " + Script.getRemainingTime(expires) + " ab.";
+                if (expires > System.currentTimeMillis()) {
+                    String expirationMessage = "× Läuft in " + Script.getRemainingTime(expires) + " ab.";
                     Script.sendClickableMessage(p, PREFIX + "§l#" + i + " §7» §b" + rs.getInt("duration") + " Tage " + expirationMessage, "/premium activate " + i, "§7Klicke hier, um den Premium Rang zu aktivieren.");
                     i++;
                 }
@@ -185,6 +187,7 @@ public class PremiumCommand implements CommandExecutor {
                         Premium.addPremium(p, TimeUnit.DAYS.toMillis(rs.getInt("duration")));
                         Script.executeAsyncUpdate("DELETE FROM premium_storage WHERE id=" + rs.getInt("id"));
                         p.sendMessage(PREFIX + "Du hast den Premium Rang aktiviert.");
+                        Log.HIGH.write(p, "hat den Premium Rang aktiviert (" + rs.getInt("duration") + " Tage).");
                         return;
                     }
                 }

@@ -13,7 +13,9 @@ public class EatEvent implements Listener {
         if(!(e.getEntity() instanceof Player)) return;
         if(e.getItem() == null) return;
         Player p = (Player) e.getEntity();
-        if(e.getItem().getType() == Material.COOKIE) Health.FAT.add(Script.getNRPID(p), Script.getRandomFloat(.01F, .02F));
+        if(!Premium.hasPremium(p)) {
+            if(e.getItem().getType() == Material.COOKIE) Health.FAT.add(Script.getNRPID(p), Script.getRandomFloat(.01F, .02F));
+        }
     }
 
 }

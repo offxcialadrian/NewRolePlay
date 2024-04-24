@@ -14,15 +14,13 @@ import de.newrp.Call.PickupCommand;
 import de.newrp.Chat.*;
 import de.newrp.Commands.DiscordCommand;
 import de.newrp.Commands.Test;
-import de.newrp.Entertainment.BlackJack;
-import de.newrp.Entertainment.Boxen;
-import de.newrp.Entertainment.Laufband;
-import de.newrp.Entertainment.Lotto;
+import de.newrp.Entertainment.*;
 import de.newrp.Forum.ForumCommand;
 import de.newrp.Berufe.Tazer;
 import de.newrp.GFB.*;
 import de.newrp.Gangwar.Capture;
 import de.newrp.Gangwar.GangwarCommand;
+import de.newrp.Gangwar.GangwarZonesCommand;
 import de.newrp.Government.*;
 import de.newrp.House.*;
 import de.newrp.Medic.*;
@@ -40,6 +38,9 @@ import de.newrp.Votifier.VoteListener;
 import de.newrp.Votifier.VoteShop;
 import de.newrp.Votifier.VoteShopListener;
 import de.newrp.Waffen.*;
+import net.labymod.serverapi.api.LabyAPI;
+import net.labymod.serverapi.api.LabyService;
+import net.labymod.serverapi.api.protocol.Protocol;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -151,7 +152,6 @@ public class main extends JavaPlugin {
 
         if (!test) new ClearLog();
         Script.prepareScoreboard();
-
 
 
         getCommand("goto").setTabCompleter(new GoTo());
@@ -418,6 +418,21 @@ public class main extends JavaPlugin {
         getCommand("motd").setExecutor(new FMOTD());
         getCommand("capture").setExecutor(new Capture());
         getCommand("kebap").setExecutor(new Kebap());
+        getCommand("blocknotruf").setExecutor(new BlockNotruf());
+        getCommand("gangzone").setExecutor(new GangwarZonesCommand());
+        getCommand("deletenotruf").setExecutor(new DeleteNotruf());
+        getCommand("checkactivemembers").setExecutor(new CheckActiveMembers());
+        getCommand("endfire").setExecutor(new EndFire());
+        getCommand("sit").setExecutor(new SitCommand());
+        getCommand("housedbank").setExecutor(new DrogenbankHouse());
+        getCommand("strecken").setExecutor(new Strecken());
+        getCommand("treuebonus").setExecutor(new Treuebonus());
+        getCommand("addticket").setExecutor(new AddToConv());
+        getCommand("tabakplantage").setExecutor(new Tabakplantage());
+        getCommand("droptabak").setExecutor(new DropTabak());
+        getCommand("neulingschat").setExecutor(new NeulingsChat());
+        getCommand("apikey").setExecutor(new APIKey());
+        getCommand("houseslot").setExecutor(new HouseSlot());
         
 
         PluginManager pm = Bukkit.getPluginManager();
@@ -546,7 +561,14 @@ public class main extends JavaPlugin {
         pm.registerEvents(new GangwarCommand(), this);
         pm.registerEvents(new Capture(), this);
         pm.registerEvents(new Kebap(), this);
+        pm.registerEvents(new AntiFireSpread(), this);
+        pm.registerEvents(new Feuerloescher(), this);
+        pm.registerEvents(new AkkuCommand(), this);
+        pm.registerEvents(new Treuebonus(), this);
+        pm.registerEvents(new Shisha(), this);
+        pm.registerEvents(new CancelTicket(), this);
         //pm.registerEvents(new MuscleDamage(), this);
+
 
         new AsyncHealth().runTaskTimerAsynchronously(this, 120 * 20L, 120 * 20L);
         new PayDay().runTaskTimerAsynchronously(this, 60 * 20L, 60 * 20L);
@@ -571,6 +593,7 @@ public class main extends JavaPlugin {
         Zeitung.restoreZeitung();
         OrgSpray.FraktionSpray.init();
 
+        LabyAPI.initialize(LabyAPI.getService());
 
         Bukkit.getConsoleSender().sendMessage("§cNRP §8× §astarting complete..");
         Bukkit.getConsoleSender().sendMessage("§cNRP §8× §aViel Erfolg heute..");

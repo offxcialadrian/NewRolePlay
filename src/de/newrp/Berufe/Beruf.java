@@ -24,10 +24,10 @@ public class Beruf {
     public static String PREFIX = "§8[§eBeruf§8] §e" + Messages.ARROW + " §7";
 
     public enum Berufe {
-        GOVERNMENT(1, "Regierung", new Location(Script.WORLD, 557, 88, 991, 89.61847f, 0.46322706f),false, true, true, 56, TeamspeakServerGroup.GOVERNMENT, new ForumGroup[]{ForumGroup.GOVERNMENT, ForumGroup.GOVERNMENT_LEADER}),
-        NEWS(2, "News", new Location(Script.WORLD, 294, 67, 789, 204.75023f, 5.849994f), true, true, true, 95, TeamspeakServerGroup.NEWS, new ForumGroup[]{ForumGroup.NEWS, ForumGroup.NEWS_LEADER}),
-        POLICE(3, "Polizei", new Location(Script.WORLD, 413, 71, 825, 37.74829f, 2.2104692f),false, true, true, 70, TeamspeakServerGroup.POLICE, new ForumGroup[]{ForumGroup.POLICE, ForumGroup.POLICE_LEADER}),
-        RETTUNGSDIENST(4, "Rettungsdienst", new Location(Script.WORLD, 267, 75, 1254, 245.1552f, 8.946896f),false, true,true, 83, TeamspeakServerGroup.RETTUNGSDIENST, new ForumGroup[]{ForumGroup.RETTUNGSDIENST, ForumGroup.RETTUNGSDIENST_LEADER});
+        GOVERNMENT(1, "Regierung", new Location(Script.WORLD, 562, 88, 992, 270.80725f, 18.372393f),false, true, true, 56, TeamspeakServerGroup.GOVERNMENT, new ForumGroup[]{ForumGroup.GOVERNMENT, ForumGroup.GOVERNMENT_LEADER}),
+        NEWS(2, "News", new Location(Script.WORLD, 302, 67, 777, -24.381052f, 8.922394f), true, true, true, 95, TeamspeakServerGroup.NEWS, new ForumGroup[]{ForumGroup.NEWS, ForumGroup.NEWS_LEADER}),
+        POLICE(3, "Polizei", new Location(Script.WORLD, 420, 71, 819, 185.04346f, 15.860464f),false, true, true, 70, TeamspeakServerGroup.POLICE, new ForumGroup[]{ForumGroup.POLICE, ForumGroup.POLICE_LEADER}),
+        RETTUNGSDIENST(4, "Rettungsdienst", new Location(Script.WORLD, 263, 75, 1254, 189.6543f, 26.346867f),false, true,true, 83, TeamspeakServerGroup.RETTUNGSDIENST, new ForumGroup[]{ForumGroup.RETTUNGSDIENST, ForumGroup.RETTUNGSDIENST_LEADER});
 
         int id;
         private final String name;
@@ -319,9 +319,6 @@ public class Beruf {
         return Script.getInt(p, "berufe", "berufID") != 0;
     }
 
-    public static boolean hasBeruf(Player p, Berufe beruf) {
-        return Script.getInt(p, "berufe", "berufID") == beruf.getID();
-    }
 
     public static boolean isCoLeader(Player p) {
         return Script.getInt(p, "berufe", "coleader") == 1;
@@ -369,6 +366,19 @@ public class Beruf {
         return false;
     }
 
+    public static boolean hasAbteilung(Player p, Abteilung.Abteilungen... abteilungen) {
+        if(isLeader(p, true)) return true;
+        if(getAbteilung(p) == null) return false;
+        for (Abteilung.Abteilungen abteilung : abteilungen) {
+            if(getAbteilung(p).equals(abteilung)) return true;
+        }
+        return false;
+    }
+
+    public static boolean hasBeruf(Player p, Berufe berufe) {
+        if(Beruf.getBeruf(p) == null) return false;
+        return Beruf.getBeruf(p).equals(berufe);
+    }
 
     public static List<Player> getPlayersFromBeruf(Berufe beruf) {
         List<Player> list = new ArrayList<>();

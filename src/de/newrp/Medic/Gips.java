@@ -53,7 +53,7 @@ public class Gips implements Listener {
             return;
         }
 
-        if(!Krankheit.GEBROCHENER_ARM.isInfected(Script.getNRPID(rightClicked)) && !Krankheit.GEBROCHENES_BEIN.isInfected(Script.getNRPID(rightClicked))) {
+        if (!Krankheit.GEBROCHENER_ARM.isInfected(Script.getNRPID(rightClicked)) && !Krankheit.GEBROCHENES_BEIN.isInfected(Script.getNRPID(rightClicked))) {
             p.sendMessage(Messages.ERROR + "Der Spieler hat keine gebrochenen Knochen");
             return;
         }
@@ -71,7 +71,7 @@ public class Gips implements Listener {
 
         LAST_CLICK.put(p.getName(), time);
         LEVEL.put(p.getName(), level + 1);
-        progressBar(30,  p);
+        progressBar(30, p);
 
         if (level >= 30) {
             PlayerInventory inv = p.getInventory();
@@ -94,7 +94,7 @@ public class Gips implements Listener {
                         rightClicked.removePotionEffect(e.getType());
                     }
                 }
-            }. runTaskLater(main.getInstance(), 20L * 10);
+            }.runTaskLater(main.getInstance(), 20L * 10);
 
             BANDAGE_COOLDOWN.put(rightClicked.getName(), time);
             LAST_CLICK.remove(p.getName());
@@ -141,7 +141,7 @@ public class Gips implements Listener {
         }
     }
 
-    @EventHandler (priority = EventPriority.HIGH)
+    @EventHandler(priority = EventPriority.HIGH)
     public void onJoin(PlayerJoinEvent e) {
         Player p = e.getPlayer();
         if (Krankheit.GEBROCHENES_BEIN.isInfected(Script.getNRPID(p)) && !p.hasPotionEffect(PotionEffectType.HEAL)) {
@@ -179,25 +179,26 @@ public class Gips implements Listener {
 
     @EventHandler
     public void onHit(EntityDamageByEntityEvent e) {
-        if(e.isCancelled()) return;
-        if(!(e.getDamager() instanceof Player)) return;
-        if(!(e.getEntity() instanceof Player)) return;
+        if (e.isCancelled()) return;
+        if (!(e.getDamager() instanceof Player)) return;
+        if (!(e.getEntity() instanceof Player)) return;
         EntityDamageEvent.DamageCause cause = e.getCause();
 
-        if(cause != EntityDamageEvent.DamageCause.ENTITY_ATTACK && cause != EntityDamageEvent.DamageCause.ENTITY_SWEEP_ATTACK) return;
+        if (cause != EntityDamageEvent.DamageCause.ENTITY_ATTACK && cause != EntityDamageEvent.DamageCause.ENTITY_SWEEP_ATTACK)
+            return;
 
         Player p = (Player) e.getEntity();
         Player d = (Player) e.getDamager();
 
 
-        if(Krankheit.GEBROCHENER_ARM.isInfected(Script.getNRPID(d))) {
+        if (Krankheit.GEBROCHENER_ARM.isInfected(Script.getNRPID(d))) {
             d.damage(4D);
             Script.sendActionBar(d, Messages.INFO + "Du hast Schaden erlitten, da du mit einem gebrochenen Arm schlägst.");
             d.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 80, 1, false, false));
             d.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 40, 1, false, false));
         }
 
-        if(!hits.containsKey(d)) {
+        if (!hits.containsKey(d)) {
             hits.put(d, 1);
             new BukkitRunnable() {
                 @Override
@@ -209,10 +210,10 @@ public class Gips implements Listener {
             hits.put(d, hits.get(d) + 1);
         }
 
-        if(hits.get(d) < 5) return;
+        if (hits.get(d) < 5) return;
 
-        if (Script.getRandom(1, 100) <= Health.getMuscleLevel(Script.getNRPID(d))/2) {
-            if(!Krankheit.GEBROCHENER_ARM.isInfected(Script.getNRPID(d))) {
+        if (Script.getRandom(1, 100) <= Health.getMuscleLevel(Script.getNRPID(d)) / 2) {
+            if (!Krankheit.GEBROCHENER_ARM.isInfected(Script.getNRPID(d))) {
                 Me.sendMessage(d, (Script.getGender(d) == Gender.MALE ? "sein" : "ihr") + " Arm hat geknackt.");
                 Krankheit.GEBROCHENER_ARM.add(Script.getNRPID(d));
                 d.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 160, 1, false, false));
@@ -221,7 +222,7 @@ public class Gips implements Listener {
         }
 
         if (Script.getRandom(1, 100) <= Health.getMuscleLevel(Script.getNRPID(d))) {
-            if(!Krankheit.GEBROCHENER_ARM.isInfected(Script.getNRPID(d))) {
+            if (!Krankheit.GEBROCHENER_ARM.isInfected(Script.getNRPID(d))) {
                 Me.sendMessage(p, (Script.getGender(p) == Gender.MALE ? "sein" : "ihr") + " Arm hat geknackt.");
                 Krankheit.GEBROCHENER_ARM.add(Script.getNRPID(p));
                 p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 160, 1, false, false));
@@ -239,12 +240,12 @@ public class Gips implements Listener {
         }
 
         for (Krankheit krankheit : Krankheit.getAllKrankheiten(Script.getNRPID(p))) {
-            if(krankheit.isFoodIntolerance()) {
+            if (krankheit.isFoodIntolerance()) {
                 p.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 10 * 30, 1, false, false));
                 p.addPotionEffect(new PotionEffect(PotionEffectType.HUNGER, 48 * 30, 2, false, false));
-                p.sendMessage(Health.PREFIX  + "§7Dir gehts nicht so gut...");
+                p.sendMessage(Health.PREFIX + "§7Dir gehts nicht so gut...");
                 Me.sendMessage(p, "hat sich übergeben.");
-                new Particle(org.bukkit.Particle.SLIME, p.getLocation(), true,0.5F, 0.5F, 0.5F, 0.5F, 10).sendAll();
+                new Particle(org.bukkit.Particle.SLIME, p.getLocation(), true, 0.5F, 0.5F, 0.5F, 0.5F, 10).sendAll();
                 break;
             }
         }
@@ -253,14 +254,16 @@ public class Gips implements Listener {
     @EventHandler
     public void onDrink(PlayerItemConsumeEvent e) {
         Player p = e.getPlayer();
-        if(Lagerarbeiter.ON_JOB.containsKey(p.getName())) {
+        if (Lagerarbeiter.ON_JOB.containsKey(p.getName())) {
             e.setCancelled(true);
             p.sendMessage(Messages.INFO + "Du kannst während dieses Jobs nichts trinken.");
             return;
         }
 
-        if(e.getItem().getType() == Material.COOKED_BEEF || e.getItem().getType() == Material.BAKED_POTATO || e.getItem().getType() == Material.COOKED_CHICKEN) {
-            Health.FAT.add(Script.getNRPID(p), Script.getRandomFloat(2F, 4F));
+        if (!Premium.hasPremium(p)) {
+            if (e.getItem().getType() == Material.COOKED_BEEF || e.getItem().getType() == Material.BAKED_POTATO || e.getItem().getType() == Material.COOKED_CHICKEN) {
+                Health.FAT.add(Script.getNRPID(p), Script.getRandomFloat(2F, 4F));
+            }
         }
 
         if (e.getItem().getType().equals(Material.POTION)) {

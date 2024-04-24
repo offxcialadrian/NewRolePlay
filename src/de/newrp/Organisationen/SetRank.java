@@ -2,6 +2,7 @@ package de.newrp.Organisationen;
 
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -29,7 +30,7 @@ public class SetRank implements CommandExecutor {
             return true;
         }
 
-        Player tg = Script.getPlayer(args[0]);
+        OfflinePlayer tg = Script.getOfflinePlayer(args[0]);
         if(tg == null) {
             p.sendMessage(Messages.PLAYER_NOT_FOUND);
             return true;
@@ -72,7 +73,7 @@ public class SetRank implements CommandExecutor {
 
         o.setRank(tg, rank);
         p.sendMessage(Organisation.PREFIX + "Du hast den Rang von " + Script.getName(tg) + " auf Rang " + rank + " gesetzt.");
-        tg.sendMessage(Organisation.PREFIX + "Dein Rang wurde von " + Script.getName(p) + " auf Rang " + rank + " gesetzt.");
+        if(tg.getPlayer() !=null) tg.getPlayer().sendMessage(Organisation.PREFIX + "Dein Rang wurde von " + Script.getName(p) + " auf Rang " + rank + " gesetzt.");
         o.sendLeaderMessage(Organisation.PREFIX + Script.getName(p) + " hat den Rang von " + Script.getName(tg) + " auf Rang " + rank + " gesetzt.");
 
         return false;

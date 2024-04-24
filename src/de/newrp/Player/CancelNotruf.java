@@ -38,6 +38,7 @@ public class CancelNotruf implements CommandExecutor {
 
         Notruf.call.remove(p);
         Notruf.call2.remove(p);
+        Notruf.call3.remove(p);
         p.sendMessage(Notruf.PREFIX + "Du hast deinen Notruf abgebrochen.");
 
         return false;

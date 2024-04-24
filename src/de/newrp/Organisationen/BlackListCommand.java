@@ -65,10 +65,6 @@ public class BlackListCommand implements CommandExecutor, Listener, TabCompleter
         PROVOKATION_KARTELL("Provokation", 250, 10, new Organisation[] {Organisation.KARTELL}),
         LB_KARTELL("Leichenbewachung", 500, 25, new Organisation[] {Organisation.KARTELL}),
         VERRAT_BRATERS("Verrat", 800, 25, new Organisation[] {Organisation.BRATERSTWO}),
-        BFB_GS("Blood for Blood", 1000, 50, new Organisation[] {Organisation.GROVE}),
-        SGS_GS("Snitches get stitches", 800, 50, new Organisation[] {Organisation.GROVE}),
-        DAF_GS("Disrespect against the fam'", 300, 25, new Organisation[] {Organisation.GROVE}),
-        GANGZONE_GS("Private Property", 500, 15, new Organisation[] {Organisation.GROVE}),
         Vendetta_FALCONE("Vendetta", 600, 50, new Organisation[] {Organisation.FALCONE}),
         Tradimento_FALCONE("Tradimento", 500, 50, new Organisation[] {Organisation.FALCONE}),
         Diffamazione_FALCONE("Diffamazione", 200, 20, new Organisation[] {Organisation.FALCONE}),
@@ -228,6 +224,7 @@ public class BlackListCommand implements CommandExecutor, Listener, TabCompleter
             p.sendMessage(Blacklist.PREFIX + "Der Spieler wurde von der Blacklist entfernt.");
             if(tg.getPlayer() != null) tg.getPlayer().sendMessage(Blacklist.PREFIX + "Du wurdest von der Blacklist der " + o.getName() + " entfernt.");
             o.sendMessage(Blacklist.PREFIX + Script.getName(p) + " hat " + Script.getName(tg) + " von der Blacklist entfernt.");
+            if(tg.getPlayer()!=null) Script.updateBlackListSubtitle(tg.getPlayer());
             return true;
         }
 
@@ -260,6 +257,11 @@ public class BlackListCommand implements CommandExecutor, Listener, TabCompleter
 
             if(Organisation.getRank(p) < 3) {
                 p.sendMessage(Messages.NO_PERMISSION);
+                return true;
+            }
+
+            if(Organisation.getOrganisation(tg) == o) {
+                p.sendMessage(Blacklist.PREFIX + "Du kannst keine Mitglieder deiner Organisation auf die Blacklist setzen.");
                 return true;
             }
 
@@ -317,6 +319,7 @@ public class BlackListCommand implements CommandExecutor, Listener, TabCompleter
             tg.sendMessage(Blacklist.PREFIX + "Du wurdest auf die Blacklist der " + o.getName() + " gesetzt (Grund: " + reasons.toString() + " | Preis: " + price + "€)");
             o.sendMessage(Blacklist.PREFIX + Script.getName(p) + " hat " + Script.getName(tg) + " auf die Blacklist gesetzt.");
             o.sendMessage(Blacklist.PREFIX + "Grund: " + reasons.toString() + " | Preis: " + price + "€");
+            Script.updateBlackListSubtitle(tg);
             return true;
         }
 

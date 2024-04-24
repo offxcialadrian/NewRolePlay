@@ -46,7 +46,7 @@ public class Me implements CommandExecutor {
                     arg.equalsIgnoreCase("sein glied") || arg.equalsIgnoreCase("lustpunkt") || arg.equalsIgnoreCase("eichel") ||
                     arg.equalsIgnoreCase("bläst ihm") || arg.equalsIgnoreCase("steckt") || arg.equalsIgnoreCase("spritzt") ||
                     arg.equalsIgnoreCase("sex") || arg.equalsIgnoreCase("futterluke") || arg.equalsIgnoreCase("orgasmus")) {
-                Notifications.sendMessage(Notifications.NotificationType.ADVANCED_ANTI_CHEAT, "Verdacht auf Missachtung der Vergewaltigungs-Regel bei " + Script.getName(p) + " " + Messages.ARROW + " " + message);
+                Notifications.sendMessage(Notifications.NotificationType.ADVANCED_ANTI_CHEAT, "Verdacht auf Missachtung der Erotik-RolePlay-Regel bei " + Script.getName(p) + " " + Messages.ARROW + " " + message);
             }
 
         }

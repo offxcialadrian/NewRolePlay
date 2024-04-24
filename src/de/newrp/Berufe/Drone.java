@@ -63,7 +63,8 @@ public class Drone implements Listener {
         p.setWalkSpeed(0.2f);
         p.setFoodLevel(20);
         p.removePotionEffect(PotionEffectType.INVISIBILITY);
-        if(giveBackDrone) p.getInventory().addItem(new ItemBuilder(Material.WITHER_SKELETON_SKULL).setName("§7Drohne").build());
+        if (giveBackDrone)
+            p.getInventory().addItem(new ItemBuilder(Material.WITHER_SKELETON_SKULL).setName("§7Drohne").build());
     }
 
     public static void crash(Player p) {
@@ -79,8 +80,8 @@ public class Drone implements Listener {
 
     @EventHandler
     public void onToggleFly(PlayerToggleFlightEvent e) {
-        if(isDrone(e.getPlayer())) {
-            if((e.getPlayer().getLocation().getBlock().getRelative(0, -1, 0).getType() != Material.AIR || e.getPlayer().getLocation().getBlock().getRelative(0, -2, 0).getType() != Material.AIR) && cooldown.get(e.getPlayer().getName())<System.currentTimeMillis()) {
+        if (isDrone(e.getPlayer())) {
+            if ((e.getPlayer().getLocation().getBlock().getRelative(0, -1, 0).getType() != Material.AIR || e.getPlayer().getLocation().getBlock().getRelative(0, -2, 0).getType() != Material.AIR) && cooldown.get(e.getPlayer().getName()) < System.currentTimeMillis()) {
                 stop(e.getPlayer(), true);
                 return;
             }
@@ -90,9 +91,9 @@ public class Drone implements Listener {
 
     @EventHandler
     public void onPickupItem(EntityPickupItemEvent e) {
-        if(e.getEntity() instanceof Player) {
+        if (e.getEntity() instanceof Player) {
             Player p = (Player) e.getEntity();
-            if(isDrone(p)) {
+            if (isDrone(p)) {
                 e.setCancelled(true);
             }
         }
@@ -100,19 +101,19 @@ public class Drone implements Listener {
 
     @EventHandler
     public void onQuit(PlayerQuitEvent e) {
-        if(isDrone(e.getPlayer())) {
+        if (isDrone(e.getPlayer())) {
             stop(e.getPlayer(), true);
         }
     }
 
     @EventHandler
     public void onMove(PlayerMoveEvent e) {
-        if(isDrone(e.getPlayer())) {
+        if (isDrone(e.getPlayer())) {
             Script.sendActionBar(e.getPlayer(), Messages.INFO + "Distanz zur Drohne: " + (int) e.getPlayer().getLocation().distance(location.get(e.getPlayer().getName())) + " Meter");
-            if(e.getPlayer().getLocation().getBlock().getType().equals(Material.WATER)) {
+            if (e.getPlayer().getLocation().getBlock().getType().equals(Material.WATER)) {
                 crash(e.getPlayer());
             }
-            if(e.getPlayer().getLocation().distance(location.get(e.getPlayer().getName())) > 150) {
+            if (e.getPlayer().getLocation().distance(location.get(e.getPlayer().getName())) > 150) {
                 crash(e.getPlayer());
                 e.getPlayer().sendMessage(Messages.INFO + "Du hast dich zu weit mit deiner Drohne entfernt und den Empfang verloren.");
             }
@@ -121,9 +122,9 @@ public class Drone implements Listener {
 
     @EventHandler
     public void onDamage(EntityDamageByEntityEvent e) {
-        if(e.getEntity() instanceof Player) {
+        if (e.getEntity() instanceof Player) {
             Player p = (Player) e.getEntity();
-            if(isDrone(p)) {
+            if (isDrone(p)) {
                 crash(p);
                 Player damager = (Player) e.getDamager();
                 damager.sendMessage(PREFIX + "Du hast die Drohne zerstört.");
@@ -134,9 +135,9 @@ public class Drone implements Listener {
 
     @EventHandler
     public void onDamage(EntityDamageEvent e) {
-        if(e.getEntity() instanceof Player) {
+        if (e.getEntity() instanceof Player) {
             Player p = (Player) e.getEntity();
-            if(isDrone(p)) {
+            if (isDrone(p)) {
                 crash(p);
             }
         }
@@ -144,7 +145,7 @@ public class Drone implements Listener {
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent e) {
-        if(isDrone((Player) e.getWhoClicked())) {
+        if (isDrone((Player) e.getWhoClicked())) {
             if (e.getSlotType().equals(InventoryType.SlotType.ARMOR)) {
                 stop((Player) e.getWhoClicked(), true);
                 Player p = (Player) e.getWhoClicked();
@@ -155,13 +156,13 @@ public class Drone implements Listener {
 
     @EventHandler
     public void onInteract(PlayerInteractEvent e) {
-        if(e.getAction() != Action.RIGHT_CLICK_BLOCK && e.getAction() != Action.RIGHT_CLICK_AIR) return;
-        if(Beruf.getBeruf(e.getPlayer()) == null) return;
-        if(e.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.WITHER_SKELETON_SKULL) && e.getPlayer().getInventory().getItemInMainHand().getItemMeta().getDisplayName().startsWith("§7Drohne")) {
-            Player p = e.getPlayer();
-            p.getInventory().getItemInMainHand().setAmount(p.getInventory().getItemInMainHand().getAmount() - 1);
-            Beruf.getBeruf(p).sendMessage(PREFIX + Beruf.getAbteilung(p).getName() + " " + Script.getName(p) + " hat eine Drohne gestartet.");
-            start(p);
-        }
+        if (!e.getPlayer().getInventory().getItemInMainHand().getItemMeta().getDisplayName().startsWith("§7Drohne")) return;
+        if (e.getAction() != Action.RIGHT_CLICK_BLOCK && e.getAction() != Action.RIGHT_CLICK_AIR) return;
+        if (Beruf.getBeruf(e.getPlayer()) == null) return;
+        Player p = e.getPlayer();
+        p.getInventory().getItemInMainHand().setAmount(p.getInventory().getItemInMainHand().getAmount() - 1);
+        Beruf.getBeruf(p).sendMessage(PREFIX + Beruf.getAbteilung(p).getName() + " " + Script.getName(p) + " hat eine Drohne gestartet.");
+        start(p);
+
     }
 }

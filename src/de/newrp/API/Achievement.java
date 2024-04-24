@@ -43,7 +43,8 @@ public enum Achievement {
     TEAMLEADER(29, "Teamleiter", "§rWerde Teamleiter", 50, null, false),
     PREMIUM(30, "Premium", "§rKaufe dir Premium", 50, null, false),
     DROHNEN_DESTROYER(31, "Drohnenzerstörer", "§rZerstöre eine Drohne", 50, null, false),
-    BIENENSTICH(32, "Bienenstich", "§rWerde von einer Biene gestochen", 50, null, false);
+    BIENENSTICH(32, "Bienenstich", "§rWerde von einer Biene gestochen", 50, null, false),
+    SHISHA(33, "Shisha", "§rRauche eine Shisha", 50, null, false);
 
 
 

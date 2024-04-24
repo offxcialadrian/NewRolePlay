@@ -22,6 +22,9 @@ public class StatsCommand implements CommandExecutor {
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
         Player p = (Player) cs;
 
+        if(Fahndung.isFahnded(p) && Fahndung.getWanteds(p)==0){
+            Fahndung.removeFahndung(p);
+        }
         p.sendMessage("§e§l=== §6" + Script.getName(p) + " §e§l===");
         p.sendMessage("§7ID §8× §e" + Script.getNRPID(p));
         p.sendMessage("§7Rang §8× §e" + (Script.isNRPTeam(p) ? Script.getRank(p).getName(p) : (Premium.hasPremium(p) ? "§aPremium" : "Spieler")));

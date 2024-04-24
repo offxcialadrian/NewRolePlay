@@ -15,8 +15,8 @@ import java.util.concurrent.TimeUnit;
 
 public class Vote {
 
-    public static final int VOTE_AMOUNT_WEEK = 250;
-    public static final int VOTE_AMOUNT_WEEKEND = 350;
+    public static final int VOTE_AMOUNT_WEEK = 200;
+    public static final int VOTE_AMOUNT_WEEKEND = 300;
 
     public static int getVotesToday(int id) {
         try (Statement stmt = main.getConnection().createStatement();
@@ -29,8 +29,15 @@ public class Vote {
     }
 
     //TODO Auf richtigen Cache ändern (Default läd dann diese funktion)
+    //check if player has voted today
     public static boolean hasVotedToday(int id) {
-        return getVotesToday(id) > 0;
+        try (Statement stmt = main.getConnection().createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT * FROM vote_cache WHERE id=" + id + " AND day=" + Calendar.getInstance().get(Calendar.DAY_OF_YEAR))) {
+            return rs.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     public static void resetVoteCache() {

@@ -1,6 +1,6 @@
 name: NewRolePlay
 main: de.newrp.main
-version: 1.0.3
+version: 1.0.4
 description: NewRP Serversystem
 author: NewRP Entwicklungs-Team
 api-version: 1.16
@@ -663,7 +663,7 @@ commands:
     aliases: [ darlehen, kredit ]
   reply:
     description: reply to a message
-    aliases: [ antworten ]
+    aliases: [ antworten, r ]
   takemoney:
     description: take money
     aliases: [ moneytake ]
@@ -682,3 +682,41 @@ commands:
   kebap:
     description: view the kebap
     aliases: [ dönermann ]
+  blocknotruf:
+    description: block a notruf
+  gangzone:
+    description: view the gangzones
+    aliases: [ gangwarzone, gangwarzones ]
+  deletenotruf:
+    description: delete a notruf
+  checkactivemembers:
+    description: check the active members
+  endfire:
+    description: end the fire
+  sit:
+    description: sit down
+  housedbank:
+    description: view the housedbank
+    aliases: [ housedkasse, hd, dbankhouse ]
+  strecken:
+    description: view the strecken
+  treuebonus:
+    description: view the treuebonus
+    aliases: [ treueboni, tbonus, tpunkt ]
+  addticket:
+    description: add a ticket
+    aliases: [ addtoconv, addticketconv ]
+  tabakplantage:
+    description: view the tabakplantage
+    aliases: [ tabakplantagen ]
+  droptabak:
+    description: drop tabak
+    aliases: [ droptabakblätter ]
+  neulingschat:
+    description: send a message to the neulingschat
+    aliases: [ nc ]
+  apikey:
+    description: view your apikey
+  houseslot:
+    description: view the houseslot
+    aliases: [ houseslots ]

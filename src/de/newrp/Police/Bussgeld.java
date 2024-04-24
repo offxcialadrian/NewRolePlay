@@ -1,11 +1,13 @@
 package de.newrp.Police;
 
+import de.newrp.API.Log;
 import de.newrp.API.Messages;
 import de.newrp.API.PaymentType;
 import de.newrp.API.Script;
 import de.newrp.Administrator.SDuty;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Government.Stadtkasse;
+import de.newrp.Player.AFK;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -57,7 +59,7 @@ public class Bussgeld implements CommandExecutor {
             return true;
         }
 
-        if(Script.getMoney(tg, PaymentType.CASH) < amount) {
+        if(Script.getMoney(tg, PaymentType.BANK) < amount) {
             p.sendMessage(Messages.ERROR + "Der Spieler hat nicht genug Geld.");
             return true;
         }
@@ -72,12 +74,18 @@ public class Bussgeld implements CommandExecutor {
             return true;
         }
 
-        Script.removeMoney(tg, PaymentType.CASH, amount);
+        if(AFK.isAFK(tg)) {
+            p.sendMessage(Messages.ERROR + "Der Spieler ist AFK.");
+            return true;
+        }
+
+        Script.removeMoney(tg, PaymentType.BANK, amount);
         Stadtkasse.addStadtkasse(amount, "Bussgeld von " + Script.getName(tg) + " erhalten.", null);
         p.sendMessage(PREFIX + "Du hast " + Script.getName(tg) + " ein Bussgeld in Höhe von " + amount + "€ ausgestellt.");
         tg.sendMessage(PREFIX + "Du hast ein Bussgeld in Höhe von " + amount + "€ erhalten.");
-        Beruf.Berufe.POLICE.sendMessage(PREFIX + "Der Spieler " + Script.getName(tg) + " hat ein Bussgeld in Höhe von " + amount + "€ erhalten.");
-        Beruf.Berufe.GOVERNMENT.sendMessage(PREFIX + "Der Spieler " + Script.getName(tg) + " hat ein Bussgeld in Höhe von " + amount + "€ erhalten.");
+        Beruf.Berufe.POLICE.sendMessage(PREFIX + "Der Spieler " + Script.getName(tg) + " hat ein Bussgeld in Höhe von " + amount + "€ von " + Script.getName(p) + " erhalten.");
+        Beruf.Berufe.GOVERNMENT.sendMessage(PREFIX + "Der Spieler " + Script.getName(tg) + " hat ein Bussgeld in Höhe von " + amount + "€ von " + Script.getName(p) + " erhalten.");
+        Log.NORMAL.write(p, "hat " + Script.getName(tg) + " ein Bussgeld in Höhe von " + amount + "€ ausgestellt.");
 
 
         return false;

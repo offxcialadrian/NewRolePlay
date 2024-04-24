@@ -217,6 +217,18 @@ public class TicketCommand implements CommandExecutor {
         return map;
     }
 
+    public static int getSupporterID(int ticketID) {
+        try(Statement stmt = main.getConnection().createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT supporterID FROM ticket WHERE id=" + ticketID)) {
+            if(rs.next()) {
+                return rs.getInt("supporterID");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
     public static boolean isInTicket(Player p) {
         for (Ticket t : tickets) {
             if (t.getTicketer().equals(p) || t.getSupporter().equals(p)) return true;
@@ -244,11 +256,11 @@ public class TicketCommand implements CommandExecutor {
         Player p = (Player) cs;
 
         if (args.length >= 2 && args[0].equalsIgnoreCase("greeting") && Script.hasRank(p, Rank.SUPPORTER, false)) {
-            String msg = "";
+            StringBuilder msg = new StringBuilder();
             for (int i = 1; i < args.length; i++) {
-                msg += args[i] + " ";
+                msg.append(args[i]).append(" ");
             }
-            msg = msg.trim();
+            msg = new StringBuilder(msg.toString().trim());
             if (msg.length() > 300) {
                 p.sendMessage(Messages.ERROR + "Die Nachricht darf maximal 100 Zeichen lang sein.");
                 return true;
@@ -260,7 +272,7 @@ public class TicketCommand implements CommandExecutor {
                 return true;
             } else {
 
-                if (getGreeting(p).equals(msg)) {
+                if (getGreeting(p).equals(msg.toString())) {
                     p.sendMessage(Messages.ERROR + "Die Nachricht ist bereits die aktuelle Nachricht.");
                     return true;
                 }

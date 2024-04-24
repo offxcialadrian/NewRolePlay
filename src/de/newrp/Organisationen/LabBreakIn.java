@@ -183,6 +183,7 @@ public class LabBreakIn implements CommandExecutor, Listener {
         int i = Script.getRandom(6, 7);
         ItemStack item = new ItemStack(Material.WARPED_BUTTON, i);
         p.getInventory().addItem(new ItemBuilder(Material.WARPED_BUTTON).setAmount(i).setName(Drogen.ECSTASY.getName()).setLore("§7Reinheitsgrad: " + purity.getText()).build());
+        Organisation.getOrganisation(p).addExp(i * 4);
         p.sendMessage(PREFIX + "Du konntest " + i + " Pillen Exiyty herstellen.");
         Organisation.getOrganisation(p).sendMessage(PREFIX + "§6" + Script.getName(p) + " §7hat " + i + " Pillen Exiyty hergestellt.");
         Beruf.Berufe.POLICE.sendMessage(PREFIX + "Es wurde Exiyty hergestellt.");

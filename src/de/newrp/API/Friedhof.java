@@ -3,11 +3,13 @@ package de.newrp.API;
 import de.newrp.Administrator.Checkpoints;
 import de.newrp.Berufe.AcceptNotruf;
 import de.newrp.Berufe.Beruf;
+import de.newrp.Berufe.Duty;
 import de.newrp.GFB.Schule;
 import de.newrp.Gangwar.GangwarCommand;
 import de.newrp.Organisationen.Organisation;
 import de.newrp.Player.Notruf;
 import de.newrp.Player.Spawnchange;
+import de.newrp.Police.StartTransport;
 import de.newrp.main;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
@@ -71,6 +73,17 @@ public class Friedhof {
 
         if(Beruf.getBeruf(p) == Beruf.Berufe.POLICE) {
             Script.setLastDeadOfficer(System.currentTimeMillis());
+        }
+
+        if(StartTransport.executor != null) {
+            if(StartTransport.executor == p) {
+                Bukkit.broadcastMessage("§8[§6News§8] §6" + Messages.ARROW + "Der Waffentransport der Polizei ist fehlgeschlagen. Bitte passen Sie auf sich auf.");
+                Beruf.getBeruf(p).sendMessage("§8[§6Waffentransport§8] §6" + Messages.ARROW + "Der Waffentransport ist fehlgeschlagen.");
+                StartTransport.executor = null;
+                StartTransport.isActive = false;
+                StartTransport.LEVEL = 0;
+                StartTransport.add = 0;
+            }
         }
 
         if(AcceptNotruf.accept.containsKey(p)) {
@@ -142,6 +155,7 @@ public class Friedhof {
         Friedhof f = getDead(p);
         if (f == null) return;
         if(Corpse.npcMap.containsKey(p)) Corpse.removeNPC(p);
+        if(teleportLoc == null) Duty.removeDuty(p);
 
         Bukkit.getScheduler().cancelTask(f.getTaskID());
         FRIEDHOF.remove(p.getName());
@@ -187,9 +201,11 @@ public class Friedhof {
                 }.runTaskLater(main.getInstance(), 20L * 2);
                 p.setHealth(p.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
 
-                p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 100, 2, false, false));
-                p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 80, 2, false, false));
-                p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, 70, 1, false, false));
+                if(!GangwarCommand.isInGangwar(p)) {
+                    p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 100, 2, false, false));
+                    p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 80, 2, false, false));
+                    p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, 70, 1, false, false));
+                }
 
             }
             if(Checkpoints.hasCheckpoints(p)) {

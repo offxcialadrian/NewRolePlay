@@ -3,6 +3,7 @@ package de.newrp.GFB;
 import com.github.theholywaffle.teamspeak3.api.wrapper.Message;
 import de.newrp.API.Achievement;
 import de.newrp.API.Messages;
+import de.newrp.API.Premium;
 import de.newrp.API.Script;
 import de.newrp.main;
 import org.bukkit.Location;
@@ -24,7 +25,8 @@ public enum GFB {
     BURGERFRYER(7, "Burgerbrater", new Location(Script.WORLD, 459, 66, 765, -11.671753f, 10.054159f)),
     STRASSENWARTUNG(8, "Straßenwartung",  new Location(Script.WORLD, 475, 65, 1316, -36.769684f, 17.13762f)),
     IMKER(9, "Imker", new Location(Script.WORLD, 222, 65, 771, 174.1878f, 10.542069f)),
-    DOENERMANN(10, "Dönermann", new Location(Script.WORLD, 445, 65, 664, -59.75107f, 7.6497645f));
+    DOENERMANN(10, "Dönermann", new Location(Script.WORLD, 445, 65, 664, -59.75107f, 7.6497645f)),
+    TABAKPLANTAGE(11, "Tabakplantage", new Location(Script.WORLD, 1015, 65, 1316, 0.0f, 0.0f));
 
 
     private int id;
@@ -88,8 +90,13 @@ public enum GFB {
                 p.sendMessage(PREFIX + Messages.INFO + "Du hast das maximale Level erreicht!");
                 return;
             }
+            if(!Premium.hasPremium(p)) {
+                Script.executeAsyncUpdate("UPDATE gfb_level SET exp=0 WHERE nrp_id='" + Script.getNRPID(p) + "' AND gfb_id=" + this.id);
+                p.sendMessage(Messages.INFO + "Nur mit einem Premium-Account werden deine überschüssigen Exp gespeichert!");
+            } else {
+                Script.executeAsyncUpdate("UPDATE gfb_level SET exp=" + (getExp(p) + exp - getLevelCost(getLevel(p))) + " WHERE nrp_id='" + Script.getNRPID(p) + "' AND gfb_id=" + this.id);
+            }
             Script.executeAsyncUpdate("UPDATE gfb_level SET level=" + (getLevel(p) + 1) + " WHERE nrp_id='" + Script.getNRPID(p) + "' AND gfb_id=" + this.id);
-            Script.executeAsyncUpdate("UPDATE gfb_level SET exp=0 WHERE nrp_id='" + Script.getNRPID(p) + "' AND gfb_id=" + this.id);
             p.sendMessage(PREFIX + "Du bist beim GFB " + this.getName() + " nun Level " + (getLevel(p)) + "!");
             return;
         }

@@ -19,6 +19,7 @@ public class TicketListener implements Listener {
         if (t == null) return;
         TicketCommand.close(t);
         t.getSupporter().sendMessage(TicketCommand.PREFIX + "Der Spieler hat das Ticket verlassen (Quit)!");
+        Script.updateListname(t.getSupporter());
     }
 
     @EventHandler
@@ -31,6 +32,7 @@ public class TicketListener implements Listener {
             if (conv.size() < 2 && !Script.isInTestMode()) {
                 TicketCommand.close(t);
                 p.sendMessage(TicketCommand.PREFIX + "Der Spieler hat das Ticket verlassen (Quit)!");
+                Script.updateListname(t.getSupporter());
                 return;
             }
 

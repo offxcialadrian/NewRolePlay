@@ -2,6 +2,7 @@ package de.newrp.Player;
 
 import de.newrp.API.Gender;
 import de.newrp.API.Messages;
+import de.newrp.API.Premium;
 import de.newrp.API.Script;
 import de.newrp.main;
 import org.bukkit.OfflinePlayer;
@@ -26,7 +27,11 @@ public class BeziehungCommand implements CommandExecutor {
         if(args.length == 0) {
             if(hasRelationship(p)) {
                 int days = (int) ((System.currentTimeMillis() - getSince(p)) / 86400000);
-                p.sendMessage(PREFIX + "Du bist mit " + Script.getNameInDB(getPartner(p)) + " seit " + days + " Tagen zusammen.");
+                if(Premium.hasPremium(p)) p.sendMessage(PREFIX + "Du bist mit " + Script.getNameInDB(getPartner(p)) + " seit " + days + " Tagen zusammen.");
+                else {
+                    p.sendMessage(PREFIX + "Du bist mit " + Script.getNameInDB(getPartner(p)) + " zusammen.");
+                    p.sendMessage(Messages.INFO + "Kaufe dir Premium, um zu sehen, wie lange du schon zusammen bist.");
+                }
                 return true;
             } else {
                 p.sendMessage(Messages.ERROR + "/beziehung [Spieler]");

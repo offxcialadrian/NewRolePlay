@@ -19,8 +19,8 @@ public class ForumCommand implements CommandExecutor {
         Player p = (Player) cs;
 
         if (args.length == 1 && args[0].equalsIgnoreCase("delete")) {
-            if (Forum.getForumID(Script.getNRPID(p)) != 0) {
-                p.sendMessage(Forum.prefix + "§cDu bist bereits mit dem Forum verbunden.");
+            if (Forum.getForumID(Script.getNRPID(p)) == 0) {
+                p.sendMessage(Forum.prefix + "§cEs wurde keine Verbindung zum Forum gefunden.");
                 return true;
             }
 

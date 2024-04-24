@@ -133,7 +133,7 @@ public class Annehmen implements CommandExecutor {
             }
 
             Stadtkasse.removeStadtkasse(amount, "Kreditvergabe an " + Script.getName(p));
-            Script.addMoney(lender, PaymentType.BANK, amount);
+            Script.addMoney(p, PaymentType.BANK, amount);
             Script.executeAsyncUpdate("INSERT INTO loans (userID, amount, zins, time) VALUES (" + Script.getNRPID(p) + ", " + amount + ", " + interest + ", " + (System.currentTimeMillis()+ TimeUnit.DAYS.toMillis(days)) + ");");
             p.sendMessage(ACCEPTED + "Du hast den Kredit über " + days + " Tage und " + amount + "€ angenommen (Zinssatz: " + interest + "%).");
             lender.sendMessage(ACCEPTED + "Du hast von " + Script.getName(p) + " ein Kreditangebot über " + days + " Tage und " + amount + "€ erhalten (Zinssatz: " + interest + "%).");

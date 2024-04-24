@@ -4,6 +4,7 @@ import de.newrp.API.ATM;
 import de.newrp.API.Messages;
 import de.newrp.API.PaymentType;
 import de.newrp.API.Script;
+import de.newrp.Administrator.Notifications;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Government.Stadtkasse;
 import org.bukkit.command.Command;
@@ -50,6 +51,7 @@ public class SpendenCommand implements CommandExecutor {
         Stadtkasse.addStadtkasse(amount, "Spende von " + Script.getName(p), null);
         p.sendMessage(PREFIX + "Du hast " + amount + "€ gespendet.");
         Beruf.Berufe.GOVERNMENT.sendMessage(PREFIX + Script.getName(p) + " hat der Stadtkasse " + amount + "€ gespendet.");
+        Notifications.sendMessage(Notifications.NotificationType.PAYMENT, Script.getName(p) + " hat der Stadtkasse " + amount + "€ gespendet.");
 
         return false;
     }

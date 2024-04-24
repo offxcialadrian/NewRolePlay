@@ -84,6 +84,7 @@ public class Blacklist {
                  ResultSet rs = stmt.executeQuery("SELECT blacklist.organisationID, blacklist.userID, nrp_id.name, blacklist.reason, blacklist.time, blacklist.kills, blacklist.price FROM blacklist LEFT JOIN nrp_id ON nrp_id.id = blacklist.userID")) {
                 while (rs.next()) {
                     Organisation f = Organisation.getOrganisation(rs.getInt("organisationID"));
+                    if(f == null) continue;
                     int userID = rs.getInt("userID");
                     String name = rs.getString("name");
                     String reason = rs.getString("reason");

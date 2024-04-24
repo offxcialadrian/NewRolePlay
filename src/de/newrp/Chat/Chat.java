@@ -29,11 +29,6 @@ import java.util.stream.Collectors;
 public class Chat implements Listener {
 
     public static String[] Filter = new String[]{
-            "Reallife",
-            "reallife",
-            "Admin",
-            "admin",
-            "Suppe",
             "Huan",
             "huan",
             "Endsieg",
@@ -164,7 +159,7 @@ public class Chat implements Listener {
         for(String arg : e.getMessage().split(" ")) {
 
             if(arg.equalsIgnoreCase("oos") || arg.equalsIgnoreCase("ooc")) {
-                Script.performCommand(p, "ooc " + e.getMessage());
+                Script.performCommand(p, "ooc " + e.getMessage().replace("oos", "").replace("ooc", ""));
                 return;
             }
 
@@ -241,6 +236,7 @@ public class Chat implements Listener {
         if (conv.size() < 2 && !Script.isInTestMode()) {
             TicketCommand.close(t);
             p.sendMessage(TicketCommand.PREFIX + "Der Spieler hat das Ticket verlassen (Quit).");
+            Script.updateListname(p);
             return;
         }
 

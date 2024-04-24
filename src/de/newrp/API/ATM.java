@@ -67,6 +67,13 @@ public enum ATM {
         return a;
     }
 
+    public static ATM getATMByID(int id) {
+        for (ATM atm : ATM.values()) {
+            if (atm.getID() == id) return atm;
+        }
+        return null;
+    }
+
     public static ATM getNearestATM(Location loc) {
         ATM a = null;
         for (ATM atm : ATM.values()) {

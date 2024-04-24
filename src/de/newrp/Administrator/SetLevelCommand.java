@@ -43,7 +43,7 @@ public class SetLevelCommand implements CommandExecutor {
             return true;
         }
 
-        Script.setLevel(tg, level);
+        Script.setLevel(tg, level, 0);
         p.sendMessage("§8[§eLevel§8] §e" + Messages.ARROW + " §7Du hast " + Script.getName(tg) + " Level auf " + level + " gesetzt.");
         tg.sendMessage("§8[§eLevel§8] §e" + Messages.ARROW + " §7Dein Level wurde von " + Script.getName(p) + " auf " + level + " gesetzt.");
         Script.sendTeamMessage(p, ChatColor.YELLOW, "hat " + Script.getName(tg) + "s Level auf " + level + " gesetzt.", true);

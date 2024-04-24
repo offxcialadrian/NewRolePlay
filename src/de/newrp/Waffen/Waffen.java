@@ -177,7 +177,6 @@ public class Waffen implements Listener {
                 }
 
                 robcooldown.put(org, System.currentTimeMillis() + 10800000);
-                p.getInventory().remove(Material.TNT);
                 p.sendMessage(PREFIX + "Der Shop ist in 360 Sekunden überfallen.");
                 Beruf.Berufe.POLICE.sendMessage(PREFIX + "ACHTUNG! ES WURDE EIN STILLER ALARM IM SHOP " + shop.getPublicName() + " AUSGELÖST!");
                 Beruf.Berufe.POLICE.sendMessage(Messages.INFO + "In der Nähe von " + Navi.getNextNaviLocation(p.getLocation()).getName());
@@ -188,6 +187,7 @@ public class Waffen implements Listener {
                     public void run() {
                         if (p.getLocation().distance(loc) > 10) {
                             p.sendMessage(PREFIX + "Du bist zu weit entfernt.");
+                            Beruf.Berufe.POLICE.sendMessage(PREFIX + "Der Shop " + shop.getName() + " wurde nicht überfallen, da der Täter zu weit entfernt war.");
                             cancel();
                             return;
                         }
@@ -257,7 +257,8 @@ public class Waffen implements Listener {
     }
 
     public void fire(Player p, Weapon w, ItemStack is) {
-        int skill = (Krankheit.GEBROCHENES_BEIN.isInfected(Script.getNRPID(p)) ? 1 : 6);
+        //int skill = (Krankheit.GEBROCHENES_BEIN.isInfected(Script.getNRPID(p)) ? 1 : 6);
+        int skill = 6;
         float recoil = w.getRecoil();
 
         recoil = recoil - recoil / (10 - skill);

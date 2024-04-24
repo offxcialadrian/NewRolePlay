@@ -159,7 +159,7 @@ public static HashMap<String, Long> cooldown = new HashMap<>();
                 }
 
                 if(title.equals("Orten")) {
-                    if(!Mobile.hasPhone(tg) || Mobile.mobileIsOn(tg)) {
+                    if(!Mobile.hasPhone(tg) || !Mobile.mobileIsOn(tg)) {
                         p.sendMessage(Messages.ERROR + "Das Handy von " + Script.getName(tg) + " ist nicht eingeschaltet.");
                         return;
                     }

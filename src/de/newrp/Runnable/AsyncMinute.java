@@ -23,6 +23,8 @@ import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
@@ -48,6 +50,9 @@ public class AsyncMinute extends BukkitRunnable {
             "§8[§cWerbung§8] §c" + Messages.ARROW + " §7Schau mal in unserem Shop vorbei: §9https://shop.newrp.de/",
             "§8[§cWerbung§8] §c" + Messages.ARROW + " §7Vote für uns und erhalte tolle Belohnungen: §8/§6vote",
             "§8[§cWerbung§8] §c" + Messages.ARROW + " §7Der beste 10er im Monat! Kaufe dir §bPremium §7und erhalte viele Vorteile!",
+            "§8[§cWerbung§8] §c" + Messages.ARROW + " §7Der beste 10er im Monat! Kaufe dir §bPremium §7und erhalte viele Vorteile!",
+            "§8[§cWerbung§8] §c" + Messages.ARROW + " §7Der beste 10er im Monat! Kaufe dir §bPremium §7und erhalte viele Vorteile!",
+            "§8[§cWerbung§8] §c" + Messages.ARROW + " §7Nutzt du schon LabyMod? Du erhältst das beste Spielerlebnis mit LabyMod!",
             "§8[§cWerbung§8] §c" + Messages.ARROW + " §7Kennst du schon unseren TikTok Account?: §chttps://www.tiktok.com/@newrpde/"};
 
 
@@ -58,6 +63,8 @@ public class AsyncMinute extends BukkitRunnable {
                 Lotto.start();
             }
         }
+
+        Corpse.reloadNPCAll();
 
         if (GangwarCommand.gangwarIsActive()) {
             if (Calendar.getInstance().get(Calendar.HOUR_OF_DAY) > 21) {
@@ -109,6 +116,9 @@ public class AsyncMinute extends BukkitRunnable {
             if (amount > 0) {
                 for (Player nrp : Script.getNRPTeam()) {
                     Title.sendTitle(nrp, 20, 100, 20, "§8[§6Tickets§8] §6" + Messages.ARROW + " §7Es sind noch " + amount + " Tickets offen.");
+                    nrp.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20 * 5, 1, false, false));
+                    nrp.sendMessage("§8[§6Tickets§8] §6" + Messages.ARROW + " §7Es sind noch " + amount + " Tickets offen.");
+                    nrp.sendMessage(Messages.INFO + "Bitte beachte, dass die Bearbeitung von Tickets eine hohe Priorität hat.");
                 }
             }
             /*for(Entity e : Script.WORLD.getEntities()) {
@@ -123,17 +133,22 @@ public class AsyncMinute extends BukkitRunnable {
             }*/
         }
 
-        if (Calendar.getInstance().get(Calendar.MINUTE) % 10 == 0) {
+        if (Calendar.getInstance().get(Calendar.MINUTE) % 15 == 0) {
             for (Player p : Bukkit.getOnlinePlayers()) {
-                if(VoteListener.max_votes.containsKey(Script.getNRPID(p))) continue;
-                p.sendMessage("§8[§6VoteShop§8]§6 " + Messages.ARROW + " §7Vote für uns und erhalte tolle Belohnungen: §8/§6vote");
+                if(Vote.hasVotedToday(Script.getNRPID(p))) continue;
+                Script.sendClickableMessage(p, "§8[§6VoteShop§8]§6 " + Messages.ARROW + " §7Vote für uns und erhalte tolle Belohnungen: §8/§6vote", "/vote", "Vote für uns!");
                 Script.sendActionBar(p, "§8[§6VoteShop§8]§6 " + Messages.ARROW + " §7Vote für uns und erhalte tolle Belohnungen: §8/§6vote");
+                p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
+                if(!Premium.hasPremium(p)) Title.sendTitle(p, 50, 100, 50, "§6 " + Messages.ARROW + " Vote für uns! «", "§8/§6vote");
             }
         }
 
 
         for (Player p : Bukkit.getOnlinePlayers()) {
-            if (!AFK.isAFK(p) && !Passwort.isLocked(p)) Script.increaseActivePlayTime(p);
+            if (!AFK.isAFK(p) && !Passwort.isLocked(p)) {
+                Treuebonus.addTime();
+                Script.increaseActivePlayTime(p);
+            }
             Script.increasePlayTime(p);
             if (Script.getRandom(1, 10) == 1) {
                 if (Krankheit.HUSTEN.isInfected(Script.getNRPID(p))) {

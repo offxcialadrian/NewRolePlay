@@ -37,6 +37,14 @@ public class Equiplog implements CommandExecutor {
 
         if(args.length == 1) {
             if(!Script.isInt(args[0])) {
+
+                if(args[0].equalsIgnoreCase("reset")) {
+                    Script.executeUpdate("DELETE FROM equiplog WHERE beruf=" + Beruf.getBeruf(p).getID());
+                    p.sendMessage(Equip.PREFIX + "EquipLog wurde zurückgesetzt.");
+                    Beruf.getBeruf(p).sendMessage(Equip.PREFIX + "EquipLog wurde von " + Script.getName(p) + " zurückgesetzt.");
+                    return true;
+                }
+
                 p.sendMessage(Messages.ERROR + "Bitte gib eine Zahl an.");
                 return true;
             }

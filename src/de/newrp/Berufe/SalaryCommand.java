@@ -168,8 +168,8 @@ public class SalaryCommand implements CommandExecutor {
                 }
             }
 
-            Player tg = Script.getPlayer(args[0]);
-            if (tg == null) {
+            OfflinePlayer tg = Script.getOfflinePlayer(args[0]);
+            if (Script.getNRPID(tg) == 0) {
                 p.sendMessage(Messages.PLAYER_NOT_FOUND);
                 return true;
             }
@@ -201,7 +201,7 @@ public class SalaryCommand implements CommandExecutor {
             Script.setInt(tg, "organisation", "salary", salary);
             p.sendMessage(PREFIX + "Du hast das Gehalt von " + Script.getName(tg) + " auf " + salary + "€ gesetzt.");
             if (p != tg)
-                tg.sendMessage(PREFIX + "Dein Gehalt wurde von " + Script.getName(p) + " auf " + salary + "€ gesetzt.");
+                if(tg.getPlayer() != null) tg.getPlayer().sendMessage(PREFIX + "Dein Gehalt wurde von " + Script.getName(p) + " auf " + salary + "€ gesetzt.");
             Organisation.getOrganisation(p).sendLeaderMessage("§8[§e" + Organisation.getOrganisation(p).getName() + "§8] §e» " + "Das Gehalt von " + Script.getName(tg) + " wurde von " + Script.getName(p) + " auf " + salary + "€ gesetzt.");
             Script.sendTeamMessage(PREFIX + "Das Gehalt von " + Script.getName(tg) + " wurde von " + Script.getName(p) + " auf " + salary + "€ gesetzt. [" + Organisation.getOrganisation(p).getName() + "]");
             return true;

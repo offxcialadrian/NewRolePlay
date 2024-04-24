@@ -66,19 +66,14 @@ public class Arrest implements CommandExecutor {
             return true;
         }
 
-        int fahndungID = Fahndung.getStraftatID(tg);
         long time = Fahndung.getFahndedTime(tg);
         int wanteds = Fahndung.getWanteds(tg);
 
-        if (wanteds < 2) {
+        if (wanteds < 5) {
             p.sendMessage(Messages.ERROR + "Der Spieler hat zu wenig Wanteds.");
             return true;
         }
 
-        if (!Straftat.isStraftat(fahndungID)) {
-            p.sendMessage(Messages.ERROR + "Diese Straftat existiert nicht.");
-            return true;
-        }
 
         p.sendMessage(Fahndung.PREFIX + "Du hast " + Script.getName(tg) + " verhaftet.");
         Stadtkasse.addStadtkasse(wanteds * 15, "Verhaftung von " + Script.getName(tg), null);
@@ -120,6 +115,7 @@ public class Arrest implements CommandExecutor {
         Script.removeWeapons(tg);
         Handschellen.uncuff(tg);
         p.getInventory().addItem(Script.setName(new ItemStack(Material.LEAD), "§7Handschellen"));
+        Script.updateFahndungSubtitle(tg);
         return false;
     }
 

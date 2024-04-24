@@ -4,6 +4,7 @@ import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.main;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -27,24 +28,24 @@ public class Houseban implements CommandExecutor, Listener, TabCompleter {
     private static String PREFIX = "§8[§6Hausverbot§8] §7»§7 ";
 
     enum Reasons {
-        LEICHENBEWACHUNG(1, "Leichenbewachung", new String[]{"leichenbewachung", "leichen", "leiche", "lb"}, 14),
-        GEWALTANWENDUNG(2, "Gewaltanwendung", new String[]{"gewaltanwendung", "gewalt", "ga"}, 14),
-        VANDALISMUS(3, "Vandalismus", new String[]{"vandalismus", "vanda", "va"}, 14),
-        BELÄSTIGUNG(4, "Belästigung", new String[]{"belästigung", "bä"}, 14),
-        UNANGEMESSENES_VERHALTEN(5, "Unangemessenes Verhalten", new String[]{"unangemessenes", "uv"}, 21),
-        BELEIDIGUNGEN(6, "Beleidigungen", new String[]{"beleidigungen", "beleidigung", "be"}, 21),
-        RESPEKTLOSES_VERHALTEN(7, "Respektloses Verhalten", new String[]{"respektloses", "respektlos", "respekt", "rv"}, 21),
-        NICHT_BEFOLGEN_VON_ANWEISUNGEN(8, "Missachen von Anweisungen", new String[]{"nichtbefolgen", "missachten", "anweisungen", "befolgen", "na"}, 28),
-        STÖREN_EINES_EVENTS(9, "Stören eines Events", new String[]{"stören", "event", "se"}, 28),
-        DROHUNGEN(10, "Drohungen", new String[]{"drohungen", "drohung", "droh", "dr"}, 28),
-        PROVOKANTES_VERHALTEN(11, "Provokantes Verhalten", new String[]{"provokation", "provokant", "provo", "pv"}, 28),
-        GEWALTTÄTIGES_VERHALTEN(12, "Gewalttätiges Verhalten", new String[]{"gewalttätig", "gewaltverhalten", "verhalten", "gv"}, 28),
-        PACKEN_EINES_MITGLIEDS(13, "Packen eines Mitglieds", new String[]{"packen", "pm"}, 35),
-        SCHIESSEN_AUF_DEM_GELÄNDE(14, "Schießen auf dem Gelände", new String[]{"schiessen", "sg"}, 35),
-        ERPRESSEN_VON_REZEPTEN(15, "Erpressen von Rezepten", new String []{"Rezepte", "Rezept", "er"}, 42),
+        LEICHENBEWACHUNG(1, "Leichenbewachung", new String[]{"leichenbewachung", "leichen", "leiche", "lb"}, 7),
+        GEWALTANWENDUNG(2, "Gewaltanwendung", new String[]{"gewaltanwendung", "gewalt", "ga"}, 7),
+        VANDALISMUS(3, "Vandalismus", new String[]{"vandalismus", "vanda", "va"}, 3),
+        BELÄSTIGUNG(4, "Belästigung", new String[]{"belästigung", "bä"}, 3),
+        UNANGEMESSENES_VERHALTEN(5, "Unangemessenes Verhalten", new String[]{"unangemessenes", "uv"}, 3),
+        BELEIDIGUNGEN(6, "Beleidigungen", new String[]{"beleidigungen", "beleidigung", "be"}, 3),
+        RESPEKTLOSES_VERHALTEN(7, "Respektloses Verhalten", new String[]{"respektloses", "respektlos", "respekt", "rv"}, 3),
+        NICHT_BEFOLGEN_VON_ANWEISUNGEN(8, "Missachen von Anweisungen", new String[]{"nichtbefolgen", "missachten", "anweisungen", "befolgen", "na"}, 3),
+        STÖREN_EINES_EVENTS(9, "Stören eines Events", new String[]{"stören", "event", "se"}, 3),
+        DROHUNGEN(10, "Drohungen", new String[]{"drohungen", "drohung", "droh", "dr"}, 7),
+        PROVOKANTES_VERHALTEN(11, "Provokantes Verhalten", new String[]{"provokation", "provokant", "provo", "pv"}, 3),
+        GEWALTTÄTIGES_VERHALTEN(12, "Gewalttätiges Verhalten", new String[]{"gewalttätig", "gewaltverhalten", "verhalten", "gv"}, 7),
+        PACKEN_EINES_MITGLIEDS(13, "Packen eines Mitglieds", new String[]{"packen", "pm"}, 14),
+        SCHIESSEN_AUF_DEM_GELÄNDE(14, "Schießen auf dem Gelände", new String[]{"schiessen", "sg"}, 7),
+        ERPRESSEN_VON_REZEPTEN(15, "Erpressen von Rezepten", new String[]{"Rezepte", "Rezept", "er"}, 30),
         ERPRESSEN_VON_DIENSTLEISTUNGEN(16, "Erpressen von Dienstleistungen", new String[]{"dienstleistungen", "dienstleistung", "dienst", "ed"}, 42),
-        TÖTEN_EINER_PERSON(17, "Töten einer Person", new String[]{"eineperson", "einer", "ep"}, 42),
-        TÖTEN_MEHRERER_PERSONEN(18, "Töten mehrerer Personen", new String[]{"mehrerepersonen", "mehrere", "mp"}, 56);
+        TÖTEN_EINER_PERSON(17, "Töten einer Person", new String[]{"eineperson", "einer", "ep"}, 14),
+        TÖTEN_MEHRERER_PERSONEN(18, "Töten mehrerer Personen", new String[]{"mehrerepersonen", "mehrere", "mp"}, 21);
 
         private final int id;
         private final String name;
@@ -100,7 +101,7 @@ public class Houseban implements CommandExecutor, Listener, TabCompleter {
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
         Player p = (Player) cs;
 
-        if(!Beruf.hasBeruf(p)) {
+        if (!Beruf.hasBeruf(p)) {
             p.sendMessage(Messages.ERROR + "Du hast keinen Beruf.");
             return true;
         }
@@ -112,7 +113,7 @@ public class Houseban implements CommandExecutor, Listener, TabCompleter {
             StringBuilder sb = new StringBuilder();
             for (Player all : Bukkit.getOnlinePlayers()) {
                 if (!isHousebanned(all, b)) continue;
-                sb.append("§7»§6 ").append(all.getName()).append(" ➲ ").append(getReason(all, b)).append(" ➲ ").append(DATE_FORMAT.format(new Date(getTime(all, b)))).append(" Uhr\n");
+                sb.append("§7»§6 ").append(all.getName()).append(" §8×§6 ").append(getReason(all, b).getName()).append(" §8×§6 ").append(DATE_FORMAT.format(new Date(getTime(all, b)))).append(" Uhr\n");
             }
             p.sendMessage(sb.toString());
             return true;
@@ -122,19 +123,15 @@ public class Houseban implements CommandExecutor, Listener, TabCompleter {
             StringBuilder sb = new StringBuilder();
             p.sendMessage("§8===§6 Hausverbote §8===");
             for (int unicacid : getHousebannedNRPIDs(b)) {
-                Player banned = Script.getPlayer(unicacid);
-                if (banned == null) {
-                    sb.append("\n  §7»§c ").append(banned.getName()).append(" ➲ ").append(getReason(banned, b)).append(" ➲ ").append(DATE_FORMAT.format(new Date(getTime(banned, b))));
-                } else {
-                    sb.append("\n  §7»§a ").append(banned.getName()).append(" ➲ ").append(getReason(banned, b)).append(" ➲ ").append(DATE_FORMAT.format(new Date(getTime(banned, b))));
-                }
+                OfflinePlayer banned = Script.getOfflinePlayer(unicacid);
+                sb.append("\n  §7»§6 ").append(Script.getNameInDB(banned)).append(" §8×§6 ").append(getReason(banned, b).getName()).append(" §8×§6 ").append(DATE_FORMAT.format(new Date(getTime(banned, b))));
                 p.sendMessage(sb.toString());
             }
             return true;
         }
 
         if (args.length == 3 && args[0].equalsIgnoreCase("add")) {
-            Player tg = Bukkit.getPlayer(args[1]);
+            OfflinePlayer tg = Script.getOfflinePlayer(args[1]);
             Reasons reason = Reasons.getReason(args[2].replace("-", " "));
             if (tg == null) {
                 p.sendMessage(Messages.ERROR + "Spieler nicht gefunden.");
@@ -147,16 +144,12 @@ public class Houseban implements CommandExecutor, Listener, TabCompleter {
             }
 
             if (isHousebanned(tg, b)) {
+
+                p.sendMessage(Messages.INFO + "Der Spieler hat bereits Hausverbot. Das Hausverbot wurde verlängert.");
+
                 long time = getTime(tg, b);
-                try (PreparedStatement statement = main.getConnection().prepareStatement(
-                        "DELETE FROM housebans WHERE userID = ? AND beruf = ?")) {
-                    statement.setInt(1, Script.getNRPID(tg));
-                    statement.setInt(2, b.getID());
-                    statement.executeUpdate();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-                time += reason.getDuration();
+                Script.executeUpdate("DELETE FROM housebans WHERE userID = " + Script.getNRPID(tg) + " AND beruf = " + b.getID());
+                time += reason.getDuration() + ((long) reason.getDuration() * 24 * 60 * 60 * 1000);
                 try (PreparedStatement statement = main.getConnection().prepareStatement(
                         "INSERT INTO housebans(userID, reason, beruf, time) VALUES(?, ?, ?, ?)")) {
                     statement.setInt(1, Script.getNRPID(tg));
@@ -169,7 +162,7 @@ public class Houseban implements CommandExecutor, Listener, TabCompleter {
                 }
 
                 b.sendMessage(PREFIX + Script.getName(p) + " hat " + Script.getName(tg) + " Hausverbot gegeben.\n" + PREFIX + "§6 " + reason.getName() + " §7»§6 " + DATE_FORMAT.format(new Date(time)) + " Uhr");
-                tg.sendMessage(PREFIX + " Du hast Hausverbot bei " + b.getName() + " bekommen.\n" + PREFIX + " §6 " + reason.getName() + " §7»§6 " + DATE_FORMAT.format(new Date(time)) +  " Uhr");
+                if(tg.getPlayer() != null) tg.getPlayer().sendMessage(PREFIX + " Du hast Hausverbot bei " + b.getName() + " bekommen.\n" + PREFIX + " §6 " + reason.getName() + " §7»§6 " + DATE_FORMAT.format(new Date(time)) + " Uhr");
 
                 return true;
             }
@@ -188,7 +181,7 @@ public class Houseban implements CommandExecutor, Listener, TabCompleter {
             }
 
             b.sendMessage(PREFIX + Script.getName(p) + " hat " + Script.getName(tg) + " Hausverbot gegeben.\n" + PREFIX + "§6 " + reason.getName() + " §7»§6 " + DATE_FORMAT.format(new Date(time)) + " Uhr");
-            tg.sendMessage(PREFIX + " Du hast Hausverbot bei " + b.getName() + " bekommen.\n" + PREFIX + " §6 " + reason.getName() + " §7»§6 " + DATE_FORMAT.format(new Date(time)) +  " Uhr");
+            if(tg.getPlayer() != null) tg.getPlayer().sendMessage(PREFIX + " Du hast Hausverbot bei " + b.getName() + " bekommen.\n" + PREFIX + " §6 " + reason.getName() + " §7»§6 " + DATE_FORMAT.format(new Date(time)) + " Uhr");
 
         } else if (args.length == 2 && args[0].equalsIgnoreCase("remove")) {
             Player tg = Bukkit.getPlayer(args[1]);
@@ -267,7 +260,25 @@ public class Houseban implements CommandExecutor, Listener, TabCompleter {
     }
 
 
-    private static boolean isHousebanned(Player p, Beruf.Berufe b) {
+    public static boolean isHousebanned(Player p, Beruf.Berufe b) {
+        int id = Script.getNRPID(p);
+        try (PreparedStatement statement = main.getConnection().prepareStatement(
+                "SELECT * FROM housebans WHERE userID = ? AND beruf = ?")) {
+            statement.setInt(1, id);
+            statement.setInt(2, b.getID());
+            try (ResultSet rs = statement.executeQuery()) {
+                if (rs.next()) {
+                    if (rs.getLong("time") > System.currentTimeMillis())
+                        return true;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    private static boolean isHousebanned(OfflinePlayer p, Beruf.Berufe b) {
         int id = Script.getNRPID(p);
         try (PreparedStatement statement = main.getConnection().prepareStatement(
                 "SELECT * FROM housebans WHERE userID = ? AND beruf = ?")) {
@@ -302,8 +313,25 @@ public class Houseban implements CommandExecutor, Listener, TabCompleter {
         return 0;
     }
 
+    private static long getTime(OfflinePlayer p, Beruf.Berufe b) {
+        int id = Script.getNRPID(p);
+        try (PreparedStatement statement = main.getConnection().prepareStatement(
+                "SELECT time FROM housebans WHERE userID = ? AND beruf = ?")) {
+            statement.setInt(1, id);
+            statement.setInt(2, b.getID());
+            try (ResultSet rs = statement.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getLong("time");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
 
-    private static List<Integer> getHousebannedNRPIDs(Beruf.Berufe b) {
+
+    public static List<Integer> getHousebannedNRPIDs(Beruf.Berufe b) {
         List<Integer> list = new ArrayList<>();
         try (PreparedStatement statement = main.getConnection().prepareStatement(
                 "SELECT userID FROM housebans WHERE beruf = ? AND time > ?")) {
@@ -320,7 +348,24 @@ public class Houseban implements CommandExecutor, Listener, TabCompleter {
         return list;
     }
 
-    private static Reasons getReason(Player p, Beruf.Berufe b) {
+    public static Reasons getReason(Player p, Beruf.Berufe b) {
+        int id = Script.getNRPID(p);
+        try (PreparedStatement statement = main.getConnection().prepareStatement(
+                "SELECT reason FROM housebans WHERE userID = ? AND beruf = ?")) {
+            statement.setInt(1, id);
+            statement.setInt(2, b.getID());
+            try (ResultSet rs = statement.executeQuery()) {
+                if (rs.next()) {
+                    return Reasons.getReasonByID(rs.getInt("reason"));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private static Reasons getReason(OfflinePlayer p, Beruf.Berufe b) {
         int id = Script.getNRPID(p);
         try (PreparedStatement statement = main.getConnection().prepareStatement(
                 "SELECT reason FROM housebans WHERE userID = ? AND beruf = ?")) {
@@ -349,7 +394,7 @@ public class Houseban implements CommandExecutor, Listener, TabCompleter {
                 oneArgList.add(reason.getName().replace(" ", "-"));
             }
 
-            if(args.length == 1) {
+            if (args.length == 1) {
                 StringUtil.copyPartialMatches(args[0], List.of("add", "remove", "edit"), completions);
             }
 

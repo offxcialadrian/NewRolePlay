@@ -205,7 +205,6 @@ public class Kellner implements CommandExecutor, Listener {
         if(!GFB.CURRENT.containsKey(p.getName())) return;
         GFB.CURRENT.remove(p.getName());
         if(SCORE.containsKey(p.getName())) SCORE.remove(p.getName());
-        if(cooldown.containsKey(p.getName())) cooldown.remove(p.getName());
     }
 
 }
