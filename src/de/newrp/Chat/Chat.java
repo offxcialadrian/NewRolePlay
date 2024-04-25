@@ -29,25 +29,16 @@ import java.util.stream.Collectors;
 public class Chat implements Listener {
 
     public static String[] Filter = new String[]{
-            "Huan",
             "huan",
-            "Endsieg",
             "endsieg",
-            "Hitler",
             "hitler",
-            "Jude",
             "jude",
-            "Ritzen",
             "ritzen",
-            "Akbar",
             "akbar",
             "vergasen",
             "88",
-            "Nazi",
             "nazi",
-            "Transe",
             "transe",
-            "Schwuchtel",
             "schwuchtel",
             "nigga",
             "nigger",
@@ -247,12 +238,10 @@ public class Chat implements Listener {
     }
 
     public static void handleChatFilter(Player p, String msg) {
-        for(String arg : msg.split(" ")) {
-            for(String filter : Filter) {
-                if(arg.equalsIgnoreCase(filter) || arg.startsWith(filter) || arg.endsWith(filter) || arg.contains(filter)) {
-                    Notifications.sendMessage(Notifications.NotificationType.ADVANCED_ANTI_CHEAT, "Verdacht auf unangebrachtes Chatverhalten bei " + Script.getName(p) + " (Level " + p.getLevel() + ") §8» §c" + msg);
-                    return;
-                }
+        for (String filter : Filter) {
+            if (msg.toLowerCase().contains(filter.toLowerCase())) {
+                Notifications.sendMessage(Notifications.NotificationType.ADVANCED_ANTI_CHEAT, "Verdacht auf unangebrachtes Chatverhalten bei " + Script.getName(p) + " (Level " + p.getLevel() + ") §8» §c" + msg);
+                return;
             }
         }
     }
