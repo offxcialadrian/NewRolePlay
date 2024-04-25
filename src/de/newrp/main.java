@@ -90,6 +90,7 @@ public class main extends JavaPlugin {
     private long lastCheckTime = System.currentTimeMillis();
 
 
+    @SuppressWarnings("DataFlowIssue")
     public void onEnable() {
 
         Bukkit.getConsoleSender().sendMessage("§cNRP §8× §astarting with version " + this.getDescription().getVersion() + "..");
