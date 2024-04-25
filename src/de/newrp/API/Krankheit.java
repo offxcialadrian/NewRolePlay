@@ -121,9 +121,11 @@ public enum Krankheit {
     }
 
     public boolean isInfected(int id) {
-        HashMap<Krankheit, Boolean> cache = getKrankheiten(id);
-        if (cache != null) {
-            return cache.get(this);
+        try(Statement stmt = main.getConnection().createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM krankheit WHERE userID = " + id + " AND krankheitID = " + this.getID())) {
+            return rs.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return false;
     }
