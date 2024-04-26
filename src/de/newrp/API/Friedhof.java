@@ -98,6 +98,7 @@ public class Friedhof {
         Location[] locs;
 
         Debug.debug("dead: " + p.getName() + " " + p.getKiller() + " " + p.getLastDamageCause().getCause().name());
+        p.getKiller().sendMessage(Messages.INFO + "§c§lKILL! §6" + Script.getName(p) + " §fdu hast getötet!");
         World w = p.getWorld();
             p.setPlayerWeather(WeatherType.DOWNFALL);
             locs = new Location[]{new Location(Script.WORLD, 222, 75, 673, 92.5503f, -2.699904f)};
@@ -136,6 +137,7 @@ public class Friedhof {
         Route.invalidate(p);
         int min = left / 60;
         int sec = left - (min * 60);
+        Script.updateListname(p);
         progress.put(p.getName(), 0.0);
         new BukkitRunnable() {
             @Override

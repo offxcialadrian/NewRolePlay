@@ -84,7 +84,7 @@ public class Script {
     public static List<Player> getNRPTeam() {
         //select all nrp_ids from ranks
         List<Player> players = new ArrayList<>();
-        for(Player p : team) {
+        for (Player p : team) {
             players.add(p);
         }
         //sort list by rank
@@ -120,10 +120,10 @@ public class Script {
         JsonObject object = new JsonObject();
 
         // Disable the voice chat for this player
-        object.addProperty( "allowed", false );
+        object.addProperty("allowed", false);
 
         // Send to LabyMod using the API
-        LabyModProtocol.sendLabyModMessage( player, "voicechat", object );
+        LabyModProtocol.sendLabyModMessage(player, "voicechat", object);
     }
 
     public static List<OfflinePlayer> getAllNRPTeam() {
@@ -166,26 +166,34 @@ public class Script {
         return item;
     }
 
+    public static ItemStack molotov() {
+        ItemStack item = new ItemStack(Material.FLINT, 1);
+        ItemMeta pm1 = item.getItemMeta();
+        pm1.setDisplayName("§6Molotov Cocktail");
+        item.setItemMeta(pm1);
+        return item;
+    }
 
     public static void updateListname(Player p) {
         String color = "";
-        if(Beruf.hasBeruf(p)) {
-            if(Beruf.getBeruf(p) == Beruf.Berufe.POLICE) color = "§9";
-            if(Beruf.getBeruf(p) == Beruf.Berufe.RETTUNGSDIENST) color = "§4";
-            if(Beruf.getBeruf(p) == Beruf.Berufe.GOVERNMENT) color = "§3";
-            if(Beruf.getBeruf(p) == Beruf.Berufe.NEWS) color = "§6";
-            if(Beruf.getAbteilung(p) == Abteilung.Abteilungen.ZIVILPOLIZEI) color = "§r";
+        if (Beruf.hasBeruf(p)) {
+            if (Beruf.getBeruf(p) == Beruf.Berufe.POLICE) color = "§9";
+            if (Beruf.getBeruf(p) == Beruf.Berufe.RETTUNGSDIENST) color = "§4";
+            if (Beruf.getBeruf(p) == Beruf.Berufe.GOVERNMENT) color = "§3";
+            if (Beruf.getBeruf(p) == Beruf.Berufe.NEWS) color = "§6";
+            if (Beruf.getAbteilung(p) == Abteilung.Abteilungen.ZIVILPOLIZEI) color = "§r";
         }
         if (!SDuty.isSDuty(p)) p.setPlayerListName("§r" + p.getName());
         if (SDuty.isSDuty(p)) p.setPlayerListName("§5§lNRP §8× §c" + p.getName());
-        if (Duty.isInDuty(p))  p.setPlayerListName(color + p.getPlayerListName());
+        if (Duty.isInDuty(p)) p.setPlayerListName(color + p.getPlayerListName());
         if (BuildMode.isInBuildMode(p)) p.setPlayerListName("§e§lB §8× §r" + p.getPlayerListName());
         if (TicketCommand.isInTicket(p)) p.setPlayerListName("§d§lT §8× §r" + p.getPlayerListName());
+        if (Friedhof.isDead(p)) p.setPlayerListName(p.getPlayerListName() + " §8✟");
     }
 
     public static Inventory fillInv(Inventory inv) {
         for (int i = 0; i < inv.getSize(); i++) {
-            if(inv.getItem(i) == null || inv.getItem(i).getType() == Material.AIR)
+            if (inv.getItem(i) == null || inv.getItem(i).getType() == Material.AIR)
                 inv.setItem(i, setName(Material.WHITE_STAINED_GLASS_PANE, " "));
         }
         return inv;
@@ -205,7 +213,7 @@ public class Script {
     public static ItemStack kevlar(int lvl) {
         ItemStack is = new ItemStack(Material.LEATHER_CHESTPLATE, 1, (short) (lvl == 1 ? 50 : 30));
         ItemMeta meta = is.getItemMeta();
-        meta.setDisplayName("§7" + (lvl==2?"Schwere ":"") + "Schutzweste");
+        meta.setDisplayName("§7" + (lvl == 2 ? "Schwere " : "") + "Schutzweste");
         LeatherArmorMeta armormeta = (LeatherArmorMeta) meta;
         if (lvl == 1) {
             armormeta.setColor(Color.fromRGB(2105376));
@@ -226,7 +234,7 @@ public class Script {
     public static ItemStack einsatzschild(int level) {
         ItemStack schild = new ItemStack(Material.SHIELD, 1, (short) (level == 1 ? 240 : 160));
         ItemMeta meta = schild.getItemMeta();
-        meta.setDisplayName("§7" + (level==2?"Schweres ":"") + "Einsatzschild");
+        meta.setDisplayName("§7" + (level == 2 ? "Schweres " : "") + "Einsatzschild");
         schild.setItemMeta(meta);
         return schild;
     }
@@ -484,7 +492,7 @@ public class Script {
     }
 
     public static String getName(OfflinePlayer p) {
-        if(p.getPlayer() != null && p.isOnline()) {
+        if (p.getPlayer() != null && p.isOnline()) {
             if (isNRPTeam(p) && SDuty.isSDuty(p.getPlayer())) return "NRP × " + p.getName();
         }
         return p.getName();
@@ -513,20 +521,20 @@ public class Script {
         return Integer.parseInt(s);
     }
 
-    public static void setSubtitle( Player receiver, UUID subtitlePlayer, String value ) {
+    public static void setSubtitle(Player receiver, UUID subtitlePlayer, String value) {
         // List of all subtitles
         JsonArray array = new JsonArray();
 
         // Add subtitle
         JsonObject subtitle = new JsonObject();
-        subtitle.addProperty( "uuid", subtitlePlayer.toString() );
+        subtitle.addProperty("uuid", subtitlePlayer.toString());
 
         // Optional: Size of the subtitle
-        subtitle.addProperty( "size", 0.8d ); // Range is 0.8 - 1.6 (1.6 is Minecraft default)
+        subtitle.addProperty("size", 0.8d); // Range is 0.8 - 1.6 (1.6 is Minecraft default)
 
         // no value = remove the subtitle
-        if(value != null)
-            subtitle.addProperty( "value", value );
+        if (value != null)
+            subtitle.addProperty("value", value);
 
         // If you want to use the new text format in 1.16+
         // subtitle.add("raw_json_text", textObject );
@@ -535,13 +543,13 @@ public class Script {
         array.add(subtitle);
 
         // Send to LabyMod using the API
-        LabyModProtocol.sendLabyModMessage( receiver, "account_subtitle", array );
+        LabyModProtocol.sendLabyModMessage(receiver, "account_subtitle", array);
     }
 
     public static void updateBlackListSubtitle(Player p) {
-        for(Organisation o : Organisation.values()) {
-            if(Blacklist.isOnBlacklist(p, o)) {
-                for(Player members : o.getMembers()) {
+        for (Organisation o : Organisation.values()) {
+            if (Blacklist.isOnBlacklist(p, o)) {
+                for (Player members : o.getMembers()) {
                     Script.setSubtitle(members, p.getUniqueId(), "§c" + Blacklist.getBlacklistObject(Script.getNRPID(p), o).getReason());
                 }
             }
@@ -549,9 +557,9 @@ public class Script {
     }
 
     public static void removeSubtitle(Player p) {
-        for(Organisation o : Organisation.values()) {
-            if(Blacklist.isOnBlacklist(p, o)) {
-                for(Player members : o.getMembers()) {
+        for (Organisation o : Organisation.values()) {
+            if (Blacklist.isOnBlacklist(p, o)) {
+                for (Player members : o.getMembers()) {
                     Script.setSubtitle(members, p.getUniqueId(), null);
                 }
             }
@@ -559,16 +567,16 @@ public class Script {
     }
 
     public static void updateFahndungSubtitle(Player p) {
-        if(Fahndung.isFahnded(p)) {
-            for(Player cops : Beruf.Berufe.POLICE.getMembers()) {
+        if (Fahndung.isFahnded(p)) {
+            for (Player cops : Beruf.Berufe.POLICE.getMembers()) {
                 Script.setSubtitle(cops, p.getUniqueId(), "§cFahndung: " + Fahndung.getWanteds(p) + " Wanted(s)");
             }
         }
     }
 
     public static void updateHousebanSubtitle(Player p) {
-        if(Houseban.isHousebanned(p, Beruf.Berufe.RETTUNGSDIENST)) {
-            for(Player medics : Beruf.Berufe.RETTUNGSDIENST.getMembers()) {
+        if (Houseban.isHousebanned(p, Beruf.Berufe.RETTUNGSDIENST)) {
+            for (Player medics : Beruf.Berufe.RETTUNGSDIENST.getMembers()) {
                 Script.setSubtitle(medics, p.getUniqueId(), "§cHausverbot: " + Houseban.getReason(p, Beruf.Berufe.RETTUNGSDIENST));
             }
         }
@@ -840,7 +848,7 @@ public class Script {
 
     public static void setGender(Player p, Gender gender) {
         Script.executeUpdate("DELETE FROM gender WHERE nrp_id=" + Script.getNRPID(p));
-        Script.executeAsyncUpdate("INSERT INTO gender (nrp_id, gender) VALUES (" + Script.getNRPID(p) + ", '" + (gender==Gender.MALE?"m":"f") + "')");
+        Script.executeAsyncUpdate("INSERT INTO gender (nrp_id, gender) VALUES (" + Script.getNRPID(p) + ", '" + (gender == Gender.MALE ? "m" : "f") + "')");
     }
 
     public static String getMonth(int i, boolean UFT8) {
@@ -1184,7 +1192,7 @@ public class Script {
             if (rs.next()) {
                 p.sendMessage(PREFIX + "Du hast Nachrichten erhalten während du Offline warst:");
                 do {
-                    if(rs.getString("msg").equalsIgnoreCase("§8[§eBeruf§8] §e" + Messages.ARROW + " Du wurdest aus deinem Beruf geworfen."))
+                    if (rs.getString("msg").equalsIgnoreCase("§8[§eBeruf§8] §e" + Messages.ARROW + " Du wurdest aus deinem Beruf geworfen."))
                         Equip.removeEquip(p);
                     p.sendMessage(rs.getString("msg"));
                 } while (rs.next());
@@ -1211,9 +1219,9 @@ public class Script {
 
     public static int getDrugAmount(Player p) {
         int i = 0;
-        for(ItemStack is : p.getInventory().getContents()) {
-            if(is != null) {
-                if(is.getType() == Material.SUGAR || is.getType() == Material.GREEN_DYE || is.getType() == Material.WARPED_BUTTON) {
+        for (ItemStack is : p.getInventory().getContents()) {
+            if (is != null) {
+                if (is.getType() == Material.SUGAR || is.getType() == Material.GREEN_DYE || is.getType() == Material.WARPED_BUTTON) {
                     i += is.getAmount();
                 }
             }
@@ -1227,9 +1235,9 @@ public class Script {
         p.getInventory().remove(Material.BEETROOT_SEEDS);
         p.getInventory().remove(Material.WARPED_BUTTON);
         p.getItemOnCursor();
-        if(p.getItemOnCursor().getType() == Material.SUGAR) p.setItemOnCursor(new ItemStack(Material.AIR));
-        if(p.getItemOnCursor().getType() == Material.GREEN_DYE) p.setItemOnCursor(new ItemStack(Material.AIR));
-        if(p.getItemOnCursor().getType() == Material.BEETROOT_SEEDS) p.setItemOnCursor(new ItemStack(Material.AIR));
+        if (p.getItemOnCursor().getType() == Material.SUGAR) p.setItemOnCursor(new ItemStack(Material.AIR));
+        if (p.getItemOnCursor().getType() == Material.GREEN_DYE) p.setItemOnCursor(new ItemStack(Material.AIR));
+        if (p.getItemOnCursor().getType() == Material.BEETROOT_SEEDS) p.setItemOnCursor(new ItemStack(Material.AIR));
     }
 
     public static long getLastDisconnect(OfflinePlayer p) {
@@ -1308,30 +1316,33 @@ public class Script {
     }
 
     public static void addMoney(Player p, PaymentType paymentType, int amount) {
-        if(paymentType == PaymentType.CASH) p.sendMessage(Messages.INFO + "Du hast " + amount + "€ Bargeld erhalten.");
+        if (paymentType == PaymentType.CASH) p.sendMessage(Messages.INFO + "Du hast " + amount + "€ Bargeld erhalten.");
         amount = Math.abs(amount);
         executeUpdate("UPDATE money SET " + paymentType.getName() + "=" + (getMoney(p, paymentType) + amount) + " WHERE nrp_id=" + getNRPID(p));
-        if(Script.getLevel(p) == 1 && getMoney(p, paymentType) >= 50000) Script.sendTeamMessage(AntiCheatSystem.PREFIX + "Verdächtige Geldmenge: " + Script.getName(p) + " (" + getMoney(p, paymentType) + "€)");
+        if (Script.getLevel(p) == 1 && getMoney(p, paymentType) >= 50000)
+            Script.sendTeamMessage(AntiCheatSystem.PREFIX + "Verdächtige Geldmenge: " + Script.getName(p) + " (" + getMoney(p, paymentType) + "€)");
     }
 
     public static void addMoney(int id, PaymentType paymentType, int amount) {
         amount = Math.abs(amount);
         executeUpdate("UPDATE money SET " + paymentType.getName() + "=" + (getMoney(id, paymentType) + amount) + " WHERE nrp_id=" + id);
 
-        if(Script.getLevel(Script.getOfflinePlayer(id)) == 1 && getMoney(id, paymentType) >= 50000) Script.sendTeamMessage(AntiCheatSystem.PREFIX + "Verdächtige Geldmenge: " + Script.getOfflinePlayer(id).getName() + " (" + getMoney(id, paymentType) + "€)");
+        if (Script.getLevel(Script.getOfflinePlayer(id)) == 1 && getMoney(id, paymentType) >= 50000)
+            Script.sendTeamMessage(AntiCheatSystem.PREFIX + "Verdächtige Geldmenge: " + Script.getOfflinePlayer(id).getName() + " (" + getMoney(id, paymentType) + "€)");
     }
 
     public static void addMoney(OfflinePlayer p, PaymentType paymentType, int amount) {
         amount = Math.abs(amount);
         executeUpdate("UPDATE money SET " + paymentType.getName() + "=" + (getMoney(p, paymentType) + amount) + " WHERE nrp_id=" + getNRPID(p));
-        if(Script.getLevel(p) == 1 && getMoney(p, paymentType) >= 50000) Script.sendTeamMessage(AntiCheatSystem.PREFIX + "Verdächtige Geldmenge: " + p.getName() + " (" + getMoney(p, paymentType) + "€)");
+        if (Script.getLevel(p) == 1 && getMoney(p, paymentType) >= 50000)
+            Script.sendTeamMessage(AntiCheatSystem.PREFIX + "Verdächtige Geldmenge: " + p.getName() + " (" + getMoney(p, paymentType) + "€)");
     }
 
     public static void removeMoney(Player p, PaymentType paymentType, int amount) {
-        if(paymentType == PaymentType.CASH) p.sendMessage(Messages.INFO + "Du hast " + amount + "€ Bargeld bezahlt.");
-        if(paymentType == PaymentType.BANK) {
-            if(Premium.hasPremium(p) && Mobile.hasPhone(p)) {
-                if(Mobile.mobileIsOn(p) && Mobile.hasConnection(p)) {
+        if (paymentType == PaymentType.CASH) p.sendMessage(Messages.INFO + "Du hast " + amount + "€ Bargeld bezahlt.");
+        if (paymentType == PaymentType.BANK) {
+            if (Premium.hasPremium(p) && Mobile.hasPhone(p)) {
+                if (Mobile.mobileIsOn(p) && Mobile.hasConnection(p)) {
                     p.sendMessage(Messages.INFO + "Du hast " + amount + "€ von deinem Konto bezahlt.");
                 }
             }
@@ -1431,8 +1442,6 @@ public class Script {
     }
 
 
-
-
     public static OfflinePlayer getOfflinePlayer(String name) {
         if (name == null) return null;
         return Bukkit.getOfflinePlayer(name);
@@ -1468,7 +1477,7 @@ public class Script {
 
     public static boolean canOpenGeschenk(Player p) {
         try (Statement stmt = main.getConnection().createStatement();
-             ResultSet rs = stmt.executeQuery("SELECT geschenk FROM birthday WHERE id=" + getNRPID(p))  ) {
+             ResultSet rs = stmt.executeQuery("SELECT geschenk FROM birthday WHERE id=" + getNRPID(p))) {
             if (rs.next()) {
                 return rs.getBoolean("geschenk");
             }
@@ -1525,7 +1534,7 @@ public class Script {
                 if (message)
                     Bukkit.broadcastMessage("§8[§6Event§8]§6 Es hat eine §lFriend-Week §r§6begonnen!");
                 executeAsyncUpdate("UPDATE serversettings SET event='" + e.getName() + "'");
-            } else if(e.equals(Event.TRIPPLE_XP)) {
+            } else if (e.equals(Event.TRIPPLE_XP)) {
                 if (message)
                     Bukkit.broadcastMessage("§8[§6Event§8]§6 Es hat ein §lTripple XP-Event §r§6begonnen!");
                 executeAsyncUpdate("UPDATE serversettings SET event='" + e.getName() + "'");
@@ -1547,7 +1556,7 @@ public class Script {
         p.sendMessage(Messages.INFO + "Du hast dich erfolgreich registriert.");
         p.sendMessage(Messages.INFO + "Du hast automatisch einen Premium Account für 7 Tage erhalten.");
 
-        if(Script.getPreReleaseVotes(p) > 0) {
+        if (Script.getPreReleaseVotes(p) > 0) {
             p.sendMessage(Messages.INFO + "Wir haben bereits " + Script.getPreReleaseVotes(p) + " Stimmen von dir erhalten. Diese werden dir nun gutgeschrieben.");
             Script.executeUpdate("DELETE FROM pre_release_votes WHERE username='" + p.getName() + "'");
             int id = Script.getNRPID(p);
@@ -1610,11 +1619,11 @@ public class Script {
     }
 
     public static String getBackUpCode(Player p) {
-        return getString(p, "backupcodes" , "code");
+        return getString(p, "backupcodes", "code");
     }
 
     public static String getBackUpCode(OfflinePlayer p) {
-        return getString(p, "backupcodes" , "code");
+        return getString(p, "backupcodes", "code");
     }
 
     public static void increasePlayTime(Player p) {
@@ -1655,6 +1664,7 @@ public class Script {
             if (p.getItemOnCursor().getType().equals(mat)) p.setItemOnCursor(null);
         }
     }
+
     public static void increaseActivePlayTime(Player p) {
         executeAsyncUpdate("UPDATE playtime SET a_minutes=a_minutes+1 WHERE nrp_id=" + getNRPID(p));
         try (Statement stmt = main.getConnection().createStatement();
@@ -1667,13 +1677,13 @@ public class Script {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if(getActivePlayTime(p, true) % 50 == 0 && getActivePlayTime(p, false) == 0) {
+        if (getActivePlayTime(p, true) % 50 == 0 && getActivePlayTime(p, false) == 0) {
             p.sendMessage(PREFIX + "Du spielst nun bereits seit " + getActivePlayTime(p, true) + " Stunden aktiv auf NRP × New RolePlay. Vielen Dank dafür!");
             p.sendMessage(PREFIX + "Du erhältst als Dankeschön für deine Treue " + getActivePlayTime(p, true) + " Exp");
             addEXP(p, getActivePlayTime(p, true));
         }
 
-        if(getActivePlayTime(p, true) % 150 == 0 && getActivePlayTime(p, false) == 0) {
+        if (getActivePlayTime(p, true) % 150 == 0 && getActivePlayTime(p, false) == 0) {
             p.sendMessage(PREFIX + "Du erhältst als Dankeschön für deine Treue 3 Tage Premium");
             Premium.addPremiumStorage(p, TimeUnit.DAYS.toMillis(3), true);
         }
@@ -1685,13 +1695,13 @@ public class Script {
     }
 
     public static void setLevel(Player p, int level, int addedexp) {
-        if(!Premium.hasPremium(p)) {
+        if (!Premium.hasPremium(p)) {
             executeUpdate("UPDATE level SET exp=" + 0 + " WHERE nrp_id=" + getNRPID(p));
             p.sendMessage(Messages.INFO + "Nur mit einem Premium-Account werden deine überschüssigen Exp übernommen.");
         } else {
             int needed = getLevelCost(p);
             int exp = getExp(p);
-            int more = (exp+addedexp) - needed;
+            int more = (exp + addedexp) - needed;
             executeUpdate("UPDATE level SET exp=" + more + " WHERE nrp_id=" + getNRPID(p));
         }
         executeUpdate("UPDATE level SET level=" + level + " WHERE nrp_id=" + getNRPID(p));
@@ -1758,7 +1768,7 @@ public class Script {
     }
 
     public static void addEXP(Player p, int exp) {
-        if(level_cooldown.containsKey(p.getName())) return;
+        if (level_cooldown.containsKey(p.getName())) return;
         level_cooldown.put(p.getName(), System.currentTimeMillis());
         new BukkitRunnable() {
             @Override
@@ -1766,14 +1776,14 @@ public class Script {
                 level_cooldown.remove(p.getName());
             }
         }.runTaskLater(main.getInstance(), 20 * 5);
-        if(exp > 200) {
+        if (exp > 200) {
             Script.sendTeamMessage(AntiCheatSystem.PREFIX + "Verdacht auf Exp-Cheat bei " + Script.getName(p) + " (+" + exp + " Exp)");
         }
         int id = getNRPID(p);
         if (main.event == Event.TRIPPLE_XP) {
             exp *= 3;
             p.sendMessage(" §a+" + exp + " Exp! §7(§6§lTRIPPLE EXP§7)");
-        } else if(main.event == Event.DOUBLE_XP || main.event == Event.DOUBLE_XP_WEEKEND) {
+        } else if (main.event == Event.DOUBLE_XP || main.event == Event.DOUBLE_XP_WEEKEND) {
             exp *= 2;
             p.sendMessage(" §a+" + exp + " Exp! §7(§6§lDOUBLE EXP§7)");
         } else {
@@ -1824,11 +1834,12 @@ public class Script {
     public static void setEXP(int id, int exp) {
         executeUpdate("UPDATE level SET exp=" + exp + " WHERE nrp_id=" + id);
     }
+
     public static ArrayList<Integer> getRandomNumbers(int min, int max, int amount) {
         ArrayList<Integer> numbers = new ArrayList<>();
-        for(int i = 0; i < amount; i++) {
+        for (int i = 0; i < amount; i++) {
             int number = Script.getRandom(min, max);
-            while(numbers.contains(number)) {
+            while (numbers.contains(number)) {
                 number = Script.getRandom(min, max);
             }
             numbers.add(number);

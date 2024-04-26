@@ -248,8 +248,19 @@ public class Wahlen implements CommandExecutor, Listener {
         Calendar nextElectionDate = Calendar.getInstance();
 
         int nextQuartal = getNextQuartal();
-        nextElectionDate.set(Calendar.MONTH, (nextQuartal - 1) * 3); // Months are 0-based in Calendar
-        nextElectionDate.set(Calendar.DAY_OF_MONTH, 15);
+        if (nextQuartal == 1) {
+            nextElectionDate.set(Calendar.MONTH, Calendar.JANUARY);
+            nextElectionDate.set(Calendar.DAY_OF_MONTH, 15);
+        } else if (nextQuartal == 2) {
+            nextElectionDate.set(Calendar.MONTH, Calendar.APRIL);
+            nextElectionDate.set(Calendar.DAY_OF_MONTH, 15);
+        } else if (nextQuartal == 3) {
+            nextElectionDate.set(Calendar.MONTH, Calendar.JULY);
+            nextElectionDate.set(Calendar.DAY_OF_MONTH, 15);
+        } else {
+            nextElectionDate.set(Calendar.MONTH, Calendar.OCTOBER);
+            nextElectionDate.set(Calendar.DAY_OF_MONTH, 15);
+        }
 
         // Format the date
         return new SimpleDateFormat("dd.MM.yyyy").format(nextElectionDate.getTime());

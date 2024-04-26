@@ -1,6 +1,6 @@
 name: NewRolePlay
 main: de.newrp.main
-version: 1.0.4
+version: 1.1.0
 description: NewRP Serversystem
 author: NewRP Entwicklungs-Team
 api-version: 1.16
@@ -720,3 +720,5 @@ commands:
   houseslot:
     description: view the houseslot
     aliases: [ houseslots ]
+  molotov:
+    description: throw a molotov

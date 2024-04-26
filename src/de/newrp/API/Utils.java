@@ -417,9 +417,7 @@ public class Utils implements Listener {
         if (Wahlen.wahlenActive())
             p.sendMessage(Messages.INFO + "Die Wahlen sind aktiv! Du kannst mit §8/§6wahlen §rdeine Stimme abgeben.");
         Notifications.sendMessage(Notifications.NotificationType.JOIN, "§e" + Script.getName(e.getPlayer()) + " §7hat den Server betreten.");
-        if (Licenses.ERSTE_HILFE.hasLicense(Script.getNRPID(p)) &&
-
-                ersteHilfeExpired(p)) {
+        if (Licenses.ERSTE_HILFE.hasLicense(Script.getNRPID(p)) && ersteHilfeExpired(p)) {
             Licenses.ERSTE_HILFE.remove(Script.getNRPID(p));
             p.sendMessage(Messages.INFO + "Dein §eErste-Hilfe-Schein §7ist abgelaufen.");
         }
@@ -821,7 +819,7 @@ public class Utils implements Listener {
 
     public static boolean ersteHilfeExpired(Player p) {
         try (Statement stmt = main.getConnection().createStatement();
-             ResultSet rs = stmt.executeQuery("SELECT erste_hilfe FROM ranks WHERE nrp_id=" + Script.getNRPID(p) + " ORDER BY id DESC LIMIT 1")) {
+             ResultSet rs = stmt.executeQuery("SELECT * FROM erste_hilfe WHERE nrp_id=" + Script.getNRPID(p) + " ORDER BY id DESC LIMIT 1")) {
             if (rs.next()) {
                 return (rs.getLong("awarded") + TimeUnit.DAYS.toMillis(30)) < System.currentTimeMillis();
             }

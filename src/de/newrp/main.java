@@ -434,6 +434,7 @@ public class main extends JavaPlugin {
         getCommand("neulingschat").setExecutor(new NeulingsChat());
         getCommand("apikey").setExecutor(new APIKey());
         getCommand("houseslot").setExecutor(new HouseSlot());
+        getCommand("molotov").setExecutor(new MolotovCocktail());
         
 
         PluginManager pm = Bukkit.getPluginManager();
@@ -568,6 +569,7 @@ public class main extends JavaPlugin {
         pm.registerEvents(new Treuebonus(), this);
         pm.registerEvents(new Shisha(), this);
         pm.registerEvents(new CancelTicket(), this);
+        pm.registerEvents(new Trash(), this);
         //pm.registerEvents(new MuscleDamage(), this);
 
 
