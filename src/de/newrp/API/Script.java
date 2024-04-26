@@ -2252,7 +2252,7 @@ public class Script {
                 String header = "\n§5§lNEW ROLEPLAY\n";
                 String footer;
                 int online = Bukkit.getOnlinePlayers().size();
-                footer = "\n§6Version §8» §6" + main.getInstance().getDescription().getVersion() + "\n§cOnline §8» §c" + online + " Spieler\n";
+                footer = "\n§6Version §8» §6" + main.getInstance().getDescription().getVersion() + "\n§6§lTHE NEXT BIG THING\n§cOnline §8» §c" + online + " Spieler\n";
                 p.setPlayerListHeader(header);
                 p.setPlayerListFooter(footer);
             }

@@ -4,6 +4,7 @@ import de.newrp.Administrator.Checkpoints;
 import de.newrp.Berufe.AcceptNotruf;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Berufe.Duty;
+import de.newrp.Berufe.Equip;
 import de.newrp.GFB.Schule;
 import de.newrp.Gangwar.GangwarCommand;
 import de.newrp.Organisationen.Organisation;
@@ -83,6 +84,11 @@ public class Friedhof {
                 StartTransport.isActive = false;
                 StartTransport.LEVEL = 0;
                 StartTransport.add = 0;
+                Player killer = p.getKiller();
+                killer.getInventory().addItem(Equip.Stuff.SCHWERE_SCHUTZWESTE.getItem());
+                killer.getInventory().addItem(Equip.Stuff.EINSATZSCHILD.getItem());
+                killer.getInventory().addItem(Equip.Stuff.EINSAZTZSCHILD_2.getItem());
+                killer.getInventory().addItem(Equip.Stuff.TAZER.getItem());
             }
         }
 
