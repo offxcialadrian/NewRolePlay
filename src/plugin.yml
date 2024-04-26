@@ -722,3 +722,6 @@ commands:
     aliases: [ houseslots ]
   molotov:
     description: throw a molotov
+  leitungswasser:
+    description: view the leitungswasser
+    aliases: [ lw ]

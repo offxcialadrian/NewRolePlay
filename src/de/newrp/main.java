@@ -435,6 +435,7 @@ public class main extends JavaPlugin {
         getCommand("apikey").setExecutor(new APIKey());
         getCommand("houseslot").setExecutor(new HouseSlot());
         getCommand("molotov").setExecutor(new MolotovCocktail());
+        getCommand("leitungswasser").setExecutor(new Leitungswasser());
         
 
         PluginManager pm = Bukkit.getPluginManager();

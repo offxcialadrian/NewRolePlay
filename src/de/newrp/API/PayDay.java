@@ -183,10 +183,15 @@ public class PayDay extends BukkitRunnable {
 
             for (House house : House.getHouses(Script.getNRPID(p))) {
                 if (house.getOwner() == Script.getNRPID(p)) continue;
-                if(Script.getMoney(p, PaymentType.BANK) >= house.getMiete(Script.getNRPID(p))) {
+                House.Mieter mieter = house.getMieterByID(Script.getNRPID(p));
+                if(Script.getMoney(p, PaymentType.BANK) >= house.getMiete(Script.getNRPID(p)) + mieter.getNebenkosten()) {
                     p.sendMessage("§8" + Messages.ARROW + " §7Miete für Haus " + house.getID() + ": §c-" + house.getMiete(Script.getNRPID(p)) + "€");
                     payday -= house.getMiete(Script.getNRPID(p));
                     house.addKasse(house.getMiete(Script.getNRPID(p)));
+                    if (mieter.getNebenkosten() > 0) {
+                        p.sendMessage("§8" + Messages.ARROW + " §7Nebenkosten für Haus " + house.getID() + ": §c-" + mieter.getNebenkosten() + "€");
+                        payday -= mieter.getNebenkosten();
+                    }
                     continue;
                 } else {
                     house.removeMieter(Script.getNRPID(p));
