@@ -572,6 +572,8 @@ public class main extends JavaPlugin {
         pm.registerEvents(new CancelTicket(), this);
         pm.registerEvents(new Trash(), this);
         //pm.registerEvents(new MuscleDamage(), this);
+        pm.registerEvents(new MemberBeruf(), this);
+        pm.registerEvents(new MemberOrga(), this);
 
 
         new AsyncHealth().runTaskTimerAsynchronously(this, 120 * 20L, 120 * 20L);

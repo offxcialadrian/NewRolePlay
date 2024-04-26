@@ -1,7 +1,6 @@
 package de.newrp.Berufe;
 
 import de.newrp.API.Messages;
-import de.newrp.API.Premium;
 import de.newrp.API.Script;
 import de.newrp.Forum.ForumGroup;
 import de.newrp.Government.Arbeitslosengeld;
@@ -17,7 +16,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class Beruf {
 
@@ -389,6 +387,4 @@ public class Beruf {
         }
         return list;
     }
-
-
 }

@@ -1,10 +1,9 @@
 package de.newrp.Berufe;
 
 import de.newrp.API.Messages;
-import de.newrp.API.Rank;
 import de.newrp.API.Script;
-import de.newrp.Administrator.SDuty;
 import de.newrp.Forum.Forum;
+import de.newrp.Organisationen.MemberOrga;
 import de.newrp.Organisationen.Organisation;
 import de.newrp.TeamSpeak.TeamSpeak;
 import org.bukkit.OfflinePlayer;
@@ -80,6 +79,7 @@ public class UninviteCommand implements CommandExecutor {
                 Script.updateListname(tg.getPlayer());
             }
             beruf.removeMember(tg, p);
+            if (tg.getPlayer() != null) MemberBeruf.removeMember(tg.getPlayer());
             Script.removeEXP(tg.getName(), Script.getRandom(50, 100));
             TeamSpeak.sync(Script.getNRPID(tg));
             Forum.syncPermission(tg);
@@ -112,6 +112,7 @@ public class UninviteCommand implements CommandExecutor {
         }
 
         beruf.removeMember(tg, p);
+        if (tg.getPlayer() != null) MemberOrga.removeMember(tg.getPlayer());
         Script.removeEXP(tg.getName(), Script.getRandom(50, 100));
         TeamSpeak.sync(Script.getNRPID(tg));
         Forum.syncPermission(tg);

@@ -10,12 +10,9 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-
 public class Duty implements CommandExecutor {
 
     public static String PREFIX = "§8[§eDuty§8] §e» §7";
-    private static ArrayList<String> duty = new ArrayList<>();
 
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
@@ -44,14 +41,14 @@ public class Duty implements CommandExecutor {
             if (isInDuty(p)) {
                 Bukkit.getScoreboardManager().getMainScoreboard().getTeam("dmedic").removeEntry(p.getName());
                 Beruf.Berufe.RETTUNGSDIENST.sendMessage(PREFIX + Script.getName(p) + " hat den Dienst verlassen.");
-                duty.remove(p.getName());
+                MemberBeruf.changeDuty(p, false);
                 Script.updateListname(p);
                 return true;
             }
 
             Bukkit.getScoreboardManager().getMainScoreboard().getTeam("dmedic").addEntry(p.getName());
             Beruf.Berufe.RETTUNGSDIENST.sendMessage(PREFIX + Script.getName(p) + " hat den Dienst betreten.");
-            duty.add(p.getName());
+            MemberBeruf.changeDuty(p, true);
             Script.updateListname(p);
             return true;
 
@@ -66,14 +63,14 @@ public class Duty implements CommandExecutor {
             if (isInDuty(p)) {
                 Bukkit.getScoreboardManager().getMainScoreboard().getTeam("cpolice").removeEntry(p.getName());
                 Beruf.Berufe.POLICE.sendMessage(PREFIX + Script.getName(p) + " hat den Dienst verlassen.");
-                duty.remove(p.getName());
+                MemberBeruf.changeDuty(p, false);
                 Script.updateListname(p);
                 return true;
             }
 
             Bukkit.getScoreboardManager().getMainScoreboard().getTeam("cpolice").addEntry(p.getName());
             Beruf.Berufe.POLICE.sendMessage(PREFIX + Script.getName(p) + " hat den Dienst betreten.");
-            duty.add(p.getName());
+            MemberBeruf.changeDuty(p, true);
             Script.updateListname(p);
             return true;
         }
@@ -88,14 +85,14 @@ public class Duty implements CommandExecutor {
             if (isInDuty(p)) {
                 Bukkit.getScoreboardManager().getMainScoreboard().getTeam("enews").removeEntry(p.getName());
                 Beruf.Berufe.NEWS.sendMessage(PREFIX + Script.getName(p) + " hat den Dienst verlassen.");
-                duty.remove(p.getName());
+                MemberBeruf.changeDuty(p, false);
                 Script.updateListname(p);
                 return true;
             }
 
             Bukkit.getScoreboardManager().getMainScoreboard().getTeam("enews").addEntry(p.getName());
             Beruf.Berufe.NEWS.sendMessage(PREFIX + Script.getName(p) + " hat den Dienst betreten.");
-            duty.add(p.getName());
+            MemberBeruf.changeDuty(p, true);
             Script.updateListname(p);
             return true;
         }
@@ -109,14 +106,14 @@ public class Duty implements CommandExecutor {
             if (isInDuty(p)) {
                 Bukkit.getScoreboardManager().getMainScoreboard().getTeam("bgovernment").removeEntry(p.getName());
                 Beruf.Berufe.GOVERNMENT.sendMessage(PREFIX + Script.getName(p) + " hat den Dienst verlassen.");
-                duty.remove(p.getName());
+                MemberBeruf.changeDuty(p, false);
                 Script.updateListname(p);
                 return true;
             }
 
             Bukkit.getScoreboardManager().getMainScoreboard().getTeam("bgovernment").addEntry(p.getName());
             Beruf.Berufe.GOVERNMENT.sendMessage(PREFIX + Script.getName(p) + " hat den Dienst betreten.");
-            duty.add(p.getName());
+            MemberBeruf.changeDuty(p, true);
             Script.updateListname(p);
             return true;
         }
@@ -127,17 +124,17 @@ public class Duty implements CommandExecutor {
     }
 
     public static boolean isInDuty(Player p) {
-        return duty.contains(p.getName());
+        return MemberBeruf.isDuty(p);
     }
 
     public static void setDuty(Player p) {
         Bukkit.getScoreboardManager().getMainScoreboard().getTeam("player").removeEntry(p.getName());
-        duty.add(p.getName());
+        MemberBeruf.changeDuty(p, true);
     }
 
     public static void removeDuty(Player p) {
         Bukkit.getScoreboardManager().getMainScoreboard().getTeam("player").addEntry(p.getName());
-        duty.remove(p.getName());
+        MemberBeruf.changeDuty(p, false);
     }
 
 }

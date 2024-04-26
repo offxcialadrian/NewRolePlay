@@ -2,6 +2,7 @@ package de.newrp.Player;
 
 import de.newrp.API.*;
 import de.newrp.Berufe.Duty;
+import de.newrp.Berufe.MemberBeruf;
 import de.newrp.main;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -168,6 +169,7 @@ public class Treuebonus implements CommandExecutor, Listener {
         if(Duty.isInDuty(e.getPlayer())) {
             wasDuty.add(e.getPlayer().getName());
             Duty.removeDuty(e.getPlayer());
+            MemberBeruf.changeDuty(e.getPlayer(), false);
         }
     }
 
