@@ -306,8 +306,6 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
                 Log.WARNING.write(tg, "wurde von " + Messages.RANK_PREFIX(p) + " für " + v.getName() + " gebannt.");
                 Log.HIGH.write(p, "hat " + Script.getName(tg) + " für " + v.getName() + " gebannt.");
                 Bukkit.broadcastMessage(Script.PREFIX + "§c" + Script.getName(tg) + " wurde von " + Messages.RANK_PREFIX(p) + " für §l" + v.getName() + "§c gebannt.");
-                if (Beruf.hasBeruf(tg)) Beruf.getBeruf(tg).removeMember(tg);
-                if (Organisation.hasOrganisation(tg)) Organisation.getOrganisation(tg).removeMember(tg);
             } else {
                 tg.sendMessage(PREFIX + "Du wurdest von " + Script.getName(p) + " bis zum " + dateFormat.format(until) + " Uhr für " + v.getName() + " gebannt.");
                 tg.sendMessage(PREFIX + "Grund: " + v.getDescription());

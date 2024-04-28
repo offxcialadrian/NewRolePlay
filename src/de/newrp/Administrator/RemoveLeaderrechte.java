@@ -5,6 +5,7 @@ import de.newrp.API.Messages;
 import de.newrp.API.Rank;
 import de.newrp.API.Script;
 import de.newrp.Berufe.Beruf;
+import de.newrp.Organisationen.Organisation;
 import de.newrp.TeamSpeak.TeamSpeak;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -42,7 +43,7 @@ public class RemoveLeaderrechte implements CommandExecutor {
             return true;
         }
 
-        if (!Beruf.isLeader(tg, true)) {
+        if (!Beruf.isLeader(tg, true) && !Organisation.isLeader(tg, true)) {
             p.sendMessage(Messages.ERROR + " Dieser Spieler ist kein Leader.");
             return true;
         }

@@ -168,6 +168,8 @@ public class Lotto implements CommandExecutor {
             Bukkit.getScheduler().runTaskAsynchronously(main.getInstance(), () -> p.sendMessage(PREFIX + "Es befinden sich " + getJackpot() + "€ im Jackpot."));
         } else if (haveLottoschein(p)) {
             p.sendMessage(PREFIX + "Du hast einen Lottoschein mit der Nummer " + getLottoNummer(Script.getNRPID(p)) + ".");
+            p.sendMessage(Messages.INFO + "Glücksspiel kann süchtig machen. Spiele verantwortungsbewusst.");
+            p.sendMessage(Messages.INFO + "Solltest du Hilfe benötigen, wende dich an: §6https://www.bzga.de/");
         } else {
             if (!activate()) {
                 p.sendMessage(Messages.ERROR + "Du kannst im Moment kein Lottoschein einlösen.");
