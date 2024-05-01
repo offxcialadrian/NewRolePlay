@@ -85,10 +85,6 @@ public class main extends JavaPlugin {
         return Bukkit.hasWhitelist();
     }
 
-    private int maxPacketsPerSecond = 5; // Maximal erlaubte Pakete pro Sekunde
-    private int packetsReceived = 0; // Anzahl der empfangenen Pakete
-    private long lastCheckTime = System.currentTimeMillis();
-
 
     @SuppressWarnings("DataFlowIssue")
     public void onEnable() {
@@ -97,25 +93,6 @@ public class main extends JavaPlugin {
         instance = this;
         test = getServer().getMaxPlayers() == 20;
         event = null;
-
-        ProtocolLibrary.getProtocolManager().addPacketListener(new PacketAdapter(this, PacketType.Play.Client.SETTINGS) {
-            @Override
-            public void onPacketReceiving(PacketEvent event) {
-                // Überprüfen, ob die maximale Anzahl von Paketen pro Sekunde erreicht wurde
-                long currentTime = System.currentTimeMillis();
-                Player p = event.getPlayer();
-                if (currentTime - lastCheckTime >= 1000) {
-                    packetsReceived = 0;
-                    lastCheckTime = currentTime;
-                }
-                if (packetsReceived >= maxPacketsPerSecond) {
-                    //Notifications.sendMessage(Notifications.NotificationType.ADVANCED_ANTI_CHEAT, "Bitte Spieler " + Script.getName(p) + " überprüfen. (Pakete pro Sekunde: " + packetsReceived + ")");
-                    event.setCancelled(true); // Blockiere das Paket
-                    return;
-                }
-                packetsReceived++;
-            }
-        });
 
         //new C05(this);
 
