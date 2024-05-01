@@ -98,8 +98,6 @@ public class main extends JavaPlugin {
         test = getServer().getMaxPlayers() == 20;
         event = null;
 
-
-        /*
         ProtocolLibrary.getProtocolManager().addPacketListener(new PacketAdapter(this, PacketType.Play.Client.SETTINGS) {
             @Override
             public void onPacketReceiving(PacketEvent event) {
@@ -118,7 +116,6 @@ public class main extends JavaPlugin {
                 packetsReceived++;
             }
         });
-         */
 
         //new C05(this);
 
@@ -134,7 +131,6 @@ public class main extends JavaPlugin {
             this.getServer().shutdown();
         }
 
-        /*
         try {
             mysql2 = new MySQL("localhost", "3306", "forum", "forumadmin", "TtXf*H&gqkSTC2a2");
             con2 = mysql2.openConnection();
@@ -153,7 +149,6 @@ public class main extends JavaPlugin {
         } catch (Exception e) {
             e.printStackTrace();
         }
-         */
 
         if (!test) new ClearLog();
         Script.prepareScoreboard();
