@@ -599,11 +599,11 @@ public class main extends JavaPlugin {
         House.loadHouses();
         Blacklist.load();
         Plantage.loadAll();
-        //Schwarzmarkt.spawnRandom();
+        Schwarzmarkt.spawnRandom();
         Zeitung.restoreZeitung();
         OrgSpray.FraktionSpray.init();
 
-        //LabyAPI.initialize(LabyAPI.getService());
+        LabyAPI.initialize(LabyAPI.getService());
 
         Bukkit.getConsoleSender().sendMessage("§cNRP §8× §astarting complete..");
         Bukkit.getConsoleSender().sendMessage("§cNRP §8× §aViel Erfolg heute..");
