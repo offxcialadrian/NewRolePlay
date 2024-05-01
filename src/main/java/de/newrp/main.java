@@ -99,6 +99,7 @@ public class main extends JavaPlugin {
         event = null;
 
 
+        /*
         ProtocolLibrary.getProtocolManager().addPacketListener(new PacketAdapter(this, PacketType.Play.Client.SETTINGS) {
             @Override
             public void onPacketReceiving(PacketEvent event) {
@@ -117,11 +118,12 @@ public class main extends JavaPlugin {
                 packetsReceived++;
             }
         });
+         */
 
         //new C05(this);
 
         try {
-            mysql = new MySQL("localhost", "3306", "minecraft", "newrpentwicklung", "k75y@p@3OpRO4*QOy@DP8gigqSP8F0*ICUBL&6*!!6dDYjf$");
+            mysql = new MySQL("localhost", "3306", "db_286070", "db_286070", "09b36fa34f");
             con = mysql.openConnection();
             Bukkit.getConsoleSender().sendMessage("§cNRP §8× §aVerbindung zur Datenbank hergestellt.");
         } catch (Exception e1) {
@@ -132,6 +134,7 @@ public class main extends JavaPlugin {
             this.getServer().shutdown();
         }
 
+        /*
         try {
             mysql2 = new MySQL("localhost", "3306", "forum", "forumadmin", "TtXf*H&gqkSTC2a2");
             con2 = mysql2.openConnection();
@@ -150,6 +153,7 @@ public class main extends JavaPlugin {
         } catch (Exception e) {
             e.printStackTrace();
         }
+         */
 
         if (!test) new ClearLog();
         Script.prepareScoreboard();

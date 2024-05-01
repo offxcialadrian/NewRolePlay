@@ -51,7 +51,6 @@ public class SpendenCommand implements CommandExecutor {
         Stadtkasse.addStadtkasse(amount, "Spende von " + Script.getName(p), null);
         p.sendMessage(PREFIX + "Du hast " + amount + "€ gespendet.");
         Beruf.Berufe.GOVERNMENT.sendMessage(PREFIX + Script.getName(p) + " hat der Stadtkasse " + amount + "€ gespendet.");
-        Beruf.Berufe.POLICE.sendMessage(PREFIX + Script.getName(p) + " hat der Stadtkasse " + amount + "€ gespendet.");
         Notifications.sendMessage(Notifications.NotificationType.PAYMENT, Script.getName(p) + " hat der Stadtkasse " + amount + "€ gespendet.");
 
         return false;

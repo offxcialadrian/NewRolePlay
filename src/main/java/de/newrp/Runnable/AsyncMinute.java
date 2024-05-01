@@ -1,7 +1,6 @@
 package de.newrp.Runnable;
 
 import de.newrp.API.*;
-import de.newrp.Administrator.SDuty;
 import de.newrp.Chat.Me;
 import de.newrp.Commands.Test;
 import de.newrp.Entertainment.Lotto;
@@ -117,7 +116,7 @@ public class AsyncMinute extends BukkitRunnable {
             if (amount > 0) {
                 for (Player nrp : Script.getNRPTeam()) {
                     Title.sendTitle(nrp, 20, 100, 20, "§8[§6Tickets§8] §6" + Messages.ARROW + " §7Es sind noch " + amount + " Tickets offen.");
-                    if(SDuty.isSDuty(nrp)) nrp.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20 * 5, 1, false, false));
+                    nrp.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20 * 5, 1, false, false));
                     nrp.sendMessage("§8[§6Tickets§8] §6" + Messages.ARROW + " §7Es sind noch " + amount + " Tickets offen.");
                     nrp.sendMessage(Messages.INFO + "Bitte beachte, dass die Bearbeitung von Tickets eine hohe Priorität hat.");
                 }

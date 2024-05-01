@@ -15,8 +15,6 @@ public class TakeDrugs implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
         Player p = (Player) cs;
-
-
         if(!Beruf.hasBeruf(p)) {
             p.sendMessage(Messages.NO_PERMISSION);
             return true;
@@ -38,8 +36,6 @@ public class TakeDrugs implements CommandExecutor {
             return true;
         }
 
-        int i = Script.getDrugAmount(tg);
-
         if(!Script.hasDrugs(tg)) {
             p.sendMessage(Messages.ERROR + "Der Spieler hat keine Drogen dabei.");
             return true;
@@ -54,7 +50,7 @@ public class TakeDrugs implements CommandExecutor {
         Script.removeDrugs(tg);
         p.sendMessage(Messages.INFO + "Du hast " + tg.getName() + " die Drogen abgenommen.");
         tg.sendMessage(Messages.INFO + "Polizist " + p.getName() + " hat dir die Drogen abgenommen");
-        Beruf.Berufe.POLICE.sendMessage("§9Beamter " + Script.getName(p) + " hat " + Script.getName(tg) + " " + i + "g Drogen abgenommen");
+        Beruf.Berufe.POLICE.sendMessage("§9Beamter " + Script.getName(p) + " hat " + Script.getName(tg) + " die Drogen abgenommen");
         return true;
 
     }
