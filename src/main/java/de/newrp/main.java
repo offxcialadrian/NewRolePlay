@@ -123,7 +123,7 @@ public class main extends JavaPlugin {
         //new C05(this);
 
         try {
-            mysql = new MySQL("localhost", "3306", "db_286070", "db_286070", "09b36fa34f");
+            mysql = new MySQL("localhost", "3306", "minecraft", "newrpentwicklung", "k75y@p@3OpRO4*QOy@DP8gigqSP8F0*ICUBL&6*!!6dDYjf$");
             con = mysql.openConnection();
             Bukkit.getConsoleSender().sendMessage("§cNRP §8× §aVerbindung zur Datenbank hergestellt.");
         } catch (Exception e1) {
@@ -599,11 +599,11 @@ public class main extends JavaPlugin {
         House.loadHouses();
         Blacklist.load();
         Plantage.loadAll();
-        Schwarzmarkt.spawnRandom();
+        //Schwarzmarkt.spawnRandom();
         Zeitung.restoreZeitung();
         OrgSpray.FraktionSpray.init();
 
-        LabyAPI.initialize(LabyAPI.getService());
+        //LabyAPI.initialize(LabyAPI.getService());
 
         Bukkit.getConsoleSender().sendMessage("§cNRP §8× §astarting complete..");
         Bukkit.getConsoleSender().sendMessage("§cNRP §8× §aViel Erfolg heute..");
