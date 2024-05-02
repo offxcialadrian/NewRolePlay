@@ -4,7 +4,6 @@ import de.newrp.API.*;
 import de.newrp.Administrator.SDuty;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Berufe.Duty;
-import de.newrp.Berufe.MemberBeruf;
 import de.newrp.Government.Stadtkasse;
 import de.newrp.Player.AFK;
 import de.newrp.main;
@@ -67,8 +66,8 @@ public class Bankautomaten implements Listener {
         atmBlocks.put(e.getClickedBlock().getLocation(), e.getClickedBlock());
         p.getInventory().remove(Material.TNT);
         p.sendMessage(PREFIX + "Der Bankautomat wird in 90 Sekunden zerstört.");
-        MemberBeruf.sendMessage(Beruf.Berufe.POLICE, PREFIX + "ACHTUNG! ES WURDE SPRENGSTOFF AN ATM " + atm.getID() + " GEFUNDEN!");
-        MemberBeruf.sendMessage(Beruf.Berufe.POLICE, Messages.INFO + "In der Nähe von " + Navi.getNextNaviLocation(p.getLocation()).getName());
+        Beruf.Berufe.POLICE.sendMessage(PREFIX + "ACHTUNG! ES WURDE SPRENGSTOFF AN ATM " + atm.getID() + " GEFUNDEN!");
+        Beruf.Berufe.POLICE.sendMessage(Messages.INFO + "In der Nähe von " + Navi.getNextNaviLocation(p.getLocation()).getName());
         Location bombLocation = atm.getLocation();
         e.getClickedBlock().setType(Material.TNT);
         progress.put(p.getName(), 0);
@@ -117,7 +116,7 @@ public class Bankautomaten implements Listener {
                     int remove = (int) Math.min(Script.getRandom(3000, 6000), Script.getPercent(20, atm.getCash()));
                     atm.removeCash(remove);
                     o.sendMessage(PREFIX + Script.getName(p) + " hat einen Bankautomaten zerstört und " + remove + "€ gestohlen.");
-                    MemberBeruf.sendMessage(Beruf.Berufe.POLICE, PREFIX + "Der Bankautomat " + atm.getID() + " wurde zerstört. Es wurden " + remove + "€ gestohlen.");
+                    Beruf.Berufe.POLICE.sendMessage(PREFIX + "Der Bankautomat " + atm.getID() + " wurde zerstört. Es wurden " + remove + "€ gestohlen.");
                     Script.addMoney(p, PaymentType.CASH, remove);
                     o.addExp(remove / 100);
                     win.put(p, remove);

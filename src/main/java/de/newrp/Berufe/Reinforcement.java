@@ -135,10 +135,10 @@ public class Reinforcement implements CommandExecutor {
                     for (Beruf.Berufe berufe : Beruf.Berufe.values()) {
                         if (berufe != Beruf.Berufe.RETTUNGSDIENST && berufe != Beruf.Berufe.POLICE && berufe != Beruf.Berufe.GOVERNMENT)
                             continue;
-                        MemberBeruf.sendMessage(berufe, "§7➲ §a" + Beruf.getBeruf(p).getName() + " " + Script.getName(p) + " kommt zum Verstärkungsruf von " + Script.getName(tg) + "! §7" + "(ETA: " + calcETA(p.getLocation().distance(new_reinforcement.get(tg.getName()))) + " Sekunden)");
+                        berufe.sendMessage("§7➲ §a" + Beruf.getBeruf(p).getName() + " " + Script.getName(p) + " kommt zum Verstärkungsruf von " + Script.getName(tg) + "! §7" + "(ETA: " + calcETA(p.getLocation().distance(new_reinforcement.get(tg.getName()))) + " Sekunden)");
                     }
                 } else {
-                    MemberBeruf.sendMessage(beruf, "§7➲ §a" + Beruf.getAbteilung(p).getName() + " " + Script.getName(p) + " kommt zum Verstärkungsruf von " + Script.getName(tg) + "! §7" + "(ETA: " + calcETA(p.getLocation().distance(new_reinforcement.get(tg.getName()))) + " Sekunden)");
+                    beruf.sendMessage("§7➲ §a" + Beruf.getAbteilung(p).getName() + " " + Script.getName(p) + " kommt zum Verstärkungsruf von " + Script.getName(tg) + "! §7" + "(ETA: " + calcETA(p.getLocation().distance(new_reinforcement.get(tg.getName()))) + " Sekunden)");
                 }
             }
             return true;
@@ -164,7 +164,7 @@ public class Reinforcement implements CommandExecutor {
                     return true;
                 }
             }
-            for (Player member : Objects.requireNonNull(MemberBeruf.getMembers(beruf))) {
+            for (Player member : Objects.requireNonNull(beruf.getMember())) {
                 member.sendMessage("§c§l" + type.getName() + " §a" + Beruf.getAbteilung(p).getName() + " " + Script.getName(p) + " benötigt Unterstützung! §8➥ §7" + Navi.getNextNaviLocation(p.getLocation()).getName() + " §7(" + (int) member.getLocation().distance(p.getLocation()) + "m)");
                 OnMyWayLink(member, p);
                 showRoute(member, p);
@@ -201,16 +201,16 @@ public class Reinforcement implements CommandExecutor {
             }
 
             Set<Player> staatler = new HashSet<>();
-            if (MemberBeruf.getMembers(Beruf.Berufe.RETTUNGSDIENST) != null) staatler.addAll(Objects.requireNonNull(MemberBeruf.getMembers(Beruf.Berufe.RETTUNGSDIENST)));
-            if (MemberBeruf.getMembers(Beruf.Berufe.POLICE) != null) staatler.addAll(Objects.requireNonNull(MemberBeruf.getMembers(Beruf.Berufe.POLICE)));
-            if (MemberBeruf.getMembers(Beruf.Berufe.GOVERNMENT) != null) staatler.addAll(Objects.requireNonNull(MemberBeruf.getMembers(Beruf.Berufe.GOVERNMENT)));
+            staatler.addAll(Objects.requireNonNull(Beruf.Berufe.RETTUNGSDIENST.getMember()));
+            staatler.addAll(Objects.requireNonNull(Beruf.Berufe.POLICE.getMember()));
+            staatler.addAll(Objects.requireNonNull(Beruf.Berufe.GOVERNMENT.getMember()));
             for (Player member : staatler) {
                 member.sendMessage("§c§l" + type.getName() + " §a" + Beruf.getBeruf(p).getName() + " " + Script.getName(p) + " benötigt Unterstützung! §8➥ §7" + Navi.getNextNaviLocation(p.getLocation()).getName() + " §7(" + (int) member.getLocation().distance(p.getLocation()) + "m)");
                 OnMyWayLink(member, p);
                 showRoute(member, p);
             }
         } else {
-            for (Player member : Objects.requireNonNull(MemberBeruf.getMembers(beruf))) {
+            for (Player member : Objects.requireNonNull(beruf.getMember())) {
                 member.sendMessage("§c§l" + type.getName() + " §a" + Beruf.getAbteilung(p).getName() + " " + Script.getName(p) + " benötigt Unterstützung! §8➥ §7" + Navi.getNextNaviLocation(p.getLocation()).getName() + " §7(" + (int) member.getLocation().distance(p.getLocation()) + "m)");
                 OnMyWayLink(member, p);
                 showRoute(member, p);
