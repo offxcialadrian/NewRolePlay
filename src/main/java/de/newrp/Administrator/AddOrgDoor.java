@@ -23,7 +23,7 @@ import java.util.HashMap;
 
 public class AddOrgDoor implements CommandExecutor, Listener {
 
-    private static final String PREFIX = "§8[§eBerufsdoor§8] §e» ";
+    private static final String PREFIX = "§8[§eBerufsdoor§8] §e» a";
     private static HashMap<String, Organisation> changing = new HashMap<>();
 
     @Override

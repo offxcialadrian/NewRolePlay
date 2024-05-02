@@ -32,7 +32,7 @@ import de.newrp.Runnable.*;
 import de.newrp.Shop.*;
 import de.newrp.TeamSpeak.*;
 import de.newrp.Ticket.*;
-import de.newrp.Vehicle.DriveCar;
+import de.newrp.Vehicle.*;
 import de.newrp.Votifier.VoteCommand;
 import de.newrp.Votifier.VoteListener;
 import de.newrp.Votifier.VoteShop;
@@ -428,6 +428,7 @@ public class main extends JavaPlugin {
         getCommand("houseslot").setExecutor(new HouseSlot());
         getCommand("molotov").setExecutor(new MolotovCocktail());
         getCommand("leitungswasser").setExecutor(new Leitungswasser());
+        getCommand("car").setExecutor(new CarCommand());
 
 
         PluginManager pm = Bukkit.getPluginManager();
@@ -566,6 +567,7 @@ public class main extends JavaPlugin {
         //pm.registerEvents(new MuscleDamage(), this);
         pm.registerEvents(new MemberBeruf(), this);
         pm.registerEvents(new MemberOrga(), this);
+        pm.registerEvents(new CarHandler(), this);
 
 
         new AsyncHealth().runTaskTimerAsynchronously(this, 120 * 20L, 120 * 20L);

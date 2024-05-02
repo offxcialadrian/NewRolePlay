@@ -666,6 +666,10 @@ public class Car {
         if (mc != null) mc.teleport(new Location(Script.WORLD, x, 71, z));
     }
 
+    public void setFuel(int fuel) {
+        this.fuel = fuel;
+    }
+
     /*
         Score platzhalter1 = o.getScore(ChatColor.RED + "");
         Score platzhalter2 = o.getScore(ChatColor.YELLOW + "");
