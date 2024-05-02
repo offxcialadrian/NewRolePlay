@@ -11,7 +11,6 @@ import de.newrp.House.House;
 import de.newrp.House.HouseAddon;
 import de.newrp.Medic.Medikamente;
 import de.newrp.Medic.Rezept;
-import de.newrp.Organisationen.MemberOrga;
 import de.newrp.Organisationen.Organisation;
 import de.newrp.Shop.Shops;
 import de.newrp.TeamSpeak.TeamSpeak;
@@ -284,7 +283,7 @@ public class Annehmen implements CommandExecutor {
             leader.sendMessage(PREFIX + Script.getName(p) + " ist der Organisation beigetreten.");
             leader.sendMessage(Messages.INFO + "Nutze /salary [Spieler] [Gehalt], um " + Script.getName(p) + " ein Gehalt zu geben.");
             organisation.addMember(p, leader);
-            MemberOrga.addMember(p);
+            organisation.setMember(p);
             offer.remove(p.getName() + ".joinorganisation");
             TeamSpeak.sync(Script.getNRPID(p));
             Forum.syncPermission(p);

@@ -94,6 +94,7 @@ public class Buy implements CommandExecutor {
             return true;
         }
 
+        amount.remove(p.getName()); // Reset BuyAmount falls /buy ohne Argument
         inv.setItem(((size / 9) <= 2 ? 13 : 22), Script.setName(Material.BARRIER, "§cSchließen"));
         p.openInventory(inv);
 

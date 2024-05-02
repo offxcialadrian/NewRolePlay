@@ -116,7 +116,7 @@ public class Bankautomaten implements Listener {
                     atmBlocks.remove(e.getClickedBlock().getLocation());
                     int remove = (int) Math.min(Script.getRandom(3000, 6000), Script.getPercent(20, atm.getCash()));
                     atm.removeCash(remove);
-                    MemberOrga.sendMessage(o, PREFIX + Script.getName(p) + " hat einen Bankautomaten zerstört und " + remove + "€ gestohlen.");
+                    o.sendMessage(PREFIX + Script.getName(p) + " hat einen Bankautomaten zerstört und " + remove + "€ gestohlen.");
                     MemberBeruf.sendMessage(Beruf.Berufe.POLICE, PREFIX + "Der Bankautomat " + atm.getID() + " wurde zerstört. Es wurden " + remove + "€ gestohlen.");
                     Script.addMoney(p, PaymentType.CASH, remove);
                     o.addExp(remove / 100);

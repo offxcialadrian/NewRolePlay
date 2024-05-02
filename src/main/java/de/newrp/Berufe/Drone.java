@@ -156,6 +156,8 @@ public class Drone implements Listener {
 
     @EventHandler
     public void onInteract(PlayerInteractEvent e) {
+        if (e.getPlayer().getInventory().getItemInMainHand().getItemMeta() == null) return;
+
         if (!e.getPlayer().getInventory().getItemInMainHand().getItemMeta().getDisplayName().startsWith("§7Drohne")) return;
         if (e.getAction() != Action.RIGHT_CLICK_BLOCK && e.getAction() != Action.RIGHT_CLICK_AIR) return;
         if (Beruf.getBeruf(e.getPlayer()) == null) return;
@@ -163,6 +165,5 @@ public class Drone implements Listener {
         p.getInventory().getItemInMainHand().setAmount(p.getInventory().getItemInMainHand().getAmount() - 1);
         Beruf.getBeruf(p).sendMessage(PREFIX + Beruf.getAbteilung(p).getName() + " " + Script.getName(p) + " hat eine Drohne gestartet.");
         start(p);
-
     }
 }

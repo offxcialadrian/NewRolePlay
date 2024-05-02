@@ -16,10 +16,12 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 
-public class CarHandler implements @NotNull Listener {
+public class CarHandler implements Listener {
 
+    public static HashMap<Boat, Player> owner = new HashMap<>();
     public static HashMap<Boat, Boolean> cars = new HashMap<>();
     public static HashMap<Boat, Double> speeds = new HashMap<>();
+    public static HashMap<Boat, Double> fuels = new HashMap<>();
 
     @EventHandler
     public static void onDrive(VehicleMoveEvent event) {

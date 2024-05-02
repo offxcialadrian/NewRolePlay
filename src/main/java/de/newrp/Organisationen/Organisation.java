@@ -18,6 +18,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 
 public enum Organisation {
 
@@ -51,6 +54,8 @@ public enum Organisation {
         this.forumGroup = forumGroup;
         this.fraktionSpray = fraktionSpray;
     }
+
+    public static Map<Organisation, List<Player>> ORGA_MEMBER = new ConcurrentHashMap<>();
 
     public static String PREFIX = "§8[§eOrganisation§8] §e" + Messages.ARROW + " §7";
 
@@ -346,8 +351,10 @@ public enum Organisation {
     }
 
     public void sendMessage(String message) {
-        for (Player all : getMembers()) {
-            all.sendMessage(message);
+        for (Player player : getMember()) {
+            if (player.isOnline()) {
+                player.sendMessage(message);
+            }
         }
     }
 
@@ -360,9 +367,34 @@ public enum Organisation {
     public List<Player> getMembers() {
         List<Player> list = new ArrayList<>();
         for (OfflinePlayer all : this.getAllMembers()) {
-            if(all.isOnline()) list.add(all.getPlayer());
+            if (all.isOnline()) list.add(all.getPlayer());
         }
         return list;
+    }
+
+    public List<Player> getMember() {
+        return getOrga(this);
+    }
+
+    private List<Player> getOrga(Organisation orga) {
+        if (!ORGA_MEMBER.containsKey(orga)) {
+            ORGA_MEMBER.put(orga, new ArrayList<>());
+        }
+        return ORGA_MEMBER.get(orga);
+    }
+
+    public void setMember(Player player) {
+        if (Organisation.hasOrganisation(player)) {
+            Objects.requireNonNull(getOrga(Organisation.getOrganisation(player))).add(player);
+        }
+    }
+
+    public void deleteMember(Player player) {
+        Objects.requireNonNull(getOrga(this)).remove(player);
+    }
+
+    public Boolean isMember(Player player) {
+        return Objects.requireNonNull(getOrga(this)).contains(player);
     }
 
     public List<OfflinePlayer> getAllMembers() {
@@ -510,7 +542,7 @@ public enum Organisation {
     }
 
     public void setRankName(int rank, Gender gender, String arg) {
-        if(getRankName(rank, gender).equalsIgnoreCase("Kein Rangname vorhanden")) {
+        if (getRankName(rank, gender).equalsIgnoreCase("Kein Rangname vorhanden")) {
             Script.executeAsyncUpdate("INSERT INTO organisation_rankname (organisationID, rank, gender, name) VALUES (" + this.id + ", '" + rank + "', '" + gender.getName().charAt(0) + "', '" + arg + "')");
             return;
         }
