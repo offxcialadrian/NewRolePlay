@@ -3,6 +3,7 @@ package de.newrp.Player;
 import de.newrp.API.*;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Berufe.Duty;
+import de.newrp.Organisationen.Organisation;
 import de.newrp.main;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -145,6 +146,12 @@ public class Treuebonus implements CommandExecutor, Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
         Player p = e.getPlayer();
+        if (Beruf.hasBeruf(p)) {
+            Beruf.getBeruf(p).setMember(p);
+        }
+        if (Organisation.hasOrganisation(p)) {
+            Organisation.getOrganisation(p).setMember(p);
+        }
         if (Treuebonus.logout.containsKey(p.getUniqueId())) {
             long logout = Treuebonus.logout.get(p.getUniqueId());
             long offtime = System.currentTimeMillis() - logout;
@@ -165,6 +172,13 @@ public class Treuebonus implements CommandExecutor, Listener {
 
     @EventHandler
     public void onQuit(PlayerQuitEvent e) {
+        Player p = e.getPlayer();
+        if (Beruf.hasBeruf(p)) {
+            Beruf.getBeruf(p).deleteMember(p);
+        }
+        if (Organisation.hasOrganisation(p)) {
+            Organisation.getOrganisation(p).deleteMember(p);
+        }
         Treuebonus.logout.put(e.getPlayer().getUniqueId(), System.currentTimeMillis());
         if(Duty.isInDuty(e.getPlayer())) {
             wasDuty.add(e.getPlayer().getName());
