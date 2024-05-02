@@ -108,23 +108,39 @@ public class main extends JavaPlugin {
             this.getServer().shutdown();
         }
 
-        try {
-            mysql2 = new MySQL("localhost", "3306", "forum", "forumadmin", "TtXf*H&gqkSTC2a2");
-            con2 = mysql2.openConnection();
-            Bukkit.getConsoleSender().sendMessage("§cNRP §8× §aVerbindung zur Forum-Datenbank hergestellt.");
-        } catch (Exception e1) {
-            Bukkit.getConsoleSender().sendMessage("§cNRP §8× §cVerbindung zur Forum-Datenbank konnte nicht hergestellt werden.");
-            Bukkit.getConsoleSender().sendMessage("§cNRP §8× §cPlugin wird gestoppt..");
-            Bukkit.getConsoleSender().sendMessage("§cNRP §8× §cFehler: " + e1.getMessage());
-            Bukkit.getConsoleSender().sendMessage("§cNRP §8× §cFahre Server herunter..");
-            this.getServer().shutdown();
+        if (!isTest()) {
+            try {
+                mysql2 = new MySQL("localhost", "3306", "forum", "forumadmin", "TtXf*H&gqkSTC2a2");
+                con2 = mysql2.openConnection();
+                Bukkit.getConsoleSender().sendMessage("§cNRP §8× §aVerbindung zur Forum-Datenbank hergestellt.");
+            } catch (Exception e1) {
+                Bukkit.getConsoleSender().sendMessage("§cNRP §8× §cVerbindung zur Forum-Datenbank konnte nicht hergestellt werden.");
+                Bukkit.getConsoleSender().sendMessage("§cNRP §8× §cPlugin wird gestoppt..");
+                Bukkit.getConsoleSender().sendMessage("§cNRP §8× §cFehler: " + e1.getMessage());
+                Bukkit.getConsoleSender().sendMessage("§cNRP §8× §cFahre Server herunter..");
+                this.getServer().shutdown();
+            }
+        } else {
+            try {
+                mysql2 = new MySQL("localhost", "3306", "forum_test", "forumadmin_test", "TtXf*H&gqkSTC2a2");
+                con2 = mysql2.openConnection();
+                Bukkit.getConsoleSender().sendMessage("§cNRP §8× §aVerbindung zur Forum-Datenbank hergestellt.");
+            } catch (Exception e1) {
+                Bukkit.getConsoleSender().sendMessage("§cNRP §8× §cVerbindung zur Forum-Datenbank konnte nicht hergestellt werden.");
+                Bukkit.getConsoleSender().sendMessage("§cNRP §8× §cPlugin wird gestoppt..");
+                Bukkit.getConsoleSender().sendMessage("§cNRP §8× §cFehler: " + e1.getMessage());
+                Bukkit.getConsoleSender().sendMessage("§cNRP §8× §cFahre Server herunter..");
+                this.getServer().shutdown();
+            }
         }
 
-        try {
-            TeamSpeak.connect();
-            Bukkit.getConsoleSender().sendMessage("§cNRP §8× §aTeamspeak Verbindung hergestellt.");
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (!isTest()) {
+            try {
+                TeamSpeak.connect();
+                Bukkit.getConsoleSender().sendMessage("§cNRP §8× §aTeamspeak Verbindung hergestellt.");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         if (!test) new ClearLog();
@@ -412,7 +428,7 @@ public class main extends JavaPlugin {
         getCommand("houseslot").setExecutor(new HouseSlot());
         getCommand("molotov").setExecutor(new MolotovCocktail());
         getCommand("leitungswasser").setExecutor(new Leitungswasser());
-        
+
 
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new SDuty(), this);
@@ -464,7 +480,7 @@ public class main extends JavaPlugin {
         pm.registerEvents(new WingsuitListener(), this);
         pm.registerEvents(new AntiVPN(), this);
         pm.registerEvents(new JailTime(), this);
-        pm.registerEvents(new TeamspeakUpdate(), this);
+        if(!test) pm.registerEvents(new TeamspeakUpdate(), this);
         pm.registerEvents(new Notruf(), this);
         pm.registerEvents(new AcceptNotruf(), this);
         pm.registerEvents(new Personalausweis(), this);

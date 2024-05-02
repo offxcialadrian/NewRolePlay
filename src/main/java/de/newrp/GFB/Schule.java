@@ -1,6 +1,7 @@
 package de.newrp.GFB;
 
 import de.newrp.API.*;
+import de.newrp.Government.Stadtkasse;
 import de.newrp.Player.AFK;
 import de.newrp.main;
 import org.bukkit.Bukkit;
@@ -101,7 +102,7 @@ public class Schule implements CommandExecutor, Listener {
             return true;
         }
 
-        if(Calendar.getInstance().get(Calendar.HOUR_OF_DAY) == 23 && Calendar.getInstance().get(Calendar.MINUTE) == 59) {
+        if(Calendar.getInstance().get(Calendar.HOUR_OF_DAY) == 23 && Calendar.getInstance().get(Calendar.MINUTE) < 45) {
             p.sendMessage(Messages.ERROR + "Du kannst die Schule nicht mehr betreten, da der Server in 60 Sekunden neu startet.");
             return true;
         }
@@ -138,6 +139,7 @@ public class Schule implements CommandExecutor, Listener {
                 }
 
                 Script.removeMoney(p, PaymentType.BANK, GFB.values().length*100);
+                Stadtkasse.removeStadtkasse(GFB.values().length*75, "Schule");
                 STUDIYING.put(p, null);
                 STARTED.put(p, System.currentTimeMillis());
                 p.sendMessage(PREFIX + "Du lernst nun für alle GFB-Jobs.");
