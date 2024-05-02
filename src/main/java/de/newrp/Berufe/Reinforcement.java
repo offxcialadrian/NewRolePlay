@@ -1,7 +1,6 @@
 package de.newrp.Berufe;
 
 import de.newrp.API.*;
-import de.newrp.Organisationen.MemberOrga;
 import de.newrp.Organisationen.Organisation;
 import de.newrp.Player.Mobile;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -123,8 +122,8 @@ public class Reinforcement implements CommandExecutor {
                 new Route(p.getName(), Script.getNRPID(p), p.getLocation(), new_reinforcement.get(tg.getName())).start();
                 if (Organisation.hasOrganisation(tg)) {
                     Organisation org = Organisation.getOrganisation(tg);
-                    if (MemberOrga.getMembers(org).contains(tg)) {
-                        for (Player member : MemberOrga.getMembers(org)) {
+                    if (org.getMember().contains(tg)) {
+                        for (Player member : org.getMember()) {
                             member.sendMessage("§7➲ §a" + Organisation.getRankName(p) + " " + Script.getName(p) + " kommt zum Verstärkungsruf von " + Script.getName(tg) + "! §a" + "(ETA: " + calcETA(p.getLocation().distance(new_reinforcement.get(tg.getName()))) + " Sekunden)");
                         }
                     }
@@ -156,8 +155,8 @@ public class Reinforcement implements CommandExecutor {
             reinf_type.put(p.getName(), type);
             if (Organisation.hasOrganisation(p)) {
                 Organisation org = Organisation.getOrganisation(p);
-                if (MemberOrga.getMembers(org).contains(p)) {
-                    for (Player member : MemberOrga.getMembers(org)) {
+                if (org.getMember().contains(p)) {
+                    for (Player member : org.getMember()) {
                         member.sendMessage("§c§l" + type.getName() + " §a" + Organisation.getRankName(p) + " " + Script.getName(p) + " benötigt Unterstützung! §8➥ §7" + Navi.getNextNaviLocation(p.getLocation()).getName() + " §7(" + (int) member.getLocation().distance(p.getLocation()) + "m)");
                         OnMyWayLink(member, p);
                         showRoute(member, p);
@@ -185,8 +184,8 @@ public class Reinforcement implements CommandExecutor {
 
         if (Organisation.hasOrganisation(p)) {
             Organisation org = Organisation.getOrganisation(p);
-            if (MemberOrga.getMembers(org).contains(p)) {
-                for (Player member : MemberOrga.getMembers(org)) {
+            if (org.getMember().contains(p)) {
+                for (Player member : org.getMember()) {
                     member.sendMessage("§c§l" + type.getName() + " §a" + org.getName() + " " + Script.getName(p) + " benötigt Unterstützung! §8➥ §7" + Navi.getNextNaviLocation(p.getLocation()).getName() + " §7(" + (int) member.getLocation().distance(p.getLocation()) + "m)");
                     OnMyWayLink(member, p);
                     showRoute(member, p);

@@ -4,6 +4,7 @@ import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.Forum.ForumGroup;
 import de.newrp.Government.Arbeitslosengeld;
+import de.newrp.Organisationen.Organisation;
 import de.newrp.TeamSpeak.TeamspeakServerGroup;
 import de.newrp.main;
 import org.bukkit.Bukkit;
@@ -16,6 +17,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Beruf {
 
@@ -48,6 +52,8 @@ public class Beruf {
             this.serverGroup = serverGroup;
             this.forumGroup = forumGroup;
         }
+
+        public static Map<Berufe, List<Player>> BERUF_MEMBER = new ConcurrentHashMap<>();
 
         public int getID() {
             return id;
@@ -192,6 +198,31 @@ public class Beruf {
                 if(all.isOnline()) list.add(all.getPlayer());
             }
             return list;
+        }
+
+        public List<Player> getMember() {
+            return getBeruf(this);
+        }
+
+        private List<Player> getBeruf(Berufe beruf) {
+            if (!BERUF_MEMBER.containsKey(beruf)) {
+                BERUF_MEMBER.put(beruf, new ArrayList<>());
+            }
+            return BERUF_MEMBER.get(beruf);
+        }
+
+        public void setMember(Player player) {
+            if (Beruf.hasBeruf(player)) {
+                Objects.requireNonNull(getBeruf(Beruf.getBeruf(player))).add(player);
+            }
+        }
+
+        public void deleteMember(Player player) {
+            Objects.requireNonNull(getBeruf(this)).remove(player);
+        }
+
+        public Boolean isMember(Player player) {
+            return Objects.requireNonNull(getBeruf(this)).contains(player);
         }
 
         public List<OfflinePlayer> getAllMembers() {

@@ -3,7 +3,6 @@ package de.newrp.Berufe;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.Forum.Forum;
-import de.newrp.Organisationen.MemberOrga;
 import de.newrp.Organisationen.Organisation;
 import de.newrp.TeamSpeak.TeamSpeak;
 import org.bukkit.OfflinePlayer;
@@ -112,7 +111,7 @@ public class UninviteCommand implements CommandExecutor {
         }
 
         beruf.removeMember(tg, p);
-        if (tg.getPlayer() != null) MemberOrga.removeMember(tg.getPlayer());
+        if (tg.getPlayer() != null) beruf.deleteMember(tg.getPlayer());
         Script.removeEXP(tg.getName(), Script.getRandom(50, 100));
         TeamSpeak.sync(Script.getNRPID(tg));
         Forum.syncPermission(tg);
