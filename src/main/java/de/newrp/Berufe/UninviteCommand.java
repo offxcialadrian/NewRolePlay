@@ -78,7 +78,7 @@ public class UninviteCommand implements CommandExecutor {
                 Script.updateListname(tg.getPlayer());
             }
             beruf.removeMember(tg, p);
-            if (tg.getPlayer() != null) MemberBeruf.removeMember(tg.getPlayer());
+            if (tg.getPlayer() != null) beruf.deleteMember(tg.getPlayer());
             Script.removeEXP(tg.getName(), Script.getRandom(50, 100));
             TeamSpeak.sync(Script.getNRPID(tg));
             Forum.syncPermission(tg);

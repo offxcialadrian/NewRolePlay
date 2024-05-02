@@ -3,7 +3,6 @@ package de.newrp.Player;
 import de.newrp.API.*;
 import de.newrp.Administrator.Notifications;
 import de.newrp.Berufe.Beruf;
-import de.newrp.Berufe.MemberBeruf;
 import de.newrp.Forum.Forum;
 import de.newrp.Government.Stadtkasse;
 import de.newrp.Government.Steuern;
@@ -79,7 +78,7 @@ public class Annehmen implements CommandExecutor {
             leader.sendMessage(Messages.INFO + "Nutze /abteilung [Spieler] [Abteilung], um " + Script.getName(p) + " in eine Abteilung zu verschieben.");
             leader.sendMessage(Messages.INFO + "Nutze /salary [Spieler] [Gehalt], um " + Script.getName(p) + " ein Gehalt zu geben.");
             beruf.addMember(p, leader);
-            MemberBeruf.addMember(p);
+            beruf.setMember(p);
             offer.remove(p.getName() + ".joinberuf");
             Achievement.BERUF_JOIN.grant(p);
             TeamSpeak.sync(Script.getNRPID(p));

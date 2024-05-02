@@ -15,10 +15,7 @@ import org.bukkit.entity.Player;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Beruf {
@@ -53,7 +50,7 @@ public class Beruf {
             this.forumGroup = forumGroup;
         }
 
-        public static Map<Berufe, List<Player>> BERUF_MEMBER = new ConcurrentHashMap<>();
+        public static Map<Berufe, HashMap<Player, Boolean>> BERUF_MEMBER = new ConcurrentHashMap<>();
 
         public int getID() {
             return id;
@@ -206,9 +203,17 @@ public class Beruf {
 
         private List<Player> getBeruf(Berufe beruf) {
             if (!BERUF_MEMBER.containsKey(beruf)) {
-                BERUF_MEMBER.put(beruf, new ArrayList<>());
+                BERUF_MEMBER.put(beruf, new HashMap<>());
             }
-            return BERUF_MEMBER.get(beruf);
+            return new ArrayList<>(BERUF_MEMBER.get(beruf).keySet());
+        }
+
+        public void changeDuty(Player player, Boolean duty) {
+            BERUF_MEMBER.get(this).put(player, duty);
+        }
+
+        public Boolean isDuty(Player player) {
+            return BERUF_MEMBER.get(this).get(player);
         }
 
         public void setMember(Player player) {
