@@ -147,7 +147,7 @@ public class Steuern implements CommandExecutor, TabCompleter {
                             }
                         }
 
-                        if((steuer == Steuer.GEWERBESTEUER || steuer==Steuer.GRUNDSTEUER) || steuer == Steuer.RUNDFUNKBEITRAG && percentage < 0) {
+                        if((steuer == Steuer.GEWERBESTEUER || steuer==Steuer.GRUNDSTEUER || steuer == Steuer.RUNDFUNKBEITRAG) && percentage < 0) {
                             p.sendMessage(Messages.ERROR + "Die Steuer kann kein negativer Betrag sein.");
                             return true;
                         }

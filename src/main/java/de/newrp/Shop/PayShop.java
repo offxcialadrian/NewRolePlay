@@ -278,7 +278,7 @@ public class PayShop implements Listener {
                 Script.executeUpdate("DELETE FROM missed_calls WHERE toID = " + Script.getNRPID(p));
             }
 
-            if (si.addToInventory()) p.getInventory().addItem(i);
+            if (si.addToInventory()) p.getInventory().addItem(i.clone());
 
             if (type == PaymentType.BANK) {
                 Cashflow.addEntry(p, -price, "Einkauf: " + si.getName());
