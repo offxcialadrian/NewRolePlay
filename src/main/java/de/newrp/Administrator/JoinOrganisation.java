@@ -61,9 +61,19 @@ public class JoinOrganisation implements CommandExecutor, Listener {
             if (e.getCurrentItem() == null || e.getCurrentItem().getType() == Material.AIR) return;
             Organisation beruf = Organisation.getOrganisation(e.getCurrentItem().getItemMeta().getDisplayName().replace("§e", ""));
             if (beruf == null) return;
-            if (Beruf.getBeruf(p) != null) Beruf.getBeruf(p).removeMember(p, p);
-            if (Organisation.getOrganisation(p) != null) Organisation.getOrganisation(p).removeMember(p, p);
+            if (Beruf.getBeruf(p) != null) {
+                Beruf.Berufe berufe = Beruf.getBeruf(p);
+                berufe.removeMember(p, p);
+                berufe.deleteMember(p);
+            }
+            if (Organisation.hasOrganisation(p)) {
+                Organisation orga = Organisation.getOrganisation(p);
+                orga.removeMember(p, p);
+                orga.deleteMember(p);
+            }
+
             beruf.addMember(p, p);
+            beruf.setMember(p);
             Organisation.setLeader(p, true);
             p.sendMessage(PREFIX + "Du bist nun Teil der " + beruf.getName() + ".");
             Script.sendTeamMessage(p, ChatColor.YELLOW, "ist nun Teil der " + beruf.getName() + ".", true);

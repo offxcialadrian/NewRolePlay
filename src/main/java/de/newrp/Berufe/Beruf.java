@@ -292,7 +292,7 @@ public class Beruf {
         }
 
         public void removeMember(Player p, Player leader) {
-            if(Duty.isInDuty(p)) Duty.removeDuty(p);
+            if (Duty.isInDuty(p)) Duty.removeDuty(p);
             Equip.removeEquip(p);
             Script.executeUpdate("DELETE FROM berufe WHERE nrp_id = '" + Script.getNRPID(p) + "'");
             for (Player members : getPlayersFromBeruf(this)) {
