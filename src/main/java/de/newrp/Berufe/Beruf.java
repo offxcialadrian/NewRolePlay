@@ -192,20 +192,20 @@ public class Beruf {
         public List<Player> getMembers() {
             List<Player> list = new ArrayList<>();
             for (OfflinePlayer all : this.getAllMembers()) {
-                if(all.isOnline()) list.add(all.getPlayer());
+                if (all.isOnline()) list.add(all.getPlayer());
             }
             return list;
         }
 
         public List<Player> getMember() {
-            return getBeruf(this);
+            return new ArrayList<>(getBeruf(this).keySet());
         }
 
-        private List<Player> getBeruf(Berufe beruf) {
+        private HashMap<Player, Boolean> getBeruf(Berufe beruf) {
             if (!BERUF_MEMBER.containsKey(beruf)) {
                 BERUF_MEMBER.put(beruf, new HashMap<>());
             }
-            return new ArrayList<>(BERUF_MEMBER.get(beruf).keySet());
+            return new HashMap<>(BERUF_MEMBER.get(beruf));
         }
 
         public void changeDuty(Player player, Boolean duty) {
@@ -218,7 +218,7 @@ public class Beruf {
 
         public void setMember(Player player) {
             if (Beruf.hasBeruf(player)) {
-                Objects.requireNonNull(getBeruf(Beruf.getBeruf(player))).add(player);
+                Objects.requireNonNull(getBeruf(Beruf.getBeruf(player))).put(player, false);
             }
         }
 
@@ -227,7 +227,7 @@ public class Beruf {
         }
 
         public Boolean isMember(Player player) {
-            return Objects.requireNonNull(getBeruf(this)).contains(player);
+            return Objects.requireNonNull(getBeruf(this)).containsKey(player);
         }
 
         public List<OfflinePlayer> getAllMembers() {
