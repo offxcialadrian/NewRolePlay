@@ -1,5 +1,6 @@
 package de.newrp.Shop;
 
+import com.sun.org.apache.bcel.internal.generic.ACONST_NULL;
 import de.newrp.API.*;
 import de.newrp.Administrator.SDuty;
 import de.newrp.Berufe.Beruf;
@@ -14,6 +15,7 @@ import de.newrp.Player.Mobile;
 import de.newrp.Waffen.Waffen;
 import de.newrp.Waffen.Weapon;
 import de.newrp.main;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -42,6 +44,7 @@ public class PayShop implements Listener {
 
     public static void pay(Player p, PaymentType type, ShopItem si, Shops s) {
         int price = (Buy.amount.containsKey(p.getName()) ? si.getPrice(s) * Buy.amount.get(p.getName()) : si.getPrice(s));
+        int singlePrice = si.getPrice(s);
         ItemStack i = si.getItemStack();
         i.setAmount(si.getItemStack().getAmount());
         ItemMeta meta = i.getItemMeta();
@@ -234,23 +237,21 @@ public class PayShop implements Listener {
                     Medikamente m = Medikamente.getMedikament(ChatColor.stripColor(si.getName()));
                     if (m == null) {
                         Script.sendBugReport(p, "medikament is null in PayShop.java and si = " + si.getName());
-                        return;
+                        break;
                     }
                     if (!Rezept.hasRezept(p, m) && m.isRezeptNeeded()) {
                         Rezept.removeRezept(p, m);
                         p.sendMessage(Messages.ERROR + "Du hast kein Rezept für " + si.getName() + "§c.");
-                        return;
+                        break;
                     }
 
 
                     if (Rezept.hasRezept(p, m) && m.insurancePays()) {
                         Rezept.removeRezept(p, m);
                         p.sendMessage(Messages.INFO + "Deine Krankenversicherung hat die Kosten für das Medikament übernommen.");
-                        Script.addMoney(p, PaymentType.BANK, price);
-                        Stadtkasse.removeStadtkasse(price, "Kostenübernahme durch Krankenversicherung an " + Script.getName(p));
+                        Script.addMoney(p, PaymentType.BANK, singlePrice);
+                        Stadtkasse.removeStadtkasse(singlePrice, "Kostenübernahme durch Krankenversicherung an " + Script.getName(p));
                     }
-
-                    if (Rezept.hasRezept(p, m)) Rezept.removeRezept(p, m);
                     break;
                 case EINZELFAHRASUSWEIS:
                     p.getInventory().addItem(new ItemBuilder(Material.PAPER).setName("§6UBahn-Ticket [Einzelfahrausweis]").setLore("Verbleibende Fahrten: 1").build());
@@ -278,14 +279,15 @@ public class PayShop implements Listener {
                 Script.executeUpdate("DELETE FROM missed_calls WHERE toID = " + Script.getNRPID(p));
             }
 
-            if (si.addToInventory()) p.getInventory().addItem(i.clone());
+            if (si.addToInventory()) {
+                p.getInventory().addItem(i.clone());
+            }
 
             if (type == PaymentType.BANK) {
                 Cashflow.addEntry(p, -price, "Einkauf: " + si.getName());
             }
 
             s.removeLager(si.getSize());
-
         }
 
         Script.removeMoney(p, type, price);

@@ -213,7 +213,11 @@ public class Beruf {
         }
 
         public Boolean isDuty(Player player) {
-            return BERUF_MEMBER.get(this).get(player);
+            final HashMap<Player, Boolean> result = BERUF_MEMBER.get(this);
+            if(result == null) {
+                return false;
+            }
+            return result.getOrDefault(player, false);
         }
 
         public void setMember(Player player) {
