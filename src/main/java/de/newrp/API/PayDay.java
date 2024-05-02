@@ -12,6 +12,7 @@ import de.newrp.Organisationen.Organisation;
 import de.newrp.Player.*;
 import de.newrp.Shop.Buy;
 import de.newrp.Shop.Shops;
+import de.newrp.Shop.gym.GymBuyHandler;
 import de.newrp.main;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -212,13 +213,13 @@ public class PayDay extends BukkitRunnable {
                 payday -= price;
             }
 
-            if (Buy.isGymMember(p)) {
+            if (GymBuyHandler.isGymMember(p)) {
                 int price = 20;
                 p.sendMessage("§8" + Messages.ARROW + " §7Fitnessstudio: §c-" + price + "€");
                 payday -= price;
                 int mehrwertsteur = (int) Steuern.Steuer.MEHRWERTSTEUER.getPercentage();
                 Stadtkasse.addStadtkasse((int) Script.getPercent(mehrwertsteur, price), "Mehrwertsteuer von " + Script.getName(p) + " erhalten", Steuern.Steuer.MEHRWERTSTEUER);
-                Buy.getGym(p).addKasse((int) (price - Script.getPercent(mehrwertsteur, price)));
+                GymBuyHandler.getGym(p).addKasse((int) (price - Script.getPercent(mehrwertsteur, price)));
             }
 
             /*if(Hotel.hasHotelRoom(p)) {

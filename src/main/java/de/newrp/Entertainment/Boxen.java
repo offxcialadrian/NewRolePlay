@@ -4,6 +4,7 @@ import de.newrp.API.Health;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.Shop.Buy;
+import de.newrp.Shop.gym.GymBuyHandler;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -41,7 +42,7 @@ public class Boxen implements Listener {
 
         if (!hittet) return;
 
-        if(!Buy.isGymMember(p)) {
+        if(!GymBuyHandler.isGymMember(p)) {
             Script.sendActionBar(p, Messages.ERROR + "Du musst dich erst im Fitnessstudio anmelden.");
             return;
         }
