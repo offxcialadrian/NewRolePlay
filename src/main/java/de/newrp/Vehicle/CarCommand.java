@@ -71,6 +71,8 @@ public class CarCommand implements @Nullable CommandExecutor {
                         return true;
                     }
 
+                    // To-Do: Warten bis die Autologik fertig ist von ramses
+
                     final Car playerCar = Car.getCarByEntityID(player.getVehicle().getEntityId());
                     if(playerCar == null) {
                         player.sendMessage(Messages.ERROR + "Du sitzt in keinem Auto!");
