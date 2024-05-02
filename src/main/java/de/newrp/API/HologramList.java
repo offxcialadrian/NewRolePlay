@@ -83,7 +83,7 @@ public enum HologramList {
     DBANK_KARTELL2(81, "§8/§6dbank", new Location(Script.WORLD, 653, 69, 1122, 100.18604f, 22.990175f)),
     BLUMEN_GANG(82, "§8/§6buy", new Location(Script.WORLD, 513, 62, 1318, -2.5583496f, 20.098667f)),
     TABAKPLANTAGE(83, "§8/§6tabakplantage", new Location(Script.WORLD, 94, 65, 628, 29.992523f, 7.2927737f)),
-    GAS_STATION(84, "§8/§6buy", new Location(Script.WORLD, 435, 77, 1073, 90.0f, 0.0f));
+    GAS_STATION(84, "§8/§6buy", new Location(Script.WORLD, 435, 76, 1073, 90.0f, 0.0f));
 
     private final int id;
     private final String name;

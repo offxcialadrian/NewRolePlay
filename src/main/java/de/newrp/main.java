@@ -566,7 +566,6 @@ public class main extends JavaPlugin {
         pm.registerEvents(new Trash(), this);
         //pm.registerEvents(new MuscleDamage(), this);
         pm.registerEvents(new MemberBeruf(), this);
-        pm.registerEvents(new MemberOrga(), this);
         pm.registerEvents(new CarHandler(), this);
 
 
