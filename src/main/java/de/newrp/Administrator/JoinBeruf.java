@@ -62,9 +62,19 @@ public class JoinBeruf implements CommandExecutor, Listener {
             if (e.getCurrentItem() == null || e.getCurrentItem().getType() == Material.AIR) return;
             Beruf.Berufe beruf = Beruf.Berufe.getBeruf(e.getCurrentItem().getItemMeta().getDisplayName().replace("§e", ""));
             if (beruf == null) return;
-            if (Beruf.getBeruf(p) != null) Beruf.getBeruf(p).removeMember(p, p);
-            if(Organisation.hasOrganisation(p)) Organisation.getOrganisation(p).removeMember(p, p);
+            if (Beruf.getBeruf(p) != null) {
+                Beruf.Berufe berufe = Beruf.getBeruf(p);
+                berufe.removeMember(p, p);
+                berufe.deleteMember(p);
+            }
+            if (Organisation.hasOrganisation(p)) {
+                Organisation orga = Organisation.getOrganisation(p);
+                orga.removeMember(p, p);
+                orga.deleteMember(p);
+            }
+
             Script.executeUpdate("INSERT INTO berufe (nrp_id, berufID, salary, abteilung, leader, coleader) VALUES ('" + Script.getNRPID(p) + "', '" + beruf.getID() + "', '0', '0', '1', '0')");
+            beruf.setMember(p);
             p.sendMessage(PREFIX + "Du bist nun Teil der " + beruf.getName() + ".");
             Script.sendTeamMessage(p, ChatColor.YELLOW, "ist nun Teil der " + beruf.getName() + ".", true);
             p.sendMessage(Messages.INFO + "Du hast automatisch die Leaderrechte erhalten.");
