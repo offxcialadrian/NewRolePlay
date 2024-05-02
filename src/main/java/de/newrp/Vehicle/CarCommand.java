@@ -96,7 +96,7 @@ public class CarCommand implements @Nullable CommandExecutor {
             // Nur exemplarisch, ansonsten Fehlermeldung für fehlende Argumente anzeigen
             Boat car = (Boat) Objects.requireNonNull(player).getWorld().spawnEntity(player.getLocation().add(0, 0.5, 0), EntityType.BOAT);
             car.setCustomName(player.getName());
-            CarHandler.cars.putIfAbsent(car, null);
+            CarHandler.cars.putIfAbsent(car, false);
         }
 
         return true;

@@ -542,7 +542,7 @@ public class main extends JavaPlugin {
         pm.registerEvents(new KameraCommand(), this);
         pm.registerEvents(new TV(), this);
         pm.registerEvents(new TestoSpritze(), this);
-        pm.registerEvents(new DriveCar(), this);
+        //pm.registerEvents(new DriveCar(), this);
         pm.registerEvents(new RegisterBanner(), this);
         pm.registerEvents(new OrgSpray(), this);
         pm.registerEvents(new StartEventCommand(), this);
@@ -565,7 +565,6 @@ public class main extends JavaPlugin {
         pm.registerEvents(new CancelTicket(), this);
         pm.registerEvents(new Trash(), this);
         //pm.registerEvents(new MuscleDamage(), this);
-        pm.registerEvents(new MemberBeruf(), this);
         pm.registerEvents(new CarHandler(), this);
 
 
