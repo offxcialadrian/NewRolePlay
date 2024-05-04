@@ -9,6 +9,11 @@ import de.newrp.Organisationen.Blacklist;
 import de.newrp.Organisationen.Organisation;
 import de.newrp.Police.Fahndung;
 import de.newrp.NewRoleplayMain;
+import de.newrp.discord.impl.JdaService;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -250,6 +255,13 @@ public class Utils implements Listener {
         sendServerBanner(p, "https://newrp.de/images/-tablist.png");
         sendCurrentPlayingGamemode(p, true, "NRP × New RolePlay " + NewRoleplayMain.getInstance().getDescription().getVersion());
         Script.disableVoiceChat(p);
+
+        JDA jda = new JdaService().getJda();
+        EmbedBuilder embed = new EmbedBuilder();
+        embed.setAuthor("New RolePlay", null, "https://minotar.net/helm/"+ p.getName() + "/100.png");
+        embed.setDescription("Der Spieler " + p.getName() + " hat den Server betreten.");
+        TextChannel channel = jda.getTextChannelById("1236431289284825182");
+        channel.sendMessageEmbeds(embed.build()).queue();
 
 
         p.getInventory().remove(Material.PLAYER_HEAD);

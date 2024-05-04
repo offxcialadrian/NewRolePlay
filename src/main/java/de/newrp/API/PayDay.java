@@ -78,7 +78,7 @@ public class PayDay extends BukkitRunnable {
                 payday += salary;
                 if (!Beruf.getBeruf(p).hasKasse()) {
                     if (Stadtkasse.getStadtkasse() < salary) {
-                        Beruf.Berufe.NEWS.sendMessage("§8[§eBerufskasse§8] §eDie Stadtkasse ist Insolvent!");
+                        Beruf.Berufe.NEWS.sendMessage("§8[§eStadtkasse§8] §eDie Stadtkasse ist Insolvent!");
                         for (Beruf.Berufe beruf : Beruf.Berufe.values()) {
                             if (!beruf.hasKasse()) {
                                 for (OfflinePlayer members : beruf.getAllMembers()) {

@@ -43,6 +43,9 @@ import de.newrp.discord.impl.JdaService;
 import de.newrp.features.emergencycall.IEmergencyCallService;
 import de.newrp.features.emergencycall.impl.EmergencyCallService;
 import de.newrp.features.emergencycall.listener.EmergencyCallInventoryListener;
+import net.dv8tion.jda.api.entities.Activity;
+import net.dv8tion.jda.api.sharding.DefaultShardManager;
+import net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder;
 import net.labymod.serverapi.api.LabyAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandMap;
@@ -147,6 +150,8 @@ public class NewRoleplayMain extends JavaPlugin {
 
         final IJdaService jdaService = DependencyContainer.getContainer().getDependency(IJdaService.class);
         jdaService.createJDAInstance(this.mainConfig.getJdaBotToken());
+        DefaultShardManagerBuilder builder = DefaultShardManagerBuilder.createDefault(this.mainConfig.getJdaBotToken());
+        builder.setActivity(Activity.playing("NRP × New Roleplay"));
 
         Bukkit.getConsoleSender().sendMessage("§cNRP §8× §astarting complete..");
         Bukkit.getConsoleSender().sendMessage("§cNRP §8× §aViel Erfolg heute..");
