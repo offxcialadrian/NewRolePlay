@@ -80,7 +80,7 @@ public class Utils implements Listener {
     public static final int WORLD_BORDER_MAX_X = 1100;
     public static final int WORLD_BORDER_MIN_Z = 420;
     public static final int WORLD_BORDER_MAX_Z = 1362;
-    private static JDA jda =  DependencyContainer.getContainer().getDependency(IJdaService.class).getJda();
+    private JDA jda =  DependencyContainer.getContainer().getDependency(IJdaService.class).getJda();
     public static HashMap<String, Long> fishCooldown = new HashMap<>();
     public static HashMap<String, Integer> fishCount = new HashMap<>();
 
