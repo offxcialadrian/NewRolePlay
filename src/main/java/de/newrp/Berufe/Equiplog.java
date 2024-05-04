@@ -3,6 +3,7 @@ package de.newrp.Berufe;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.Main;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -61,8 +62,8 @@ public class Equiplog implements CommandExecutor {
         }
 
         int hours = Integer.parseInt(args[1]);
-        Player tg = Script.getPlayer(args[0]);
-        if(tg == null) {
+        OfflinePlayer tg = Script.getOfflinePlayer(args[0]);
+        if(Script.getNRPID(tg) == 0) {
             p.sendMessage(Messages.PLAYER_NOT_FOUND);
             return true;
         }
@@ -117,7 +118,31 @@ public class Equiplog implements CommandExecutor {
         }
     }
 
+    public static void sendEquiplog(Player p, OfflinePlayer tg, int hours) {
+        try (Statement stmt = Main.getConnection().createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT * FROM equiplog WHERE beruf=" + Beruf.getBeruf(p).getID() + " AND time>" + (System.currentTimeMillis() - TimeUnit.HOURS.toMillis(hours)) + " AND nrp_id=" + Script.getNRPID(tg))) {
+            while (rs.next()) {
+                p.sendMessage(Equip.PREFIX + Script.getName(tg) + " §8× §7" + Equip.Stuff.getStuff(rs.getInt("stuffID")).getName() + " §8× §7" + Equip.Stuff.getStuff(rs.getInt("stuffID")).getCost() + "€");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public static int getTotalOfPlayer(Player p, int hours) {
+        int total = 0;
+        try (Statement stmt = Main.getConnection().createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT * FROM equiplog WHERE beruf=" + Beruf.getBeruf(p).getID() + " AND time>" + (System.currentTimeMillis() - TimeUnit.HOURS.toMillis(hours)) + " AND nrp_id=" + Script.getNRPID(p))) {
+            while (rs.next()) {
+                total += Equip.Stuff.getStuff(rs.getInt("stuffID")).getCost();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return total;
+    }
+
+    public static int getTotalOfPlayer(OfflinePlayer p, int hours) {
         int total = 0;
         try (Statement stmt = Main.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM equiplog WHERE beruf=" + Beruf.getBeruf(p).getID() + " AND time>" + (System.currentTimeMillis() - TimeUnit.HOURS.toMillis(hours)) + " AND nrp_id=" + Script.getNRPID(p))) {
