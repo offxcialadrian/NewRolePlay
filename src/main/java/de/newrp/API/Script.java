@@ -1768,14 +1768,6 @@ public class Script {
     }
 
     public static void addEXP(Player p, int exp) {
-        if (level_cooldown.containsKey(p.getName())) return;
-        level_cooldown.put(p.getName(), System.currentTimeMillis());
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                level_cooldown.remove(p.getName());
-            }
-        }.runTaskLater(main.getInstance(), 20 * 5);
         if (exp > 200) {
             Script.sendTeamMessage(AntiCheatSystem.PREFIX + "Verdacht auf Exp-Cheat bei " + Script.getName(p) + " (+" + exp + " Exp)");
         }
