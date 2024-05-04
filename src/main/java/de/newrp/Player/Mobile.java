@@ -9,6 +9,8 @@ import de.newrp.News.Umfrage;
 import de.newrp.Police.Handschellen;
 import de.newrp.Police.Jail;
 import de.newrp.NewRoleplayMain;
+import de.newrp.dependencies.DependencyContainer;
+import de.newrp.features.emergencycall.inventory.EmergencyCallFactionSelectionInventory;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -520,8 +522,8 @@ public class Mobile implements Listener {
             return;
         }
         if(e.getCurrentItem().getItemMeta().getDisplayName().equals("§8» §cNotruf")) {
-            p.closeInventory();
-            Notruf.openGUI(p, Notruf.Questions.FRAGE1);
+            final EmergencyCallFactionSelectionInventory factionSelectionInventory = new EmergencyCallFactionSelectionInventory();
+            factionSelectionInventory.openToPlayer(p);
             return;
         }
         if(e.getCurrentItem().getItemMeta().getDisplayName().equals("§8» §cNavigation")) {

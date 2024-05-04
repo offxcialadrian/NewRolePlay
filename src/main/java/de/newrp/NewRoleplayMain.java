@@ -38,6 +38,9 @@ import de.newrp.config.IConfigService;
 import de.newrp.config.MainConfig;
 import de.newrp.config.impl.ConfigService;
 import de.newrp.dependencies.DependencyContainer;
+import de.newrp.features.emergencycall.IEmergencyCallService;
+import de.newrp.features.emergencycall.impl.EmergencyCallService;
+import de.newrp.features.emergencycall.listener.EmergencyCallInventoryListener;
 import net.labymod.serverapi.api.LabyAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandMap;
@@ -571,6 +574,7 @@ public class NewRoleplayMain extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new CancelTicket(), this);
         Bukkit.getPluginManager().registerEvents(new Trash(), this);
         Bukkit.getPluginManager().registerEvents(new CarHandler(), this);
+        Bukkit.getPluginManager().registerEvents(new EmergencyCallInventoryListener(), this);
     }
 
     /**
@@ -579,6 +583,7 @@ public class NewRoleplayMain extends JavaPlugin {
     private void registerAllDependencies() {
         DependencyContainer.getContainer().add(NewRoleplayMain.class, this);
         DependencyContainer.getContainer().add(IConfigService.class, this.configService);
+        DependencyContainer.getContainer().add(IEmergencyCallService.class, new EmergencyCallService());
     }
 
     /**

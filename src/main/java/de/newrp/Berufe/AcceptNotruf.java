@@ -124,7 +124,6 @@ public class AcceptNotruf implements CommandExecutor, Listener {
         List<Beruf.Berufe> berufe = Notruf.call2.getOrDefault(emergency, new ArrayList<>());
         berufe.add(Beruf.getBeruf(player));
         Notruf.call2.replace(emergency, berufe);
-        Notruf.call.
     }
 
     public static void deleteNotruf(Player p) {

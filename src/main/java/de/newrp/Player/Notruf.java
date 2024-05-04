@@ -147,6 +147,7 @@ public class Notruf implements Listener {
         RETTUNG();
 
     }
+
     public enum Questions {
         FRAGE1(1, "Polizei oder Rettungsdienst?"),
         FRAGE2(2, "Was ist passiert?");
