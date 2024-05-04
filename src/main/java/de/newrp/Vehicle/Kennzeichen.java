@@ -1,6 +1,6 @@
 package de.newrp.Vehicle;
 
-import de.newrp.Main;
+import de.newrp.NewRoleplayMain;
 import de.newrp.API.PaymentType;
 import de.newrp.API.Script;
 import org.bukkit.Location;
@@ -66,7 +66,7 @@ public class Kennzeichen implements CommandExecutor {
     }
 
     public boolean isInUse(String s) {
-        try (PreparedStatement stmt = Main.getConnection().prepareStatement("SELECT id FROM vehicle WHERE kennzeichen = ?")) {
+        try (PreparedStatement stmt = NewRoleplayMain.getConnection().prepareStatement("SELECT id FROM vehicle WHERE kennzeichen = ?")) {
 
             stmt.setString(1, s);
 

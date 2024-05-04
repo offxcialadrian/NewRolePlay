@@ -4,7 +4,7 @@ import de.newrp.API.*;
 import de.newrp.Administrator.SDuty;
 import de.newrp.Berufe.Abteilung;
 import de.newrp.Berufe.Beruf;
-import de.newrp.Main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -97,7 +97,7 @@ public class Stadtkasse implements CommandExecutor {
     }
 
     public static int getStadtkasse() {
-        try (Statement stmt = Main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM city")) {
             if (rs.next()) {
                 return rs.getInt("money");
@@ -119,7 +119,7 @@ public class Stadtkasse implements CommandExecutor {
             public void run() {
                 SDuty.updateScoreboard();
             }
-        }.runTaskLater(Main.getInstance(), 20L);
+        }.runTaskLater(NewRoleplayMain.getInstance(), 20L);
     }
 
     public static void setStadtkasse(int betrag) {
@@ -136,11 +136,11 @@ public class Stadtkasse implements CommandExecutor {
             public void run() {
                 SDuty.updateScoreboard();
             }
-        }.runTaskLater(Main.getInstance(), 20L);
+        }.runTaskLater(NewRoleplayMain.getInstance(), 20L);
     }
 
     public static int getArbeitslosengeld() {
-        try (Statement stmt = Main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM city")) {
             if (rs.next()) {
                 return rs.getInt("arbeitslosengeld");

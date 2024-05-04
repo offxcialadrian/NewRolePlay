@@ -2,7 +2,7 @@ package de.newrp.Berufe;
 
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
-import de.newrp.Main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -86,7 +86,7 @@ public class Equiplog implements CommandExecutor {
 
     public static void sendEquiplog(Player p, int hours) {
         HashMap<Integer, Integer> equiplog = new HashMap<>();
-        try (Statement stmt = Main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM equiplog WHERE beruf=" + Beruf.getBeruf(p).getID() + " AND time>" + (System.currentTimeMillis() - TimeUnit.HOURS.toMillis(hours)))) {
             while (rs.next()) {
                 int item = rs.getInt("nrp_id");
@@ -108,7 +108,7 @@ public class Equiplog implements CommandExecutor {
     }
 
     public static void sendEquiplog(Player p, Player tg, int hours) {
-        try (Statement stmt = Main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM equiplog WHERE beruf=" + Beruf.getBeruf(p).getID() + " AND time>" + (System.currentTimeMillis() - TimeUnit.HOURS.toMillis(hours)) + " AND nrp_id=" + Script.getNRPID(tg))) {
             while (rs.next()) {
                 p.sendMessage(Equip.PREFIX + Script.getName(tg) + " §8× §7" + Equip.Stuff.getStuff(rs.getInt("stuffID")).getName() + " §8× §7" + Equip.Stuff.getStuff(rs.getInt("stuffID")).getCost() + "€");
@@ -119,7 +119,7 @@ public class Equiplog implements CommandExecutor {
     }
 
     public static void sendEquiplog(Player p, OfflinePlayer tg, int hours) {
-        try (Statement stmt = Main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM equiplog WHERE beruf=" + Beruf.getBeruf(p).getID() + " AND time>" + (System.currentTimeMillis() - TimeUnit.HOURS.toMillis(hours)) + " AND nrp_id=" + Script.getNRPID(tg))) {
             while (rs.next()) {
                 p.sendMessage(Equip.PREFIX + Script.getName(tg) + " §8× §7" + Equip.Stuff.getStuff(rs.getInt("stuffID")).getName() + " §8× §7" + Equip.Stuff.getStuff(rs.getInt("stuffID")).getCost() + "€");
@@ -131,7 +131,7 @@ public class Equiplog implements CommandExecutor {
 
     public static int getTotalOfPlayer(Player p, int hours) {
         int total = 0;
-        try (Statement stmt = Main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM equiplog WHERE beruf=" + Beruf.getBeruf(p).getID() + " AND time>" + (System.currentTimeMillis() - TimeUnit.HOURS.toMillis(hours)) + " AND nrp_id=" + Script.getNRPID(p))) {
             while (rs.next()) {
                 total += Equip.Stuff.getStuff(rs.getInt("stuffID")).getCost();
@@ -144,7 +144,7 @@ public class Equiplog implements CommandExecutor {
 
     public static int getTotalOfPlayer(OfflinePlayer p, int hours) {
         int total = 0;
-        try (Statement stmt = Main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM equiplog WHERE beruf=" + Beruf.getBeruf(p).getID() + " AND time>" + (System.currentTimeMillis() - TimeUnit.HOURS.toMillis(hours)) + " AND nrp_id=" + Script.getNRPID(p))) {
             while (rs.next()) {
                 total += Equip.Stuff.getStuff(rs.getInt("stuffID")).getCost();

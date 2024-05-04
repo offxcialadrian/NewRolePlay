@@ -1,7 +1,7 @@
 package de.newrp.Player;
 
 import de.newrp.API.*;
-import de.newrp.Main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -91,7 +91,7 @@ public class Banken implements CommandExecutor, Listener {
         }
 
         public static Bank getBankByPlayer(Player p) {
-            try (PreparedStatement preparedStatement = Main.getConnection().prepareStatement("SELECT * FROM banks WHERE nrp_id=" + Script.getNRPID(p))) {
+            try (PreparedStatement preparedStatement = NewRoleplayMain.getConnection().prepareStatement("SELECT * FROM banks WHERE nrp_id=" + Script.getNRPID(p))) {
                 ResultSet rs = preparedStatement.executeQuery();
                 if (rs.next()) {
                     return Bank.getBankByID(rs.getInt("bank_id"));
@@ -116,7 +116,7 @@ public class Banken implements CommandExecutor, Listener {
     }
 
     public static boolean hasBank(Player p) {
-        try (PreparedStatement preparedStatement = Main.getConnection().prepareStatement("SELECT * FROM banks WHERE nrp_id=" + Script.getNRPID(p))) {
+        try (PreparedStatement preparedStatement = NewRoleplayMain.getConnection().prepareStatement("SELECT * FROM banks WHERE nrp_id=" + Script.getNRPID(p))) {
             ResultSet rs = preparedStatement.executeQuery();
             if (rs.next()) {
                 return true;
@@ -129,7 +129,7 @@ public class Banken implements CommandExecutor, Listener {
     }
 
     public static boolean hasBank(OfflinePlayer p) {
-        try (PreparedStatement preparedStatement = Main.getConnection().prepareStatement("SELECT * FROM banks WHERE nrp_id=" + Script.getNRPID(p))) {
+        try (PreparedStatement preparedStatement = NewRoleplayMain.getConnection().prepareStatement("SELECT * FROM banks WHERE nrp_id=" + Script.getNRPID(p))) {
             ResultSet rs = preparedStatement.executeQuery();
             if (rs.next()) {
                 return true;
@@ -176,7 +176,7 @@ public class Banken implements CommandExecutor, Listener {
     }
 
     public static Bank getBankByPlayer(Player p) {
-        try (PreparedStatement preparedStatement = Main.getConnection().prepareStatement("SELECT * FROM banks WHERE nrp_id=" + Script.getNRPID(p))) {
+        try (PreparedStatement preparedStatement = NewRoleplayMain.getConnection().prepareStatement("SELECT * FROM banks WHERE nrp_id=" + Script.getNRPID(p))) {
             ResultSet rs = preparedStatement.executeQuery();
             if (rs.next()) {
                 return Bank.getBankByID(rs.getInt("bank_id"));
@@ -189,7 +189,7 @@ public class Banken implements CommandExecutor, Listener {
     }
 
     public static Bank getBankByPlayer(OfflinePlayer p) {
-        try (PreparedStatement preparedStatement = Main.getConnection().prepareStatement("SELECT * FROM banks WHERE nrp_id=" + Script.getNRPID(p))) {
+        try (PreparedStatement preparedStatement = NewRoleplayMain.getConnection().prepareStatement("SELECT * FROM banks WHERE nrp_id=" + Script.getNRPID(p))) {
             ResultSet rs = preparedStatement.executeQuery();
             if (rs.next()) {
                 return Bank.getBankByID(rs.getInt("bank_id"));

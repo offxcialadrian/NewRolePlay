@@ -1,6 +1,6 @@
 package de.newrp.API;
 
-import de.newrp.Main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -52,7 +52,7 @@ public enum Aktie {
     }
 
     public int getPrice() {
-        try (Statement stmt = Main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM shares WHERE id = " + this.id)) {
             if (rs.next()) {
                 return rs.getInt("price");
@@ -67,7 +67,7 @@ public enum Aktie {
         Cashflow.addEntry(p, -(amount*this.getPrice()), "Kauf von " + amount + "x " + this.getName() + "-Aktie");
         int id = Script.getNRPID(p);
         long time = System.currentTimeMillis();
-        try (Statement stmt = Main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM player_shares WHERE id = " + id + " AND aktien_id = " + this.id)) {
             Script.executeUpdate("INSERT INTO player_shares_log (id, aktien_id, date, amount, price, bought) VALUES (" + Script.getNRPID(p) + ", " + this.id + ", " + time + ", " + amount + ", " + getPrice() + ", 1);");
             if (rs.next()) {
@@ -88,7 +88,7 @@ public enum Aktie {
         Cashflow.addEntry(p, (amount*this.getPrice()), "Verkauf von " + amount + "x " + this.getName() + "-Aktie");
         long time = System.currentTimeMillis();
         int id = Script.getNRPID(p);
-        try (Statement stmt = Main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM player_shares WHERE id = " + id + " AND aktien_id = " + this.id)) {
             Script.executeUpdate("INSERT INTO player_shares_log (id, aktien_id, date, amount, price, bought) VALUES (" + Script.getNRPID(p) + ", " + this.id + ", " + time + ", " + amount + ", " + getPrice() + ", 0);");
             if (rs.next()) {
@@ -106,7 +106,7 @@ public enum Aktie {
 
     public int getAmountByPlayer(Player p) {
         int id = Script.getNRPID(p);
-        try (Statement stmt = Main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM player_shares WHERE id = " + id + " AND aktien_id = " + this.id)) {
             if (rs.next()) {
                 return rs.getInt("amount");
@@ -119,7 +119,7 @@ public enum Aktie {
 
     public int getBoughtAmount(long hours) {
         long time = System.currentTimeMillis() - TimeUnit.HOURS.toMillis(hours);
-        try (Statement stmt = Main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT COUNT(*) FROM `player_shares_log` WHERE aktien_id=" + this.id + " AND bought=1 AND date >" + time + ";")) {
             if (rs.next()) {
                 return rs.getInt("COUNT(*)");
@@ -132,7 +132,7 @@ public enum Aktie {
 
     public int getSoldAmount(long hours) {
         long time = System.currentTimeMillis() - TimeUnit.HOURS.toMillis(hours);
-        try (Statement stmt = Main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT COUNT(*) FROM `player_shares_log` WHERE aktien_id=" + this.id + " AND bought=0 AND date >" + time + ";")) {
             if (rs.next()) {
                 return rs.getInt("COUNT(*)");
@@ -165,7 +165,7 @@ public enum Aktie {
     }
 
     public int getUsedShares() {
-        try (Statement stmt = Main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT amount FROM shares WHERE id = " + this.id)) {
             if (rs.next()) {
                 return (getMaxShares() - rs.getInt("amount"));
@@ -184,7 +184,7 @@ public enum Aktie {
     public static Boolean playerHasShare(Aktie aktie, Player p) {
         int i = 0;
         int id = Script.getNRPID(p);
-        try (Statement stmt = Main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM player_shares WHERE id = " + id + " AND aktien_id = " + aktie.getID())) {
             if (rs.next()) {
                 if (rs.getInt("amount") > 0) return true;
@@ -203,7 +203,7 @@ public enum Aktie {
 
     public int getHistoryPriceDays(long days) {
         long time = System.currentTimeMillis() - TimeUnit.DAYS.toMillis(days);
-        try (Statement stmt = Main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM shares_log WHERE date >" + time + " AND aktien_id=" + this.id + " ORDER BY date asc LIMIT 1;")) {
             if (rs.next()) {
                 return rs.getInt("price");
@@ -216,7 +216,7 @@ public enum Aktie {
 
     public int getHistoryPriceHours(long hours) {
         long time = System.currentTimeMillis() - TimeUnit.HOURS.toMillis(hours);
-        try (Statement stmt = Main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM shares_log WHERE date >" + time + " AND aktien_id=" + this.id + " ORDER BY date asc LIMIT 1;")) {
             if (rs.next()) {
                 return rs.getInt("price");
@@ -228,7 +228,7 @@ public enum Aktie {
     }
 
     public int getLastBuyPrice(Player p) {
-        try (Statement stmt = Main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT price FROM player_shares_log WHERE aktien_id=" + this.id + " AND id=" + Script.getNRPID(p) + " AND bought=1 ORDER BY date desc LIMIT 1;")) {
             if (rs.next()) {
                 return rs.getInt("price");

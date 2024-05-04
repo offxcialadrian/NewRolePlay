@@ -8,7 +8,7 @@ import de.newrp.House.House;
 import de.newrp.House.HouseAddon;
 import de.newrp.Player.Notruf;
 import de.newrp.Police.Handschellen;
-import de.newrp.Main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -73,7 +73,7 @@ public class BreakIn implements Listener {
         }
 
         if (house.hasAddon(HouseAddon.ALARM)) {
-            Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> Beruf.Berufe.POLICE.sendMessage(Notruf.PREFIX + "Es wurde ein Einbruch bei Haus " + house.getID() + " gemeldet."), 10 * 20L);
+            Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> Beruf.Berufe.POLICE.sendMessage(Notruf.PREFIX + "Es wurde ein Einbruch bei Haus " + house.getID() + " gemeldet."), 10 * 20L);
         }
 
 
@@ -140,7 +140,7 @@ public class BreakIn implements Listener {
                 return;
 
             }
-        }.runTaskTimer(Main.getInstance(), 20L, 20L);
+        }.runTaskTimer(NewRoleplayMain.getInstance(), 20L, 20L);
         return;
 
     }

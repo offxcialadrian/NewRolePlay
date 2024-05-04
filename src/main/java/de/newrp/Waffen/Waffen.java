@@ -11,7 +11,7 @@ import de.newrp.Player.AFK;
 import de.newrp.Player.Fesseln;
 import de.newrp.Police.Handschellen;
 import de.newrp.Shop.Shops;
-import de.newrp.Main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -199,13 +199,13 @@ public class Waffen implements Listener {
                                 public void run() {
                                     Bankautomaten.win.remove(p);
                                 }
-                            }.runTaskLater(Main.getInstance(), 20L * 60 * 15);
+                            }.runTaskLater(NewRoleplayMain.getInstance(), 20L * 60 * 15);
                         } else {
                             progressBar(360, p);
                             progress.replace(p.getName(), progress.get(p.getName()) + 1);
                         }
                     }
-                }.runTaskTimer(Main.getInstance(), 20L, 20L);
+                }.runTaskTimer(NewRoleplayMain.getInstance(), 20L, 20L);
 
             }
         }

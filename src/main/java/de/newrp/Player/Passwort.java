@@ -4,7 +4,7 @@ import de.newrp.API.AES;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.Administrator.Notifications;
-import de.newrp.Main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
@@ -41,7 +41,7 @@ public class Passwort implements CommandExecutor, Listener {
 
     public static boolean hasPasswort(Player p) {
         boolean b = false;
-        try (Statement stmt = Main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM password WHERE nrp_id= '" + Script.getNRPID(p) + "'")) {
             b = rs.next();
         } catch (SQLException e) {
@@ -65,7 +65,7 @@ public class Passwort implements CommandExecutor, Listener {
 
     public static boolean usePasswort(Player p, String passwort) {
         String pw = null;
-        try (Statement stmt = Main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM password WHERE nrp_id= '" + Script.getNRPID(p) + "'")) {
             if (rs.next()) {
                 pw = rs.getString("password");
@@ -174,17 +174,17 @@ public class Passwort implements CommandExecutor, Listener {
         if (Passwort.hasPasswort(p)) {
             Passwort.lock(p);
             p.sendMessage(Messages.INFO + "Gebe bitte dein Passwort ein. /passwort [Passwort]");
-            Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
+            Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> {
                 if (Passwort.isLocked(p)) {
                     p.sendMessage(PREFIX + "Bitte gebe dein Passwort innerhalb der nächsten 10 Sekunden ein");
                 }
             }, 880L);
-            Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
+            Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> {
                 if (Passwort.isLocked(p)) {
                     p.sendMessage(PREFIX + "Bitte gebe dein Passwort innerhalb der nächsten 3 Sekunden ein");
                 }
             }, 1144L);
-            Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
+            Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> {
                 if (Passwort.isLocked(p)) {
                     p.kickPlayer("§8» §cNRP × New RolePlay §8┃ §cKICK §8« \n\n§8§m------------------------------\n\n§7Du wurdest vom Server gekickt§8.\n\n§7Grund §8× §eDu hast dein Passwort nicht eingegeben\n\n§7Solltest du dein Passwort vergessen haben, melde dich bitte bei unserem Support!\n\n§8§m------------------------------");
                     Notifications.sendMessage(Notifications.NotificationType.ADVANCED_ANTI_CHEAT, Script.getName(p) + " wurde vom Server gekickt (Passwort nicht eingegeben).");

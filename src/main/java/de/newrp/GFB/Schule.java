@@ -3,7 +3,7 @@ package de.newrp.GFB;
 import de.newrp.API.*;
 import de.newrp.Government.Stadtkasse;
 import de.newrp.Player.AFK;
-import de.newrp.Main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -160,7 +160,7 @@ public class Schule implements CommandExecutor, Listener {
                     }
                 };
                 taskID.put(p, task);
-                task.runTaskLater(Main.getInstance(), 20 * 60 * 30);
+                task.runTaskLater(NewRoleplayMain.getInstance(), 20 * 60 * 30);
 
                 return;
             }
@@ -193,7 +193,7 @@ public class Schule implements CommandExecutor, Listener {
                 }
             };
             taskID.put(p, task);
-            task.runTaskLater(Main.getInstance(), 20 * 60 * 15);
+            task.runTaskLater(NewRoleplayMain.getInstance(), 20 * 60 * 15);
 
         }
     }

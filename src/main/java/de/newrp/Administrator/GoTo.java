@@ -20,7 +20,6 @@ public class GoTo implements CommandExecutor, TabCompleter {
     private static final String PREFIX = "§8[§eTeleport§8] §e" + Messages.ARROW + " ";
 
     public enum Points {
-
         STADTHALLE(1, "Stadthalle", new String[]{"SH", "Regierung"},new Location(Script.WORLD, 581, 69, 992, -269.48206f, -3.5868206f)),
         POLIZEIREVIER(2, "Polizeirevier", new String[]{"PR", "Polizeirevier", "Police", "Cop", "Cops", "police"}, new Location(Script.WORLD, 405, 71, 852, 177.84886f, 5.210484f)),
         KRANKENHAUS  (3, "Krankenhaus", new String[]{"Krankenhaus", "KH", "Hospitalm", "Medic"}, new Location(Script.WORLD, 320, 75, 1232, 90.95497f, -1.2530943f)),

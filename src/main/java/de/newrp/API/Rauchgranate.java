@@ -1,6 +1,6 @@
 package de.newrp.API;
 
-import de.newrp.Main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -34,7 +34,7 @@ public class Rauchgranate implements Listener {
             cooldowns.put(e.getPlayer().getName(), time);
             e.getItemDrop().setPickupDelay(Integer.MAX_VALUE);
             player.getInventory().getItemInMainHand().setAmount(player.getInventory().getItemInMainHand().getAmount() - 1);
-            final int taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getInstance(), new Runnable() {
+            final int taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(NewRoleplayMain.getInstance(), new Runnable() {
                 ArrayList<Location> locs = null;
 
                 public void run() {
@@ -52,7 +52,7 @@ public class Rauchgranate implements Listener {
                     }
                 }
             }, 50L, 5L);
-            Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> Bukkit.getScheduler().cancelTask(taskId), 16 * 20L);
+            Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> Bukkit.getScheduler().cancelTask(taskId), 16 * 20L);
         }
     }
 
@@ -73,7 +73,7 @@ public class Rauchgranate implements Listener {
                 final Item i = e.getPlayer().getWorld().dropItemNaturally(e.getPlayer().getLocation(), Script.rauchgranate());
                 i.setVelocity(e.getPlayer().getLocation().getDirection().multiply(1.2F));
                 i.setPickupDelay(Integer.MAX_VALUE);
-                final int taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getInstance(), new Runnable() {
+                final int taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(NewRoleplayMain.getInstance(), new Runnable() {
                     ArrayList<Location> locs = null;
 
                     public void run() {
@@ -91,7 +91,7 @@ public class Rauchgranate implements Listener {
                         }
                     }
                 }, 50L, 5L);
-                Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> Bukkit.getScheduler().cancelTask(taskId), 16 * 20L);
+                Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> Bukkit.getScheduler().cancelTask(taskId), 16 * 20L);
             }
         }
     }

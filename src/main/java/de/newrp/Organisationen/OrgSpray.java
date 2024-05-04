@@ -3,7 +3,7 @@ package de.newrp.Organisationen;
 import de.newrp.API.ItemBuilder;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
-import de.newrp.Main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.*;
 import org.bukkit.block.Banner;
 import org.bukkit.block.Block;
@@ -266,7 +266,7 @@ public class OrgSpray implements Listener {
 
         public static void init() {
             World w = Script.WORLD;
-            try (Statement stmt = Main.getConnection().createStatement();
+            try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
                  ResultSet rs = stmt.executeQuery("SELECT x, y, z, org FROM graffiti")) {
                 while (rs.next()) {
                     Location loc = new Location(w, rs.getInt("x"), rs.getInt("y"), rs.getInt("z"));

@@ -12,7 +12,7 @@ import de.newrp.Organisationen.Organisation;
 import de.newrp.Player.*;
 import de.newrp.Shop.Shops;
 import de.newrp.Shop.gym.GymBuyHandler;
-import de.newrp.Main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -273,7 +273,7 @@ public class PayDay extends BukkitRunnable {
                 public void run() {
                     SDuty.updateScoreboard();
                 }
-            }.runTaskLater(Main.getInstance(), 20L);
+            }.runTaskLater(NewRoleplayMain.getInstance(), 20L);
         }
     }
 

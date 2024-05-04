@@ -2,7 +2,7 @@ package de.newrp.Berufe;
 
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
-import de.newrp.Main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -67,7 +67,7 @@ public class BlockNotruf implements CommandExecutor {
 
     private static List<Integer> getBlockedNRPIDs(Beruf.Berufe b) {
         List<Integer> list = new ArrayList<>();
-        try (PreparedStatement statement = Main.getConnection().prepareStatement(
+        try (PreparedStatement statement = NewRoleplayMain.getConnection().prepareStatement(
                 "SELECT nrp_id FROM blocked_notruf WHERE berufID = ?")) {
             statement.setInt(1, b.getID());
             statement.setLong(2, System.currentTimeMillis());
@@ -83,7 +83,7 @@ public class BlockNotruf implements CommandExecutor {
     }
 
     public static boolean isBlocked(Beruf.Berufe b, OfflinePlayer tg) {
-        try (PreparedStatement statement = Main.getConnection().prepareStatement(
+        try (PreparedStatement statement = NewRoleplayMain.getConnection().prepareStatement(
                 "SELECT * FROM blocked_notruf WHERE berufID = ? AND nrp_id = ?")) {
             statement.setInt(1, b.getID());
             statement.setInt(2, Script.getNRPID(tg));
@@ -97,7 +97,7 @@ public class BlockNotruf implements CommandExecutor {
     }
 
     public static void block(Beruf.Berufe b, OfflinePlayer tg) {
-        try (PreparedStatement statement = Main.getConnection().prepareStatement(
+        try (PreparedStatement statement = NewRoleplayMain.getConnection().prepareStatement(
                 "INSERT INTO blocked_notruf (nrp_id, berufID) VALUES (?, ?)")) {
             statement.setInt(1, Script.getNRPID(tg));
             statement.setInt(2, b.getID());
@@ -108,7 +108,7 @@ public class BlockNotruf implements CommandExecutor {
     }
 
     public static void unblock(Beruf.Berufe b, OfflinePlayer tg) {
-        try (PreparedStatement statement = Main.getConnection().prepareStatement(
+        try (PreparedStatement statement = NewRoleplayMain.getConnection().prepareStatement(
                 "DELETE FROM blocked_notruf WHERE nrp_id = ? AND berufID = ?")) {
             statement.setInt(1, Script.getNRPID(tg));
             statement.setInt(2, b.getID());

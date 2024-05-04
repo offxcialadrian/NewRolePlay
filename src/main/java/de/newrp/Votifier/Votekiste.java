@@ -3,7 +3,7 @@ package de.newrp.Votifier;
 import de.newrp.API.*;
 import de.newrp.Waffen.Waffen;
 import de.newrp.Waffen.Weapon;
-import de.newrp.Main;
+import de.newrp.NewRoleplayMain;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
@@ -108,7 +108,7 @@ public enum Votekiste {
 
         Debug.debug("reached another another step");
 
-        final int taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getInstance(), new Runnable() {
+        final int taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(NewRoleplayMain.getInstance(), new Runnable() {
             int interval = 2;
             int count = 0;
             int tick = 0;
@@ -159,7 +159,7 @@ public enum Votekiste {
             }
         }, 1L, 1L);
 
-        final BukkitTask taskId1 = Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
+        final BukkitTask taskId1 = Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> {
             Bukkit.getScheduler().cancelTask(taskId);
             p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1F, 1F);
             tasks.remove(p.getName());

@@ -1,6 +1,6 @@
 package de.newrp.API;
 
-import de.newrp.Main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
@@ -30,7 +30,7 @@ public class Hologram {
     }
 
     public static void reload() {
-        Bukkit.getScheduler().runTaskLater(Main.getInstance(), Hologram::respawn, 2 * 20L);
+        Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), Hologram::respawn, 2 * 20L);
     }
 
     public static void respawn() {
@@ -39,7 +39,7 @@ public class Hologram {
     }
 
     public static void create() {
-        Bukkit.getScheduler().runTask(Main.getInstance(), () -> {
+        Bukkit.getScheduler().runTask(NewRoleplayMain.getInstance(), () -> {
             for (HologramList h : HologramList.values()) {
                 h.getLocation().getChunk().load();
                 Hologram.HOLOGRAMS.add(new Hologram(h.getLocation(), h.getName()));

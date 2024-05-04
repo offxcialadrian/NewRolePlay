@@ -8,7 +8,7 @@ import de.newrp.Berufe.Abteilung;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Berufe.Duty;
 import de.newrp.Player.Vertrag;
-import de.newrp.Main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -33,7 +33,7 @@ public class Erstattung implements CommandExecutor {
 
     public static List<String> getAktenzeichen() {
         List<String> list = new ArrayList<>();
-        try (PreparedStatement statement = Main.getConnection().prepareStatement(
+        try (PreparedStatement statement = NewRoleplayMain.getConnection().prepareStatement(
                 "SELECT aktenzeichen FROM erstattung")) {
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
@@ -46,7 +46,7 @@ public class Erstattung implements CommandExecutor {
     }
 
     public static VertragAPI getVertragByAktenzeichen(String aktenzeichen) {
-        try (PreparedStatement statement = Main.getConnection().prepareStatement(
+        try (PreparedStatement statement = NewRoleplayMain.getConnection().prepareStatement(
                 "SELECT aktenzeichen FROM erstattung WHERE aktenzeichen = ?")) {
             ResultSet rs = statement.executeQuery();
             if (rs.next()) {
@@ -59,7 +59,7 @@ public class Erstattung implements CommandExecutor {
     }
 
     public static int getErstattungByAktenzeichen(String aktenzeichen) {
-        try (PreparedStatement statement = Main.getConnection().prepareStatement(
+        try (PreparedStatement statement = NewRoleplayMain.getConnection().prepareStatement(
                 "SELECT * FROM erstattung WHERE aktenzeichen = ?")) {
             ResultSet rs = statement.executeQuery();
             if (rs.next()) {
@@ -72,7 +72,7 @@ public class Erstattung implements CommandExecutor {
     }
 
     public static int getErstattungForByAktenzeichen(String aktenzeichen) {
-        try (PreparedStatement statement = Main.getConnection().prepareStatement(
+        try (PreparedStatement statement = NewRoleplayMain.getConnection().prepareStatement(
                 "SELECT * FROM erstattung WHERE aktenzeichen = ?")) {
             ResultSet rs = statement.executeQuery();
             if (rs.next()) {

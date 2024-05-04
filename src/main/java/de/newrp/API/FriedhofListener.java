@@ -5,7 +5,7 @@ import de.newrp.Administrator.SDuty;
 import de.newrp.Call.Call;
 import de.newrp.Gangwar.GangwarCommand;
 import de.newrp.Player.Fesseln;
-import de.newrp.Main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.*;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
@@ -142,7 +142,7 @@ public class FriedhofListener implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
-        Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () -> {
+        Bukkit.getScheduler().runTaskAsynchronously(NewRoleplayMain.getInstance(), () -> {
             Player p = e.getPlayer();
             int id = Script.getNRPID(p);
             int i = Friedhof.getDeathtimeDatabase(p);

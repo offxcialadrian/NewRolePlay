@@ -2,7 +2,7 @@ package de.newrp.API;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import de.newrp.Main;
+import de.newrp.NewRoleplayMain;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -19,7 +19,7 @@ public class Vote {
     public static final int VOTE_AMOUNT_WEEKEND = 300;
 
     public static int getVotesToday(int id) {
-        try (Statement stmt = Main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT count(id) AS total FROM vote_cache WHERE id=" + id)) {
             if (rs.next()) return rs.getInt("total");
         } catch (SQLException e) {
@@ -31,7 +31,7 @@ public class Vote {
     //TODO Auf richtigen Cache ändern (Default läd dann diese funktion)
     //check if player has voted today
     public static boolean hasVotedToday(int id) {
-        try (Statement stmt = Main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM vote_cache WHERE id=" + id + " AND day=" + Calendar.getInstance().get(Calendar.DAY_OF_YEAR))) {
             return rs.next();
         } catch (SQLException e) {

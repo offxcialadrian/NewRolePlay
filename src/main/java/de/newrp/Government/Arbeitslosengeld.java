@@ -4,7 +4,7 @@ import de.newrp.API.*;
 import de.newrp.Berufe.Abteilung;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Player.Banken;
-import de.newrp.Main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
@@ -195,7 +195,7 @@ public class Arbeitslosengeld implements CommandExecutor {
     }
 
     public static void sendApplications(Player p) {
-        try (Statement stmt = Main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM arbeitslosengeld WHERE accepted='0'")) {
             while (rs.next()) {
 
@@ -207,7 +207,7 @@ public class Arbeitslosengeld implements CommandExecutor {
     }
 
     public static int getArbeitslosengeldApplicationAmount() {
-        try (Statement stmt = Main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM arbeitslosengeld WHERE accepted='0'")) {
             int i = 0;
             while (rs.next()) {
@@ -222,7 +222,7 @@ public class Arbeitslosengeld implements CommandExecutor {
 
 
     public static void acceptApplication(int id) {
-        try (Statement stmt = Main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM arbeitslosengeld WHERE id='" + id + "'")) {
             if (rs.next()) {
                 Script.executeAsyncUpdate("UPDATE arbeitslosengeld SET accepted=1 WHERE id='" + id + "'");
@@ -240,7 +240,7 @@ public class Arbeitslosengeld implements CommandExecutor {
     }
 
     public static void denyApplication(int id) {
-        try (Statement stmt = Main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM arbeitslosengeld WHERE id='" + id + "'")) {
             if (rs.next()) {
                 Script.executeAsyncUpdate("DELETE from arbeitslosengeld WHERE id='" + id + "'");
@@ -257,7 +257,7 @@ public class Arbeitslosengeld implements CommandExecutor {
     }
 
     public static Player getPlayerByArbeitslosengeldID(int id) {
-        try (Statement stmt = Main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM arbeitslosengeld WHERE id=" + id)) {
             return Script.getPlayer(rs.getInt("nrp_id"));
         } catch (Exception e) {
@@ -267,7 +267,7 @@ public class Arbeitslosengeld implements CommandExecutor {
     }
 
     public static int getNRPIDByArbeitslosengeldID(int id) {
-        try (Statement stmt = Main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM arbeitslosengeld WHERE id=" + id)) {
             return rs.getInt("nrp_id");
         } catch (Exception e) {
@@ -277,7 +277,7 @@ public class Arbeitslosengeld implements CommandExecutor {
     }
 
     public static boolean arbeitslosengeldExists(int id) {
-        try (Statement stmt = Main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM arbeitslosengeld WHERE id=" + id)) {
             return rs.next();
         } catch (Exception e) {

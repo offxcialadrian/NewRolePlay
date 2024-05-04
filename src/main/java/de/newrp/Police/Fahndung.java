@@ -8,7 +8,7 @@ import de.newrp.Berufe.Beruf;
 import de.newrp.Berufe.Duty;
 import de.newrp.Government.Straftat;
 import de.newrp.Player.AFK;
-import de.newrp.Main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -148,7 +148,7 @@ public class Fahndung implements CommandExecutor, TabCompleter {
     }
 
     public static long getFahndedTime(Player p) {
-        try (Statement stmt = Main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM wanted WHERE nrp_id=" + Script.getNRPID(p) + " ORDER BY id ASC LIMIT 1")) {
             if (rs.next()) {
                 return (System.currentTimeMillis() - rs.getLong("time"));
@@ -204,7 +204,7 @@ public class Fahndung implements CommandExecutor, TabCompleter {
 
     public static List<Player> getList() {
         List<Player> list = new ArrayList<>();
-        try (Statement stmt = Main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM wanted")) {
             if (rs.next()) {
                 do {
@@ -219,7 +219,7 @@ public class Fahndung implements CommandExecutor, TabCompleter {
 
     public static List<Integer> getStraftatIDs(Player p) {
         List<Integer> list = new ArrayList<>();
-        try (Statement stmt = Main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM wanted WHERE nrp_id=" + Script.getNRPID(p))) {
             while (rs.next()) {
                list.add(rs.getInt("wantedreason"));
@@ -232,7 +232,7 @@ public class Fahndung implements CommandExecutor, TabCompleter {
 
     public static List<Integer> getStraftatIDs(OfflinePlayer p) {
         List<Integer> list = new ArrayList<>();
-        try (Statement stmt = Main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM wanted WHERE nrp_id=" + Script.getNRPID(p))) {
             while (rs.next()) {
                 list.add(rs.getInt("wantedreason"));
@@ -244,7 +244,7 @@ public class Fahndung implements CommandExecutor, TabCompleter {
     }
 
     public static int getStraftatID(OfflinePlayer p) {
-        try (Statement stmt = Main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM wanted WHERE nrp_id=" + Script.getNRPID(p))) {
             if (rs.next()) {
                 return rs.getInt("wantedreason");

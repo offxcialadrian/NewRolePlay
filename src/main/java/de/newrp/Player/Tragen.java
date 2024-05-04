@@ -3,7 +3,7 @@ package de.newrp.Player;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.Chat.Me;
-import de.newrp.Main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -83,7 +83,7 @@ public class Tragen implements CommandExecutor, Listener {
 
         Tragen.tragenTasks.put(tg, task);
 
-        task.runTaskLater(Main.getInstance(), 5L);
+        task.runTaskLater(NewRoleplayMain.getInstance(), 5L);
     }
 
 

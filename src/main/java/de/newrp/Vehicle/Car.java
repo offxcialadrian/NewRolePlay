@@ -4,7 +4,7 @@ import de.newrp.API.Cache;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.API.SlotLimit;
-import de.newrp.Main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -75,7 +75,7 @@ public class Car {
     }
 
     public static int getCarIDByLicenseplate(String licenseplate) {
-        try (PreparedStatement stmt = Main.getConnection().prepareStatement("SELECT id FROM vehicle WHERE kennzeichen = ?")) {
+        try (PreparedStatement stmt = NewRoleplayMain.getConnection().prepareStatement("SELECT id FROM vehicle WHERE kennzeichen = ?")) {
 
             stmt.setString(1, licenseplate.toUpperCase());
 
@@ -88,7 +88,7 @@ public class Car {
     }
 
     public static boolean carExcistByCarID(int carID) {
-        try (PreparedStatement stmt = Main.getConnection().prepareStatement("SELECT id FROM vehicle WHERE id = ?")) {
+        try (PreparedStatement stmt = NewRoleplayMain.getConnection().prepareStatement("SELECT id FROM vehicle WHERE id = ?")) {
 
             stmt.setInt(1, carID);
 
@@ -110,7 +110,7 @@ public class Car {
     }
 
     public static void createCar(CarType carType, Location loc, Player p) {
-        try (PreparedStatement stmt = Main.getConnection().prepareStatement(
+        try (PreparedStatement stmt = NewRoleplayMain.getConnection().prepareStatement(
                 "INSERT INTO vehicle (owner, cartype, fuel, heal, mileage, locked, location_x, location_y, location_z) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", com.mysql.jdbc.Statement.RETURN_GENERATED_KEYS
         )) {
             stmt.setInt(1, Script.getNRPID(p));
@@ -147,7 +147,7 @@ public class Car {
 
         List<Car> cars = new ArrayList<>();
 
-        try (Statement stmt = Main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT vehicle.id, vehicle.cartype, vehicle.fuel, vehicle.heal, vehicle.mileage, vehicle.insurance, vehicle.locked, vehicle.activated, vehicle.kennzeichen, vehicle.bomb, vehicle_addon.akku, vehicle_addon.musik \n" +
                      "FROM vehicle\n" +
                      "LEFT JOIN vehicle_addon ON vehicle_addon.id = vehicle.id\n" +
@@ -183,7 +183,7 @@ public class Car {
                 Location loc = car.getSavedLocation();
                 loc.getChunk().load();
 
-                Bukkit.getScheduler().runTask(Main.getInstance(), () -> {
+                Bukkit.getScheduler().runTask(NewRoleplayMain.getInstance(), () -> {
                     Boat boat = (Boat) Script.WORLD.spawnEntity(loc, EntityType.BOAT);
                     boat.setMaxSpeed(car.getCarType().getMaxSpeed());
 
@@ -462,7 +462,7 @@ public class Car {
     public void setLicenseplate(String licenseplate) {
         this.licenseplate = licenseplate;
 
-        try (PreparedStatement stmt = Main.getConnection().prepareStatement("UPDATE vehicle SET kennzeichen = ? WHERE id = ?")) {
+        try (PreparedStatement stmt = NewRoleplayMain.getConnection().prepareStatement("UPDATE vehicle SET kennzeichen = ? WHERE id = ?")) {
 
             stmt.setString(1, licenseplate.toUpperCase());
 
@@ -487,7 +487,7 @@ public class Car {
     }
 
     public Location getSavedLocation() {
-        try (Statement stmt = Main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT location_x, location_y, location_z FROM vehicle WHERE id=" + this.carID)) {
             if (rs.next()) {
                 return new Location(Script.WORLD, rs.getDouble("location_x"), rs.getDouble("location_y"), rs.getDouble("location_z"));
@@ -501,7 +501,7 @@ public class Car {
     public void save(Boat minecart) {
         Location loc = minecart.getLocation();
 
-        try (PreparedStatement stmt = Main.getConnection().prepareStatement("UPDATE vehicle SET fuel = ?, heal = ?, mileage = ?, location_x = ?, location_y = ?, location_z = ? WHERE id = ?")) {
+        try (PreparedStatement stmt = NewRoleplayMain.getConnection().prepareStatement("UPDATE vehicle SET fuel = ?, heal = ?, mileage = ?, location_x = ?, location_y = ?, location_z = ? WHERE id = ?")) {
 
             stmt.setInt(1, this.fuel);
             stmt.setInt(2, this.carheal);
@@ -537,7 +537,7 @@ public class Car {
     }
 
     public int getTotalTrunkAmount() {
-        try (Statement stmt = Main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT SUM(amount) AS total FROM trunk WHERE carID=" + this.carID + " AND amount>0")) {
             if (rs.next()) {
                 return rs.getInt("total");

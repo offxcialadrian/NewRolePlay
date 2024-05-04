@@ -6,7 +6,7 @@ import de.newrp.API.ShishaType;
 import de.newrp.House.HouseAddon;
 import de.newrp.Medic.Medikamente;
 import de.newrp.Waffen.Weapon;
-import de.newrp.Main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -235,7 +235,7 @@ public enum ShopItem {
     }
 
     public void setPrice(Shops b, int price) {
-        try (Statement stmt = Main.getConnection().createStatement()) {
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement()) {
             stmt.executeUpdate("UPDATE shopprice SET price=" + price + " WHERE shopID=" + b.getID() + " AND itemID=" + getID());
         } catch (SQLException e) {
             e.printStackTrace();
@@ -243,7 +243,7 @@ public enum ShopItem {
     }
 
     public int getPrice(Shops b) {
-        try (Statement stmt = Main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT price FROM shopprice WHERE shopID=" + b.getID() + " AND itemID=" + getID())) {
             if (rs.next()) {
                 return rs.getInt("price");

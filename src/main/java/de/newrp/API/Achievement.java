@@ -3,7 +3,7 @@ package de.newrp.API;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
-import de.newrp.Main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.sql.ResultSet;
@@ -116,7 +116,7 @@ public enum Achievement {
                     public void run() {
                         p.sendMessage("§8[§aErklärung§8] §6» " + Achievement.this.getExplanation().replace("\n", "\n§8[§aErklärung§8] §6» "));
                     }
-                }.runTaskLater(Main.getInstance(), 10*20L);
+                }.runTaskLater(NewRoleplayMain.getInstance(), 10*20L);
             }
         }
     }
@@ -150,7 +150,7 @@ public enum Achievement {
         for (Achievement a : all) {
             map.put(a, false);
         }
-        try (Statement stmt = Main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT achievementID FROM achievements WHERE userID=" + id + " AND done=TRUE")) {
             while (rs.next()) {
                 Achievement a = Achievement.getAchievementByID(rs.getInt("achievementID"));

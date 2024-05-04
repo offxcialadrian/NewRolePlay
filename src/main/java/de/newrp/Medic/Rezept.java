@@ -115,6 +115,18 @@ public class Rezept implements CommandExecutor, TabCompleter {
         return false;
     }
 
+    public static int getAmountOfRecipes(final Player player, final Medikamente medikamente) {
+        for(ItemStack is : player.getInventory().getContents()) {
+            if(is == null || is.getType() == Material.AIR) continue;
+            if(is.getItemMeta() == null) continue;;
+
+            if(is.getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.stripColor(medikamente.getRezept().getItemMeta().getDisplayName()))) {
+                return is.getAmount();
+            }
+        }
+        return 0;
+    }
+
     public static void removeRezept(Player p, Medikamente m) {
         for(ItemStack is : p.getInventory().getContents()) {
             if(is != null && is.getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.stripColor(m.getRezept().getItemMeta().getDisplayName()))) {

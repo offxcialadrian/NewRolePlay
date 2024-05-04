@@ -5,7 +5,7 @@ import de.newrp.Berufe.Beruf;
 import de.newrp.Forum.Forum;
 import de.newrp.Organisationen.Organisation;
 import de.newrp.TeamSpeak.TeamSpeak;
-import de.newrp.Main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -490,7 +490,7 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
 
 
     public static boolean isMuted(Player p) {
-        try (Statement stmt = Main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM mute WHERE nrp_id=" + Script.getNRPID(p) + " ORDER BY id DESC LIMIT 1;")) {
             if (rs.next()) {
                 if (rs.getLong("until") > System.currentTimeMillis()) {
@@ -504,7 +504,7 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
     }
 
     public static long getMuteUntil(Player p) {
-        try (Statement stmt = Main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM ban WHERE nrp_id=" + Script.getNRPID(p) + " ORDER BY id DESC LIMIT 1;")) {
             if (rs.next()) {
                 if (rs.getLong("until") > System.currentTimeMillis()) {
@@ -521,7 +521,7 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
     }
 
     public static long getBanUntil(Player p) {
-        try (Statement stmt = Main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM ban WHERE nrp_id=" + Script.getNRPID(p) + " ORDER BY id DESC LIMIT 1;")) {
             if (rs.next()) {
                 if (rs.getLong("until") > System.currentTimeMillis()) {
@@ -538,7 +538,7 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
     }
 
     public static long getBanUntil(OfflinePlayer p) {
-        try (Statement stmt = Main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM ban WHERE nrp_id=" + Script.getNRPID(p) + " ORDER BY id DESC LIMIT 1;")) {
             if (rs.next()) {
                 if (rs.getLong("until") > System.currentTimeMillis()) {
@@ -556,7 +556,7 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
 
     public static int getWarns(Player p) {
         int i = 0;
-        try (Statement stmt = Main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM warns WHERE nrp_id=" + Script.getNRPID(p))) {
             if (rs.next()) {
                 do {
@@ -571,7 +571,7 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
 
     public static int getWarns(OfflinePlayer p) {
         int i = 0;
-        try (Statement stmt = Main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM warns WHERE nrp_id=" + Script.getNRPID(p))) {
             if (rs.next()) {
                 do {
@@ -586,7 +586,7 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
 
     public static HashMap<Long, String> getWarnsMap(Player p) {
         HashMap<Long, String> warns = new HashMap<>();
-        try (Statement stmt = Main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM warns WHERE nrp_id=" + Script.getNRPID(p) + " ORDER BY since ASC;")) {
             if (rs.next()) {
                 do {
@@ -601,7 +601,7 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
 
     public static HashMap<Long, String> getWarnsMap(OfflinePlayer p) {
         HashMap<Long, String> warns = new HashMap<>();
-        try (Statement stmt = Main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM warns WHERE nrp_id=" + Script.getNRPID(p) + " ORDER BY since ASC;")) {
             if (rs.next()) {
                 do {
@@ -616,7 +616,7 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
 
 
     public static String getBanReason(Player p) {
-        try (Statement stmt = Main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM ban WHERE nrp_id=" + Script.getNRPID(p) + " ORDER BY id DESC LIMIT 1;")) {
             if (rs.next()) {
                 return rs.getString("reason");
@@ -628,7 +628,7 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
     }
 
     public static String getBanReason(OfflinePlayer p) {
-        try (Statement stmt = Main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM ban WHERE nrp_id=" + Script.getNRPID(p) + " ORDER BY id DESC LIMIT 1;")) {
             if (rs.next()) {
                 return rs.getString("reason");

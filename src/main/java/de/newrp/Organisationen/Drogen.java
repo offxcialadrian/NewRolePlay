@@ -3,7 +3,7 @@ package de.newrp.Organisationen;
 import de.newrp.API.*;
 import de.newrp.Chat.Me;
 import de.newrp.Police.Handschellen;
-import de.newrp.Main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -106,7 +106,7 @@ public enum Drogen {
 
     public static int getAddiction(Player p) {
         int i = 0;
-        try (Statement stmt = Main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM drug_addiction WHERE nrp_id='" + Script.getNRPID(p) + "' AND heal = false")) {
             while (rs.next()) {
                 if (rs.getLong("time") + TimeUnit.DAYS.toMillis(5) > System.currentTimeMillis()) {
@@ -121,7 +121,7 @@ public enum Drogen {
 
     public static int getAddictionHeal(Player p) {
         int i = 0;
-        try (Statement stmt = Main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM drug_addiction WHERE nrp_id='" + Script.getNRPID(p) + "' AND heal = true")) {
             while (rs.next()) {
                 if (rs.getLong("time") + TimeUnit.DAYS.toMillis(5) > System.currentTimeMillis()) {
@@ -168,7 +168,7 @@ public enum Drogen {
             taskID.remove(p.getName());
         }
 
-        int task = Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getInstance(), () -> {
+        int task = Bukkit.getScheduler().scheduleSyncDelayedTask(NewRoleplayMain.getInstance(), () -> {
             if(!test.containsKey(p.getName())) return;
             test.remove(p.getName());
             taskID.remove(p.getName());

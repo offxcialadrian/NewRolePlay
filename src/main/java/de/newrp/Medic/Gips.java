@@ -2,7 +2,7 @@ package de.newrp.Medic;
 
 import de.newrp.API.*;
 import de.newrp.GFB.Lagerarbeiter;
-import de.newrp.Main;
+import de.newrp.NewRoleplayMain;
 import de.newrp.Chat.Me;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -91,7 +91,7 @@ public class Gips implements Listener {
                         rightClicked.removePotionEffect(e.getType());
                     }
                 }
-            }.runTaskLater(Main.getInstance(), 20L * 10);
+            }.runTaskLater(NewRoleplayMain.getInstance(), 20L * 10);
 
             BANDAGE_COOLDOWN.put(rightClicked.getName(), time);
             LAST_CLICK.remove(p.getName());
@@ -142,9 +142,7 @@ public class Gips implements Listener {
     public void onJoin(PlayerJoinEvent e) {
         Player p = e.getPlayer();
         if (Krankheit.GEBROCHENES_BEIN.isInfected(Script.getNRPID(p)) && !p.hasPotionEffect(PotionEffectType.HEAL)) {
-            /*p.setWalkSpeed(0.1F);
-            p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 280, 1, false, false));
-            p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20, 1, false, false));*/
+            p.setWalkSpeed(0.1F);
         }
     }
 
@@ -202,7 +200,7 @@ public class Gips implements Listener {
                 public void run() {
                     hits.remove(d);
                 }
-            }.runTaskLater(Main.getInstance(), 20 * 5);
+            }.runTaskLater(NewRoleplayMain.getInstance(), 20 * 5);
         } else {
             hits.put(d, hits.get(d) + 1);
         }

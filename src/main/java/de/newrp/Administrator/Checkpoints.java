@@ -1,6 +1,6 @@
 package de.newrp.Administrator;
 
-import de.newrp.Main;
+import de.newrp.NewRoleplayMain;
 import de.newrp.API.*;
 import de.newrp.Police.Jail;
 import org.bukkit.*;
@@ -162,7 +162,7 @@ public class Checkpoints implements Listener {
     }
 
     public static int getCheckpoints(int id) {
-        try (Statement stmt = Main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT checkpoints FROM checkpoints WHERE id=" + id)) {
             if (rs.next()) {
                 int checkpoints = rs.getInt("checkpoints");
@@ -181,7 +181,7 @@ public class Checkpoints implements Listener {
     }
 
     public static int getCheckpoints(Player p) {
-        try (Statement stmt = Main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT checkpoints FROM checkpoints WHERE id=" + Script.getNRPID(p))) {
             if (rs.next()) {
                 int checkpoints = rs.getInt("checkpoints");
@@ -200,7 +200,7 @@ public class Checkpoints implements Listener {
     }
 
     public static int getCheckpoints(OfflinePlayer p) {
-        try (Statement stmt = Main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT checkpoints FROM checkpoints WHERE id=" + Script.getNRPID(p))) {
             if (rs.next()) {
                 int checkpoints = rs.getInt("checkpoints");
@@ -332,7 +332,7 @@ public class Checkpoints implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
-        Bukkit.getScheduler().runTask(Main.getInstance(), () -> Checkpoints.checkCheckpoints(e.getPlayer()));
+        Bukkit.getScheduler().runTask(NewRoleplayMain.getInstance(), () -> Checkpoints.checkCheckpoints(e.getPlayer()));
     }
 
     @EventHandler

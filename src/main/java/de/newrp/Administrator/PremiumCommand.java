@@ -2,7 +2,7 @@ package de.newrp.Administrator;
 
 import de.newrp.API.*;
 import de.newrp.TeamSpeak.TeamSpeak;
-import de.newrp.Main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -122,7 +122,7 @@ public class PremiumCommand implements CommandExecutor {
     }
 
     public static boolean hasPremiumStored(Player p) {
-        try (Statement stmt = Main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM premium_storage WHERE nrp_id=" + Script.getNRPID(p))) {
             if (rs.next()) {
                 if (rs.getLong("expires") > System.currentTimeMillis()) {
@@ -137,7 +137,7 @@ public class PremiumCommand implements CommandExecutor {
 
     public static void sendPremiumStorage(Player p) {
         int i = 1;
-        try (Statement stmt = Main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM premium_storage WHERE nrp_id=" + Script.getNRPID(p) + " ORDER BY id ASC;")) {
             while (rs.next()) {
                 long expires = rs.getLong("expires");
@@ -162,7 +162,7 @@ public class PremiumCommand implements CommandExecutor {
 
 
     public static OfflinePlayer getOwner(int id) {
-        try (Statement stmt = Main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM premium_storage WHERE id=" + id)) {
             if (rs.next()) {
                 return Script.getOfflinePlayer(rs.getInt("nrp_id"));
@@ -175,7 +175,7 @@ public class PremiumCommand implements CommandExecutor {
 
     public static void activatePremium(Player p, int id) {
         int i = 0;
-        try (Statement stmt = Main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM premium_storage WHERE nrp_id=" + Script.getNRPID(p) + " ORDER BY id ASC;")) {
 
             while (rs.next()) {

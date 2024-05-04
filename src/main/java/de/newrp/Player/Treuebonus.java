@@ -4,7 +4,7 @@ import de.newrp.API.*;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Berufe.Duty;
 import de.newrp.Organisationen.Organisation;
-import de.newrp.Main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -68,7 +68,7 @@ public class Treuebonus implements CommandExecutor, Listener {
     }
 
     public static int getPunkte(Player p) {
-        try (Statement stmt = Main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT punkte FROM treuebonus WHERE id=" + Script.getNRPID(p))) {
             if (rs.next()) {
                 return rs.getInt("punkte");
@@ -83,7 +83,7 @@ public class Treuebonus implements CommandExecutor, Listener {
     }
 
     public static int getTotalPunkte(Player p) {
-        try (Statement stmt = Main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT total FROM treuebonus WHERE id=" + Script.getNRPID(p))) {
             if (rs.next()) {
                 return rs.getInt("total");
@@ -98,10 +98,10 @@ public class Treuebonus implements CommandExecutor, Listener {
     }
 
     public static void add(Player p, boolean updateTime) {
-        Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () -> {
+        Bukkit.getScheduler().runTaskAsynchronously(NewRoleplayMain.getInstance(), () -> {
             int unicaID = Script.getNRPID(p);
 
-            try (PreparedStatement updateStatement = Main.getConnection().prepareStatement("UPDATE treuebonus SET punkte=punkte+1, total=total+1 WHERE id=?");) {
+            try (PreparedStatement updateStatement = NewRoleplayMain.getConnection().prepareStatement("UPDATE treuebonus SET punkte=punkte+1, total=total+1 WHERE id=?");) {
                 updateStatement.setInt(1, unicaID);
                 // check if nothing was updated
                 if (updateStatement.executeUpdate() == 0) {

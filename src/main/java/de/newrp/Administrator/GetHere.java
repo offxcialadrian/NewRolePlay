@@ -4,7 +4,7 @@ import de.newrp.API.Friedhof;
 import de.newrp.API.Messages;
 import de.newrp.API.Rank;
 import de.newrp.API.Script;
-import de.newrp.Main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
@@ -77,7 +77,7 @@ public class GetHere implements CommandExecutor {
     }
 
     public static Location getOfflineTP(Player p) {
-        try (Statement stmt = Main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM offline_tp WHERE nrp_id=" + Script.getNRPID(p) + " ORDER BY id DESC LIMIT 1;")) {
             if (rs.next()) {
                 return new Location(Script.WORLD, rs.getInt("x"), rs.getInt("y"), rs.getInt("z"));
@@ -91,7 +91,7 @@ public class GetHere implements CommandExecutor {
     }
 
     public static boolean hasOfflineTP(OfflinePlayer p) {
-        try (Statement stmt = Main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM offline_tp WHERE nrp_id=" + Script.getNRPID(p))) {
             return rs.next();
         } catch (Exception e) {
@@ -101,7 +101,7 @@ public class GetHere implements CommandExecutor {
     }
 
     public static boolean hasOfflineTP(Player p) {
-        try (Statement stmt = Main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM offline_tp WHERE nrp_id=" + Script.getNRPID(p))) {
             return rs.next();
         } catch (Exception e) {

@@ -6,7 +6,7 @@ import de.newrp.API.Script;
 import de.newrp.Chat.Me;
 import de.newrp.Entertainment.Boxen;
 import de.newrp.Police.Handschellen;
-import de.newrp.Main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -80,7 +80,7 @@ public class TestoSpritze implements Listener {
                     public void run() {
                         Boxen.onTesto.remove(p.getName());
                     }
-                }.runTaskLater(Main.getInstance(), 20 * 60 * 30);
+                }.runTaskLater(NewRoleplayMain.getInstance(), 20 * 60 * 30);
 
                 COOLDOWN.put(p.getName(), time);
                 LAST_CLICK.remove(p.getName());

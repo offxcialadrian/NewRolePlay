@@ -1,6 +1,6 @@
 package de.newrp.Vehicle;
 
-import de.newrp.Main;
+import de.newrp.NewRoleplayMain;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -70,10 +70,10 @@ public class CarHandler implements Listener {
                     boat.setVelocity(direction.multiply(speed));
                     double finalY = y;
                     if (finalY > 0) {
-                        Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> boat.setVelocity(boat.getLocation().getDirection().setY(finalY)), 1L);
+                        Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> boat.setVelocity(boat.getLocation().getDirection().setY(finalY)), 1L);
                     }
                     if (boat.getFallDistance() > 0) {
-                        Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> boat.setVelocity(boat.getLocation().getDirection().setY(-1)), 2L);
+                        Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> boat.setVelocity(boat.getLocation().getDirection().setY(-1)), 2L);
                     }
                 }
             }

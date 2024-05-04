@@ -6,7 +6,7 @@ import de.newrp.Berufe.Beruf;
 import de.newrp.Berufe.Duty;
 import de.newrp.Government.Stadtkasse;
 import de.newrp.Player.AFK;
-import de.newrp.Main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -128,13 +128,13 @@ public class Bankautomaten implements Listener {
                             win.remove(p);
                             Stadtkasse.removeStadtkasse(1000, "Wiederherstellung Bankautomat");
                         }
-                    }.runTaskLater(Main.getInstance(), 20L * 60 * 60);
+                    }.runTaskLater(NewRoleplayMain.getInstance(), 20L * 60 * 60);
                 } else {
                     progressBar(90, p);
                     progress.replace(p.getName(), progress.get(p.getName()) + 1);
                 }
             }
-        }.runTaskTimer(Main.getInstance(), 20L, 20L);
+        }.runTaskTimer(NewRoleplayMain.getInstance(), 20L, 20L);
     }
 
     private static void progressBar(double required_progress, Player p) {

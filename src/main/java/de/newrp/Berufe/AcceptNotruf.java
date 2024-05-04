@@ -113,16 +113,18 @@ public class AcceptNotruf implements CommandExecutor, Listener {
         return (int) (meter / 6.0);
     }
 
-    public static void reOpenNotruf(Player emergency) {
-        if(accept.containsKey(emergency)) {
-            Player p = accept.get(emergency);
-            Beruf.getBeruf(p).sendMessage(Notruf.PREFIX + "Der Notruf von §6" + Script.getName(emergency) + " §7wurde wieder geöffnet");
-            accept.remove(p);
-            List<Beruf.Berufe> berufe = Notruf.call2.get(emergency);
-            berufe.add(Beruf.getBeruf(p));
-            Notruf.call2.replace(emergency, berufe);
+    public static void reOpenNotruf(final Player player, final Player emergency) {
+        if(!accept.containsKey(player)) {
+            player.sendMessage(Messages.ERROR + "Du hast keinen Notruf angenommen!");
             return;
         }
+
+        Beruf.getBeruf(player).sendMessage(Notruf.PREFIX + "Der Notruf von §6" + Script.getName(emergency) + " §7wurde wieder geöffnet");
+        accept.remove(player);
+        List<Beruf.Berufe> berufe = Notruf.call2.getOrDefault(emergency, new ArrayList<>());
+        berufe.add(Beruf.getBeruf(player));
+        Notruf.call2.replace(emergency, berufe);
+        Notruf.call.
     }
 
     public static void deleteNotruf(Player p) {

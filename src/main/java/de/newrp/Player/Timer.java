@@ -2,7 +2,7 @@ package de.newrp.Player;
 
 import de.newrp.API.Messages;
 import de.newrp.API.Premium;
-import de.newrp.Main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.command.Command;
@@ -53,7 +53,7 @@ public class Timer implements CommandExecutor {
 
             p.sendMessage(PREFIX + "Timer gestartet.");
 
-            final int taskId = Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getInstance(), () -> {
+            final int taskId = Bukkit.getScheduler().scheduleSyncDelayedTask(NewRoleplayMain.getInstance(), () -> {
                 p.sendMessage(PREFIX + "Timer abgelaufen.");
                 for(int i = 0; i < 10; i++) {
                     p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_BELL, 1, 1);

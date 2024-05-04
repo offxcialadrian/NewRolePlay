@@ -1,6 +1,6 @@
 package de.newrp.Vehicle;
 
-import de.newrp.Main;
+import de.newrp.NewRoleplayMain;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -21,7 +21,7 @@ public class Strafzettel {
     }
 
     public static Strafzettel loadStrafzettel(int carID) {
-        try (PreparedStatement stmt = Main.getConnection().prepareStatement("SELECT id, reason, preis, cop FROM strafzettel WHERE id = ? ")) {
+        try (PreparedStatement stmt = NewRoleplayMain.getConnection().prepareStatement("SELECT id, reason, preis, cop FROM strafzettel WHERE id = ? ")) {
             stmt.setInt(1, carID);
 
             ResultSet rs = stmt.executeQuery();

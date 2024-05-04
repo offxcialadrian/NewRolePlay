@@ -1,6 +1,6 @@
 package de.newrp.API;
 
-import de.newrp.Main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -11,8 +11,8 @@ import java.sql.SQLException;
 public class FahndungLog {
 
     public FahndungLog(OfflinePlayer user, Player admin, int amount) {
-        Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () -> {
-            try (PreparedStatement statement = Main.getConnection().prepareStatement(
+        Bukkit.getScheduler().runTaskAsynchronously(NewRoleplayMain.getInstance(), () -> {
+            try (PreparedStatement statement = NewRoleplayMain.getConnection().prepareStatement(
                     "INSERT INTO wantedlog (userID, copID, amount, time) VALUES (?, ?, ?, ?);"
             )) {
                 statement.setInt(1, Script.getNRPID(user));

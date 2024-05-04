@@ -1,7 +1,7 @@
 package de.newrp.Player;
 
 import de.newrp.API.*;
-import de.newrp.Main;
+import de.newrp.NewRoleplayMain;
 import de.newrp.House.House;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -224,7 +224,7 @@ public class Personalausweis implements CommandExecutor, Listener {
                         Sperre.PERSONALAUSWEIS.setSperre(id, 6);
                         Personalausweis.cooldown.put(p, System.currentTimeMillis());
                         e.getView().close();
-                        Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
+                        Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> {
                             if (p.isOnline()) {
                                 p.sendMessage(PREFIX + "Sie können Ihren Personalausweis nun in der Stadthalle abholen.");
                             }

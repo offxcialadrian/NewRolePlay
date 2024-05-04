@@ -4,7 +4,7 @@ import de.newrp.API.Log;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.Berufe.Beruf;
-import de.newrp.Main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -73,7 +73,7 @@ public class Steuern implements CommandExecutor, TabCompleter {
         }
 
         public double getPercentage() {
-            try (Statement stmt = Main.getConnection().createStatement();
+            try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
                  ResultSet rs = stmt.executeQuery("SELECT * FROM city")) {
                 if (rs.next()) {
                     return rs.getDouble(this.dbname);

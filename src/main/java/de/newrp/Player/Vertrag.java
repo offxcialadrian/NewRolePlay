@@ -2,7 +2,7 @@ package de.newrp.Player;
 
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
-import de.newrp.Main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -15,7 +15,7 @@ public class Vertrag implements CommandExecutor {
     public static final String PREFIX = "§8[§6Vertrag§8] §6" + Messages.ARROW + " §7";
 
     public static void saveVertrag(Player from, Player to, String vertrag, boolean accept) {
-        try (PreparedStatement statement = Main.getConnection().prepareStatement("INSERT INTO vertrag (userID_from, userID_to, bedingung, accept, time) VALUES (?, ?, ?, ?, ?);")) {
+        try (PreparedStatement statement = NewRoleplayMain.getConnection().prepareStatement("INSERT INTO vertrag (userID_from, userID_to, bedingung, accept, time) VALUES (?, ?, ?, ?, ?);")) {
             statement.setInt(1, Script.getNRPID(from));
             statement.setInt(2, Script.getNRPID(to));
             statement.setString(3, vertrag);

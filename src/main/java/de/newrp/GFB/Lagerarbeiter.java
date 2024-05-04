@@ -2,7 +2,7 @@ package de.newrp.GFB;
 
 import de.newrp.API.*;
 import de.newrp.Administrator.BuildMode;
-import de.newrp.Main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.*;
 import org.bukkit.block.Sign;
 import org.bukkit.command.Command;
@@ -306,7 +306,7 @@ public class Lagerarbeiter implements CommandExecutor, Listener {
                         p.getInventory().clear();
                         Cache.loadInventory(p);
                     }
-                }.runTaskLater(Main.getInstance(), 20L);
+                }.runTaskLater(NewRoleplayMain.getInstance(), 20L);
             } else {
                 SCORE.replace(p.getName(), amount - 1);
                 p.sendMessage(PREFIX + "§aRichtig! §6Hole nun das nächste Produkt aus \"Ware\" und sortiere es ein (" + (TOTAL_SCORE.get(p.getName()) - SCORE.get(p.getName())) + "/" + (TOTAL_SCORE.get(p.getName()) + 1) + ")");

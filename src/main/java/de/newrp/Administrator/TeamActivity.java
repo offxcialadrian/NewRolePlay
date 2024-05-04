@@ -3,7 +3,7 @@ package de.newrp.Administrator;
 import de.newrp.API.Messages;
 import de.newrp.API.Rank;
 import de.newrp.API.Script;
-import de.newrp.Main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -66,7 +66,7 @@ public class TeamActivity implements CommandExecutor {
     public static HashMap<String, Integer> getActitvity() {
         HashMap<String, Integer> activity = new HashMap<>();
         for(OfflinePlayer op : Script.getAllNRPTeam()) {
-            try (Statement stmt = Main.getConnection().createStatement();
+            try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
                  ResultSet rs = stmt.executeQuery("SELECT COUNT(*) AS total FROM ticket WHERE supporterID=" + Script.getNRPID(op))) {
                 if(rs.next()) {
                     activity.put(Script.getNameInDB(op), rs.getInt("total"));
@@ -83,7 +83,7 @@ public class TeamActivity implements CommandExecutor {
 
     public static double getRating(int nrpid) {
         double rating = 0;
-        try (Statement stmt = Main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT AVG(rating) AS total FROM supporter_rating WHERE rating > 0 AND supporterID=" + nrpid)) {
             if (rs.next()) {
                 rating = rs.getDouble("total");
@@ -96,7 +96,7 @@ public class TeamActivity implements CommandExecutor {
 
     public static double getRating(int days, int nrpid) {
         double rating = 0;
-        try (Statement stmt = Main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT AVG(rating) AS supporter_rating FROM supporter_rating WHERE rating > 0 AND time > " + (System.currentTimeMillis() - ((long) days * 24 * 60 * 60 * 1000)) + " AND supporterID=" + nrpid) ) {
             if (rs.next()) {
                 rating = rs.getDouble("total");
@@ -110,7 +110,7 @@ public class TeamActivity implements CommandExecutor {
     public static HashMap<String, Integer> getActitvity(int days) {
         HashMap<String, Integer> activity = new HashMap<>();
         for(OfflinePlayer op : Script.getAllNRPTeam()) {
-            try (Statement stmt = Main.getConnection().createStatement();
+            try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
                  ResultSet rs = stmt.executeQuery("SELECT COUNT(*) AS total FROM ticket WHERE supporterID=" + Script.getNRPID(op) + " AND closed > " + (System.currentTimeMillis() - ((long) days * 24 * 60 * 60 * 1000)))) {
                 if(rs.next()) {
                     activity.put(Script.getNameInDB(op), rs.getInt("total"));
@@ -127,7 +127,7 @@ public class TeamActivity implements CommandExecutor {
 
     public static int getTotalTicket() {
         int total = 0;
-        try (Statement stmt = Main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT COUNT(*) AS total FROM ticket")) {
             if (rs.next()) {
                 total = rs.getInt("total");
@@ -140,7 +140,7 @@ public class TeamActivity implements CommandExecutor {
 
     public static int getTotalTicket(int days) {
         int total = 0;
-        try (Statement stmt = Main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT COUNT(*) AS total FROM ticket WHERE closed > " + (System.currentTimeMillis() - ((long) days * 24 * 60 * 60 * 1000)))) {
             if (rs.next()) {
                 total = rs.getInt("total");

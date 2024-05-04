@@ -5,7 +5,7 @@ import de.newrp.Berufe.Abteilung;
 import de.newrp.Berufe.Beruf;
 import de.newrp.House.House;
 import de.newrp.Shop.Shops;
-import de.newrp.Main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -53,7 +53,7 @@ public class FeuerwehrEinsatz {
         };
 
         if (scheduled) {
-            Bukkit.getScheduler().runTask(Main.getInstance(), runnable);
+            Bukkit.getScheduler().runTask(NewRoleplayMain.getInstance(), runnable);
         } else {
             runnable.run();
         }
@@ -98,7 +98,7 @@ public class FeuerwehrEinsatz {
                         count++;
                     }
                     if (l.getBlock().getType().equals(Material.AIR) && (l.getBlockY() - loc.getBlockY() < 5)) {
-                        Bukkit.getScheduler().runTask(Main.getInstance(), () -> {
+                        Bukkit.getScheduler().runTask(NewRoleplayMain.getInstance(), () -> {
                             Block setFire = b.getWorld().getBlockAt(l);
                             setFire.setType(Material.FIRE);
                             if (setFire.getType().equals(Material.FIRE)) {
@@ -158,7 +158,7 @@ public class FeuerwehrEinsatz {
                     count++;
                 }
                 if (l.getBlock().getType().equals(Material.AIR) && (l.getBlockY() - loc.getBlockY() < 5)) {
-                    Bukkit.getScheduler().runTask(Main.getInstance(), () -> {
+                    Bukkit.getScheduler().runTask(NewRoleplayMain.getInstance(), () -> {
                         Block setFire = b.getWorld().getBlockAt(l);
                         setFire.setType(Material.FIRE);
                         if (setFire.getType().equals(Material.FIRE)) {

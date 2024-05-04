@@ -4,7 +4,7 @@ import de.newrp.API.Messages;
 import de.newrp.API.Rank;
 import de.newrp.API.Script;
 import de.newrp.API.Team;
-import de.newrp.Main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -44,7 +44,7 @@ public class Baulog implements CommandExecutor {
                         p.sendMessage(PREFIX + builder.getName() + " §8× §6" + Script.getBuiltBlocks(builder) + " §8(§6" + Script.getPercentage(Script.getBuiltOnlyPlacedBlocks(builder), Script.getBuiltBlocks(builder)) + "%§8)");
                     }
                 }
-            }.runTaskAsynchronously(Main.getInstance());
+            }.runTaskAsynchronously(NewRoleplayMain.getInstance());
             return true;
         }
 

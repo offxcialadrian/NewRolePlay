@@ -4,7 +4,7 @@ import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.Shop.ShopItem;
 import de.newrp.Shop.Shops;
-import de.newrp.Main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -151,7 +151,7 @@ public class Hotel {
 
         public List<Rooms> getRentedRooms() {
             for(Rooms room : Rooms.values()) {
-                try(Statement stmt = Main.getConnection().createStatement()) {
+                try(Statement stmt = NewRoleplayMain.getConnection().createStatement()) {
                     if(stmt.executeQuery("SELECT * FROM hotel WHERE room = " + room.getID()).next()) {
                         return List.of(room);
                     }
@@ -288,7 +288,7 @@ public class Hotel {
         }
 
         public boolean isRented() {
-            try (Statement stmt = Main.getConnection().createStatement();
+            try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
                  ResultSet rs = stmt.executeQuery("SELECT COUNT(*) AS total FROM HOTEL WHERE room='" + getID() + "'")) {
                 while (rs.next()) {
                     return rs.getInt("total")>=getType().getCapacity();

@@ -3,7 +3,7 @@ package de.newrp.GFB;
 import de.newrp.API.Messages;
 import de.newrp.API.PayDay;
 import de.newrp.API.Script;
-import de.newrp.Main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -78,7 +78,7 @@ public class Eishalle implements CommandExecutor, Listener {
                     }
                 }
             }
-        }.runTaskLater(Main.getInstance(), 3 * 60 * 20L);
+        }.runTaskLater(NewRoleplayMain.getInstance(), 3 * 60 * 20L);
         return false;
     }
 

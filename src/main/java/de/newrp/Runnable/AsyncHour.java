@@ -18,7 +18,7 @@ import de.newrp.Player.Hotel;
 import de.newrp.Shop.Shop;
 import de.newrp.Shop.ShopType;
 import de.newrp.Shop.Shops;
-import de.newrp.Main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -62,7 +62,7 @@ public class AsyncHour extends BukkitRunnable {
             }
         }
 
-        try (Statement stmt = Main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM loans WHERE time>" + System.currentTimeMillis())) {
             while (rs.next()) {
                 OfflinePlayer p = Script.getOfflinePlayer(rs.getInt("userID"));

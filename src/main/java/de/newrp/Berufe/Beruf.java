@@ -5,7 +5,7 @@ import de.newrp.API.Script;
 import de.newrp.Forum.ForumGroup;
 import de.newrp.Government.Arbeitslosengeld;
 import de.newrp.TeamSpeak.TeamspeakServerGroup;
-import de.newrp.Main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
@@ -98,7 +98,7 @@ public class Beruf {
 
         public ArrayList<Location> getDoors() {
             ArrayList<Location> locs = new ArrayList<>();
-            try (Statement stmt = Main.getConnection().createStatement();
+            try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
                  ResultSet rs = stmt.executeQuery("SELECT berufID, x, y, z FROM berufsdoor WHERE berufID=" + this.id)) {
                 while (rs.next()) {
                     int x = rs.getInt("x");
@@ -115,7 +115,7 @@ public class Beruf {
         }
 
         public int getKasse() {
-            try (Statement stmt = Main.getConnection().createStatement();
+            try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
                  ResultSet rs = stmt.executeQuery("SELECT * FROM berufe_kasse WHERE berufID='" + this.id + "'")) {
                 if (rs.next()) {
                     return rs.getInt("kasse");
@@ -139,7 +139,7 @@ public class Beruf {
         }
 
         public String getMOTD() {
-            try (Statement stmt = Main.getConnection().createStatement();
+            try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
                  ResultSet rs = stmt.executeQuery("SELECT * FROM berufe_motd WHERE berufID='" + this.id + "'")) {
                 if (rs.next()) {
                     return rs.getString("motd");
@@ -235,7 +235,7 @@ public class Beruf {
 
         public List<OfflinePlayer> getAllMembers() {
             List<OfflinePlayer> list = new ArrayList<>();
-            try (Statement stmt = Main.getConnection().createStatement();
+            try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
                  ResultSet rs = stmt.executeQuery("SELECT * FROM berufe WHERE berufID='" + this.id + "' ORDER BY abteilung DESC")) {
                 if (rs.next()) {
                     do {

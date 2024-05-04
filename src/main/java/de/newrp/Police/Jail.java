@@ -1,7 +1,7 @@
 package de.newrp.Police;
 
 import de.newrp.API.*;
-import de.newrp.Main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -47,7 +47,7 @@ public class Jail {
     }
 
     public static int getJailtimeDatabase(Player p) {
-        try (Statement stmt = Main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT time FROM jail WHERE nrp_id=" + Script.getNRPID(p))) {
             if (rs.next()) {
                 return rs.getInt("time");
@@ -67,7 +67,7 @@ public class Jail {
             int taskID = j.getTaskID();
             Bukkit.getScheduler().cancelTask(taskID);
 
-            taskID = Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getInstance(), () -> {
+            taskID = Bukkit.getScheduler().scheduleSyncDelayedTask(NewRoleplayMain.getInstance(), () -> {
                 if (p.isOnline()) unarrest(p);
             }, (left - seconds) * 20L);
             j.setTaskID(taskID);
@@ -83,7 +83,7 @@ public class Jail {
             if (j.getTaskID() != 0) Bukkit.getScheduler().cancelTask(j.getTaskID());
             JAIL.remove(p.getName());
         }
-        final int taskID = Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getInstance(), () -> {
+        final int taskID = Bukkit.getScheduler().scheduleSyncDelayedTask(NewRoleplayMain.getInstance(), () -> {
             if (p.isOnline()) unarrest(p);
         }, time * 20L);
         Jail j = new Jail(Script.getNRPID(p), p.getName(), System.currentTimeMillis(), time);
@@ -121,7 +121,7 @@ public class Jail {
             Location loc = locs[Script.getRandom(0, 0)];
             loc.getChunk().load();
 
-            Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> p.teleport(loc), 5);
+            Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> p.teleport(loc), 5);
         } else {
             p.teleport(new Location(Script.WORLD, 1018, 68, 548, 358.74432f, -1.3718445f));
         }

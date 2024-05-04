@@ -10,7 +10,7 @@ import de.newrp.Gangwar.GangwarCommand;
 import de.newrp.Player.Notruf;
 import de.newrp.Player.Spawnchange;
 import de.newrp.Police.StartTransport;
-import de.newrp.Main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
@@ -65,7 +65,7 @@ public class Friedhof {
             Schule.STARTED.remove(p);
         }
 
-        final int taskID = Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getInstance(), () -> {
+        final int taskID = Bukkit.getScheduler().scheduleSyncDelayedTask(NewRoleplayMain.getInstance(), () -> {
             if (p.isOnline()) revive(p, null);
         }, f.getDeathtimeLeft() * 20L);
         f.setTaskID(taskID);
@@ -92,7 +92,7 @@ public class Friedhof {
         }
 
         if(AcceptNotruf.accept.containsKey(p)) {
-            AcceptNotruf.reOpenNotruf(p);
+            AcceptNotruf.reOpenNotruf(p, AcceptNotruf.accept.get(p));
         }
 
         if(Notruf.call.containsKey(p)) {
@@ -155,7 +155,7 @@ public class Friedhof {
                     cancel();
                 }
             }
-        }.runTaskTimer(Main.getInstance(), 20L, 20L);
+        }.runTaskTimer(NewRoleplayMain.getInstance(), 20L, 20L);
     }
 
     public static void revive(Player p, Location teleportLoc) {
@@ -205,7 +205,7 @@ public class Friedhof {
                     public void run() {
                         p.sendMessage(Messages.INFO + "Du lebst nun wieder!");
                     }
-                }.runTaskLater(Main.getInstance(), 20L * 2);
+                }.runTaskLater(NewRoleplayMain.getInstance(), 20L * 2);
                 p.setHealth(p.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
 
                 if(!GangwarCommand.isInGangwar(p)) {
@@ -241,7 +241,7 @@ public class Friedhof {
             int taskID = f.getTaskID();
             Bukkit.getScheduler().cancelTask(taskID);
 
-            taskID = Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getInstance(), () -> {
+            taskID = Bukkit.getScheduler().scheduleSyncDelayedTask(NewRoleplayMain.getInstance(), () -> {
                 if (p.isOnline()) revive(p, null);
             }, (left - seconds) * 20L);
             f.setTaskID(taskID);
@@ -256,7 +256,7 @@ public class Friedhof {
         int left = this.getDeathtimeLeft();
 
         Bukkit.getScheduler().cancelTask(taskID);
-        taskID = Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getInstance(), () -> {
+        taskID = Bukkit.getScheduler().scheduleSyncDelayedTask(NewRoleplayMain.getInstance(), () -> {
             if (p.isOnline()) revive(p, null);
         }, (left + seconds) * 20L);
 
@@ -267,7 +267,7 @@ public class Friedhof {
     }
 
     public static int getDeathtimeDatabase(Player p) {
-        try (Statement stmt = Main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT time FROM friedhof WHERE id=" + Script.getNRPID(p))) {
             if (rs.next()) {
                 return rs.getInt("time");

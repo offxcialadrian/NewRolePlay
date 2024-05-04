@@ -9,7 +9,7 @@ import de.newrp.Government.Stadtkasse;
 import de.newrp.Police.StartTransport;
 import de.newrp.Waffen.Waffen;
 import de.newrp.Waffen.Weapon;
-import de.newrp.Main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -380,7 +380,7 @@ public class Equip implements CommandExecutor, Listener {
     }
 
     public static int getAvailableEquip() {
-        try (Statement stmt = Main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT equip FROM city")) {
             if (rs.next()) return rs.getInt("equip");
         } catch (SQLException e) {

@@ -5,7 +5,7 @@ import de.newrp.API.Premium;
 import de.newrp.API.Rank;
 import de.newrp.API.Script;
 import de.newrp.Administrator.SDuty;
-import de.newrp.Main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -54,7 +54,7 @@ public class Anrufbeantworter implements CommandExecutor {
             if(getAnrufbeantworter(tg) == null) {
                 p.sendMessage(PREFIX + "Der Spieler hat keinen Anrufbeantworter.");
             } else {
-                try (Statement stmt = Main.getConnection().createStatement()) {
+                try (Statement stmt = NewRoleplayMain.getConnection().createStatement()) {
                     stmt.executeUpdate("UPDATE handy_settings SET anrufbeantworter=NULL WHERE nrp_id=" + Script.getNRPID(tg));
                     p.sendMessage(PREFIX + "Der Anrufbeantworter von §e" + tg.getName() + "§7 wurde entfernt.");
                     Script.sendTeamMessage(p, ChatColor.GOLD, "hat den Anruf beantworter von " + tg.getName() + " entfernt.", true);
@@ -98,7 +98,7 @@ public class Anrufbeantworter implements CommandExecutor {
 
     public static String getAnrufbeantworter(OfflinePlayer p) {
         if(!Premium.hasPremium(p)) return null;
-        try (Statement stmt = Main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM handy_settings WHERE nrp_id=" + Script.getNRPID(p))) {
             if (rs.next()) {
                 return rs.getString("anrufbeantworter");

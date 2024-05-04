@@ -3,7 +3,7 @@ package de.newrp.TeamSpeak;
 import com.github.theholywaffle.teamspeak3.api.ChannelProperty;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
-import de.newrp.Main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -19,7 +19,7 @@ public class TeamspeakUpdate implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
-        Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () -> {
+        Bukkit.getScheduler().runTaskAsynchronously(NewRoleplayMain.getInstance(), () -> {
             try {
                 String name = "[cspacer]» " + (Bukkit.getOnlinePlayers().size()) + "/" + (Bukkit.getServer().getMaxPlayers()) + " Spieler online «";
                 if (!TeamSpeak.getApi().getChannelInfo(4).getName().equals(name)) {
@@ -34,11 +34,11 @@ public class TeamspeakUpdate implements Listener {
 			if(SELF_TRY) {
 				Script.sendTeamMessage(TeamSpeak.PREFIX + "§cVersuche automatisch verbindung herzustellen...");
 				try {
-					Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), TeamSpeak::disconnect);
+					Bukkit.getScheduler().runTaskAsynchronously(NewRoleplayMain.getInstance(), TeamSpeak::disconnect);
 				} catch (Exception exc) {
                     Script.sendTeamMessage(TeamSpeak.PREFIX + "§cDie Verbindung zum Teamspeak konnte nicht automatisch hergstellt werden.");
 				} finally {
-					Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), TeamSpeak::connect);
+					Bukkit.getScheduler().runTaskAsynchronously(NewRoleplayMain.getInstance(), TeamSpeak::connect);
                     Script.sendTeamMessage(TeamSpeak.PREFIX + "§aVerbindung zum Teamspeak wieder aufgebaut.");
 				}
 			}
@@ -48,7 +48,7 @@ public class TeamspeakUpdate implements Listener {
 
     @EventHandler
     public void onQuit(PlayerQuitEvent e) {
-        Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () -> {
+        Bukkit.getScheduler().runTaskAsynchronously(NewRoleplayMain.getInstance(), () -> {
             try {
                 String name = "[cspacer]» " + (Bukkit.getOnlinePlayers().size()) + "/" + (Bukkit.getServer().getMaxPlayers()) + " Spieler online «";
                 if (!TeamSpeak.getApi().getChannelInfo(4).getName().equals(name)) {

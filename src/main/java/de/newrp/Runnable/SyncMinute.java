@@ -10,7 +10,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
-import de.newrp.Main;
+import de.newrp.NewRoleplayMain;
 
 import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
@@ -52,11 +52,11 @@ public class SyncMinute extends BukkitRunnable {
 
             Bukkit.broadcastMessage(Script.PREFIX + "§4§lACHTUNG: §cDer Server startet in einer Minute neu! (erwartete Restart-Dauer: " + Script.getRandom(20, 25) + " Sekunden)");
             try{ TeamSpeak.getApi().sendServerMessage("ACHTUNG! DER SERVER STARTET IN EINER MINUTE NEU!");} catch (Exception e) { Script.sendTeamMessage(Script.PREFIX + "Es erfolgte keine Nachricht auf dem TeamSpeak, da die Querry down ist."); }
-            Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
+            Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> {
                 Bukkit.broadcastMessage(Script.PREFIX + "§4§lACHTUNG: §cDer Server startet in 30 Sekunden neu!");
-                Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
+                Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> {
                     Bukkit.broadcastMessage(Script.PREFIX + "§4§lACHTUNG: §cDer Server startet in 10 Sekunden neu!");
-                    Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
+                    Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> {
                         Bukkit.broadcastMessage(Script.PREFIX + "§4§lACHTUNG: §cDer Server startet in 5 Sekunden neu!");
                         for(Player all : Bukkit.getOnlinePlayers()) {
                             if(Cache.inventar.containsKey(all.getName())) {
@@ -64,15 +64,15 @@ public class SyncMinute extends BukkitRunnable {
                                 all.sendMessage(Messages.INFO + "Der Server restartet und dein Inventar wurde wiederhergestellt.");
                             }
                         }
-                        Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
+                        Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> {
                             Bukkit.broadcastMessage(Script.PREFIX + "§4§lACHTUNG: §cDer Server startet in 4 Sekunden neu!");
-                            Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
+                            Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> {
                                 Bukkit.broadcastMessage(Script.PREFIX + "§4§lACHTUNG: §cDer Server startet in 3 Sekunden neu!");
-                                Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
+                                Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> {
                                     Bukkit.broadcastMessage(Script.PREFIX + "§4§lACHTUNG: §cDer Server startet in 2 Sekunden neu!");
-                                    Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
+                                    Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> {
                                         Bukkit.broadcastMessage(Script.PREFIX + "§4§lACHTUNG: §cDer Server startet in 1 Sekunde neu!");
-                                        Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
+                                        Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> {
                                             Script.executeUpdate("UPDATE birthday SET geschenk = 0");
                                             Bukkit.broadcastMessage(Script.PREFIX + "§4§lACHTUNG: §cDer Server startet jetzt neu!");
                                             for(Player all : Bukkit.getOnlinePlayers()) {

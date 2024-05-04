@@ -8,7 +8,7 @@ import de.newrp.News.BreakingNews;
 import de.newrp.News.Umfrage;
 import de.newrp.Police.Handschellen;
 import de.newrp.Police.Jail;
-import de.newrp.Main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -110,7 +110,7 @@ public class Mobile implements Listener {
         }
 
         public int getAkku(Player p) {
-            try(PreparedStatement stmt = Main.getConnection().prepareStatement("SELECT akku FROM phone WHERE nrp_id = ?")) {
+            try(PreparedStatement stmt = NewRoleplayMain.getConnection().prepareStatement("SELECT akku FROM phone WHERE nrp_id = ?")) {
                 stmt.setInt(1, Script.getNRPID(p));
                 ResultSet rs = stmt.executeQuery();
                 if(rs.next()) {
@@ -141,7 +141,7 @@ public class Mobile implements Listener {
         }
 
         public boolean isDestroyed(Player p) {
-            try(PreparedStatement stmt = Main.getConnection().prepareStatement("SELECT destroyed FROM phone WHERE nrp_id = ?")) {
+            try(PreparedStatement stmt = NewRoleplayMain.getConnection().prepareStatement("SELECT destroyed FROM phone WHERE nrp_id = ?")) {
                 stmt.setInt(1, Script.getNRPID(p));
                 ResultSet rs = stmt.executeQuery();
                 if(rs.next()) {
@@ -161,7 +161,7 @@ public class Mobile implements Listener {
         }
 
         public boolean hasCloud(Player p) {
-            try(PreparedStatement stmt = Main.getConnection().prepareStatement("SELECT cloud FROM handy_settings WHERE nrp_id = ?")) {
+            try(PreparedStatement stmt = NewRoleplayMain.getConnection().prepareStatement("SELECT cloud FROM handy_settings WHERE nrp_id = ?")) {
                 stmt.setInt(1, Script.getNRPID(p));
                 ResultSet rs = stmt.executeQuery();
                 if(rs.next()) {
@@ -193,7 +193,7 @@ public class Mobile implements Listener {
         }
 
         public boolean getLautlos(Player p) {
-            try(PreparedStatement stmt = Main.getConnection().prepareStatement("SELECT lautlos FROM handy_settings WHERE nrp_id = ?")) {
+            try(PreparedStatement stmt = NewRoleplayMain.getConnection().prepareStatement("SELECT lautlos FROM handy_settings WHERE nrp_id = ?")) {
                 stmt.setInt(1, Script.getNRPID(p));
                 ResultSet rs = stmt.executeQuery();
                 if(rs.next()) {
@@ -215,7 +215,7 @@ public class Mobile implements Listener {
     }
 
     public static boolean hasCloud(Player p) {
-        try(PreparedStatement stmt = Main.getConnection().prepareStatement("SELECT cloud FROM handy_settings WHERE nrp_id = ?")) {
+        try(PreparedStatement stmt = NewRoleplayMain.getConnection().prepareStatement("SELECT cloud FROM handy_settings WHERE nrp_id = ?")) {
             stmt.setInt(1, Script.getNRPID(p));
             ResultSet rs = stmt.executeQuery();
             if(rs.next()) {
@@ -297,7 +297,7 @@ public class Mobile implements Listener {
     }
 
     public static void sendCallHistory(Player p) {
-        try(PreparedStatement stmt = Main.getConnection().prepareStatement("SELECT * FROM call_history WHERE nrp_id = ? LIMIT 10")) {
+        try(PreparedStatement stmt = NewRoleplayMain.getConnection().prepareStatement("SELECT * FROM call_history WHERE nrp_id = ? LIMIT 10")) {
             stmt.setInt(1, Script.getNRPID(p));
             ResultSet rs = stmt.executeQuery();
             p.sendMessage(PREFIX + "§8» §7Anrufverlauf:");
@@ -313,7 +313,7 @@ public class Mobile implements Listener {
     }
 
     public static void sendMessageHistory(Player p) {
-        try(PreparedStatement stmt = Main.getConnection().prepareStatement("SELECT * FROM messages WHERE nrp_id = ? OR sender= ? AND seen = false")) {
+        try(PreparedStatement stmt = NewRoleplayMain.getConnection().prepareStatement("SELECT * FROM messages WHERE nrp_id = ? OR sender= ? AND seen = false")) {
             stmt.setInt(1, Script.getNRPID(p));
             stmt.setInt(2, Script.getNRPID(p));
             ResultSet rs = stmt.executeQuery();
@@ -624,7 +624,7 @@ public class Mobile implements Listener {
     }
 
     public static int getMissedCalls(Player p) {
-        try(PreparedStatement stmt = Main.getConnection().prepareStatement("SELECT * FROM missed_calls WHERE toID = ?")) {
+        try(PreparedStatement stmt = NewRoleplayMain.getConnection().prepareStatement("SELECT * FROM missed_calls WHERE toID = ?")) {
             stmt.setInt(1, Script.getNRPID(p));
             ResultSet rs = stmt.executeQuery();
             int i = 0;
@@ -639,7 +639,7 @@ public class Mobile implements Listener {
     }
 
     public static void sendMissedCalls(Player p) {
-        try (PreparedStatement stmt = Main.getConnection().prepareStatement("SELECT * FROM missed_calls WHERE toID = ?")) {
+        try (PreparedStatement stmt = NewRoleplayMain.getConnection().prepareStatement("SELECT * FROM missed_calls WHERE toID = ?")) {
             stmt.setInt(1, Script.getNRPID(p));
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {

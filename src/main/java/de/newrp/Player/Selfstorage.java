@@ -6,7 +6,7 @@ import de.newrp.Administrator.BuildMode;
 import de.newrp.Berufe.Equip;
 import de.newrp.GFB.GFB;
 import de.newrp.Waffen.Weapon;
-import de.newrp.Main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -252,7 +252,7 @@ public class Selfstorage implements CommandExecutor, Listener {
     }
 
     public static OfflinePlayer getOwner(Rooms room) {
-        try (Statement stmt = Main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM selfstorage WHERE room_id=" + room.getID())) {
             if (rs.next()) {
                 return Script.getOfflinePlayer(rs.getInt("nrp_id"));

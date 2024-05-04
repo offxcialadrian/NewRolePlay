@@ -12,7 +12,7 @@ import de.newrp.Berufe.Beruf;
 import de.newrp.Berufe.Duty;
 import de.newrp.Player.AFK;
 import de.newrp.Police.Fahndung;
-import de.newrp.Main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -132,7 +132,7 @@ public class HackPoliceComputer implements CommandExecutor, Listener {
                 lastTime = now;
                 hacker = null;
             }
-        }.runTaskLater(Main.getInstance(), lengthInSeconds * 20L);
+        }.runTaskLater(NewRoleplayMain.getInstance(), lengthInSeconds * 20L);
         schedulerID = task.getTaskId();
         return true;
     }

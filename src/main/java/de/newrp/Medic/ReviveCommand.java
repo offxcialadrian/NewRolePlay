@@ -6,7 +6,7 @@ import de.newrp.Berufe.Beruf;
 import de.newrp.Berufe.Duty;
 import de.newrp.Chat.Me;
 import de.newrp.Waffen.Waffen;
-import de.newrp.Main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -131,7 +131,7 @@ public class ReviveCommand implements CommandExecutor {
         cooldowns.put(p.getName(), time);
         cooldowns.put(tg.getName(), time);
         final Location loc = p.getLocation();
-        Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
+        Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> {
             if (p.getLocation().distance(f.getDeathLocation()) > 3D) {
                 p.sendMessage(Messages.ERROR + "Du bist zuweit von der Leiche weg.");
                 return;

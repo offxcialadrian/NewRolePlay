@@ -4,7 +4,7 @@ import de.newrp.API.Particle;
 import de.newrp.API.Script;
 import de.newrp.Administrator.SDuty;
 import de.newrp.Chat.Me;
-import de.newrp.Main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
@@ -67,7 +67,7 @@ public class Tazer implements Listener {
                             }
                         }
                     }
-                }.runTaskTimer(Main.getInstance(), 20, 20);
+                }.runTaskTimer(NewRoleplayMain.getInstance(), 20, 20);
             }
             e.setCancelled(true);
         }

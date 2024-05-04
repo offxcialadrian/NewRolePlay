@@ -1,7 +1,7 @@
 package de.newrp.GFB;
 
 import de.newrp.API.*;
-import de.newrp.Main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.data.type.Slab;
@@ -106,7 +106,7 @@ public class Strassenwartung implements CommandExecutor, Listener {
                     TOTAL_SCORE.remove(p.getName());
                 }
             }
-        }.runTaskLater(Main.getInstance(), (15L * GFB.STRASSENWARTUNG.getLevel(p)) * 60 * 20L);
+        }.runTaskLater(NewRoleplayMain.getInstance(), (15L * GFB.STRASSENWARTUNG.getLevel(p)) * 60 * 20L);
 
         return false;
     }

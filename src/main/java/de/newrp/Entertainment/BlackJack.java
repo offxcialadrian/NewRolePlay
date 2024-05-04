@@ -3,7 +3,7 @@ package de.newrp.Entertainment;
 import de.newrp.API.Messages;
 import de.newrp.API.PaymentType;
 import de.newrp.API.Script;
-import de.newrp.Main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -196,7 +196,7 @@ public class BlackJack implements CommandExecutor, Listener {
                                 public void run() {
                                     stand(p);
                                 }
-                            }.runTaskLater(Main.getInstance(), 20L * 2);
+                            }.runTaskLater(NewRoleplayMain.getInstance(), 20L * 2);
                         } else {
                             if (nc == pc) {
                                 tie(p);
@@ -208,7 +208,7 @@ public class BlackJack implements CommandExecutor, Listener {
                     win(p);
                 }
             }
-        }.runTaskLater(Main.getInstance(), 20L * 3);
+        }.runTaskLater(NewRoleplayMain.getInstance(), 20L * 3);
     }
 
     private static void openGUI(Player p) {

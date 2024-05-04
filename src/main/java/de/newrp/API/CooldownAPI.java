@@ -1,6 +1,6 @@
 package de.newrp.API;
 
-import de.newrp.Main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -58,7 +58,7 @@ public class CooldownAPI implements Listener {
                 Script.sendActionBar(p, "§cWarte... §8» §a" + sb);
                 level++;
             }
-        }.runTaskTimerAsynchronously(Main.getInstance(), 0L, (seconds / 10) * 20L);
+        }.runTaskTimerAsynchronously(NewRoleplayMain.getInstance(), 0L, (seconds / 10) * 20L);
     }
 
     public Player getPlayer() {

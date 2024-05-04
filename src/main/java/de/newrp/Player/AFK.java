@@ -4,7 +4,7 @@ import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.Administrator.SDuty;
 import de.newrp.GFB.Schule;
-import de.newrp.Main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -69,7 +69,7 @@ public class AFK implements CommandExecutor, Listener {
             public void run() {
                 SDuty.updateScoreboard();
             }
-        }.runTaskLater(Main.getInstance(), 20L);
+        }.runTaskLater(NewRoleplayMain.getInstance(), 20L);
     }
 
     public static void updateAFK(Player p) {
@@ -92,7 +92,7 @@ public class AFK implements CommandExecutor, Listener {
             loc.remove(p);
             return;
         }
-        Bukkit.getScheduler().runTask(Main.getInstance(), () -> AFK.setAFK(p, true));
+        Bukkit.getScheduler().runTask(NewRoleplayMain.getInstance(), () -> AFK.setAFK(p, true));
         if(!SDuty.isSDuty(p)) Script.sendLocalMessage(5, p, "§a§o  " + Script.getName(p) + " ist nun abwesend.");
         p.sendMessage(PREFIX + "Du bist nun im AFK-Modus.");
     }

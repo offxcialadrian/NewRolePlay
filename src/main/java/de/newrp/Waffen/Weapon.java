@@ -1,7 +1,7 @@
 package de.newrp.Waffen;
 
 import de.newrp.API.Script;
-import de.newrp.Main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -116,8 +116,8 @@ public enum Weapon {
             wdata.setWear(wdata.getWear() + 250);
         }
         final Weapon w = this;
-        Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () -> {
-            try (Statement stmt = Main.getConnection().createStatement();
+        Bukkit.getScheduler().runTaskAsynchronously(NewRoleplayMain.getInstance(), () -> {
+            try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
                  ResultSet rs = stmt.executeQuery("SELECT weaponDataID FROM weapon WHERE userID = " + id + " AND weaponID = " + w.getWeaponID())) {
                 if (rs.next()) {
                     int wdataID = rs.getInt("weaponDataID");
@@ -143,8 +143,8 @@ public enum Weapon {
             wdata.setAmmo(wdata.getAmmo() + ammo);
         }
         final Weapon w = this;
-        Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () -> {
-            try (Statement stmt = Main.getConnection().createStatement();
+        Bukkit.getScheduler().runTaskAsynchronously(NewRoleplayMain.getInstance(), () -> {
+            try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
                  ResultSet rs = stmt.executeQuery("SELECT weaponDataID FROM weapon WHERE userID = " + id + " AND weaponID = " + w.getWeaponID())) {
                 if (rs.next()) {
                     int wdataID = rs.getInt("weaponDataID");
@@ -166,8 +166,8 @@ public enum Weapon {
             wdata.setAmmo(i);
         }
         final Weapon w = this;
-        Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () -> {
-            try (Statement stmt = Main.getConnection().createStatement();
+        Bukkit.getScheduler().runTaskAsynchronously(NewRoleplayMain.getInstance(), () -> {
+            try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
                  ResultSet rs = stmt.executeQuery("SELECT weaponDataID FROM weapon WHERE userID = " + id + " AND weaponID = " + w.getWeaponID())) {
                 if (rs.next()) {
                     int wdataID = rs.getInt("weaponDataID");
@@ -193,8 +193,8 @@ public enum Weapon {
             wdata.setWear(wdata.getWear() + wear);
         }
         final Weapon w = this;
-        Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () -> {
-            try (Statement stmt = Main.getConnection().createStatement();
+        Bukkit.getScheduler().runTaskAsynchronously(NewRoleplayMain.getInstance(), () -> {
+            try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
                  ResultSet rs = stmt.executeQuery("SELECT weaponDataID FROM weapon WHERE userID = " + id + " AND weaponID = " + w.getWeaponID())) {
                 if (rs.next()) {
                     int wdataID = rs.getInt("weaponDataID");
@@ -216,8 +216,8 @@ public enum Weapon {
             wdata.setWear(i);
         }
         final Weapon w = this;
-        Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () -> {
-            try (Statement stmt = Main.getConnection().createStatement();
+        Bukkit.getScheduler().runTaskAsynchronously(NewRoleplayMain.getInstance(), () -> {
+            try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
                  ResultSet rs = stmt.executeQuery("SELECT weaponDataID FROM weapon WHERE userID = " + id + " AND weaponID = " + w.getWeaponID())) {
                 if (rs.next()) {
                     int wdataID = rs.getInt("weaponDataID");
