@@ -9,4 +9,6 @@ public interface IJdaService {
 
     void addEvent(final ListenerAdapter adapter);
 
+    JDA getJda();
+
 }

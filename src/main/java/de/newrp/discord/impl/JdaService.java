@@ -21,4 +21,9 @@ public class JdaService implements IJdaService {
     public void addEvent(ListenerAdapter adapter) {
         this.jda.addEventListener(adapter);
     }
+
+    @Override
+    public JDA getJda() {
+        return this.jda;
+    }
 }
