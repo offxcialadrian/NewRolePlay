@@ -1,11 +1,10 @@
 package de.newrp.Berufe;
 
-import de.newrp.API.Achievement;
 import de.newrp.API.Particle;
 import de.newrp.API.Script;
 import de.newrp.Administrator.SDuty;
 import de.newrp.Chat.Me;
-import de.newrp.main;
+import de.newrp.Main;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
@@ -68,7 +67,7 @@ public class Tazer implements Listener {
                             }
                         }
                     }
-                }.runTaskTimer(main.getInstance(), 20, 20);
+                }.runTaskTimer(Main.getInstance(), 20, 20);
             }
             e.setCancelled(true);
         }

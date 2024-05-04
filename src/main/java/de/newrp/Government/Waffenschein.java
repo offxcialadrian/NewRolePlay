@@ -6,7 +6,7 @@ import de.newrp.API.PaymentType;
 import de.newrp.API.Script;
 import de.newrp.Berufe.Abteilung;
 import de.newrp.Berufe.Beruf;
-import de.newrp.main;
+import de.newrp.Main;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -166,7 +166,7 @@ public class Waffenschein implements CommandExecutor {
     }
 
     public static int getApplicationAmount() {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = Main.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM waffenschein WHERE accepted='0'")) {
             int i = 0;
             while (rs.next()) {
@@ -180,7 +180,7 @@ public class Waffenschein implements CommandExecutor {
     }
 
     public static void sendApplications(Player p) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = Main.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM waffenschein WHERE accepted='0'")) {
             p.sendMessage(PREFIX + "Anträge gefunden:");
             while (rs.next()) {
@@ -194,7 +194,7 @@ public class Waffenschein implements CommandExecutor {
 
 
     public static void acceptApplication(int id) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = Main.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM waffenschein WHERE id='" + id + "'")) {
             if (rs.next()) {
                 Script.executeAsyncUpdate("UPDATE waffenschein SET accepted=1 WHERE id='" + id + "'");
@@ -214,7 +214,7 @@ public class Waffenschein implements CommandExecutor {
     }
 
     public static void denyApplication(int id) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = Main.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM waffenschein WHERE id='" + id + "'")) {
             if (rs.next()) {
                 Script.executeAsyncUpdate("DELETE from waffenschein WHERE id='" + id + "'");
@@ -231,7 +231,7 @@ public class Waffenschein implements CommandExecutor {
     }
 
     public static Player getPlayerByWaffenscheinID(int id) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = Main.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM waffenschein WHERE id=" + id)) {
             return Script.getPlayer(rs.getInt("nrp_id"));
         } catch (Exception e) {
@@ -242,7 +242,7 @@ public class Waffenschein implements CommandExecutor {
 
 
     public static boolean antragExists(int id) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = Main.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM waffenschein WHERE id=" + id)) {
             return rs.next();
         } catch (Exception e) {

@@ -1,10 +1,9 @@
 package de.newrp.Organisationen;
 
-import de.newrp.API.Debug;
 import de.newrp.API.ItemBuilder;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
-import de.newrp.main;
+import de.newrp.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -110,8 +109,8 @@ public class Plantage {
     }
 
     public static void loadAll() {
-        Bukkit.getScheduler().runTaskAsynchronously(main.getInstance(), () -> {
-            try (Statement stmt = main.getConnection().createStatement();
+        Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () -> {
+            try (Statement stmt = Main.getConnection().createStatement();
                  ResultSet rs = stmt.executeQuery("SELECT * FROM plantage")) {
                 while (rs.next()) {
                     Plantage p = new Plantage(rs.getInt("plantID"), Organisation.getOrganisation(rs.getInt("organisationID")), new Location(Script.WORLD, rs.getInt("x"), rs.getInt("y"), rs.getInt("z")),
@@ -284,7 +283,7 @@ public class Plantage {
     @SuppressWarnings("deprecation")
     public void register() {
         PLANTAGEN.add(this);
-        Bukkit.getScheduler().runTask(main.getInstance(), () -> {
+        Bukkit.getScheduler().runTask(Main.getInstance(), () -> {
             getLocation().getBlock().setType(getType().getMaterial());
             getLocation().getBlock().getRelative(BlockFace.DOWN).setType(Material.DIRT);
         });
@@ -321,11 +320,11 @@ public class Plantage {
     }
 
     public void burn() {
-        Bukkit.getScheduler().runTaskLater(main.getInstance(), () -> {
+        Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
             getLocation().getBlock().setType(Material.FIRE);
             getLocation().getBlock().getRelative(BlockFace.DOWN).setType(Material.DIRT);
         }, 50L);
-        Bukkit.getScheduler().runTaskLater(main.getInstance(), () -> getLocation().getBlock().setType(Material.AIR), 24 * 20L);
+        Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> getLocation().getBlock().setType(Material.AIR), 24 * 20L);
         Script.executeAsyncUpdate("DELETE FROM plantage WHERE plantID = " + this.plantID);
         PLANTAGEN.remove(this);
     }

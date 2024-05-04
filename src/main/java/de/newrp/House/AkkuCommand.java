@@ -7,7 +7,7 @@ import de.newrp.Berufe.Beruf;
 import de.newrp.Organisationen.Organisation;
 import de.newrp.Player.Hotel;
 import de.newrp.Player.Mobile;
-import de.newrp.main;
+import de.newrp.Main;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -174,6 +174,6 @@ public class AkkuCommand implements CommandExecutor, Listener {
                 Script.sendActionBar(p, "§eAufladen... §8» §a" + sb);
 
             }
-        }. runTaskTimerAsynchronously(main.getInstance(), Premium.hasPremium(p) ? 3L : 5L, Premium.hasPremium(p) ? 3L : 5L);
+        }. runTaskTimerAsynchronously(Main.getInstance(), Premium.hasPremium(p) ? 3L : 5L, Premium.hasPremium(p) ? 3L : 5L);
     }
 }

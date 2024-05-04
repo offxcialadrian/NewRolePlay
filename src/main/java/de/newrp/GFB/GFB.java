@@ -1,11 +1,10 @@
 package de.newrp.GFB;
 
-import com.github.theholywaffle.teamspeak3.api.wrapper.Message;
 import de.newrp.API.Achievement;
 import de.newrp.API.Messages;
 import de.newrp.API.Premium;
 import de.newrp.API.Script;
-import de.newrp.main;
+import de.newrp.Main;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -69,7 +68,7 @@ public enum GFB {
     }
 
     public int getExp(Player p) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = Main.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM gfb_level WHERE nrp_id='" + Script.getNRPID(p) + "' AND gfb_id=" + this.id)) {
             if (rs.next()) {
                 return rs.getInt("exp");
@@ -100,7 +99,7 @@ public enum GFB {
             p.sendMessage(PREFIX + "Du bist beim GFB " + this.getName() + " nun Level " + (getLevel(p)) + "!");
             return;
         }
-        try (Statement stmt = main.getConnection().createStatement()) {
+        try (Statement stmt = Main.getConnection().createStatement()) {
             stmt.executeUpdate("UPDATE gfb_level SET exp=" + (getExp(p) + exp) + " WHERE nrp_id='" + Script.getNRPID(p) + "' AND gfb_id=" + this.id);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -115,7 +114,7 @@ public enum GFB {
             p.sendMessage(PREFIX + "Du bist beim GFB " + this.getName() + " nun Level " + (getLevel(p) - 1) + "!");
             return;
         }
-        try (Statement stmt = main.getConnection().createStatement()) {
+        try (Statement stmt = Main.getConnection().createStatement()) {
             stmt.executeUpdate("UPDATE gfb_level SET exp=" + (getExp(p) - exp) + " WHERE nrp_id='" + Script.getNRPID(p) + "' AND gfb_id=" + this.id);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -124,7 +123,7 @@ public enum GFB {
     }
 
     public int getLevel(Player p) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = Main.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM gfb_level WHERE nrp_id='" + Script.getNRPID(p) + "' AND gfb_id=" + this.id)) {
             if (rs.next()) {
                 return rs.getInt("level");

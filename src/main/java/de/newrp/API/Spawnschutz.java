@@ -1,7 +1,7 @@
 package de.newrp.API;
 
 import de.newrp.Ticket.TicketCommand;
-import de.newrp.main;
+import de.newrp.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
@@ -42,7 +42,7 @@ public class Spawnschutz implements Listener {
                 return;
             }
         }
-        Bukkit.getScheduler().runTaskLater(main.getInstance(), () -> {
+        Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
             if (spawnschutz.containsKey(p.getName())) {
                 e.getPlayer().sendMessage(PREFIX + "Spawnschutz ist vorbei!");
                 spawnschutz.remove(e.getPlayer().getName());
@@ -54,7 +54,7 @@ public class Spawnschutz implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onRespawn(PlayerRespawnEvent e) {
         Long time = System.currentTimeMillis();
-        Bukkit.getScheduler().runTaskLater(main.getInstance(), () -> {
+        Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
             if (spawnschutz.containsKey(e.getPlayer().getName())) {
                 e.getPlayer().sendMessage(PREFIX + "Spawnschutz ist vorbei!");
                 spawnschutz.remove(e.getPlayer().getName());

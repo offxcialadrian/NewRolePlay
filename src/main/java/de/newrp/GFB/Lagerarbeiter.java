@@ -2,19 +2,17 @@ package de.newrp.GFB;
 
 import de.newrp.API.*;
 import de.newrp.Administrator.BuildMode;
-import de.newrp.main;
+import de.newrp.Main;
 import org.bukkit.*;
 import org.bukkit.block.Sign;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.craftbukkit.libs.org.apache.commons.lang3.builder.EqualsExclude;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
@@ -25,7 +23,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
-import java.util.Objects;
 
 public class Lagerarbeiter implements CommandExecutor, Listener {
 
@@ -309,7 +306,7 @@ public class Lagerarbeiter implements CommandExecutor, Listener {
                         p.getInventory().clear();
                         Cache.loadInventory(p);
                     }
-                }.runTaskLater(main.getInstance(), 20L);
+                }.runTaskLater(Main.getInstance(), 20L);
             } else {
                 SCORE.replace(p.getName(), amount - 1);
                 p.sendMessage(PREFIX + "§aRichtig! §6Hole nun das nächste Produkt aus \"Ware\" und sortiere es ein (" + (TOTAL_SCORE.get(p.getName()) - SCORE.get(p.getName())) + "/" + (TOTAL_SCORE.get(p.getName()) + 1) + ")");

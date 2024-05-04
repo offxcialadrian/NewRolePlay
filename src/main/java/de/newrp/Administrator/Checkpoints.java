@@ -1,13 +1,11 @@
 package de.newrp.Administrator;
 
-import de.newrp.Player.AFK;
-import de.newrp.main;
+import de.newrp.Main;
 import de.newrp.API.*;
 import de.newrp.Police.Jail;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.block.Skull;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -27,7 +25,6 @@ import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.UUID;
 
 public class Checkpoints implements Listener {
 
@@ -165,7 +162,7 @@ public class Checkpoints implements Listener {
     }
 
     public static int getCheckpoints(int id) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = Main.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT checkpoints FROM checkpoints WHERE id=" + id)) {
             if (rs.next()) {
                 int checkpoints = rs.getInt("checkpoints");
@@ -184,7 +181,7 @@ public class Checkpoints implements Listener {
     }
 
     public static int getCheckpoints(Player p) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = Main.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT checkpoints FROM checkpoints WHERE id=" + Script.getNRPID(p))) {
             if (rs.next()) {
                 int checkpoints = rs.getInt("checkpoints");
@@ -203,7 +200,7 @@ public class Checkpoints implements Listener {
     }
 
     public static int getCheckpoints(OfflinePlayer p) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = Main.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT checkpoints FROM checkpoints WHERE id=" + Script.getNRPID(p))) {
             if (rs.next()) {
                 int checkpoints = rs.getInt("checkpoints");
@@ -335,7 +332,7 @@ public class Checkpoints implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
-        Bukkit.getScheduler().runTask(main.getInstance(), () -> Checkpoints.checkCheckpoints(e.getPlayer()));
+        Bukkit.getScheduler().runTask(Main.getInstance(), () -> Checkpoints.checkCheckpoints(e.getPlayer()));
     }
 
     @EventHandler

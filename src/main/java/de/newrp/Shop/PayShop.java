@@ -1,6 +1,5 @@
 package de.newrp.Shop;
 
-import com.sun.org.apache.bcel.internal.generic.ACONST_NULL;
 import de.newrp.API.*;
 import de.newrp.Administrator.SDuty;
 import de.newrp.Berufe.Beruf;
@@ -14,8 +13,7 @@ import de.newrp.Player.Banken;
 import de.newrp.Player.Mobile;
 import de.newrp.Waffen.Waffen;
 import de.newrp.Waffen.Weapon;
-import de.newrp.main;
-import org.bukkit.Bukkit;
+import de.newrp.Main;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -43,8 +41,9 @@ public class PayShop implements Listener {
 
 
     public static void pay(Player p, PaymentType type, ShopItem si, Shops s) {
-        int price = (Buy.amount.containsKey(p.getName()) ? si.getPrice(s) * Buy.amount.get(p.getName()) : si.getPrice(s));
-        int singlePrice = si.getPrice(s);
+        final int price = (Buy.amount.containsKey(p.getName()) ? si.getPrice(s) * Buy.amount.get(p.getName()) : si.getPrice(s));
+        final int singlePrice = si.getPrice(s);
+
         ItemStack i = si.getItemStack();
         i.setAmount(si.getItemStack().getAmount());
         ItemMeta meta = i.getItemMeta();
@@ -242,7 +241,7 @@ public class PayShop implements Listener {
                     if (!Rezept.hasRezept(p, m) && m.isRezeptNeeded()) {
                         Rezept.removeRezept(p, m);
                         p.sendMessage(Messages.ERROR + "Du hast kein Rezept für " + si.getName() + "§c.");
-                        break;
+                        return;
                     }
 
 
@@ -340,7 +339,7 @@ public class PayShop implements Listener {
     }
 
     private static void Zeitung(Player p) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = Main.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM zeitung WHERE id=" + getLatestZeitungID())) {
             if (rs.next()) {
                 String[] pages = rs.getString("content").split("/\\{new_page}/");

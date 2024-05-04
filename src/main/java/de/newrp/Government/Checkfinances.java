@@ -6,7 +6,7 @@ import de.newrp.API.Script;
 import de.newrp.Berufe.Abteilung;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Shop.Shops;
-import de.newrp.main;
+import de.newrp.Main;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -93,7 +93,7 @@ public class Checkfinances implements CommandExecutor {
     }
 
     private static void sendCashFlow(Player p, OfflinePlayer tg) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = Main.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM cashflow WHERE nrp_id='" + Script.getNRPID(tg) + "' ORDER BY id DESC LIMIT 15")) {
             if (rs.next()) {
                 do {

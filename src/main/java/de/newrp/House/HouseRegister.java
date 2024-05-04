@@ -6,7 +6,7 @@ import de.newrp.API.Messages;
 import de.newrp.API.Rank;
 import de.newrp.API.Script;
 import de.newrp.Administrator.SDuty;
-import de.newrp.main;
+import de.newrp.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -141,7 +141,7 @@ public class HouseRegister implements CommandExecutor, Listener {
                         }
 
                         if (autoID) {
-                            try (PreparedStatement statement = main.getConnection().prepareStatement("SELECT houseID FROM house ORDER BY houseID DESC LIMIT 1;")) {
+                            try (PreparedStatement statement = Main.getConnection().prepareStatement("SELECT houseID FROM house ORDER BY houseID DESC LIMIT 1;")) {
                                 try (ResultSet rs = statement.executeQuery()) {
                                     if (rs.next()) {
                                         reg.setHouseID(rs.getInt("houseID") + 1);
@@ -294,8 +294,8 @@ public class HouseRegister implements CommandExecutor, Listener {
             }
             if (this.houseID == 0) {
                 final HouseRegistration reg = this;
-                Bukkit.getScheduler().runTaskAsynchronously(main.getInstance(), () -> {
-                    try (PreparedStatement statement = main.getConnection().prepareStatement(
+                Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () -> {
+                    try (PreparedStatement statement = Main.getConnection().prepareStatement(
                             "INSERT INTO house (ownerID, min_x, min_y, min_z, max_x, max_y, max_z, sign, kasse, slots, price, snacks) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS
                     )) {
                         statement.setInt(1, reg.getOwnerID());
@@ -385,8 +385,8 @@ public class HouseRegister implements CommandExecutor, Listener {
 
                 final HouseRegistration reg = this;
 
-                Bukkit.getScheduler().runTaskAsynchronously(main.getInstance(), () -> {
-                    try (PreparedStatement statement = main.getConnection().prepareStatement("INSERT INTO house (houseID, ownerID, min_x, min_y, min_z, max_x, max_y, max_z, sign, kasse, slots, price, snacks) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?); ")) {
+                Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () -> {
+                    try (PreparedStatement statement = Main.getConnection().prepareStatement("INSERT INTO house (houseID, ownerID, min_x, min_y, min_z, max_x, max_y, max_z, sign, kasse, slots, price, snacks) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?); ")) {
                         statement.setInt(1, reg.getHouseID());
                         statement.setInt(2, reg.getOwnerID());
 

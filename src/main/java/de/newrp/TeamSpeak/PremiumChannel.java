@@ -2,7 +2,7 @@ package de.newrp.TeamSpeak;
 
 import com.github.theholywaffle.teamspeak3.api.ChannelProperty;
 import com.github.theholywaffle.teamspeak3.api.wrapper.Client;
-import de.newrp.main;
+import de.newrp.Main;
 import de.newrp.API.Premium;
 import de.newrp.API.Script;
 import org.bukkit.Bukkit;
@@ -33,7 +33,7 @@ public class PremiumChannel implements CommandExecutor {
                 p.sendMessage(TeamSpeak.PREFIX + "Du hast bereits ein eigenen Teamspeak Channel erstellt.");
             } else {
                 if (args.length == 0) {
-                    Bukkit.getScheduler().runTaskAsynchronously(main.getInstance(), () -> {
+                    Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () -> {
                         try {
                             Map<ChannelProperty, String> properties = new HashMap<>();
                             properties.put(ChannelProperty.CHANNEL_NAME, "» Privater Talk [" + channel + "]");
@@ -58,7 +58,7 @@ public class PremiumChannel implements CommandExecutor {
                     });
                 } else {
                     if (args[0].length() > 0 && args[0].length() < 10) {
-                        Bukkit.getScheduler().runTaskAsynchronously(main.getInstance(), () -> {
+                        Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () -> {
                             try {
                                 Map<ChannelProperty, String> properties = new HashMap<>();
                                 properties.put(ChannelProperty.CHANNEL_NAME, "» Privater Talk [" + channel + "]");

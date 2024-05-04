@@ -13,20 +13,16 @@ import de.newrp.House.House;
 import de.newrp.Medic.FeuerwehrEinsatz;
 import de.newrp.Organisationen.LabBreakIn;
 import de.newrp.Organisationen.Organisation;
-import de.newrp.Organisationen.OrganisationKasse;
 import de.newrp.Player.AFK;
 import de.newrp.Player.Hotel;
 import de.newrp.Shop.Shop;
-import de.newrp.Shop.ShopItem;
 import de.newrp.Shop.ShopType;
 import de.newrp.Shop.Shops;
-import de.newrp.main;
+import de.newrp.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.World;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -37,7 +33,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 public class AsyncHour extends BukkitRunnable {
 
@@ -67,7 +62,7 @@ public class AsyncHour extends BukkitRunnable {
             }
         }
 
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = Main.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM loans WHERE time>" + System.currentTimeMillis())) {
             while (rs.next()) {
                 OfflinePlayer p = Script.getOfflinePlayer(rs.getInt("userID"));

@@ -4,7 +4,7 @@ import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.API.SlotLimit;
 import de.newrp.House.House;
-import de.newrp.main;
+import de.newrp.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -46,7 +46,7 @@ public class TV implements CommandExecutor, Listener {
                     p.setSpectatorTarget(null);
                     p.setGameMode(GameMode.SURVIVAL);
                 }
-            }.runTaskLater(main.getInstance(), 5L);
+            }.runTaskLater(Main.getInstance(), 5L);
             return true;
         }
 
@@ -70,7 +70,7 @@ public class TV implements CommandExecutor, Listener {
         tvs.put(p.getName(), p.getLocation());
         p.setGameMode(GameMode.SPECTATOR);
         p.teleport(camera.getLocation().add(0, 3, 0));
-        Bukkit.getScheduler().runTaskLater(main.getInstance(), () -> p.setSpectatorTarget(camera), 5L);
+        Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> p.setSpectatorTarget(camera), 5L);
 
         return false;
     }

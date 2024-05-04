@@ -11,7 +11,7 @@ import com.github.theholywaffle.teamspeak3.api.wrapper.Client;
 import de.newrp.API.*;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Organisationen.Organisation;
-import de.newrp.main;
+import de.newrp.Main;
 import org.bukkit.Bukkit;
 
 import java.sql.ResultSet;
@@ -50,7 +50,7 @@ public class TeamSpeak {
     }
 
     public static boolean isVerified(int id) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = Main.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT id FROM teamspeak WHERE id=" + id)) {
             return rs.next();
         } catch (SQLException e) {
@@ -72,7 +72,7 @@ public class TeamSpeak {
     }
 
     public static String getVerification(int id) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = Main.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT uid FROM teamspeak WHERE id=" + id)) {
             if (rs.next()) return rs.getString("uid");
         } catch (SQLException e) {
@@ -82,7 +82,7 @@ public class TeamSpeak {
     }
 
     public static void ban(int id, Client c) {
-        Bukkit.getScheduler().runTaskAsynchronously(main.getInstance(), () -> {
+        Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () -> {
             if (c == null) return;
             int dbID = c.getDatabaseId();
             for (int g : c.getServerGroups()) removeFromServerGroup(g, dbID);
@@ -101,7 +101,7 @@ public class TeamSpeak {
 
     public static void sync(int id, Client c) {
         if(!isVerified(id)) return;
-        Bukkit.getScheduler().runTaskAsynchronously(main.getInstance(), () -> {
+        Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () -> {
             String uid = getVerification(id);
             if (uid == null || c == null) return;
             int dbID = c.getDatabaseId();
@@ -178,7 +178,7 @@ public class TeamSpeak {
 
     public static void sync(int id) {
         if(!isVerified(id)) return;
-        Bukkit.getScheduler().runTaskAsynchronously(main.getInstance(), () -> {
+        Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () -> {
             String uid = getVerification(id);
             Client c = getClient(uid);
             if (uid == null || c == null) return;
@@ -331,7 +331,7 @@ public class TeamSpeak {
 
     public static void addToServerGroup(int g, int dbID) {
         if (dbID != 0) {
-            Bukkit.getScheduler().runTaskAsynchronously(main.getInstance(), () -> tsApi.addClientToServerGroup(g, dbID));
+            Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () -> tsApi.addClientToServerGroup(g, dbID));
         }
     }
 
@@ -373,7 +373,7 @@ public class TeamSpeak {
     }
 
     public static boolean UidIsUsed(String uid) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = Main.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT id FROM teamspeak WHERE uid='" + uid + "'")) {
             return rs.next();
         } catch (SQLException e) {

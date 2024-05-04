@@ -3,7 +3,7 @@ package de.newrp.Forum;
 import de.newrp.API.Achievement;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
-import de.newrp.main;
+import de.newrp.Main;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -45,7 +45,7 @@ public class ForumCommand implements CommandExecutor {
         }
 
         p.sendMessage(Forum.prefix + "§cEs wurde keine Verbindung zum Forum gefunden. Versuche Verifikation...");
-        try (Statement stmt = main.getForumConnection().createStatement();
+        try (Statement stmt = Main.getForumConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT userID, username FROM wcf1_user WHERE username='" + Script.getName(p) + "'")) {
             if (rs.next()) {
                 Script.executeUpdate("INSERT INTO forum (id, forumID) VALUES (" + Script.getNRPID(p) + ", " + rs.getInt("userID") + ")");

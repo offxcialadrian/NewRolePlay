@@ -1,7 +1,7 @@
 package de.newrp.Administrator;
 
 import de.newrp.API.*;
-import de.newrp.main;
+import de.newrp.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -59,7 +59,7 @@ public class Notifications implements CommandExecutor, Listener {
     private static final String PREFIX = "§8[§aNotifications§8] §a" + Messages.ARROW + " ";
 
     private static boolean isNotificationEnabled(Player p, NotificationType type) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = Main.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM notifications WHERE nrp_id = '" + Script.getNRPID(p) + "' AND notification_id = '" + type.getID() + "'")) {
             return rs.next();
         } catch (Exception e) {

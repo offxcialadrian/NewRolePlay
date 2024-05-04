@@ -2,7 +2,7 @@ package de.newrp.House;
 
 import de.newrp.API.Debug;
 import de.newrp.API.Script;
-import de.newrp.main;
+import de.newrp.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -62,8 +62,8 @@ public class House {
     }
 
     public static void loadHouses() {
-        Bukkit.getScheduler().runTaskAsynchronously(main.getInstance(), () -> {
-            try (Statement stmt = main.getConnection().createStatement();
+        Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () -> {
+            try (Statement stmt = Main.getConnection().createStatement();
                  ResultSet rs = stmt.executeQuery("SELECT house.houseID, house.ownerID, house.min_x, house.min_y, house.min_z, house.max_x, house.max_y, house.max_z, "
                          + "house.sign, house.kasse, house.slots, house.price, house.snacks, nrpID_owner.name AS ownerName, "
                          + "GROUP_CONCAT(DISTINCT house_addon.addonID SEPARATOR '/') AS addons, "
@@ -120,7 +120,7 @@ public class House {
 
                     getHouseSignLocation(houseID);
                     getHouseDoors(houseID);
-                    Bukkit.getScheduler().runTask(main.getInstance(), () -> house.updateSign(ownerName));
+                    Bukkit.getScheduler().runTask(Main.getInstance(), () -> house.updateSign(ownerName));
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -143,7 +143,7 @@ public class House {
 
     public static List<House> getHouses(int id) {
         ArrayList<Integer> houses = new ArrayList<>();
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = Main.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT houseID FROM house_bewohner WHERE mieterID = " + id + " ORDER BY houseID")) {
             while (rs.next()) {
                 houses.add(rs.getInt("houseID"));
@@ -411,7 +411,7 @@ public class House {
 
     public static ArrayList<Location> getHouseDoors(int house) {
         ArrayList<Location> list = new ArrayList<>();
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = Main.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT x, y, z FROM house_door WHERE houseID=" + house)) {
             while (rs.next()) {
                 int x = rs.getInt("x");
@@ -497,7 +497,7 @@ public class House {
     }
 
     public int getMiete(int userID) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = Main.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT miete FROM house_bewohner WHERE houseID = " + this.houseID + " AND mieterID = " + userID)) {
             if (rs.next()) {
                 return rs.getInt("miete");
@@ -509,7 +509,7 @@ public class House {
     }
 
     public static Location getHouseSignLocation(int id) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = Main.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT sign FROM house WHERE houseid=" + id)) {
             if (rs.next()) {
                 String raw = rs.getString("sign");

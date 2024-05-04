@@ -1,6 +1,6 @@
 package de.newrp.Waffen;
 
-import de.newrp.main;
+import de.newrp.Main;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -19,7 +19,7 @@ public class WeaponData {
 
     public static HashMap<Weapon, WeaponData> getWeaponData(Integer id) {
         HashMap<Weapon, WeaponData> data = new HashMap<>();
-        try (PreparedStatement statement = main.getConnection().prepareStatement(
+        try (PreparedStatement statement = Main.getConnection().prepareStatement(
                 "SELECT weaponID, ammo, wear FROM weapon WHERE userID = ?")) {
             statement.setInt(1, id);
             try (ResultSet rs = statement.executeQuery()) {

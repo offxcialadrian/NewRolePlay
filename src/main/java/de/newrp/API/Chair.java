@@ -2,7 +2,7 @@ package de.newrp.API;
 
 import de.newrp.Player.Fesseln;
 import de.newrp.Police.Handschellen;
-import de.newrp.main;
+import de.newrp.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -154,7 +154,7 @@ public class Chair implements Listener {
         if (NO_TELEPORT.remove(p.getName())) return;
 
         final Location l = p.getLocation().add(0, 1.2D, 0);
-        Bukkit.getScheduler().runTaskLater(main.getInstance(), () -> {
+        Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
             Location loc = l;
 
             // UC-104: check whether a block will block the player

@@ -10,10 +10,9 @@ import de.newrp.Government.Steuern;
 import de.newrp.House.House;
 import de.newrp.Organisationen.Organisation;
 import de.newrp.Player.*;
-import de.newrp.Shop.Buy;
 import de.newrp.Shop.Shops;
 import de.newrp.Shop.gym.GymBuyHandler;
-import de.newrp.main;
+import de.newrp.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -274,7 +273,7 @@ public class PayDay extends BukkitRunnable {
                 public void run() {
                     SDuty.updateScoreboard();
                 }
-            }.runTaskLater(main.getInstance(), 20L);
+            }.runTaskLater(Main.getInstance(), 20L);
         }
     }
 

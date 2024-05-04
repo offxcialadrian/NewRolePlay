@@ -1,6 +1,6 @@
 package de.newrp.API;
 
-import de.newrp.main;
+import de.newrp.Main;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -24,7 +24,7 @@ public class ParticleManager {
     public static HashMap<ParticleManager.ParticleType, ParticleManager.ParticleWrapper> getParticles(int userID) {
         HashMap<ParticleManager.ParticleType, ParticleManager.ParticleWrapper> map = ParticleManager.getDefaultCacheMap();
         if(!Premium.hasPremium(userID)) return map;
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = Main.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT routeID, spotID FROM particles WHERE userID=" + userID)) {
             if (rs.next()) {
                 map.put(ParticleManager.ParticleType.ROUTE, ParticleManager.ParticleWrapper.getParticleWrapperByID(rs.getInt("routeID")));

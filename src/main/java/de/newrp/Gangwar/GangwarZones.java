@@ -2,7 +2,7 @@ package de.newrp.Gangwar;
 
 import de.newrp.API.Script;
 import de.newrp.Organisationen.Organisation;
-import de.newrp.main;
+import de.newrp.Main;
 import org.bukkit.Location;
 
 import java.sql.ResultSet;
@@ -97,7 +97,7 @@ public enum GangwarZones {
     }
 
     public Organisation getOwner() {
-        try(Statement stmt = main.getConnection().createStatement();
+        try(Statement stmt = Main.getConnection().createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM gangwarzone WHERE zoneID='" + this.id + "'")) {
             if(rs.next()) {
                 return Organisation.getOrganisation(rs.getInt("ownerID"));
@@ -109,7 +109,7 @@ public enum GangwarZones {
     }
 
     public void setOwner(Organisation org) {
-        try(Statement stmt = main.getConnection().createStatement()) {
+        try(Statement stmt = Main.getConnection().createStatement()) {
             stmt.executeUpdate("UPDATE gangwarzone SET ownerID='" + org.getID() + "' WHERE zoneID='" + this.id + "'");
         } catch (Exception e) {
             e.printStackTrace();

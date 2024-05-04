@@ -7,7 +7,7 @@ import de.newrp.Berufe.Duty;
 import de.newrp.Berufe.Equip;
 import de.newrp.Forum.ForumGroup;
 import de.newrp.TeamSpeak.TeamspeakServerGroup;
-import de.newrp.main;
+import de.newrp.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
@@ -60,7 +60,7 @@ public enum Organisation {
     public static String PREFIX = "§8[§eOrganisation§8] §e" + Messages.ARROW + " §7";
 
     public int getLevel() {
-        try(Statement stmt = main.getConnection().createStatement();
+        try(Statement stmt = Main.getConnection().createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM organisation_level WHERE organisationID='" + this.id + "'")) {
             if(rs.next()) {
                 return rs.getInt("level");
@@ -96,7 +96,7 @@ public enum Organisation {
     }
 
     public String getMOTD() {
-        try(Statement stmt = main.getConnection().createStatement();
+        try(Statement stmt = Main.getConnection().createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM organisation_motd WHERE organisationID='" + this.id + "'")) {
             if(rs.next()) {
                 return rs.getString("motd");
@@ -116,7 +116,7 @@ public enum Organisation {
     }
 
     public int getExp() {
-        try(Statement stmt = main.getConnection().createStatement();
+        try(Statement stmt = Main.getConnection().createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM organisation_level WHERE organisationID='" + this.id + "'")) {
             if(rs.next()) {
                 return rs.getInt("exp");
@@ -154,7 +154,7 @@ public enum Organisation {
 
     public ArrayList<Location> getDoors() {
         ArrayList<Location> locs = new ArrayList<>();
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = Main.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT orgID, x, y, z FROM orgadoor WHERE orgID=" + this.id)) {
             while (rs.next()) {
                 int x = rs.getInt("x");
@@ -310,7 +310,7 @@ public enum Organisation {
 
 
     public int getKasse() {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = Main.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM organisation_kasse WHERE organisationID='" + this.id + "'")) {
             if (rs.next()) {
                 return rs.getInt("kasse");
@@ -399,7 +399,7 @@ public enum Organisation {
 
     public List<OfflinePlayer> getAllMembers() {
         List<OfflinePlayer> list = new ArrayList<>();
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = Main.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM organisation WHERE organisationID='" + this.id + "' ORDER BY rank ASC")) {
             if (rs.next()) {
                 do {
@@ -434,7 +434,7 @@ public enum Organisation {
 
     public List<OfflinePlayer> getAllLeaders() {
         List<OfflinePlayer> list = new ArrayList<>();
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = Main.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM organisation WHERE organisationID='" + this.id + "' AND leader=1")) {
             if (rs.next()) {
                 do {
@@ -506,7 +506,7 @@ public enum Organisation {
     }
 
     public static String getRankName(Player p) {
-        try(Statement stmt = main.getConnection().createStatement();
+        try(Statement stmt = Main.getConnection().createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM organisation_rankname WHERE organisationID='" + Organisation.getOrganisation(p).getID() + "' AND rank='" + Organisation.getRank(p) + "' AND gender='" + Script.getGender(p).getName().charAt(0)+"'")) {
             if(rs.next()) {
                 return rs.getString("name").replace("-"," ");
@@ -518,7 +518,7 @@ public enum Organisation {
     }
 
     public static String getRankName(OfflinePlayer p) {
-        try(Statement stmt = main.getConnection().createStatement();
+        try(Statement stmt = Main.getConnection().createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM organisation_rankname WHERE organisationID='" + Organisation.getOrganisation(p).getID() + "' AND rank='" + Organisation.getRank(p) + "' AND gender='" + Script.getGender(p).getName().charAt(0) + "'")) {
             if(rs.next()) {
                 return rs.getString("name").replace("-"," ");
@@ -530,7 +530,7 @@ public enum Organisation {
     }
 
     public String getRankName(int rank, Gender g) {
-        try(Statement stmt = main.getConnection().createStatement();
+        try(Statement stmt = Main.getConnection().createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM organisation_rankname WHERE organisationID='" + this.id + "' AND rank='" + rank + "' AND gender='" + g.getName().charAt(0) + "'")) {
             if(rs.next()) {
                 return rs.getString("name").replace("-"," ");

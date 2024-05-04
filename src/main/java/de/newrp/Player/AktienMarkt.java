@@ -4,8 +4,7 @@ import de.newrp.API.Aktie;
 import de.newrp.API.Messages;
 import de.newrp.API.PaymentType;
 import de.newrp.API.Script;
-import de.newrp.main;
-import org.bukkit.Location;
+import de.newrp.Main;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -67,7 +66,7 @@ public class AktienMarkt implements CommandExecutor, Listener {
                                     public void run() {
                                         cooldown.remove(p.getName());
                                     }
-                                }.runTaskLater(main.getInstance(), 20L * 5);
+                                }.runTaskLater(Main.getInstance(), 20L * 5);
                             } else
                                 p.sendMessage(Messages.ERROR + "Es gibt keine §6" + aktie.getName() + " §cAktien!");
                         } else {
@@ -88,7 +87,7 @@ public class AktienMarkt implements CommandExecutor, Listener {
                             public void run() {
                                 cooldown.remove(p.getName());
                             }
-                        }.runTaskLater(main.getInstance(), 20L * 5);
+                        }.runTaskLater(Main.getInstance(), 20L * 5);
                     }
                 }
             }

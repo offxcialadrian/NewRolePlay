@@ -1,6 +1,6 @@
 package de.newrp.API;
 
-import de.newrp.main;
+import de.newrp.Main;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -57,7 +57,7 @@ public enum SlotLimit {
             map.put(sl, 0);
         }
         int h = SlotLimit.HOUSE.getDefaultAmount(premium), c = SlotLimit.VEHICLE.getDefaultAmount(premium), s = SlotLimit.SHOP.getDefaultAmount(premium);
-        try (PreparedStatement statement = main.getConnection().prepareStatement(
+        try (PreparedStatement statement = Main.getConnection().prepareStatement(
                 "SELECT ( SELECT houselimit " +
                         "FROM houselimit WHERE id = ? ) AS house, ( SELECT carlimit FROM carlimit WHERE id = ?) AS car, ( SELECT shoplimit FROM shoplimit WHERE id = ? ) AS shop")) {
             statement.setInt(1, id);

@@ -6,7 +6,7 @@ import de.newrp.API.Messages;
 import de.newrp.API.Rank;
 import de.newrp.API.Script;
 import de.newrp.Administrator.SDuty;
-import de.newrp.main;
+import de.newrp.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -34,11 +34,11 @@ public class TeamspeakCommand implements CommandExecutor {
         String argument = args[0];
         if (argument.equalsIgnoreCase("reconnect") && Script.hasRank(p, Rank.ADMINISTRATOR, false) && SDuty.isSDuty(p)) {
             try {
-                Bukkit.getScheduler().runTaskAsynchronously(main.getInstance(), TeamSpeak::disconnect);
+                Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), TeamSpeak::disconnect);
             } catch (Exception e) {
                 p.sendMessage(TeamSpeak.PREFIX + "§4Die Verbindung konnte nicht neu verbunden werden.");
             }
-            Bukkit.getScheduler().runTaskAsynchronously(main.getInstance(), TeamSpeak::connect);
+            Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), TeamSpeak::connect);
             Script.sendTeamMessage(TeamSpeak.PREFIX + "§c" + Script.getName(p) + " hat den Teamspeak neu verbunden.");
             return true;
         }
@@ -72,7 +72,7 @@ public class TeamspeakCommand implements CommandExecutor {
                     p.sendMessage(TeamSpeak.PREFIX + "§cDer Spieler hat sich noch nicht verifiziert.");
                     return true;
                 }
-                Bukkit.getScheduler().runTaskAsynchronously(main.getInstance(), () -> {
+                Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () -> {
                     TeamSpeak.sync(Script.getNRPID(target), getClient(Script.getNRPID(target)));
                     if(target.isOnline()) target.getPlayer().sendMessage(PREFIX + Messages.RANK_PREFIX(p) + " hat deinen Teamspeak Account neu synchronisiert.");
                     Script.sendTeamMessage(p, ChatColor.YELLOW, "hat den TeamSpeak Account von " + target.getName() + " neu synchronisiert.", true);
@@ -101,7 +101,7 @@ public class TeamspeakCommand implements CommandExecutor {
             } else {
 
 
-                Bukkit.getScheduler().runTaskAsynchronously(main.getInstance(), () -> {
+                Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () -> {
                     Client client = getClient(argument);
                     int unicaID = Script.getNRPID(p);
                     if (client == null) {

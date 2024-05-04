@@ -9,10 +9,8 @@ import de.newrp.Berufe.Duty;
 import de.newrp.Chat.Me;
 import de.newrp.Government.Stadtkasse;
 import de.newrp.Player.AFK;
-import de.newrp.main;
+import de.newrp.Main;
 import org.bukkit.Material;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -112,7 +110,7 @@ public class Krankheitstest implements Listener {
                         p.sendMessage(PREFIX + "§7" + k.getName() + ": " + (k.isInfected(Script.getNRPID(tg)) ? "§aJa" : "§cNein"));
                     }
                 }
-            }.runTaskLater(main.getInstance(), 20L*60L*2L);
+            }.runTaskLater(Main.getInstance(), 20L*60L*2L);
 
             SPRITZE_COOLDOWN.put(tg.getName(), time);
             LAST_CLICK.remove(p.getName());

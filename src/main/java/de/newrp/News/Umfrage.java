@@ -1,8 +1,6 @@
 package de.newrp.News;
 
-import de.newrp.API.VertragAPI;
-import de.newrp.main;
-import org.bukkit.entity.Player;
+import de.newrp.Main;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -48,14 +46,14 @@ public class Umfrage {
         String frage;
         HashMap<String, Integer> antworten = new HashMap<>();
         boolean active;
-        try (PreparedStatement statement = main.getConnection().prepareStatement(
+        try (PreparedStatement statement = Main.getConnection().prepareStatement(
                 "SELECT * FROM umfragen WHERE active = 1")) {
             ResultSet rs = statement.executeQuery();
             if (rs.next()) {
                 id = rs.getInt("id");
                 frage = rs.getString("frage");
                 active = rs.getBoolean("active");
-                try (PreparedStatement statement2 = main.getConnection().prepareStatement(
+                try (PreparedStatement statement2 = Main.getConnection().prepareStatement(
                         "SELECT * FROM umfragen_antworten WHERE umfrageID = ? ORDER BY id ASC")) {
                     statement2.setInt(1, id);
                     ResultSet rs2 = statement2.executeQuery();
@@ -75,7 +73,7 @@ public class Umfrage {
 
     public static void endUmfrage(Umfrage u) {
         players.clear();
-        try (PreparedStatement statement = main.getConnection().prepareStatement(
+        try (PreparedStatement statement = Main.getConnection().prepareStatement(
                 "UPDATE umfragen SET active = 0 WHERE id = ?")) {
             statement.setInt(1, u.getID());
             statement.executeUpdate();
@@ -90,7 +88,7 @@ public class Umfrage {
         }
         try {
             String insertUmfrageQuery = "INSERT INTO umfragen (frage, active) VALUES (?, 1)";
-            try (PreparedStatement umfrageStatement = main.getConnection().prepareStatement(insertUmfrageQuery,
+            try (PreparedStatement umfrageStatement = Main.getConnection().prepareStatement(insertUmfrageQuery,
                     PreparedStatement.RETURN_GENERATED_KEYS)) {
                 umfrageStatement.setString(1, frage);
                 int umfrageAffectedRows = umfrageStatement.executeUpdate();
@@ -103,7 +101,7 @@ public class Umfrage {
                         int umfrageID = generatedKeys.getInt(1);
 
                         String insertAntwortQuery = "INSERT INTO umfragen_antworten (umfrageID, antwort, votes) VALUES (?, ?, 0)";
-                        try (PreparedStatement antwortStatement = main.getConnection().prepareStatement(insertAntwortQuery)) {
+                        try (PreparedStatement antwortStatement = Main.getConnection().prepareStatement(insertAntwortQuery)) {
                             for (String antwort : antworten) {
                                 antwortStatement.setInt(1, umfrageID);
                                 antwortStatement.setString(2, antwort);
@@ -121,7 +119,7 @@ public class Umfrage {
     }
 
     public void vote(String antwort) {
-        try (PreparedStatement statement = main.getConnection().prepareStatement(
+        try (PreparedStatement statement = Main.getConnection().prepareStatement(
                 "UPDATE umfragen_antworten SET votes = votes + 1 WHERE umfrageID = ? AND antwort = ?")) {
             statement.setInt(1, id);
             statement.setString(2, antwort);

@@ -4,7 +4,7 @@ import de.newrp.API.Messages;
 import de.newrp.API.PaymentType;
 import de.newrp.API.Script;
 import de.newrp.Shop.ShopItem;
-import de.newrp.main;
+import de.newrp.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -28,7 +28,7 @@ public class Lotto implements CommandExecutor {
     public static String NEWS = "§8[§6News§8] §6" + Messages.ARROW + " ";
 
     public static boolean haveLottoschein(Player p) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = Main.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT nrp_id FROM lotto WHERE nrp_id=" + Script.getNRPID(p))) {
             return rs.next();
         } catch (SQLException e) {
@@ -38,7 +38,7 @@ public class Lotto implements CommandExecutor {
     }
 
     public static int getJackpot() {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = Main.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT amount FROM lotto_jackpot")) {
             if (rs.next()) {
                 return rs.getInt("amount");
@@ -51,7 +51,7 @@ public class Lotto implements CommandExecutor {
 
     public static ArrayList<Integer> getLottoPlayer() {
         ArrayList<Integer> player = new ArrayList<>();
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = Main.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT nrp_id FROM lotto")) {
             while (rs.next()) {
                 player.add(rs.getInt("nrp_id"));
@@ -66,10 +66,10 @@ public class Lotto implements CommandExecutor {
         int i = Script.getRandom(1, 500);
         String day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY ? "Sonntagabend" : "Mittwochabend";
         Bukkit.broadcastMessage(NEWS + "Guten Abend! Herzlich Willkommen zur Lottoziehung am "+ day + "!");
-        Bukkit.getServer().getScheduler().runTaskLater(main.getInstance(), () -> Bukkit.broadcastMessage(NEWS + "Der aktuelle Jackpot beträgt §e§l" + getJackpot() + "§r§6€..."), 20 * 20L);
-        Bukkit.getServer().getScheduler().runTaskLater(main.getInstance(), () -> Bukkit.broadcastMessage(NEWS + "Es wird nun eine Nummer gezogen..."), 33 * 20L);
-        Bukkit.getServer().getScheduler().runTaskLater(main.getInstance(), () -> Bukkit.broadcastMessage(NEWS + "Und es ist die Zahl Nummer... §e§l" + i + "§r§6!"), 40 * 20L);
-        Bukkit.getServer().getScheduler().runTaskLater(main.getInstance(), () -> {
+        Bukkit.getServer().getScheduler().runTaskLater(Main.getInstance(), () -> Bukkit.broadcastMessage(NEWS + "Der aktuelle Jackpot beträgt §e§l" + getJackpot() + "§r§6€..."), 20 * 20L);
+        Bukkit.getServer().getScheduler().runTaskLater(Main.getInstance(), () -> Bukkit.broadcastMessage(NEWS + "Es wird nun eine Nummer gezogen..."), 33 * 20L);
+        Bukkit.getServer().getScheduler().runTaskLater(Main.getInstance(), () -> Bukkit.broadcastMessage(NEWS + "Und es ist die Zahl Nummer... §e§l" + i + "§r§6!"), 40 * 20L);
+        Bukkit.getServer().getScheduler().runTaskLater(Main.getInstance(), () -> {
             int jackpot = getJackpot();
             ArrayList<Integer> winner = getWinner(i);
             if (!winner.isEmpty()) {
@@ -113,7 +113,7 @@ public class Lotto implements CommandExecutor {
 
     public static ArrayList<Integer> getWinner(int i) {
         ArrayList<Integer> l = new ArrayList<>();
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = Main.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT nrp_id FROM lotto WHERE number=" + i)) {
             while (rs.next()) {
                 l.add(rs.getInt("nrp_id"));
@@ -125,7 +125,7 @@ public class Lotto implements CommandExecutor {
     }
 
     public static int getLottoNummer(int id) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = Main.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT number FROM lotto WHERE nrp_id=" + id)) {
             if (rs.next()) {
                 return rs.getInt("number");
@@ -165,7 +165,7 @@ public class Lotto implements CommandExecutor {
             return true;
 
         } else if (args.length >= 1 && args[0].equalsIgnoreCase("info")) {
-            Bukkit.getScheduler().runTaskAsynchronously(main.getInstance(), () -> p.sendMessage(PREFIX + "Es befinden sich " + getJackpot() + "€ im Jackpot."));
+            Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () -> p.sendMessage(PREFIX + "Es befinden sich " + getJackpot() + "€ im Jackpot."));
         } else if (haveLottoschein(p)) {
             p.sendMessage(PREFIX + "Du hast einen Lottoschein mit der Nummer " + getLottoNummer(Script.getNRPID(p)) + ".");
         } else {

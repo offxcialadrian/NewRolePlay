@@ -4,7 +4,7 @@ import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.Berufe.Abteilung;
 import de.newrp.Berufe.Beruf;
-import de.newrp.main;
+import de.newrp.Main;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -104,7 +104,7 @@ public class Strafregister implements CommandExecutor {
 
     public static int getWantedAmount(OfflinePlayer p, Long time) {
         int amount = 0;
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = Main.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM wantedlog WHERE userID='" + Script.getNRPID(p) + "' AND time > '" + time + "'")) {
             while (rs.next()) {
                 amount += rs.getInt("amount");

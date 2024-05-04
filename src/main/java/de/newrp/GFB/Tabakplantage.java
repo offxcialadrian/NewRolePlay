@@ -1,7 +1,7 @@
 package de.newrp.GFB;
 
 import de.newrp.API.*;
-import de.newrp.main;
+import de.newrp.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -116,7 +116,7 @@ public class Tabakplantage implements CommandExecutor, Listener {
                 ITEMS.put(loc, items);
                 DRYING.put(p.getName(), System.currentTimeMillis() + TimeUnit.SECONDS.toMillis(210));
                 LOCATION.put(p.getName(), loc);
-                Bukkit.getScheduler().runTaskLater(main.getInstance(), () -> {
+                Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
                     if (p.isOnline()) {
                         p.sendMessage(PREFIX + "Der Tabak ist nun getrocknet.\n" + PREFIX + "Hol den Tabak nun ab für den nächsten Schritt.");
                         new Route(p.getName(), Script.getNRPID(p), p.getLocation(), new Location(p.getWorld(), 434, 64, 654), PREFIX + "Du hast den Tabak aufgesammelt.", () -> pickUp(p)).start();
@@ -209,7 +209,7 @@ public class Tabakplantage implements CommandExecutor, Listener {
                 if (left == 1) {
                     is.setAmount(0);
 
-                    new Route(p.getName(), Script.getNRPID(p), p.getLocation(), new Location(p.getWorld(), 434, 64, 654), PREFIX + "Du hast den frischen Tabak zum Trocknen ausgelegt.", () -> Bukkit.getScheduler().runTask(main.getInstance(), () -> drop(p))).start();
+                    new Route(p.getName(), Script.getNRPID(p), p.getLocation(), new Location(p.getWorld(), 434, 64, 654), PREFIX + "Du hast den frischen Tabak zum Trocknen ausgelegt.", () -> Bukkit.getScheduler().runTask(Main.getInstance(), () -> drop(p))).start();
                     p.sendMessage(PREFIX + "Bring die " + total + " Tabakpflanzen nun zum Trocknen.");
                 } else {
                     short r = (short) (is.getType().getMaxDurability() / 8);

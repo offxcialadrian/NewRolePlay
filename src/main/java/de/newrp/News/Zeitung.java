@@ -5,9 +5,7 @@ import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.Administrator.SDuty;
 import de.newrp.Berufe.Beruf;
-import de.newrp.Shop.Shops;
-import de.newrp.main;
-import org.bukkit.ChatColor;
+import de.newrp.Main;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -33,7 +31,7 @@ public class Zeitung implements CommandExecutor, Listener {
     public static BookMeta cache = null;
 
     public static int getNextID() {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = Main.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT id FROM zeitung ORDER BY id DESC LIMIT 1")) {
             if (rs.next()) {
                 return (rs.getInt("id") + 1);
@@ -113,7 +111,7 @@ public class Zeitung implements CommandExecutor, Listener {
                 return true;
             }
 
-            try (Statement stmt = main.getConnection().createStatement();
+            try (Statement stmt = Main.getConnection().createStatement();
                  ResultSet rs = stmt.executeQuery("SELECT * FROM zeitung WHERE id=" + id)) {
                 if(rs.next()) {
                     String[] pages = rs.getString("content").split("/\\{new_page}/");
@@ -187,7 +185,7 @@ public class Zeitung implements CommandExecutor, Listener {
     }
 
     public static int getLatestZeitungID() {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = Main.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT id FROM zeitung ORDER BY id DESC LIMIT 1")) {
             if (rs.next()) {
                 return rs.getInt("id");
@@ -200,7 +198,7 @@ public class Zeitung implements CommandExecutor, Listener {
 
 
     public static void restoreZeitung() {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = Main.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM zeitung WHERE id=" + getLatestZeitungID())) {
             if(rs.next()) {
                 String[] pages = rs.getString("content").split("/\\{new_page}/");
@@ -243,7 +241,7 @@ public class Zeitung implements CommandExecutor, Listener {
     }
 
     public static int getBuyPrice() {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = Main.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT price FROM zeitung_price")) {
             if (rs.next()) {
                 return rs.getInt("price");

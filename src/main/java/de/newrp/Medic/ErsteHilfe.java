@@ -5,7 +5,7 @@ import de.newrp.API.Licenses;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.Chat.Me;
-import de.newrp.main;
+import de.newrp.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -83,7 +83,7 @@ public class ErsteHilfe implements CommandExecutor, Listener {
             public void run() {
                 p.sendMessage(ErsteHilfe.PREFIX + "Du kannst nun wieder Erste-Hilfe leisten.");
             }
-        }.runTaskLater(main.getInstance(), 20L * 120);
+        }.runTaskLater(Main.getInstance(), 20L * 120);
 
         return false;
     }

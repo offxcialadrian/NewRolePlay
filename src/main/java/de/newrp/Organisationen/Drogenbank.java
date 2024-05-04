@@ -3,7 +3,7 @@ package de.newrp.Organisationen;
 import de.newrp.API.ItemBuilder;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
-import de.newrp.main;
+import de.newrp.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -29,7 +29,7 @@ public class Drogenbank implements CommandExecutor, Listener {
 
 
     public static int getDrogenAmount(Organisation o, Drogen droge, Drogen.DrugPurity purity) {
-        try (Statement stmt = main.getConnection().createStatement()) {
+        try (Statement stmt = Main.getConnection().createStatement()) {
             ResultSet rs = stmt.executeQuery("SELECT amount FROM drugbank WHERE organisation = '" + o.getID() + "' AND drug = '" + droge.getID() + "' AND purity = '" + purity.getID() + "'");
             if (rs.next()) {
                 return rs.getInt("amount");
@@ -41,7 +41,7 @@ public class Drogenbank implements CommandExecutor, Listener {
     }
 
     public static int getDrogenAmount(Organisation o, Drogen droge) {
-        try (Statement stmt = main.getConnection().createStatement()) {
+        try (Statement stmt = Main.getConnection().createStatement()) {
             ResultSet rs = stmt.executeQuery("SELECT amount FROM drugbank WHERE organisation = '" + o.getID() + "' AND drug = '" + droge.getID() + "'");
             if (rs.next()) {
                 return rs.getInt("amount");
@@ -55,13 +55,13 @@ public class Drogenbank implements CommandExecutor, Listener {
 
     public static void addDrogen(Organisation o, Drogen droge, Drogen.DrugPurity purity, int amount) {
         if (getDrogenAmount(o, droge, purity) == 0) {
-            try (Statement stmt = main.getConnection().createStatement()) {
+            try (Statement stmt = Main.getConnection().createStatement()) {
                 stmt.executeUpdate("INSERT INTO drugbank (organisation, drug, purity, amount) VALUES ('" + o.getID() + "', '" + droge.getID() + "', '" + purity.getID() + "', '" + amount + "')");
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         } else {
-            try (Statement stmt = main.getConnection().createStatement()) {
+            try (Statement stmt = Main.getConnection().createStatement()) {
                 stmt.executeUpdate("UPDATE drugbank SET amount = amount + " + amount + " WHERE organisation = '" + o.getID() + "' AND drug = '" + droge.getID() + "' AND purity = '" + purity.getID() + "'");
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -71,7 +71,7 @@ public class Drogenbank implements CommandExecutor, Listener {
 
     public static void removeDrogen(Organisation o, Drogen droge, Drogen.DrugPurity purity, int amount) {
         if (getDrogenAmount(o, droge, purity) == 0) return;
-        try (Statement stmt = main.getConnection().createStatement()) {
+        try (Statement stmt = Main.getConnection().createStatement()) {
             stmt.executeUpdate("UPDATE drugbank SET amount = amount - " + amount + " WHERE organisation = '" + o.getID() + "' AND drug = '" + droge.getID() + "' AND purity = '" + purity.getID() + "'");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -80,13 +80,13 @@ public class Drogenbank implements CommandExecutor, Listener {
 
     public static void setDrogen(Organisation o, Drogen droge, Drogen.DrugPurity purity, int amount) {
         if (getDrogenAmount(o, droge, purity) == 0) {
-            try (Statement stmt = main.getConnection().createStatement()) {
+            try (Statement stmt = Main.getConnection().createStatement()) {
                 stmt.executeUpdate("INSERT INTO drugbank (organisation, drug, purity, amount) VALUES ('" + o.getID() + "', '" + droge.getID() + "', '" + purity.getID() + "', '" + amount + "')");
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         } else {
-            try (Statement stmt = main.getConnection().createStatement()) {
+            try (Statement stmt = Main.getConnection().createStatement()) {
                 stmt.executeUpdate("UPDATE drugbank SET amount = " + amount + " WHERE organisation = '" + o.getID() + "' AND drug = '" + droge.getID() + "' AND purity = '" + purity.getID() + "'");
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -95,7 +95,7 @@ public class Drogenbank implements CommandExecutor, Listener {
     }
 
     public static void clearDrogen(Organisation o) {
-        try (Statement stmt = main.getConnection().createStatement()) {
+        try (Statement stmt = Main.getConnection().createStatement()) {
             stmt.executeUpdate("DELETE FROM drugbank WHERE organisation = '" + o.getID() + "'");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -103,7 +103,7 @@ public class Drogenbank implements CommandExecutor, Listener {
     }
 
     public static void clearDrogen(Organisation o, Drogen droge) {
-        try (Statement stmt = main.getConnection().createStatement()) {
+        try (Statement stmt = Main.getConnection().createStatement()) {
             stmt.executeUpdate("DELETE FROM drugbank WHERE organisation = '" + o.getID() + "' AND drug = '" + droge.getID() + "'");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -111,7 +111,7 @@ public class Drogenbank implements CommandExecutor, Listener {
     }
 
     public static void clearDrogen(Organisation o, Drogen.DrugPurity purity) {
-        try (Statement stmt = main.getConnection().createStatement()) {
+        try (Statement stmt = Main.getConnection().createStatement()) {
             stmt.executeUpdate("DELETE FROM drugbank WHERE organisation = '" + o.getID() + "' AND purity = '" + purity.getID() + "'");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -119,7 +119,7 @@ public class Drogenbank implements CommandExecutor, Listener {
     }
 
     public static void clearDrogen(Organisation o, Drogen droge, Drogen.DrugPurity purity) {
-        try (Statement stmt = main.getConnection().createStatement()) {
+        try (Statement stmt = Main.getConnection().createStatement()) {
             stmt.executeUpdate("DELETE FROM drugbank WHERE organisation = '" + o.getID() + "' AND drug = '" + droge.getID() + "' AND purity = '" + purity.getID() + "'");
         } catch (SQLException e) {
             e.printStackTrace();

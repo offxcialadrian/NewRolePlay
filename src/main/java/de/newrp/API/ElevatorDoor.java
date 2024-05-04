@@ -1,6 +1,6 @@
 package de.newrp.API;
 
-import de.newrp.main;
+import de.newrp.Main;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -1246,7 +1246,7 @@ public class ElevatorDoor implements Listener {
                             public void run() {
                                 loc.getBlock().setType(Material.IRON_BLOCK);
                             }
-                        }.runTaskLater(main.getInstance(), 20L * 5);
+                        }.runTaskLater(Main.getInstance(), 20L * 5);
                     }
                 }
             }
@@ -1262,7 +1262,7 @@ public class ElevatorDoor implements Listener {
                     public void run() {
                         loc.getBlock().setType(Material.IRON_BLOCK);
                     }
-                }.runTaskLater(main.getInstance(), 20L * 5);
+                }.runTaskLater(Main.getInstance(), 20L * 5);
             }
         }
     }

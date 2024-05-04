@@ -2,7 +2,7 @@ package de.newrp.Berufe;
 
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
-import de.newrp.main;
+import de.newrp.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -150,7 +150,7 @@ public class Houseban implements CommandExecutor, Listener, TabCompleter {
                 long time = getTime(tg, b);
                 Script.executeUpdate("DELETE FROM housebans WHERE userID = " + Script.getNRPID(tg) + " AND beruf = " + b.getID());
                 time += reason.getDuration() + ((long) reason.getDuration() * 24 * 60 * 60 * 1000);
-                try (PreparedStatement statement = main.getConnection().prepareStatement(
+                try (PreparedStatement statement = Main.getConnection().prepareStatement(
                         "INSERT INTO housebans(userID, reason, beruf, time) VALUES(?, ?, ?, ?)")) {
                     statement.setInt(1, Script.getNRPID(tg));
                     statement.setInt(2, reason.getID());
@@ -169,7 +169,7 @@ public class Houseban implements CommandExecutor, Listener, TabCompleter {
 
             int id = Script.getNRPID(tg);
             long time = System.currentTimeMillis() + ((long) reason.getDuration() * 24 * 60 * 60 * 1000);
-            try (PreparedStatement statement = main.getConnection().prepareStatement(
+            try (PreparedStatement statement = Main.getConnection().prepareStatement(
                     "INSERT INTO housebans(userID, reason, beruf, time) VALUES(?, ?, ?, ?)")) {
                 statement.setInt(1, id);
                 statement.setInt(2, reason.getID());
@@ -196,7 +196,7 @@ public class Houseban implements CommandExecutor, Listener, TabCompleter {
             }
 
             int id = Script.getNRPID(tg);
-            try (PreparedStatement statement = main.getConnection().prepareStatement(
+            try (PreparedStatement statement = Main.getConnection().prepareStatement(
                     "DELETE FROM housebans WHERE userID = ? AND beruf = ?")) {
                 statement.setInt(1, id);
                 statement.setInt(2, b.getID());
@@ -228,7 +228,7 @@ public class Houseban implements CommandExecutor, Listener, TabCompleter {
 
             int id = Script.getNRPID(tg);
             long time = System.currentTimeMillis() + ((long) reason.getDuration() * 24 * 60 * 60 * 1000);
-            try (PreparedStatement statement = main.getConnection().prepareStatement(
+            try (PreparedStatement statement = Main.getConnection().prepareStatement(
                     "DELETE FROM housebans WHERE userID = ? AND beruf = ?")) {
                 statement.setInt(1, id);
                 statement.setInt(2, b.getID());
@@ -237,7 +237,7 @@ public class Houseban implements CommandExecutor, Listener, TabCompleter {
                 e.printStackTrace();
             }
 
-            try (PreparedStatement statement = main.getConnection().prepareStatement(
+            try (PreparedStatement statement = Main.getConnection().prepareStatement(
                     "INSERT INTO housebans(userID, reason, time, beruf) VALUES(?, ?, ?, ?)")) {
                 statement.setInt(1, id);
                 statement.setInt(2, reason.getID());
@@ -262,7 +262,7 @@ public class Houseban implements CommandExecutor, Listener, TabCompleter {
 
     public static boolean isHousebanned(Player p, Beruf.Berufe b) {
         int id = Script.getNRPID(p);
-        try (PreparedStatement statement = main.getConnection().prepareStatement(
+        try (PreparedStatement statement = Main.getConnection().prepareStatement(
                 "SELECT * FROM housebans WHERE userID = ? AND beruf = ?")) {
             statement.setInt(1, id);
             statement.setInt(2, b.getID());
@@ -280,7 +280,7 @@ public class Houseban implements CommandExecutor, Listener, TabCompleter {
 
     private static boolean isHousebanned(OfflinePlayer p, Beruf.Berufe b) {
         int id = Script.getNRPID(p);
-        try (PreparedStatement statement = main.getConnection().prepareStatement(
+        try (PreparedStatement statement = Main.getConnection().prepareStatement(
                 "SELECT * FROM housebans WHERE userID = ? AND beruf = ?")) {
             statement.setInt(1, id);
             statement.setInt(2, b.getID());
@@ -298,7 +298,7 @@ public class Houseban implements CommandExecutor, Listener, TabCompleter {
 
     private static long getTime(Player p, Beruf.Berufe b) {
         int id = Script.getNRPID(p);
-        try (PreparedStatement statement = main.getConnection().prepareStatement(
+        try (PreparedStatement statement = Main.getConnection().prepareStatement(
                 "SELECT time FROM housebans WHERE userID = ? AND beruf = ?")) {
             statement.setInt(1, id);
             statement.setInt(2, b.getID());
@@ -315,7 +315,7 @@ public class Houseban implements CommandExecutor, Listener, TabCompleter {
 
     private static long getTime(OfflinePlayer p, Beruf.Berufe b) {
         int id = Script.getNRPID(p);
-        try (PreparedStatement statement = main.getConnection().prepareStatement(
+        try (PreparedStatement statement = Main.getConnection().prepareStatement(
                 "SELECT time FROM housebans WHERE userID = ? AND beruf = ?")) {
             statement.setInt(1, id);
             statement.setInt(2, b.getID());
@@ -333,7 +333,7 @@ public class Houseban implements CommandExecutor, Listener, TabCompleter {
 
     public static List<Integer> getHousebannedNRPIDs(Beruf.Berufe b) {
         List<Integer> list = new ArrayList<>();
-        try (PreparedStatement statement = main.getConnection().prepareStatement(
+        try (PreparedStatement statement = Main.getConnection().prepareStatement(
                 "SELECT userID FROM housebans WHERE beruf = ? AND time > ?")) {
             statement.setInt(1, b.getID());
             statement.setLong(2, System.currentTimeMillis());
@@ -350,7 +350,7 @@ public class Houseban implements CommandExecutor, Listener, TabCompleter {
 
     public static Reasons getReason(Player p, Beruf.Berufe b) {
         int id = Script.getNRPID(p);
-        try (PreparedStatement statement = main.getConnection().prepareStatement(
+        try (PreparedStatement statement = Main.getConnection().prepareStatement(
                 "SELECT reason FROM housebans WHERE userID = ? AND beruf = ?")) {
             statement.setInt(1, id);
             statement.setInt(2, b.getID());
@@ -367,7 +367,7 @@ public class Houseban implements CommandExecutor, Listener, TabCompleter {
 
     private static Reasons getReason(OfflinePlayer p, Beruf.Berufe b) {
         int id = Script.getNRPID(p);
-        try (PreparedStatement statement = main.getConnection().prepareStatement(
+        try (PreparedStatement statement = Main.getConnection().prepareStatement(
                 "SELECT reason FROM housebans WHERE userID = ? AND beruf = ?")) {
             statement.setInt(1, id);
             statement.setInt(2, b.getID());

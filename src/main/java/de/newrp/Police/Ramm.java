@@ -8,7 +8,7 @@ import de.newrp.Berufe.Beruf;
 import de.newrp.Berufe.Duty;
 import de.newrp.Chat.Me;
 import de.newrp.House.House;
-import de.newrp.main;
+import de.newrp.Main;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -81,7 +81,7 @@ public class Ramm implements CommandExecutor {
         p.sendMessage(PREFIX + "Du hast begonnen die Tür aufzubrechen.");
         Me.sendMessage(p, "tritt gegen die Haustür");
 
-        Bukkit.getScheduler().runTaskLater(main.getInstance(), () -> {
+        Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
             Script.playLocalSound(h.getSignLocation(), Sound.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, 5);
             for (Location loc : h.getDoors()) {
                 if (loc.distance(p.getLocation()) < 4) {

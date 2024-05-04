@@ -52,12 +52,12 @@ public class Buy implements CommandExecutor {
         }
 
         current.put(player.getName(), shop);
-        HashMap<Integer, ItemStack> c = shop.getItems();
-        int size = (c.size() > 9 ? 3 : 2) * 9;
-        Inventory inv = player.getServer().createInventory(null, size, "§6" + shop.getPublicName());
+        final Map<Integer, ItemStack> shopItems = shop.getItems();
+        final int inventorySize = (shopItems.size() > 9 ? 3 : 2) * 9;
+        Inventory inv = player.getServer().createInventory(null, inventorySize, "§6" + shop.getPublicName());
         int i = 0;
 
-        for (Map.Entry<Integer, ItemStack> n : c.entrySet()) {
+        for (Map.Entry<Integer, ItemStack> n : shopItems.entrySet()) {
             ItemStack is = n.getValue();
             if (is == null) {
                 continue;
@@ -73,7 +73,7 @@ public class Buy implements CommandExecutor {
         // Reset amount if players doesn't
         amount.remove(player.getName());
 
-        inv.setItem(((size / 9) <= 2 ? 13 : 22), Script.setName(Material.BARRIER, "§cSchließen"));
+        inv.setItem(((inventorySize / 9) <= 2 ? 13 : 22), Script.setName(Material.BARRIER, "§cSchließen"));
         player.openInventory(inv);
 
         if(args.length == 1) {

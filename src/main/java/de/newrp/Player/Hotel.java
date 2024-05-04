@@ -1,19 +1,16 @@
 package de.newrp.Player;
 
-import de.newrp.API.ItemBuilder;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.Shop.ShopItem;
 import de.newrp.Shop.Shops;
-import de.newrp.main;
-import org.bukkit.Bukkit;
+import de.newrp.Main;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.List;
-import java.util.UUID;
 
 public class Hotel {
 
@@ -154,7 +151,7 @@ public class Hotel {
 
         public List<Rooms> getRentedRooms() {
             for(Rooms room : Rooms.values()) {
-                try(Statement stmt = main.getConnection().createStatement()) {
+                try(Statement stmt = Main.getConnection().createStatement()) {
                     if(stmt.executeQuery("SELECT * FROM hotel WHERE room = " + room.getID()).next()) {
                         return List.of(room);
                     }
@@ -291,7 +288,7 @@ public class Hotel {
         }
 
         public boolean isRented() {
-            try (Statement stmt = main.getConnection().createStatement();
+            try (Statement stmt = Main.getConnection().createStatement();
                  ResultSet rs = stmt.executeQuery("SELECT COUNT(*) AS total FROM HOTEL WHERE room='" + getID() + "'")) {
                 while (rs.next()) {
                     return rs.getInt("total")>=getType().getCapacity();

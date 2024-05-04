@@ -1,6 +1,6 @@
 package de.newrp.API;
 
-import de.newrp.main;
+import de.newrp.Main;
 import org.bukkit.entity.Player;
 
 import java.sql.ResultSet;
@@ -98,7 +98,7 @@ public enum Krankheit {
     }
 
     public boolean isImpfed(int id) {
-        try(Statement stmt = main.getConnection().createStatement();
+        try(Statement stmt = Main.getConnection().createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM impfung WHERE nrp_id = " + id + " AND krankheitID = " + this.getID())) {
             if(rs.next()) {
                 return rs.getLong("until") > System.currentTimeMillis();
@@ -121,7 +121,7 @@ public enum Krankheit {
     }
 
     public boolean isInfected(int id) {
-        try(Statement stmt = main.getConnection().createStatement();
+        try(Statement stmt = Main.getConnection().createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM krankheit WHERE userID = " + id + " AND krankheitID = " + this.getID())) {
             return rs.next();
         } catch (SQLException e) {
@@ -133,7 +133,7 @@ public enum Krankheit {
     public static HashMap<Krankheit, Boolean> getKrankheiten(Integer id) {
         HashMap<Krankheit, Boolean> map = new HashMap<>();
         for (Krankheit k : Krankheit.values()) map.put(k, false);
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = Main.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT krankheitID FROM krankheit WHERE userID = " + id)) {
             while (rs.next()) {
                 Krankheit k = Krankheit.getKrankheitByID(rs.getInt("krankheitID"));

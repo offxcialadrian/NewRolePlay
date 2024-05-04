@@ -1,13 +1,12 @@
 package de.newrp.Player;
 
-import de.newrp.API.Health;
 import de.newrp.API.ItemBuilder;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.Chat.Me;
 import de.newrp.Entertainment.Boxen;
 import de.newrp.Police.Handschellen;
-import de.newrp.main;
+import de.newrp.Main;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -16,8 +15,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
@@ -83,7 +80,7 @@ public class TestoSpritze implements Listener {
                     public void run() {
                         Boxen.onTesto.remove(p.getName());
                     }
-                }.runTaskLater(main.getInstance(), 20 * 60 * 30);
+                }.runTaskLater(Main.getInstance(), 20 * 60 * 30);
 
                 COOLDOWN.put(p.getName(), time);
                 LAST_CLICK.remove(p.getName());

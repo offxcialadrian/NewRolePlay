@@ -1,23 +1,12 @@
 package de.newrp.Police;
 
 import de.newrp.API.*;
-import de.newrp.Organisationen.Organisation;
-import de.newrp.main;
+import de.newrp.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.block.Block;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.sql.ResultSet;
@@ -58,7 +47,7 @@ public class Jail {
     }
 
     public static int getJailtimeDatabase(Player p) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = Main.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT time FROM jail WHERE nrp_id=" + Script.getNRPID(p))) {
             if (rs.next()) {
                 return rs.getInt("time");
@@ -78,7 +67,7 @@ public class Jail {
             int taskID = j.getTaskID();
             Bukkit.getScheduler().cancelTask(taskID);
 
-            taskID = Bukkit.getScheduler().scheduleSyncDelayedTask(main.getInstance(), () -> {
+            taskID = Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getInstance(), () -> {
                 if (p.isOnline()) unarrest(p);
             }, (left - seconds) * 20L);
             j.setTaskID(taskID);
@@ -94,7 +83,7 @@ public class Jail {
             if (j.getTaskID() != 0) Bukkit.getScheduler().cancelTask(j.getTaskID());
             JAIL.remove(p.getName());
         }
-        final int taskID = Bukkit.getScheduler().scheduleSyncDelayedTask(main.getInstance(), () -> {
+        final int taskID = Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getInstance(), () -> {
             if (p.isOnline()) unarrest(p);
         }, time * 20L);
         Jail j = new Jail(Script.getNRPID(p), p.getName(), System.currentTimeMillis(), time);
@@ -132,7 +121,7 @@ public class Jail {
             Location loc = locs[Script.getRandom(0, 0)];
             loc.getChunk().load();
 
-            Bukkit.getScheduler().runTaskLater(main.getInstance(), () -> p.teleport(loc), 5);
+            Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> p.teleport(loc), 5);
         } else {
             p.teleport(new Location(Script.WORLD, 1018, 68, 548, 358.74432f, -1.3718445f));
         }

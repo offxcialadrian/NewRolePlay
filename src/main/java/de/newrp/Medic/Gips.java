@@ -1,11 +1,8 @@
 package de.newrp.Medic;
 
 import de.newrp.API.*;
-import de.newrp.GFB.GFB;
 import de.newrp.GFB.Lagerarbeiter;
-import de.newrp.main;
-import de.newrp.Administrator.BuildMode;
-import de.newrp.Administrator.SDuty;
+import de.newrp.Main;
 import de.newrp.Chat.Me;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -94,7 +91,7 @@ public class Gips implements Listener {
                         rightClicked.removePotionEffect(e.getType());
                     }
                 }
-            }.runTaskLater(main.getInstance(), 20L * 10);
+            }.runTaskLater(Main.getInstance(), 20L * 10);
 
             BANDAGE_COOLDOWN.put(rightClicked.getName(), time);
             LAST_CLICK.remove(p.getName());
@@ -205,7 +202,7 @@ public class Gips implements Listener {
                 public void run() {
                     hits.remove(d);
                 }
-            }.runTaskLater(main.getInstance(), 20 * 5);
+            }.runTaskLater(Main.getInstance(), 20 * 5);
         } else {
             hits.put(d, hits.get(d) + 1);
         }

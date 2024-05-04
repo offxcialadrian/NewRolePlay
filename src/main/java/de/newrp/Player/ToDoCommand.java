@@ -2,10 +2,8 @@ package de.newrp.Player;
 
 import de.newrp.API.Messages;
 import de.newrp.API.Premium;
-import de.newrp.API.Rank;
 import de.newrp.API.Script;
-import de.newrp.main;
-import org.bukkit.OfflinePlayer;
+import de.newrp.Main;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -50,7 +48,7 @@ public class ToDoCommand implements CommandExecutor {
                 return true;
             }
 
-            try (Statement stmt = main.getConnection().createStatement()) {
+            try (Statement stmt = Main.getConnection().createStatement()) {
                 stmt.executeUpdate("INSERT INTO todos (nrp_id, todo) VALUES (" + Script.getNRPID(p) + ", '" + todo.toString() + "')");
                 p.sendMessage(PREFIX + "ToDo hinzugefügt.");
             } catch (Exception e) {
@@ -67,7 +65,7 @@ public class ToDoCommand implements CommandExecutor {
                 return true;
             }
 
-            try (Statement stmt = main.getConnection().createStatement()) {
+            try (Statement stmt = Main.getConnection().createStatement()) {
                 stmt.executeUpdate("DELETE FROM todos WHERE nrp_id=" + Script.getNRPID(p) + " AND id=" + getDatabaseID(p, Integer.parseInt(args[1])));
                 p.sendMessage(PREFIX + "ToDo entfernt.");
             } catch (Exception e) {
@@ -82,7 +80,7 @@ public class ToDoCommand implements CommandExecutor {
 
     public static void sendToDos(Player p) {
         int i = 1;
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = Main.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM todos WHERE nrp_id=" + Script.getNRPID(p) + " ORDER BY id ASC")) {
 
             if(rs.next()) {
@@ -102,7 +100,7 @@ public class ToDoCommand implements CommandExecutor {
 
     public static int getDatabaseID(Player p, int id) {
         int i = 1;
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = Main.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM todos WHERE nrp_id=" + Script.getNRPID(p) + " ORDER BY id ASC")) {
             if(rs.next()) {
                 do {

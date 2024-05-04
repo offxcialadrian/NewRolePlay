@@ -1,6 +1,6 @@
 package de.newrp.API;
 
-import de.newrp.main;
+import de.newrp.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
@@ -33,7 +33,7 @@ public class Flashbang implements Listener {
             player.getInventory().getItemInMainHand().setAmount(player.getInventory().getItemInMainHand().getAmount() - 1);
             cooldowns.put(e.getPlayer().getName(), time);
             e.getItemDrop().setPickupDelay(Integer.MAX_VALUE);
-            Bukkit.getScheduler().runTaskLater(main.getInstance(), () -> {
+            Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
                 for (Entity ent : e.getItemDrop().getNearbyEntities(10D, 5D, 10D)) {
                     if (ent instanceof Player) {
                         Player p = (Player) ent;
@@ -66,7 +66,7 @@ public class Flashbang implements Listener {
                 final Item i = e.getPlayer().getWorld().dropItemNaturally(e.getPlayer().getLocation(), Script.flashbang());
                 i.setVelocity(e.getPlayer().getLocation().getDirection().multiply(1.2F));
                 i.setPickupDelay(Integer.MAX_VALUE);
-                Bukkit.getScheduler().runTaskLater(main.getInstance(), () -> {
+                Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
                     for (Entity ent : i.getNearbyEntities(10D, 5D, 10D)) {
                         if (ent instanceof Player) {
                             Player p = (Player) ent;

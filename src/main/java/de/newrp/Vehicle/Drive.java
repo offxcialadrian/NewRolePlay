@@ -1,6 +1,6 @@
 package de.newrp.Vehicle;
 
-import de.newrp.main;
+import de.newrp.Main;
 import de.newrp.API.Script;
 import de.newrp.Player.AFK;
 import org.bukkit.Material;
@@ -97,7 +97,7 @@ public class Drive implements Listener {
                                 public void run() {
                                     damage_cooldown.remove(c.getCarID());
                                 }
-                            }.runTaskLater(main.getInstance(), 20 * 60 * 5);
+                            }.runTaskLater(Main.getInstance(), 20 * 60 * 5);
                         }
                     }
                     return ct.getSpeed();

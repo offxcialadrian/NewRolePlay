@@ -9,10 +9,9 @@ import de.newrp.Berufe.Equip;
 import de.newrp.Chat.Me;
 import de.newrp.GFB.GFB;
 import de.newrp.House.House;
+import de.newrp.Main;
 import de.newrp.Organisationen.Drogen;
-import de.newrp.Police.Fahndung;
 import de.newrp.Police.Handschellen;
-import de.newrp.Police.Policecomputer;
 import de.newrp.Ticket.TicketCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -235,7 +234,7 @@ public class InteractMenu implements Listener {
                     public void run() {
                         p.setPassenger(tg);
                     }
-                }.runTaskLater(de.newrp.main.getInstance(), 5L);
+                }.runTaskLater(Main.getInstance(), 5L);
                 break;
             case "Handschellen öffnen":
                 if (Fesseln.isTiedUp(p)) {
@@ -389,7 +388,7 @@ public class InteractMenu implements Listener {
                         progressBar(16, p);
                         LEVEL.replace(p.getName(), LEVEL.get(p.getName()) + 1);
                     }
-                }.runTaskTimer(de.newrp.main.getInstance(), 0L, 20L);
+                }.runTaskTimer(Main.getInstance(), 0L, 20L);
                 break;
             case "Drogentest":
                 if (!Duty.isInDuty(p)) {

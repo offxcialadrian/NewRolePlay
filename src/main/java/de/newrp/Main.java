@@ -1,9 +1,5 @@
 package de.newrp;
 
-import com.comphenix.protocol.PacketType;
-import com.comphenix.protocol.ProtocolLibrary;
-import com.comphenix.protocol.events.PacketAdapter;
-import com.comphenix.protocol.events.PacketEvent;
 import de.newrp.API.*;
 import de.newrp.Administrator.*;
 import de.newrp.Administrator.ServerTeam;
@@ -39,17 +35,14 @@ import de.newrp.Votifier.VoteShop;
 import de.newrp.Votifier.VoteShopListener;
 import de.newrp.Waffen.*;
 import net.labymod.serverapi.api.LabyAPI;
-import net.labymod.serverapi.api.LabyService;
-import net.labymod.serverapi.api.protocol.Protocol;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.sql.Connection;
 
-public class main extends JavaPlugin {
+public class Main extends JavaPlugin {
 
     private static Plugin instance;
     public static Event event;

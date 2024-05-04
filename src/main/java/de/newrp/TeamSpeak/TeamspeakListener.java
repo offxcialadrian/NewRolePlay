@@ -7,14 +7,14 @@ import com.github.theholywaffle.teamspeak3.api.wrapper.Client;
 import de.newrp.API.Debug;
 import de.newrp.API.Premium;
 import de.newrp.API.Script;
-import de.newrp.main;
+import de.newrp.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
 public class TeamspeakListener extends TS3EventAdapter {
     @Override
     public void onClientJoin(ClientJoinEvent e) {
-        Bukkit.getScheduler().runTaskAsynchronously(main.getInstance(), () -> {
+        Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () -> {
             if (!e.getClientDescription().isEmpty()) {
                 OfflinePlayer p = Script.getOfflinePlayer(e.getClientDescription());
                 if(!Premium.hasPremium(p) && TeamSpeak.hasGroup(e.getClientId(), TeamspeakServerGroup.PREMIUM)) {
@@ -37,7 +37,7 @@ public class TeamspeakListener extends TS3EventAdapter {
     @Override
     public void onClientMoved(ClientMovedEvent e) {
         Debug.debug("Client moved: " + e.getClientId() + " " + e.getTargetChannelId());
-        Bukkit.getScheduler().runTaskAsynchronously(main.getInstance(), () -> {
+        Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () -> {
             if (e.getTargetChannelId() != 15) return;
             Client client = TeamSpeak.getApi().getClientInfo(e.getClientId());
             Script.sendTeamMessage("§8[§cSupport§8] §c" + client.getNickname() + " §7hat den TeamSpeak-Support betreten.");

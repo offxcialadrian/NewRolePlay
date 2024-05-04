@@ -6,17 +6,13 @@ import de.newrp.Berufe.Beruf;
 import de.newrp.Berufe.Duty;
 import de.newrp.Chat.Me;
 import de.newrp.Waffen.Waffen;
-import de.newrp.main;
+import de.newrp.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -135,7 +131,7 @@ public class ReviveCommand implements CommandExecutor {
         cooldowns.put(p.getName(), time);
         cooldowns.put(tg.getName(), time);
         final Location loc = p.getLocation();
-        Bukkit.getScheduler().runTaskLater(main.getInstance(), () -> {
+        Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
             if (p.getLocation().distance(f.getDeathLocation()) > 3D) {
                 p.sendMessage(Messages.ERROR + "Du bist zuweit von der Leiche weg.");
                 return;

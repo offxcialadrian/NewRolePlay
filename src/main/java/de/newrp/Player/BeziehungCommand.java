@@ -4,7 +4,7 @@ import de.newrp.API.Gender;
 import de.newrp.API.Messages;
 import de.newrp.API.Premium;
 import de.newrp.API.Script;
-import de.newrp.main;
+import de.newrp.Main;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -80,7 +80,7 @@ public class BeziehungCommand implements CommandExecutor {
     }
 
     public static boolean hasRelationship(Player p) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = Main.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM relationship WHERE person1 = '" + Script.getNRPID(p) + "' OR person2 = '" + Script.getNRPID(p) + "'")) {
             return rs.next();
         } catch (SQLException e) {
@@ -90,7 +90,7 @@ public class BeziehungCommand implements CommandExecutor {
     }
 
     public static boolean hasRelationship(OfflinePlayer p) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = Main.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM relationship WHERE person1 = '" + Script.getNRPID(p) + "' OR person2 = '" + Script.getNRPID(p) + "'")) {
             return rs.next();
         } catch (SQLException e) {
@@ -101,7 +101,7 @@ public class BeziehungCommand implements CommandExecutor {
 
     public static boolean isMarried(Player p) {
         if (!hasRelationship(p)) return false;
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = Main.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM relationship WHERE person1 = '" + Script.getNRPID(p) + "' OR person2 = '" + Script.getNRPID(p) + "'")) {
             if (rs.next()) {
                 return rs.getBoolean("married");
@@ -114,7 +114,7 @@ public class BeziehungCommand implements CommandExecutor {
 
     public static long getSince(Player p) {
         if (!hasRelationship(p)) return 0;
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = Main.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM relationship WHERE person1 = '" + Script.getNRPID(p) + "' OR person2 = '" + Script.getNRPID(p) + "'")) {
             if (rs.next()) {
                 return rs.getLong("since");
@@ -127,7 +127,7 @@ public class BeziehungCommand implements CommandExecutor {
 
     public static OfflinePlayer getPartner(Player p) {
         if (!hasRelationship(p)) return null;
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = Main.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM relationship WHERE person1 = '" + Script.getNRPID(p) + "' OR person2 = '" + Script.getNRPID(p) + "'")) {
             if (rs.next()) {
                 if (rs.getInt("person1") == Script.getNRPID(p)) {
@@ -143,7 +143,7 @@ public class BeziehungCommand implements CommandExecutor {
     }
 
     public static void setMarried(Player p, boolean married) {
-        try (Statement stmt = main.getConnection().createStatement()) {
+        try (Statement stmt = Main.getConnection().createStatement()) {
             stmt.executeUpdate("UPDATE relationship SET married = '" + (married ? 1 : 0) + "' WHERE person1 = '" + Script.getNRPID(p) + "' OR person2 = '" + Script.getNRPID(p) + "'");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -151,7 +151,7 @@ public class BeziehungCommand implements CommandExecutor {
     }
 
     public static void setMarried(OfflinePlayer p, boolean married) {
-        try (Statement stmt = main.getConnection().createStatement()) {
+        try (Statement stmt = Main.getConnection().createStatement()) {
             stmt.executeUpdate("UPDATE relationship SET married = '" + (married ? 1 : 0) + "' WHERE person1 = '" + Script.getNRPID(p) + "' OR person2 = '" + Script.getNRPID(p) + "'");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -160,7 +160,7 @@ public class BeziehungCommand implements CommandExecutor {
 
     public static void breakup(Player p) {
         if (!hasRelationship(p)) return;
-        try (Statement stmt = main.getConnection().createStatement()) {
+        try (Statement stmt = Main.getConnection().createStatement()) {
             stmt.executeUpdate("DELETE FROM relationship WHERE person1 = '" + Script.getNRPID(p) + "' OR person2 = '" + Script.getNRPID(p) + "'");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -169,7 +169,7 @@ public class BeziehungCommand implements CommandExecutor {
 
     public static void breakup(OfflinePlayer p) {
         if (!hasRelationship(p)) return;
-        try (Statement stmt = main.getConnection().createStatement()) {
+        try (Statement stmt = Main.getConnection().createStatement()) {
             stmt.executeUpdate("DELETE FROM relationship WHERE person1 = '" + Script.getNRPID(p) + "' OR person2 = '" + Script.getNRPID(p) + "'");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -177,7 +177,7 @@ public class BeziehungCommand implements CommandExecutor {
     }
 
     public static void setPartner(Player p, OfflinePlayer partner) {
-        try (Statement stmt = main.getConnection().createStatement()) {
+        try (Statement stmt = Main.getConnection().createStatement()) {
             stmt.executeUpdate("UPDATE relationship SET person1 = '" + Script.getNRPID(p) + "', person2 = '" + Script.getNRPID(partner) + "' WHERE person1 = '" + Script.getNRPID(p) + "' OR person2 = '" + Script.getNRPID(p) + "'");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -185,7 +185,7 @@ public class BeziehungCommand implements CommandExecutor {
     }
 
     public static void createRelationship(Player p, OfflinePlayer partner) {
-        try (Statement stmt = main.getConnection().createStatement()) {
+        try (Statement stmt = Main.getConnection().createStatement()) {
             stmt.executeUpdate("INSERT INTO relationship (person1, person2, married, since) VALUES ('" + Script.getNRPID(p) + "', '" + Script.getNRPID(partner) + "', 0, " + System.currentTimeMillis() + ")");
         } catch (SQLException e) {
             e.printStackTrace();

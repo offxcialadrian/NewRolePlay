@@ -4,7 +4,7 @@ import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.Shop.Shops;
 import de.newrp.Shop.generic.GenericBuyHandler;
-import de.newrp.main;
+import de.newrp.Main;
 import org.bukkit.entity.Player;
 
 import java.sql.ResultSet;
@@ -33,7 +33,7 @@ public class GymBuyHandler implements GenericBuyHandler {
     }
 
     public static boolean isGymMember(Player p) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = Main.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM gym WHERE nrp_id=" + Script.getNRPID(p))  ) {
             return rs.next();
         } catch (SQLException e) {
