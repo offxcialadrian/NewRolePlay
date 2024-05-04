@@ -80,7 +80,7 @@ public class Utils implements Listener {
     public static final int WORLD_BORDER_MAX_X = 1100;
     public static final int WORLD_BORDER_MIN_Z = 420;
     public static final int WORLD_BORDER_MAX_Z = 1362;
-    private JDA jda =  DependencyContainer.getContainer().getDependency(IJdaService.class).getJda();
+    private IJdaService jdaService =  DependencyContainer.getContainer().getDependency(IJdaService.class);
     public static HashMap<String, Long> fishCooldown = new HashMap<>();
     public static HashMap<String, Integer> fishCount = new HashMap<>();
 
@@ -262,7 +262,7 @@ public class Utils implements Listener {
         EmbedBuilder embed = new EmbedBuilder();
         embed.setAuthor(Script.getName(p), null, "https://minotar.net/helm/"+ p.getName() + "/100.png");
         embed.setDescription("Der Spieler " + p.getName() + " hat den Server betreten.");
-        TextChannel channel = jda.getTextChannelById("1236441113057824881");
+        TextChannel channel = this.jdaService.getJda().getTextChannelById("1236441113057824881");
         channel.sendMessageEmbeds(embed.build()).queue();
 
 
