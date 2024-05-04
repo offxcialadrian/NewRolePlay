@@ -6,10 +6,12 @@ public class MainConfig {
 
     private JDBCConfig mainConnection = new JDBCConfig();
     private JDBCConfig forumConnection = new JDBCConfig();
+    private String jdaBotToken = "";
 
-    public MainConfig(JDBCConfig mainConnection, JDBCConfig forumConnection) {
+    public MainConfig(JDBCConfig mainConnection, JDBCConfig forumConnection, String jdaBotToken) {
         this.mainConnection = mainConnection;
         this.forumConnection = forumConnection;
+        this.jdaBotToken = jdaBotToken;
     }
 
     public MainConfig() {
@@ -22,5 +24,9 @@ public class MainConfig {
 
     public JDBCConfig getForumConnection() {
         return forumConnection;
+    }
+
+    public String getJdaBotToken() {
+        return jdaBotToken;
     }
 }

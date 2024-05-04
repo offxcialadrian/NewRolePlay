@@ -38,6 +38,8 @@ import de.newrp.config.IConfigService;
 import de.newrp.config.MainConfig;
 import de.newrp.config.impl.ConfigService;
 import de.newrp.dependencies.DependencyContainer;
+import de.newrp.discord.IJdaService;
+import de.newrp.discord.impl.JdaService;
 import de.newrp.features.emergencycall.IEmergencyCallService;
 import de.newrp.features.emergencycall.impl.EmergencyCallService;
 import de.newrp.features.emergencycall.listener.EmergencyCallInventoryListener;
@@ -142,6 +144,9 @@ public class NewRoleplayMain extends JavaPlugin {
         OrgSpray.FraktionSpray.init();
 
         LabyAPI.initialize(LabyAPI.getService());
+
+        final IJdaService jdaService = DependencyContainer.getContainer().getDependency(IJdaService.class);
+        jdaService.createJDAInstance(this.mainConfig.getJdaBotToken());
 
         Bukkit.getConsoleSender().sendMessage("§cNRP §8× §astarting complete..");
         Bukkit.getConsoleSender().sendMessage("§cNRP §8× §aViel Erfolg heute..");
@@ -584,6 +589,7 @@ public class NewRoleplayMain extends JavaPlugin {
         DependencyContainer.getContainer().add(NewRoleplayMain.class, this);
         DependencyContainer.getContainer().add(IConfigService.class, this.configService);
         DependencyContainer.getContainer().add(IEmergencyCallService.class, new EmergencyCallService());
+        DependencyContainer.getContainer().add(IJdaService.class, new JdaService());
     }
 
     /**
