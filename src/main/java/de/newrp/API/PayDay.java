@@ -238,6 +238,11 @@ public class PayDay extends BukkitRunnable {
                 payday -= price;
             }
 
+            if(Team.getTeam(p) != null && Team.getTeam(p) == Team.Teams.ENTWICKLUNG) {
+                p.sendMessage("§8" + Messages.ARROW + " §7Entwickler-Gehalt: §a+100€");
+                payday += 100;
+            }
+
             if (payday > 0) {
                 p.sendMessage("§8" + Messages.ARROW + " §7Einkommenssteuer (" + einkommenssteuer + "%): §c-" + (int) Script.getPercent(einkommenssteuer, payday) + "€");
                 Stadtkasse.addStadtkasse((int) Script.getPercent(einkommenssteuer, payday), "Einkommenssteuer von " + Script.getName(p) + " erhalten", Steuern.Steuer.EINKOMMENSSTEUER);
