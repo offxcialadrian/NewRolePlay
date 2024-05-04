@@ -9,6 +9,8 @@ import de.newrp.Organisationen.Blacklist;
 import de.newrp.Organisationen.Organisation;
 import de.newrp.Police.Fahndung;
 import de.newrp.NewRoleplayMain;
+import de.newrp.dependencies.DependencyContainer;
+import de.newrp.discord.IJdaService;
 import de.newrp.discord.impl.JdaService;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
@@ -78,6 +80,7 @@ public class Utils implements Listener {
     public static final int WORLD_BORDER_MAX_X = 1100;
     public static final int WORLD_BORDER_MIN_Z = 420;
     public static final int WORLD_BORDER_MAX_Z = 1362;
+    private static JDA jda =  DependencyContainer.getContainer().getDependency(IJdaService.class).getJda();
     public static HashMap<String, Long> fishCooldown = new HashMap<>();
     public static HashMap<String, Integer> fishCount = new HashMap<>();
 
@@ -256,11 +259,10 @@ public class Utils implements Listener {
         sendCurrentPlayingGamemode(p, true, "NRP × New RolePlay " + NewRoleplayMain.getInstance().getDescription().getVersion());
         Script.disableVoiceChat(p);
 
-        JDA jda = new JdaService().getJda();
         EmbedBuilder embed = new EmbedBuilder();
-        embed.setAuthor("New RolePlay", null, "https://minotar.net/helm/"+ p.getName() + "/100.png");
+        embed.setAuthor(Script.getName(p), null, "https://minotar.net/helm/"+ p.getName() + "/100.png");
         embed.setDescription("Der Spieler " + p.getName() + " hat den Server betreten.");
-        TextChannel channel = jda.getTextChannelById("1236431289284825182");
+        TextChannel channel = jda.getTextChannelById("1236441113057824881");
         channel.sendMessageEmbeds(embed.build()).queue();
 
 
@@ -705,6 +707,11 @@ public class Utils implements Listener {
         }
 
         e.setQuitMessage(null);
+        EmbedBuilder embed = new EmbedBuilder();
+        embed.setAuthor(Script.getName(p), null, "https://minotar.net/helm/"+ p.getName() + "/100.png");
+        embed.setDescription("Der Spieler " + p.getName() + " hat den Server verlassen.");
+        TextChannel channel = jda.getTextChannelById("1236441810885410896");
+        channel.sendMessageEmbeds(embed.build()).queue();
         Log.LOW.write(p, "hat den Server verlassen.");
         Script.executeAsyncUpdate("INSERT INTO last_disconnect (nrp_id, time) VALUES (" + Script.getNRPID(p) + ", " + System.currentTimeMillis() + ")");
         new BukkitRunnable() {
