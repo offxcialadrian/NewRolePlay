@@ -101,12 +101,7 @@ public class Discord {
 
     public static Member findMemberByName(JDA jda, String guildId, String username) {
         Guild guild = jda.getGuildById(guildId);
-        final Optional<Member> optionalMember = guild.findMembers(a -> {
-            if (a.hasPermission(Permission.ADMINISTRATOR)) {
-                Bukkit.getLogger().info("Effective: " + a.getEffectiveName() + ", Nickname: " + a.getNickname() + ", Global Name: " + a.getUser().getGlobalName());
-            }
-            return a.getEffectiveName().equalsIgnoreCase(username);
-        }).get().stream().findFirst();
+        final Optional<Member> optionalMember = guild.findMembers(a -> a.getEffectiveName().equalsIgnoreCase(username)).get().stream().findFirst();
         return optionalMember.orElseGet(() -> null);
     }
 

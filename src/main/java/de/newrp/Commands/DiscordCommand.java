@@ -30,6 +30,7 @@ public class DiscordCommand implements CommandExecutor {
         Player p = (Player) cs;
         if (args.length == 0) {
             p.sendMessage("§8[§9Discord§8] §9» §7https://discord.gg/newroleplay");
+            p.sendMessage(Messages.INFO + "Nutze /verify [Name] auf dem Discord in #verify um dich zu verifizieren.");
             return true;
         }
         String argument = args[0];
@@ -52,22 +53,8 @@ public class DiscordCommand implements CommandExecutor {
             p.sendMessage(Discord.PREFIX + "§cDu hast deinen Discord Account neu synchronisiert.");
             Discord.sync(Script.getNRPID(p));
         } else {
-            Bukkit.getScheduler().runTaskAsynchronously(NewRoleplayMain.getInstance(), () -> {
-                int userID = Script.getNRPID(p);
-                JDA jda = DependencyContainer.getContainer().getDependency(IJdaService.class).getJda();
-                String guildId = "1183386774374981662";
-
-                Member foundMember = Discord.findMemberByName(jda, guildId, args[0]);
-                if (foundMember == null) {
-                    p.sendMessage(Messages.ERROR + "Der Benutzer konnte nicht gefunden werden.");
-                } else if (Discord.getDiscordID(userID) != 0) {
-                    p.sendMessage(Messages.ERROR + "§cDu hast dich bereits verifiziert.");
-                } else {
-                    Discord.verify(Script.getNRPID(p), foundMember);
-                    p.sendMessage(Discord.PREFIX + "Du hast deinen Minecraft Account mit deinem Discord-Account verbunden!");
-                    //Achievement.TEAMSPEAK.grant(p);
-                }
-            });
+            p.sendMessage(Messages.ERROR + "§cNutze /discord [delete/sync]");
+            p.sendMessage(Messages.INFO + "Nutze /verify [Name] auf dem Discord in #verify um dich zu verifizieren.");
         }
         return true;
     }
