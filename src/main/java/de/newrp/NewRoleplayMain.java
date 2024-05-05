@@ -157,10 +157,7 @@ public class NewRoleplayMain extends JavaPlugin {
         builder.setActivity(Activity.playing("NRP × New Roleplay"));
 
 
-        jdaService.getJda().getGuildById(1183386774374981662L).updateCommands().addCommands(
-                Commands.slash("verify", "Verifiziere deinen Minecraft-Account")
-                        .addOption(OptionType.STRING, "verify", "Verifiziere deinen Minecraft-Account", true, false)
-        ).queue();
+        jdaService.getJda().upsertCommand("verify", "Verifiziere deinen Minecraft-Account");
         builder.addEventListeners(new VerifyListener());
         builder.build();
 
