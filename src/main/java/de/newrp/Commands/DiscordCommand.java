@@ -41,6 +41,7 @@ public class DiscordCommand implements CommandExecutor {
             }
             p.sendMessage(TeamSpeak.PREFIX + "§cDu hast deine Discord-Verfikation gelöscht.");
             Discord.deleteVerfify(Script.getNRPID(p));
+            return true;
         }
 
         if (args.length == 1 && argument.equalsIgnoreCase("sync")) {
@@ -48,7 +49,7 @@ public class DiscordCommand implements CommandExecutor {
                 p.sendMessage(TeamSpeak.PREFIX + "§cDu hast dich noch nicht verifiziert.");
                 return true;
             }
-            p.sendMessage(TeamSpeak.PREFIX + "§cDu hast deinen Discord Account neu synchronisiert.");
+            p.sendMessage(Discord.PREFIX + "§cDu hast deinen Discord Account neu synchronisiert.");
             Discord.sync(Script.getNRPID(p));
         } else {
             Bukkit.getScheduler().runTaskAsynchronously(NewRoleplayMain.getInstance(), () -> {
@@ -63,7 +64,7 @@ public class DiscordCommand implements CommandExecutor {
                     p.sendMessage(Messages.ERROR + "§cDu hast dich bereits verifiziert.");
                 } else {
                     Discord.verify(Script.getNRPID(p), foundMember);
-                    p.sendMessage(TeamSpeak.PREFIX + "Du hast deinen Minecraft Account mit deinem Discord-Account verbunden!");
+                    p.sendMessage(Discord.PREFIX + "Du hast deinen Minecraft Account mit deinem Discord-Account verbunden!");
                     //Achievement.TEAMSPEAK.grant(p);
                 }
             });

@@ -2,6 +2,7 @@ package de.newrp.discord;
 
 import de.newrp.API.Rank;
 import de.newrp.API.Script;
+import de.newrp.API.Team;
 import de.newrp.NewRoleplayMain;
 import de.newrp.TeamSpeak.TeamspeakServerGroup;
 import de.newrp.dependencies.DependencyContainer;
@@ -19,6 +20,7 @@ import java.util.Optional;
 
 public class Discord {
 
+    public static String PREFIX = "§8[§9Discord§8] §9» §7";
 
     public static boolean isVerified(int id) {
         try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
@@ -31,18 +33,15 @@ public class Discord {
     }
 
     public static void deleteVerfify(int id) {
-        try (Statement stmt = NewRoleplayMain.getConnection().createStatement()) {
-            JDA jda =  DependencyContainer.getContainer().getDependency(IJdaService.class).getJda();
-            Member member = jda.getGuildById("1183386774374981662").getMemberById(getDiscordID(id));
-            Guild guild = jda.getGuildById("1183386774374981662");
-            for(Role role : member.getRoles()) {
-                jda.getGuildById("1183386774374981662").removeRoleFromMember(member, role).queue();
+        JDA jda = DependencyContainer.getContainer().getDependency(IJdaService.class).getJda();
+        Guild guild = jda.getGuildById("1183386774374981662");
+        guild.retrieveMemberById(getDiscordID(id)).queue(member -> {
+            for (Role role : member.getRoles()) {
+                if(role.getIdLong() == 1184935696138514473L) continue;
+                guild.removeRoleFromMember(member, role).queue();
             }
-            jda.getGuildById("1183386774374981662").addRoleToMember(member, DiscordServerRole.VERIFIED.getRole(guild)).queue();
-            stmt.executeUpdate("DELETE FROM discord WHERE id=" + id);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+            Script.executeUpdate("DELETE FROM discord WHERE nrp_id=" + id);
+        });
     }
 
     public static long getDiscordID(int id) {
@@ -59,14 +58,15 @@ public class Discord {
     }
 
     public static void sync(int id) {
-        JDA jda =  DependencyContainer.getContainer().getDependency(IJdaService.class).getJda();
+        JDA jda = DependencyContainer.getContainer().getDependency(IJdaService.class).getJda();
         Guild guild = jda.getGuildById("1183386774374981662");
         guild.retrieveMemberById(getDiscordID(id)).queue(member -> {
-            for(Role role : member.getRoles()) {
-                jda.getGuildById("1183386774374981662").removeRoleFromMember(member, role).queue();
+            for (Role role : member.getRoles()) {
+                guild.removeRoleFromMember(member, role).queue();
             }
-            jda.getGuildById("1183386774374981662").addRoleToMember(member, DiscordServerRole.VERIFIED.getRole(guild)).queue();
             Rank rank = Script.getRank(Script.getOfflinePlayer(id));
+            addToRole(id, DiscordServerRole.VERIFIED);
+
             switch (rank) {
                 case OWNER:
                 case ADMINISTRATOR:
@@ -79,13 +79,30 @@ public class Discord {
                     addToRole(id, DiscordServerRole.SUPPORTER);
                     break;
             }
+
+            if(Team.getTeam(id) != null) {
+                switch (Team.getTeam(id)) {
+                    case ENTWICKLUNG:
+                        addToRole(id, DiscordServerRole.ENTWICKLER);
+                        break;
+                    case SOCIALMEDIA:
+                        addToRole(id, DiscordServerRole.SOCIALMEDIA);
+                        break;
+                    case BAU:
+                        addToRole(id, DiscordServerRole.BAUTEAM);
+                        break;
+                    case EVENT:
+                        addToRole(id, DiscordServerRole.EVENTTEAM);
+                        break;
+                }
+            }
         });
     }
 
     public static Member findMemberByName(JDA jda, String guildId, String username) {
         Guild guild = jda.getGuildById(guildId);
         final Optional<Member> optionalMember = guild.findMembers(a -> {
-            if(a.hasPermission(Permission.ADMINISTRATOR)) {
+            if (a.hasPermission(Permission.ADMINISTRATOR)) {
                 Bukkit.getLogger().info("Effective: " + a.getEffectiveName() + ", Nickname: " + a.getNickname() + ", Global Name: " + a.getUser().getGlobalName());
             }
             return a.getEffectiveName().equalsIgnoreCase(username);
@@ -94,10 +111,11 @@ public class Discord {
     }
 
     public static void addToRole(int id, DiscordServerRole role) {
-        JDA jda =  DependencyContainer.getContainer().getDependency(IJdaService.class).getJda();
-        Member member = jda.getGuildById("1183386774374981662").getMemberById(getDiscordID(id));
+        JDA jda = DependencyContainer.getContainer().getDependency(IJdaService.class).getJda();
         Guild guild = jda.getGuildById("1183386774374981662");
-        jda.getGuildById("1183386774374981662").addRoleToMember(member, role.getRole(guild)).queue();
+        guild.retrieveMemberById(getDiscordID(id)).queue(member -> {
+            jda.getGuildById("1183386774374981662").addRoleToMember(member, role.getRole(guild)).queue();
+        });
     }
 
     public static void verify(int id, Member member) {

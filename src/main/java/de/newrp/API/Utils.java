@@ -135,7 +135,7 @@ public class Utils implements Listener {
         if (Script.isInTestMode()) {
             e.setMotd("§5§lNew RolePlay §8┃ §5Reallife §8× §5RolePlay §8┃ §c1.16.5\n§8» §a§l" + "§e§lWartungsarbeiten!");
         } else {
-            e.setMotd("§5§lNew RolePlay §8┃ §5Reallife §8× §5RolePlay §8┃ §c1.16.5\n§8» §a§l" + NewRoleplayMain.getInstance().getDescription().getVersion() + " §8- §5Werde Teil einer neuen Ära!");
+            e.setMotd("§5§lNew RolePlay §8┃ §5Reallife §8× §5RolePlay §8┃ §c1.16.5\n§8» §a§l" + NewRoleplayMain.getInstance().getDescription().getVersion() + " §8- §6§lTHE NEXT BIG THING");
         }
     }
 

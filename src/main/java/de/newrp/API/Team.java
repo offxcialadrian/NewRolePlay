@@ -158,6 +158,18 @@ public class Team {
         return null;
     }
 
+    public static Teams getTeam(int id) {
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT * FROM teams WHERE nrp_id=" + id)) {
+            if (rs.next()) {
+                return Teams.getTeam(rs.getInt("team_id"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public static void removeTeam(Player p) {
         setTeamLeader(p, false);
         Script.executeUpdate("DELETE FROM teams WHERE nrp_id=" + Script.getNRPID(p));
