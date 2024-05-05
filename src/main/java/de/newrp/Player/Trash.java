@@ -46,6 +46,7 @@ public class Trash implements Listener {
             }
         }
         Inventory inv = Bukkit.createInventory(null, InventoryType.HOPPER, "§7Mülleimer");
+        Bukkit.getLogger().info("b is " + b);
         if (b) {
             ItemStack is;
             if (content.containsKey(e.getBlock().getLocation())) {
@@ -58,7 +59,6 @@ public class Trash implements Listener {
         }
         p.openInventory(inv);
         cache.put(p.getName(), e.getBlock().getLocation());
-        cooldowns.put(cache.get(p.getName()), System.currentTimeMillis());
     }
 
     @EventHandler
@@ -83,6 +83,7 @@ public class Trash implements Listener {
                     p.getInventory().addItem(is);
                     p.sendMessage("§7Du hast etwas aus dem Mülleimer genommen.");
                     Me.sendMessage(p, "hat etwas aus dem Mülleimer genommen.");
+                    cooldowns.put(cache.get(p.getName()), System.currentTimeMillis());
                 }
             }
         }

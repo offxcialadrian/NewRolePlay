@@ -25,11 +25,6 @@ public class ShareLocation implements CommandExecutor {
             return true;
         }
 
-        if (!Mobile.isPhone(p.getInventory().getItemInMainHand())) {
-            p.sendMessage(Messages.ERROR + "Du hast kein Handy in der Hand.");
-            return true;
-        }
-
         if (!Mobile.mobileIsOn(p)) {
             p.sendMessage(Messages.ERROR + "Dein Handy ist ausgeschaltet.");
             return true;
