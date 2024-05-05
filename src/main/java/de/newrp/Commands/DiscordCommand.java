@@ -59,8 +59,8 @@ public class DiscordCommand implements CommandExecutor {
                 Member foundMember = Discord.findMemberByName(jda, guildId, args[0]);
                 if (foundMember == null) {
                     p.sendMessage(Messages.ERROR + "Der Benutzer konnte nicht gefunden werden.");
-                } else if (Discord.getDiscordID(userID) == 0) {
-                    p.sendMessage(TeamSpeak.PREFIX + "§cDu hast dich bereits verifiziert.");
+                } else if (Discord.getDiscordID(userID) != 0) {
+                    p.sendMessage(Messages.ERROR + "§cDu hast dich bereits verifiziert.");
                 } else {
                     Discord.verify(Script.getNRPID(p), foundMember);
                     p.sendMessage(TeamSpeak.PREFIX + "Du hast deinen Minecraft Account mit deinem Discord-Account verbunden!");

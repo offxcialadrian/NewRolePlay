@@ -22,7 +22,7 @@ public class Discord {
 
     public static boolean isVerified(int id) {
         try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
-             ResultSet rs = stmt.executeQuery("SELECT id FROM discord WHERE id=" + id)) {
+             ResultSet rs = stmt.executeQuery("SELECT id FROM discord WHERE nrp_id=" + id)) {
             return rs.next();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -32,7 +32,6 @@ public class Discord {
 
     public static void deleteVerfify(int id) {
         try (Statement stmt = NewRoleplayMain.getConnection().createStatement()) {
-            stmt.executeUpdate("DELETE FROM discord WHERE id=" + id);
             JDA jda =  DependencyContainer.getContainer().getDependency(IJdaService.class).getJda();
             Member member = jda.getGuildById("1183386774374981662").getMemberById(getDiscordID(id));
             Guild guild = jda.getGuildById("1183386774374981662");
@@ -40,16 +39,18 @@ public class Discord {
                 jda.getGuildById("1183386774374981662").removeRoleFromMember(member, role).queue();
             }
             jda.getGuildById("1183386774374981662").addRoleToMember(member, DiscordServerRole.VERIFIED.getRole(guild)).queue();
+            stmt.executeUpdate("DELETE FROM discord WHERE id=" + id);
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public static int getDiscordID(int id) {
+    public static long getDiscordID(int id) {
         try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT discord_id FROM discord WHERE nrp_id=" + id)) {
             if (rs.next()) {
-                return rs.getInt("discord_id");
+                Bukkit.getLogger().info("Discord ID: " + rs.getLong("discord_id"));
+                return rs.getLong("discord_id");
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -59,7 +60,7 @@ public class Discord {
 
     public static void sync(int id) {
         JDA jda =  DependencyContainer.getContainer().getDependency(IJdaService.class).getJda();
-        Member member = jda.getGuildById("1183386774374981662").getMemberById(getDiscordID(id));
+        Member member = jda.getGuildById("1183386774374981662").retrieveMemberById(getDiscordID(id));
         Guild guild = jda.getGuildById("1183386774374981662");
         for(Role role : member.getRoles()) {
             jda.getGuildById("1183386774374981662").removeRoleFromMember(member, role).queue();
