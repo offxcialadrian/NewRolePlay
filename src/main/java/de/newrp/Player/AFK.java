@@ -184,6 +184,7 @@ public class AFK implements CommandExecutor, Listener {
     @EventHandler
     public void onInteract(PlayerInteractEvent e) {
         if (e.getAction() == Action.PHYSICAL) return;
+        if (e.getAction() == Action.RIGHT_CLICK_BLOCK) return;
 
         Player p = e.getPlayer();
         lastActions.add(p.getName());
