@@ -48,7 +48,7 @@ public class DiscordCommand implements CommandExecutor {
                 p.sendMessage(TeamSpeak.PREFIX + "§cDu hast dich noch nicht verifiziert.");
                 return true;
             }
-            p.sendMessage(TeamSpeak.PREFIX + "§cDu hast deinen Teamspeak Account neu synchronisiert.");
+            p.sendMessage(TeamSpeak.PREFIX + "§cDu hast deinen Discord Account neu synchronisiert.");
             Discord.sync(Script.getNRPID(p));
         } else {
             Bukkit.getScheduler().runTaskAsynchronously(NewRoleplayMain.getInstance(), () -> {
@@ -63,8 +63,8 @@ public class DiscordCommand implements CommandExecutor {
                     p.sendMessage(TeamSpeak.PREFIX + "§cDu hast dich bereits verifiziert.");
                 } else {
                     Discord.verify(Script.getNRPID(p), foundMember);
-                    p.sendMessage(TeamSpeak.PREFIX + "Du hast deinen Minecraft Account mit deinem Teamspeak-Account verbunden!");
-                    Achievement.TEAMSPEAK.grant(p);
+                    p.sendMessage(TeamSpeak.PREFIX + "Du hast deinen Minecraft Account mit deinem Discord-Account verbunden!");
+                    //Achievement.TEAMSPEAK.grant(p);
                 }
             });
         }

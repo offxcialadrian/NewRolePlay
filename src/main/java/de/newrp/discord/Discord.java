@@ -79,8 +79,7 @@ public class Discord {
 
     public static Member findMemberByName(JDA jda, String guildId, String username) {
         Guild guild = jda.getGuildById(guildId);
-        guild.findMembers(a -> a.getNickname().equalsIgnoreCase(username)).get().stream().findFirst();
-        return null;
+        return guild.findMembers(a -> a.getEffectiveName().equalsIgnoreCase(username)).get().stream().findFirst().get();
     }
 
     public static void addToRole(int id, DiscordServerRole role) {
