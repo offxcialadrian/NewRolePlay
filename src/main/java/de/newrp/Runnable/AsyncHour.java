@@ -149,7 +149,7 @@ public class AsyncHour extends BukkitRunnable {
                 all.sendMessage(Messages.INFO + "Du hast Entzugserscheinungen. Lasse dich von einem Arzt behandeln.");
             }
             if(Script.getRandom(1, 100) > 3) continue;
-            if(Script.WORLD.getHighestBlockYAt(all.getLocation()) < all.getLocation().getY()) {
+            if(Script.WORLD.getHighestBlockYAt(all.getLocation()) <= all.getLocation().getY()) {
                 Krankheit.HUSTEN.add(Script.getNRPID(all));
             }
         }
