@@ -39,6 +39,7 @@ import de.newrp.config.MainConfig;
 import de.newrp.config.impl.ConfigService;
 import de.newrp.dependencies.DependencyContainer;
 import de.newrp.discord.IJdaService;
+import de.newrp.discord.events.GuildReadyListener;
 import de.newrp.discord.impl.JdaService;
 import de.newrp.discord.listeners.VerifyListener;
 import de.newrp.features.emergencycall.IEmergencyCallService;
@@ -46,6 +47,7 @@ import de.newrp.features.emergencycall.impl.EmergencyCallService;
 import de.newrp.features.emergencycall.listener.EmergencyCallInventoryListener;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Activity;
+import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.sharding.DefaultShardManager;
@@ -158,12 +160,8 @@ public class NewRoleplayMain extends JavaPlugin {
         DefaultShardManagerBuilder builder = DefaultShardManagerBuilder.createDefault(this.mainConfig.getJdaBotToken());
         builder.setActivity(Activity.playing("NRP × New Roleplay"));
 
-        jda.getGuildById(1183386774374981662L).updateCommands().addCommands(
-                Commands.slash("verify", "Verifiziere deinen Minecraft-Account")
-                        .addOption(OptionType.STRING, "verify", "Verifiziere deinen Minecraft-Account", true, false)
-        ).queue();
-        jda.upsertCommand("verify", "Verifiziere deinen Minecraft-Account").queue();
         builder.addEventListeners(new VerifyListener());
+        builder.addEventListeners(new GuildReadyListener());
         builder.build();
 
         Bukkit.getConsoleSender().sendMessage("§cNRP §8× §astarting complete..");
