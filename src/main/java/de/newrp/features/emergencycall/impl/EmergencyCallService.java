@@ -30,13 +30,12 @@ public class EmergencyCallService implements IEmergencyCallService {
         final EmergencyCall emergencyCall = new EmergencyCall(player, location, targetFaction, reason, null);
         this.emergencyCalls.add(emergencyCall);
 
-        List<Player> nearbyPlayers = this.getNearbyPlayersOfFactionToLocation(location, targetFaction);
         final StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(getPrefix()).append("§6Achtung! Ein Notruf von ").append(Script.getName(player)).append(" ist eingegangen.")
                 .append("\n").append(getPrefix()).append("§6Vorfall§8: §6").append(reason)
-                .append("\n").append(getPrefix()).append("");
+                .append("\n").append(getPrefix()).append(buildNearbyPlayersString(location, targetFaction));
 
-        for (final Player member : targetFaction.getMembers()) {
+        for (Player member : targetFaction.getBeruf().keySet()) {
             member.sendMessage(stringBuilder.toString());
             Script.sendClickableMessage(player, getPrefix() + "§6Notruf annehmen und Route anzeigen", "/acceptnotruf " + player.getName(), "Klicke hier um den Notruf anzunehmen.");
         }
@@ -130,8 +129,18 @@ public class EmergencyCallService implements IEmergencyCallService {
             return "§6Kein Beamter ist in der Nähe";
         }
 
+        final Player firstPlayer = nearbyPlayers.get(0);
+        final Player secondPlayer = getOrDefault(1, null, nearbyPlayers);
 
+        stringBuilder.append(Script.getName(firstPlayer)).append(" (").append((int) firstPlayer.getLocation().distance(location)).append("m)");
+        if(secondPlayer != null) {
+            stringBuilder.append(" und ").append(Script.getName(secondPlayer)).append(" (").append((int) secondPlayer.getLocation().distance(location)).append("m)");
+        }
 
         return stringBuilder.toString();
+    }
+
+    private <E> E getOrDefault(int index, E defaultValue, List<E> list) {
+        return index <= list.size() - 1 ? list.get(index) : defaultValue;
     }
 }
