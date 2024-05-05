@@ -6,13 +6,16 @@ import de.newrp.NewRoleplayMain;
 import de.newrp.TeamSpeak.TeamspeakServerGroup;
 import de.newrp.dependencies.DependencyContainer;
 import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
+import org.bukkit.Bukkit;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Optional;
 
 public class Discord {
 
@@ -79,7 +82,13 @@ public class Discord {
 
     public static Member findMemberByName(JDA jda, String guildId, String username) {
         Guild guild = jda.getGuildById(guildId);
-        return guild.findMembers(a -> a.getEffectiveName().equalsIgnoreCase(username)).get().stream().findFirst().get();
+        final Optional<Member> optionalMember = guild.findMembers(a -> {
+            if(a.hasPermission(Permission.ADMINISTRATOR)) {
+                Bukkit.getLogger().info("Effective: " + a.getEffectiveName() + ", Nickname: " + a.getNickname());
+            }
+            return a.getEffectiveName().equalsIgnoreCase(username);
+        }).get().stream().findFirst();
+        return optionalMember.orElseGet(() -> null);
     }
 
     public static void addToRole(int id, DiscordServerRole role) {
