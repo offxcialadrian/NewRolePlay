@@ -60,25 +60,26 @@ public class Discord {
 
     public static void sync(int id) {
         JDA jda =  DependencyContainer.getContainer().getDependency(IJdaService.class).getJda();
-        Member member = jda.getGuildById("1183386774374981662").retrieveMemberById(getDiscordID(id));
         Guild guild = jda.getGuildById("1183386774374981662");
-        for(Role role : member.getRoles()) {
-            jda.getGuildById("1183386774374981662").removeRoleFromMember(member, role).queue();
-        }
-        jda.getGuildById("1183386774374981662").addRoleToMember(member, DiscordServerRole.VERIFIED.getRole(guild)).queue();
-        Rank rank = Script.getRank(Script.getOfflinePlayer(id));
-        switch (rank) {
-            case OWNER:
-            case ADMINISTRATOR:
-                addToRole(id, DiscordServerRole.ADMINISTRATOR);
-                break;
-            case MODERATOR:
-                addToRole(id, DiscordServerRole.MODERATOR);
-                break;
-            case SUPPORTER:
-                addToRole(id, DiscordServerRole.SUPPORTER);
-                break;
-        }
+        guild.retrieveMemberById(getDiscordID(id)).queue(member -> {
+            for(Role role : member.getRoles()) {
+                jda.getGuildById("1183386774374981662").removeRoleFromMember(member, role).queue();
+            }
+            jda.getGuildById("1183386774374981662").addRoleToMember(member, DiscordServerRole.VERIFIED.getRole(guild)).queue();
+            Rank rank = Script.getRank(Script.getOfflinePlayer(id));
+            switch (rank) {
+                case OWNER:
+                case ADMINISTRATOR:
+                    addToRole(id, DiscordServerRole.ADMINISTRATOR);
+                    break;
+                case MODERATOR:
+                    addToRole(id, DiscordServerRole.MODERATOR);
+                    break;
+                case SUPPORTER:
+                    addToRole(id, DiscordServerRole.SUPPORTER);
+                    break;
+            }
+        });
     }
 
     public static Member findMemberByName(JDA jda, String guildId, String username) {
