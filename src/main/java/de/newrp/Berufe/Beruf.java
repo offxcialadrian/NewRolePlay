@@ -140,7 +140,7 @@ public class Beruf {
 
         public String getMOTD() {
             try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
-                 ResultSet rs = stmt.executeQuery("SELECT * FROM berufe_motd WHERE berufID='" + this.id + "'")) {
+                 ResultSet rs = stmt.executeQuery("SELECT * FROM berufe_motd WHERE berufeID='" + this.id + "'")) {
                 if (rs.next()) {
                     return rs.getString("motd");
                 }
@@ -177,7 +177,7 @@ public class Beruf {
         }
 
         public void sendMessage(String message) {
-            for (Player all : getMembers()) {
+            for (Player all : getBeruf().keySet()) {
                 all.sendMessage(message);
             }
         }
@@ -197,14 +197,14 @@ public class Beruf {
         }
 
         public List<Player> getMember() {
-            return new ArrayList<>(getBeruf(this).keySet());
+            return new ArrayList<>(getBeruf().keySet());
         }
 
-        private HashMap<Player, Boolean> getBeruf(Berufe beruf) {
-            if (!BERUF_MEMBER.containsKey(beruf)) {
-                BERUF_MEMBER.put(beruf, new HashMap<>());
+        public HashMap<Player, Boolean> getBeruf() {
+            if (!BERUF_MEMBER.containsKey(this)) {
+                BERUF_MEMBER.put(this, new HashMap<>());
             }
-            return new HashMap<>(BERUF_MEMBER.get(beruf));
+            return new HashMap<>(BERUF_MEMBER.get(this));
         }
 
         public void changeDuty(Player player, Boolean duty) {
@@ -221,16 +221,16 @@ public class Beruf {
 
         public void setMember(Player player) {
             if (Beruf.hasBeruf(player)) {
-                Objects.requireNonNull(getBeruf(Beruf.getBeruf(player))).put(player, false);
+                getBeruf().put(player, false);
             }
         }
 
         public void deleteMember(Player player) {
-            Objects.requireNonNull(getBeruf(this)).remove(player);
+            Objects.requireNonNull(getBeruf()).remove(player);
         }
 
         public Boolean isMember(Player player) {
-            return Objects.requireNonNull(getBeruf(this)).containsKey(player);
+            return Objects.requireNonNull(getBeruf()).containsKey(player);
         }
 
         public List<OfflinePlayer> getAllMembers() {
@@ -334,8 +334,6 @@ public class Beruf {
             return null;
         }
     }
-
-    private static final Map<UUID, Berufe> BERUFE_MAP = new ConcurrentHashMap<>();
 
 
     public static Berufe getBeruf(Player p) {

@@ -57,7 +57,7 @@ public static HashMap<String, Long> cooldown = new HashMap<>();
             return true;
         }
 
-        Inventory inv = Bukkit.createInventory(null, 9, "§8[§9Polizeicomputer§8] §9" + Script.getName(tg));
+        Inventory inv = Bukkit.createInventory(null, 9, "§8[§9Polizeicomputer§8] §9" + tg.getName());
         inv.setItem(0, new ItemBuilder(Material.OAK_SIGN).setName("Personendaten").setLore("§8» §7Klicke um die Personendaten von " + Script.getName(tg) + " zu sehen.").build());
         inv.setItem(1, new ItemBuilder(Material.OAK_SIGN).setName("Lizenzen").setLore("§8» §7Klicke um die Lizenzen von " + Script.getName(tg) + " zu sehen.").build());
         inv.setItem(2, new ItemBuilder(Material.OAK_SIGN).setName("Gefährlichkeitsstufe").setLore("§8» §7Gefährlichkeitsstufe von " + Script.getName(tg) + "§8: §7" + getDangerLevel(tg)).build());

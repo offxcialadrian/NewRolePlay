@@ -30,21 +30,33 @@ public class EmergencyCallService implements IEmergencyCallService {
         final EmergencyCall emergencyCall = new EmergencyCall(player, location, targetFaction, reason, null);
         this.emergencyCalls.add(emergencyCall);
 
-        List<Player> nearbyPlayers = this.getNearbyPlayersOfFactionToLocation(location, targetFaction);
         final StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(getPrefix()).append("§6Achtung! Ein Notruf von ").append(Script.getName(player)).append(" ist eingegangen.")
                 .append("\n").append(getPrefix()).append("§6Vorfall§8: §6").append(reason)
-                .append("\n").append(getPrefix()).append("");
+                .append("\n").append(buildNearbyPlayersString(location, targetFaction));
 
-        for (final Player member : targetFaction.getMembers()) {
+        for (Player member : targetFaction.getBeruf().keySet()) {
             member.sendMessage(stringBuilder.toString());
             Script.sendClickableMessage(player, getPrefix() + "§6Notruf annehmen und Route anzeigen", "/acceptnotruf " + player.getName(), "Klicke hier um den Notruf anzunehmen.");
         }
     }
 
     @Override
-    public void dropEmergencyCall(Player player, Beruf.Berufe targetFaction) {
-        this.emergencyCalls.removeIf(e -> e.sender().getUniqueId() == player.getUniqueId() && e.faction() == targetFaction);
+    public void dropEmergencyCall(EmergencyCall emergencyCall) {
+        final boolean hasBeenRemoved = this.emergencyCalls.remove(emergencyCall);
+        if(hasBeenRemoved) {
+            for (Player member : emergencyCall.faction().getBeruf().keySet()) {
+                member.sendMessage(this.getPrefix() + "Der Notruf von " + Script.getName(emergencyCall.sender()) + " wurde abgebrochen");
+            }
+        }
+    }
+
+    @Override
+    public void doneEmergencyCall(Player player, EmergencyCall emergencyCall) {
+        for (Player member : emergencyCall.faction().getBeruf().keySet()) {
+            member.sendMessage(this.getPrefix() + Script.getName(player) + " hat den Notruf von " + Script.getName(emergencyCall.sender()) + " abgeschlossen");
+        }
+        this.emergencyCalls.remove(emergencyCall);
     }
 
     @Override
@@ -66,8 +78,16 @@ public class EmergencyCallService implements IEmergencyCallService {
     }
 
     @Override
-    public void requeueAcceptedEmergencyCall(EmergencyCall emergencyCall) {
+    public Optional<EmergencyCall> getAcceptedEmergencyCallByFactionMember(Player player) {
+        return emergencyCalls.stream().filter(e -> e.acceptEmergencyCallMetadata() != null && e.acceptEmergencyCallMetadata().player().getUniqueId() == player.getUniqueId()).findFirst();
+    }
+
+    @Override
+    public void requeueAcceptedEmergencyCall(Player player, EmergencyCall emergencyCall) {
         emergencyCall.acceptEmergencyCallMetadata(null);
+        for (Player member : emergencyCall.faction().getBeruf().keySet()) {
+            member.sendMessage(this.getPrefix() + Script.getName(player) + " hat den Notruf von " + Script.getName(emergencyCall.sender()) + " wieder geöffnet!");
+        }
     }
 
     @Override
@@ -83,7 +103,7 @@ public class EmergencyCallService implements IEmergencyCallService {
     @Override
     public Optional<EmergencyCall> getEmergencyCallByPlayer(Player player, Beruf.Berufe faction) {
         return this.emergencyCalls.stream()
-                .filter(e -> e.sender().getUniqueId() == player.getUniqueId() && e.faction() == faction)
+                .filter(e -> e.sender().getUniqueId() == player.getUniqueId() && (faction == null || e.faction() == faction))
                 .findFirst();
     }
 
@@ -113,13 +133,10 @@ public class EmergencyCallService implements IEmergencyCallService {
 
     @Override
     public List<Player> getNearbyPlayersOfFactionToLocation(Location location, Beruf.Berufe faction) {
-        final List<Player> playersSortedByDistance = Bukkit.getOnlinePlayers().stream()
+        return faction.getBeruf().keySet().stream()
                 .sorted(Comparator.comparingDouble((Player a) -> a.getLocation().distance(location)))
-                .filter(faction::isMember)
                 .limit(2)
                 .collect(Collectors.toList());
-
-        return playersSortedByDistance;
     }
 
     private String buildNearbyPlayersString(final Location location, final Beruf.Berufe faction) {
@@ -130,8 +147,18 @@ public class EmergencyCallService implements IEmergencyCallService {
             return "§6Kein Beamter ist in der Nähe";
         }
 
+        final Player firstPlayer = nearbyPlayers.get(0);
+        final Player secondPlayer = getOrDefault(1, null, nearbyPlayers);
 
+        stringBuilder.append(Script.getName(firstPlayer)).append(" (").append((int) firstPlayer.getLocation().distance(location)).append("m)");
+        if(secondPlayer != null) {
+            stringBuilder.append(" und ").append(Script.getName(secondPlayer)).append(" (").append((int) secondPlayer.getLocation().distance(location)).append("m)");
+        }
 
         return stringBuilder.toString();
+    }
+
+    private <E> E getOrDefault(int index, E defaultValue, List<E> list) {
+        return index <= list.size() - 1 ? list.get(index) : defaultValue;
     }
 }

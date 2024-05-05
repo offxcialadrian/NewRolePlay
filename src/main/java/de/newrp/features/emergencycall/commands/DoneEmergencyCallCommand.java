@@ -10,7 +10,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-public class RequeueEmergencyCallCommand implements CommandExecutor {
+public class DoneEmergencyCallCommand implements CommandExecutor {
 
     private final IEmergencyCallService emergencyCallService = DependencyContainer.getContainer().getDependency(IEmergencyCallService.class);
 
@@ -34,7 +34,9 @@ public class RequeueEmergencyCallCommand implements CommandExecutor {
             return false;
         }
 
-        this.emergencyCallService.requeueAcceptedEmergencyCall(player, this.emergencyCallService.getAcceptedEmergencyCallByFactionMember(player).get());
+
+
+        this.emergencyCallService.doneEmergencyCall(player, this.emergencyCallService.getAcceptedEmergencyCallByFactionMember(player).get());
         return false;
     }
 }

@@ -40,6 +40,7 @@ public class Bankautomaten implements Listener {
         Player p = e.getPlayer();
         if (!Organisation.hasOrganisation(p)) return;
         if(e.getClickedBlock() == null) return;
+        if(e.getClickedBlock().getType() == Material.CYAN_BANNER) return;
         if (p.getInventory().getItemInMainHand().getType() != Material.TNT) return;
         ATM atm = ATM.getNearATM(p);
         if (atm == null) return;
@@ -59,7 +60,6 @@ public class Bankautomaten implements Listener {
             p.sendMessage(Messages.ERROR + "Es braucht mindestens 3 Beamte um einen Bankautomaten zu zerstören.");
             return;
         }
-
 
         cooldown.put(o, System.currentTimeMillis() + 10800000);
         cooldownATM.put(atm, System.currentTimeMillis() + 3600000);
