@@ -1,5 +1,6 @@
 package de.newrp.features.emergencycall.listener;
 
+import de.newrp.API.Messages;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Chat.Me;
 import de.newrp.dependencies.DependencyContainer;
@@ -41,6 +42,14 @@ public class EmergencyCallInventoryListener implements Listener {
             if(faction == null) {
                 return;
             }
+
+            if(this.emergencyCallService.getEmergencyCallByPlayer(player, faction).isPresent()) {
+                player.sendMessage(this.emergencyCallService.getPrefix() + "Du hast bereits einen aktiven Notruf!");
+                player.sendMessage(Messages.INFO + "Du kannst den Notruf über /cancelnotruf abbrechen");
+                player.closeInventory();
+                return;
+            }
+
             final EmergencyCallReasonSelectInventory emergencyCallReasonSelectInventory = new EmergencyCallReasonSelectInventory(faction);
             emergencyCallReasonSelectInventory.openToPlayer(player);
         } else if(clickedInventory.getHolder() instanceof EmergencyCallReasonSelectInventory.EmergencyCallReasonSelectInventoryHolder) {

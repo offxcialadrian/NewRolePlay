@@ -43,8 +43,10 @@ import de.newrp.discord.events.GuildReadyListener;
 import de.newrp.discord.impl.JdaService;
 import de.newrp.discord.listeners.VerifyListener;
 import de.newrp.features.emergencycall.IEmergencyCallService;
+import de.newrp.features.emergencycall.commands.*;
 import de.newrp.features.emergencycall.impl.EmergencyCallService;
 import de.newrp.features.emergencycall.listener.EmergencyCallInventoryListener;
+import de.newrp.features.emergencycall.listener.EmergencyCallQuitListener;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Guild;
@@ -307,9 +309,9 @@ public class NewRoleplayMain extends JavaPlugin {
         getCommand("teamspeak").setExecutor(new TeamspeakCommand());
         getCommand("channel").setExecutor(new PremiumChannel());
         getCommand("takeshop").setExecutor(new TakeShop());
-        getCommand("acceptnotruf").setExecutor(new AcceptNotruf());
-        getCommand("donenotruf").setExecutor(new DoneNotruf());
-        getCommand("cancelnotruf").setExecutor(new CancelNotruf());
+        getCommand("acceptnotruf").setExecutor(new AcceptEmergencyCallCommand());
+        getCommand("donenotruf").setExecutor(new DoneEmergencyCallCommand());
+        getCommand("cancelnotruf").setExecutor(new CancelEmergencyCallCommand());
         getCommand("sharenotruf").setExecutor(new ShareNotruf());
         getCommand("personalausweis").setExecutor(new Personalausweis());
         getCommand("policecomputer").setExecutor(new Policecomputer());
@@ -320,11 +322,11 @@ public class NewRoleplayMain extends JavaPlugin {
         getCommand("tipp").setExecutor(new TippOfTheDay());
         getCommand("zeitung").setExecutor(new Zeitung());
         getCommand("aab").setExecutor(new AimBot());
-        getCommand("requeuenotruf").setExecutor(new RequeueNotruf());
+        getCommand("requeuenotruf").setExecutor(new RequeueEmergencyCallCommand());
         getCommand("ramm").setExecutor(new Ramm());
         getCommand("transferticket").setExecutor(new TransferTicket());
         getCommand("health").setExecutor(new HealthCommand());
-        getCommand("notrufe").setExecutor(new Notrufe());
+        getCommand("notrufe").setExecutor(new EmergencyCallsCommand());
         getCommand("dropgun").setExecutor(new DropGuns());
         getCommand("rezept").setExecutor(new Rezept());
         getCommand("selfstorage").setExecutor(new Selfstorage());
@@ -440,7 +442,7 @@ public class NewRoleplayMain extends JavaPlugin {
         getCommand("kebap").setExecutor(new Kebap());
         getCommand("blocknotruf").setExecutor(new BlockNotruf());
         getCommand("gangzone").setExecutor(new GangwarZonesCommand());
-        getCommand("deletenotruf").setExecutor(new DeleteNotruf());
+        getCommand("deletenotruf").setExecutor(new DeleteEmergencyCallCommand());
         getCommand("checkactivemembers").setExecutor(new CheckActiveMembers());
         getCommand("endfire").setExecutor(new EndFire());
         getCommand("sit").setExecutor(new SitCommand());
@@ -596,6 +598,7 @@ public class NewRoleplayMain extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new Trash(), this);
         Bukkit.getPluginManager().registerEvents(new CarHandler(), this);
         Bukkit.getPluginManager().registerEvents(new EmergencyCallInventoryListener(), this);
+        Bukkit.getPluginManager().registerEvents(new EmergencyCallQuitListener(), this);
     }
 
     /**

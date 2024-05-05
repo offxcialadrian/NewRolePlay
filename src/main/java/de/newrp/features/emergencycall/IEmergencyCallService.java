@@ -13,7 +13,9 @@ public interface IEmergencyCallService {
 
     void createEmergencyCall(final Player player, final Location location, final Beruf.Berufe targetFaction, final String reason);
 
-    void dropEmergencyCall(final Player player, final Beruf.Berufe targetFaction);
+    void dropEmergencyCall(final EmergencyCall emergencyCall);
+
+    void doneEmergencyCall(final Player player, final EmergencyCall emergencyCall);
 
     boolean hasBeenAccepted(final EmergencyCall emergencyCall);
 
@@ -21,7 +23,9 @@ public interface IEmergencyCallService {
 
     void acceptEmergencyCall(final Player player, final EmergencyCall emergencyCall);
 
-    void requeueAcceptedEmergencyCall(final EmergencyCall emergencyCall);
+    Optional<EmergencyCall> getAcceptedEmergencyCallByFactionMember(final Player player);
+
+    void requeueAcceptedEmergencyCall(final Player player, final EmergencyCall emergencyCall);
 
     boolean factionMemberHasAccepted(final Player player);
 
