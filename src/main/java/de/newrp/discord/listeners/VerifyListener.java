@@ -38,7 +38,9 @@ public class VerifyListener extends ListenerAdapter {
                 return;
             }
 
+            event.reply("Du hast eine Anfrage an " + Script.getName(p) + " gesendet.").setEphemeral(true).queue();
             Annehmen.offer.put(p.getName() + ".dcverify", event.getUser().getId());
+            p.sendMessage(Discord.PREFIX + "Der User " + event.getUser().getEffectiveName() + " möchte sich mit deinem Account verifizieren.");
             Script.sendAcceptMessage(p);
         }
     }
