@@ -106,7 +106,7 @@ public class Fahndung implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        if(Beruf.getBeruf(tg) == Beruf.Berufe.GOVERNMENT) {
+        if(Beruf.getBeruf(tg) == Beruf.Berufe.GOVERNMENT && Duty.isInDuty(tg)) {
             p.sendMessage(Messages.ERROR + "Du kannst keine Regierungsmitglieder fahnden.");
             return true;
         }

@@ -710,7 +710,7 @@ public class Utils implements Listener {
         EmbedBuilder embed = new EmbedBuilder();
         embed.setAuthor(Script.getName(p), null, "https://minotar.net/helm/"+ p.getName() + "/100.png");
         embed.setDescription("Der Spieler " + p.getName() + " hat den Server verlassen.");
-        TextChannel channel = jda.getTextChannelById("1236441810885410896");
+        TextChannel channel = this.jdaService.getJda().getTextChannelById("1236441810885410896");
         channel.sendMessageEmbeds(embed.build()).queue();
         Log.LOW.write(p, "hat den Server verlassen.");
         Script.executeAsyncUpdate("INSERT INTO last_disconnect (nrp_id, time) VALUES (" + Script.getNRPID(p) + ", " + System.currentTimeMillis() + ")");
