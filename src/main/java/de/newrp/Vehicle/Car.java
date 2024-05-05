@@ -85,7 +85,7 @@ public class Car {
         return 0;
     }
 
-    public static boolean carExcistByCarID(int carID) {
+    public static boolean carExists(int carID) {
         try (PreparedStatement stmt = NewRoleplayMain.getConnection().prepareStatement("SELECT id FROM vehicle WHERE id = ?")) {
 
             stmt.setInt(1, carID);
