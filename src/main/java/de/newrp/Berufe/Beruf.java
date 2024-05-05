@@ -333,11 +333,9 @@ public class Beruf {
             }
             return null;
         }
-
-
     }
 
-
+    private static final Map<UUID, Berufe> BERUFE_MAP = new ConcurrentHashMap<>();
 
 
     public static Berufe getBeruf(Player p) {

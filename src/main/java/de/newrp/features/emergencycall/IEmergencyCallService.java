@@ -35,5 +35,7 @@ public interface IEmergencyCallService {
 
     String getPrefix();
 
+    List<Player> getNearbyPlayersOfFactionToLocation(final Location location, final Beruf.Berufe faction);
+
 
 }
