@@ -9,6 +9,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Boat;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
@@ -26,7 +27,6 @@ import java.util.*;
 public class Car {
 
     public static final List<Car> CARS = new ArrayList<>();
-    public static final HashMap<Car, Boolean> LIVE_BOMB = new HashMap<>();
     public static final String PREFIX = "§8[§6Auto§8] §6" + Messages.ARROW + " §7";
 
     private final int carID;
@@ -39,13 +39,12 @@ public class Car {
     private int insurance;
     private boolean locked;
     private boolean activated;
-    private boolean bomb;
     private String licenseplate;
     private Strafzettel strafzettel;
     private final List<VehicleAddon> addons;
 
     public Car(int carID, Boat boatEntity, CarType carType, Player owner, int fuel, int carheal, int mileage, int insurance, boolean locked,
-               boolean activated, boolean bomb, String licenseplate, Strafzettel strafzettel, List<VehicleAddon> addons) {
+               boolean activated, String licenseplate, Strafzettel strafzettel, List<VehicleAddon> addons) {
         this.carID = carID;
         this.boatEntity = boatEntity;
         this.carType = carType;
@@ -59,7 +58,6 @@ public class Car {
         this.licenseplate = licenseplate;
         this.strafzettel = strafzettel;
         this.addons = addons;
-        this.bomb = bomb;
     }
 
     public static Car getCarByCarID(int carID) {
@@ -100,11 +98,11 @@ public class Car {
     }
 
     public static void clearAll() {
-        for (Boat mc : Script.WORLD.getEntitiesByClass(Boat.class)) {
-            Car car = getCarByEntityID(mc.getEntityId());
+        for (Boat boat : Script.WORLD.getEntitiesByClass(Boat.class)) {
+            Car car = getCarByEntityID(boat.getEntityId());
 
             if (car != null && car.getOwner() == null) {
-                mc.remove();
+                boat.remove();
             }
         }
     }
@@ -131,7 +129,7 @@ public class Car {
                     Boat boat = (Boat) Script.WORLD.spawnEntity(loc.clone().add(0, .5, 0), EntityType.BOAT);
                     boat.setMaxSpeed(carType.getMaxSpeed());
 
-                    Car car = new Car(carID, boat, carType, p, 100, carType.getCarheal(), 0, 0, true, true, false, "", null, new ArrayList<>());
+                    Car car = new Car(carID, boat, carType, p, 100, carType.getCarheal(), 0, 0, true, true, "", null, new ArrayList<>());
                     CARS.add(car);
                 }
             }
@@ -148,7 +146,7 @@ public class Car {
         List<Car> cars = new ArrayList<>();
 
         try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
-             ResultSet rs = stmt.executeQuery("SELECT vehicle.id, vehicle.cartype, vehicle.fuel, vehicle.heal, vehicle.mileage, vehicle.insurance, vehicle.locked, vehicle.activated, vehicle.kennzeichen, vehicle.bomb, vehicle_addon.akku, vehicle_addon.musik \n" +
+             ResultSet rs = stmt.executeQuery("SELECT vehicle.id, vehicle.cartype, vehicle.fuel, vehicle.heal, vehicle.mileage, vehicle.insurance, vehicle.locked, vehicle.activated, vehicle.kennzeichen, vehicle_addon.akku, vehicle_addon.musik \n" +
                      "FROM vehicle\n" +
                      "LEFT JOIN vehicle_addon ON vehicle_addon.id = vehicle.id\n" +
                      "WHERE vehicle.owner = " + userID + " AND vehicle.activated = TRUE")) {
@@ -170,9 +168,8 @@ public class Car {
 
                 boolean locked = rs.getBoolean("locked");
                 boolean activated = rs.getBoolean("activated");
-                boolean bomb = rs.getBoolean("bomb");
 
-                cars.add(new Car(carID, null, carType, p, fuel, heal, mileage, insurance, locked, activated, bomb, licenseplate, Strafzettel.loadStrafzettel(carID), addons));
+                cars.add(new Car(carID, null, carType, p, fuel, heal, mileage, insurance, locked, activated, licenseplate, Strafzettel.loadStrafzettel(carID), addons));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -357,7 +354,6 @@ public class Car {
                 ", insurance=" + insurance +
                 ", locked=" + locked +
                 ", activated=" + activated +
-                ", bomb=" + bomb +
                 ", licenseplate='" + licenseplate + '\'' +
                 ", strafzettel=" + strafzettel +
                 ", addons=" + addons +
@@ -388,10 +384,6 @@ public class Car {
         return fuel;
     }
 
-    public boolean hasBomb() {
-        if (LIVE_BOMB.containsKey(this)) return true;
-        return bomb;
-    }
 
     public void fill(int amount) {
         int tank = getFuel() + amount;
@@ -498,8 +490,8 @@ public class Car {
         return null;
     }
 
-    public void save(Boat minecart) {
-        Location loc = minecart.getLocation();
+    public void save(Boat boat) {
+        Location loc = boat.getLocation();
 
         try (PreparedStatement stmt = NewRoleplayMain.getConnection().prepareStatement("UPDATE vehicle SET fuel = ?, heal = ?, mileage = ?, location_x = ?, location_y = ?, location_z = ? WHERE id = ?")) {
 
@@ -552,11 +544,13 @@ public class Car {
         Script.executeUpdate("UPDATE trunk SET amount = 0 WHERE carID = " + this.carID);
     }
 
-    public void updateCarSidebar(Boat mc) {
-        if (mc != null) {
-            if (mc.getPassengers().size() == 0) return;
-            Player p = (Player) mc.getPassengers().get(0);
-            updateCarSidebar(p, this, mc);
+    public void updateCarSidebar(Boat boat) {
+        if (boat != null) {
+            for(Entity e : boat.getPassengers()) {
+                if(!(e instanceof Player)) continue;
+                Player p = (Player) e;
+                updateCarSidebar(p, this, boat);
+            }
         }
     }
 
@@ -594,48 +588,6 @@ public class Car {
 
             updateCarSidebar(mc);
         }
-    }
-
-    public void removeBomb() {
-        Script.executeUpdate("UPDATE vehicle SET bomb=null WHERE id = " + this.carID);
-        LIVE_BOMB.remove(this);
-    }
-
-    public void crashByBomb(Boat mc) {
-        Location loc = mc.getLocation();
-        setCarHeal(0);
-        Player owner = getOwner();
-        if (carheal <= 0) {
-            this.carheal = 0;
-            if (mc != null) {
-                int v = getInsurance();
-                if (v > 0) {
-                    if (owner != null)
-                        owner.sendMessage("§eDeine Versicherung hat den Schaden ohne weitere Kosten übernommen. §8[§7" + (v - 1) + "/10§8]");
-                    mc.getWorld().createExplosion(mc.getLocation().getX(), mc.getLocation().getY(), mc.getLocation().getZ(), .4F, false, false);
-                    setInsurance(v - 1);
-                    schrottplatz(mc);
-                    removeBomb();
-                } else {
-                    destroy(true, mc);
-                    if (owner != null)
-                        owner.sendMessage(PREFIX + "Dein Fahrzeug wurde durch eine Autobombe komplett zerstört!");
-                }
-            }
-            for (Player online : Bukkit.getOnlinePlayers()) {
-                double distance = online.getLocation().distance(loc);
-                if (distance < 20D) {
-                    online.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 0, 0, false));
-                    online.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 5 * 20, 1, false));
-
-                    if (distance < 7D) {
-                        double damage = ((150D - (distance * 1.5D)) * .8D);
-                        online.damage(damage);
-                    }
-                }
-            }
-        }
-        updateCarSidebar(mc);
     }
 
     public void destroy(boolean explode, Boat mc) {
