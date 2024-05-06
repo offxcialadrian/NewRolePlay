@@ -1,8 +1,7 @@
 package de.newrp.Administrator;
 
 import de.newrp.API.*;
-import de.newrp.Commands.Test;
-import de.newrp.main;
+import de.newrp.NewRoleplayMain;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.Bukkit;
@@ -55,11 +54,11 @@ public class GMX implements CommandExecutor {
 
         Bukkit.broadcastMessage(Script.PREFIX + "§4§lACHTUNG: §cDer Server startet in einer Minute neu! (erwartete Restart-Dauer: " + Script.getRandom(20, 25) + " Sekunden)");
         Bukkit.broadcastMessage(Script.PREFIX + "§4Grund §8× §c" + msg);
-        Bukkit.getScheduler().runTaskLater(main.getInstance(), () -> {
+        Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> {
             Bukkit.broadcastMessage(Script.PREFIX + "§4§lACHTUNG: §cDer Server startet in 30 Sekunden neu!");
-            Bukkit.getScheduler().runTaskLater(main.getInstance(), () -> {
+            Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> {
                 Bukkit.broadcastMessage(Script.PREFIX + "§4§lACHTUNG: §cDer Server startet in 10 Sekunden neu!");
-                Bukkit.getScheduler().runTaskLater(main.getInstance(), () -> {
+                Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> {
                     Bukkit.broadcastMessage(Script.PREFIX + "§4§lACHTUNG: §cDer Server startet in 5 Sekunden neu!");
                     for(Player all : Bukkit.getOnlinePlayers()) {
                         if(Cache.inventar.containsKey(all.getName())) {
@@ -67,15 +66,15 @@ public class GMX implements CommandExecutor {
                             all.sendMessage(Messages.INFO + "Der Server restartet und dein Inventar wurde wiederhergestellt.");
                         }
                     }
-                    Bukkit.getScheduler().runTaskLater(main.getInstance(), () -> {
+                    Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> {
                         Bukkit.broadcastMessage(Script.PREFIX + "§4§lACHTUNG: §cDer Server startet in 4 Sekunden neu!");
-                        Bukkit.getScheduler().runTaskLater(main.getInstance(), () -> {
+                        Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> {
                             Bukkit.broadcastMessage(Script.PREFIX + "§4§lACHTUNG: §cDer Server startet in 3 Sekunden neu!");
-                            Bukkit.getScheduler().runTaskLater(main.getInstance(), () -> {
+                            Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> {
                                 Bukkit.broadcastMessage(Script.PREFIX + "§4§lACHTUNG: §cDer Server startet in 2 Sekunden neu!");
-                                Bukkit.getScheduler().runTaskLater(main.getInstance(), () -> {
+                                Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> {
                                     Bukkit.broadcastMessage(Script.PREFIX + "§4§lACHTUNG: §cDer Server startet in 1 Sekunde neu!");
-                                    Bukkit.getScheduler().runTaskLater(main.getInstance(), () -> {
+                                    Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> {
                                         Bukkit.broadcastMessage(Script.PREFIX + "§4§lACHTUNG: §cDer Server startet jetzt neu!");
                                         for(Player all : Bukkit.getOnlinePlayers()) {
                                             all.kickPlayer("§8» §cNRP × New RolePlay §8┃ §cKICK §8« \n\n§8§m------------------------------\n\n§7Der Server startet neu§8.\n\n§7Grund §8× §e" + msg + "\n\n§8§m------------------------------");

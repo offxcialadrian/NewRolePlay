@@ -6,7 +6,7 @@ import de.newrp.API.Achievement;
 import de.newrp.API.Debug;
 import de.newrp.API.Event;
 import de.newrp.API.Script;
-import de.newrp.main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -48,7 +48,7 @@ public class VoteListener implements Listener {
         int year = Calendar.getInstance().get(Calendar.YEAR);
         int votes = getTotalVotesToday();
         if (++votes >= (weekend ? de.newrp.API.Vote.VOTE_AMOUNT_WEEKEND : de.newrp.API.Vote.VOTE_AMOUNT_WEEK)) {
-            if (main.event == null) Script.startEvent(Event.VOTE, true);
+            if (NewRoleplayMain.event == null) Script.startEvent(Event.VOTE, true);
         }
         Script.executeAsyncUpdate("UPDATE voteday SET votes=votes+1 WHERE day=" + day + " AND year=" + year);
         Player p = Script.getPlayer(player);
@@ -79,7 +79,7 @@ public class VoteListener implements Listener {
     public static void addVoteStreak(int p) {
         int c_year = Calendar.getInstance().get(Calendar.YEAR);
         int c_day = Calendar.getInstance().get(Calendar.DAY_OF_YEAR);
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT last_vote_day, last_vote_year FROM vote_history WHERE id=" + p)) {
             if (rs.next()) {
                 int day = rs.getInt("last_vote_day");
@@ -104,7 +104,7 @@ public class VoteListener implements Listener {
     }
 
     public static int getVotepoints(int p) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT votepoints FROM vote WHERE id=" + p)) {
             if (rs.next()) {
                 return rs.getInt("votepoints");
@@ -118,7 +118,7 @@ public class VoteListener implements Listener {
     }
 
     public static int getTotalVotepoints(int p) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT totalvotes FROM vote WHERE id=" + p)) {
             if (rs.next()) {
                 return rs.getInt("totalvotes");
@@ -141,7 +141,7 @@ public class VoteListener implements Listener {
     public static int getTotalVotesToday() {
         int day = Calendar.getInstance().get(Calendar.DAY_OF_YEAR);
         int year = Calendar.getInstance().get(Calendar.YEAR);
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT votes FROM voteday WHERE day=" + day + " AND year=" + year)) {
             if (rs.next()) {
                 return rs.getInt("votes");
@@ -157,13 +157,13 @@ public class VoteListener implements Listener {
 
     @EventHandler
     public void onPlayerVote(VotifierEvent e) {
-        Bukkit.getScheduler().runTaskAsynchronously(main.getInstance(), () -> {
+        Bukkit.getScheduler().runTaskAsynchronously(NewRoleplayMain.getInstance(), () -> {
             Vote v = e.getVote();
             addVote(v);
             int id = Script.getNRPID(v.getUsername());
             if (id == 0) {
                 String ip = v.getAddress();
-                try (Statement stmt = main.getConnection().createStatement();
+                try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
                      ResultSet rs = stmt.executeQuery("SELECT id FROM ip WHERE ip='" + ip + "' LIMIT 1")) {
                     if (rs.next()) {
                         id = rs.getInt("id");

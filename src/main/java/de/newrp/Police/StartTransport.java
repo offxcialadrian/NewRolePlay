@@ -3,6 +3,7 @@ package de.newrp.Police;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.Berufe.Beruf;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -71,7 +72,7 @@ public class StartTransport implements CommandExecutor {
                 StartTransport.LEVEL = 0;
                 StartTransport.add = 0;
             }
-        }.runTaskLater(de.newrp.main.getInstance(), 20*60*15);
+        }.runTaskLater(NewRoleplayMain.getInstance(), 20*60*15);
 
         return false;
     }
@@ -101,7 +102,7 @@ public class StartTransport implements CommandExecutor {
                 LEVEL++;
                 progressBar(p);
             }
-        }.runTaskTimer(de.newrp.main.getInstance(), 0, 20);
+        }.runTaskTimer(NewRoleplayMain.getInstance(), 0, 20);
 
     }
 

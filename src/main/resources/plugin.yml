@@ -1,8 +1,12 @@
 name: NewRolePlay
-main: de.newrp.main
+main: de.newrp.NewRoleplayMain
 version: 1.1.0
 description: NewRP Serversystem
 author: NewRP Entwicklungs-Team
+softdepend:
+  - Citizens
+  - Votifier
+  - HeadDatabase
 api-version: 1.16
 loadbefore:
   - ProtocolLib

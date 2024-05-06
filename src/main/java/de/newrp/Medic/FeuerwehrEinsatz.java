@@ -5,12 +5,11 @@ import de.newrp.Berufe.Abteilung;
 import de.newrp.Berufe.Beruf;
 import de.newrp.House.House;
 import de.newrp.Shop.Shops;
-import de.newrp.main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -54,7 +53,7 @@ public class FeuerwehrEinsatz {
         };
 
         if (scheduled) {
-            Bukkit.getScheduler().runTask(main.getInstance(), runnable);
+            Bukkit.getScheduler().runTask(NewRoleplayMain.getInstance(), runnable);
         } else {
             runnable.run();
         }
@@ -99,7 +98,7 @@ public class FeuerwehrEinsatz {
                         count++;
                     }
                     if (l.getBlock().getType().equals(Material.AIR) && (l.getBlockY() - loc.getBlockY() < 5)) {
-                        Bukkit.getScheduler().runTask(main.getInstance(), () -> {
+                        Bukkit.getScheduler().runTask(NewRoleplayMain.getInstance(), () -> {
                             Block setFire = b.getWorld().getBlockAt(l);
                             setFire.setType(Material.FIRE);
                             if (setFire.getType().equals(Material.FIRE)) {
@@ -159,7 +158,7 @@ public class FeuerwehrEinsatz {
                     count++;
                 }
                 if (l.getBlock().getType().equals(Material.AIR) && (l.getBlockY() - loc.getBlockY() < 5)) {
-                    Bukkit.getScheduler().runTask(main.getInstance(), () -> {
+                    Bukkit.getScheduler().runTask(NewRoleplayMain.getInstance(), () -> {
                         Block setFire = b.getWorld().getBlockAt(l);
                         setFire.setType(Material.FIRE);
                         if (setFire.getType().equals(Material.FIRE)) {

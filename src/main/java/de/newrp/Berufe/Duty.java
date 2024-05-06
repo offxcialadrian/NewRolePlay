@@ -124,7 +124,12 @@ public class Duty implements CommandExecutor {
     }
 
     public static boolean isInDuty(Player p) {
-        return Beruf.getBeruf(p.getPlayer()).isDuty(p);
+        final Beruf.Berufe beruf = Beruf.getBeruf(p.getPlayer());
+        if(beruf == null) {
+            return false;
+        }
+
+        return beruf.isDuty(p);
     }
 
     public static void setDuty(Player p) {

@@ -2,7 +2,7 @@ package de.newrp.Shop;
 
 import de.newrp.API.ItemBuilder;
 import de.newrp.API.Script;
-import de.newrp.main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -53,7 +53,8 @@ public enum Shops {
     BURGERBRATER_SHOP(39, "Burgerladen", "Burgerladen", 30000, new Location(Script.WORLD, 460, 67, 771, -191.7402f, 6.5769224f), 10, 600, true, ShopType.FASTFOOD),
     BLUMENLADEN(40, "Blumenhandlung", "Blumenhandlung", 50000, new Location(Script.WORLD, 316, 76, 932, -181.94073f, 90.0f), 3, 600, true, ShopType.FLOWER),
     BLUMENLADEN_GANG(41, "Blumenladen Gang", "Blumenladen Gang", 579000, new Location(Script.WORLD, 512, 65, 1319, -83.85142f, 12.219168f), 15, 600, true, ShopType.FLOWER),
-    WHITE_LOUNGE(42, "White Lounge", "White Lounge", 30000, new Location(Script.WORLD, 424, 66, 918, 0.0f, 0.0f), 10, 600, true, ShopType.SHISHA);
+    WHITE_LOUNGE(42, "White Lounge", "White Lounge", 30000, new Location(Script.WORLD, 424, 66, 918, 0.0f, 0.0f), 10, 600, true, ShopType.SHISHA),
+    GAS_STATION_HOSPITAL(43, "Tankstelle am Krankenhaus", "Tankstelle am Krankenhaus", 99999, new Location(Script.WORLD, 434, 76, 1072, 0.0f, 0.0f), 20, 600, false, ShopType.GAS_STATION);
 
 
     private final int id;
@@ -115,8 +116,17 @@ public enum Shops {
         return null;
     }
 
+    public static Shops getShopByLocation(Location loc, float distance) {
+        for(Shops shop : Shops.values()) {
+            if(shop.getLocation().distance(loc) <= distance) {
+                return shop;
+            }
+        }
+        return null;
+    }
+
     public int getKasse() {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT kasse FROM shops WHERE shopID=" + this.id)) {
             if (rs.next()) {
                 return rs.getInt("kasse");
@@ -160,7 +170,7 @@ public enum Shops {
     }
 
     public int getLagerSize() {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT lager_max FROM shops WHERE shopID=" + this.id)) {
             if (rs.next()) {
                 return rs.getInt("lager_max");
@@ -176,7 +186,7 @@ public enum Shops {
     }
 
     public boolean acceptCard() {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT card FROM shops WHERE shopID=" + this.id)) {
             if (rs.next()) {
                 return rs.getInt("card")==1;
@@ -188,7 +198,7 @@ public enum Shops {
     }
 
     public int getLager() {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT lager FROM shops WHERE shopID=" + this.id)) {
             if (rs.next()) {
                 return rs.getInt("lager");
@@ -200,7 +210,7 @@ public enum Shops {
     }
 
     public int getOwner() {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT ownerID FROM shops WHERE shopID=" + this.id)) {
             if (rs.next()) {
                 return rs.getInt("ownerID");
@@ -238,7 +248,7 @@ public enum Shops {
     public static HashMap<Integer, int[]> getShopItemData(Shops s) {
         HashMap<Integer, int[]> c = new HashMap<>();
         try (
-                Statement stmt = main.getConnection().createStatement();
+                Statement stmt = NewRoleplayMain.getConnection().createStatement();
                 ResultSet rs = stmt.executeQuery("SELECT amount, price, itemID FROM shopprice WHERE shopID=" + s.getID())) {
             while (rs.next()) {
                 c.put(rs.getInt("itemID"), new int[]{rs.getInt("amount"), rs.getInt("price")});
@@ -275,7 +285,7 @@ public enum Shops {
 
     public boolean isInShop(ShopItem si) {
         try (
-                Statement stmt = main.getConnection().createStatement();
+                Statement stmt = NewRoleplayMain.getConnection().createStatement();
                 ResultSet rs = stmt.executeQuery("SELECT * FROM shopprice WHERE shopID=" + this.getID() + " AND itemID=" + si.getID())) {
             return rs.next();
         } catch (SQLException e) {
@@ -296,7 +306,7 @@ public enum Shops {
     public static List<Shops> getShopsByPlayer(int id) {
         ArrayList<Shops> s = new ArrayList<>();
         try (
-                Statement stmt = main.getConnection().createStatement();
+                Statement stmt = NewRoleplayMain.getConnection().createStatement();
                 ResultSet rs = stmt.executeQuery("SELECT * FROM shops WHERE ownerID=" + id)) {
             while (rs.next()) {
                 s.add(getShopyByID(rs.getInt("shopID")));

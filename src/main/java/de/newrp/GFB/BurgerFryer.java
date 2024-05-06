@@ -230,7 +230,7 @@ public class BurgerFryer implements CommandExecutor, Listener {
         }
         if (e.getCurrentItem().getType().equals(Material.GREEN_WOOL)) {
             e.getView().close();
-            if (SCORE.get(p.getName()) >= 1) {
+            if (SCORE.get(p.getName()) > 1) {
                 if (NEEDED.get(p.getName()).isEmpty()) {
                     p.sendMessage(PREFIX + "Du hast den Burger erfolgreich zubereitet.");
                     p.sendMessage(Messages.INFO + "Klicke nun Rechtsklick auf den Burger neben der Spüle.");

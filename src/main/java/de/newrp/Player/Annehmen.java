@@ -10,9 +10,16 @@ import de.newrp.House.House;
 import de.newrp.House.HouseAddon;
 import de.newrp.Medic.Medikamente;
 import de.newrp.Medic.Rezept;
+import de.newrp.NewRoleplayMain;
 import de.newrp.Organisationen.Organisation;
 import de.newrp.Shop.Shops;
 import de.newrp.TeamSpeak.TeamSpeak;
+import de.newrp.dependencies.DependencyContainer;
+import de.newrp.discord.Discord;
+import de.newrp.discord.IJdaService;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -205,6 +212,29 @@ public class Annehmen implements CommandExecutor {
             Script.removeMoney(p, PaymentType.CASH, 250);
             Stadtkasse.addStadtkasse(250, "Erste-Hilfe-Kurs von " + Script.getName(p), null);
             offer.remove(p.getName() + ".erstehilfeschein");
+
+        } else if(offer.containsKey(p.getName() + ".dcverify")) {
+            Bukkit.getScheduler().runTaskAsynchronously(NewRoleplayMain.getInstance(), () -> {
+                int userID = Script.getNRPID(p);
+                JDA jda = DependencyContainer.getContainer().getDependency(IJdaService.class).getJda();
+                Guild guild = jda.getGuildById("1183386774374981662");
+
+                guild.retrieveMemberById(offer.get(p.getName() + ".dcverify")).queue(member -> {
+                    if (member == null) {
+                        p.sendMessage(Messages.ERROR + "Der Benutzer konnte nicht gefunden werden.");
+                        return;
+                    }
+
+                    if (Discord.getDiscordID(userID) != 0) {
+                        p.sendMessage(Messages.ERROR + "§cDu hast dich bereits verifiziert.");
+                        return;
+                    }
+
+                    Discord.verify(userID, member);
+                    p.sendMessage(Discord.PREFIX + "Du hast deinen Minecraft Account mit deinem Discord-Account verbunden.");
+                    Achievement.DISCORD.grant(p);
+                });
+            });
 
         } else if(offer.containsKey(p.getName() + ".sellhouse")) {
             Player seller = Script.getPlayer(offer.get(p.getName() + ".sellhouse"));

@@ -5,7 +5,7 @@ import de.newrp.API.Licenses;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.Police.Handschellen;
-import de.newrp.main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Minecart;
 import org.bukkit.entity.Player;
@@ -31,7 +31,7 @@ public class CarEnter implements Listener {
             if (Kennzeichen.kfz.containsKey(p)) {
                 e.setCancelled(true);
                 if (!car.hasLicenseplate() && car.isCarOwner(p)) {
-                    try (Statement stmt = main.getConnection().createStatement();
+                    try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
                          ResultSet rs = stmt.executeQuery("SELECT id FROM vehicle WHERE kennzeichen='" + Kennzeichen.kfz.get(p) + "'")) {
                         if (rs.next()) {
                             p.sendMessage(Kennzeichen.prefix + "Das Kennzeichen ist bereits vergeben.");

@@ -1,12 +1,7 @@
 package de.newrp.Commands;
 
-import de.newrp.main;
 import de.newrp.API.*;
 import de.newrp.Administrator.SDuty;
-import net.citizensnpcs.api.CitizensAPI;
-import net.citizensnpcs.api.event.NPCRightClickEvent;
-import net.citizensnpcs.api.npc.NPC;
-import net.citizensnpcs.trait.SkinTrait;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -15,17 +10,10 @@ import org.bukkit.block.data.type.Slab;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.scoreboard.Team;
 import org.bukkit.util.Vector;
-
-import java.util.UUID;
 
 public class Test implements CommandExecutor, Listener {
 

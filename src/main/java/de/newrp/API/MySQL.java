@@ -8,10 +8,10 @@ public class MySQL extends Database {
     private final String user;
     private final String database;
     private final String password;
-    private final String port;
+    private final int port;
     private final String hostname;
 
-    public MySQL(String hostname, String port, String database,
+    public MySQL(String hostname, int port, String database,
                  String username, String password) {
         this.hostname = hostname;
         this.port = port;

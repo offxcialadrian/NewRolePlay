@@ -6,7 +6,7 @@ import de.newrp.API.Route;
 import de.newrp.API.Script;
 import de.newrp.Administrator.BuildMode;
 import de.newrp.Berufe.Beruf;
-import de.newrp.main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
@@ -148,7 +148,7 @@ public class LabBreakIn implements CommandExecutor, Listener {
 
     private static void spawnParticles(Location loc) {
         final Location clonedLoc = loc.clone().add(0.5, 1, 0.5);
-        schedulerID = Bukkit.getScheduler().scheduleSyncRepeatingTask(main.getInstance(), () -> {
+        schedulerID = Bukkit.getScheduler().scheduleSyncRepeatingTask(NewRoleplayMain.getInstance(), () -> {
             new de.newrp.API.Particle(org.bukkit.Particle.ENCHANTMENT_TABLE, clonedLoc, false, 0.2F, 0.2F, 0.2F, .1F, Script.getRandom(4, 8)).sendAll();
             clonedLoc.getWorld().playSound(loc, Sound.BLOCK_BREWING_STAND_BREW, 1, 1);
         }, 0L, 10L);

@@ -12,11 +12,6 @@ public class GangwarZonesCommand implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender cs, @NotNull Command cmd, @NotNull String s, @NotNull String[] args) {
         Player p = (Player) cs;
 
-        if(args.length != 1 && GangwarZones.getZoneByName(args[0]) != null) {
-            p.sendMessage(GangwarCommand.PREFIX + "Die Zone " + GangwarZones.getZoneByName(args[0]).getName() + " gehört derzeit " + GangwarZones.getZoneByName(args[0]).getOwner().getName());
-            return true;
-        }
-
         p.sendMessage(GangwarCommand.PREFIX + "Die Zonen sind derzeit wie folgt verteilt:");
         for(GangwarZones zone : GangwarZones.values()) {
             p.sendMessage(GangwarCommand.PREFIX + "Die Zone " + zone.getName() + " gehört derzeit " + zone.getOwner().getName());

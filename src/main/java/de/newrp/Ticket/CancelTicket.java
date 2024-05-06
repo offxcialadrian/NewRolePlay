@@ -2,7 +2,7 @@ package de.newrp.Ticket;
 
 import de.newrp.API.*;
 import de.newrp.Administrator.SDuty;
-import de.newrp.main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -65,7 +65,7 @@ public class CancelTicket implements CommandExecutor, Listener {
                         sendRatingGUI(tg, t);
                         if(Script.isNRPTeam(p)) Script.addEXP(p, 5);
                     }
-                }.runTaskLater(main.getInstance(), 2 * 20L);
+                }.runTaskLater(NewRoleplayMain.getInstance(), 2 * 20L);
                 return true;
             }
             p.sendMessage(TicketCommand.PREFIX + "Du hast das Ticket mit " + Script.getName(tg) + " beendet! §7(§6#" + id + "§7)");

@@ -1,7 +1,7 @@
 package de.newrp.Administrator;
 
 import de.newrp.API.Script;
-import de.newrp.main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -12,8 +12,8 @@ import java.sql.SQLException;
 public class Straflog {
 
     public Straflog(OfflinePlayer user, Player admin, Punish.Violation punishment) {
-        Bukkit.getScheduler().runTaskAsynchronously(main.getInstance(), () -> {
-            try (PreparedStatement statement = main.getConnection().prepareStatement(
+        Bukkit.getScheduler().runTaskAsynchronously(NewRoleplayMain.getInstance(), () -> {
+            try (PreparedStatement statement = NewRoleplayMain.getConnection().prepareStatement(
                     "INSERT INTO straflog (userID, adminID, punishmentID, time) VALUES (?, ?, ?, ?);"
             )) {
                 statement.setInt(1, Script.getNRPID(user));

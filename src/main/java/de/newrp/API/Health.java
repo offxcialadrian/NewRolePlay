@@ -4,7 +4,7 @@ import de.newrp.Administrator.BuildMode;
 import de.newrp.Administrator.SDuty;
 import de.newrp.Player.AFK;
 import de.newrp.Police.Jail;
-import de.newrp.main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
@@ -60,7 +60,7 @@ public enum Health {
     }
 
     public static void setup(int id) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT id FROM health WHERE id=" + id)) {
             if (!rs.next()) {
                 Script.executeAsyncUpdate("INSERT INTO health (id, bloodamount, thirst, fat, muscles) VALUES (" + id + ", 6, 20, 0, 0);");
@@ -76,7 +76,7 @@ public enum Health {
 
 
     public static float getBloodAmount(int id) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT bloodamount FROM health WHERE id=" + id)) {
             if (rs.next()) {
                 return rs.getFloat("bloodamount");
@@ -158,7 +158,7 @@ public enum Health {
 
     public static HashMap<Health, Float> getHealthStats(int id) {
         HashMap<Health, Float> health = new HashMap<>();
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM health WHERE id=" + id)) {
             if (rs.next()) {
                 health.put(Health.THIRST, rs.getFloat("thirst"));
@@ -185,7 +185,7 @@ public enum Health {
             if (f <= 2.0F) {
                 Player p = Script.getPlayer(id);
                 if (p != null) {
-                    Bukkit.getScheduler().runTask(main.getInstance(), () -> {
+                    Bukkit.getScheduler().runTask(NewRoleplayMain.getInstance(), () -> {
                         p.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 300 * 20, 1, false, false));
                         p.sendMessage(PREFIX + "Dir wird unwohl...");
                     });
@@ -193,14 +193,14 @@ public enum Health {
             }
             Player p = Script.getPlayer(id);
             if (p != null) {
-                Bukkit.getScheduler().runTask(main.getInstance(), () -> p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 6 * 20, 1, false, false)));
+                Bukkit.getScheduler().runTask(NewRoleplayMain.getInstance(), () -> p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 6 * 20, 1, false, false)));
             }
         }
         if (this.id == 1) {
             Player p = Script.getPlayer(id);
             if (f <= 2.0F) {
                 if (p != null) {
-                    Bukkit.getScheduler().runTask(main.getInstance(), () -> {
+                    Bukkit.getScheduler().runTask(NewRoleplayMain.getInstance(), () -> {
                         p.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 300 * 20, 1, false, false));
                         p.sendMessage(PREFIX + "Du verdurstest...");
                     });

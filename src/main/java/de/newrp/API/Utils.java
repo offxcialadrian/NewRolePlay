@@ -7,10 +7,15 @@ import de.newrp.Berufe.Houseban;
 import de.newrp.Government.Wahlen;
 import de.newrp.Organisationen.Blacklist;
 import de.newrp.Organisationen.Organisation;
-import de.newrp.Player.Mobile;
 import de.newrp.Police.Fahndung;
-import de.newrp.TeamSpeak.TeamSpeak;
-import de.newrp.main;
+import de.newrp.NewRoleplayMain;
+import de.newrp.dependencies.DependencyContainer;
+import de.newrp.discord.IJdaService;
+import de.newrp.discord.impl.JdaService;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -26,7 +31,6 @@ import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.event.server.ServerListPingEvent;
 import org.bukkit.event.server.TabCompleteEvent;
@@ -43,7 +47,6 @@ import java.sql.Statement;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
-import static de.newrp.API.Rank.PLAYER;
 import static de.newrp.API.Rank.SUPPORTER;
 
 public class Utils implements Listener {
@@ -77,6 +80,7 @@ public class Utils implements Listener {
     public static final int WORLD_BORDER_MAX_X = 1100;
     public static final int WORLD_BORDER_MIN_Z = 420;
     public static final int WORLD_BORDER_MAX_Z = 1362;
+    private IJdaService jdaService =  DependencyContainer.getContainer().getDependency(IJdaService.class);
     public static HashMap<String, Long> fishCooldown = new HashMap<>();
     public static HashMap<String, Integer> fishCount = new HashMap<>();
 
@@ -131,7 +135,7 @@ public class Utils implements Listener {
         if (Script.isInTestMode()) {
             e.setMotd("§5§lNew RolePlay §8┃ §5Reallife §8× §5RolePlay §8┃ §c1.16.5\n§8» §a§l" + "§e§lWartungsarbeiten!");
         } else {
-            e.setMotd("§5§lNew RolePlay §8┃ §5Reallife §8× §5RolePlay §8┃ §c1.16.5\n§8» §a§l" + main.getInstance().getDescription().getVersion() + " §8- §5Werde Teil einer neuen Ära!");
+            e.setMotd("§5§lNew RolePlay §8┃ §5Reallife §8× §5RolePlay §8┃ §c1.16.5\n§8» §a§l" + NewRoleplayMain.getInstance().getDescription().getVersion() + " §8- §6§lTHE NEXT BIG THING");
         }
     }
 
@@ -202,7 +206,7 @@ public class Utils implements Listener {
                         if (fishCount.get(e.getPlayer().getName()) > 2)
                             Notifications.sendMessage(Notifications.NotificationType.ADVANCED_ANTI_CHEAT, "Verdacht auf Angelmissbrauch bei " + e.getPlayer().getName() + " (" + Script.getPercentage(fishCount.get(e.getPlayer().getName()), 6) + "%)");
                     }
-                }.runTaskLaterAsynchronously(main.getInstance(), 20 * 5);
+                }.runTaskLaterAsynchronously(NewRoleplayMain.getInstance(), 20 * 5);
                 e.setCancelled(true);
                 return;
             }
@@ -252,8 +256,14 @@ public class Utils implements Listener {
         Script.updateExpBar(p);
         Corpse.reloadNPC(p);
         sendServerBanner(p, "https://newrp.de/images/-tablist.png");
-        sendCurrentPlayingGamemode(p, true, "NRP × New RolePlay " + main.getInstance().getDescription().getVersion());
+        sendCurrentPlayingGamemode(p, true, "NRP × New RolePlay " + NewRoleplayMain.getInstance().getDescription().getVersion());
         Script.disableVoiceChat(p);
+
+        EmbedBuilder embed = new EmbedBuilder();
+        embed.setAuthor(Script.getName(p), null, "https://minotar.net/helm/"+ p.getName() + "/100.png");
+        embed.setDescription("Der Spieler " + p.getName() + " hat den Server betreten.");
+        TextChannel channel = this.jdaService.getJda().getTextChannelById("1236441113057824881");
+        channel.sendMessageEmbeds(embed.build()).queue();
 
 
         p.getInventory().remove(Material.PLAYER_HEAD);
@@ -270,7 +280,7 @@ public class Utils implements Listener {
             if (BuildMode.isInBuildMode(online)) {
                 if (Team.getTeam(p) != Team.Teams.BAU && !Script.hasRank(p, Rank.SUPPORTER, false)) {
                     Debug.debug("hiding " + online.getName() + " from " + p.getName());
-                    p.hidePlayer(main.getInstance(), online);
+                    p.hidePlayer(NewRoleplayMain.getInstance(), online);
                 }
             }
         }
@@ -350,7 +360,7 @@ public class Utils implements Listener {
                 public void run() {
                     p.teleport(new Location(Script.WORLD, 935, 66, 1198, 179.92924f, 0.32957163f));
                 }
-            }.runTaskLater(main.getInstance(), 20L);
+            }.runTaskLater(NewRoleplayMain.getInstance(), 20L);
             Script.registerPlayer(e.getPlayer());
             Script.sendActionBar(e.getPlayer(), "§7Willkommen auf §eNewRP§7!");
             e.getPlayer().sendMessage("§eNew RolePlay" + " §rWillkommen auf §eNewRP§7!");
@@ -379,13 +389,13 @@ public class Utils implements Listener {
                                             p.sendMessage(Messages.INFO + "Du kannst bis Level 3 den NeulingsChat mit §8/§6nc nutzen. Dort findest du andere Spieler mit ähnlichem Level und Supporter. Dort kannst du deine Anliegen auch äußern.");
                                             p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1.0F, 1.0F);
                                         }
-                                    }.runTaskLater(main.getInstance(), 20L);
+                                    }.runTaskLater(NewRoleplayMain.getInstance(), 20L);
                                 }
-                            }.runTaskLater(main.getInstance(), 20L);
+                            }.runTaskLater(NewRoleplayMain.getInstance(), 20L);
                         }
-                    }.runTaskLater(main.getInstance(), 60 * 20L);
+                    }.runTaskLater(NewRoleplayMain.getInstance(), 60 * 20L);
                 }
-            }.runTaskLaterAsynchronously(main.getInstance(), 20L);
+            }.runTaskLaterAsynchronously(NewRoleplayMain.getInstance(), 20L);
         }
         e.getPlayer().
 
@@ -412,7 +422,7 @@ public class Utils implements Listener {
                     }
                 }.
 
-                runTaskLater(main.getInstance(), 20L);
+                runTaskLater(NewRoleplayMain.getInstance(), 20L);
         p.setFlySpeed(0.1f);
         if (Wahlen.wahlenActive())
             p.sendMessage(Messages.INFO + "Die Wahlen sind aktiv! Du kannst mit §8/§6wahlen §rdeine Stimme abgeben.");
@@ -697,6 +707,11 @@ public class Utils implements Listener {
         }
 
         e.setQuitMessage(null);
+        EmbedBuilder embed = new EmbedBuilder();
+        embed.setAuthor(Script.getName(p), null, "https://minotar.net/helm/"+ p.getName() + "/100.png");
+        embed.setDescription("Der Spieler " + p.getName() + " hat den Server verlassen.");
+        TextChannel channel = this.jdaService.getJda().getTextChannelById("1236441810885410896");
+        channel.sendMessageEmbeds(embed.build()).queue();
         Log.LOW.write(p, "hat den Server verlassen.");
         Script.executeAsyncUpdate("INSERT INTO last_disconnect (nrp_id, time) VALUES (" + Script.getNRPID(p) + ", " + System.currentTimeMillis() + ")");
         new BukkitRunnable() {
@@ -708,7 +723,7 @@ public class Utils implements Listener {
                     Script.sendTabTitle(all);
                 }
             }
-        }.runTaskLater(main.getInstance(), 20L);
+        }.runTaskLater(NewRoleplayMain.getInstance(), 20L);
     }
 
 
@@ -806,7 +821,7 @@ public class Utils implements Listener {
     }
 
     public static boolean hasOpenPresent(Player p) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM birthday WHERE id=" + Script.getNRPID(p))) {
             if (rs.next()) {
                 return rs.getInt("geschenk") == 1;
@@ -818,7 +833,7 @@ public class Utils implements Listener {
     }
 
     public static boolean ersteHilfeExpired(Player p) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM erste_hilfe WHERE nrp_id=" + Script.getNRPID(p) + " ORDER BY id DESC LIMIT 1")) {
             if (rs.next()) {
                 return (rs.getLong("awarded") + TimeUnit.DAYS.toMillis(30)) < System.currentTimeMillis();

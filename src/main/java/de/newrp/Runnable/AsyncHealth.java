@@ -10,7 +10,7 @@ import de.newrp.Administrator.SDuty;
 import de.newrp.Berufe.Drone;
 import de.newrp.Player.AFK;
 import de.newrp.Police.Jail;
-import de.newrp.main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -27,7 +27,7 @@ public class AsyncHealth extends BukkitRunnable {
                 int id = Script.getNRPID(p);
                 Health.BLOOD.remove(id, amount);
                 final float f = amount;
-                Bukkit.getScheduler().runTask(main.getInstance(), () -> p.damage(f < 1F ? .5D : 1D));
+                Bukkit.getScheduler().runTask(NewRoleplayMain.getInstance(), () -> p.damage(f < 1F ? .5D : 1D));
                 if (amount < 1F) {
                     if(Script.getRandom(0, 1) == 0)
                     p.sendMessage(Health.PREFIX + "Du blutest leicht...");

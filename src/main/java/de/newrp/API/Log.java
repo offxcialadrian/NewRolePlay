@@ -1,6 +1,6 @@
 package de.newrp.API;
 
-import de.newrp.main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -29,8 +29,8 @@ public enum Log {
     }
 
     public void write(Player p, String log) {
-        Bukkit.getScheduler().runTaskAsynchronously(main.getInstance(), () -> {
-            try (PreparedStatement stmt = main.getConnection().prepareStatement("INSERT INTO log (id, nrp_id, log, importance, time) VALUES (NULL, ?, ?, ?, NOW());")) {
+        Bukkit.getScheduler().runTaskAsynchronously(NewRoleplayMain.getInstance(), () -> {
+            try (PreparedStatement stmt = NewRoleplayMain.getConnection().prepareStatement("INSERT INTO log (id, nrp_id, log, importance, time) VALUES (NULL, ?, ?, ?, NOW());")) {
                 stmt.setInt(1, Script.getNRPID(p));
                 stmt.setString(2, log);
                 stmt.setInt(3, getImportance());
@@ -42,8 +42,8 @@ public enum Log {
     }
 
     public void write(OfflinePlayer p, String log) {
-        Bukkit.getScheduler().runTaskAsynchronously(main.getInstance(), () -> {
-            try (PreparedStatement stmt = main.getConnection().prepareStatement("INSERT INTO log (id, nrp_id, log, importance, time) VALUES (NULL, ?, ?, ?, NOW());")) {
+        Bukkit.getScheduler().runTaskAsynchronously(NewRoleplayMain.getInstance(), () -> {
+            try (PreparedStatement stmt = NewRoleplayMain.getConnection().prepareStatement("INSERT INTO log (id, nrp_id, log, importance, time) VALUES (NULL, ?, ?, ?, NOW());")) {
                 stmt.setInt(1, Script.getNRPID(p));
                 stmt.setString(2, log);
                 stmt.setInt(3, getImportance());

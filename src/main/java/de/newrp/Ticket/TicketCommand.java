@@ -4,7 +4,7 @@ import de.newrp.API.*;
 import de.newrp.Administrator.AntiCheatSystem;
 import de.newrp.Administrator.SDuty;
 import de.newrp.Player.AFK;
-import de.newrp.main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -91,7 +91,7 @@ public class TicketCommand implements CommandExecutor {
 
     public static void create(Player p, Player supporter, Ticket.Queue q) {
         int userID = Script.getNRPID(p);
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT id FROM ticket ORDER BY id DESC LIMIT 1")) {
             if (rs.next()) {
                 int id = rs.getInt("id") + 1;
@@ -218,7 +218,7 @@ public class TicketCommand implements CommandExecutor {
     }
 
     public static int getSupporterID(int ticketID) {
-        try(Statement stmt = main.getConnection().createStatement();
+        try(Statement stmt = NewRoleplayMain.getConnection().createStatement();
             ResultSet rs = stmt.executeQuery("SELECT supporterID FROM ticket WHERE id=" + ticketID)) {
             if(rs.next()) {
                 return rs.getInt("supporterID");

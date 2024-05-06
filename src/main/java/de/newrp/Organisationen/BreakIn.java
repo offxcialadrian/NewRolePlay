@@ -8,13 +8,10 @@ import de.newrp.House.House;
 import de.newrp.House.HouseAddon;
 import de.newrp.Player.Notruf;
 import de.newrp.Police.Handschellen;
-import de.newrp.main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.block.data.type.Door;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -24,7 +21,6 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -77,7 +73,7 @@ public class BreakIn implements Listener {
         }
 
         if (house.hasAddon(HouseAddon.ALARM)) {
-            Bukkit.getScheduler().runTaskLater(main.getInstance(), () -> Beruf.Berufe.POLICE.sendMessage(Notruf.PREFIX + "Es wurde ein Einbruch bei Haus " + house.getID() + " gemeldet."), 10 * 20L);
+            Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> Beruf.Berufe.POLICE.sendMessage(Notruf.PREFIX + "Es wurde ein Einbruch bei Haus " + house.getID() + " gemeldet."), 10 * 20L);
         }
 
 
@@ -144,7 +140,7 @@ public class BreakIn implements Listener {
                 return;
 
             }
-        }.runTaskTimer(main.getInstance(), 20L, 20L);
+        }.runTaskTimer(NewRoleplayMain.getInstance(), 20L, 20L);
         return;
 
     }

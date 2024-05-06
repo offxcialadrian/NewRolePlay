@@ -2,7 +2,7 @@ package de.newrp.Organisationen;
 
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
-import de.newrp.main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -74,13 +74,13 @@ public class Blacklist {
     }
 
     public static void load() {
-        Bukkit.getScheduler().runTaskAsynchronously(main.getInstance(), () -> {
+        Bukkit.getScheduler().runTaskAsynchronously(NewRoleplayMain.getInstance(), () -> {
             HashMap<Organisation, List<Blacklist>> blacklist = new HashMap<>();
             for (Organisation f : Organisation.values()) {
                 if(!f.hasBlacklist()) continue;
                 blacklist.put(f, new ArrayList<>());
             }
-            try (Statement stmt = main.getConnection().createStatement();
+            try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
                  ResultSet rs = stmt.executeQuery("SELECT blacklist.organisationID, blacklist.userID, nrp_id.name, blacklist.reason, blacklist.time, blacklist.kills, blacklist.price FROM blacklist LEFT JOIN nrp_id ON nrp_id.id = blacklist.userID")) {
                 while (rs.next()) {
                     Organisation f = Organisation.getOrganisation(rs.getInt("organisationID"));
@@ -103,8 +103,8 @@ public class Blacklist {
     public static void add(Player p, Organisation f, String reason, int kills, int price) {
         Blacklist bl = new Blacklist(Script.getNRPID(p), p.getName(), f, reason, System.currentTimeMillis(), kills, price);
         BLACKLIST.get(f).add(bl);
-        Bukkit.getScheduler().runTaskAsynchronously(main.getInstance(), () -> {
-            try (PreparedStatement statement = main.getConnection().prepareStatement("INSERT INTO blacklist (userID, organisationID, reason, time, kills, price) VALUES (?, ?, ?, ?, ?, ?);")) {
+        Bukkit.getScheduler().runTaskAsynchronously(NewRoleplayMain.getInstance(), () -> {
+            try (PreparedStatement statement = NewRoleplayMain.getConnection().prepareStatement("INSERT INTO blacklist (userID, organisationID, reason, time, kills, price) VALUES (?, ?, ?, ?, ?, ?);")) {
                 statement.setInt(1, Script.getNRPID(p));
                 statement.setInt(2, f.getID());
                 statement.setString(3, reason);

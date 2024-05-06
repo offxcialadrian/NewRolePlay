@@ -3,7 +3,7 @@ package de.newrp.API;
 import de.newrp.Forum.Forum;
 import de.newrp.TeamSpeak.TeamSpeak;
 import de.newrp.TeamSpeak.TeamspeakServerGroup;
-import de.newrp.main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
@@ -75,7 +75,7 @@ public class Team {
 
         public ArrayList<OfflinePlayer> getAllMembers() {
             ArrayList<OfflinePlayer> members = new ArrayList<>();
-            try (Statement stmt = main.getConnection().createStatement();
+            try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
                  ResultSet rs = stmt.executeQuery("SELECT * FROM teams WHERE team_id=" + this.getID())) {
                 while (rs.next()) {
                     members.add(Script.getOfflinePlayer(rs.getInt("nrp_id")));
@@ -88,7 +88,7 @@ public class Team {
 
         public ArrayList<Player> getAllOnlineMembers() {
             ArrayList<Player> members = new ArrayList<>();
-            try (Statement stmt = main.getConnection().createStatement();
+            try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
                  ResultSet rs = stmt.executeQuery("SELECT * FROM teams WHERE team_id=" + this.getID())) {
                 while (rs.next()) {
                     members.add(Script.getPlayer(rs.getInt("nrp_id")));
@@ -135,7 +135,7 @@ public class Team {
     }
 
     public static Teams getTeam(Player p) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM teams WHERE nrp_id=" + Script.getNRPID(p))) {
             if (rs.next()) {
                 return Teams.getTeam(rs.getInt("team_id"));
@@ -147,8 +147,20 @@ public class Team {
     }
 
     public static Teams getTeam(OfflinePlayer p) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM teams WHERE nrp_id=" + Script.getNRPID(p))) {
+            if (rs.next()) {
+                return Teams.getTeam(rs.getInt("team_id"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static Teams getTeam(int id) {
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT * FROM teams WHERE nrp_id=" + id)) {
             if (rs.next()) {
                 return Teams.getTeam(rs.getInt("team_id"));
             }

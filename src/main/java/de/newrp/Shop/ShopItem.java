@@ -5,9 +5,8 @@ import de.newrp.API.Script;
 import de.newrp.API.ShishaType;
 import de.newrp.House.HouseAddon;
 import de.newrp.Medic.Medikamente;
-import de.newrp.News.Zeitung;
 import de.newrp.Waffen.Weapon;
-import de.newrp.main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -17,8 +16,6 @@ import org.bukkit.inventory.meta.LeatherArmorMeta;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
-import static de.newrp.News.Zeitung.getLatestZeitungID;
 
 public enum ShopItem {
 
@@ -48,7 +45,7 @@ public enum ShopItem {
     VERBAND(57, "§7Verband", new ItemBuilder(Material.PAPER).setName("§7Verband").build(), 3, 1, 1, 60, 4300, false, true, false, new ShopType[] {ShopType.PHARMACY}),
     TRINKWASSER(58, "§7Trinkwasser", new ItemBuilder(Material.POTION).setName("§7Trinkwasser").build(), 3, 1, 1, 2, 500, false, true, false, new ShopType[] {ShopType.SUPERMARKET, ShopType.CAFE, ShopType.NEWS}),
     AMMO_762MM(59, "§7.762mm Munition (" + Weapon.AK47.getName() + ")", new ItemBuilder(Material.ARROW).setAmount(Weapon.AK47.getMagazineSize()).build(), 1, 1, 1, 30, 3000, false, false, false, new ShopType[] {ShopType.GUNSHOP}),
-    KEVLAR(51, "§7Schutzweste", Script.kevlar(1), 20, 1, 1, 2900, 14900, false, true, false, new ShopType[] {ShopType.GUNSHOP}),
+    KEVLAR(51, "§7Schutzweste", Script.kevlar(1), 20, 1, 1, 1400, 14900, false, true, false, new ShopType[] {ShopType.GUNSHOP}),
     SCHMERZMITTEL_HIGH(60, "§fSchmerzmittel (High)", new ItemBuilder(Material.PAPER).setName("§fSchmerzmittel (High)").setAmount(Medikamente.SCHMERZMITTEL_HIGH.getNeeded()).build(), 2, 2, 25, 65, 6100, true, true, false, new ShopType[] {ShopType.PHARMACY, ShopType.SUPERMARKET}),
     ANTIBIOTIKA(61, "§fAntibiotika", new ItemBuilder(Material.PAPER).setName("§fAntibiotika").setAmount(Medikamente.ANTIBIOTIKA.getNeeded()).build(), 5, 2, 25, 75, 4900, true, true, false, new ShopType[] {ShopType.PHARMACY}),
     HUSTENSAFT(62, "§fHustensaft", new ItemBuilder(Material.PAPER).setName("§fHustensaft").setAmount(Medikamente.HUSTENSAFT.getNeeded()).build(), 5, 2, 25, 60, 3400, true, true, false, new ShopType[] {ShopType.PHARMACY}),
@@ -238,7 +235,7 @@ public enum ShopItem {
     }
 
     public void setPrice(Shops b, int price) {
-        try (Statement stmt = main.getConnection().createStatement()) {
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement()) {
             stmt.executeUpdate("UPDATE shopprice SET price=" + price + " WHERE shopID=" + b.getID() + " AND itemID=" + getID());
         } catch (SQLException e) {
             e.printStackTrace();
@@ -246,7 +243,7 @@ public enum ShopItem {
     }
 
     public int getPrice(Shops b) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT price FROM shopprice WHERE shopID=" + b.getID() + " AND itemID=" + getID())) {
             if (rs.next()) {
                 return rs.getInt("price");

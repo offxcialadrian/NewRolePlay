@@ -8,7 +8,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import de.newrp.main;
+import de.newrp.NewRoleplayMain;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -102,7 +102,7 @@ public class TippOfTheDay implements CommandExecutor {
     }
 
     public static boolean exists(String tipp) {
-        try (Statement statement = main.getConnection().createStatement()) {
+        try (Statement statement = NewRoleplayMain.getConnection().createStatement()) {
             ResultSet rs = statement.executeQuery("SELECT * FROM tippoftheday WHERE tipp = '" + tipp + "'");
             return rs.next();
         } catch (SQLException e) {
@@ -112,7 +112,7 @@ public class TippOfTheDay implements CommandExecutor {
     }
 
     public static void add(String tipp) {
-        try (Statement statement = main.getConnection().createStatement()) {
+        try (Statement statement = NewRoleplayMain.getConnection().createStatement()) {
             statement.executeUpdate("INSERT INTO tippoftheday (tipp) VALUES ('" + tipp + "')");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -120,7 +120,7 @@ public class TippOfTheDay implements CommandExecutor {
     }
 
     public static void remove(String tipp) {
-        try (Statement statement = main.getConnection().createStatement()) {
+        try (Statement statement = NewRoleplayMain.getConnection().createStatement()) {
             statement.executeUpdate("DELETE FROM tippoftheday WHERE tipp = '" + tipp + "'");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -128,7 +128,7 @@ public class TippOfTheDay implements CommandExecutor {
     }
 
     public static List<Integer> getIDs() {
-        try (Statement statement = main.getConnection().createStatement()) {
+        try (Statement statement = NewRoleplayMain.getConnection().createStatement()) {
             ResultSet rs = statement.executeQuery("SELECT id FROM tippoftheday");
             List<Integer> ids = new ArrayList<>();
             while(rs.next()) {
@@ -142,7 +142,7 @@ public class TippOfTheDay implements CommandExecutor {
     }
 
     public static String getTipp(int id) {
-        try (Statement statement = main.getConnection().createStatement()) {
+        try (Statement statement = NewRoleplayMain.getConnection().createStatement()) {
             ResultSet rs = statement.executeQuery("SELECT * FROM tippoftheday WHERE id = '" + id + "'");
             if(rs.next()) {
                 return rs.getString("tipp");

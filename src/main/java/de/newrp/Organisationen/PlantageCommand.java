@@ -3,10 +3,7 @@ package de.newrp.Organisationen;
 import de.newrp.API.Messages;
 import de.newrp.API.Particle;
 import de.newrp.API.Script;
-import de.newrp.Administrator.BuildMode;
-import de.newrp.Administrator.GoTo;
-import de.newrp.Administrator.SDuty;
-import de.newrp.main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -102,10 +99,10 @@ public class PlantageCommand implements CommandExecutor, Listener, TabCompleter 
                                     f.sendMessage(Plantage.PREFIX + Script.getName(p) + " hat eine " + type.getItem().getName() + " Plantage gelegt. §8[§6" + (count + 1) + "/" + (Organisation.getOrganisation(p).getLevel()+1) + "§8]");
                                     final Organisation final_f = f;
                                     final Plantage.PlantageType final_type = type;
-                                    Bukkit.getScheduler().runTaskAsynchronously(main.getInstance(), () -> {
+                                    Bukkit.getScheduler().runTaskAsynchronously(NewRoleplayMain.getInstance(), () -> {
                                         int i = 0;
                                         //TODO umändern auf returned key query
-                                        try (Statement stmt = main.getConnection().createStatement();
+                                        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
                                              ResultSet rs = stmt.executeQuery("SELECT AUTO_INCREMENT AS max FROM information_schema.TABLES WHERE TABLE_SCHEMA = 'minecraft' AND TABLE_NAME = 'plantage'")) {
                                             if (rs.next()) {
                                                 i = rs.getInt("max");
@@ -338,7 +335,7 @@ public class PlantageCommand implements CommandExecutor, Listener, TabCompleter 
                                                 }
                                                 new Particle(org.bukkit.Particle.CRIT, plant.getLocation().clone().add(0, .5, 0), false, 0.01F, 0.01F, 0.01F, 0.01F, Script.getRandom(4, 9)).sendAll();
                                             }
-                                        }.runTaskTimer(main.getInstance(), 10L, 10L);
+                                        }.runTaskTimer(NewRoleplayMain.getInstance(), 10L, 10L);
                                     } else {
                                         p.sendMessage(Plantage.PREFIX + "Du hast keinen Dünger bei dir.");
                                     }
@@ -412,7 +409,7 @@ public class PlantageCommand implements CommandExecutor, Listener, TabCompleter 
                                                 }
                                                 new Particle(org.bukkit.Particle.WATER_DROP, plant.getLocation().clone().add(0, .8, 0), false, 0.01F, 0.01F, 0.01F, 0.01F, Script.getRandom(4, 9)).sendAll();
                                             }
-                                        }.runTaskTimer(main.getInstance(), 10L, 10L);
+                                        }.runTaskTimer(NewRoleplayMain.getInstance(), 10L, 10L);
                                     } else {
                                         p.sendMessage(Plantage.PREFIX + "Du hast kein Wasser bei dir.");
                                     }

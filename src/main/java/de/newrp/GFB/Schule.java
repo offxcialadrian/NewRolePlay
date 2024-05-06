@@ -1,12 +1,12 @@
 package de.newrp.GFB;
 
 import de.newrp.API.*;
+import de.newrp.Government.Stadtkasse;
 import de.newrp.Player.AFK;
-import de.newrp.main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.block.data.type.Sign;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -14,7 +14,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -101,7 +100,7 @@ public class Schule implements CommandExecutor, Listener {
             return true;
         }
 
-        if(Calendar.getInstance().get(Calendar.HOUR_OF_DAY) == 23 && Calendar.getInstance().get(Calendar.MINUTE) == 59) {
+        if(Calendar.getInstance().get(Calendar.HOUR_OF_DAY) == 23 && Calendar.getInstance().get(Calendar.MINUTE) < 45) {
             p.sendMessage(Messages.ERROR + "Du kannst die Schule nicht mehr betreten, da der Server in 60 Sekunden neu startet.");
             return true;
         }
@@ -138,6 +137,7 @@ public class Schule implements CommandExecutor, Listener {
                 }
 
                 Script.removeMoney(p, PaymentType.BANK, GFB.values().length*100);
+                Stadtkasse.removeStadtkasse(GFB.values().length*75, "Schule");
                 STUDIYING.put(p, null);
                 STARTED.put(p, System.currentTimeMillis());
                 p.sendMessage(PREFIX + "Du lernst nun für alle GFB-Jobs.");
@@ -160,7 +160,7 @@ public class Schule implements CommandExecutor, Listener {
                     }
                 };
                 taskID.put(p, task);
-                task.runTaskLater(main.getInstance(), 20 * 60 * 30);
+                task.runTaskLater(NewRoleplayMain.getInstance(), 20 * 60 * 30);
 
                 return;
             }
@@ -193,7 +193,7 @@ public class Schule implements CommandExecutor, Listener {
                 }
             };
             taskID.put(p, task);
-            task.runTaskLater(main.getInstance(), 20 * 60 * 15);
+            task.runTaskLater(NewRoleplayMain.getInstance(), 20 * 60 * 15);
 
         }
     }

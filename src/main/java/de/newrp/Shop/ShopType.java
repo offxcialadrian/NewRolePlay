@@ -19,5 +19,6 @@ public enum ShopType {
     FASTFOOD(),
     CARDEALER(),
     SHISHA(),
+    GAS_STATION(),
     HOUSEADDON();
 }

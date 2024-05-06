@@ -1,9 +1,5 @@
 package de.newrp;
 
-import com.comphenix.protocol.PacketType;
-import com.comphenix.protocol.ProtocolLibrary;
-import com.comphenix.protocol.events.PacketAdapter;
-import com.comphenix.protocol.events.PacketEvent;
 import de.newrp.API.*;
 import de.newrp.Administrator.*;
 import de.newrp.Administrator.ServerTeam;
@@ -32,101 +28,70 @@ import de.newrp.Runnable.*;
 import de.newrp.Shop.*;
 import de.newrp.TeamSpeak.*;
 import de.newrp.Ticket.*;
-import de.newrp.Vehicle.CarCommand;
-import de.newrp.Vehicle.CarHandler;
-import de.newrp.Vehicle.DriveCar;
+import de.newrp.Vehicle.*;
 import de.newrp.Votifier.VoteCommand;
 import de.newrp.Votifier.VoteListener;
 import de.newrp.Votifier.VoteShop;
 import de.newrp.Votifier.VoteShopListener;
 import de.newrp.Waffen.*;
+import de.newrp.config.IConfigService;
+import de.newrp.config.MainConfig;
+import de.newrp.config.impl.ConfigService;
+import de.newrp.dependencies.DependencyContainer;
+import de.newrp.discord.IJdaService;
+import de.newrp.discord.events.GuildReadyListener;
+import de.newrp.discord.impl.JdaService;
+import de.newrp.discord.listeners.VerifyListener;
+import de.newrp.features.emergencycall.IEmergencyCallService;
+import de.newrp.features.emergencycall.commands.*;
+import de.newrp.features.emergencycall.impl.EmergencyCallService;
+import de.newrp.features.emergencycall.listener.EmergencyCallInventoryListener;
+import de.newrp.features.emergencycall.listener.EmergencyCallQuitListener;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.entities.Activity;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.interactions.commands.OptionType;
+import net.dv8tion.jda.api.interactions.commands.build.Commands;
+import net.dv8tion.jda.api.sharding.DefaultShardManager;
+import net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder;
 import net.labymod.serverapi.api.LabyAPI;
-import net.labymod.serverapi.api.LabyService;
-import net.labymod.serverapi.api.protocol.Protocol;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
+import org.bukkit.command.CommandMap;
+import org.bukkit.craftbukkit.v1_16_R3.CraftServer;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.File;
 import java.sql.Connection;
 
-public class main extends JavaPlugin {
+public class NewRoleplayMain extends JavaPlugin {
 
     private static Plugin instance;
+    private static Connection mainConnection;
+    private static Connection forumConnection;
+
     public static Event event;
-    private static MySQL mysql;
-    private static MySQL mysql2;
-    private static Connection con;
 
-    private static Connection con2;
+    private IConfigService configService;
+    private MainConfig mainConfig;
 
-    private static boolean test;
-
-    public static Plugin getInstance() {
-        return instance;
-    }
-
-    public static MySQL MySQL() {
-        return mysql;
-    }
-
-    public static MySQL MySQL2() {
-        return mysql2;
-    }
-
-    public static Connection getConnection() {
-        return con;
-    }
-
-    public static Connection getForumConnection() {
-        return con2;
-    }
-
-    public static boolean isTest() {
-        return Bukkit.hasWhitelist();
-    }
-
-    private int maxPacketsPerSecond = 5; // Maximal erlaubte Pakete pro Sekunde
-    private int packetsReceived = 0; // Anzahl der empfangenen Pakete
-    private long lastCheckTime = System.currentTimeMillis();
-
-
-    @SuppressWarnings("DataFlowIssue")
     public void onEnable() {
+        Bukkit.getConsoleSender().sendMessage("§cNRP §8× §aStarting with version " + this.getDescription().getVersion() + "..");
 
-        Bukkit.getConsoleSender().sendMessage("§cNRP §8× §astarting with version " + this.getDescription().getVersion() + "..");
-        instance = this;
-        test = getServer().getMaxPlayers() == 20;
-        event = null;
+        this.configService = new ConfigService();
 
+        // Loads all configurations
+        this.loadConfig();
 
-        /*
-        ProtocolLibrary.getProtocolManager().addPacketListener(new PacketAdapter(this, PacketType.Play.Client.SETTINGS) {
-            @Override
-            public void onPacketReceiving(PacketEvent event) {
-                // Überprüfen, ob die maximale Anzahl von Paketen pro Sekunde erreicht wurde
-                long currentTime = System.currentTimeMillis();
-                Player p = event.getPlayer();
-                if (currentTime - lastCheckTime >= 1000) {
-                    packetsReceived = 0;
-                    lastCheckTime = currentTime;
-                }
-                if (packetsReceived >= maxPacketsPerSecond) {
-                    //Notifications.sendMessage(Notifications.NotificationType.ADVANCED_ANTI_CHEAT, "Bitte Spieler " + Script.getName(p) + " überprüfen. (Pakete pro Sekunde: " + packetsReceived + ")");
-                    event.setCancelled(true); // Blockiere das Paket
-                    return;
-                }
-                packetsReceived++;
-            }
-        });
-         */
+        // Register all dependencies
+        this.registerAllDependencies();
 
-        //new C05(this);
+        NewRoleplayMain.instance = this;
+        NewRoleplayMain.event = null;
 
         try {
-            mysql = new MySQL("localhost", "3306", "minecraft", "newrpentwicklung", "k75y@p@3OpRO4*QOy@DP8gigqSP8F0*ICUBL&6*!!6dDYjf$");
-            con = mysql.openConnection();
+            final MySQL database = new MySQL(this.mainConfig.getMainConnection().getHostname(), this.mainConfig.getMainConnection().getPort(), this.mainConfig.getMainConnection().getDatabase(), this.mainConfig.getMainConnection().getUsername(), this.mainConfig.getMainConnection().getPassword());
+            NewRoleplayMain.mainConnection = database.openConnection();
             Bukkit.getConsoleSender().sendMessage("§cNRP §8× §aVerbindung zur Datenbank hergestellt.");
         } catch (Exception e1) {
             Bukkit.getConsoleSender().sendMessage("§cNRP §8× §cVerbindung zur Datenbank konnte nicht hergestellt werden.");
@@ -136,10 +101,9 @@ public class main extends JavaPlugin {
             this.getServer().shutdown();
         }
 
-        /*
         try {
-            mysql2 = new MySQL("localhost", "3306", "forum", "forumadmin", "TtXf*H&gqkSTC2a2");
-            con2 = mysql2.openConnection();
+            MySQL forumDatabase = new MySQL(this.mainConfig.getForumConnection().getHostname(), this.mainConfig.getForumConnection().getPort(), this.mainConfig.getForumConnection().getDatabase(), this.mainConfig.getForumConnection().getUsername(), this.mainConfig.getForumConnection().getPassword());
+            NewRoleplayMain.forumConnection = forumDatabase.openConnection();
             Bukkit.getConsoleSender().sendMessage("§cNRP §8× §aVerbindung zur Forum-Datenbank hergestellt.");
         } catch (Exception e1) {
             Bukkit.getConsoleSender().sendMessage("§cNRP §8× §cVerbindung zur Forum-Datenbank konnte nicht hergestellt werden.");
@@ -149,24 +113,76 @@ public class main extends JavaPlugin {
             this.getServer().shutdown();
         }
 
-        try {
-            TeamSpeak.connect();
-            Bukkit.getConsoleSender().sendMessage("§cNRP §8× §aTeamspeak Verbindung hergestellt.");
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (!isTest()) {
+            try {
+                TeamSpeak.connect();
+                Bukkit.getConsoleSender().sendMessage("§cNRP §8× §aTeamspeak Verbindung hergestellt.");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            new ClearLog();
         }
-         */
 
-        if (!test) new ClearLog();
+        // Prepare scoreboard teams
         Script.prepareScoreboard();
+        
+        // Register all commands
+        this.registerAllCommands();
 
+        // Register all listeners
+        this.registerAllListeners();
 
+        new AsyncHealth().runTaskTimerAsynchronously(this, 120 * 20L, 120 * 20L);
+        new PayDay().runTaskTimerAsynchronously(this, 60 * 20L, 60 * 20L);
+        new AsyncMinute().runTaskTimerAsynchronously(this, 60 * 20L, 60 * 20L);
+        new AsyncHour().runTaskTimerAsynchronously(this, 60 * 60 * 20L, 60 * 60 * 20L);
+        new SyncHour().runTaskTimer(this, 60 * 60 * 20L, 60 * 60 * 20L);
+        new AsyncDaylightCycle().runTaskTimer(this, 20L, 600L);
+        new SyncMinute().runTaskTimer(this, 60 * 20L, 60 * 20L);
+        new AsyncPlantation().runTaskTimerAsynchronously(this, 60 * 20L, 60 * 20L);
+        new Sync15Sek().runTaskTimer(this, 15 * 20L, 15 * 20L);
+        new Async2Min().runTaskTimer(this, 120 * 20L, 120 * 20L);
+
+        ScoreboardManager.initMainScoreboard();
+        Hologram.reload();
+        ATM.restore();
+        House.loadHouses();
+        Blacklist.load();
+        Plantage.loadAll();
+        Schwarzmarkt.spawnRandom();
+        Zeitung.restoreZeitung();
+        OrgSpray.FraktionSpray.init();
+
+        LabyAPI.initialize(LabyAPI.getService());
+
+        final IJdaService jdaService = DependencyContainer.getContainer().getDependency(IJdaService.class);
+        final JDA jda = jdaService.createJDAInstance(this.mainConfig.getJdaBotToken());
+
+        DefaultShardManagerBuilder builder = DefaultShardManagerBuilder.createDefault(this.mainConfig.getJdaBotToken());
+        builder.setActivity(Activity.playing("NRP × New Roleplay"));
+
+        builder.addEventListeners(new VerifyListener());
+        builder.addEventListeners(new GuildReadyListener());
+        builder.build();
+
+        Bukkit.getConsoleSender().sendMessage("§cNRP §8× §astarting complete..");
+        Bukkit.getConsoleSender().sendMessage("§cNRP §8× §aViel Erfolg heute..");
+    }
+
+    /***
+     * Method to register all commands, soon to be fully automatic
+     */
+    private void registerAllCommands() {
+
+        // To-Do: Use command map to register commands, big refactoring inc
+        final CommandMap commandMap = ((CraftServer) this.getServer()).getCommandMap();
+        
         getCommand("goto").setTabCompleter(new GoTo());
         getCommand("debug").setTabCompleter(new DebugCommand());
         getCommand("punish").setTabCompleter(new Punish());
         getCommand("tp").setTabCompleter(new Teleport());
         getCommand("fahndung").setTabCompleter(new Fahndung());
-
         getCommand("sduty").setExecutor(new SDuty());
         getCommand("debug").setExecutor(new DebugCommand());
         getCommand("nrp").setExecutor(new NRPChat());
@@ -293,9 +309,9 @@ public class main extends JavaPlugin {
         getCommand("teamspeak").setExecutor(new TeamspeakCommand());
         getCommand("channel").setExecutor(new PremiumChannel());
         getCommand("takeshop").setExecutor(new TakeShop());
-        getCommand("acceptnotruf").setExecutor(new AcceptNotruf());
-        getCommand("donenotruf").setExecutor(new DoneNotruf());
-        getCommand("cancelnotruf").setExecutor(new CancelNotruf());
+        getCommand("acceptnotruf").setExecutor(new AcceptEmergencyCallCommand());
+        getCommand("donenotruf").setExecutor(new DoneEmergencyCallCommand());
+        getCommand("cancelnotruf").setExecutor(new CancelEmergencyCallCommand());
         getCommand("sharenotruf").setExecutor(new ShareNotruf());
         getCommand("personalausweis").setExecutor(new Personalausweis());
         getCommand("policecomputer").setExecutor(new Policecomputer());
@@ -306,11 +322,11 @@ public class main extends JavaPlugin {
         getCommand("tipp").setExecutor(new TippOfTheDay());
         getCommand("zeitung").setExecutor(new Zeitung());
         getCommand("aab").setExecutor(new AimBot());
-        getCommand("requeuenotruf").setExecutor(new RequeueNotruf());
+        getCommand("requeuenotruf").setExecutor(new RequeueEmergencyCallCommand());
         getCommand("ramm").setExecutor(new Ramm());
         getCommand("transferticket").setExecutor(new TransferTicket());
         getCommand("health").setExecutor(new HealthCommand());
-        getCommand("notrufe").setExecutor(new Notrufe());
+        getCommand("notrufe").setExecutor(new EmergencyCallsCommand());
         getCommand("dropgun").setExecutor(new DropGuns());
         getCommand("rezept").setExecutor(new Rezept());
         getCommand("selfstorage").setExecutor(new Selfstorage());
@@ -397,7 +413,7 @@ public class main extends JavaPlugin {
         getCommand("slap").setExecutor(new SlapCommand());
         getCommand("raffle").setExecutor(new RaffleCommand());
         getCommand("sellfisch").setExecutor(new Sellfisch());
-        // getCommand("spawncar").setExecutor(new SpawnCar());
+        getCommand("spawncar").setExecutor(new SpawnCar());
         getCommand("dice").setExecutor(new Dice());
         getCommand("flipcoin").setExecutor(new Flipcoin());
         getCommand("registerbanner").setExecutor(new RegisterBanner());
@@ -410,7 +426,6 @@ public class main extends JavaPlugin {
         getCommand("drogenbank").setExecutor(new Drogenbank());
         getCommand("addorgdoor").setExecutor(new AddOrgDoor());
         getCommand("destroykoms").setExecutor(new DestroyKoms());
-        //getCommand("restorezeitung").setExecutor(new RestoreZeitung());
         getCommand("teamactivity").setExecutor(new TeamActivity());
         getCommand("bussgeld").setExecutor(new Bussgeld());
         getCommand("bankraub").setExecutor(new Bankraub());
@@ -427,7 +442,7 @@ public class main extends JavaPlugin {
         getCommand("kebap").setExecutor(new Kebap());
         getCommand("blocknotruf").setExecutor(new BlockNotruf());
         getCommand("gangzone").setExecutor(new GangwarZonesCommand());
-        getCommand("deletenotruf").setExecutor(new DeleteNotruf());
+        getCommand("deletenotruf").setExecutor(new DeleteEmergencyCallCommand());
         getCommand("checkactivemembers").setExecutor(new CheckActiveMembers());
         getCommand("endfire").setExecutor(new EndFire());
         getCommand("sit").setExecutor(new SitCommand());
@@ -443,172 +458,189 @@ public class main extends JavaPlugin {
         getCommand("molotov").setExecutor(new MolotovCocktail());
         getCommand("leitungswasser").setExecutor(new Leitungswasser());
         getCommand("car").setExecutor(new CarCommand());
-
-
-        PluginManager pm = Bukkit.getPluginManager();
-        pm.registerEvents(new SDuty(), this);
-        pm.registerEvents(new BlackJack(), this);
-        pm.registerEvents(new BuildMode(), this);
-        pm.registerEvents(new Chat(), this);
-        pm.registerEvents(new Tazer(), this);
-        pm.registerEvents(new Utils(), this);
-        pm.registerEvents(new Test(), this);
-        pm.registerEvents(new WeatherControl(), this);
-        pm.registerEvents(new Elevator(), this);
-        pm.registerEvents(new ElevatorDoor(), this);
-        pm.registerEvents(new AFK(), this);
-        pm.registerEvents(new Punish(), this);
-        pm.registerEvents(new HungerFix(), this);
-        pm.registerEvents(new Notifications(), this);
-        pm.registerEvents(new Banken(), this);
-        pm.registerEvents(new JoinTeam(), this);
-        pm.registerEvents(new NaviClick(), this);
-        pm.registerEvents(new RouteListener(), this);
-        pm.registerEvents(new TicketClick(), this);
-        pm.registerEvents(new TicketListener(), this);
-        pm.registerEvents(new JoinBeruf(), this);
-        pm.registerEvents(new Chair(), this);
-        pm.registerEvents(new Wahlen(), this);
-        pm.registerEvents(new Laufband(), this);
-        pm.registerEvents(new Passwort(), this);
-        pm.registerEvents(new BuyClick(), this);
-        pm.registerEvents(new PayShop(), this);
-        pm.registerEvents(new Shop(), this);
-        pm.registerEvents(new HologramClick(), this);
-        pm.registerEvents(new HouseRegister(), this);
-        pm.registerEvents(new HouseOpen(), this);
-        pm.registerEvents(new AddBerufsDoor(), this);
-        pm.registerEvents(new FriedhofListener(), this);
-        pm.registerEvents(new Spectate(), this);
-        pm.registerEvents(new GetLocation(), this);
-        pm.registerEvents(new Waffen(), this);
-        pm.registerEvents(new WaffenDamage(), this);
-        pm.registerEvents(new GetGun(), this);
-        pm.registerEvents(new AntiCheatSystem(), this);
-        //pm.registerEvents(new AntiCheatFly(), this);
-        pm.registerEvents(new AntiOfflineFlucht(), this);
-        pm.registerEvents(new Spawnschutz(), this);
-        pm.registerEvents(new Equip(), this);
-        pm.registerEvents(new Handschellen(), this);
-        pm.registerEvents(new Flashbang(), this);
-        pm.registerEvents(new Rauchgranate(), this);
-        pm.registerEvents(new WingsuitListener(), this);
-        pm.registerEvents(new AntiVPN(), this);
-        pm.registerEvents(new JailTime(), this);
-        pm.registerEvents(new TeamspeakUpdate(), this);
-        pm.registerEvents(new Notruf(), this);
-        pm.registerEvents(new AcceptNotruf(), this);
-        pm.registerEvents(new Personalausweis(), this);
-        pm.registerEvents(new Policecomputer(), this);
-        pm.registerEvents(new BlockCommand(), this);
-        pm.registerEvents(new Zeitung(), this);
-        pm.registerEvents(new Verband(), this);
-        pm.registerEvents(new Gips(), this);
-        pm.registerEvents(new HealthCommand(), this);
-        pm.registerEvents(new EatEvent(), this);
-        pm.registerEvents(new UseMedikamente(), this);
-        pm.registerEvents(new Selfstorage(), this);
-        pm.registerEvents(new Baseballschlaeger(), this);
-        pm.registerEvents(new Checkpoints(), this);
-        pm.registerEvents(new Vertraege(), this);
-        pm.registerEvents(new GetShulker(), this);
-        pm.registerEvents(new CallCommand(), this);
-        pm.registerEvents(new Mobile(), this);
-        pm.registerEvents(new Krankheitstest(), this);
-        pm.registerEvents(new Impfen(), this);
-        pm.registerEvents(new AktienMarkt(), this);
-        pm.registerEvents(new Tragen(), this);
-        pm.registerEvents(new BlackListCommand(), this);
-        pm.registerEvents(new JoinOrganisation(), this);
-        pm.registerEvents(new PlantageCommand(), this);
-        pm.registerEvents(new UseDrogen(), this);
-        pm.registerEvents(new BreakIn(), this);
-        pm.registerEvents(new SchwarzmarktListener(), this);
-        pm.registerEvents(new Lagerarbeiter(), this);
-        pm.registerEvents(new Schule(), this);
-        pm.registerEvents(new Kellner(), this);
-        pm.registerEvents(new Transport(), this);
-        pm.registerEvents(new VoteListener(), this);
-        pm.registerEvents(new VoteShopListener(), this);
-        pm.registerEvents(new Eishalle(), this);
-        pm.registerEvents(new Pizza(), this);
-        pm.registerEvents(new Dishwasher(), this);
-        pm.registerEvents(new BurgerFryer(), this);
-        pm.registerEvents(new InteractMenu(), this);
-        pm.registerEvents(new InteractMenu(), this);
-        pm.registerEvents(new Strassenwartung(), this);
-        pm.registerEvents(new Imker(), this);
-        pm.registerEvents(new AddHouseDoor(), this);
-        pm.registerEvents(new AchievementCommand(), this);
-        pm.registerEvents(new ErsteHilfe(), this);
-        pm.registerEvents(new HouseListener(), this);
-        pm.registerEvents(new GFBLevel(), this);
-        pm.registerEvents(new Pfandautomat(), this);
-        pm.registerEvents(new Fesseln(), this);
-        pm.registerEvents(new SniperZoom(), this);
-        pm.registerEvents(new Boxen(), this);
-        pm.registerEvents(new Drone(), this);
-        pm.registerEvents(new Flugblatt(), this);
-        pm.registerEvents(new UmfragenCommand(), this);
-        pm.registerEvents(new Spawnchange(), this);
-        pm.registerEvents(new JailWork(), this);
-        pm.registerEvents(new ParticleCommand(), this);
-        pm.registerEvents(new KameraCommand(), this);
-        pm.registerEvents(new TV(), this);
-        pm.registerEvents(new TestoSpritze(), this);
-        // pm.registerEvents(new DriveCar(), this);
-        pm.registerEvents(new RegisterBanner(), this);
-        pm.registerEvents(new OrgSpray(), this);
-        pm.registerEvents(new StartEventCommand(), this);
-        pm.registerEvents(new AntiLeftHand(), this);
-        pm.registerEvents(new Drogenbank(), this);
-        pm.registerEvents(new AddOrgDoor(), this);
-        pm.registerEvents(new Bankautomaten(), this);
-        pm.registerEvents(new Bankraub(), this);
-        pm.registerEvents(new LabBreakIn(), this);
-        pm.registerEvents(new HackPoliceComputer(), this);
-        pm.registerEvents(new FrakChatColor(), this);
-        pm.registerEvents(new GangwarCommand(), this);
-        pm.registerEvents(new Capture(), this);
-        pm.registerEvents(new Kebap(), this);
-        pm.registerEvents(new AntiFireSpread(), this);
-        pm.registerEvents(new Feuerloescher(), this);
-        pm.registerEvents(new AkkuCommand(), this);
-        pm.registerEvents(new Treuebonus(), this);
-        pm.registerEvents(new Shisha(), this);
-        pm.registerEvents(new CancelTicket(), this);
-        pm.registerEvents(new Trash(), this);
-        //pm.registerEvents(new MuscleDamage(), this);
-        pm.registerEvents(new CarHandler(), this);
-
-
-        new AsyncHealth().runTaskTimerAsynchronously(this, 120 * 20L, 120 * 20L);
-        new PayDay().runTaskTimerAsynchronously(this, 60 * 20L, 60 * 20L);
-        new AsyncMinute().runTaskTimerAsynchronously(this, 60 * 20L, 60 * 20L);
-        new AsyncHour().runTaskTimerAsynchronously(this, 60 * 60 * 20L, 60 * 60 * 20L);
-        new SyncHour().runTaskTimer(this, 60 * 60 * 20L, 60 * 60 * 20L);
-        new AsyncDaylightCycle().runTaskTimer(this, 20L, 600L);
-        new SyncMinute().runTaskTimer(this, 60 * 20L, 60 * 20L);
-        new AsyncPlantation().runTaskTimerAsynchronously(this, 60 * 20L, 60 * 20L);
-        //new Async15Sek().runTaskTimerAsynchronously(this, 15* 20L, 15 * 20L);
-        new Sync15Sek().runTaskTimer(this, 15 * 20L, 15 * 20L);
-        new Async2Min().runTaskTimer(this, 120 * 20L, 120 * 20L);
-        //new AsyncSecond().runTaskTimerAsynchronously(this, 20L, 20L);
-
-        ScoreboardManager.initMainScoreboard();
-        Hologram.reload();
-        ATM.restore();
-        House.loadHouses();
-        Blacklist.load();
-        Plantage.loadAll();
-        Schwarzmarkt.spawnRandom();
-        Zeitung.restoreZeitung();
-        OrgSpray.FraktionSpray.init();
-
-        LabyAPI.initialize(LabyAPI.getService());
-
-        Bukkit.getConsoleSender().sendMessage("§cNRP §8× §astarting complete..");
-        Bukkit.getConsoleSender().sendMessage("§cNRP §8× §aViel Erfolg heute..");
     }
+
+    /**
+     * Registers all listeners, soon to be fully automatic
+     */
+    private void registerAllListeners() {
+        Bukkit.getPluginManager().registerEvents(new SDuty(), this);
+        Bukkit.getPluginManager().registerEvents(new BlackJack(), this);
+        Bukkit.getPluginManager().registerEvents(new BuildMode(), this);
+        Bukkit.getPluginManager().registerEvents(new Chat(), this);
+        Bukkit.getPluginManager().registerEvents(new Tazer(), this);
+        Bukkit.getPluginManager().registerEvents(new Utils(), this);
+        Bukkit.getPluginManager().registerEvents(new Test(), this);
+        Bukkit.getPluginManager().registerEvents(new WeatherControl(), this);
+        Bukkit.getPluginManager().registerEvents(new Elevator(), this);
+        Bukkit.getPluginManager().registerEvents(new ElevatorDoor(), this);
+        Bukkit.getPluginManager().registerEvents(new AFK(), this);
+        Bukkit.getPluginManager().registerEvents(new Punish(), this);
+        Bukkit.getPluginManager().registerEvents(new HungerFix(), this);
+        Bukkit.getPluginManager().registerEvents(new Notifications(), this);
+        Bukkit.getPluginManager().registerEvents(new Banken(), this);
+        Bukkit.getPluginManager().registerEvents(new JoinTeam(), this);
+        Bukkit.getPluginManager().registerEvents(new NaviClick(), this);
+        Bukkit.getPluginManager().registerEvents(new RouteListener(), this);
+        Bukkit.getPluginManager().registerEvents(new TicketClick(), this);
+        Bukkit.getPluginManager().registerEvents(new TicketListener(), this);
+        Bukkit.getPluginManager().registerEvents(new JoinBeruf(), this);
+        Bukkit.getPluginManager().registerEvents(new Chair(), this);
+        Bukkit.getPluginManager().registerEvents(new Wahlen(), this);
+        Bukkit.getPluginManager().registerEvents(new Laufband(), this);
+        Bukkit.getPluginManager().registerEvents(new Passwort(), this);
+        Bukkit.getPluginManager().registerEvents(new BuyClick(), this);
+        Bukkit.getPluginManager().registerEvents(new PayShop(), this);
+        Bukkit.getPluginManager().registerEvents(new Shop(), this);
+        Bukkit.getPluginManager().registerEvents(new HologramClick(), this);
+        Bukkit.getPluginManager().registerEvents(new HouseRegister(), this);
+        Bukkit.getPluginManager().registerEvents(new HouseOpen(), this);
+        Bukkit.getPluginManager().registerEvents(new AddBerufsDoor(), this);
+        Bukkit.getPluginManager().registerEvents(new FriedhofListener(), this);
+        Bukkit.getPluginManager().registerEvents(new Spectate(), this);
+        Bukkit.getPluginManager().registerEvents(new GetLocation(), this);
+        Bukkit.getPluginManager().registerEvents(new Waffen(), this);
+        Bukkit.getPluginManager().registerEvents(new WaffenDamage(), this);
+        Bukkit.getPluginManager().registerEvents(new GetGun(), this);
+        Bukkit.getPluginManager().registerEvents(new AntiCheatSystem(), this);
+        Bukkit.getPluginManager().registerEvents(new AntiOfflineFlucht(), this);
+        Bukkit.getPluginManager().registerEvents(new Spawnschutz(), this);
+        Bukkit.getPluginManager().registerEvents(new Equip(), this);
+        Bukkit.getPluginManager().registerEvents(new Handschellen(), this);
+        Bukkit.getPluginManager().registerEvents(new Flashbang(), this);
+        Bukkit.getPluginManager().registerEvents(new Rauchgranate(), this);
+        Bukkit.getPluginManager().registerEvents(new WingsuitListener(), this);
+        Bukkit.getPluginManager().registerEvents(new AntiVPN(), this);
+        Bukkit.getPluginManager().registerEvents(new JailTime(), this);
+        if(!isTest()) {
+            Bukkit.getPluginManager().registerEvents(new TeamspeakUpdate(), this);
+        }
+        Bukkit.getPluginManager().registerEvents(new Notruf(), this);
+        Bukkit.getPluginManager().registerEvents(new AcceptNotruf(), this);
+        Bukkit.getPluginManager().registerEvents(new Personalausweis(), this);
+        Bukkit.getPluginManager().registerEvents(new Policecomputer(), this);
+        Bukkit.getPluginManager().registerEvents(new BlockCommand(), this);
+        Bukkit.getPluginManager().registerEvents(new Zeitung(), this);
+        Bukkit.getPluginManager().registerEvents(new Verband(), this);
+        Bukkit.getPluginManager().registerEvents(new Gips(), this);
+        Bukkit.getPluginManager().registerEvents(new HealthCommand(), this);
+        Bukkit.getPluginManager().registerEvents(new EatEvent(), this);
+        Bukkit.getPluginManager().registerEvents(new UseMedikamente(), this);
+        Bukkit.getPluginManager().registerEvents(new Selfstorage(), this);
+        Bukkit.getPluginManager().registerEvents(new Baseballschlaeger(), this);
+        Bukkit.getPluginManager().registerEvents(new Checkpoints(), this);
+        Bukkit.getPluginManager().registerEvents(new Vertraege(), this);
+        Bukkit.getPluginManager().registerEvents(new GetShulker(), this);
+        Bukkit.getPluginManager().registerEvents(new CallCommand(), this);
+        Bukkit.getPluginManager().registerEvents(new Mobile(), this);
+        Bukkit.getPluginManager().registerEvents(new Krankheitstest(), this);
+        Bukkit.getPluginManager().registerEvents(new Impfen(), this);
+        Bukkit.getPluginManager().registerEvents(new AktienMarkt(), this);
+        Bukkit.getPluginManager().registerEvents(new Tragen(), this);
+        Bukkit.getPluginManager().registerEvents(new BlackListCommand(), this);
+        Bukkit.getPluginManager().registerEvents(new JoinOrganisation(), this);
+        Bukkit.getPluginManager().registerEvents(new PlantageCommand(), this);
+        Bukkit.getPluginManager().registerEvents(new UseDrogen(), this);
+        Bukkit.getPluginManager().registerEvents(new BreakIn(), this);
+        Bukkit.getPluginManager().registerEvents(new SchwarzmarktListener(), this);
+        Bukkit.getPluginManager().registerEvents(new Lagerarbeiter(), this);
+        Bukkit.getPluginManager().registerEvents(new Schule(), this);
+        Bukkit.getPluginManager().registerEvents(new Kellner(), this);
+        Bukkit.getPluginManager().registerEvents(new Transport(), this);
+        Bukkit.getPluginManager().registerEvents(new VoteListener(), this);
+        Bukkit.getPluginManager().registerEvents(new VoteShopListener(), this);
+        Bukkit.getPluginManager().registerEvents(new Eishalle(), this);
+        Bukkit.getPluginManager().registerEvents(new Pizza(), this);
+        Bukkit.getPluginManager().registerEvents(new Dishwasher(), this);
+        Bukkit.getPluginManager().registerEvents(new BurgerFryer(), this);
+        Bukkit.getPluginManager().registerEvents(new InteractMenu(), this);
+        Bukkit.getPluginManager().registerEvents(new InteractMenu(), this);
+        Bukkit.getPluginManager().registerEvents(new Strassenwartung(), this);
+        Bukkit.getPluginManager().registerEvents(new Imker(), this);
+        Bukkit.getPluginManager().registerEvents(new AddHouseDoor(), this);
+        Bukkit.getPluginManager().registerEvents(new AchievementCommand(), this);
+        Bukkit.getPluginManager().registerEvents(new ErsteHilfe(), this);
+        Bukkit.getPluginManager().registerEvents(new HouseListener(), this);
+        Bukkit.getPluginManager().registerEvents(new GFBLevel(), this);
+        Bukkit.getPluginManager().registerEvents(new Pfandautomat(), this);
+        Bukkit.getPluginManager().registerEvents(new Fesseln(), this);
+        Bukkit.getPluginManager().registerEvents(new SniperZoom(), this);
+        Bukkit.getPluginManager().registerEvents(new Boxen(), this);
+        Bukkit.getPluginManager().registerEvents(new Drone(), this);
+        Bukkit.getPluginManager().registerEvents(new Flugblatt(), this);
+        Bukkit.getPluginManager().registerEvents(new UmfragenCommand(), this);
+        Bukkit.getPluginManager().registerEvents(new Spawnchange(), this);
+        Bukkit.getPluginManager().registerEvents(new JailWork(), this);
+        Bukkit.getPluginManager().registerEvents(new ParticleCommand(), this);
+        Bukkit.getPluginManager().registerEvents(new KameraCommand(), this);
+        Bukkit.getPluginManager().registerEvents(new TV(), this);
+        Bukkit.getPluginManager().registerEvents(new TestoSpritze(), this);
+        Bukkit.getPluginManager().registerEvents(new RegisterBanner(), this);
+        Bukkit.getPluginManager().registerEvents(new OrgSpray(), this);
+        Bukkit.getPluginManager().registerEvents(new StartEventCommand(), this);
+        Bukkit.getPluginManager().registerEvents(new AntiLeftHand(), this);
+        Bukkit.getPluginManager().registerEvents(new Drogenbank(), this);
+        Bukkit.getPluginManager().registerEvents(new AddOrgDoor(), this);
+        Bukkit.getPluginManager().registerEvents(new Bankautomaten(), this);
+        Bukkit.getPluginManager().registerEvents(new Bankraub(), this);
+        Bukkit.getPluginManager().registerEvents(new LabBreakIn(), this);
+        Bukkit.getPluginManager().registerEvents(new HackPoliceComputer(), this);
+        Bukkit.getPluginManager().registerEvents(new FrakChatColor(), this);
+        Bukkit.getPluginManager().registerEvents(new GangwarCommand(), this);
+        Bukkit.getPluginManager().registerEvents(new Capture(), this);
+        Bukkit.getPluginManager().registerEvents(new Kebap(), this);
+        Bukkit.getPluginManager().registerEvents(new AntiFireSpread(), this);
+        Bukkit.getPluginManager().registerEvents(new Feuerloescher(), this);
+        Bukkit.getPluginManager().registerEvents(new AkkuCommand(), this);
+        Bukkit.getPluginManager().registerEvents(new Treuebonus(), this);
+        Bukkit.getPluginManager().registerEvents(new Shisha(), this);
+        Bukkit.getPluginManager().registerEvents(new CancelTicket(), this);
+        Bukkit.getPluginManager().registerEvents(new Trash(), this);
+        Bukkit.getPluginManager().registerEvents(new CarHandler(), this);
+        Bukkit.getPluginManager().registerEvents(new EmergencyCallInventoryListener(), this);
+        Bukkit.getPluginManager().registerEvents(new EmergencyCallQuitListener(), this);
+    }
+
+    /**
+     * Registers all dependencies
+     */
+    private void registerAllDependencies() {
+        DependencyContainer.getContainer().add(NewRoleplayMain.class, this);
+        DependencyContainer.getContainer().add(IConfigService.class, this.configService);
+        DependencyContainer.getContainer().add(IEmergencyCallService.class, new EmergencyCallService());
+        DependencyContainer.getContainer().add(IJdaService.class, new JdaService());
+    }
+
+    /**
+     * Loads all configuration files
+     */
+    private void loadConfig() {
+        final File pluginFolder = new File("plugins/NewRoleplay");
+        if(!pluginFolder.exists()) {
+            pluginFolder.mkdir();
+        }
+
+        final File mainConfigFile = new File(pluginFolder, "config.json");
+        this.configService.saveConfig(mainConfigFile, new MainConfig(), false);
+        this.mainConfig = this.configService.readConfig(mainConfigFile, MainConfig.class);
+        Bukkit.getLogger().info("Successfully read Main Configuration!");
+    }
+
+    public static boolean isTest() {
+        return Bukkit.hasWhitelist();
+    }
+
+    public static Plugin getInstance() {
+        return instance;
+    }
+
+    public static Connection getConnection() {
+        return mainConnection;
+    }
+
+    public static Connection getForumConnection() {
+        return forumConnection;
+    }
+
 
 }

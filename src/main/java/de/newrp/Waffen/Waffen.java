@@ -1,30 +1,24 @@
 package de.newrp.Waffen;
 
 import de.newrp.API.*;
-import de.newrp.Administrator.AimBot;
 import de.newrp.Administrator.SDuty;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Berufe.Duty;
 import de.newrp.Gangwar.GangwarCommand;
-import de.newrp.Government.Stadtkasse;
 import de.newrp.Organisationen.Bankautomaten;
 import de.newrp.Organisationen.Organisation;
 import de.newrp.Player.AFK;
 import de.newrp.Player.Fesseln;
 import de.newrp.Police.Handschellen;
-import de.newrp.Shop.Shop;
 import de.newrp.Shop.Shops;
-import de.newrp.main;
-import org.bukkit.Bukkit;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
-import org.bukkit.block.Block;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -33,8 +27,6 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
@@ -207,13 +199,13 @@ public class Waffen implements Listener {
                                 public void run() {
                                     Bankautomaten.win.remove(p);
                                 }
-                            }.runTaskLater(main.getInstance(), 20L * 60 * 15);
+                            }.runTaskLater(NewRoleplayMain.getInstance(), 20L * 60 * 15);
                         } else {
                             progressBar(360, p);
                             progress.replace(p.getName(), progress.get(p.getName()) + 1);
                         }
                     }
-                }.runTaskTimer(main.getInstance(), 20L, 20L);
+                }.runTaskTimer(NewRoleplayMain.getInstance(), 20L, 20L);
 
             }
         }

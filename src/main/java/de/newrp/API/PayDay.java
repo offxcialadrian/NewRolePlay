@@ -10,9 +10,9 @@ import de.newrp.Government.Steuern;
 import de.newrp.House.House;
 import de.newrp.Organisationen.Organisation;
 import de.newrp.Player.*;
-import de.newrp.Shop.Buy;
 import de.newrp.Shop.Shops;
-import de.newrp.main;
+import de.newrp.Shop.gym.GymBuyHandler;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -78,7 +78,7 @@ public class PayDay extends BukkitRunnable {
                 payday += salary;
                 if (!Beruf.getBeruf(p).hasKasse()) {
                     if (Stadtkasse.getStadtkasse() < salary) {
-                        Beruf.Berufe.NEWS.sendMessage("§8[§eBerufskasse§8] §eDie Stadtkasse ist Insolvent!");
+                        Beruf.Berufe.NEWS.sendMessage("§8[§eStadtkasse§8] §eDie Stadtkasse ist Insolvent!");
                         for (Beruf.Berufe beruf : Beruf.Berufe.values()) {
                             if (!beruf.hasKasse()) {
                                 for (OfflinePlayer members : beruf.getAllMembers()) {
@@ -212,13 +212,13 @@ public class PayDay extends BukkitRunnable {
                 payday -= price;
             }
 
-            if (Buy.isGymMember(p)) {
+            if (GymBuyHandler.isGymMember(p)) {
                 int price = 20;
                 p.sendMessage("§8" + Messages.ARROW + " §7Fitnessstudio: §c-" + price + "€");
                 payday -= price;
                 int mehrwertsteur = (int) Steuern.Steuer.MEHRWERTSTEUER.getPercentage();
                 Stadtkasse.addStadtkasse((int) Script.getPercent(mehrwertsteur, price), "Mehrwertsteuer von " + Script.getName(p) + " erhalten", Steuern.Steuer.MEHRWERTSTEUER);
-                Buy.getGym(p).addKasse((int) (price - Script.getPercent(mehrwertsteur, price)));
+                GymBuyHandler.getGym(p).addKasse((int) (price - Script.getPercent(mehrwertsteur, price)));
             }
 
             /*if(Hotel.hasHotelRoom(p)) {
@@ -236,6 +236,11 @@ public class PayDay extends BukkitRunnable {
                 int price = (Premium.hasPremium(p) ? 5 : 10);
                 p.sendMessage("§8" + Messages.ARROW + " §7Handy-Cloud: §c-" + price + "€");
                 payday -= price;
+            }
+
+            if(Team.getTeam(p) != null && Team.getTeam(p) == Team.Teams.ENTWICKLUNG) {
+                p.sendMessage("§8" + Messages.ARROW + " §7Entwickler-Gehalt: §a+100€");
+                payday += 100;
             }
 
             if (payday > 0) {
@@ -273,7 +278,7 @@ public class PayDay extends BukkitRunnable {
                 public void run() {
                     SDuty.updateScoreboard();
                 }
-            }.runTaskLater(main.getInstance(), 20L);
+            }.runTaskLater(NewRoleplayMain.getInstance(), 20L);
         }
     }
 

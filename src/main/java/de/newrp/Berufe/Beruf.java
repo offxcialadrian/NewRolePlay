@@ -4,9 +4,8 @@ import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.Forum.ForumGroup;
 import de.newrp.Government.Arbeitslosengeld;
-import de.newrp.Organisationen.Organisation;
 import de.newrp.TeamSpeak.TeamspeakServerGroup;
-import de.newrp.main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
@@ -99,7 +98,7 @@ public class Beruf {
 
         public ArrayList<Location> getDoors() {
             ArrayList<Location> locs = new ArrayList<>();
-            try (Statement stmt = main.getConnection().createStatement();
+            try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
                  ResultSet rs = stmt.executeQuery("SELECT berufID, x, y, z FROM berufsdoor WHERE berufID=" + this.id)) {
                 while (rs.next()) {
                     int x = rs.getInt("x");
@@ -116,7 +115,7 @@ public class Beruf {
         }
 
         public int getKasse() {
-            try (Statement stmt = main.getConnection().createStatement();
+            try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
                  ResultSet rs = stmt.executeQuery("SELECT * FROM berufe_kasse WHERE berufID='" + this.id + "'")) {
                 if (rs.next()) {
                     return rs.getInt("kasse");
@@ -140,8 +139,8 @@ public class Beruf {
         }
 
         public String getMOTD() {
-            try (Statement stmt = main.getConnection().createStatement();
-                 ResultSet rs = stmt.executeQuery("SELECT * FROM berufe_motd WHERE berufID='" + this.id + "'")) {
+            try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
+                 ResultSet rs = stmt.executeQuery("SELECT * FROM berufe_motd WHERE berufeID='" + this.id + "'")) {
                 if (rs.next()) {
                     return rs.getString("motd");
                 }
@@ -178,7 +177,7 @@ public class Beruf {
         }
 
         public void sendMessage(String message) {
-            for (Player all : getMembers()) {
+            for (Player all : getBeruf().keySet()) {
                 all.sendMessage(message);
             }
         }
@@ -198,14 +197,14 @@ public class Beruf {
         }
 
         public List<Player> getMember() {
-            return new ArrayList<>(getBeruf(this).keySet());
+            return new ArrayList<>(getBeruf().keySet());
         }
 
-        private HashMap<Player, Boolean> getBeruf(Berufe beruf) {
-            if (!BERUF_MEMBER.containsKey(beruf)) {
-                BERUF_MEMBER.put(beruf, new HashMap<>());
+        public HashMap<Player, Boolean> getBeruf() {
+            if (!BERUF_MEMBER.containsKey(this)) {
+                BERUF_MEMBER.put(this, new HashMap<>());
             }
-            return new HashMap<>(BERUF_MEMBER.get(beruf));
+            return new HashMap<>(BERUF_MEMBER.get(this));
         }
 
         public void changeDuty(Player player, Boolean duty) {
@@ -213,26 +212,30 @@ public class Beruf {
         }
 
         public Boolean isDuty(Player player) {
-            return BERUF_MEMBER.get(this).get(player);
+            final HashMap<Player, Boolean> result = BERUF_MEMBER.get(this);
+            if(result == null) {
+                return false;
+            }
+            return result.getOrDefault(player, false);
         }
 
         public void setMember(Player player) {
             if (Beruf.hasBeruf(player)) {
-                Objects.requireNonNull(getBeruf(Beruf.getBeruf(player))).put(player, false);
+                getBeruf().put(player, false);
             }
         }
 
         public void deleteMember(Player player) {
-            Objects.requireNonNull(getBeruf(this)).remove(player);
+            Objects.requireNonNull(getBeruf()).remove(player);
         }
 
         public Boolean isMember(Player player) {
-            return Objects.requireNonNull(getBeruf(this)).containsKey(player);
+            return Objects.requireNonNull(getBeruf()).containsKey(player);
         }
 
         public List<OfflinePlayer> getAllMembers() {
             List<OfflinePlayer> list = new ArrayList<>();
-            try (Statement stmt = main.getConnection().createStatement();
+            try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
                  ResultSet rs = stmt.executeQuery("SELECT * FROM berufe WHERE berufID='" + this.id + "' ORDER BY abteilung DESC")) {
                 if (rs.next()) {
                     do {
@@ -330,11 +333,7 @@ public class Beruf {
             }
             return null;
         }
-
-
     }
-
-
 
 
     public static Berufe getBeruf(Player p) {

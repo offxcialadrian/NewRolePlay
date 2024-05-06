@@ -1,6 +1,6 @@
 package de.newrp.API;
 
-import de.newrp.main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.entity.Player;
 
 import java.sql.PreparedStatement;
@@ -51,7 +51,7 @@ public class VertragAPI {
         int to;
         String bedingung;
         long time;
-        try (PreparedStatement statement = main.getConnection().prepareStatement(
+        try (PreparedStatement statement = NewRoleplayMain.getConnection().prepareStatement(
                 "SELECT * FROM vertrag WHERE id = ?")) {
             statement.setInt(1, id);
             ResultSet rs = statement.executeQuery();
@@ -74,7 +74,7 @@ public class VertragAPI {
         int to;
         String bedingung;
         long time;
-        try (PreparedStatement statement = main.getConnection().prepareStatement(
+        try (PreparedStatement statement = NewRoleplayMain.getConnection().prepareStatement(
                 "SELECT * FROM vertrag WHERE userID_from = ? OR userID_from = ? ORDER BY id DESC")) {
             statement.setInt(1, Script.getNRPID(p));
             statement.setInt(2, Script.getNRPID(p));
