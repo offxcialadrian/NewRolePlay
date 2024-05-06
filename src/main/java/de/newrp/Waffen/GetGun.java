@@ -145,6 +145,10 @@ public class GetGun implements CommandExecutor, Listener {
                     }
                     if (w != null) {
                         WeaponData wdata = WeaponData.getWeaponData(id, w);
+                        if(Script.haveGunInInventory(p, wdata.getWeapon())) {
+                            p.sendMessage(Messages.ERROR + "Du kannst nur eine Waffe vom selben Typen bei dir tragen!");
+                            return;
+                        }
                         if (wdata.getWear() > 0) {
                             p.getInventory().addItem(Waffen.setAmmo(w.getWeapon(), 0, 0));
                             w.removeWear(id, 1);
