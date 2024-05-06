@@ -29,7 +29,7 @@ public class CarCommand implements @Nullable CommandExecutor {
                 switch (args[0]) {
                     case "start":
                         if (Objects.requireNonNull(player).isInsideVehicle()) {
-                            CarHandler.cars.put((Boat) player.getVehicle(), true);
+                            CarHandler.locked.put((Car) player.getVehicle(), true);
                             player.sendMessage(PREFIX.append(Component.text("Du hast deinen Motor gestartet.")
                                     .color(TextColor.color(Color.SILVER.asRGB()))));
                         } else {
@@ -40,7 +40,7 @@ public class CarCommand implements @Nullable CommandExecutor {
                     case "stop":
                         if (Objects.requireNonNull(player).isInsideVehicle()) {
                             if (player.getVehicle() instanceof Boat) {
-                                CarHandler.cars.put((Boat) player.getVehicle(), false);
+                                CarHandler.locked.put((Car) player.getVehicle(), false);
                                 player.sendMessage(PREFIX.append(Component.text("Du hast deinen Motor angehalten.")
                                         .color(TextColor.color(Color.SILVER.asRGB()))));
                             }
@@ -56,7 +56,8 @@ public class CarCommand implements @Nullable CommandExecutor {
                 // Nur exemplarisch, ansonsten Fehlermeldung für fehlende Argumente anzeigen
                 Boat car = (Boat) Objects.requireNonNull(player).getWorld().spawnEntity(player.getLocation().add(0, 0.5, 0), EntityType.BOAT);
                 car.setCustomName(player.getName());
-                CarHandler.cars.putIfAbsent(car, null);
+                Car.CARS.add((Car) player.getVehicle());
+                CarHandler.locked.putIfAbsent((Car) player.getVehicle(), false);
             }
         }
 

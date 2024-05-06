@@ -9,6 +9,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Boat;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
@@ -664,6 +665,26 @@ public class Car {
         int z = Script.getRandom(min_z, max_z);
 
         if (mc != null) mc.teleport(new Location(Script.WORLD, x, 71, z));
+    }
+
+    public List<Entity> getPassengers() {
+        return this.getBoatEntity().getPassengers();
+    }
+
+    public Entity getDriver() {
+        return this.getPassengers().get(0);
+    }
+
+    public Location getLocation() {
+        return this.getBoatEntity().getLocation();
+    }
+
+    public void setVelocity(Vector velocity) {
+        this.getBoatEntity().setVelocity(velocity);
+    }
+
+    public Float getFallDistance() {
+        return this.getBoatEntity().getFallDistance();
     }
 
     /*
