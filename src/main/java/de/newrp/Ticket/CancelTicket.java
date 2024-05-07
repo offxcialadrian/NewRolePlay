@@ -119,12 +119,12 @@ public class CancelTicket implements CommandExecutor, Listener {
             }
             int ticketID = e.getView().getTitle().contains("#") ? Integer.parseInt(e.getView().getTitle().split("#")[1].replace("]", "")) : -1;
             int supporterID = TicketCommand.getSupporterID(ticketID);
-            Script.executeUpdate("INSERT INTO supporter_rating = (supporterID, rating, time) VALUES (" + supporterID + ", " + rating + ", " + System.currentTimeMillis() + ")");
+            Script.executeUpdate("INSERT INTO supporter_rating (id, ticketID, supporterID, rating, time) VALUES(NULL, " + ticketID + ", " + supporterID + ", " + rating + ", " + System.currentTimeMillis() + ")");
             p.sendMessage(TicketCommand.PREFIX + "Vielen Dank für deine Bewertung!");
             p.sendMessage(Messages.INFO + "Du hilfst uns damit, unseren Support zu verbessern.");
-            if(rating < 3) {
+            if(rating < 3 && Script.getLevel(p) <= 5) {
                 p.sendMessage(Script.PREFIX + "Es tut uns leid, dass du mit unserem Support nicht zufrieden warst.");
-                p.sendMessage(Messages.INFO + "Bitte melde dich bei einem Teammitglied, damit wir das Problem klären können.");
+                p.sendMessage(Messages.INFO + "Bitte melde dich bei einem Administrator, damit wir das Problem klären können.");
                 p.sendMessage(Messages.INFO + "Als Entschädigung erhältst du 3 Tage Premium.");
                 Premium.addPremiumStorage(p, 3);
             }

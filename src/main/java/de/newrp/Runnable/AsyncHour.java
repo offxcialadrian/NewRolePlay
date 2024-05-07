@@ -110,7 +110,7 @@ public class AsyncHour extends BukkitRunnable {
             }
             int totalcost = runningcost + shop.getRent();
             if(shop.getKasse() >= totalcost) {
-                shop.removeKasse(shop.getRunningCost());
+                shop.removeKasse(runningcost);
                 shop.removeKasse(shop.getRent());
                 Stadtkasse.addStadtkasse(shop.getRent(), "Miete von " + shop.getPublicName(), null);
                 if(Script.getPlayer(shop.getOwner()) != null) {

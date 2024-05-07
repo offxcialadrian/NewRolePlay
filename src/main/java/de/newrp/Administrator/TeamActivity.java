@@ -97,7 +97,7 @@ public class TeamActivity implements CommandExecutor {
     public static double getRating(int days, int nrpid) {
         double rating = 0;
         try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
-             ResultSet rs = stmt.executeQuery("SELECT AVG(rating) AS supporter_rating FROM supporter_rating WHERE rating > 0 AND time > " + (System.currentTimeMillis() - ((long) days * 24 * 60 * 60 * 1000)) + " AND supporterID=" + nrpid) ) {
+             ResultSet rs = stmt.executeQuery("SELECT AVG(rating) AS total FROM supporter_rating WHERE rating > 0 AND time > " + (System.currentTimeMillis() - ((long) days * 24 * 60 * 60 * 1000)) + " AND supporterID=" + nrpid) ) {
             if (rs.next()) {
                 rating = rs.getDouble("total");
             }
