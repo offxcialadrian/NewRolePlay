@@ -140,6 +140,12 @@ public class Spawnschutz implements Listener {
         Entity damager = e.getDamager();
         Player p = (Player) e.getEntity();
 
+        if(damager instanceof Player) {
+            damager = e.getDamager();
+        } else if(damager instanceof Arrow) {
+            damager = (Entity) ((Arrow) damager).getShooter();
+        }
+
         if (Script.getLevel(p)!=1 && Script.getLevel((Player) damager)!=1) return;
 
         e.setCancelled(true);

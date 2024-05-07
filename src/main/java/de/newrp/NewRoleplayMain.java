@@ -42,6 +42,11 @@ import de.newrp.discord.IJdaService;
 import de.newrp.discord.events.GuildReadyListener;
 import de.newrp.discord.impl.JdaService;
 import de.newrp.discord.listeners.VerifyListener;
+import de.newrp.features.deathmatcharena.IDeathmatchArenaService;
+import de.newrp.features.deathmatcharena.commands.DeathmatchArenaCommand;
+import de.newrp.features.deathmatcharena.impl.DeathmatchArenaService;
+import de.newrp.features.deathmatcharena.listener.DeathmatchQuitListener;
+import de.newrp.features.deathmatcharena.listener.DeathmatchRespawnListener;
 import de.newrp.features.emergencycall.IEmergencyCallService;
 import de.newrp.features.emergencycall.commands.*;
 import de.newrp.features.emergencycall.impl.EmergencyCallService;
@@ -458,6 +463,7 @@ public class NewRoleplayMain extends JavaPlugin {
         getCommand("molotov").setExecutor(new MolotovCocktail());
         getCommand("leitungswasser").setExecutor(new Leitungswasser());
         getCommand("car").setExecutor(new CarCommand());
+        getCommand("dm").setExecutor(new DeathmatchArenaCommand());
     }
 
     /**
@@ -599,6 +605,8 @@ public class NewRoleplayMain extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new CarHandler(), this);
         Bukkit.getPluginManager().registerEvents(new EmergencyCallInventoryListener(), this);
         Bukkit.getPluginManager().registerEvents(new EmergencyCallQuitListener(), this);
+        Bukkit.getPluginManager().registerEvents(new DeathmatchRespawnListener(), this);
+        Bukkit.getPluginManager().registerEvents(new DeathmatchQuitListener(), this);
     }
 
     /**
@@ -609,6 +617,7 @@ public class NewRoleplayMain extends JavaPlugin {
         DependencyContainer.getContainer().add(IConfigService.class, this.configService);
         DependencyContainer.getContainer().add(IEmergencyCallService.class, new EmergencyCallService());
         DependencyContainer.getContainer().add(IJdaService.class, new JdaService());
+        DependencyContainer.getContainer().add(IDeathmatchArenaService.class, new DeathmatchArenaService());
     }
 
     /**

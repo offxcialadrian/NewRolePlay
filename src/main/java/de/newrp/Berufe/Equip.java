@@ -35,7 +35,7 @@ public class Equip implements CommandExecutor, Listener {
 
     public enum Stuff {
         PISTOLE(1, "Glory", new ItemBuilder(Material.IRON_HORSE_ARMOR).setName("§7Glory").build(), 500, 0, null, Beruf.Berufe.POLICE, false),
-        SCHUTZWESTE(2, "Schutzweste", Script.kevlar(1), 800, 0, null, Beruf.Berufe.POLICE, false),
+        SCHUTZWESTE(2, "Schutzweste", Script.kevlar(1), 700, 0, null, Beruf.Berufe.POLICE, false),
         HANDSCHELLEN(3, "Handschellen", Script.setName(new ItemStack(Material.LEAD, 2), "§7Handschellen"), 50, 0, null, Beruf.Berufe.POLICE, true),
         TAZER(4, "Tazer", Script.tazer(), 250, 0, null, Beruf.Berufe.POLICE, true),
         DONUT(5, "Donut", new ItemBuilder(Material.COOKIE).setAmount(16).setName("§7Donut").build(), 1, 0, null, Beruf.Berufe.POLICE, false),
@@ -48,7 +48,7 @@ public class Equip implements CommandExecutor, Listener {
         ZEITUNG(12, "Buch und Stift", Script.setName(new ItemStack(Material.WRITABLE_BOOK), "§7Buch und Stift"), 20, 0, new Abteilung.Abteilungen[]{Abteilung.Abteilungen.JOURNALIST}, Beruf.Berufe.NEWS, false),
         VERBAND(13, "Verband", new ItemBuilder(Material.PAPER).setName("§7Verband").setAmount(5).build(), 50, 0, null, Beruf.Berufe.RETTUNGSDIENST, true),
         GIPS(14, "Gips", Script.setName(new ItemStack(Material.PAPER), "§7Gips"), 50, 0, null, Beruf.Berufe.RETTUNGSDIENST, true),
-        SCHWERE_SCHUTZWESTE(15, "Schwere Schutzweste", Script.kevlar(2), 2490, 0, new Abteilung.Abteilungen[]{Abteilung.Abteilungen.SEK, Abteilung.Abteilungen.ABTEILUNGSLEITUNG}, Beruf.Berufe.POLICE, true),
+        SCHWERE_SCHUTZWESTE(15, "Schwere Schutzweste", Script.kevlar(2), 1200, 0, new Abteilung.Abteilungen[]{Abteilung.Abteilungen.SEK, Abteilung.Abteilungen.ABTEILUNGSLEITUNG}, Beruf.Berufe.POLICE, true),
         SPRITZE(16, "Spritze", Script.setName(new ItemStack(Material.END_ROD), "§7Spritze"), 10, 0, null, Beruf.Berufe.RETTUNGSDIENST, true),
         HUSTEN_IMPFUNG(17, "Husten Impfung", Script.setName(new ItemStack(Material.END_ROD), "§7Husten Impfung"), 50, 0, null, Beruf.Berufe.RETTUNGSDIENST, true),
         KAFFEE(18, "Kaffee", Script.setName(new ItemStack(Material.POTION), "§7Kaffee"), 2, 0, null, Beruf.Berufe.NEWS, false),

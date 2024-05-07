@@ -206,7 +206,7 @@ public class Script {
     }
 
     public static ItemStack kevlar(int lvl) {
-        ItemStack is = new ItemStack(Material.LEATHER_CHESTPLATE, 1, (short) (lvl == 1 ? 50 : 30));
+        ItemStack is = new ItemStack(Material.LEATHER_CHESTPLATE, 1, (short) (lvl == 1 ? 30 : 0));
         ItemMeta meta = is.getItemMeta();
         meta.setDisplayName("§7" + (lvl == 2 ? "Schwere " : "") + "Schutzweste");
         LeatherArmorMeta armormeta = (LeatherArmorMeta) meta;

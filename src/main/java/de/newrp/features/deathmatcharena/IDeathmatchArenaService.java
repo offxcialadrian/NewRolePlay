@@ -1,5 +1,6 @@
 package de.newrp.features.deathmatcharena;
 
+import de.newrp.features.deathmatcharena.data.DeathmatchArenaStats;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -28,6 +29,8 @@ public interface IDeathmatchArenaService {
     List<Location> getSpawnPoints();
 
     Location getRandomSpawnPoint();
+
+    DeathmatchArenaStats getStats(final Player player);
 
 
 

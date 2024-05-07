@@ -4,6 +4,8 @@ import de.newrp.API.*;
 import de.newrp.Chat.Me;
 import de.newrp.Police.Handschellen;
 import de.newrp.NewRoleplayMain;
+import de.newrp.dependencies.DependencyContainer;
+import de.newrp.features.deathmatcharena.IDeathmatchArenaService;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -135,6 +137,7 @@ public enum Drogen {
     }
 
     public static void addToAdiction(Player p) {
+        if(DependencyContainer.getContainer().getDependency(IDeathmatchArenaService.class).isInDeathmatch(p.getPlayer(), false)) return;
         Script.executeAsyncUpdate("INSERT INTO drug_addiction (nrp_id, time, heal) VALUES (" + Script.getNRPID(p) + ", " + System.currentTimeMillis() + ", false)");
         if(getAddiction(p) >= (Premium.hasPremium(p)?Script.getRandom(40, 50):Script.getRandom(30, 40)) && !Krankheit.ABHAENGIGKEIT.isInfected(Script.getNRPID(p))) {
             Krankheit.ABHAENGIGKEIT.add(Script.getNRPID(p));
