@@ -4,6 +4,9 @@ import de.newrp.API.*;
 import de.newrp.Chat.Chat;
 import de.newrp.Entertainment.Lotto;
 import de.newrp.Player.Hotel;
+import de.newrp.Vehicle.Car;
+import de.newrp.Vehicle.CarType;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -118,7 +121,6 @@ public class BuyClick implements Listener {
             } else {
                 PayShop.shops.put(p, s);
             }
-
 
             sendMessage(p, "Möchten Sie Bar oder mit Karte bezahlen?");
             int price = (Buy.amount.containsKey(p.getName()) ? si.getPrice(s) * Buy.amount.get(p.getName()) : si.getPrice(s));

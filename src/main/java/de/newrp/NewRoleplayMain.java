@@ -2,7 +2,6 @@ package de.newrp;
 
 import de.newrp.API.*;
 import de.newrp.Administrator.*;
-import de.newrp.Administrator.ServerTeam;
 import de.newrp.Berufe.*;
 import de.newrp.Call.CallCommand;
 import de.newrp.Call.HangupCommand;
@@ -12,7 +11,6 @@ import de.newrp.Commands.DiscordCommand;
 import de.newrp.Commands.Test;
 import de.newrp.Entertainment.*;
 import de.newrp.Forum.ForumCommand;
-import de.newrp.Berufe.Tazer;
 import de.newrp.GFB.*;
 import de.newrp.Gangwar.Capture;
 import de.newrp.Gangwar.GangwarCommand;
@@ -26,9 +24,14 @@ import de.newrp.Player.*;
 import de.newrp.Police.*;
 import de.newrp.Runnable.*;
 import de.newrp.Shop.*;
-import de.newrp.TeamSpeak.*;
+import de.newrp.TeamSpeak.PremiumChannel;
+import de.newrp.TeamSpeak.TeamSpeak;
+import de.newrp.TeamSpeak.TeamspeakCommand;
+import de.newrp.TeamSpeak.TeamspeakUpdate;
 import de.newrp.Ticket.*;
-import de.newrp.Vehicle.*;
+import de.newrp.Vehicle.CarCommand;
+import de.newrp.Vehicle.CarHandler;
+import de.newrp.Vehicle.CarListener;
 import de.newrp.Votifier.VoteCommand;
 import de.newrp.Votifier.VoteListener;
 import de.newrp.Votifier.VoteShop;
@@ -49,15 +52,13 @@ import de.newrp.features.emergencycall.listener.EmergencyCallInventoryListener;
 import de.newrp.features.emergencycall.listener.EmergencyCallQuitListener;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Activity;
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.interactions.commands.OptionType;
-import net.dv8tion.jda.api.interactions.commands.build.Commands;
-import net.dv8tion.jda.api.sharding.DefaultShardManager;
 import net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder;
 import net.labymod.serverapi.api.LabyAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandMap;
 import org.bukkit.craftbukkit.v1_16_R3.CraftServer;
+import org.bukkit.entity.Boat;
+import org.bukkit.entity.Entity;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -173,6 +174,7 @@ public class NewRoleplayMain extends JavaPlugin {
     /***
      * Method to register all commands, soon to be fully automatic
      */
+    @SuppressWarnings("DataFlowIssue")
     private void registerAllCommands() {
 
         // To-Do: Use command map to register commands, big refactoring inc
@@ -597,6 +599,7 @@ public class NewRoleplayMain extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new CancelTicket(), this);
         Bukkit.getPluginManager().registerEvents(new Trash(), this);
         Bukkit.getPluginManager().registerEvents(new CarHandler(), this);
+        Bukkit.getPluginManager().registerEvents(new CarListener(), this);
         Bukkit.getPluginManager().registerEvents(new EmergencyCallInventoryListener(), this);
         Bukkit.getPluginManager().registerEvents(new EmergencyCallQuitListener(), this);
     }

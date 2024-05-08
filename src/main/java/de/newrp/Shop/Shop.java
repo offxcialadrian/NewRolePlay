@@ -17,6 +17,7 @@ import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -24,12 +25,10 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
-public class Shop implements CommandExecutor, Listener {
+public class Shop implements CommandExecutor, Listener, TabCompleter {
 
     public static String PREFIX = "§8[§6Shop§8] » §7";
     private static HashMap<Player, Integer> priceMap = new HashMap<>();
@@ -470,6 +469,17 @@ public class Shop implements CommandExecutor, Listener {
         return false;
     }
 
-
-
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        String[] args1 = new String[] {"kasse", "sell", "karte", "info", "setprice", "upgradelager", "sortiment"};
+        String[] args2 = new String[] {};
+        List<String> completions = new ArrayList<>();
+        if (args.length == 1) {
+            for (String string : args1) if (string.toLowerCase().startsWith(args[0].toLowerCase())) completions.add(string);
+        } else if (args.length == 2) {
+            if (args[0].equalsIgnoreCase("kasse")) args2 = new String[] {"einzahlen", "auszahlen"};
+            for (String string : args2) if (string.toLowerCase().startsWith(args[1].toLowerCase())) completions.add(string);
+        }
+        return completions;
+    }
 }

@@ -82,7 +82,7 @@ public class BuyShop implements CommandExecutor {
 
             }
 
-            if(args[0].equalsIgnoreCase("info")) {
+            if (args[0].equalsIgnoreCase("info")) {
                 if(shop.getOwner() == 0) {
                     p.sendMessage(PREFIX + "Dieser Shop wird derzeit von der Stadt verkauft.");
                     p.sendMessage(Messages.INFO + "Preis: " + shop.getPrice() + "€");

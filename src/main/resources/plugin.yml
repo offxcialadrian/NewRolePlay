@@ -616,6 +616,9 @@ commands:
   car:
     description: drive a car
     aliases: [ auto ]
+  spawncar:
+    description: spawn a car
+    aliases: [ spawnauto ]
   dice:
     description: roll a dice
     aliases: [ würfel, roll ]

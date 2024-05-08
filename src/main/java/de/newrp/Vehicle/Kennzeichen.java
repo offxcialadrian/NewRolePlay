@@ -17,7 +17,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Kennzeichen implements CommandExecutor {
-    public static final String prefix = "§8[§cKFZ-Kennzeichen§8]§6 ";
+    public static final String prefix = "§8[§cKennzeichen§8]§6 ";
     public static final HashMap<Player, String> kfz = new HashMap<>();
 
     @Override
@@ -33,7 +33,7 @@ public class Kennzeichen implements CommandExecutor {
                         String s1 = args[0];
                         if (!check(s1)) {
                             if (Script.getMoney(p, PaymentType.BANK) >= 60) {
-                                String kennzeichen = "UC" + "-" + s1 + "-" + i;
+                                String kennzeichen = "N" + "-" + s1 + "-" + i;
                                 if (isInUse(kennzeichen)) {
                                     p.sendMessage(prefix + "Das Kennzeichen ist bereits vergeben.");
                                 } else {

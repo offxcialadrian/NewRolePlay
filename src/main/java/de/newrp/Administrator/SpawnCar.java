@@ -5,13 +5,18 @@ import de.newrp.API.Rank;
 import de.newrp.API.Script;
 import de.newrp.Vehicle.Car;
 import de.newrp.Vehicle.CarType;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-public class SpawnCar implements CommandExecutor {
+import java.util.ArrayList;
+import java.util.List;
+
+public class SpawnCar implements CommandExecutor, TabCompleter {
 
     public static String PREFIX = "§8[§eFahrzeug§8] §e" + Messages.ARROW + " §7";
 
@@ -50,5 +55,17 @@ public class SpawnCar implements CommandExecutor {
         p.sendMessage(PREFIX + "Du hast ein " + type.getName() + " für " + Script.getName(owner) + " gespawnt.");
 
         return false;
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        List<String> args1 = new ArrayList<>();
+        for (CarType carType : CarType.values()) args1.add(carType.getName());
+        List<String> args2 = new ArrayList<>();
+        for (Player player : Bukkit.getOnlinePlayers()) args2.add(player.getName());
+        List<String> completions = new ArrayList<>();
+        if (args.length == 1) for (String string : args1) if (string.toLowerCase().startsWith(args[0].toLowerCase())) completions.add(string);
+        if (args.length == 2) for (String string : args2) if (string.toLowerCase().startsWith(args[1].toLowerCase())) completions.add(string);
+        return completions;
     }
 }
