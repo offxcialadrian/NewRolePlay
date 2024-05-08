@@ -7,12 +7,15 @@ import net.kyori.adventure.text.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.block.data.type.Slab;
 import org.bukkit.entity.Boat;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.event.vehicle.VehicleDamageEvent;
 import org.bukkit.event.vehicle.VehicleEnterEvent;
 import org.bukkit.event.vehicle.VehicleExitEvent;
 import org.bukkit.event.vehicle.VehicleMoveEvent;
@@ -36,7 +39,7 @@ public class CarHandler implements Listener {
                 Vector direction = car.getLocation().getDirection();
 
                 CarType carType = car.getCarType();
-                if (car.isStarted()) {
+                if (car.isStarted() && car.getFuel() > 0) {
                     if (speed < carType.getMaxSpeed()) {
                         speed += ((0.01 * carType.getMaxSpeed()) / ((0.1 * speed) + 1));
                     }
@@ -94,6 +97,7 @@ public class CarHandler implements Listener {
                     }
 
                     car.setMileage(car.getMileage() + speed);
+                    if (car.getFuel() > 0) car.fill((float) (speed * -0.001 * carType.getConsumption()));
                 }
             }
         }
@@ -149,6 +153,13 @@ public class CarHandler implements Listener {
     }
 
     @EventHandler
+    public static void onDamage(VehicleDamageEvent event) {
+        if (event.getVehicle() instanceof Boat) {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
     public static void onClick(InventoryClickEvent event) {
         if (event.getWhoClicked().getOpenInventory().title().equals(Component.text("Fahrzeuge"))) {
             event.setCancelled(true);
@@ -158,17 +169,41 @@ public class CarHandler implements Listener {
             Car car = Car.getCarByLicenseplateCheckOwner(plate, player);
             if (car != null) {
                 assert item != null;
-                if (item.getType() == Material.GREEN_WOOL) {
+                if (item.getType() == Material.LIME_DYE) {
                     car.setLocked(true);
+                    player.getWorld().playSound(car.getLocation(), Sound.BLOCK_STONE_BUTTON_CLICK_OFF, 1.0F, 0.9F);
                     player.sendMessage(Component.text(Car.PREFIX + "Du hast deinen " + car.getCarType().getName() + " abgeschlossen."));
-                } else if (item.getType() == Material.RED_WOOL) {
+                } else if (item.getType() == Material.RED_DYE) {
                     car.setLocked(false);
+                    player.getWorld().playSound(car.getLocation(), Sound.BLOCK_STONE_BUTTON_CLICK_ON, 1.0F, 1.0F);
                     player.sendMessage(Component.text(Car.PREFIX + "Du hast deinen " + car.getCarType().getName() + " aufgeschlossen."));
                 } else if (item.getType() == Material.ACACIA_BOAT || item.getType() == Material.BIRCH_BOAT || item.getType() == Material.JUNGLE_BOAT || item.getType() == Material.OAK_BOAT || item.getType() == Material.SPRUCE_BOAT || item.getType() == Material.DARK_OAK_BOAT) {
                     player.performCommand("navi " + car.getLocation().getBlockX() + "/" + car.getLocation().getBlockY() + "/" + car.getLocation().getBlockZ());
                 }
             } // Hier könnte man noch eine automatische Bugmeldung hinzufügen
             event.getInventory().close();
+        }
+    }
+
+    @EventHandler
+    public static void onClick(PlayerInteractEntityEvent event) {
+        if (event.getPlayer().getInventory().getItemInMainHand().getType() == Material.PAPER) {
+            if (event.getRightClicked() instanceof Boat) {
+                Player player = event.getPlayer();
+                Car car = Car.getCarByEntityID(event.getRightClicked().getEntityId());
+                ItemStack paper = event.getPlayer().getInventory().getItemInMainHand();
+                String text = paper.getItemMeta().getDisplayName();
+                if (text.contains("Versicherung")) {
+                    if (car.isCarOwner(player)) {
+                        car.setInsurance(car.getInsurance() + 1);
+                        paper.setAmount(paper.getAmount() - 1);
+                        player.sendMessage(Car.PREFIX + "Dein " + car.getCarType().getName() + " nun " + car.getInsurance() + "x versichert.");
+                    } else {
+                        player.sendMessage(Car.PREFIX + "Dieses Auto gehört dir nicht!");
+                    }
+                    event.setCancelled(true);
+                }
+            }
         }
     }
 }

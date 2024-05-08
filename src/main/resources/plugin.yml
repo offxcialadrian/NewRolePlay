@@ -735,3 +735,9 @@ commands:
   dm:
     description: deathmatch
     aliases: [ deathmatch, arena, deathmatcharena ]
+  tanken:
+    description: fills your car
+    aliases: [ refuel ]
+  kennzeichen:
+    description: sets your license plate
+    aliases: [ license ]

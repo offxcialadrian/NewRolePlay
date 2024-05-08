@@ -9,7 +9,7 @@ public class GasStationBuyHandler implements GenericBuyHandler {
 
     @Override
     public boolean buyItem(Player player, Shops shop, final Object... args) {
-        player.sendMessage(Messages.INFO + "Tankstelle :3");
+        player.sendMessage(Messages.INFO + "Tankstelle :3"); // UwU ?
         return false;
     }
 

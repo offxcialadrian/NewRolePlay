@@ -15,11 +15,13 @@ import de.newrp.Police.Handschellen;
 import de.newrp.Ticket.TicketCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.block.data.type.Bed;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -28,6 +30,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class InteractMenu implements Listener {
 
@@ -453,4 +456,10 @@ public class InteractMenu implements Listener {
         Script.sendActionBar(p, "§cFesseln öffnen.. §8» §a" + sb.toString());
     }
 
+    @EventHandler
+    public static void onBed(PlayerInteractEvent event) {
+        if (Objects.requireNonNull(event.getClickedBlock()).getBlockData() instanceof Bed) {
+            event.setCancelled(true);
+        }
+    }
 }

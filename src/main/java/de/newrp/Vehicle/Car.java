@@ -5,7 +5,6 @@ import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.API.SlotLimit;
 import de.newrp.NewRoleplayMain;
-import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -36,7 +35,7 @@ public class Car {
     private final CarType carType;
     private final Player owner;
     private double speed;
-    private int fuel;
+    private float fuel;
     private double carheal;
     private double mileage;
     private int insurance;
@@ -244,7 +243,7 @@ public class Car {
         Score score5 = o.getScore(ChatColor.GRAY + "§bGang§8:");
         Score score6 = o.getScore(ChatColor.DARK_AQUA + " §8» §e" + getGear());
         Score score7 = o.getScore(ChatColor.GRAY + "§bTank§8:");
-        Score score8 = o.getScore(ChatColor.DARK_AQUA + " §8» §e" + car.getFuel() + "%");
+        Score score8 = o.getScore(ChatColor.DARK_AQUA + " §8» §e" + (double) Math.round(car.getFuel() * 10) / 10 + "%");
         Score score9 = o.getScore(ChatColor.GRAY + "§bKilometer§8:");
         Score score10 = o.getScore(ChatColor.DARK_AQUA + " §8» §e" + Math.round((float) car.getMileage() / 1000) + " km");
         Score score11 = o.getScore(ChatColor.GRAY + "§bSchäden§8:");
@@ -285,7 +284,7 @@ public class Car {
         Score score5 = o.getScore(ChatColor.GRAY + "§bGang§8:");
         Score score6 = o.getScore(ChatColor.DARK_AQUA + " §8» §e" + getGear());
         Score score7 = o.getScore(ChatColor.GRAY + "§bTank§8:");
-        Score score8 = o.getScore(ChatColor.DARK_AQUA + " §8» §e" + car.getFuel() + "%");
+        Score score8 = o.getScore(ChatColor.DARK_AQUA + " §8» §e" + (double) Math.round(car.getFuel() * 10) / 10 + "%");
         Score score9 = o.getScore(ChatColor.GRAY + "§bKilometer§8:");
         Score score10 = o.getScore(ChatColor.DARK_AQUA + " §8» §e" + Math.round((float) car.getMileage() / 1000) + " km");
         Score score11 = o.getScore(ChatColor.GRAY + "§bSchäden§8:");
@@ -404,7 +403,7 @@ public class Car {
         return owner;
     }
 
-    public int getFuel() {
+    public float getFuel() {
         return fuel;
     }
 
@@ -413,8 +412,8 @@ public class Car {
         return bomb;
     }
 
-    public void fill(int amount) {
-        int tank = getFuel() + amount;
+    public void fill(float amount) {
+        float tank = getFuel() + amount;
         if (tank > 100) tank = 100;
         Script.executeAsyncUpdate("UPDATE vehicle SET fuel=" + tank + " WHERE id=" + this.carID);
         this.fuel = tank;
@@ -536,7 +535,7 @@ public class Car {
 
         try (PreparedStatement stmt = NewRoleplayMain.getConnection().prepareStatement("UPDATE vehicle SET fuel = ?, heal = ?, mileage = ?, location_x = ?, location_y = ?, location_z = ? WHERE id = ?")) {
 
-            stmt.setInt(1, this.fuel);
+            stmt.setInt(1, Math.round(this.fuel));
             stmt.setInt(2, (int) Math.round(this.carheal));
             stmt.setInt(3, (int) Math.round(this.mileage));
             stmt.setDouble(4, loc.getX());

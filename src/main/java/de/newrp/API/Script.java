@@ -1333,17 +1333,22 @@ public class Script {
             Script.sendTeamMessage(AntiCheatSystem.PREFIX + "Verdächtige Geldmenge: " + p.getName() + " (" + getMoney(p, paymentType) + "€)");
     }
 
-    public static void removeMoney(Player p, PaymentType paymentType, int amount) {
-        if (paymentType == PaymentType.CASH) p.sendMessage(Messages.INFO + "Du hast " + amount + "€ Bargeld bezahlt.");
-        if (paymentType == PaymentType.BANK) {
-            if (Premium.hasPremium(p) && Mobile.hasPhone(p)) {
-                if (Mobile.mobileIsOn(p) && Mobile.hasConnection(p)) {
-                    p.sendMessage(Messages.INFO + "Du hast " + amount + "€ von deinem Konto bezahlt.");
+    public static boolean removeMoney(Player p, PaymentType paymentType, int amount) {
+        if (amount <= getMoney(p, paymentType)) {
+            if (paymentType == PaymentType.CASH)
+                p.sendMessage(Messages.INFO + "Du hast " + amount + "€ Bargeld bezahlt.");
+            if (paymentType == PaymentType.BANK) {
+                if (Premium.hasPremium(p) && Mobile.hasPhone(p)) {
+                    if (Mobile.mobileIsOn(p) && Mobile.hasConnection(p)) {
+                        p.sendMessage(Messages.INFO + "Du hast " + amount + "€ von deinem Konto bezahlt.");
+                    }
                 }
             }
+            amount = Math.abs(amount);
+            executeUpdate("UPDATE money SET " + paymentType.getName() + "=" + (getMoney(p, paymentType) - amount) + " WHERE nrp_id=" + getNRPID(p));
+            return true;
         }
-        amount = Math.abs(amount);
-        executeUpdate("UPDATE money SET " + paymentType.getName() + "=" + (getMoney(p, paymentType) - amount) + " WHERE nrp_id=" + getNRPID(p));
+        return false;
     }
 
     public static void removeMoney(OfflinePlayer p, PaymentType paymentType, int amount) {

@@ -1,11 +1,9 @@
 package de.newrp.Vehicle;
 
 import de.newrp.API.Messages;
-import de.newrp.API.Navi;
 import de.newrp.API.Premium;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
-import org.bouncycastle.asn1.cms.MetaData;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Material;
@@ -15,22 +13,14 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Boat;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.util.StringUtil;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-
-import static com.comphenix.protocol.PacketType.Play.Server.COMMANDS;
 
 public class CarCommand implements CommandExecutor, TabCompleter {
 
@@ -44,9 +34,13 @@ public class CarCommand implements CommandExecutor, TabCompleter {
                 switch (args[0]) {
                     case "start":
                         if (Objects.requireNonNull(player).isInsideVehicle()) {
-                            Car.getCarByEntityID(Objects.requireNonNull(player.getVehicle()).getEntityId()).setStarted(true);
-                            player.sendMessage(Component.text(Car.PREFIX).append(Component.text("Du hast deinen Motor gestartet.")
-                                    .color(TextColor.color(Color.SILVER.asRGB()))));
+                            if (player.getVehicle() instanceof Boat) {
+                                Car car = Car.getCarByEntityID(Objects.requireNonNull(player.getVehicle()).getEntityId());
+                                car.setStarted(true);
+                                car.setVelocity(car.getLocation().getDirection().multiply(0.1));
+                                player.sendMessage(Component.text(Car.PREFIX).append(Component.text("Du hast deinen Motor gestartet.")
+                                        .color(TextColor.color(Color.SILVER.asRGB()))));
+                            }
                         } else {
                             player.sendMessage(Component.text(Car.PREFIX).append(Component.text("Du befindest dich nicht in einem Auto!")
                                     .color(TextColor.color(Color.SILVER.asRGB()))));
@@ -76,9 +70,9 @@ public class CarCommand implements CommandExecutor, TabCompleter {
                                 if (Premium.hasPremium(player) ? distance < 10 : distance < 5) {
                                     ItemStack lock;
                                     if (car.isLocked()) {
-                                        lock = new ItemStack(Material.RED_WOOL);
+                                        lock = new ItemStack(Material.RED_DYE);
                                     } else {
-                                        lock = new ItemStack(Material.GREEN_WOOL);
+                                        lock = new ItemStack(Material.LIME_DYE);
                                     }
                                     ItemMeta lockMeta = lock.getItemMeta();
                                     lockMeta.displayName(Component.text(car.getLicenseplate()).color(TextColor.color(Color.ORANGE.asRGB())));
@@ -105,12 +99,33 @@ public class CarCommand implements CommandExecutor, TabCompleter {
                             Objects.requireNonNull(player).openInventory(gui);
                         }
                         break;
+                    case "fill":
+                        assert player != null;
+                        player.performCommand("tanken");
+                        break;
+                    case "sell":
+                        if (Objects.requireNonNull(player).isInsideVehicle()) {
+                            if (player.getVehicle() instanceof Boat) {
+                                Car car = Car.getCarByEntityID(Objects.requireNonNull(Objects.requireNonNull(player).getVehicle()).getEntityId());
+                                if (car.isCarOwner(player)) {
+                                    car.setActivated(false);
+                                    car.getBoatEntity().remove();
+                                    Car.CARS.remove(car);
+                                    player.sendMessage(Component.text(Car.PREFIX).append(Component.text("Du hast deinen " + car.getCarType().getName() + " verkauft.")));
+                                } else {
+                                    player.sendMessage(Component.text(Car.PREFIX).append(Component.text("Du kannst kein fremdes Auto verkaufen!")));
+                                }
+                            }
+                        } else {
+                            player.sendMessage(Component.text(Car.PREFIX).append(Component.text("Du befindest dich nicht in einem Auto!")));
+                        }
+                        break;
                     default:
-                        Objects.requireNonNull(player).sendMessage(Component.text(Messages.ERROR + "/car [start/stop/lock/find]"));
+                        Objects.requireNonNull(player).sendMessage(Component.text(Messages.ERROR + "/car [start/stop/lock/find/fill/sell]"));
                         break;
                 }
             } else {
-                Objects.requireNonNull(player).sendMessage(Component.text(Messages.ERROR + "/car [start/stop/lock/find]"));
+                Objects.requireNonNull(player).sendMessage(Component.text(Messages.ERROR + "/car [start/stop/lock/find/fill/sell]"));
             }
         }
 
@@ -119,7 +134,7 @@ public class CarCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-        String[] args1 = new String[] {"start", "stop", "lock", "find"};
+        String[] args1 = new String[] {"start", "stop", "lock", "find", "fill", "sell"};
         List<String> completions = new ArrayList<>();
         if (args.length == 1) for (String string : args1) if (string.toLowerCase().startsWith(args[0].toLowerCase())) completions.add(string);
         return completions;

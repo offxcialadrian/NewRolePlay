@@ -119,7 +119,11 @@ public enum ShopItem {
     NMW(130, CarType.NMW.getName(), Script.setName(new ItemStack(CarType.NMW.getMaterial(), 1), "§e" + CarType.NMW.getName()), 1, 1, 1, 7000, 14000, false, false, false, new ShopType[] {ShopType.CARDEALER}),
     AWDI(131, CarType.AWDI.getName(), Script.setName(new ItemStack(CarType.AWDI.getMaterial(), 1), "§e" + CarType.AWDI.getName()), 1, 1, 1, 9000, 17000, false, false, false, new ShopType[] {ShopType.CARDEALER}),
     MERCADAS(132, CarType.MERCADAS.getName(), Script.setName(new ItemStack(CarType.MERCADAS.getMaterial(), 1), "§e" + CarType.MERCADAS.getName()), 1, 1, 1, 11000, 20000, false, false, false, new ShopType[] {ShopType.CARDEALER}),
-    PORSCHUH(133, CarType.PORSCHUH.getName(), Script.setName(new ItemStack(CarType.PORSCHUH.getMaterial(), 1), "§e" + CarType.PORSCHUH.getName()), 1, 1, 1, 13000, 23000, false, false, false, new ShopType[] {ShopType.CARDEALER});
+    PORSCHUH(133, CarType.PORSCHUH.getName(), Script.setName(new ItemStack(CarType.PORSCHUH.getMaterial(), 1), "§e" + CarType.PORSCHUH.getName()), 1, 1, 1, 13000, 23000, false, false, false, new ShopType[] {ShopType.CARDEALER}),
+    KANISTER(134, "Kanister", Script.setName(new ItemStack(Material.BEETROOT_SOUP, 1), "§cKanister"), 1, 1, 1, 50, 1200, false, true, false, new ShopType[] {ShopType.GAS_STATION}),
+    INSURANCE(135, "Versicherung", Script.setName(new ItemStack(Material.PAPER, 1), "§aVersicherung"), 1, 1, 1, 1000, 5400, false, true, false, new ShopType[] {ShopType.CARDEALER}),
+    LICENSE(136, "Kennzeichen", Script.setName(new ItemStack(Material.NAME_TAG, 1), "§bKennzeichen"), 1, 1, 1, 1500, 3600, false, true, false, new ShopType[] {ShopType.CARDEALER}),
+    TOOLS(137, "Werkzeug", Script.setName(new ItemStack(Material.SHEARS, 1), "§7Werkzeug"), 1, 1, 1, 100, 500, false, true, false, new ShopType[] {ShopType.GAS_STATION});
 
 
     private final int id;
