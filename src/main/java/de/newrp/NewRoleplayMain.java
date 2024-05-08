@@ -446,7 +446,7 @@ public class NewRoleplayMain extends JavaPlugin {
         getCommand("motd").setExecutor(new FMOTD());
         getCommand("capture").setExecutor(new Capture());
         getCommand("kebap").setExecutor(new Kebap());
-        getCommand("blocknotruf").setExecutor(new BlockNotruf());
+        getCommand("blocknotruf").setExecutor(new BlockEmergencyCallCommand());
         getCommand("gangzone").setExecutor(new GangwarZonesCommand());
         getCommand("deletenotruf").setExecutor(new DeleteEmergencyCallCommand());
         getCommand("checkactivemembers").setExecutor(new CheckActiveMembers());
