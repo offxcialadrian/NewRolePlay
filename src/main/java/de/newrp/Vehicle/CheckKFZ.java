@@ -38,14 +38,14 @@ public class CheckKFZ implements CommandExecutor {
         if (car != null) {
             if (car.isCarOwner(p) || Beruf.hasBeruf(p, Beruf.Berufe.POLICE)) {
                 if (car.isCarOwner(p) || Duty.isInDuty(p)) {
-                    if (car.hasBomb()) {
+                    /*if (car.hasBomb()) {
                         int i = Script.getRandom(1, 100);
                         if (i > 50) {
                             p.sendMessage(Car.PREFIX + "Du hast §cetwas merkwürdiges §7am Auto entdeckt...");
                         } else
                             p.sendMessage(Car.PREFIX + "Du konntest §anichts merkwürdiges §7am Auto entdecken.");
                     } else
-                        p.sendMessage(Car.PREFIX + "Du konntest §anichts merkwürdiges §7am Auto entdecken.");
+                        p.sendMessage(Car.PREFIX + "Du konntest §anichts merkwürdiges §7am Auto entdecken.");*/
                 }
             }
         }

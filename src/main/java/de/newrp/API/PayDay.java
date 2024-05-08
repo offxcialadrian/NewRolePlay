@@ -39,8 +39,11 @@ public class PayDay extends BukkitRunnable {
 
             int payday = 0;
             int interest = (Script.getMoney(p, PaymentType.BANK) > 0 ? (int) (Banken.getBankByPlayer(p).getInterest() * Script.getMoney(p, PaymentType.BANK)) : (int) (0.02 * Script.getMoney(p, PaymentType.BANK)));
-            if (Script.getMoney(p, PaymentType.BANK) > 50000) interest = interest / 2;
-            if (Script.getMoney(p, PaymentType.BANK) > 100000) interest = interest / 3;
+            if(interest > 500) {
+                interest = 500;
+            }
+            /*if (Script.getMoney(p, PaymentType.BANK) > 50000) interest = interest / 2;
+            if (Script.getMoney(p, PaymentType.BANK) > 100000) interest = interest / 3;*/
             double einkommenssteuer = Steuern.Steuer.EINKOMMENSSTEUER.getPercentage();
             double arbeitslosenversicherung = Steuern.Steuer.ARBEITSLOSENVERSICHERUNG.getPercentage();
             double lohnsteuer = Steuern.Steuer.LOHNSTEUER.getPercentage();

@@ -51,7 +51,7 @@ public class Sellfisch implements CommandExecutor {
         }
 
         if(p.getInventory().getItemInOffHand().getType() != Material.AIR) {
-            Notifications.sendMessage(Notifications.NotificationType.ADVANCED_ANTI_CHEAT, "Verdacht auf SellFisch Buguse bei " + Script.getName(p) + " (Wahrscheinlichkeit: 100%)");
+            Notifications.sendMessage(Notifications.NotificationType.ADVANCED_ANTI_CHEAT, "Verdacht auf SellFisch Buguse bei " + Script.getName(p) + " (Wahrscheinlichkeit: 100%) [" + p.getInventory().getItemInOffHand().getType() + "]");
             if(Script.getLevel(p) == 1) {
                 Script.executeUpdate("INSERT INTO `ban` (id, ban_id, nrp_id, since, until, reason, banned_by) VALUES (NULL, '" + Punish.generatePunishID() + "', '" + Script.getNRPID(p) + "', '" + System.currentTimeMillis() + "', " + ("NULL") + ", '" + Punish.Violation.BUGUSE_EIGENERTRAG.getName() + "', '" + 0 + "');");
                 Log.WARNING.write(p, "wurde vom AntiCheat für " + Punish.Violation.BUGUSE_EIGENERTRAG.getName() + " gebannt.");
@@ -59,6 +59,9 @@ public class Sellfisch implements CommandExecutor {
                 p.kickPlayer("§8» §cNRP × New RolePlay §8┃ §cBANN §8« \n\n§8§m------------------------------\n\n§7Du wurdest vom Server gebannt§8.\n\n§7Grund §8× §e" + Punish.Violation.BUGUSE_EIGENERTRAG.getName() + "\n§7Gebannt bis §8× §e" + "Lebenslang" + "\n\n§7Eine Entbannungsantrag ist ausgeschlossen.\n\n§8§m------------------------------");
                 Script.setMoney(p, PaymentType.BANK, 0);
                 Script.setMoney(p, PaymentType.CASH, 0);
+            } else {
+                p.sendMessage(Messages.ERROR + "Du kannst nicht verkaufen, während du einen Gegenstand in der Offhand hast.");
+                return true;
             }
         }
         p.getInventory().getItemInOffHand().setType(Material.AIR);
@@ -90,7 +93,7 @@ public class Sellfisch implements CommandExecutor {
                 continue;
             p.getInventory().remove(is);
             if(p.getInventory().getItemInOffHand().getType() != Material.AIR) {
-                Notifications.sendMessage(Notifications.NotificationType.ADVANCED_ANTI_CHEAT, "Verdacht auf SellFisch Buguse bei " + Script.getName(p) + " (Wahrscheinlichkeit: 100%)");
+                Notifications.sendMessage(Notifications.NotificationType.ADVANCED_ANTI_CHEAT, "Verdacht auf SellFisch Buguse bei " + Script.getName(p) + " (Wahrscheinlichkeit: 100%) [" + p.getInventory().getItemInOffHand().getType() + "]");
             }
             p.getInventory().getItemInOffHand().setType(Material.AIR);
 

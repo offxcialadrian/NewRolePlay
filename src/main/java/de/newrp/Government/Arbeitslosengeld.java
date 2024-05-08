@@ -3,6 +3,7 @@ package de.newrp.Government;
 import de.newrp.API.*;
 import de.newrp.Berufe.Abteilung;
 import de.newrp.Berufe.Beruf;
+import de.newrp.Government.data.UnemploymentBenefitData;
 import de.newrp.Player.Banken;
 import de.newrp.NewRoleplayMain;
 import org.bukkit.Bukkit;
@@ -15,6 +16,9 @@ import org.bukkit.entity.Player;
 
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 public class Arbeitslosengeld implements CommandExecutor {
 
@@ -268,7 +272,7 @@ public class Arbeitslosengeld implements CommandExecutor {
 
     public static int getNRPIDByArbeitslosengeldID(int id) {
         try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
-             ResultSet rs = stmt.executeQuery("SELECT * FROM arbeitslosengeld WHERE id=" + id)) {
+             ResultSet rs = stmt.executeQuery("SELECT nrp_id FROM arbeitslosengeld WHERE id=" + id)) {
             return rs.getInt("nrp_id");
         } catch (Exception e) {
             e.printStackTrace();
@@ -278,7 +282,7 @@ public class Arbeitslosengeld implements CommandExecutor {
 
     public static boolean arbeitslosengeldExists(int id) {
         try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
-             ResultSet rs = stmt.executeQuery("SELECT * FROM arbeitslosengeld WHERE id=" + id)) {
+             ResultSet rs = stmt.executeQuery("SELECT id FROM arbeitslosengeld WHERE id=" + id)) {
             return rs.next();
         } catch (Exception e) {
             e.printStackTrace();
@@ -298,5 +302,18 @@ public class Arbeitslosengeld implements CommandExecutor {
             Script.executeAsyncUpdate("DELETE FROM arbeitslosengeld WHERE nrp_id='" + Script.getNRPID(p) + "'");
             Beruf.Berufe.GOVERNMENT.sendMessage(PREFIX + p.getName() + "s Arbeitslosengeld wurde gekündigt.");
         }
+    }
+
+    public static List<UnemploymentBenefitData> getAllActiveUnemploymentBenefits() {
+        final List<UnemploymentBenefitData> list = new ArrayList<>();
+        try (final Statement statement = NewRoleplayMain.getConnection().createStatement();
+             ResultSet rs = statement.executeQuery("SELECT alg.id, alg.nrp_id, nid.uuid, nid.name FROM arbeitslosengeld alg LEFT JOIN nrp_id nid ON nid.id=alg.nrp_id;")) {
+            while(rs.next()) {
+                list.add(new UnemploymentBenefitData(rs.getInt(1), UUID.fromString(rs.getString(3)), rs.getString(4), rs.getInt(2)));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
     }
 }

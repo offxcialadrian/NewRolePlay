@@ -732,3 +732,6 @@ commands:
   leitungswasser:
     description: view the leitungswasser
     aliases: [ lw ]
+  dm:
+    description: deathmatch
+    aliases: [ deathmatch, arena, deathmatcharena ]

@@ -12,6 +12,9 @@ import de.newrp.Player.Fesseln;
 import de.newrp.Police.Handschellen;
 import de.newrp.Shop.Shops;
 import de.newrp.NewRoleplayMain;
+import de.newrp.dependencies.DependencyContainer;
+import de.newrp.features.deathmatcharena.IDeathmatchArenaService;
+import de.newrp.features.deathmatcharena.data.DeathmatchArenaStats;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -37,6 +40,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 public class Waffen implements Listener {
+
+    private final IDeathmatchArenaService deathmatchArenaService = DependencyContainer.getContainer().getDependency(IDeathmatchArenaService.class);
 
     public static final HashMap<String, Long> REVIVE_COOLDOWN = new HashMap<>();
     public static final ConcurrentHashMap<String, Long> cooldown = new ConcurrentHashMap<>();
@@ -249,6 +254,11 @@ public class Waffen implements Listener {
     }
 
     public void fire(Player p, Weapon w, ItemStack is) {
+        if(deathmatchArenaService.isInDeathmatch(p, false)) {
+            final DeathmatchArenaStats stats = this.deathmatchArenaService.getStats(p);
+            stats.shotsFired(stats.shotsFired() + 1);
+        }
+
         //int skill = (Krankheit.GEBROCHENES_BEIN.isInfected(Script.getNRPID(p)) ? 1 : 6);
         int skill = 6;
         float recoil = w.getRecoil();

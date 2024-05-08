@@ -52,8 +52,8 @@ public class Hologram {
             ArmorStand stand = h.getArmorStand();
             stand.remove();
         }
-        for (ArmorStand ent : Script.WORLD.getEntitiesByClass(ArmorStand.class)) {
 
+        for (ArmorStand ent : Script.WORLD.getEntitiesByClass(ArmorStand.class)) {
             if (ent.getPassengers().isEmpty()) {
                 ent.remove();
             }

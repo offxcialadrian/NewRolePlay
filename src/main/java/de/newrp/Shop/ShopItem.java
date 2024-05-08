@@ -5,8 +5,6 @@ import de.newrp.API.Script;
 import de.newrp.API.ShishaType;
 import de.newrp.House.HouseAddon;
 import de.newrp.Medic.Medikamente;
-import de.newrp.Vehicle.Car;
-import de.newrp.Vehicle.CarType;
 import de.newrp.Waffen.Weapon;
 import de.newrp.NewRoleplayMain;
 import org.bukkit.Color;
@@ -47,7 +45,7 @@ public enum ShopItem {
     VERBAND(57, "§7Verband", new ItemBuilder(Material.PAPER).setName("§7Verband").build(), 3, 1, 1, 60, 4300, false, true, false, new ShopType[] {ShopType.PHARMACY}),
     TRINKWASSER(58, "§7Trinkwasser", new ItemBuilder(Material.POTION).setName("§7Trinkwasser").build(), 3, 1, 1, 2, 500, false, true, false, new ShopType[] {ShopType.SUPERMARKET, ShopType.CAFE, ShopType.NEWS}),
     AMMO_762MM(59, "§7.762mm Munition (" + Weapon.AK47.getName() + ")", new ItemBuilder(Material.ARROW).setAmount(Weapon.AK47.getMagazineSize()).build(), 1, 1, 1, 30, 3000, false, false, false, new ShopType[] {ShopType.GUNSHOP}),
-    KEVLAR(51, "§7Schutzweste", Script.kevlar(1), 20, 1, 1, 1400, 14900, false, true, false, new ShopType[] {ShopType.GUNSHOP}),
+    KEVLAR(51, "§7Schutzweste", Script.kevlar(1), 20, 1, 1, 500, 14900, false, true, false, new ShopType[] {ShopType.GUNSHOP}),
     SCHMERZMITTEL_HIGH(60, "§fSchmerzmittel (High)", new ItemBuilder(Material.PAPER).setName("§fSchmerzmittel (High)").setAmount(Medikamente.SCHMERZMITTEL_HIGH.getNeeded()).build(), 2, 2, 25, 65, 6100, true, true, false, new ShopType[] {ShopType.PHARMACY, ShopType.SUPERMARKET}),
     ANTIBIOTIKA(61, "§fAntibiotika", new ItemBuilder(Material.PAPER).setName("§fAntibiotika").setAmount(Medikamente.ANTIBIOTIKA.getNeeded()).build(), 5, 2, 25, 75, 4900, true, true, false, new ShopType[] {ShopType.PHARMACY}),
     HUSTENSAFT(62, "§fHustensaft", new ItemBuilder(Material.PAPER).setName("§fHustensaft").setAmount(Medikamente.HUSTENSAFT.getNeeded()).build(), 5, 2, 25, 60, 3400, true, true, false, new ShopType[] {ShopType.PHARMACY}),
@@ -114,12 +112,7 @@ public enum ShopItem {
     SHISHA_4(124, "§6Shisha " + ShishaType.ZITRONE, Script.setNameAndLore(Material.STICK, "§6Shisha " + ShishaType.ZITRONE.getName(), "§c" + ShishaType.ZITRONE.getName(), "§7" + ShishaType.ZITRONE.getDuration() + "/" + ShishaType.ZITRONE.getDuration()), 1, 1, 1, 10, 500, false, true, false, new ShopType[] {ShopType.SHISHA}),
     SHISHA_5(125, "§6Shisha " + ShishaType.SPECIAL, Script.setNameAndLore(Material.STICK, "§6Shisha " + ShishaType.SPECIAL.getName(), "§c" + ShishaType.SPECIAL.getName(), "§7" + ShishaType.SPECIAL.getDuration() + "/" + ShishaType.SPECIAL.getDuration()), 1, 1, 1, 10, 500, false, true, false, new ShopType[] {ShopType.SHISHA}),
     SHISHA_6(126, "§6Shisha " + ShishaType.TRAUBE, Script.setNameAndLore(Material.STICK, "§6Shisha " + ShishaType.TRAUBE.getName(), "§c" + ShishaType.TRAUBE.getName(), "§7" + ShishaType.TRAUBE.getDuration() + "/" + ShishaType.TRAUBE.getDuration()), 1, 1, 1, 10, 500, false, true, false, new ShopType[] {ShopType.SHISHA}),
-    OPPEL(127, CarType.OPPEL.getName(), Script.setName(new ItemStack(CarType.OPPEL.getMaterial(), 1), "§e" + CarType.OPPEL.getName()), 1, 1, 1, 3000, 5000, false, false, false, new ShopType[] {ShopType.CARDEALER}),
-    VOLTSWAGEN(128, CarType.VOLTSWAGEN.getName(), Script.setName(new ItemStack(CarType.VOLTSWAGEN.getMaterial(), 1), "§e" + CarType.VOLTSWAGEN.getName()), 1, 1, 1, 5000, 8000, false, false, false, new ShopType[] {ShopType.CARDEALER}),
-    NMW(129, CarType.NMW.getName(), Script.setName(new ItemStack(CarType.NMW.getMaterial(), 1), "§e" + CarType.NMW.getName()), 1, 1, 1, 7000, 14000, false, false, false, new ShopType[] {ShopType.CARDEALER}),
-    AWDI(130, CarType.AWDI.getName(), Script.setName(new ItemStack(CarType.AWDI.getMaterial(), 1), "§e" + CarType.AWDI.getName()), 1, 1, 1, 9000, 17000, false, false, false, new ShopType[] {ShopType.CARDEALER}),
-    MERCADAS(131, CarType.MERCADAS.getName(), Script.setName(new ItemStack(CarType.MERCADAS.getMaterial(), 1), "§e" + CarType.MERCADAS.getName()), 1, 1, 1, 11000, 20000, false, false, false, new ShopType[] {ShopType.CARDEALER}),
-    PORSCHUH(132, CarType.PORSCHUH.getName(), Script.setName(new ItemStack(CarType.PORSCHUH.getMaterial(), 1), "§e" + CarType.PORSCHUH.getName()), 1, 1, 1, 13000, 23000, false, false, false, new ShopType[] {ShopType.CARDEALER});
+    SCHWERE_KEVLAR(127, "§7Schwere Schutzweste", Script.kevlar(2), 20, 1, 1, 1000, 14900, false, true, false, new ShopType[] {ShopType.GUNSHOP});
 
 
     private final int id;
