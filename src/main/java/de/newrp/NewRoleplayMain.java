@@ -465,6 +465,7 @@ public class NewRoleplayMain extends JavaPlugin {
         getCommand("leitungswasser").setExecutor(new Leitungswasser());
         getCommand("car").setExecutor(new CarCommand());
         getCommand("dm").setExecutor(new DeathmatchArenaCommand());
+        getCommand("car").setExecutor(new CarCommand());
     }
 
     /**
