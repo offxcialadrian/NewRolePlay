@@ -283,7 +283,9 @@ public class PayShop implements Listener {
                 case PORSCHUH:
                     CarType carType = CarType.getCarTypeByName(si.getName());
                     assert carType != null;
-                    Car.createCar(carType, new Location(p.getWorld(), 392 + new Random().nextInt(3), 76.5, 1090), p);
+                    Car car = Car.createCar(carType, new Location(p.getWorld(), 392 + new Random().nextInt(3), 76.5, 1090), p);
+                    assert car != null;
+                    car.setActivated(true);
                     p.sendMessage(Component.text(Car.PREFIX + "Du hast dir einen neuen " + si.getName() + " gekauft."));
                     BuyClick.sendMessage(p, "Hier sind die Schlüssel, dann viel Spaß!");
             }

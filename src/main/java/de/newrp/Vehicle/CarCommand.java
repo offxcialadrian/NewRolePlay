@@ -44,7 +44,7 @@ public class CarCommand implements CommandExecutor, TabCompleter {
                 switch (args[0]) {
                     case "start":
                         if (Objects.requireNonNull(player).isInsideVehicle()) {
-                            Car.getCarByEntityID(Objects.requireNonNull(player.getVehicle()).getEntityId()).setLocked(false);
+                            Car.getCarByEntityID(Objects.requireNonNull(player.getVehicle()).getEntityId()).setStarted(true);
                             player.sendMessage(Component.text(Car.PREFIX).append(Component.text("Du hast deinen Motor gestartet.")
                                     .color(TextColor.color(Color.SILVER.asRGB()))));
                         } else {
@@ -55,7 +55,7 @@ public class CarCommand implements CommandExecutor, TabCompleter {
                     case "stop":
                         if (Objects.requireNonNull(player).isInsideVehicle()) {
                             if (player.getVehicle() instanceof Boat) {
-                                Car.getCarByEntityID(Objects.requireNonNull(player.getVehicle()).getEntityId()).setLocked(true);
+                                Car.getCarByEntityID(Objects.requireNonNull(player.getVehicle()).getEntityId()).setStarted(false);
                                 player.sendMessage(Component.text(Car.PREFIX).append(Component.text("Du hast deinen Motor angehalten.")
                                         .color(TextColor.color(Color.SILVER.asRGB()))));
                             }

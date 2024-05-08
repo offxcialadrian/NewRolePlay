@@ -605,6 +605,7 @@ public class NewRoleplayMain extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new CancelTicket(), this);
         Bukkit.getPluginManager().registerEvents(new Trash(), this);
         Bukkit.getPluginManager().registerEvents(new CarHandler(), this);
+        Bukkit.getPluginManager().registerEvents(new CarListener(), this);
         Bukkit.getPluginManager().registerEvents(new EmergencyCallInventoryListener(), this);
         Bukkit.getPluginManager().registerEvents(new EmergencyCallQuitListener(), this);
         Bukkit.getPluginManager().registerEvents(new DeathmatchRespawnListener(), this);

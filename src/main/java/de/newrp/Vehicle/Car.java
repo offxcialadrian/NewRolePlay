@@ -5,6 +5,7 @@ import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.API.SlotLimit;
 import de.newrp.NewRoleplayMain;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -40,13 +41,14 @@ public class Car {
     private double mileage;
     private int insurance;
     private boolean locked;
+    private boolean started;
     private boolean activated;
     private boolean bomb;
     private String licenseplate;
     private Strafzettel strafzettel;
     private final List<VehicleAddon> addons;
 
-    public Car(int carID, Boat boatEntity, CarType carType, Player owner, double speed, int fuel, double carheal, double mileage, int insurance, boolean locked,
+    public Car(int carID, Boat boatEntity, CarType carType, Player owner, double speed, int fuel, double carheal, double mileage, int insurance, boolean locked, boolean started,
                boolean activated, boolean bomb, String licenseplate, Strafzettel strafzettel, List<VehicleAddon> addons) {
         this.carID = carID;
         this.boatEntity = boatEntity;
@@ -58,6 +60,7 @@ public class Car {
         this.mileage = mileage;
         this.insurance = insurance;
         this.locked = locked;
+        this.started = started;
         this.activated = activated;
         this.licenseplate = licenseplate;
         this.strafzettel = strafzettel;
@@ -123,7 +126,7 @@ public class Car {
         }
     }
 
-    public static void createCar(CarType carType, Location loc, Player p) {
+    public static Car createCar(CarType carType, Location loc, Player p) {
         try (PreparedStatement stmt = NewRoleplayMain.getConnection().prepareStatement(
                 "INSERT INTO vehicle (owner, cartype, fuel, heal, mileage, locked, location_x, location_y, location_z) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", com.mysql.jdbc.Statement.RETURN_GENERATED_KEYS
         )) {
@@ -146,13 +149,16 @@ public class Car {
                     boat.setWoodType(carType.getType());
                     boat.setMaxSpeed(carType.getMaxSpeed());
 
-                    Car car = new Car(carID, boat, carType, p, 0D, 100, carType.getCarheal(), 0, 0, true, true, false, "", null, new ArrayList<>());
+                    Car car = new Car(carID, boat, carType, p, 0D, 100, carType.getCarheal(), 0, 0, true, false, true, false, "", null, new ArrayList<>());
                     CARS.add(car);
+                    return car;
                 }
             }
         } catch (SQLException e) {
             throw new IllegalStateException(e);
         }
+
+        return null;
     }
 
     public static void spawnCars(Player p) {
@@ -187,7 +193,8 @@ public class Car {
                 boolean activated = rs.getBoolean("activated");
                 boolean bomb = rs.getBoolean("bomb");
 
-                cars.add(new Car(carID, null, carType, p, 0D, fuel, heal, mileage, insurance, locked, activated, bomb, licenseplate, Strafzettel.loadStrafzettel(carID), addons));
+                Car car = new Car(carID, null, carType, p, 0D, fuel, heal, mileage, insurance, locked, false, activated, bomb, licenseplate, Strafzettel.loadStrafzettel(carID), addons);
+                cars.add(car);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -200,8 +207,8 @@ public class Car {
 
                 Bukkit.getScheduler().runTask(NewRoleplayMain.getInstance(), () -> {
                     Boat boat = (Boat) Script.WORLD.spawnEntity(loc, EntityType.BOAT);
+                    boat.setWoodType(car.getCarType().getType());
                     boat.setMaxSpeed(car.getCarType().getMaxSpeed());
-
                     car.setBoatEntity(boat);
 
                     CARS.add(car);
@@ -216,7 +223,7 @@ public class Car {
             Car car = it.next();
             if (car.getOwner().getUniqueId().equals(p.getUniqueId())) {
                 Boat mc = car.getBoatEntity();
-                car.save(mc);
+                car.save();
                 mc.remove();
                 it.remove();
             }
@@ -441,6 +448,14 @@ public class Car {
         Script.executeAsyncUpdate("UPDATE vehicle SET locked=" + locked + " WHERE id=" + this.carID);
     }
 
+    public boolean isStarted() {
+        return this.started;
+    }
+
+    public void setStarted(boolean started) {
+        this.started = started;
+    }
+
     public boolean isActivated() {
         return activated;
     }
@@ -516,8 +531,8 @@ public class Car {
         return null;
     }
 
-    public void save(Boat minecart) {
-        Location loc = minecart.getLocation();
+    public void save() {
+        Location loc = this.getLocation();
 
         try (PreparedStatement stmt = NewRoleplayMain.getConnection().prepareStatement("UPDATE vehicle SET fuel = ?, heal = ?, mileage = ?, location_x = ?, location_y = ?, location_z = ? WHERE id = ?")) {
 

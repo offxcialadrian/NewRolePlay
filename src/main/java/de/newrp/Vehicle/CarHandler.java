@@ -36,7 +36,7 @@ public class CarHandler implements Listener {
                 Vector direction = car.getLocation().getDirection();
 
                 CarType carType = car.getCarType();
-                if (!car.isLocked()) {
+                if (car.isStarted()) {
                     if (speed < carType.getMaxSpeed()) {
                         speed += ((0.01 * carType.getMaxSpeed()) / ((0.1 * speed) + 1));
                     }
