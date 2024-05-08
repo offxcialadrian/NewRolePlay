@@ -256,7 +256,7 @@ public class Waffen implements Listener {
     public void fire(Player p, Weapon w, ItemStack is) {
         if(deathmatchArenaService.isInDeathmatch(p, false)) {
             final DeathmatchArenaStats stats = this.deathmatchArenaService.getStats(p);
-            stats.shotsHit(stats.shotsHit() + 1);
+            stats.shotsFired(stats.shotsFired() + 1);
         }
 
         //int skill = (Krankheit.GEBROCHENES_BEIN.isInfected(Script.getNRPID(p)) ? 1 : 6);

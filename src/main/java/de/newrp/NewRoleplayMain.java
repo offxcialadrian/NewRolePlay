@@ -44,6 +44,7 @@ import de.newrp.discord.impl.JdaService;
 import de.newrp.discord.listeners.VerifyListener;
 import de.newrp.features.deathmatcharena.IDeathmatchArenaService;
 import de.newrp.features.deathmatcharena.commands.DeathmatchArenaCommand;
+import de.newrp.features.deathmatcharena.data.DeathmatchArenaConfig;
 import de.newrp.features.deathmatcharena.impl.DeathmatchArenaService;
 import de.newrp.features.deathmatcharena.listener.DeathmatchQuitListener;
 import de.newrp.features.deathmatcharena.listener.DeathmatchRespawnListener;
@@ -633,6 +634,11 @@ public class NewRoleplayMain extends JavaPlugin {
         this.configService.saveConfig(mainConfigFile, new MainConfig(), false);
         this.mainConfig = this.configService.readConfig(mainConfigFile, MainConfig.class);
         Bukkit.getLogger().info("Successfully read Main Configuration!");
+
+        final File dmConfigFile = new File(pluginFolder, "deathmatch.json");
+        this.configService.saveConfig(dmConfigFile, new DeathmatchArenaConfig(), false);
+        DependencyContainer.getContainer().add(DeathmatchArenaConfig.class, this.configService.readConfig(dmConfigFile, DeathmatchArenaConfig.class));
+        Bukkit.getLogger().info("Successfully read Deathmatch Configuration!");
     }
 
     public static boolean isTest() {

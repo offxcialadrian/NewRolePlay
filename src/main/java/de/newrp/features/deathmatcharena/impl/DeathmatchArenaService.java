@@ -1,5 +1,6 @@
 package de.newrp.features.deathmatcharena.impl;
 
+import de.newrp.API.Hologram;
 import de.newrp.API.ItemBuilder;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
@@ -7,7 +8,10 @@ import de.newrp.Administrator.SDuty;
 import de.newrp.Organisationen.Drogen;
 import de.newrp.Waffen.Waffen;
 import de.newrp.Waffen.Weapon;
+import de.newrp.config.data.LocationConfig;
+import de.newrp.dependencies.DependencyContainer;
 import de.newrp.features.deathmatcharena.IDeathmatchArenaService;
+import de.newrp.features.deathmatcharena.data.DeathmatchArenaConfig;
 import de.newrp.features.deathmatcharena.data.DeathmatchArenaStats;
 import de.newrp.features.deathmatcharena.data.DeathmatchJoinData;
 import org.bukkit.Bukkit;
@@ -24,11 +28,16 @@ public class DeathmatchArenaService implements IDeathmatchArenaService {
 
     private final Map<UUID, DeathmatchJoinData> activeParticipants = new ConcurrentHashMap<>();
     private final List<Location> spawnPoints = new ArrayList<>();
+    private final Location joinLocation;
+    private final DeathmatchArenaConfig deathmatchArenaConfig = DependencyContainer.getContainer().getDependency(DeathmatchArenaConfig.class);
 
     public DeathmatchArenaService() {
-        this.spawnPoints.add(new Location(Script.WORLD, 436.5, 31.5, 1069, -70, 0));
-        this.spawnPoints.add(new Location(Script.WORLD, 484.5, 24, 1074.5, 158, 0));
-        this.spawnPoints.add(new Location(Script.WORLD, 438, 31, 1031, -120, 0));
+        for (LocationConfig locationConfig : this.deathmatchArenaConfig.arenas().getOrDefault("default", new ArrayList<>())) {
+            this.spawnPoints.add(locationConfig.toLocation());
+        }
+        this.joinLocation = this.deathmatchArenaConfig.enterLocation().toLocation();
+        this.joinLocation.getChunk().load();
+        Hologram.HOLOGRAMS.add(new Hologram(this.joinLocation, "§6/dm join"));
     }
 
     @Override
@@ -37,6 +46,12 @@ public class DeathmatchArenaService implements IDeathmatchArenaService {
             player.sendMessage(Messages.ERROR + "Du bist bereits in der Deathmatch Arena");
             return;
         }
+
+        if(player.getLocation().distance(this.joinLocation) > 3) {
+            player.sendMessage(Messages.ERROR + "Du bist zu weit vom Eingang der Deathmatch Arena!");
+            return;
+        }
+
 
         this.activeParticipants.put(player.getUniqueId(), createJoinData(player));
 
@@ -65,7 +80,9 @@ public class DeathmatchArenaService implements IDeathmatchArenaService {
         player.getInventory().clear();
         player.getInventory().setArmorContents(null);
         for(final Weapon w : Weapon.values()) {
-            if(w == Weapon.SNIPER) continue;
+            if(!this.deathmatchArenaConfig.activatedWeapons().contains(w.getName())) {
+                continue;
+            }
 
             player.getInventory().addItem(Waffen.setAmmo(w.getWeapon(), w.getMagazineSize(), 200));
         }
@@ -84,7 +101,7 @@ public class DeathmatchArenaService implements IDeathmatchArenaService {
                 continue;
             }
 
-            player.getInventory().addItem(new ItemBuilder(drug.getMaterial()).setName(drug.getName()).setLore("§7Reinheitsgrad: " + Drogen.DrugPurity.HIGH.getText()).setAmount(10).build());
+            player.getInventory().addItem(new ItemBuilder(drug.getMaterial()).setName(drug.getName()).setLore("§7Reinheitsgrad: " + Drogen.DrugPurity.HIGH.getText()).setAmount(this.deathmatchArenaConfig.drugAmount()).build());
         }
 
         player.teleport(this.getRandomSpawnPoint());
