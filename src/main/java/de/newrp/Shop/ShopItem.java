@@ -5,6 +5,7 @@ import de.newrp.API.Script;
 import de.newrp.API.ShishaType;
 import de.newrp.House.HouseAddon;
 import de.newrp.Medic.Medikamente;
+import de.newrp.Vehicle.CarType;
 import de.newrp.Waffen.Weapon;
 import de.newrp.NewRoleplayMain;
 import org.bukkit.Color;
@@ -112,7 +113,13 @@ public enum ShopItem {
     SHISHA_4(124, "§6Shisha " + ShishaType.ZITRONE, Script.setNameAndLore(Material.STICK, "§6Shisha " + ShishaType.ZITRONE.getName(), "§c" + ShishaType.ZITRONE.getName(), "§7" + ShishaType.ZITRONE.getDuration() + "/" + ShishaType.ZITRONE.getDuration()), 1, 1, 1, 10, 500, false, true, false, new ShopType[] {ShopType.SHISHA}),
     SHISHA_5(125, "§6Shisha " + ShishaType.SPECIAL, Script.setNameAndLore(Material.STICK, "§6Shisha " + ShishaType.SPECIAL.getName(), "§c" + ShishaType.SPECIAL.getName(), "§7" + ShishaType.SPECIAL.getDuration() + "/" + ShishaType.SPECIAL.getDuration()), 1, 1, 1, 10, 500, false, true, false, new ShopType[] {ShopType.SHISHA}),
     SHISHA_6(126, "§6Shisha " + ShishaType.TRAUBE, Script.setNameAndLore(Material.STICK, "§6Shisha " + ShishaType.TRAUBE.getName(), "§c" + ShishaType.TRAUBE.getName(), "§7" + ShishaType.TRAUBE.getDuration() + "/" + ShishaType.TRAUBE.getDuration()), 1, 1, 1, 10, 500, false, true, false, new ShopType[] {ShopType.SHISHA}),
-    SCHWERE_KEVLAR(127, "§7Schwere Schutzweste", Script.kevlar(2), 20, 1, 1, 1000, 14900, false, true, false, new ShopType[] {ShopType.GUNSHOP});
+    SCHWERE_KEVLAR(127, "§7Schwere Schutzweste", Script.kevlar(2), 20, 1, 1, 1000, 14900, false, true, false, new ShopType[] {ShopType.GUNSHOP}),
+    OPPEL(128,CarType.OPPEL.getName(), Script.setName(new ItemStack(CarType.OPPEL.getMaterial(), 1), "§e" + CarType.OPPEL.getName()), 1, 1, 1, 3000, 5000, false, false, false, new ShopType[] {ShopType.CARDEALER}),
+    VOLTSWAGEN(129, CarType.VOLTSWAGEN.getName(), Script.setName(new ItemStack(CarType.VOLTSWAGEN.getMaterial(), 1), "§e" + CarType.VOLTSWAGEN.getName()), 1, 1, 1, 5000, 8000, false, false, false, new ShopType[] {ShopType.CARDEALER}),
+    NMW(130, CarType.NMW.getName(), Script.setName(new ItemStack(CarType.NMW.getMaterial(), 1), "§e" + CarType.NMW.getName()), 1, 1, 1, 7000, 14000, false, false, false, new ShopType[] {ShopType.CARDEALER}),
+    AWDI(131, CarType.AWDI.getName(), Script.setName(new ItemStack(CarType.AWDI.getMaterial(), 1), "§e" + CarType.AWDI.getName()), 1, 1, 1, 9000, 17000, false, false, false, new ShopType[] {ShopType.CARDEALER}),
+    MERCADAS(132, CarType.MERCADAS.getName(), Script.setName(new ItemStack(CarType.MERCADAS.getMaterial(), 1), "§e" + CarType.MERCADAS.getName()), 1, 1, 1, 11000, 20000, false, false, false, new ShopType[] {ShopType.CARDEALER}),
+    PORSCHUH(133, CarType.PORSCHUH.getName(), Script.setName(new ItemStack(CarType.PORSCHUH.getMaterial(), 1), "§e" + CarType.PORSCHUH.getName()), 1, 1, 1, 13000, 23000, false, false, false, new ShopType[] {ShopType.CARDEALER});
 
 
     private final int id;
