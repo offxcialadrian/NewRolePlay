@@ -20,7 +20,7 @@ public class GasStationBuyHandler implements GenericBuyHandler {
     @Override
     public boolean buyItem(Player player, Shops shop, final Object... args) {
         if (refuels.containsKey(player)) {
-            if (Script.removeMoney(player, PaymentType.CASH, Math.round(amount.get(player) * 1.7F) + 1)) {
+            if (Script.removeMoney(player, PaymentType.CASH, Math.round(amount.get(player) * 2.0F) + 1)) {
                 refuels.get(player).fill(amount.get(player));
                 refuels.remove(player);
                 amount.remove(player);
