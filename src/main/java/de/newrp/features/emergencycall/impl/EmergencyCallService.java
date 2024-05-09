@@ -1,24 +1,33 @@
 package de.newrp.features.emergencycall.impl;
 
-import com.google.common.collect.Lists;
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.Berufe.Beruf;
-import de.newrp.Player.Notruf;
+import de.newrp.NewRoleplayMain;
 import de.newrp.features.emergencycall.IEmergencyCallService;
 import de.newrp.features.emergencycall.data.AcceptEmergencyCallMetadata;
+import de.newrp.features.emergencycall.data.BlockPlayerInfo;
 import de.newrp.features.emergencycall.data.EmergencyCall;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 public class EmergencyCallService implements IEmergencyCallService {
 
     private final Set<EmergencyCall> emergencyCalls = new HashSet<>();
     private final Set<Beruf.Berufe> factionsWithEmergencyCalls = new HashSet<>();
+    private final Cache<String, Boolean> blockedCache = CacheBuilder.newBuilder()
+            .expireAfterAccess(5, TimeUnit.MINUTES)
+            .build();
 
     public EmergencyCallService() {
         this.factionsWithEmergencyCalls.add(Beruf.Berufe.POLICE);
@@ -37,7 +46,7 @@ public class EmergencyCallService implements IEmergencyCallService {
 
         for (Player member : targetFaction.getBeruf().keySet()) {
             member.sendMessage(stringBuilder.toString());
-            Script.sendClickableMessage(player, getPrefix() + "§6Notruf annehmen und Route anzeigen", "/acceptnotruf " + player.getName(), "Klicke hier um den Notruf anzunehmen.");
+            Script.sendClickableMessage(member, getPrefix() + "§6Notruf annehmen und Route anzeigen", "/acceptnotruf " + player.getName(), "Klicke hier um den Notruf anzunehmen.");
         }
     }
 
@@ -117,10 +126,16 @@ public class EmergencyCallService implements IEmergencyCallService {
         final List<String> reasons = new ArrayList<>();
         switch (faction) {
             case RETTUNGSDIENST:
-                reasons.add("Test Rettungsdienst");
+                reasons.add("Reanimation");
+                reasons.add("Verletzung");
+                reasons.add("Knochenbruch");
                 break;
             case POLICE:
-                reasons.add("Test Cops");
+                reasons.add("Einbruch");
+                reasons.add("Mord");
+                reasons.add("Körperverletzung");
+                reasons.add("Raubüberfall");
+                reasons.add("Diebstahl");
                 break;
         }
         return reasons;
@@ -137,6 +152,69 @@ public class EmergencyCallService implements IEmergencyCallService {
                 .sorted(Comparator.comparingDouble((Player a) -> a.getLocation().distance(location)))
                 .limit(2)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public void blockEmergencyCalls(OfflinePlayer targetPlayer, Beruf.Berufe faction) {
+        this.blockedCache.put(targetPlayer.getUniqueId().toString() + "_" + faction.getName(), true);
+        try (final PreparedStatement statement = NewRoleplayMain.getConnection().prepareStatement("INSERT INTO blocked_notruf (nrp_id, berufID) VALUES (?, ?)")) {
+            statement.setInt(1, Script.getNRPID(targetPlayer));
+            statement.setInt(2, faction.getID());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void unblockEmergencyCalls(OfflinePlayer targetPlayer, Beruf.Berufe faction) {
+        this.blockedCache.invalidate(targetPlayer.getUniqueId().toString() + "_" + faction.getName());
+        try (final PreparedStatement statement = NewRoleplayMain.getConnection().prepareStatement(
+                "DELETE FROM blocked_notruf WHERE nrp_id = ? AND berufID = ?")) {
+            statement.setInt(1, Script.getNRPID(targetPlayer));
+            statement.setInt(2, faction.getID());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public boolean isBlocked(OfflinePlayer targetPlayer, Beruf.Berufe faction) {
+        if(this.blockedCache.asMap().containsKey(targetPlayer.getUniqueId().toString() + "_" + faction.getName())) {
+            return this.blockedCache.getIfPresent(targetPlayer.getUniqueId().toString() + "_" + faction.getName());
+        }
+        try (final PreparedStatement statement = NewRoleplayMain.getConnection().prepareStatement(
+                "SELECT nrp_id FROM blocked_notruf WHERE nrp_id = ? AND berufID = ?")) {
+            statement.setInt(1, Script.getNRPID(targetPlayer));
+            statement.setInt(2, faction.getID());
+            try (final ResultSet resultSet = statement.executeQuery()) {
+                final boolean isBlocked = resultSet.next();
+                this.blockedCache.put(targetPlayer.getUniqueId().toString() + "_" + faction.getName(), isBlocked);
+                return isBlocked;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    public List<BlockPlayerInfo> getAllBlockedPlayers(Beruf.Berufe faction) {
+        final List<BlockPlayerInfo> blockPlayerInfos = new ArrayList<>();
+        try (final PreparedStatement statement = NewRoleplayMain.getConnection().prepareStatement(
+                "SELECT nid.id, nid.uuid, nid.name FROM blocked_notruf bn LEFT JOIN nrp_id nid ON nid.id = bn.nrp_id WHERE bn.berufID = ?")) {
+            statement.setInt(1, faction.getID());
+            try (final ResultSet resultSet = statement.executeQuery()) {
+                while(resultSet.next()) {
+                    blockPlayerInfos.add(new BlockPlayerInfo(resultSet.getString(3), UUID.fromString(resultSet.getString(2)), resultSet.getInt(1)));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return blockPlayerInfos;
     }
 
     private String buildNearbyPlayersString(final Location location, final Beruf.Berufe faction) {

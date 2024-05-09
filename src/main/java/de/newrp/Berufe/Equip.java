@@ -39,7 +39,7 @@ public class Equip implements CommandExecutor, Listener {
         HANDSCHELLEN(3, "Handschellen", Script.setName(new ItemStack(Material.LEAD, 2), "§7Handschellen"), 50, 0, null, Beruf.Berufe.POLICE, true),
         TAZER(4, "Tazer", Script.tazer(), 250, 0, null, Beruf.Berufe.POLICE, true),
         DONUT(5, "Donut", new ItemBuilder(Material.COOKIE).setAmount(16).setName("§7Donut").build(), 1, 0, null, Beruf.Berufe.POLICE, false),
-        MP7(6, "Striker", new ItemBuilder(Material.GOLDEN_HORSE_ARMOR).setName("§7Striker").build(), 800, 0, new Abteilung.Abteilungen[]{Abteilung.Abteilungen.SEK, Abteilung.Abteilungen.ABTEILUNGSLEITUNG}, Beruf.Berufe.POLICE, false),
+        MP7(6, "Striker", new ItemBuilder(Material.GOLDEN_HORSE_ARMOR).setName("§7Striker").build(), 800, 0, new Abteilung.Abteilungen[]{Abteilung.Abteilungen.SEK, Abteilung.Abteilungen.ABTEILUNGSLEITUNG}, Beruf.Berufe.POLICE, true),
         EINSATZSCHILD(7, "Einsatzschild", Script.einsatzschild(1), 1000, 0, new Abteilung.Abteilungen[]{Abteilung.Abteilungen.SEK, Abteilung.Abteilungen.ABTEILUNGSLEITUNG}, Beruf.Berufe.POLICE, true),
         EINSAZTZSCHILD_2(8, "Schweres Einsatzschild", Script.einsatzschild(2), 1700, 0, new Abteilung.Abteilungen[]{Abteilung.Abteilungen.SEK, Abteilung.Abteilungen.ABTEILUNGSLEITUNG}, Beruf.Berufe.POLICE, true),
         RAUCHGRANATE(9, "Rauchgranate", Script.rauchgranate(), 300, 0, new Abteilung.Abteilungen[]{Abteilung.Abteilungen.SEK, Abteilung.Abteilungen.ABTEILUNGSLEITUNG}, Beruf.Berufe.POLICE, true),

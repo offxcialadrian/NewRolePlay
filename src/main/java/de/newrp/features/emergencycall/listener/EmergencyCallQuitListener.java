@@ -8,6 +8,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 
+import javax.swing.text.html.Option;
 import java.util.Optional;
 
 public class EmergencyCallQuitListener implements Listener {
@@ -21,5 +22,8 @@ public class EmergencyCallQuitListener implements Listener {
 
         final Optional<EmergencyCall> emergencyCallOptional = this.emergencyCallService.getEmergencyCallByPlayer(player, null);
         emergencyCallOptional.ifPresent(emergencyCallService::dropEmergencyCall);
+
+        final Optional<EmergencyCall> activeEmergencyCall = this.emergencyCallService.getAcceptedEmergencyCallByFactionMember(player);
+        emergencyCallOptional.ifPresent(emergencyCall -> emergencyCallService.requeueAcceptedEmergencyCall(player, emergencyCall));
     }
 }

@@ -26,7 +26,7 @@ public class CheckActiveMembers implements CommandExecutor {
 
         StringBuilder sb = new StringBuilder("§8[§6Aktive Mitglieder§8] §6" + Messages.ARROW);
         for(Beruf.Berufe b : Beruf.Berufe.values()) {
-            ArrayList<Player> members = new ArrayList<>(b.getMembers());
+            ArrayList<Player> members = new ArrayList<>(b.getBeruf().keySet());
             members.removeIf(member -> member == null);
             members.removeIf(AFK::isAFK);
             members.removeIf(member -> !Duty.isInDuty(member));
@@ -34,7 +34,7 @@ public class CheckActiveMembers implements CommandExecutor {
             sb.append("\n§8» §e").append(b.getName()).append("§8: §7").append(members.size()).append("§8/§7").append(b.getMembers().size());
         }
         for(Organisation o : Organisation.values()) {
-            ArrayList<Player> members = new ArrayList<>(o.getMembers());
+            ArrayList<Player> members = new ArrayList<>(o.getMember());
             members.removeIf(member -> member == null);
             members.removeIf(AFK::isAFK);
             members.removeIf(SDuty::isSDuty);

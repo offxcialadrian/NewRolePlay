@@ -30,7 +30,7 @@ public class DoneEmergencyCallCommand implements CommandExecutor {
         }
 
         if(!this.emergencyCallService.factionMemberHasAccepted(player)) {
-            player.sendMessage(Messages.ERROR + "Du hast bereits keinen aktiven Notruf!");
+            player.sendMessage(Messages.ERROR + "Du hast keinen aktiven Notruf!");
             return false;
         }
 

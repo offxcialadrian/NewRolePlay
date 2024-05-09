@@ -4,7 +4,6 @@ import de.newrp.API.Messages;
 import de.newrp.API.Route;
 import de.newrp.API.Script;
 import de.newrp.Berufe.Beruf;
-import de.newrp.Player.Notruf;
 import de.newrp.dependencies.DependencyContainer;
 import de.newrp.features.emergencycall.IEmergencyCallService;
 import de.newrp.features.emergencycall.data.EmergencyCall;
@@ -67,8 +66,8 @@ public class AcceptEmergencyCallCommand implements CommandExecutor {
         }
 
         this.emergencyCallService.acceptEmergencyCall(player, emergencyCall);
-        playerFaction.sendMessage(Notruf.PREFIX  + "§6" + Script.getName(player) + " §7hat den Notruf von §6" + Script.getName(targetPlayer) + " §7angenommen.");
-        targetPlayer.sendMessage(Notruf.PREFIX + "Die Hilfe ist in ca. " + this.emergencyCallService.estimateArrival(player.getLocation().distance(emergencyCall.location())) + " Sekunden bei Ihnen, bitte warten Sie vorort.");
+        playerFaction.sendMessage(this.emergencyCallService.getPrefix() + "§6" + Script.getName(player) + " §7hat den Notruf von §6" + Script.getName(targetPlayer) + " §7angenommen.");
+        targetPlayer.sendMessage(this.emergencyCallService.getPrefix() + "Die Hilfe ist in ca. " + this.emergencyCallService.estimateArrival(player.getLocation().distance(emergencyCall.location())) + " Sekunden bei Ihnen, bitte warten Sie vorort.");
         new Route(player.getName(), 0, player.getLocation(), emergencyCall.location()).start();
         return false;
     }

@@ -2,23 +2,14 @@ package de.newrp.Runnable;
 
 import de.newrp.API.*;
 import de.newrp.Chat.Me;
-import de.newrp.Commands.Test;
 import de.newrp.Entertainment.Lotto;
 import de.newrp.Gangwar.GangwarCommand;
 import de.newrp.Government.Wahlen;
 import de.newrp.News.BreakingNews;
 import de.newrp.Player.*;
-import de.newrp.Ticket.AcceptTicket;
 import de.newrp.Ticket.Ticket;
 import de.newrp.Ticket.TicketCommand;
-import de.newrp.Ticket.TicketTopic;
-import de.newrp.Votifier.VoteCommand;
-import de.newrp.Votifier.VoteListener;
-import de.newrp.Votifier.VoteShop;
-import net.citizensnpcs.api.CitizensAPI;
-import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.*;
@@ -27,7 +18,6 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -97,20 +87,33 @@ public class AsyncMinute extends BukkitRunnable {
             Wahlen.getWahlResult();
         }
 
-        if (Calendar.getInstance().get(Calendar.MINUTE) == 0 || Calendar.getInstance().get(Calendar.MINUTE) == 20 || Calendar.getInstance().get(Calendar.MINUTE) == 40) {
+        if (Calendar.getInstance().get(Calendar.MINUTE) == 0 || Calendar.getInstance().get(Calendar.MINUTE) == 15 || Calendar.getInstance().get(Calendar.MINUTE) == 30 || Calendar.getInstance().get(Calendar.MINUTE) == 45) {
             for (Player p : Bukkit.getOnlinePlayers()) {
                 if (Premium.hasPremium(p)) continue;
                 String advert = advertises[Script.getRandom(0, advertises.length - 1)];
                 p.sendMessage(advert);
-                //Title.sendTitle(p, 20, 100, 20, advert);
+                Title.sendTitle(p, 20, 100, 20, advert.split(Messages.ARROW)[0], advert.split(Messages.ARROW)[1]);
                 Script.sendActionBar(p, "§8[§cWerbung§8] §c" + Messages.ARROW + " §7Mit Premium erhältst du keine Werbung.");
             }
         }
 
+        for (Map.Entry<Integer, Ticket.Queue> ent : queue.entrySet()) {
+            Player ticketer = ent.getValue().getReporter();
+            ticketer.sendMessage(TicketCommand.PREFIX + "Bitte warte... Dein Ticket wird in Kürze bearbeitet.");
+            int amount = 0;
+            for (Map.Entry<Integer, Ticket.Queue> ent2 : queue.entrySet()) {
+                if (ent2.getKey() < ent.getKey()) amount++;
+            }
+            if (amount == 0) {
+                ticketer.sendMessage(TicketCommand.PREFIX + "Du bist als nächstes dran.");
+            } else {
+                ticketer.sendMessage(TicketCommand.PREFIX + "Du bist in der Warteschlange an Position " + amount + ".");
+            }
+        }
 
         if (Calendar.getInstance().get(Calendar.MINUTE) % 2 == 0) {
             int amount = 0;
-            for (Map.Entry<Integer, Ticket.Queue> ent : queue.entrySet()) {
+            for (Map.Entry<Integer, Ticket.Queue> ignored : queue.entrySet()) {
                 amount++;
             }
             if (amount > 0) {

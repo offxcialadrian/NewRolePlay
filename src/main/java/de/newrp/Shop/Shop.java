@@ -175,7 +175,6 @@ public class Shop implements CommandExecutor, Listener, TabCompleter {
 
             buyer.sendMessage(Messages.INFO + "Miete (Gebäude): " + shop.getRent() + "€");
             buyer.sendMessage(Messages.INFO + "Lager: " + shop.getLager() + "/" + shop.getLagerSize());
-            buyer.sendMessage(Messages.INFO + "Betriebskosten: " + shop.getRunningCost() + "€");
             buyer.sendMessage(Messages.INFO + "Kasse: " + shop.getKasse() + "€");
             if(shop.getKasse()<=0) {
                 buyer.sendMessage(Messages.INFO + "§c§lBitte beachte, dass der Shop derzeit Schulden hat, welche du übernehmen würdest.");
@@ -187,7 +186,6 @@ public class Shop implements CommandExecutor, Listener, TabCompleter {
 
         if(args.length == 1 && args[0].equalsIgnoreCase("info")) {
             p.sendMessage(PREFIX + "=== " + shop.getPublicName() + " ===");
-            p.sendMessage("§8» " + "§6Betriebskosten: " + shop.getRunningCost() + "€");
             p.sendMessage("§8» " + "§6Miete (Gebäude): " + shop.getRent() + "€");
             p.sendMessage("§8» " + "§6Lager: " + shop.getLager() + "/" + shop.getLagerSize());
             p.sendMessage("§8» " + "§6Preise:");

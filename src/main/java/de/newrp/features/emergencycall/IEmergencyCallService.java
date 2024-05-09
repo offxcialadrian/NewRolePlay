@@ -1,8 +1,10 @@
 package de.newrp.features.emergencycall;
 
 import de.newrp.Berufe.Beruf;
+import de.newrp.features.emergencycall.data.BlockPlayerInfo;
 import de.newrp.features.emergencycall.data.EmergencyCall;
 import org.bukkit.Location;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import java.util.List;
@@ -40,6 +42,14 @@ public interface IEmergencyCallService {
     String getPrefix();
 
     List<Player> getNearbyPlayersOfFactionToLocation(final Location location, final Beruf.Berufe faction);
+
+    void blockEmergencyCalls(final OfflinePlayer targetPlayer, Beruf.Berufe faction);
+
+    void unblockEmergencyCalls(final OfflinePlayer targetPlayer, Beruf.Berufe faction);
+
+    boolean isBlocked(final OfflinePlayer targetPlayer,  Beruf.Berufe faction);
+
+    List<BlockPlayerInfo> getAllBlockedPlayers(final Beruf.Berufe faction);
 
 
 }

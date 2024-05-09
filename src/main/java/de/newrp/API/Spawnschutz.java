@@ -2,6 +2,8 @@ package de.newrp.API;
 
 import de.newrp.Ticket.TicketCommand;
 import de.newrp.NewRoleplayMain;
+import de.newrp.dependencies.DependencyContainer;
+import de.newrp.features.deathmatcharena.IDeathmatchArenaService;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
@@ -54,6 +56,10 @@ public class Spawnschutz implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onRespawn(PlayerRespawnEvent e) {
         Long time = System.currentTimeMillis();
+        final IDeathmatchArenaService deathmatchArenaService = DependencyContainer.getContainer().getDependency(IDeathmatchArenaService.class);
+        if(deathmatchArenaService.isInDeathmatch(e.getPlayer(), false)) {
+            return;
+        }
         Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> {
             if (spawnschutz.containsKey(e.getPlayer().getName())) {
                 e.getPlayer().sendMessage(PREFIX + "Spawnschutz ist vorbei!");
