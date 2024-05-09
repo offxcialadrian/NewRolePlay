@@ -1,5 +1,6 @@
 package de.newrp.Vehicle;
 
+import de.newrp.API.HologramList;
 import de.newrp.NewRoleplayMain;
 import de.newrp.API.PaymentType;
 import de.newrp.API.Script;
@@ -40,8 +41,7 @@ public class Kennzeichen implements CommandExecutor, Listener {
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         Player p = (Player) cs;
         if (p.getInventory().getItemInMainHand().getType() == Material.NAME_TAG && p.getInventory().getItemInMainHand().getAmount() == 1) {
-            Shops shop = Shops.getShopByLocation(p.getLocation(), 8.0F);
-            if (shop != null && Objects.requireNonNull(shop).getType() == ShopType.CARDEALER) {
+            if (p.getLocation().distance(HologramList.KFZSTELLE.getLocation()) <= 6) {
                 if (args.length < 2) {
                     p.sendMessage(PREFIX + "Du musst folgende Angaben machen: XX 0000");
                 } else {

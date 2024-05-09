@@ -1,8 +1,6 @@
 package de.newrp.Vehicle;
 
-import de.newrp.API.Cache;
-import de.newrp.API.Messages;
-import de.newrp.API.Premium;
+import de.newrp.API.*;
 import de.newrp.Shop.gasstations.GasStationBuyHandler;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
@@ -21,6 +19,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -108,20 +107,45 @@ public class CarCommand implements CommandExecutor, TabCompleter {
                     case "sell":
                         if (Objects.requireNonNull(player).isInsideVehicle()) {
                             if (player.getVehicle() instanceof Boat) {
-                                Car car = Car.getCarByEntityID(Objects.requireNonNull(Objects.requireNonNull(player).getVehicle()).getEntityId());
-                                if (car.isCarOwner(player)) {
-                                    car.destroy(false);
-                                    player.sendMessage(Component.text(Car.PREFIX + "Du hast deinen " + car.getCarType().getName() + " verkauft."));
-                                    player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
-                                    Cache.loadScoreboard(player);
+                                if (player.getLocation().distance(HologramList.KFZSTELLE.getLocation()) <= 6) {
+                                    Car car = Car.getCarByEntityID(Objects.requireNonNull(Objects.requireNonNull(player).getVehicle()).getEntityId());
+                                    if (car.isCarOwner(player)) {
+                                        if (args.length >= 2 && Objects.equals(args[1], "confirm")) {
+                                            car.destroy(false);
+                                            player.sendMessage(Component.text(Car.PREFIX + "Du hast deinen " + car.getCarType().getName() + " verkauft."));
+                                            player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
+                                            Cache.loadScoreboard(player);
+                                        } else {
+                                            player.sendMessage(Component.text(Car.PREFIX + "Verwende §6/car sell confirm §7um den Verkauf zu bestätigen!"));
+                                        }
+                                    } else {
+                                        player.sendMessage(Component.text(Car.PREFIX + "Du kannst kein fremdes Auto verkaufen!"));
+                                    }
                                 } else {
-                                    player.sendMessage(Component.text(Car.PREFIX + "Du kannst kein fremdes Auto verkaufen!"));
+                                    player.sendMessage(Component.text(Car.PREFIX + "Du kannst dein Auto nur bei einer KFZ-Anmeldestelle verkaufen!"));
                                 }
                             }
                         } else {
                             player.sendMessage(Component.text(Car.PREFIX + "Du befindest dich nicht in einem Auto!"));
                         }
                         break;
+                    case "teleport":
+                        assert player != null;
+                        if (Script.hasRank(player, Rank.SUPPORTER, false)) {
+                            if (args.length >= 2) {
+                                if (!args[1].startsWith("N-")) args[1] = "N-" + args[1];
+                                Car car = Car.getCarByLicenseplate(args[1]);
+                                if (car != null) {
+                                    car.getBoatEntity().teleport(player.getLocation());
+                                    player.sendMessage(Component.text(Car.PREFIX + "Du hast das Auto N-" + args[1].replaceFirst("N-", "") + " zu dir teleportiert."));
+                                } else {
+                                    player.sendMessage(Component.text(Messages.ERROR + "N-" + args[1].replaceFirst("N-", "") + " ist kein gültiges Kennzeichen!"));
+                                }
+                            } else {
+                                player.sendMessage(Component.text(Messages.ERROR + "Du musst ein Kennzeichen angeben!"));
+                            }
+                            break;
+                        }
                     default:
                         Objects.requireNonNull(player).sendMessage(Component.text(Messages.ERROR + "/car [start/stop/lock/find/fill/sell]"));
                         break;
@@ -136,9 +160,22 @@ public class CarCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-        String[] args1 = new String[] {"start", "stop", "lock", "find", "fill", "sell"};
+        List<String> args1 = Arrays.asList("start", "stop", "lock", "find", "fill", "sell", "teleport");
+        List<String> args2 = new ArrayList<>();
         List<String> completions = new ArrayList<>();
         if (args.length == 1) for (String string : args1) if (string.toLowerCase().startsWith(args[0].toLowerCase())) completions.add(string);
+        if (args.length == 2) {
+            if (args[0].equalsIgnoreCase("teleport")) {
+                if (Script.hasRank((Player) sender, Rank.SUPPORTER, false)) {
+                    for (Car car : Car.CARS) {
+                        if (args[1].startsWith("N-") || args[1].isEmpty()) args2.add(car.getLicenseplate());
+                        else if (args[1].startsWith("N") && args[1].length() == 1) args2.add(car.getLicenseplate());
+                        else args2.add(car.getLicenseplate().replaceFirst("N-", ""));
+                    }
+                    for (String string : args2) if (string.toLowerCase().startsWith(args[1].toLowerCase())) completions.add(string);
+                }
+            }
+        }
         return completions;
     }
 }

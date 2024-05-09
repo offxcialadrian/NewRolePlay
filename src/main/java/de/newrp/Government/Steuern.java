@@ -42,7 +42,8 @@ public class Steuern implements CommandExecutor, TabCompleter {
         GRUNDSTEUER(8, "Grundsteuer", "grundsteuer", "Die Grundsteuer wird jeden PayDay auf jedes Haus erhoben."),
         HAUSVERKAUFSSTEUER(9, "Haus Verkaufssteuer", "haus_verkaufssteuer", "Die Haus Verkaufssteuer wird auf jeden Verkauf eines Hauses erhoben."),
         KRANKENVERSICHERUNG(10, "Krankenversicherung", "krankenversicherung", "Die Krankenversicherung wird auf dein Gehalt am PayDay erhoben."),
-        RUNDFUNKBEITRAG(11, "Rundfunkbeitrag", "rundfunk", "Der Rundfunkbeitrag wird jeden PayDay erhoben.");
+        RUNDFUNKBEITRAG(11, "Rundfunkbeitrag", "rundfunk", "Der Rundfunkbeitrag wird jeden PayDay erhoben."),
+        KFZSTEUER(12, "KFZ-Steuer", "kfzsteuer", "Die KFZ-Steuer wird jeden PayDay von den Fahrzeugen erhoben.");
 
         private final int id;
         private final String name;

@@ -280,7 +280,7 @@ public class PayShop implements Listener {
                 case NMW:
                 case AWDI:
                 case MERCADAS:
-                case PORSCHUH:
+                case PAWSCHE:
                     if (!Licenses.FUEHRERSCHEIN.hasLicense(Script.getNRPID(p))) {
                         p.sendMessage(Component.text(Car.PREFIX + "Du hast keinen Führerschein!"));
                         return;

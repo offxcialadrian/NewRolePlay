@@ -100,8 +100,8 @@ public class Fahrschule implements CommandExecutor, Listener {
                 player.closeInventory();
                 player.sendMessage(Component.text(PREFIX + "Bravo! Du bist bereit für den praktischen Teil."));
 
-                player.teleport(new Location(player.getWorld(), 396, 77, 1137));
-                Car car = Car.createCar(CarType.OPPEL, new Location(player.getWorld(), 396, 77, 1137), player);
+                player.teleport(new Location(player.getWorld(), 391, 77, 1131));
+                Car car = Car.createCar(CarType.OPPEL, new Location(player.getWorld(), 391, 76.5, 1132, -90F, 0F), player);
                 assert car != null;
                 car.setLicenseplate("N-NO-OB");
 

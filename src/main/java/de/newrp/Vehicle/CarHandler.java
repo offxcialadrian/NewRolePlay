@@ -1,7 +1,6 @@
 package de.newrp.Vehicle;
 
 import de.newrp.API.Cache;
-import de.newrp.API.ScoreboardManager;
 import de.newrp.NewRoleplayMain;
 import de.newrp.Shop.ShopItem;
 import net.kyori.adventure.text.Component;
@@ -112,8 +111,8 @@ public class CarHandler implements Listener {
         if (event.getVehicle() instanceof Boat) {
             if (event.getEntered() instanceof Player) {
                 Car car = Car.getCarByEntityID(event.getVehicle().getEntityId());
+                Player player = (Player) event.getEntered();
                 if (car.isLocked()) {
-                    Player player = (Player) event.getEntered();
                     if (car.isCarOwner(player)) {
                         event.getEntered().sendMessage(Component.text(Car.PREFIX + "Dein " + car.getCarType().getName() + " ist abgeschlossen!"));
                     } else {
@@ -122,7 +121,8 @@ public class CarHandler implements Listener {
 
                     event.setCancelled(true);
                 } else {
-                    Cache.saveScoreboard(((Player) event.getEntered()));
+                    Cache.saveScoreboard(player);
+                    player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
                     car.setCarSidebar();
                     new BukkitRunnable() {
                         @Override
@@ -136,7 +136,6 @@ public class CarHandler implements Listener {
                         }
                     }.runTaskTimer(NewRoleplayMain.getInstance(), 5L, 5L);
 
-                    Player player = (Player) event.getEntered();
                     if (car.isCarOwner(player)) {
                         event.getEntered().sendMessage(Component.text(Car.PREFIX + "Du bist in deinen " + car.getCarType().getName() + " eingestiegen!"));
                     } else {
@@ -205,7 +204,7 @@ public class CarHandler implements Listener {
                     if (car.isCarOwner(player)) {
                         car.setInsurance(car.getInsurance() + 1);
                         paper.setAmount(paper.getAmount() - 1);
-                        player.sendMessage(Car.PREFIX + "Dein " + car.getCarType().getName() + " nun " + car.getInsurance() + "x versichert.");
+                        player.sendMessage(Car.PREFIX + "Dein " + car.getCarType().getName() + " ist nun " + car.getInsurance() + "x versichert.");
                     } else {
                         player.sendMessage(Car.PREFIX + "Dieses Auto gehört dir nicht!");
                     }

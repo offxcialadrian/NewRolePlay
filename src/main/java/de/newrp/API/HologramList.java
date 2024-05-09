@@ -60,7 +60,7 @@ public enum HologramList {
     BUY_10(55, "§8/§6buy", new Location(Script.WORLD, 450, 64, 665, -270.5968f, 8.693133f)),
     BUY_11(56, "§8/§6buy", new Location(Script.WORLD, 449, 65, 644, -269.53955f, 13.067986f)),
     BUY_12(57, "§8/§6buy", new Location(Script.WORLD, 557, 63, 1270, -0.9939575f, 90.0f)),
-    BUY_14(59, "§8/§6buy", new Location(Script.WORLD, 412, 76, 1081, -180.1416f, 90.0f)),
+    BUY_14(59, "§8/§6buy", new Location(Script.WORLD, 412, 76, 1082, -180.1416f, 90.0f)),
     BUY_15(60, "§8/§6buy", new Location(Script.WORLD, 518, 65, 774, -1.5904541f, 90.0f)),
     BUY_17(62, "§8/§6buy", new Location(Script.WORLD, 304, 51, 1148, -179.80176f, 6.610959f)),
     BUY_18(63, "§8/§6buy", new Location(Script.WORLD, 304, 51, 1148, -179.80176f, 6.610959f)),
@@ -85,7 +85,8 @@ public enum HologramList {
     TABAKPLANTAGE(83, "§8/§6tabakplantage", new Location(Script.WORLD, 94, 65, 628, 29.992523f, 7.2927737f)),
     GAS_STATION_KH(84, "§8/§6buy", new Location(Script.WORLD, 435, 76, 1073, 90.0f, 0.0f)),
     GAS_STATION_GANG(85, "§8/§6buy", new Location(Script.WORLD, 534, 65, 1262, 90.0f, 0.0f)),
-    FAHRSCHULE(86, "§8/§6fahrschule", new Location(Script.WORLD, 396, 76, 1124, 90.0f, 0.0f));
+    FAHRSCHULE(86, "§8/§6fahrschule", new Location(Script.WORLD, 396, 76, 1124, 90.0f, 0.0f)),
+    KFZSTELLE(87, "§8/§6kennzeichen", new Location(Script.WORLD, 394, 76, 1085, 90.0f, 0.0f));
 
     private final int id;
     private final String name;

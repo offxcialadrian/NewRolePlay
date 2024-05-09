@@ -13,6 +13,7 @@ import de.newrp.Player.*;
 import de.newrp.Shop.Shops;
 import de.newrp.Shop.gym.GymBuyHandler;
 import de.newrp.NewRoleplayMain;
+import de.newrp.Vehicle.Car;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -165,6 +166,13 @@ public class PayDay extends BukkitRunnable {
                 }
             }
 
+            if (!Car.getCars(p).isEmpty()) {
+                int kfz = 0;
+                for (Car car : Car.getCars(p)) kfz += car.getCarType().getTax();
+                p.sendMessage("§8" + Messages.ARROW + " §KFZ-Steuer: §c-" + kfz + "€");
+                Stadtkasse.addStadtkasse(kfz, "KFZ-Steuer von " + Script.getName(p) + " erhalten", Steuern.Steuer.KFZSTEUER);
+                payday -= kfz;
+            }
 
             if(!Beruf.hasBeruf(p) || Beruf.getBeruf(p) != Beruf.Berufe.NEWS) {
                 int rundfunk = (int) (Steuern.Steuer.RUNDFUNKBEITRAG.getPercentage());
