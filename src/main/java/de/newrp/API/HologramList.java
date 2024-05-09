@@ -81,7 +81,7 @@ public enum HologramList {
     HACKPOLICE(79, "§8/§6hackpolicecomputer", new Location(Script.WORLD, 448, 31, 855, -88.80542f, 24.899044f)),
     DOENERMANN(80, "§8/§6dönermann", new Location(Script.WORLD, 445, 64, 664, -59.75107f, 7.6497645f)),
     DBANK_KARTELL2(81, "§8/§6dbank", new Location(Script.WORLD, 653, 69, 1122, 100.18604f, 22.990175f)),
-    BLUMEN_GANG(82, "§8/§6buy", new Location(Script.WORLD, 513, 62, 1318, -2.5583496f, 20.098667f)),
+    //BLUMEN_GANG(82, "§8/§6buy", new Location(Script.WORLD, 513, 62, 1318, -2.5583496f, 20.098667f)),
     TABAKPLANTAGE(83, "§8/§6tabakplantage", new Location(Script.WORLD, 94, 65, 628, 29.992523f, 7.2927737f)),
     GAS_STATION_KH(84, "§8/§6buy", new Location(Script.WORLD, 435, 76, 1073, 90.0f, 0.0f)),
     GAS_STATION_GANG(85, "§8/§6buy", new Location(Script.WORLD, 534, 65, 1262, 90.0f, 0.0f)),

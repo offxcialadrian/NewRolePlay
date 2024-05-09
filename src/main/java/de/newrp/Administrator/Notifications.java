@@ -147,7 +147,6 @@ public class Notifications implements CommandExecutor, Listener {
 
     @EventHandler
     public void onCommand(PlayerCommandPreprocessEvent e) {
-        Log.COMMAND.write(e.getPlayer(), e.getMessage());
         if (e.getMessage().startsWith("/sudo")) return;
         if (e.getMessage().startsWith("/passwort")) return;
         if (e.getMessage().startsWith("/password")) return;
@@ -156,6 +155,7 @@ public class Notifications implements CommandExecutor, Listener {
         if (e.getMessage().startsWith("/rnrp")) return;
         if (e.getMessage().startsWith("/nrp")) return;
         if (e.getMessage().startsWith("/tc")) return;
+        Log.COMMAND.write(e.getPlayer(), e.getMessage());
         if (e.getMessage().startsWith("/op") || e.getMessage().startsWith("/deop") || e.getMessage().startsWith("/gamemode") || e.getMessage().startsWith("/punish") || e.getMessage().startsWith("/nrp") || e.getMessage().startsWith("/setsupporter") ||
             e.getMessage().startsWith("/rnrp") || e.getMessage().startsWith("/tp")) {
             if (!Script.isNRPTeam(e.getPlayer()))
