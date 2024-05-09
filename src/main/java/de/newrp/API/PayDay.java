@@ -169,7 +169,7 @@ public class PayDay extends BukkitRunnable {
             if (!Car.getCars(p).isEmpty()) {
                 int kfz = 0;
                 for (Car car : Car.getCars(p)) kfz += car.getCarType().getTax();
-                p.sendMessage("§8" + Messages.ARROW + " §KFZ-Steuer: §c-" + kfz + "€");
+                p.sendMessage("§8" + Messages.ARROW + " §7KFZ-Steuer: §c-" + kfz + "€");
                 Stadtkasse.addStadtkasse(kfz, "KFZ-Steuer von " + Script.getName(p) + " erhalten", Steuern.Steuer.KFZSTEUER);
                 payday -= kfz;
             }
