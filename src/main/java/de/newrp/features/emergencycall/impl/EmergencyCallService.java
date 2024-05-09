@@ -2,16 +2,14 @@ package de.newrp.features.emergencycall.impl;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import com.google.common.collect.Lists;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.Berufe.Beruf;
 import de.newrp.NewRoleplayMain;
-import de.newrp.Player.Notruf;
 import de.newrp.features.emergencycall.IEmergencyCallService;
 import de.newrp.features.emergencycall.data.AcceptEmergencyCallMetadata;
+import de.newrp.features.emergencycall.data.BlockPlayerInfo;
 import de.newrp.features.emergencycall.data.EmergencyCall;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -19,7 +17,6 @@ import org.bukkit.entity.Player;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -194,6 +191,24 @@ public class EmergencyCallService implements IEmergencyCallService {
             e.printStackTrace();
         }
         return false;
+    }
+
+    @Override
+    public List<BlockPlayerInfo> getAllBlockedPlayers(Beruf.Berufe faction) {
+        final List<BlockPlayerInfo> blockPlayerInfos = new ArrayList<>();
+        try (final PreparedStatement statement = NewRoleplayMain.getConnection().prepareStatement(
+                "SELECT nid.id, nid.uuid, nid.name FROM blocked_notruf bn LEFT JOIN nrp_id nid ON nid.id = bn.nrp_id WHERE bn.berufID = ?")) {
+            statement.setInt(1, faction.getID());
+            try (final ResultSet resultSet = statement.executeQuery()) {
+                while(resultSet.next()) {
+                    blockPlayerInfos.add(new BlockPlayerInfo(resultSet.getString(3), UUID.fromString(resultSet.getString(2)), resultSet.getInt(1)));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return blockPlayerInfos;
     }
 
     private String buildNearbyPlayersString(final Location location, final Beruf.Berufe faction) {

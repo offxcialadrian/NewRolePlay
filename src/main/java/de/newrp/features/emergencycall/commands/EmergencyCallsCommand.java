@@ -3,7 +3,6 @@ package de.newrp.features.emergencycall.commands;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.Berufe.Beruf;
-import de.newrp.Player.Notruf;
 import de.newrp.dependencies.DependencyContainer;
 import de.newrp.features.emergencycall.IEmergencyCallService;
 import de.newrp.features.emergencycall.data.EmergencyCall;
@@ -13,7 +12,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.text.SimpleDateFormat;
 import java.util.Set;
 
 public class EmergencyCallsCommand implements CommandExecutor {

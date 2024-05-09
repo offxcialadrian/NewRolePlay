@@ -6,9 +6,10 @@ import de.newrp.API.Script;
 import de.newrp.Berufe.Beruf;
 import de.newrp.House.House;
 import de.newrp.House.HouseAddon;
-import de.newrp.Player.Notruf;
 import de.newrp.Police.Handschellen;
 import de.newrp.NewRoleplayMain;
+import de.newrp.dependencies.DependencyContainer;
+import de.newrp.features.emergencycall.IEmergencyCallService;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -30,6 +31,7 @@ public class BreakIn implements Listener {
     private static final Map<String, Long> TOTAL_COOLDOWN = new HashMap<>();
     private static final Map<String, House> HOUSES = new HashMap<>();
     private static final HashMap<String, Double> progress = new HashMap<>();
+    private final IEmergencyCallService emergencyCallService = DependencyContainer.getContainer().getDependency(IEmergencyCallService.class);
 
     Location[] labor = new Location[] { new Location(Script.WORLD, 374, 76, 1312), new Location(Script.WORLD, 374, 75, 1312), new Location(Script.WORLD, 375, 76, 1312), new Location(Script.WORLD, 375, 75, 1312)};
 
@@ -73,7 +75,7 @@ public class BreakIn implements Listener {
         }
 
         if (house.hasAddon(HouseAddon.ALARM)) {
-            Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> Beruf.Berufe.POLICE.sendMessage(Notruf.PREFIX + "Es wurde ein Einbruch bei Haus " + house.getID() + " gemeldet."), 10 * 20L);
+            Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> Beruf.Berufe.POLICE.sendMessage(this.emergencyCallService.getPrefix() + "Es wurde ein Einbruch bei Haus " + house.getID() + " gemeldet."), 10 * 20L);
         }
 
 
@@ -131,7 +133,7 @@ public class BreakIn implements Listener {
                 TOTAL_COOLDOWN.put(p.getName(), System.currentTimeMillis());
                 progress.remove(p.getName());
                 if(house.hasAddon(HouseAddon.ALARM)) {
-                    Beruf.Berufe.POLICE.sendMessage(Notruf.PREFIX + "Ein Einbruch bei Haus " + house.getID() + " wurde gemeldet.");
+                    Beruf.Berufe.POLICE.sendMessage(emergencyCallService.getPrefix() + "Ein Einbruch bei Haus " + house.getID() + " wurde gemeldet.");
                 }
                 if(Organisation.hasOrganisation(p)) {
                     Organisation.getOrganisation(p).addExp(Script.getRandom(5, 7));

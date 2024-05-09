@@ -1,13 +1,11 @@
 package de.newrp.API;
 
 import de.newrp.Administrator.Checkpoints;
-import de.newrp.Berufe.AcceptNotruf;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Berufe.Duty;
 import de.newrp.Berufe.Equip;
 import de.newrp.GFB.Schule;
 import de.newrp.Gangwar.GangwarCommand;
-import de.newrp.Player.Notruf;
 import de.newrp.Player.Spawnchange;
 import de.newrp.Police.StartTransport;
 import de.newrp.NewRoleplayMain;
@@ -90,15 +88,6 @@ public class Friedhof {
                 killer.getInventory().addItem(Equip.Stuff.TAZER.getItem());
             }
         }
-
-        if(AcceptNotruf.accept.containsKey(p)) {
-            AcceptNotruf.reOpenNotruf(p, AcceptNotruf.accept.get(p));
-        }
-
-        if(Notruf.call.containsKey(p)) {
-            AcceptNotruf.deleteNotruf(p);
-        }
-
         FRIEDHOF.put(p.getName(), f);
         Location[] locs;
 

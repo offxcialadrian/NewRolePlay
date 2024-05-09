@@ -315,7 +315,7 @@ public class NewRoleplayMain extends JavaPlugin {
         getCommand("acceptnotruf").setExecutor(new AcceptEmergencyCallCommand());
         getCommand("donenotruf").setExecutor(new DoneEmergencyCallCommand());
         getCommand("cancelnotruf").setExecutor(new CancelEmergencyCallCommand());
-        getCommand("sharenotruf").setExecutor(new ShareNotruf());
+        getCommand("sharenotruf").setExecutor(new ShareEmergencyCallCommand());
         getCommand("personalausweis").setExecutor(new Personalausweis());
         getCommand("policecomputer").setExecutor(new Policecomputer());
         getCommand("dangerlevel").setExecutor(new DangerLevel());
@@ -523,8 +523,6 @@ public class NewRoleplayMain extends JavaPlugin {
         if(!isTest()) {
             Bukkit.getPluginManager().registerEvents(new TeamspeakUpdate(), this);
         }
-        Bukkit.getPluginManager().registerEvents(new Notruf(), this);
-        Bukkit.getPluginManager().registerEvents(new AcceptNotruf(), this);
         Bukkit.getPluginManager().registerEvents(new Personalausweis(), this);
         Bukkit.getPluginManager().registerEvents(new Policecomputer(), this);
         Bukkit.getPluginManager().registerEvents(new BlockCommand(), this);

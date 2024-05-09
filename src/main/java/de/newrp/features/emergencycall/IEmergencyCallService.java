@@ -1,6 +1,7 @@
 package de.newrp.features.emergencycall;
 
 import de.newrp.Berufe.Beruf;
+import de.newrp.features.emergencycall.data.BlockPlayerInfo;
 import de.newrp.features.emergencycall.data.EmergencyCall;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
@@ -47,6 +48,8 @@ public interface IEmergencyCallService {
     void unblockEmergencyCalls(final OfflinePlayer targetPlayer, Beruf.Berufe faction);
 
     boolean isBlocked(final OfflinePlayer targetPlayer,  Beruf.Berufe faction);
+
+    List<BlockPlayerInfo> getAllBlockedPlayers(final Beruf.Berufe faction);
 
 
 }

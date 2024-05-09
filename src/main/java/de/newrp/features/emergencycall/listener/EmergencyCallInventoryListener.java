@@ -9,6 +9,7 @@ import de.newrp.features.emergencycall.inventory.EmergencyCallFactionSelectionIn
 import de.newrp.features.emergencycall.inventory.EmergencyCallReasonSelectInventory;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -46,6 +47,14 @@ public class EmergencyCallInventoryListener implements Listener {
             if(this.emergencyCallService.getEmergencyCallByPlayer(player, faction).isPresent()) {
                 player.sendMessage(this.emergencyCallService.getPrefix() + "Du hast bereits einen aktiven Notruf!");
                 player.sendMessage(Messages.INFO + "Du kannst den Notruf über /cancelnotruf abbrechen");
+                player.closeInventory();
+                return;
+            }
+
+            if(this.emergencyCallService.isBlocked(player, faction)) {
+                player.sendMessage(this.emergencyCallService.getPrefix() + "Deine Notruf sind blockiert!");
+                player.sendMessage(Messages.INFO + "Du kannst die Sperre ggf. bei der Leitungseben des Berufes anfechten");
+                player.playSound(player.getEyeLocation(), Sound.BLOCK_ANVIL_DESTROY, 1f, 1f);
                 player.closeInventory();
                 return;
             }
