@@ -27,14 +27,8 @@ public class GasStationBuyHandler implements GenericBuyHandler {
                 BuyClick.sendMessage(player, "Vielen Dank fürs Tanken!");
             } else {
                 player.sendMessage(Component.text(Car.PREFIX + "Du hast nicht genug Bargeld!"));
-
             }
             return true;
-        } else {
-            player.sendMessage(Messages.INFO + "Tankstelle :3"); // UwU ?
-
-            player.getInventory().addItem(ShopItem.KANISTER.getItemStack()); // pls
-            player.getInventory().addItem(ShopItem.TOOLS.getItemStack()); // pls
         }
         return false;
     }

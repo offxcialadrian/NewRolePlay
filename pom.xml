@@ -32,7 +32,11 @@
             <artifactId>maven-jar-plugin</artifactId>
             <version>2.3.1</version>
             <configuration>
+<<<<<<< Updated upstream
                 <outputDirectory>C:\Users\adria\OneDrive\Desktop\New RolePlay</outputDirectory>
+=======
+                <outputDirectory>libs</outputDirectory>
+>>>>>>> Stashed changes
             </configuration>
         </plugin>
       <plugin>

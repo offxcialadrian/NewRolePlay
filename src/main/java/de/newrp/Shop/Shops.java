@@ -60,13 +60,13 @@ public enum Shops {
 
     private final int id;
     private final String name;
-    private final String publicname;
     private final int preis;
     private final Location buy;
     private final int rent;
     private final int running_cost;
     private final boolean lager;
     private final ShopType type;
+    private final String publicname;
 
     Shops(int id, String name, String publicname, int preis, Location buy, int rent, int running_cost, boolean lager, ShopType type) {
         this.id = id;
