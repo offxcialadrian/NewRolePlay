@@ -46,7 +46,7 @@ public class EmergencyCallService implements IEmergencyCallService {
 
         for (Player member : targetFaction.getBeruf().keySet()) {
             member.sendMessage(stringBuilder.toString());
-            Script.sendClickableMessage(player, getPrefix() + "§6Notruf annehmen und Route anzeigen", "/acceptnotruf " + player.getName(), "Klicke hier um den Notruf anzunehmen.");
+            Script.sendClickableMessage(member, getPrefix() + "§6Notruf annehmen und Route anzeigen", "/acceptnotruf " + player.getName(), "Klicke hier um den Notruf anzunehmen.");
         }
     }
 
@@ -126,10 +126,16 @@ public class EmergencyCallService implements IEmergencyCallService {
         final List<String> reasons = new ArrayList<>();
         switch (faction) {
             case RETTUNGSDIENST:
-                reasons.add("Test Rettungsdienst");
+                reasons.add("Reanimation");
+                reasons.add("Verletzung");
+                reasons.add("Knochenbruch");
                 break;
             case POLICE:
-                reasons.add("Test Cops");
+                reasons.add("Einbruch");
+                reasons.add("Mord");
+                reasons.add("Körperverletzung");
+                reasons.add("Raubüberfall");
+                reasons.add("Diebstahl");
                 break;
         }
         return reasons;
