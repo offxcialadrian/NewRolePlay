@@ -70,7 +70,6 @@ public class Buy implements CommandExecutor {
             return true;
         }
 
-        // Reset amount if players doesn't
         amount.remove(player.getName());
 
         inv.setItem(((inventorySize / 9) <= 2 ? 13 : 22), Script.setName(Material.BARRIER, "§cSchließen"));

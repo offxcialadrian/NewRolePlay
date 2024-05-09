@@ -14,15 +14,18 @@ import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class UseDrogenCommand implements CommandExecutor {
+public class UseDrogenCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public boolean onCommand(@NotNull CommandSender cs, @NotNull Command cmd, @NotNull String s, @NotNull String[] args) {
@@ -130,5 +133,19 @@ public class UseDrogenCommand implements CommandExecutor {
         p.sendMessage(Messages.ERROR + "Du hast kein " + droge.getName() + " mit dem Reinheitsgrad " + purity.getText() + " in deinem Inventar.");
 
         return false;
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        List<String> args1 = new ArrayList<>();
+        for (Drogen drug : Drogen.values()) args1.add(drug.getName());
+        String[] args2 = new String[] {"0", "1", "2", "3"};
+        List<String> completions = new ArrayList<>();
+        if (args.length == 1) {
+            for (String string : args1) if (string.toLowerCase().startsWith(args[0].toLowerCase())) completions.add(string);
+        } else if (args.length == 2) {
+            for (String string : args2) if (string.toLowerCase().startsWith(args[1].toLowerCase())) completions.add(string);
+        }
+        return completions;
     }
 }

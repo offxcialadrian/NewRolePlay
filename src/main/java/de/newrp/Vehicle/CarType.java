@@ -1,36 +1,40 @@
 package de.newrp.Vehicle;
 
+import org.bukkit.Material;
 import org.bukkit.TreeSpecies;
-import org.bukkit.entity.Boat;
 
 public enum CarType {
 
-    ALGERARI("Algerari", TreeSpecies.ACACIA, 1000, 11D, 30, Fuel.BENZIN, 6000, 69,1.9F, 2500, 100),
-    HOSSAROSSA("HossaRossa", TreeSpecies.BIRCH, 1250, 17D, 50, Fuel.BENZIN, 14900, 200,2.2F, 5000,200),
-    BIMBORGINI("Bimborgini", TreeSpecies.DARK_OAK, 1500, 25D, 40, Fuel.BENZIN, 27500, 282,2.6F, 10000, 300),
-    VAN("Van", TreeSpecies.GENERIC, 1750, 15D, 150, Fuel.BENZIN, 52000, 242, 2F, 15000, 400),
-    CHEETAH("Cheetah", TreeSpecies.JUNGLE, 1500, 21D, 55, Fuel.BENZIN, 23400, 235,2.4F, 20000, 500),
-    TAXI("Taxi", TreeSpecies.REDWOOD, 1250, 20D, 0, Fuel.BENZIN, 0, 0, 1.9F, 0, 0);
+    OPPEL("Oppel", TreeSpecies.JUNGLE, Material.JUNGLE_BOAT, 500, 1.0, 30, Fuel.BENZIN, 2.0F, 6000, 69,1.0F, 2500, 100),
+    VOLTSWAGEN("Voltswagen", TreeSpecies.ACACIA, Material.ACACIA_BOAT, 700, 1.3, 50, Fuel.BENZIN, 1.8F, 14900, 200,1.3F, 5000,200),
+    NMW("NMW", TreeSpecies.DARK_OAK, Material.DARK_OAK_BOAT, 900, 1.6, 40, Fuel.BENZIN, 1.6F, 27500, 282,1.6F, 10000, 300),
+    AWDI("Awdi", TreeSpecies.BIRCH, Material.BIRCH_BOAT, 1100, 2.0, 150, Fuel.BENZIN, 1.4F, 52000, 242, 2.0F, 15000, 400),
+    MERCADAS("Mercadas", TreeSpecies.REDWOOD, Material.SPRUCE_BOAT, 1300, 1.0, 55, Fuel.BENZIN, 1.2F, 23400, 235,1.0F, 20000, 500),
+    PORSCHUH("Porschuh", TreeSpecies.GENERIC, Material.OAK_BOAT, 1500, 1.0, 0, Fuel.BENZIN, 1.0F, 0, 0, 1.0F, 0, 600);
 
     private final String name;
     private final TreeSpecies type;
+    private final Material material;
     private final int carheal;
     private final double max_speed;
     private final int kofferraum;
     private final Fuel kraftstoff;
+    private final float consumption;
     private final int price;
     private final int tax;
     private final float speed;
     private final int minpreis;
     private final int insurance;
 
-    CarType(String name, TreeSpecies type, int carheal, double max_speed, int kofferraum, Fuel kraftstoff, int price, int tax, float speed, int minpreis, int insurance) {
+    CarType(String name, TreeSpecies type, Material material, int carheal, double max_speed, int kofferraum, Fuel kraftstoff, float consumption, int price, int tax, float speed, int minpreis, int insurance) {
         this.name = name;
         this.type = type;
+        this.material = material;
         this.carheal = carheal;
         this.max_speed = max_speed;
         this.kofferraum = kofferraum;
         this.kraftstoff = kraftstoff;
+        this.consumption = consumption;
         this.price = price;
         this.tax = tax;
         this.speed = speed;
@@ -47,6 +51,10 @@ public enum CarType {
 
     public TreeSpecies getType() {
         return this.type;
+    }
+
+    public Material getMaterial() {
+        return this.material;
     }
 
     public String getName() {
@@ -67,6 +75,10 @@ public enum CarType {
 
     public Fuel getFuel() {
         return this.kraftstoff;
+    }
+
+    public float getConsumption() {
+        return this.consumption;
     }
 
     public int getPrice() {

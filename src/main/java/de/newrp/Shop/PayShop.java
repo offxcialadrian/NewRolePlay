@@ -11,11 +11,15 @@ import de.newrp.Medic.Medikamente;
 import de.newrp.Medic.Rezept;
 import de.newrp.Player.Banken;
 import de.newrp.Player.Mobile;
+import de.newrp.Vehicle.Car;
+import de.newrp.Vehicle.CarType;
 import de.newrp.Waffen.Waffen;
 import de.newrp.Waffen.Weapon;
 import de.newrp.NewRoleplayMain;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -30,6 +34,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Random;
 
 import static de.newrp.News.Zeitung.getLatestZeitungID;
 import static de.newrp.Waffen.GetGun.haveGun;
@@ -269,6 +274,24 @@ public class PayShop implements Listener {
                     break;
                 case DUENGER:
                     p.getInventory().addItem(Script.setNameAndLore(new ItemStack(Material.INK_SAC), "§7Dünger", "§65/5"));
+                    break;
+                case OPPEL:
+                case VOLTSWAGEN:
+                case NMW:
+                case AWDI:
+                case MERCADAS:
+                case PORSCHUH:
+                    if (!Licenses.FUEHRERSCHEIN.hasLicense(Script.getNRPID(p))) {
+                        p.sendMessage(Component.text(Car.PREFIX + "Du hast keinen Führerschein!"));
+                        return;
+                    }
+                    CarType carType = CarType.getCarTypeByName(si.getName());
+                    assert carType != null;
+                    Car car = Car.createCar(carType, new Location(p.getWorld(), 393 + new Random().nextInt(3), 76.5, 1090), p);
+                    assert car != null;
+                    car.setActivated(true);
+                    p.sendMessage(Component.text(Car.PREFIX + "Du hast dir einen neuen " + si.getName() + " gekauft."));
+                    BuyClick.sendMessage(p, "Hier sind die Schlüssel, dann viel Spaß!");
                     break;
             }
 

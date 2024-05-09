@@ -2,7 +2,6 @@ package de.newrp;
 
 import de.newrp.API.*;
 import de.newrp.Administrator.*;
-import de.newrp.Administrator.ServerTeam;
 import de.newrp.Berufe.*;
 import de.newrp.Call.CallCommand;
 import de.newrp.Call.HangupCommand;
@@ -12,7 +11,6 @@ import de.newrp.Commands.DiscordCommand;
 import de.newrp.Commands.Test;
 import de.newrp.Entertainment.*;
 import de.newrp.Forum.ForumCommand;
-import de.newrp.Berufe.Tazer;
 import de.newrp.GFB.*;
 import de.newrp.Gangwar.Capture;
 import de.newrp.Gangwar.GangwarCommand;
@@ -26,7 +24,10 @@ import de.newrp.Player.*;
 import de.newrp.Police.*;
 import de.newrp.Runnable.*;
 import de.newrp.Shop.*;
-import de.newrp.TeamSpeak.*;
+import de.newrp.TeamSpeak.PremiumChannel;
+import de.newrp.TeamSpeak.TeamSpeak;
+import de.newrp.TeamSpeak.TeamspeakCommand;
+import de.newrp.TeamSpeak.TeamspeakUpdate;
 import de.newrp.Ticket.*;
 import de.newrp.Vehicle.*;
 import de.newrp.Votifier.VoteCommand;
@@ -55,10 +56,6 @@ import de.newrp.features.emergencycall.listener.EmergencyCallInventoryListener;
 import de.newrp.features.emergencycall.listener.EmergencyCallQuitListener;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Activity;
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.interactions.commands.OptionType;
-import net.dv8tion.jda.api.interactions.commands.build.Commands;
-import net.dv8tion.jda.api.sharding.DefaultShardManager;
 import net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder;
 import net.labymod.serverapi.api.LabyAPI;
 import org.bukkit.Bukkit;
@@ -466,6 +463,9 @@ public class NewRoleplayMain extends JavaPlugin {
         getCommand("car").setExecutor(new CarCommand());
         getCommand("dm").setExecutor(new DeathmatchArenaCommand());
         getCommand("car").setExecutor(new CarCommand());
+        getCommand("tanken").setExecutor(new TankenCommand());
+        getCommand("kennzeichen").setExecutor(new Kennzeichen());
+        getCommand("fahrschule").setExecutor(new Fahrschule());
     }
 
     /**
@@ -562,7 +562,6 @@ public class NewRoleplayMain extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new Dishwasher(), this);
         Bukkit.getPluginManager().registerEvents(new BurgerFryer(), this);
         Bukkit.getPluginManager().registerEvents(new InteractMenu(), this);
-        Bukkit.getPluginManager().registerEvents(new InteractMenu(), this);
         Bukkit.getPluginManager().registerEvents(new Strassenwartung(), this);
         Bukkit.getPluginManager().registerEvents(new Imker(), this);
         Bukkit.getPluginManager().registerEvents(new AddHouseDoor(), this);
@@ -605,10 +604,13 @@ public class NewRoleplayMain extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new CancelTicket(), this);
         Bukkit.getPluginManager().registerEvents(new Trash(), this);
         Bukkit.getPluginManager().registerEvents(new CarHandler(), this);
+        Bukkit.getPluginManager().registerEvents(new CarListener(), this);
         Bukkit.getPluginManager().registerEvents(new EmergencyCallInventoryListener(), this);
         Bukkit.getPluginManager().registerEvents(new EmergencyCallQuitListener(), this);
         Bukkit.getPluginManager().registerEvents(new DeathmatchRespawnListener(), this);
         Bukkit.getPluginManager().registerEvents(new DeathmatchQuitListener(), this);
+        Bukkit.getPluginManager().registerEvents(new Kennzeichen(), this);
+        Bukkit.getPluginManager().registerEvents(new Fahrschule(), this);
     }
 
     /**

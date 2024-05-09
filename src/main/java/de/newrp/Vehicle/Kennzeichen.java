@@ -3,64 +3,88 @@ package de.newrp.Vehicle;
 import de.newrp.NewRoleplayMain;
 import de.newrp.API.PaymentType;
 import de.newrp.API.Script;
+import de.newrp.Shop.Shop;
+import de.newrp.Shop.ShopType;
+import de.newrp.Shop.Shops;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.format.TextColor;
+import org.bukkit.Color;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Boat;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerInteractAtEntityEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Kennzeichen implements CommandExecutor {
-    public static final String prefix = "§8[§cKFZ-Kennzeichen§8]§6 ";
-    public static final HashMap<Player, String> kfz = new HashMap<>();
+public class Kennzeichen implements CommandExecutor, Listener {
+
+    public static final String PREFIX = "§8[§cKennzeichen§8]§6 ";
 
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         Player p = (Player) cs;
-        if (p.getLocation().distance(new Location(p.getWorld(), -149, 68, 260)) < 5) {
-            if (args.length != 3) {
-                p.sendMessage(prefix + "Sie müssen folgende Angaben machen: XX 0000");
-            } else {
-                if (args[0].length() == 2 && args[1].length() == 4) {
-                    if (Script.isInt(args[1])) {
-                        int i = Integer.parseInt(args[1]);
-                        String s1 = args[0];
-                        if (!check(s1)) {
-                            if (Script.getMoney(p, PaymentType.BANK) >= 60) {
-                                String kennzeichen = "UC" + "-" + s1 + "-" + i;
-                                if (isInUse(kennzeichen)) {
-                                    p.sendMessage(prefix + "Das Kennzeichen ist bereits vergeben.");
+        if (p.getInventory().getItemInMainHand().getType() == Material.NAME_TAG && p.getInventory().getItemInMainHand().getAmount() == 1) {
+            Shops shop = Shops.getShopByLocation(p.getLocation(), 8.0F);
+            if (shop != null && Objects.requireNonNull(shop).getType() == ShopType.CARDEALER) {
+                if (args.length < 2) {
+                    p.sendMessage(PREFIX + "Du musst folgende Angaben machen: XX 0000");
+                } else {
+                    if (args[0].length() == 2 && args[1].length() == 4) {
+                        if (Script.isInt(args[1])) {
+                            int i = Integer.parseInt(args[1]);
+                            String s1 = args[0];
+                            if (!check(s1)) {
+                                if (Script.getMoney(p, PaymentType.BANK) >= 60) {
+                                    String kennzeichen = "N" + "-" + s1 + "-" + i;
+                                    if (isInUse(kennzeichen)) {
+                                        p.sendMessage(PREFIX + "Das Kennzeichen ist bereits vergeben.");
+                                    } else {
+                                        p.sendMessage(PREFIX + "Du hast das Kennzeichen " + kennzeichen + " beschriftet.");
+                                        p.sendMessage(PREFIX + "Du musst nun nur noch das Kennzeichen anbringen (Rechtsklick)");
+                                        ItemStack plate = p.getInventory().getItemInMainHand();
+                                        ItemMeta plateMeta = plate.getItemMeta();
+                                        plateMeta.setDisplayName(kennzeichen);
+                                        plate.setItemMeta(plateMeta);
+                                        Script.removeMoney(p, PaymentType.BANK, 60);
+                                    }
                                 } else {
-                                    p.sendMessage(prefix + "Sie haben das Kennzeichen " + kennzeichen + " gekauft.");
-                                    p.sendMessage(prefix + "Sie müssen nun nurnoch das Kennzeichen anbringen (Rechtsklick)");
-                                    kfz.put(p, kennzeichen);
-                                    Script.removeMoney(p, PaymentType.BANK, 60);
+                                    p.sendMessage(PREFIX + "Ein Kennzeichen kostet 60$!");
                                 }
                             } else {
-                                p.sendMessage(prefix + "Ein Kennzeichen kostet 60$.");
+                                p.sendMessage(PREFIX + "Das Kennzeichen darf keine Sonderzeichen beinhalten!");
                             }
-                        } else {
-                            p.sendMessage(prefix + "Das Kennzeichen darf keine Sonderzeichen beinhalten.");
                         }
+                    } else {
+                        p.sendMessage(PREFIX + "Du musst folgende Angaben machen: XX 0000");
                     }
-                } else {
-                    p.sendMessage(prefix + "Sie müssen folgende Angaben machen: XX 0000");
                 }
+            } else {
+                p.sendMessage(PREFIX + "Du bist nicht bei einer KFZ-Anmeldestelle!");
             }
         } else {
-            p.sendMessage(prefix + "Du bist nicht bei der KFZ Anmeldestelle.");
+            p.sendMessage(PREFIX + "Du hast kein Kennzeichen in der Hand!");
         }
         return true;
     }
 
     public boolean check(String s) {
-        Pattern p = Pattern.compile("[\\p{Alpha}]*[\\p{Punct}][\\p{Alpha}]*");
+        Pattern p = Pattern.compile("\\p{Alpha}*\\p{Punct}\\p{Alpha}*");
         Matcher m = p.matcher(s);
         return m.matches();
     }
@@ -76,5 +100,29 @@ public class Kennzeichen implements CommandExecutor {
             e.printStackTrace();
         }
         return true;
+    }
+
+    @EventHandler
+    public static void onClick(PlayerInteractEntityEvent event) {
+        if (event.getPlayer().getInventory().getItemInMainHand().getType() == Material.NAME_TAG) {
+            if (event.getRightClicked() instanceof Boat) {
+                Player player = event.getPlayer();
+                Car car = Car.getCarByEntityID(event.getRightClicked().getEntityId());
+                ItemStack plate = event.getPlayer().getInventory().getItemInMainHand();
+                String license = plate.getItemMeta().getDisplayName();
+                if (license.contains("Kennzeichen")) {
+                    player.sendMessage(PREFIX + "Das Kennzeichen ist unbeschriftet!");
+                } else {
+                    if (car.isCarOwner(player)) {
+                        car.setLicenseplate(license);
+                        plate.setAmount(plate.getAmount() - 1);
+                        player.sendMessage(PREFIX + "Das Kennzeichen deines " + car.getCarType().getName() + " wurde auf " + license + " gesetzt.");
+                    } else {
+                        player.sendMessage(PREFIX + "Dieses Auto gehört dir nicht!");
+                    }
+                }
+                event.setCancelled(true);
+            }
+        }
     }
 }

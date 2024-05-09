@@ -3,6 +3,8 @@ package de.newrp.Shop;
 import de.newrp.API.*;
 import de.newrp.Administrator.Notifications;
 import de.newrp.Government.Stadtkasse;
+import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -78,11 +80,12 @@ public class BuyShop implements CommandExecutor {
                 Log.HIGH.write(p.getName() + " hat den Shop " + shop.getPublicName() + " gekauft.");
                 Notifications.sendMessage(Notifications.NotificationType.SHOP, Script.getName(p) + " hat den Shop " + shop.getPublicName() + " gekauft.");
                 Script.executeAsyncUpdate("DELETE FROM shopprice WHERE shopID = " + shop.getID() + ";");
+                Bukkit.broadcast(Component.text("Buy"));
                 return true;
 
             }
 
-            if(args[0].equalsIgnoreCase("info")) {
+            if (args[0].equalsIgnoreCase("info")) {
                 if(shop.getOwner() == 0) {
                     p.sendMessage(PREFIX + "Dieser Shop wird derzeit von der Stadt verkauft.");
                     p.sendMessage(Messages.INFO + "Preis: " + shop.getPrice() + "€");
