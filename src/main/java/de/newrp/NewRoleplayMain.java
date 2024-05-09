@@ -29,10 +29,7 @@ import de.newrp.TeamSpeak.TeamSpeak;
 import de.newrp.TeamSpeak.TeamspeakCommand;
 import de.newrp.TeamSpeak.TeamspeakUpdate;
 import de.newrp.Ticket.*;
-import de.newrp.Vehicle.CarCommand;
-import de.newrp.Vehicle.CarHandler;
-import de.newrp.Vehicle.CarListener;
-import de.newrp.Vehicle.Kennzeichen;
+import de.newrp.Vehicle.*;
 import de.newrp.Votifier.VoteCommand;
 import de.newrp.Votifier.VoteListener;
 import de.newrp.Votifier.VoteShop;
@@ -468,6 +465,7 @@ public class NewRoleplayMain extends JavaPlugin {
         getCommand("car").setExecutor(new CarCommand());
         getCommand("tanken").setExecutor(new TankenCommand());
         getCommand("kennzeichen").setExecutor(new Kennzeichen());
+        getCommand("fahrschule").setExecutor(new Fahrschule());
     }
 
     /**
@@ -612,6 +610,7 @@ public class NewRoleplayMain extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new DeathmatchRespawnListener(), this);
         Bukkit.getPluginManager().registerEvents(new DeathmatchQuitListener(), this);
         Bukkit.getPluginManager().registerEvents(new Kennzeichen(), this);
+        Bukkit.getPluginManager().registerEvents(new Fahrschule(), this);
     }
 
     /**

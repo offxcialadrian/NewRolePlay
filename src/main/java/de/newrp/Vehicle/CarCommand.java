@@ -43,25 +43,21 @@ public class CarCommand implements CommandExecutor, TabCompleter {
                                     Car car = Car.getCarByEntityID(Objects.requireNonNull(player.getVehicle()).getEntityId());
                                     car.setStarted(true);
                                     car.setVelocity(car.getLocation().getDirection().multiply(0.2));
-                                    player.sendMessage(Component.text(Car.PREFIX).append(Component.text("Du hast deinen Motor gestartet.")
-                                            .color(TextColor.color(Color.SILVER.asRGB()))));
+                                    player.sendMessage(Component.text(Car.PREFIX + "Du hast deinen Motor gestartet."));
                                 }
                             }
                         } else {
-                            player.sendMessage(Component.text(Car.PREFIX).append(Component.text("Du befindest dich nicht in einem Auto!")
-                                    .color(TextColor.color(Color.SILVER.asRGB()))));
+                            player.sendMessage(Component.text(Car.PREFIX + "Du befindest dich nicht in einem Auto!"));
                         }
                         break;
                     case "stop":
                         if (Objects.requireNonNull(player).isInsideVehicle()) {
                             if (player.getVehicle() instanceof Boat) {
                                 Car.getCarByEntityID(Objects.requireNonNull(player.getVehicle()).getEntityId()).setStarted(false);
-                                player.sendMessage(Component.text(Car.PREFIX).append(Component.text("Du hast deinen Motor angehalten.")
-                                        .color(TextColor.color(Color.SILVER.asRGB()))));
+                                player.sendMessage(Component.text(Car.PREFIX + "Du hast deinen Motor angehalten."));
                             }
                         } else {
-                            player.sendMessage(Component.text(Car.PREFIX).append(Component.text("Du befindest dich nicht in einem Auto!")
-                                    .color(TextColor.color(Color.SILVER.asRGB()))));
+                            player.sendMessage(Component.text(Car.PREFIX + "Du befindest dich nicht in einem Auto!"));
                         }
                         break;
                     case "lock":
@@ -114,9 +110,7 @@ public class CarCommand implements CommandExecutor, TabCompleter {
                             if (player.getVehicle() instanceof Boat) {
                                 Car car = Car.getCarByEntityID(Objects.requireNonNull(Objects.requireNonNull(player).getVehicle()).getEntityId());
                                 if (car.isCarOwner(player)) {
-                                    car.setActivated(false);
-                                    car.getBoatEntity().remove();
-                                    Car.CARS.remove(car);
+                                    car.destroy(false);
                                     player.sendMessage(Component.text(Car.PREFIX + "Du hast deinen " + car.getCarType().getName() + " verkauft."));
                                     player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
                                     Cache.loadScoreboard(player);
@@ -125,7 +119,7 @@ public class CarCommand implements CommandExecutor, TabCompleter {
                                 }
                             }
                         } else {
-                            player.sendMessage(Component.text(Car.PREFIX).append(Component.text("Du befindest dich nicht in einem Auto!")));
+                            player.sendMessage(Component.text(Car.PREFIX + "Du befindest dich nicht in einem Auto!"));
                         }
                         break;
                     default:

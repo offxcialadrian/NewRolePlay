@@ -14,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class TakeDriversLicense implements CommandExecutor {
 
-    public static String PREFIX = "§8[§9Waffenschein§8] §9» §7";
+    public static String PREFIX = "§8[§9Führerschein§8] §9» §7";
 
     @Override
     public boolean onCommand(@NotNull CommandSender cs, @NotNull Command cmd, @NotNull String s, @NotNull String[] args) {

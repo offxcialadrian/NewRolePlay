@@ -741,3 +741,6 @@ commands:
   kennzeichen:
     description: sets your license plate
     aliases: [ license ]
+  fahrschule:
+    description: how to drive
+    aliases: [ drivingschool ]

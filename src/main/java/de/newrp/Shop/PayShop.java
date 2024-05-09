@@ -281,6 +281,10 @@ public class PayShop implements Listener {
                 case AWDI:
                 case MERCADAS:
                 case PORSCHUH:
+                    if (!Licenses.FUEHRERSCHEIN.hasLicense(Script.getNRPID(p))) {
+                        p.sendMessage(Component.text(Car.PREFIX + "Du hast keinen Führerschein!"));
+                        return;
+                    }
                     CarType carType = CarType.getCarTypeByName(si.getName());
                     assert carType != null;
                     Car car = Car.createCar(carType, new Location(p.getWorld(), 393 + new Random().nextInt(3), 76.5, 1090), p);
