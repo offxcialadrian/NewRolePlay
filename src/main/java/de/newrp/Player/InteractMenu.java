@@ -458,8 +458,10 @@ public class InteractMenu implements Listener {
 
     @EventHandler
     public static void onBed(PlayerInteractEvent event) {
-        if (Objects.requireNonNull(event.getClickedBlock()).getBlockData() instanceof Bed) {
-            event.setCancelled(true);
+        if (event.getClickedBlock() != null) {
+            if (event.getClickedBlock().getBlockData() instanceof Bed) {
+                event.setCancelled(true);
+            }
         }
     }
 }

@@ -1,7 +1,9 @@
 package de.newrp.Vehicle;
 
+import de.newrp.API.Cache;
 import de.newrp.API.Messages;
 import de.newrp.API.Premium;
+import de.newrp.Shop.gasstations.GasStationBuyHandler;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Bukkit;
@@ -35,11 +37,15 @@ public class CarCommand implements CommandExecutor, TabCompleter {
                     case "start":
                         if (Objects.requireNonNull(player).isInsideVehicle()) {
                             if (player.getVehicle() instanceof Boat) {
-                                Car car = Car.getCarByEntityID(Objects.requireNonNull(player.getVehicle()).getEntityId());
-                                car.setStarted(true);
-                                car.setVelocity(car.getLocation().getDirection().multiply(0.1));
-                                player.sendMessage(Component.text(Car.PREFIX).append(Component.text("Du hast deinen Motor gestartet.")
-                                        .color(TextColor.color(Color.SILVER.asRGB()))));
+                                if (GasStationBuyHandler.refuels.containsKey(player)) {
+                                    player.sendMessage(Component.text(Car.PREFIX + "Du hast noch nicht bezahlt!"));
+                                } else {
+                                    Car car = Car.getCarByEntityID(Objects.requireNonNull(player.getVehicle()).getEntityId());
+                                    car.setStarted(true);
+                                    car.setVelocity(car.getLocation().getDirection().multiply(0.2));
+                                    player.sendMessage(Component.text(Car.PREFIX).append(Component.text("Du hast deinen Motor gestartet.")
+                                            .color(TextColor.color(Color.SILVER.asRGB()))));
+                                }
                             }
                         } else {
                             player.sendMessage(Component.text(Car.PREFIX).append(Component.text("Du befindest dich nicht in einem Auto!")
@@ -111,9 +117,11 @@ public class CarCommand implements CommandExecutor, TabCompleter {
                                     car.setActivated(false);
                                     car.getBoatEntity().remove();
                                     Car.CARS.remove(car);
-                                    player.sendMessage(Component.text(Car.PREFIX).append(Component.text("Du hast deinen " + car.getCarType().getName() + " verkauft.")));
+                                    player.sendMessage(Component.text(Car.PREFIX + "Du hast deinen " + car.getCarType().getName() + " verkauft."));
+                                    player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
+                                    Cache.loadScoreboard(player);
                                 } else {
-                                    player.sendMessage(Component.text(Car.PREFIX).append(Component.text("Du kannst kein fremdes Auto verkaufen!")));
+                                    player.sendMessage(Component.text(Car.PREFIX + "Du kannst kein fremdes Auto verkaufen!"));
                                 }
                             }
                         } else {

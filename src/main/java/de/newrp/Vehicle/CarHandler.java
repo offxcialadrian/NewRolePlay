@@ -1,7 +1,9 @@
 package de.newrp.Vehicle;
 
 import de.newrp.API.Cache;
+import de.newrp.API.ScoreboardManager;
 import de.newrp.NewRoleplayMain;
+import de.newrp.Shop.ShopItem;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import org.bukkit.Bukkit;
@@ -118,6 +120,7 @@ public class CarHandler implements Listener {
 
                     event.setCancelled(true);
                 } else {
+                    Cache.saveScoreboard(((Player) event.getEntered()));
                     car.setCarSidebar();
                     new BukkitRunnable() {
                         @Override
@@ -146,9 +149,12 @@ public class CarHandler implements Listener {
     public static void onExit(VehicleExitEvent event) {
         if (event.getVehicle() instanceof Boat) {
             Car car = Car.getCarByEntityID(event.getVehicle().getEntityId());
-            car.setSpeed(0D);
-            Cache.loadScoreboard((Player) event.getExited());
-            car.saveLocation(car.getLocation());
+            if (car !=  null) {
+                car.setSpeed(0D);
+                ((Player) event.getExited()).setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
+                Cache.loadScoreboard((Player) event.getExited());
+                car.saveLocation(car.getLocation());
+            }
         }
     }
 
@@ -200,6 +206,52 @@ public class CarHandler implements Listener {
                         player.sendMessage(Car.PREFIX + "Dein " + car.getCarType().getName() + " nun " + car.getInsurance() + "x versichert.");
                     } else {
                         player.sendMessage(Car.PREFIX + "Dieses Auto gehört dir nicht!");
+                    }
+                    event.setCancelled(true);
+                }
+            }
+        }
+    }
+
+    @EventHandler
+    public static void onRepair(PlayerInteractEntityEvent event) {
+        if (event.getPlayer().getInventory().getItemInMainHand().getType() == Material.SHEARS) {
+            if (event.getRightClicked() instanceof Boat) {
+                Player player = event.getPlayer();
+                Car car = Car.getCarByEntityID(event.getRightClicked().getEntityId());
+                ItemStack tool = event.getPlayer().getInventory().getItemInMainHand();
+                String text = tool.getItemMeta().getDisplayName();
+                if (text.contains("Werkzeug")) {
+                    double heal = car.getCarheal();
+                    if (heal < car.getCarType().getCarheal()) {
+                        car.setCarHeal(heal + 1);
+                        tool.setDurability((short) (tool.getDurability() + 1));
+                        if ((int) Math.round(heal) % 20 == 0) player.getWorld().playSound(car.getLocation(), Sound.BLOCK_ANVIL_USE, 1.0F, 1.0F);
+                    } else {
+                        player.sendMessage(Component.text(Car.PREFIX + "Dieses Auto hat keine Schäden!"));
+                    }
+                    event.setCancelled(true);
+                }
+            }
+        }
+    }
+
+    @EventHandler
+    public static void onKanister(PlayerInteractEntityEvent event) {
+        if (event.getPlayer().getInventory().getItemInMainHand().getType() == ShopItem.KANISTER.getItemStack().getType()) {
+            if (event.getRightClicked() instanceof Boat) {
+                Player player = event.getPlayer();
+                Car car = Car.getCarByEntityID(event.getRightClicked().getEntityId());
+                ItemStack kanister = event.getPlayer().getInventory().getItemInMainHand();
+                String text = kanister.getItemMeta().getDisplayName();
+                if (text.contains("Kanister")) {
+                    if (car.getFuel() < 100) {
+                        car.fill(10);
+                        player.getWorld().playSound(car.getLocation(), Sound.AMBIENT_UNDERWATER_LOOP_ADDITIONS, 1.0F, 1.0F);
+                        kanister.setAmount(kanister.getAmount() - 1);
+                        player.sendMessage(Component.text(Car.PREFIX + "Du hast den Tank aufgefüllt."));
+                    } else {
+                        player.sendMessage(Component.text(Car.PREFIX + "Der Tank ist voll!"));
                     }
                     event.setCancelled(true);
                 }

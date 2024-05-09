@@ -3,6 +3,7 @@ package de.newrp.Shop;
 import de.newrp.API.Messages;
 import de.newrp.API.PaymentType;
 import de.newrp.API.Script;
+import de.newrp.Shop.gasstations.GasStationBuyHandler;
 import de.newrp.Vehicle.Car;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
@@ -34,6 +35,11 @@ public class TankenCommand implements CommandExecutor {
         if (car == null) {
             player.sendMessage(Messages.ERROR + "Du bist bei keinem Auto!");
         } else {
+            if (car.isStarted()) {
+                player.sendMessage(Component.text(Car.PREFIX + "Du musst zuvor deinen Motor ausschalten!"));
+                return true;
+            }
+
             float max = 100 - car.getFuel();
             float amount = 0;
             if (args.length == 0) {
@@ -42,16 +48,17 @@ public class TankenCommand implements CommandExecutor {
                 try {
                     amount = Integer.parseInt(args[0]);
                 } catch (Exception e) {
-                    player.sendMessage(Component.text(Car.PREFIX + "Du musst eine Zahl angeben!"));
+                    player.sendMessage(Messages.ERROR + "Du musst eine Zahl angeben!");
                 }
                 if (amount == 0) return true;
                 if (amount > max) amount = max;
             }
 
             if (amount > 0) {
-                if (Script.removeMoney(player, PaymentType.CASH, Math.round(amount * 1.7F) + 1)) {
-                    car.fill(amount);
+                if (Script.getMoney(player, PaymentType.CASH) >= amount) {
                     player.sendMessage(Component.text(Car.PREFIX + "Du hast " + (double) Math.round(amount * 10) / 10 + " Liter getankt."));
+                    GasStationBuyHandler.refuels.put(player, car);
+                    GasStationBuyHandler.amount.put(player, amount);
                 } else {
                     player.sendMessage(Component.text(Car.PREFIX + "Du hast nicht genug Bargeld!"));
                 }
