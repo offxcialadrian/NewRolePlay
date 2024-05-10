@@ -481,6 +481,9 @@ public class NewRoleplayMain extends JavaPlugin {
         getCommand("leasing").setExecutor(new LeasingCommand());
         getCommand("breakin").setExecutor(new BreakinCommand());
         getCommand("rob").setExecutor(new RobCommand());
+        getCommand("checkkfz").setExecutor(new CheckKFZ());
+        getCommand("strafzettel").setExecutor(new StrafzettelCommand());
+        getCommand("payticket").setExecutor(new PayTicket());
     }
 
     /**

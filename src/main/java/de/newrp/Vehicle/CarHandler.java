@@ -1,6 +1,8 @@
 package de.newrp.Vehicle;
 
 import de.newrp.API.Cache;
+import de.newrp.API.Script;
+import de.newrp.Administrator.SDuty;
 import de.newrp.NewRoleplayMain;
 import de.newrp.Shop.ShopItem;
 import net.kyori.adventure.text.Component;
@@ -112,34 +114,62 @@ public class CarHandler implements Listener {
             if (event.getEntered() instanceof Player) {
                 Car car = Car.getCarByEntityID(event.getVehicle().getEntityId());
                 Player player = (Player) event.getEntered();
-                if (car.isLocked()) {
-                    if (car.isCarOwner(player)) {
-                        event.getEntered().sendMessage(Component.text(Car.PREFIX + "Dein " + car.getCarType().getName() + " ist abgeschlossen!"));
-                    } else {
-                        event.getEntered().sendMessage(Component.text(Car.PREFIX + "Der " + car.getCarType().getName() + " ist abgeschlossen!"));
+                if (CheckKFZ.isChecking(player)) {
+                    CheckKFZ.check(player, car);
+                    CheckKFZ.kfz_check.remove(player);
+                    event.setCancelled(true);
+                } else if (Strafzettel.isTicketing(player)) {
+                    car.setStrafzettel(new Strafzettel(car.getCarID(), Strafzettel.reasons.get(player), Strafzettel.prices.get(player), Script.getNRPID(player)));
+                    Strafzettel.reasons.remove(player);
+                    Strafzettel.prices.remove(player);
+                    event.setCancelled(true);
+                }else {
+                    if (SDuty.isSDuty(player)) {
+                        event.setCancelled(true);
+                        return;
                     }
 
-                    event.setCancelled(true);
-                } else {
-                    Cache.saveScoreboard(player);
-                    player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
-                    car.setCarSidebar();
-                    new BukkitRunnable() {
-                        @Override
-                        public void run() {
-                            //noinspection ConstantValue
-                            if (car != null && car.getDriver() != null) {
-                                car.updateCarSidebar();
-                            } else {
-                                cancel();
-                            }
+                    if (car.getStrafzettel() != null) {
+                        Strafzettel ticket = car.getStrafzettel();
+                        if (car.isCarOwner(player)) {
+                            event.getEntered().sendMessage(StrafzettelCommand.PREFIX + "Dein Auto hat einen Strafzettel!");
+                            event.getEntered().sendMessage(StrafzettelCommand.PREFIX + "Grund: §e" + ticket.getReason() + "§7 | Betrag: §e" + ticket.getPrice() + "€");
+                        } else {
+                            event.getEntered().sendMessage(StrafzettelCommand.PREFIX + "Das Auto hat einen Strafzettel!");
                         }
-                    }.runTaskTimer(NewRoleplayMain.getInstance(), 5L, 5L);
+                        event.setCancelled(true);
+                        return;
+                    }
 
-                    if (car.isCarOwner(player)) {
-                        event.getEntered().sendMessage(Component.text(Car.PREFIX + "Du bist in deinen " + car.getCarType().getName() + " eingestiegen!"));
+                    if (car.isLocked()) {
+                        if (car.isCarOwner(player)) {
+                            event.getEntered().sendMessage(Component.text(Car.PREFIX + "Dein " + car.getCarType().getName() + " ist abgeschlossen!"));
+                        } else {
+                            event.getEntered().sendMessage(Component.text(Car.PREFIX + "Der " + car.getCarType().getName() + " ist abgeschlossen!"));
+                        }
+
+                        event.setCancelled(true);
                     } else {
-                        event.getEntered().sendMessage(Component.text(Car.PREFIX + "Du bist in den " + car.getCarType().getName() + " eingestiegen!"));
+                        Cache.saveScoreboard(player);
+                        player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
+                        car.setCarSidebar();
+                        new BukkitRunnable() {
+                            @Override
+                            public void run() {
+                                //noinspection ConstantValue
+                                if (car != null && car.getDriver() != null) {
+                                    car.updateCarSidebar();
+                                } else {
+                                    cancel();
+                                }
+                            }
+                        }.runTaskTimer(NewRoleplayMain.getInstance(), 5L, 5L);
+
+                        if (car.isCarOwner(player)) {
+                            event.getEntered().sendMessage(Component.text(Car.PREFIX + "Du bist in deinen " + car.getCarType().getName() + " eingestiegen!"));
+                        } else {
+                            event.getEntered().sendMessage(Component.text(Car.PREFIX + "Du bist in den " + car.getCarType().getName() + " eingestiegen!"));
+                        }
                     }
                 }
             }
@@ -193,7 +223,7 @@ public class CarHandler implements Listener {
     }
 
     @EventHandler
-    public static void onClick(PlayerInteractEntityEvent event) {
+    public static void onInsurance(PlayerInteractEntityEvent event) {
         if (event.getPlayer().getInventory().getItemInMainHand().getType() == Material.PAPER) {
             if (event.getRightClicked() instanceof Boat) {
                 Player player = event.getPlayer();

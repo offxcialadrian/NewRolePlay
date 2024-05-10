@@ -753,3 +753,9 @@ commands:
     aliases: [ rb ]
   sprungtuch:
     description: activates the sprungtuch system
+  checkkfz:
+    description: check licenseplate
+  strafzettel:
+    description: give tickets
+  payticket:
+    description: pays your ticket

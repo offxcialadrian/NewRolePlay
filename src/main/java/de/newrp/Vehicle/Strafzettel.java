@@ -1,12 +1,20 @@
 package de.newrp.Vehicle;
 
+import de.newrp.API.Script;
 import de.newrp.NewRoleplayMain;
+import lombok.Getter;
+import org.bukkit.entity.Player;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 
+@Getter
 public class Strafzettel {
+
+    public static HashMap<Player, String> reasons = new HashMap<>();
+    public static HashMap<Player, Integer> prices = new HashMap<>();
 
     private final int carID;
     private final String reason;
@@ -21,12 +29,12 @@ public class Strafzettel {
     }
 
     public static Strafzettel loadStrafzettel(int carID) {
-        try (PreparedStatement stmt = NewRoleplayMain.getConnection().prepareStatement("SELECT id, reason, preis, cop FROM strafzettel WHERE id = ? ")) {
+        try (PreparedStatement stmt = NewRoleplayMain.getConnection().prepareStatement("SELECT car_id, betrag, grund, cop_id FROM strafzettel WHERE id = ? ")) {
             stmt.setInt(1, carID);
 
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
-                return new Strafzettel(rs.getInt("id"), rs.getString("reason"), rs.getInt("preis"), rs.getInt("cop"));
+                return new Strafzettel(rs.getInt("id"), rs.getString("betrag"), rs.getInt("grund"), rs.getInt("cop"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -34,19 +42,11 @@ public class Strafzettel {
         return null;
     }
 
-    public int getCarID() {
-        return carID;
+    public static void saveStrafzettel(int carID, String reason, int price, int copID) {
+        Script.executeAsyncUpdate("UPDATE strafzettel SET car_id=" + carID + ", betrag=" + price + ", grund=" + reason + ", cop_id=" + copID + "  WHERE id=" + carID);
     }
 
-    public String getReason() {
-        return reason;
-    }
-
-    public int getPrice() {
-        return price;
-    }
-
-    public int getCopID() {
-        return copID;
+    public static boolean isTicketing(Player player) {
+        return reasons.containsKey(player);
     }
 }
