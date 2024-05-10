@@ -481,7 +481,9 @@ public class Car {
 
     public void setStrafzettel(Strafzettel strafzettel) {
         this.strafzettel = strafzettel;
-        Strafzettel.saveStrafzettel(strafzettel.getCarID(), strafzettel.getReason(), strafzettel.getPrice(), strafzettel.getCopID());
+        if (strafzettel != null) {
+            Strafzettel.saveStrafzettel(strafzettel.getCarID(), strafzettel.getReason(), strafzettel.getPrice(), strafzettel.getCopID());
+        }
     }
 
     public String getLicenseplate() {

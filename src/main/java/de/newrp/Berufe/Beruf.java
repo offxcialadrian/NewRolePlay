@@ -215,7 +215,7 @@ public class Beruf {
 
         public Boolean isDuty(Player player) {
             final HashMap<Player, Boolean> result = BERUF_MEMBER.get(this);
-            if(result == null) {
+            if (result == null) {
                 return false;
             }
             return result.getOrDefault(player, false);

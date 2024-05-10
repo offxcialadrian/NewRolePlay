@@ -54,7 +54,7 @@ public class CheckKFZ implements CommandExecutor {
             if (car == null) {
                 p.sendMessage(Messages.ERROR + "§cKein Fahrzeug gefunden.");
             } else {
-                p.sendMessage(PREFIX + "Kennzeichen§8: " + car.getLicenseplate() + " | Modell§8: " + car.getCarType().getName() + " | Besitzer§8: " + car.getOwner().getName());
+                p.sendMessage(PREFIX + "Kennzeichen: §8" + car.getLicenseplate() + " §7| Modell: §8" + car.getCarType().getName() + " §7| Besitzer: §8" + car.getOwner().getName());
             }
         } else if (Beruf.hasBeruf(p, Beruf.Berufe.POLICE)) {
             if (Duty.isInDuty(p)) {

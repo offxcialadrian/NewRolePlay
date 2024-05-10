@@ -60,6 +60,7 @@ public class CarCommand implements CommandExecutor, TabCompleter {
                         }
                         break;
                     case "lock":
+                    case "open":
                         cars = Car.getCars(player);
                         if (cars.isEmpty()) {
                             Objects.requireNonNull(player).sendMessage(Component.text(Messages.ERROR + "Du besitzt keine Autos!"));
@@ -160,7 +161,7 @@ public class CarCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-        List<String> args1 = Arrays.asList("start", "stop", "lock", "find", "fill", "sell", "teleport");
+        List<String> args1 = Arrays.asList("start", "stop", "lock", "open", "find", "fill", "sell", "teleport");
         List<String> args2 = new ArrayList<>();
         List<String> completions = new ArrayList<>();
         if (args.length == 1) for (String string : args1) if (string.toLowerCase().startsWith(args[0].toLowerCase())) completions.add(string);
