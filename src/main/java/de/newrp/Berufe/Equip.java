@@ -66,7 +66,8 @@ public class Equip implements CommandExecutor, Listener {
         //TRINKWASSER_MEDIC(29, "Trinkwasser", new ItemBuilder(Material.POTION).setName("§7Trinkwasser").build(), 2, 0, null, Beruf.Berufe.RETTUNGSDIENST, false),
         KEVLAR(29, "Kevlar", Script.kevlar(1), 2900, 0, null, Beruf.Berufe.GOVERNMENT, false),
         APPLE(30, "Apfel", new ItemBuilder(Material.APPLE).setAmount(16).setName("§7Apfel").build(), 1, 0, null, Beruf.Berufe.GOVERNMENT, false),
-        LATTE_MACCHIATO(31, "Latte Macchiato", new ItemBuilder(Material.FLOWER_POT).setName("§rLatte Macchiato").build(), 2, 0, null, Beruf.Berufe.GOVERNMENT, false);
+        LATTE_MACCHIATO(31, "Latte Macchiato", new ItemBuilder(Material.FLOWER_POT).setName("§rLatte Macchiato").build(), 2, 0, null, Beruf.Berufe.GOVERNMENT, false),
+        FEUERLOESCHER(32, "Feuerlöscher", Script.feuerloescher(), 300, 0, new Abteilung.Abteilungen[]{Abteilung.Abteilungen.FEUERWEHR}, Beruf.Berufe.RETTUNGSDIENST, false);
 
         private String name;
         private int id;
