@@ -53,7 +53,7 @@ public class SQLCommand implements CommandExecutor {
                     }
 
                     final String tableName = args[1];
-                    final String whereClause = args.length >= 3 ? " WHERE " + args[2] : "";
+                    final String whereClause = args.length >= 3 ? " WHERE " + String.join(" ", Arrays.copyOfRange(args, 2, args.length)) : "";
                     Bukkit.getLogger().info(whereClause);
                     final Optional<String> schema = this.getTableWithSchema(this.mainConfig.getMainConnection().getDatabase(), tableName).stream().findFirst();
                     if(!schema.isPresent()) {

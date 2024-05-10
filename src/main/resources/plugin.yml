@@ -761,3 +761,5 @@ commands:
     description: pays your ticket
   sql:
     description: executes sql queries for dev team only
+  checkhealth:
+    description: checks a players health
