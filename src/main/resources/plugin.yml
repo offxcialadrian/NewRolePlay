@@ -763,3 +763,5 @@ commands:
     description: executes sql queries for dev team only
   checkhealth:
     description: checks a players health
+  starttransport:
+    description: starts a equip transport

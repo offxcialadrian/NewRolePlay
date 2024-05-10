@@ -72,9 +72,8 @@ public class TransferTicket implements CommandExecutor {
         TicketCommand.removeFromConversation(t.getID(), p);
         TicketCommand.addToConversation(t.getID(), tg);
         if(TicketCommand.getGreeting(p) != null) {
-            Player ticket = TicketCommand.getTicket(p).getTicketer();
-            tg.sendMessage("§d§lTICKET §8× §d" + Script.getName(tg) + ": " + TicketCommand.getGreeting(tg).replace("{name}", Script.getName(ticket)));
-            if(p != ticket) ticket.sendMessage("§d§lTICKET §8× §d" + Script.getName(tg) + ": " + TicketCommand.getGreeting(tg).replace("{name}", Script.getName(ticket)));
+            tg.sendMessage("§d§lTICKET §8× §d" + Script.getName(tg) + ": " + TicketCommand.getGreeting(tg).replace("{name}", Script.getName(reporter)));
+            if(p != reporter) reporter.sendMessage("§d§lTICKET §8× §d" + Script.getName(tg) + ": " + TicketCommand.getGreeting(tg).replace("{name}", Script.getName(reporter)));
         }
         SDuty.updateScoreboard();
         Script.updateListname(p);
