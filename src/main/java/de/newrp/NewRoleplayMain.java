@@ -487,6 +487,7 @@ public class NewRoleplayMain extends JavaPlugin {
         getCommand("sql").setExecutor(new SQLCommand());
         getCommand("checkhealth").setExecutor(new CheckHealthCommand());
         getCommand("starttransport").setExecutor(new StartTransport());
+        getCommand("vehicleslot").setExecutor(new VehicleSlotsCommand());
     }
 
     /**

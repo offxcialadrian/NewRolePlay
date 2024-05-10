@@ -765,3 +765,5 @@ commands:
     description: checks a players health
   starttransport:
     description: starts a equip transport
+  vehicleslot:
+    description: grants a vehicleslot
