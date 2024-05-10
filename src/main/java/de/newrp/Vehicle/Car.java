@@ -5,6 +5,7 @@ import de.newrp.NewRoleplayMain;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.TreeSpecies;
 import org.bukkit.entity.Boat;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -204,7 +205,9 @@ public class Car {
 
                 Bukkit.getScheduler().runTask(NewRoleplayMain.getInstance(), () -> {
                     Boat boat = (Boat) Script.WORLD.spawnEntity(loc, EntityType.BOAT);
-                    boat.setWoodType(car.getCarType().getType());
+                    TreeSpecies type = car.getCarType().getType();
+                    if (type == null) type = TreeSpecies.JUNGLE;
+                    boat.setWoodType(type);
                     boat.setMaxSpeed(car.getCarType().getMaxSpeed());
                     car.setBoatEntity(boat);
 
