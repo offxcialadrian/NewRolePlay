@@ -1,5 +1,6 @@
 package de.newrp.News;
 
+import de.newrp.API.Debug;
 import de.newrp.NewRoleplayMain;
 
 import java.sql.PreparedStatement;
@@ -66,6 +67,7 @@ public class Umfrage {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            Debug.debug("SQLException -> " + e.getMessage());
             return null;
         }
         return new Umfrage(id, frage, antworten, active);
@@ -79,6 +81,7 @@ public class Umfrage {
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+            Debug.debug("SQLException -> " + e.getMessage());
         }
     }
 
@@ -115,6 +118,7 @@ public class Umfrage {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            Debug.debug("SQLException -> " + e.getMessage());
         }
     }
 

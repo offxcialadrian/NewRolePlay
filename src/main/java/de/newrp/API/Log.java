@@ -36,6 +36,7 @@ public enum Log {
                 stmt.setInt(3, getImportance());
                 stmt.execute();
             } catch (SQLException e1) {
+                Debug.debug("SQLException -> " + e1.getMessage());
                 e1.printStackTrace();
             }
         });

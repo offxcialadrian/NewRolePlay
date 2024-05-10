@@ -22,6 +22,7 @@ public class Premium {
                 }
             }
         } catch (Exception e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         return false;
@@ -37,6 +38,7 @@ public class Premium {
                 }
             }
         } catch (Exception e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         return false;
@@ -52,6 +54,7 @@ public class Premium {
                 }
             }
         } catch (Exception e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         return 0;
@@ -67,6 +70,7 @@ public class Premium {
                 }
             }
         } catch (Exception e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         return 0;
@@ -82,6 +86,7 @@ public class Premium {
                 }
             }
         } catch (Exception e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         return false;
@@ -99,6 +104,7 @@ public class Premium {
                     }
                 }
             } catch (Exception e) {
+                Debug.debug("SQLException -> " + e.getMessage());
                 e.printStackTrace();
             }
         } else {
@@ -117,6 +123,7 @@ public class Premium {
                     }
                 }
             } catch (Exception e) {
+                Debug.debug("SQLException -> " + e.getMessage());
                 e.printStackTrace();
             }
         } else {

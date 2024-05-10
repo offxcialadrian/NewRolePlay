@@ -130,6 +130,7 @@ public class Script {
                 players.add(Script.getOfflinePlayer(rs.getInt("nrp_id")));
             }
         } catch (Exception e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         //sort list by rank
@@ -281,6 +282,7 @@ public class Script {
                 return true;
             }
         } catch (Exception e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         return false;
@@ -299,6 +301,7 @@ public class Script {
              ResultSet rs = stmt.executeQuery("SELECT * FROM whitelist WHERE name='" + name + "'")) {
             return rs.next();
         } catch (Exception e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         return true;
@@ -385,6 +388,7 @@ public class Script {
                 return Rank.getRankByID(rs.getInt("rank_id"));
             }
         } catch (Exception e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         return PLAYER;
@@ -397,6 +401,7 @@ public class Script {
                 return Rank.getRankByID(rs.getInt("rank_id"));
             }
         } catch (Exception e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         return PLAYER;

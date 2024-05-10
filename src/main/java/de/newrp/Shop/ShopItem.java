@@ -1,5 +1,6 @@
 package de.newrp.Shop;
 
+import de.newrp.API.Debug;
 import de.newrp.API.ItemBuilder;
 import de.newrp.API.Script;
 import de.newrp.API.ShishaType;
@@ -251,6 +252,7 @@ public enum ShopItem {
             stmt.executeUpdate("UPDATE shopprice SET price=" + price + " WHERE shopID=" + b.getID() + " AND itemID=" + getID());
         } catch (SQLException e) {
             e.printStackTrace();
+            Debug.debug("SQLException -> " + e.getMessage());
         }
     }
 

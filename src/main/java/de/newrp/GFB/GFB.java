@@ -1,9 +1,6 @@
 package de.newrp.GFB;
 
-import de.newrp.API.Achievement;
-import de.newrp.API.Messages;
-import de.newrp.API.Premium;
-import de.newrp.API.Script;
+import de.newrp.API.*;
 import de.newrp.NewRoleplayMain;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -78,6 +75,7 @@ public enum GFB {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            Debug.debug("SQLException -> " + e.getMessage());
         }
         return 0;
     }
@@ -103,6 +101,7 @@ public enum GFB {
             stmt.executeUpdate("UPDATE gfb_level SET exp=" + (getExp(p) + exp) + " WHERE nrp_id='" + Script.getNRPID(p) + "' AND gfb_id=" + this.id);
         } catch (SQLException e) {
             e.printStackTrace();
+            Debug.debug("SQLException -> " + e.getMessage());
         }
         p.sendMessage(PREFIX + "Du hast " + exp + " Exp für den Job " + this.name + " erhalten (" + getExp(p) + "/" + getLevelCost(getLevel(p)) + ")");
     }
@@ -118,6 +117,7 @@ public enum GFB {
             stmt.executeUpdate("UPDATE gfb_level SET exp=" + (getExp(p) - exp) + " WHERE nrp_id='" + Script.getNRPID(p) + "' AND gfb_id=" + this.id);
         } catch (SQLException e) {
             e.printStackTrace();
+            Debug.debug("SQLException -> " + e.getMessage());
         }
         p.sendMessage(PREFIX + "Du hast " + exp + " Exp für den Job " + this.name + " verloren (" + getExp(p) + "/" + getLevelCost(getLevel(p)) + ")");
     }

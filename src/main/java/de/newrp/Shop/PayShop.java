@@ -402,6 +402,7 @@ public class PayShop implements Listener {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            Debug.debug("SQLException -> " + e.getMessage());
         }
     }
 

@@ -58,6 +58,7 @@ public enum Aktie {
                 return rs.getInt("price");
             }
         } catch (SQLException ex) {
+            Debug.debug("SQLException -> " + ex.getMessage());
             ex.printStackTrace();
         }
         return 0;
@@ -80,6 +81,7 @@ public enum Aktie {
                 Script.executeUpdate("UPDATE shares SET amount = " + (getMaxShares() - getUsedShares() - amount) + " WHERE id = " + this.id);
             }
         } catch (SQLException ex) {
+            Debug.debug("SQLException -> " + ex.getMessage());
             ex.printStackTrace();
         }
     }
@@ -100,6 +102,7 @@ public enum Aktie {
                 }
             }
         } catch (SQLException ex) {
+            Debug.debug("SQLException -> " + ex.getMessage());
             ex.printStackTrace();
         }
     }
@@ -112,6 +115,7 @@ public enum Aktie {
                 return rs.getInt("amount");
             }
         } catch (SQLException ex) {
+            Debug.debug("SQLException -> " + ex.getMessage());
             ex.printStackTrace();
         }
         return 0;
@@ -125,6 +129,7 @@ public enum Aktie {
                 return rs.getInt("COUNT(*)");
             }
         } catch (SQLException e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         return 0;
@@ -138,6 +143,7 @@ public enum Aktie {
                 return rs.getInt("COUNT(*)");
             }
         } catch (SQLException e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         return 0;
@@ -171,6 +177,7 @@ public enum Aktie {
                 return (getMaxShares() - rs.getInt("amount"));
             }
         } catch (SQLException ex) {
+            Debug.debug("SQLException -> " + ex.getMessage());
             ex.printStackTrace();
         }
         return 0;
@@ -192,6 +199,7 @@ public enum Aktie {
             } else
                 return false;
         } catch (SQLException ex) {
+            Debug.debug("SQLException -> " + ex.getMessage());
             ex.printStackTrace();
         }
         return false;
@@ -209,6 +217,7 @@ public enum Aktie {
                 return rs.getInt("price");
             }
         } catch (SQLException e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         return 0;
@@ -222,6 +231,7 @@ public enum Aktie {
                 return rs.getInt("price");
             }
         } catch (SQLException e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         return 0;
@@ -234,6 +244,7 @@ public enum Aktie {
                 return rs.getInt("price");
             }
         } catch (SQLException e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         return 0;

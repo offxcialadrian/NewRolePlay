@@ -1,5 +1,6 @@
 package de.newrp.Berufe;
 
+import de.newrp.API.Debug;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.Forum.ForumGroup;
@@ -109,6 +110,7 @@ public class Beruf {
                 }
                 return locs;
             } catch (SQLException e) {
+                Debug.debug("SQLException -> " + e.getMessage());
                 e.printStackTrace();
             }
             return locs;

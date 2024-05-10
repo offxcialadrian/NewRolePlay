@@ -23,6 +23,7 @@ public class Vote {
              ResultSet rs = stmt.executeQuery("SELECT count(id) AS total FROM vote_cache WHERE id=" + id)) {
             if (rs.next()) return rs.getInt("total");
         } catch (SQLException e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         return 0;
@@ -35,6 +36,7 @@ public class Vote {
              ResultSet rs = stmt.executeQuery("SELECT * FROM vote_cache WHERE id=" + id + " AND day=" + Calendar.getInstance().get(Calendar.DAY_OF_YEAR))) {
             return rs.next();
         } catch (SQLException e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         return false;

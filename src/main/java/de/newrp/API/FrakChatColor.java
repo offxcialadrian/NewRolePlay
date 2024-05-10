@@ -170,6 +170,7 @@ public class FrakChatColor implements CommandExecutor, Listener {
                 return rs.getString("color1");
             }
         } catch (Exception e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         return "e";
@@ -182,6 +183,7 @@ public class FrakChatColor implements CommandExecutor, Listener {
                 return rs.getString("color1");
             }
         } catch (Exception e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         return "e";

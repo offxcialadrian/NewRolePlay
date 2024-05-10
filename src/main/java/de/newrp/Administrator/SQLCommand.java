@@ -43,16 +43,18 @@ public class SQLCommand implements CommandExecutor {
                 case "tables":
                     player.sendMessage(getPrefix() + " §6Folgende SQL Tabellen existieren:");
                     for (final String table : getTableWithSchema(this.mainConfig.getMainConnection().getDatabase(), "*")) {
-                        player.sendMessage(getPrefix() + Messages.ARROW + " §a" + table);
+                        player.sendMessage(getPrefix() + " §a" + table);
                     }
                     break;
                 case "table":
                     if(args.length < 2) {
-                        player.sendMessage(Messages.ERROR + "/sql table [Table Name]");
+                        player.sendMessage(Messages.ERROR + "/sql table [Table Name] ([WHERE])");
                         return;
                     }
 
                     final String tableName = args[1];
+                    final String whereClause = args.length >= 3 ? " WHERE " + args[2] : "";
+                    Bukkit.getLogger().info(whereClause);
                     final Optional<String> schema = this.getTableWithSchema(this.mainConfig.getMainConnection().getDatabase(), tableName).stream().findFirst();
                     if(!schema.isPresent()) {
                         player.sendMessage(Messages.ERROR + "Es existiert keine Tabelle mit dem Namen!");
@@ -60,7 +62,8 @@ public class SQLCommand implements CommandExecutor {
                     }
 
                     player.sendMessage(getPrefix() + schema.get());
-                    try(final PreparedStatement statement = NewRoleplayMain.getConnection().prepareStatement("SELECT * FROM " + tableName)) {
+                    Bukkit.getLogger().info("SELECT * FROM " + tableName + whereClause);
+                    try(final PreparedStatement statement = NewRoleplayMain.getConnection().prepareStatement("SELECT * FROM " + tableName + whereClause)) {
                         try(final ResultSet resultSet = statement.executeQuery()) {
                             final ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
                             final int columnCount = resultSetMetaData.getColumnCount();
@@ -80,11 +83,29 @@ public class SQLCommand implements CommandExecutor {
                             }
                         }
                     } catch(final Exception exception) {
-                        exception.printStackTrace();
+                        player.sendMessage(exception.getMessage());
                     }
 
                     break;
                 case "run":
+                    if(!NewRoleplayMain.isTest()) {
+                        player.sendMessage(Messages.ERROR + "Dieser Befehl ist nur im Testmodus ausführbar!");
+                        return;
+                    }
+
+                    if(args.length < 2) {
+                        player.sendMessage(Messages.ERROR + "/sql run [Query]");
+                        return;
+                    }
+
+                    final String query = String.join(" ", Arrays.copyOfRange(args, 1, args.length));
+                    Bukkit.getLogger().info(query);
+
+                    try(final PreparedStatement statement = NewRoleplayMain.getConnection().prepareStatement(query)) {
+                        player.sendMessage(getPrefix() + "§aErfolgreich ausgeführt!");
+                    } catch(final Exception exception) {
+                        player.sendMessage(exception.getMessage());
+                    }
                     break;
             }
         });
@@ -126,6 +147,6 @@ public class SQLCommand implements CommandExecutor {
     }
 
     private String getPrefix() {
-        return "§8[§eSQL§8] §7";
+        return "§8[§eSQL§8] §e" + Messages.ARROW + " §7";
     }
 }

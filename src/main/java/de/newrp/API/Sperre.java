@@ -75,6 +75,7 @@ public enum Sperre {
                         sperren.put(sperre, (rs.getLong("time") > System.currentTimeMillis() ? rs.getLong("time") : 0L));
                     }
                 } catch (SQLException e1) {
+                    Debug.debug("SQLException -> " + e1.getMessage());
                     e1.printStackTrace();
                 }
             }

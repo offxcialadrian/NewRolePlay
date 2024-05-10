@@ -71,6 +71,7 @@ public enum SlotLimit {
                 }
             }
         } catch (SQLException e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
 

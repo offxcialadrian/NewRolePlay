@@ -49,6 +49,7 @@ public enum Token {
                 return rs.getInt(this.getName());
             }
         } catch (SQLException e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         return getDefaultValue(Script.getPlayer(id));
@@ -63,6 +64,7 @@ public enum Token {
                 Script.executeAsyncUpdate("INSERT INTO change_token (id, " + this.getName() + ") VALUES (" + id + ", " + (1 + amount) + ");");
             }
         } catch (SQLException e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -78,6 +80,7 @@ public enum Token {
                 Script.executeAsyncUpdate("INSERT INTO change_token (id, " + this.getName() + ") VALUES (" + id + ", " + (1 - amount) + ");");
             }
         } catch (SQLException e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
     }

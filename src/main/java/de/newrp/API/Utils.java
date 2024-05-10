@@ -827,6 +827,7 @@ public class Utils implements Listener {
                 return rs.getInt("geschenk") == 1;
             }
         } catch (Exception e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         return false;

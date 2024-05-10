@@ -119,6 +119,12 @@ public class Passwort implements CommandExecutor, Listener {
                 p.sendMessage(Messages.ERROR + "Du hast kein Passwort.");
                 return true;
             }
+
+            if(Script.isNRPTeam(p)) {
+                p.sendMessage(Messages.ERROR + "Als Mitglied des NRP Teams kannst du dein Passwort nicht löschen :(");
+                return true;
+            }
+
             removePasswort(p);
             p.sendMessage(PREFIX + "Dein Passwort wurde entfernt.");
             return true;

@@ -160,6 +160,7 @@ public enum Achievement {
                 }
             }
         } catch (SQLException e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         return map;
