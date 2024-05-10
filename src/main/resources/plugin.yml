@@ -740,6 +740,14 @@ commands:
   fahrschule:
     description: how to drive
     aliases: [ drivingschool ]
+  leasing:
+    description: lease a car
+  breakin:
+    description: break into a location
+    aliases: [ einbrechen, lockpick ]
+  rob:
+    description: rob a person
+    aliases: [ überfall ]
   roadblock:
     description: activates the roadblock system
   sprungtuch:

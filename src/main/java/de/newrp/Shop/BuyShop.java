@@ -80,7 +80,6 @@ public class BuyShop implements CommandExecutor {
                 Log.HIGH.write(p.getName() + " hat den Shop " + shop.getPublicName() + " gekauft.");
                 Notifications.sendMessage(Notifications.NotificationType.SHOP, Script.getName(p) + " hat den Shop " + shop.getPublicName() + " gekauft.");
                 Script.executeAsyncUpdate("DELETE FROM shopprice WHERE shopID = " + shop.getID() + ";");
-                Bukkit.broadcast(Component.text("Buy"));
                 return true;
 
             }

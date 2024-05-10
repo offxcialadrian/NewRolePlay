@@ -100,8 +100,8 @@ public class Fahrschule implements CommandExecutor, Listener {
                 player.closeInventory();
                 player.sendMessage(Component.text(PREFIX + "Bravo! Du bist bereit für den praktischen Teil."));
 
-                player.teleport(new Location(player.getWorld(), 396, 77, 1137));
-                Car car = Car.createCar(CarType.OPPEL, new Location(player.getWorld(), 396, 77, 1137), player);
+                player.teleport(new Location(player.getWorld(), 391, 77, 1131));
+                Car car = Car.createCar(CarType.OPPEL, new Location(player.getWorld(), 391, 76.5, 1132, -90F, 0F), player);
                 assert car != null;
                 car.setLicenseplate("N-NO-OB");
 
@@ -145,10 +145,10 @@ public class Fahrschule implements CommandExecutor, Listener {
         ItemStack answer1 = new ItemStack(Material.EMERALD);
         Script.setName(answer1, "§a" + asw1);
         gui.setItem(10, answer1);
-        ItemStack answer2 = new ItemStack(Material.DIAMOND);
+        ItemStack answer2 = new ItemStack(Material.EMERALD);
         Script.setName(answer2, "§a" + asw2);
         gui.setItem(13, answer2);
-        ItemStack answer3 = new ItemStack(Material.GOLD_INGOT);
+        ItemStack answer3 = new ItemStack(Material.EMERALD);
         Script.setName(answer3, "§a" + asw3);
         gui.setItem(16, answer3);
         player.openInventory(gui);

@@ -473,8 +473,14 @@ public class NewRoleplayMain extends JavaPlugin {
         getCommand("tanken").setExecutor(new TankenCommand());
         getCommand("kennzeichen").setExecutor(new Kennzeichen());
         getCommand("fahrschule").setExecutor(new Fahrschule());
+<<<<<<< HEAD
         getCommand("roadblock").setExecutor(new RoadBlockCommand());
         getCommand("sprungtuch").setExecutor(new SprungtuchCommand());
+=======
+        getCommand("leasing").setExecutor(new LeasingCommand());
+        getCommand("breakin").setExecutor(new BreakinCommand());
+        getCommand("rob").setExecutor(new RobCommand());
+>>>>>>> ramses-changes
     }
 
     /**
@@ -621,6 +627,7 @@ public class NewRoleplayMain extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new FactionBlockClickListener(), this);
         Bukkit.getPluginManager().registerEvents(new FactionBlockDropItemListener(), this);
         Bukkit.getPluginManager().registerEvents(new FactionBlockQuitListener(), this);
+        Bukkit.getPluginManager().registerEvents(new LockpickHandler(), this);
     }
 
     /**

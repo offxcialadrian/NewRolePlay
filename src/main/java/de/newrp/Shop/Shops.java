@@ -37,7 +37,7 @@ public enum Shops {
     WAFFENLADEN_GANG(18, "Waffenladen Gang", "Waffenladen Gang", 199000, new Location(Script.WORLD, 534, 65, 1314, -269.9749f, 90.0f), 100, 600, true, ShopType.GUNSHOP),
     GEMUESE(19, "Gemüseladen", "Gemüseladen", 15000, new Location(Script.WORLD, 842, 74, 918, -356.24542f, 9.236951f), 15, 600, true, ShopType.GEMUESE),
     BUCHHALTUNG(20, "Buchladen", "Buchladen", 29000, new Location(Script.WORLD, 841, 74, 907, -1.7087402f, 20.008091f), 10, 600, true, ShopType.NEWS),
-    NEWS_GERICHT(21, "Newsstand am Gericht", "Newsstand am Gericht", 20000, new Location(Script.WORLD, 794, 72, 951, -271.5559f, 7.0643415f), 5, 600, true, ShopType.NEWS),
+    NEWS_GERICHT(21, "Newsstand am Gericht", "Newsstand am Gericht", 20000, new Location(Script.WORLD, 794, 72, 952, -271.5559f, 7.0643415f), 5, 600, true, ShopType.NEWS),
     NEWS_HAFEN(22, "Newsstand am Strand", "Newsstand am Strand", 5000, new Location(Script.WORLD, 604, 65, 689, -358.99744f, 16.507566f), 2, 600, true, ShopType.NEWS),
     NEWS_PROMENADE(23, "Newsstand an der Promenade", "Newsstand an der Promenade", 5000, new Location(Script.WORLD, 275, 66, 892, -1.6918945f, 6.6413584f), 2, 600, true, ShopType.NEWS),
     NEWS_UBAHN(24, "Newsstand an der U-Bahn", "Newsstand an der U-Bahn", 5000, new Location(Script.WORLD, 336, 52, 1143, -269.4386f, 12.283148f), 2, 600, true, ShopType.NEWS),
@@ -118,12 +118,14 @@ public enum Shops {
     }
 
     public static Shops getShopByLocation(Location loc, float distance) {
-        for(Shops shop : Shops.values()) {
-            if(shop.getLocation().distance(loc) <= distance) {
-                return shop;
+        Shops shop = null;
+        for(Shops s : Shops.values()) {
+            if (s.getLocation().distance(loc) <= distance) {
+                if (shop == null) shop = s;
+                else if (s.getLocation().distance(loc) < shop.getLocation().distance(loc)) shop = s;
             }
         }
-        return null;
+        return shop;
     }
 
     public int getKasse() {

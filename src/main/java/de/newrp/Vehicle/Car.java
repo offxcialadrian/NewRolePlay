@@ -1,9 +1,6 @@
 package de.newrp.Vehicle;
 
-import de.newrp.API.Cache;
-import de.newrp.API.Messages;
-import de.newrp.API.Script;
-import de.newrp.API.SlotLimit;
+import de.newrp.API.*;
 import de.newrp.NewRoleplayMain;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -15,6 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scoreboard.*;
+import org.bukkit.scoreboard.ScoreboardManager;
 import org.bukkit.util.NumberConversions;
 import org.bukkit.util.Vector;
 
@@ -610,6 +608,7 @@ public class Car {
                 int v = getInsurance();
                 if (v > 0) {
                     p.sendMessage("§eDeine Versicherung hat den Schaden ohne weitere Kosten übernommen. §8[" + (v - 1) + "§7/1§8]");
+                    Script.removeMoney(p, PaymentType.BANK, this.getCarType().getInsurance());
                     setInsurance(v - 1);
                     schrottplatz();
                 } else {

@@ -13,8 +13,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.text.ParseException;
-
 public class TankenCommand implements CommandExecutor {
 
     @Override
@@ -25,7 +23,7 @@ public class TankenCommand implements CommandExecutor {
         }
 
         final Player player = (Player) commandSender;
-        final Shops shop = Shops.getShopByLocation(player.getLocation(), 10.0f);
+        final Shops shop = Shops.getShopByLocation(player.getLocation(), 20.0f);
         if (shop == null || shop.getType() != ShopType.GAS_STATION) {
             player.sendMessage(Messages.ERROR + "Du bist bei keiner Tankstelle!");
             return false;
