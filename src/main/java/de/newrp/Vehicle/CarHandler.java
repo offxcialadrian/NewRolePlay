@@ -164,9 +164,10 @@ public class CarHandler implements Listener {
                             @Override
                             public void run() {
                                 //noinspection ConstantValue
-                                if (car != null && car.getDriver() != null) {
+                                if (car != null && car.getPassengers().contains(player)) {
                                     car.updateCarSidebar();
                                 } else {
+                                    player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
                                     cancel();
                                 }
                             }
