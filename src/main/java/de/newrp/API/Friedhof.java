@@ -92,7 +92,9 @@ public class Friedhof {
         Location[] locs;
 
         Debug.debug("dead: " + p.getName() + " " + p.getKiller() + " " + p.getLastDamageCause().getCause().name());
-        p.getKiller().sendMessage(Messages.INFO + "§c§lKILL! §6" + Script.getName(p) + " §fdu hast getötet!");
+        if(p.getKiller() != null) {
+            p.getKiller().sendMessage(Messages.INFO + "§c§lKILL! §6" + Script.getName(p) + " §fdu hast getötet!");
+        }
         World w = p.getWorld();
             p.setPlayerWeather(WeatherType.DOWNFALL);
             locs = new Location[]{new Location(Script.WORLD, 222, 75, 673, 92.5503f, -2.699904f)};
