@@ -67,6 +67,7 @@ public class UmfragenCommand implements CommandExecutor, Listener {
 
             Umfrage.createUmfrage(frage.replace(",", ""), antworten);
             Beruf.Berufe.NEWS.sendMessage(PREFIX + "§6" + Script.getName(p) + " §7hat eine neue Umfrage erstellt.");
+            Script.addEXP(p, Script.getRandom(4, 8));
             Beruf.Berufe.NEWS.sendMessage(PREFIX + "§7Frage: §6" + frage.replace(",", ""));
             for (String antwort : antworten) {
                 Beruf.Berufe.NEWS.sendMessage(PREFIX + "§7Antwort: §6" + antwort);

@@ -11,6 +11,7 @@ import de.newrp.Government.Loan;
 import de.newrp.Government.Stadtkasse;
 import de.newrp.House.House;
 import de.newrp.Medic.FeuerwehrEinsatz;
+import de.newrp.NewRoleplayMain;
 import de.newrp.Organisationen.LabBreakIn;
 import de.newrp.Organisationen.Organisation;
 import de.newrp.Player.AFK;
@@ -18,8 +19,6 @@ import de.newrp.Player.Hotel;
 import de.newrp.Shop.Shop;
 import de.newrp.Shop.ShopType;
 import de.newrp.Shop.Shops;
-import de.newrp.NewRoleplayMain;
-import net.citizensnpcs.api.CitizensAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -40,8 +39,7 @@ public class AsyncHour extends BukkitRunnable {
     @Override
     public void run() {
         //Aktie.update();
-        Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), CitizensAPI.getNPCRegistry()::deregisterAll, 2L);
-        Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), Schwarzmarkt::spawnRandom, 4L);
+        Schwarzmarkt.spawnRandom();
         Hologram.reload();
         LabBreakIn.repairDoors(false);
 

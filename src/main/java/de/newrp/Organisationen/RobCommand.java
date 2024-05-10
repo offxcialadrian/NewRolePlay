@@ -17,6 +17,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 public class RobCommand implements CommandExecutor {
@@ -81,8 +82,9 @@ public class RobCommand implements CommandExecutor {
 
                     cooldownsP.put(player, System.currentTimeMillis() + 10 * 60 * 1000);
 
-                    int money = Script.getMoney(player, PaymentType.CASH);
-                    if (money > 50) money = 50;
+                    int money = Script.getMoney(victim, PaymentType.CASH);
+                    if (money > 500) money = 500;
+                    money = Math.round(money * (0.4F + (new Random().nextFloat() / 3)));
                     Me.sendMessage(player, "greift in die Brieftasche von " + victim.getName() + ".");
 
                     Player finalVictim = victim;
@@ -93,9 +95,12 @@ public class RobCommand implements CommandExecutor {
                             if (finalLocation.distance(finalVictim.getLocation()) <= 2) {
                                 Me.sendMessage(player, "nimmt etwas aus der Brieftasche von " + finalVictim.getName() + " heraus.");
                                 player.sendMessage(PREFIX + "Du hast " + finalMoney + "€ von " + finalVictim.getName() + " gestohlen.");
+                                int exp = finalMoney / 5;
+                                if (exp > 50) exp = 50;
+                                Script.addEXP(player, exp);
                                 Script.removeMoney(finalVictim, PaymentType.CASH, finalMoney);
                                 Script.addMoney(player, PaymentType.CASH, finalMoney);
-                                cooldownsV.put(player, System.currentTimeMillis() + 2 * 60 * 60 * 1000);
+                                cooldownsV.put(finalVictim, System.currentTimeMillis() + 2 * 60 * 60 * 1000);
                             } else {
                                 player.sendMessage(PREFIX + "Die Person hat sich zu viel bewegt!");
                             }

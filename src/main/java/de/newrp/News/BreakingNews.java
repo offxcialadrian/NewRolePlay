@@ -2,6 +2,7 @@ package de.newrp.News;
 
 import de.newrp.API.Log;
 import de.newrp.API.Messages;
+import de.newrp.API.Script;
 import de.newrp.Berufe.Abteilung;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Player.Mobile;
@@ -60,6 +61,7 @@ public class BreakingNews implements CommandExecutor {
             }
         }
         Log.HIGH.write(p, "hat eine Breaking News geschaltet: " + msg.toString());
+        Script.addEXP(p, Script.getRandom(4, 8));
         return true;
     }
 }

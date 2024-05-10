@@ -687,16 +687,16 @@ public class Car {
     }
 
     public void schrottplatz() {
-        int max_x = 696;
-        int min_x = 675;
+        int max_x = 506;
+        int min_x = 500;
 
-        int max_z = 401;
-        int min_z = 380;
+        int max_z = 1252;
+        int min_z = 1261;
 
         int x = Script.getRandom(min_x, max_x);
         int z = Script.getRandom(min_z, max_z);
 
-        this.getBoatEntity().teleport(new Location(Script.WORLD, x, 71, z));
+        this.getBoatEntity().teleport(new Location(Script.WORLD, x, 65, z));
     }
 
     public List<Entity> getPassengers() {

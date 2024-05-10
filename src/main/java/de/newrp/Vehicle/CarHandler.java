@@ -18,10 +18,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
-import org.bukkit.event.vehicle.VehicleDamageEvent;
-import org.bukkit.event.vehicle.VehicleEnterEvent;
-import org.bukkit.event.vehicle.VehicleExitEvent;
-import org.bukkit.event.vehicle.VehicleMoveEvent;
+import org.bukkit.event.vehicle.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
@@ -164,9 +161,10 @@ public class CarHandler implements Listener {
                             @Override
                             public void run() {
                                 //noinspection ConstantValue
-                                if (car != null && car.getDriver() != null) {
+                                if (car != null && car.getPassengers().contains(player)) {
                                     car.updateCarSidebar();
                                 } else {
+                                    player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
                                     cancel();
                                 }
                             }
@@ -178,6 +176,21 @@ public class CarHandler implements Listener {
                             event.getEntered().sendMessage(Component.text(Car.PREFIX + "Du bist in den " + car.getCarType().getName() + " eingestiegen!"));
                         }
                     }
+                }
+            }
+        }
+    }
+
+    @EventHandler
+    public static void onCrash(VehicleEntityCollisionEvent event) {
+        if (event.getVehicle() instanceof Boat) {
+            if (event.getEntity() instanceof Player) {
+                Player player = (Player) event.getEntity();
+                Car car = Car.getCarByEntityID(event.getVehicle().getEntityId());
+                if (car != null) {
+                    player.setVelocity(car.getVelocity().multiply(10));
+                    player.damage(Math.floor(car.getSpeed() * 20));
+                    car.crash(Math.floor(car.getSpeed() * 50));
                 }
             }
         }
@@ -264,9 +277,13 @@ public class CarHandler implements Listener {
                 if (text.contains("Werkzeug")) {
                     double heal = car.getCarheal();
                     if (heal < car.getCarType().getCarheal()) {
-                        car.setCarHeal(heal + 1);
-                        tool.setDurability((short) (tool.getDurability() + 1));
+                        car.setCarHeal(heal + 2);
+                        tool.setDurability((short) (tool.getDurability() + 2));
                         if ((int) Math.round(heal) % 20 == 0) player.getWorld().playSound(car.getLocation(), Sound.BLOCK_ANVIL_USE, 1.0F, 1.0F);
+                        if (tool.getDurability() > 238) {
+                            tool.setAmount(0);
+                            player.getWorld().playSound(car.getLocation(), Sound.ENTITY_ITEM_BREAK, 1.0F, 1.0F);
+                        }
                     } else {
                         player.sendMessage(Component.text(Car.PREFIX + "Dieses Auto hat keine Schäden!"));
                     }

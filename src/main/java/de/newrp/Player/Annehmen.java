@@ -280,9 +280,12 @@ public class Annehmen implements CommandExecutor {
             Script.addMoney(seller, PaymentType.BANK, add);
             house.setOwner(Script.getNRPID(p));
             house.updateSign();
-            for(HouseAddon addon : house.getAddons()) {
-                house.removeAddon(addon);
+            if (!house.getAddons().isEmpty()) {
+                for (HouseAddon addon : house.getAddons()) {
+                    house.removeAddon(addon);
+                }
             }
+            if (house.livesInHouse(p)) house.removeMieter(Script.getNRPID(p));
             house.setSlots(1);
             Script.executeAsyncUpdate("INSERT INTO house_bewohner (houseID, mieterID, vermieter, miete, nebenkosten, immobilienmarkt) VALUES (" + houseID + ", " + Script.getNRPID(p) + ", " + true + ", " + 0 + ", 0, FALSE);");
             p.sendMessage(ACCEPTED + "Du hast das Haus erfolgreich gekauft.");
