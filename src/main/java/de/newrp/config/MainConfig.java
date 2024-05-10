@@ -7,6 +7,7 @@ public class MainConfig {
     private JDBCConfig mainConnection = new JDBCConfig();
     private JDBCConfig forumConnection = new JDBCConfig();
     private String jdaBotToken = "";
+    private int maxRoadBlockAmount = 50;
 
     public MainConfig(JDBCConfig mainConnection, JDBCConfig forumConnection, String jdaBotToken) {
         this.mainConnection = mainConnection;
@@ -28,5 +29,9 @@ public class MainConfig {
 
     public String getJdaBotToken() {
         return jdaBotToken;
+    }
+
+    public int getMaxRoadBlockAmount() {
+        return maxRoadBlockAmount;
     }
 }

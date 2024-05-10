@@ -54,6 +54,13 @@ import de.newrp.features.emergencycall.commands.*;
 import de.newrp.features.emergencycall.impl.EmergencyCallService;
 import de.newrp.features.emergencycall.listener.EmergencyCallInventoryListener;
 import de.newrp.features.emergencycall.listener.EmergencyCallQuitListener;
+import de.newrp.features.roadblocks.IFactionBlockService;
+import de.newrp.features.roadblocks.commands.RoadBlockCommand;
+import de.newrp.features.roadblocks.commands.SprungtuchCommand;
+import de.newrp.features.roadblocks.impl.FactionBlockService;
+import de.newrp.features.roadblocks.listener.FactionBlockClickListener;
+import de.newrp.features.roadblocks.listener.FactionBlockDropItemListener;
+import de.newrp.features.roadblocks.listener.FactionBlockQuitListener;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder;
@@ -466,6 +473,8 @@ public class NewRoleplayMain extends JavaPlugin {
         getCommand("tanken").setExecutor(new TankenCommand());
         getCommand("kennzeichen").setExecutor(new Kennzeichen());
         getCommand("fahrschule").setExecutor(new Fahrschule());
+        getCommand("roadblock").setExecutor(new RoadBlockCommand());
+        getCommand("sprungtuch").setExecutor(new SprungtuchCommand());
     }
 
     /**
@@ -609,6 +618,9 @@ public class NewRoleplayMain extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new DeathmatchQuitListener(), this);
         Bukkit.getPluginManager().registerEvents(new Kennzeichen(), this);
         Bukkit.getPluginManager().registerEvents(new Fahrschule(), this);
+        Bukkit.getPluginManager().registerEvents(new FactionBlockClickListener(), this);
+        Bukkit.getPluginManager().registerEvents(new FactionBlockDropItemListener(), this);
+        Bukkit.getPluginManager().registerEvents(new FactionBlockQuitListener(), this);
     }
 
     /**
@@ -617,9 +629,11 @@ public class NewRoleplayMain extends JavaPlugin {
     private void registerAllDependencies() {
         DependencyContainer.getContainer().add(NewRoleplayMain.class, this);
         DependencyContainer.getContainer().add(IConfigService.class, this.configService);
+        DependencyContainer.getContainer().add(MainConfig.class, this.mainConfig);
         DependencyContainer.getContainer().add(IEmergencyCallService.class, new EmergencyCallService());
         DependencyContainer.getContainer().add(IJdaService.class, new JdaService());
         DependencyContainer.getContainer().add(IDeathmatchArenaService.class, new DeathmatchArenaService());
+        DependencyContainer.getContainer().add(IFactionBlockService.class, new FactionBlockService());
     }
 
     /**

@@ -740,3 +740,7 @@ commands:
   fahrschule:
     description: how to drive
     aliases: [ drivingschool ]
+  roadblock:
+    description: activates the roadblock system
+  sprungtuch:
+    description: activates the sprungtuch system
