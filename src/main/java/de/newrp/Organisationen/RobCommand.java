@@ -17,6 +17,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 public class RobCommand implements CommandExecutor {
@@ -82,7 +83,8 @@ public class RobCommand implements CommandExecutor {
                     cooldownsP.put(player, System.currentTimeMillis() + 10 * 60 * 1000);
 
                     int money = Script.getMoney(player, PaymentType.CASH);
-                    if (money > 50) money = 50;
+                    if (money > 500) money = 500;
+                    money = Math.round(money * (0.4F + (new Random().nextFloat() / 3)));
                     Me.sendMessage(player, "greift in die Brieftasche von " + victim.getName() + ".");
 
                     Player finalVictim = victim;
