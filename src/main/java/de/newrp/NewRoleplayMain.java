@@ -183,6 +183,7 @@ public class NewRoleplayMain extends JavaPlugin {
     /***
      * Method to register all commands, soon to be fully automatic
      */
+    @SuppressWarnings("DataFlowIssue")
     private void registerAllCommands() {
 
         // To-Do: Use command map to register commands, big refactoring inc
@@ -473,14 +474,11 @@ public class NewRoleplayMain extends JavaPlugin {
         getCommand("tanken").setExecutor(new TankenCommand());
         getCommand("kennzeichen").setExecutor(new Kennzeichen());
         getCommand("fahrschule").setExecutor(new Fahrschule());
-<<<<<<< HEAD
         getCommand("roadblock").setExecutor(new RoadBlockCommand());
         getCommand("sprungtuch").setExecutor(new SprungtuchCommand());
-=======
         getCommand("leasing").setExecutor(new LeasingCommand());
         getCommand("breakin").setExecutor(new BreakinCommand());
         getCommand("rob").setExecutor(new RobCommand());
->>>>>>> ramses-changes
     }
 
     /**
