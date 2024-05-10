@@ -324,17 +324,17 @@ public class PayShop implements Listener {
         final double mwst = Steuern.Steuer.MEHRWERTSTEUER.getPercentage();
         final int bankTransferFee = (int) Script.getPercent(2, price);
         final int buyPrice = si.getBuyPrice() * buyAmount;
-        Bukkit.getLogger().info("MWST = " + mwst + ", " +
+        Debug.debug("MWST = " + mwst + ", " +
                 "bankTransferFee = " + bankTransferFee + ", " +
                 "paid price = " + price + ", " +
                 "buyPriceSingle = " + si.getBuyPrice() + ", " +
                 "buyPriceTimes" + buyAmount + " = " + buyPrice);
 
-        Bukkit.getLogger().info("Price before mwst (" + mwst + ") is " + (price - buyPrice));
+        Debug.debug("Price before mwst (" + mwst + ") is " + (price - buyPrice));
 
         int shopMoney = (price - buyPrice) - (int) Script.getPercent(mwst, price - buyPrice);
 
-        Bukkit.getLogger().info("Price after mwst is " + shopMoney);
+        Debug.debug("Price after mwst is " + shopMoney);
         if(type == PaymentType.BANK) {
             shopMoney -= bankTransferFee;
         }

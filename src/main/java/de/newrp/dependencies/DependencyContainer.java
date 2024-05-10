@@ -1,5 +1,6 @@
 package de.newrp.dependencies;
 
+import de.newrp.API.Debug;
 import org.bukkit.Bukkit;
 
 import java.util.Map;
@@ -20,7 +21,7 @@ public class DependencyContainer {
 
     public <T> T getDependency(final Class<? extends T> type) {
         if(!registeredDependencies.containsKey(type)) {
-            Bukkit.getLogger().warning("Dependency Container doesn't know type " + type.getName());
+            Debug.debug("Dependency Container doesn't know type " + type.getName());
             return null;
         }
 

@@ -1,9 +1,6 @@
 package de.newrp.features.deathmatcharena.impl;
 
-import de.newrp.API.Hologram;
-import de.newrp.API.ItemBuilder;
-import de.newrp.API.Messages;
-import de.newrp.API.Script;
+import de.newrp.API.*;
 import de.newrp.Administrator.SDuty;
 import de.newrp.Organisationen.Drogen;
 import de.newrp.Waffen.Waffen;
@@ -155,7 +152,7 @@ public class DeathmatchArenaService implements IDeathmatchArenaService {
     public void sendMessageToArenaMembers(String message) {
         for (final DeathmatchJoinData value : this.activeParticipants.values()) {
             if(value.player() == null) {
-                Bukkit.getLogger().warning("A player is null in deathmatch arena, maybe not removed properly?");
+                Debug.debug("A player is null in deathmatch arena, maybe not removed properly?");
                 continue;
             }
 

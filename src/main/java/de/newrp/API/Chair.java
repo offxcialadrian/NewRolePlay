@@ -76,6 +76,9 @@ public class Chair implements Listener {
 
         Block b = e.getClickedBlock();
         if (!canSit(p, b) || !Script.isInRange(p.getLocation(), b.getLocation(), 1.9D)) return;
+        if(b instanceof Stairs) {
+
+        }
         Stairs u = (Stairs) b.getState().getData();
         BlockFace F = u.getFacing().getOppositeFace();
         if (chairIsUsed(b.getLocation())) return;

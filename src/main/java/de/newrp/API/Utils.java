@@ -397,9 +397,7 @@ public class Utils implements Listener {
                 }
             }.runTaskLaterAsynchronously(NewRoleplayMain.getInstance(), 20L);
         }
-        e.getPlayer().
-
-                setPlayerListName(Script.getName(e.getPlayer()));
+        Script.updateListname(p);
         Script.checkPlayerName(p);
         Script.resetHealth(p);
         Log.LOW.write(p, "hat den Server betreten.");

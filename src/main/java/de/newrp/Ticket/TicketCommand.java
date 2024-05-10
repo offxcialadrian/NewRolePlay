@@ -131,7 +131,7 @@ public class TicketCommand implements CommandExecutor {
         conversation.keySet().removeIf(n -> r.getID() == n);
 
         for (Player p : list) {
-            p.setPlayerListName(Script.getName(p));
+            Script.updateListname(p);
         }
     }
 

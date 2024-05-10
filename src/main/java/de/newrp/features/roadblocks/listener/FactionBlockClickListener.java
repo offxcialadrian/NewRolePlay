@@ -33,7 +33,7 @@ public class FactionBlockClickListener implements Listener {
             return;
         }
 
-        if(System.currentTimeMillis() - this.lastUsed < 500) {
+        if(System.currentTimeMillis() - this.lastUsed < 250) {
             return;
         }
 
@@ -42,7 +42,6 @@ public class FactionBlockClickListener implements Listener {
         }
 
         if(!itemStack.getItemMeta().getDisplayName().equalsIgnoreCase(this.factionBlockService.getItem().getItemMeta().getDisplayName())) {
-            Bukkit.getLogger().warning("not the right item D:");
             return;
         }
 
