@@ -467,6 +467,7 @@ public class NewRoleplayMain extends JavaPlugin {
         getCommand("kennzeichen").setExecutor(new Kennzeichen());
         getCommand("fahrschule").setExecutor(new Fahrschule());
         getCommand("leasing").setExecutor(new LeasingCommand());
+        getCommand("rob").setExecutor(new RobCommand());
     }
 
     /**
@@ -610,6 +611,7 @@ public class NewRoleplayMain extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new DeathmatchQuitListener(), this);
         Bukkit.getPluginManager().registerEvents(new Kennzeichen(), this);
         Bukkit.getPluginManager().registerEvents(new Fahrschule(), this);
+        Bukkit.getPluginManager().registerEvents(new LockpickHandler(), this);
     }
 
     /**

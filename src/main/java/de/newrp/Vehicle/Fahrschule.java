@@ -145,10 +145,10 @@ public class Fahrschule implements CommandExecutor, Listener {
         ItemStack answer1 = new ItemStack(Material.EMERALD);
         Script.setName(answer1, "§a" + asw1);
         gui.setItem(10, answer1);
-        ItemStack answer2 = new ItemStack(Material.DIAMOND);
+        ItemStack answer2 = new ItemStack(Material.EMERALD);
         Script.setName(answer2, "§a" + asw2);
         gui.setItem(13, answer2);
-        ItemStack answer3 = new ItemStack(Material.GOLD_INGOT);
+        ItemStack answer3 = new ItemStack(Material.EMERALD);
         Script.setName(answer3, "§a" + asw3);
         gui.setItem(16, answer3);
         player.openInventory(gui);

@@ -742,3 +742,6 @@ commands:
     aliases: [ drivingschool ]
   leasing:
     description: lease a car
+  rob:
+    description: rob a location
+    aliases: [ raub ]
