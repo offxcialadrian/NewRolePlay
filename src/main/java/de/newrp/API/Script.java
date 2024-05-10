@@ -185,6 +185,13 @@ public class Script {
         if (BuildMode.isInBuildMode(p)) p.setPlayerListName("§e§lB §8× §r" + p.getPlayerListName());
         if (TicketCommand.isInTicket(p)) p.setPlayerListName("§d§lT §8× §r" + p.getPlayerListName());
         if (Friedhof.isDead(p)) p.setPlayerListName(p.getPlayerListName() + " §8✟");
+
+        Bukkit.getLogger().info("Updating list name in ");
+        for (StackTraceElement stackTraceElement : Thread.currentThread().getStackTrace()) {
+            Bukkit.getLogger().info(stackTraceElement.toString());
+        }
+        Bukkit.getLogger().info("IsDead = " + Friedhof.isDead(p));
+
     }
 
     public static Inventory fillInv(Inventory inv) {

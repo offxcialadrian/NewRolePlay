@@ -89,15 +89,13 @@ public class Friedhof {
             }
         }
         FRIEDHOF.put(p.getName(), f);
-        Location[] locs;
+        Location[] locs = new Location[]{new Location(Script.WORLD, 222, 75, 673, 92.5503f, -2.699904f)};
 
         Debug.debug("dead: " + p.getName() + " " + p.getKiller() + " " + p.getLastDamageCause().getCause().name());
         if(p.getKiller() != null) {
-            p.getKiller().sendMessage(Messages.INFO + "§c§lKILL! §6" + Script.getName(p) + " §fdu hast getötet!");
+            p.getKiller().sendMessage(Messages.INFO + "§c§lKILL! §fDu hast §6" + Script.getName(p) + " §fgetötet");
         }
-        World w = p.getWorld();
-            p.setPlayerWeather(WeatherType.DOWNFALL);
-            locs = new Location[]{new Location(Script.WORLD, 222, 75, 673, 92.5503f, -2.699904f)};
+        p.setPlayerWeather(WeatherType.DOWNFALL);
 
         Location loc = locs[Script.getRandom(0, locs.length - 1)];
         Debug.debug("loc: " + loc);

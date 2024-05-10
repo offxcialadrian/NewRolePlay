@@ -17,6 +17,9 @@ import org.bukkit.inventory.Inventory;
 
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 public class Notifications implements CommandExecutor, Listener {
 
@@ -69,13 +72,17 @@ public class Notifications implements CommandExecutor, Listener {
     }
 
     public static void sendMessage(NotificationType type, String msg) {
+        final List<UUID> hasReceived = new ArrayList<>();
         for (Player p : Script.getNRPTeam()) {
+            hasReceived.add(p.getUniqueId());
             if (isNotificationEnabled(p, type)) {
                 p.sendMessage((type == NotificationType.ADVANCED_ANTI_CHEAT ? AntiCheatSystem.PREFIX : PREFIX) + msg);
             }
         }
 
         for (final Player p : Bukkit.getOnlinePlayers()) {
+            if(hasReceived.contains(p.getUniqueId())) continue;
+
             if(Team.getTeam(p) == null) continue;
             if (Team.getTeam(p) == Team.Teams.ENTWICKLUNG)
                 p.sendMessage((type == NotificationType.ADVANCED_ANTI_CHEAT ? AntiCheatSystem.PREFIX : PREFIX) + msg);
