@@ -102,6 +102,7 @@ public class SQLCommand implements CommandExecutor {
                     Bukkit.getLogger().info(query);
 
                     try(final PreparedStatement statement = NewRoleplayMain.getConnection().prepareStatement(query)) {
+                        statement.execute();
                         player.sendMessage(getPrefix() + "§aErfolgreich ausgeführt!");
                     } catch(final Exception exception) {
                         player.sendMessage(exception.getMessage());
