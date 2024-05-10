@@ -24,7 +24,7 @@ import java.util.HashMap;
 
 public class TV implements CommandExecutor, Listener {
 
-    public static HashMap<String, Location> tvs = new HashMap<>();
+    public static HashMap<Player, Location> tvs = new HashMap<>();
     public static String PREFIX = "§8[§6TV§8] §6" + Messages.ARROW + " §7";
 
     @Override
@@ -36,14 +36,14 @@ public class TV implements CommandExecutor, Listener {
             return true;
         }
 
-        if (tvs.containsKey(p.getName())) {
+        if (tvs.containsKey(p)) {
             p.sendMessage(PREFIX + "Du hast den Fernseher ausgeschaltet.");
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    p.teleport(tvs.get(p.getName()));
-                    tvs.remove(p.getName());
                     p.setSpectatorTarget(null);
+                    p.teleport(tvs.get(p));
+                    tvs.remove(p);
                     p.setGameMode(GameMode.SURVIVAL);
                 }
             }.runTaskLater(NewRoleplayMain.getInstance(), 5L);
@@ -67,7 +67,7 @@ public class TV implements CommandExecutor, Listener {
             return true;
         }
 
-        tvs.put(p.getName(), p.getLocation());
+        tvs.put(p, p.getLocation());
         p.setGameMode(GameMode.SPECTATOR);
         p.teleport(camera.getLocation().add(0, 3, 0));
         Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> p.setSpectatorTarget(camera), 5L);

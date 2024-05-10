@@ -62,6 +62,7 @@ public class NewsCommand implements CommandExecutor {
         Bukkit.broadcastMessage(msg.toString());
         Script.sendTeamMessage(NEWS + "Diese News wurde geschaltet von " + Script.getName(p));
         Beruf.Berufe.NEWS.sendMessage(NEWS + "Diese News wurde geschaltet von " + Script.getName(p));
+        Script.addEXP(p, Script.getRandom(4, 8));
 
         return false;
     }

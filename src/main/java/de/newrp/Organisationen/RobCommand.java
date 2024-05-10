@@ -95,10 +95,12 @@ public class RobCommand implements CommandExecutor {
                             if (finalLocation.distance(finalVictim.getLocation()) <= 2) {
                                 Me.sendMessage(player, "nimmt etwas aus der Brieftasche von " + finalVictim.getName() + " heraus.");
                                 player.sendMessage(PREFIX + "Du hast " + finalMoney + "€ von " + finalVictim.getName() + " gestohlen.");
-                                Script.addEXP(player, finalMoney / 5);
+                                int exp = finalMoney / 5;
+                                if (exp > 50) exp = 50;
+                                Script.addEXP(player, exp);
                                 Script.removeMoney(finalVictim, PaymentType.CASH, finalMoney);
                                 Script.addMoney(player, PaymentType.CASH, finalMoney);
-                                cooldownsV.put(player, System.currentTimeMillis() + 2 * 60 * 60 * 1000);
+                                cooldownsV.put(finalVictim, System.currentTimeMillis() + 2 * 60 * 60 * 1000);
                             } else {
                                 player.sendMessage(PREFIX + "Die Person hat sich zu viel bewegt!");
                             }
