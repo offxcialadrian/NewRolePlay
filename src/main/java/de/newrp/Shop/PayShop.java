@@ -9,15 +9,14 @@ import de.newrp.House.House;
 import de.newrp.House.HouseAddon;
 import de.newrp.Medic.Medikamente;
 import de.newrp.Medic.Rezept;
+import de.newrp.NewRoleplayMain;
 import de.newrp.Player.Banken;
 import de.newrp.Player.Mobile;
 import de.newrp.Vehicle.Car;
 import de.newrp.Vehicle.CarType;
 import de.newrp.Waffen.Waffen;
 import de.newrp.Waffen.Weapon;
-import de.newrp.NewRoleplayMain;
 import net.kyori.adventure.text.Component;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -291,6 +290,12 @@ public class PayShop implements Listener {
                         p.sendMessage(Component.text(Car.PREFIX + "Du hast keinen Führerschein!"));
                         return;
                     }
+
+                    if (Car.getCars(p).size() >= SlotLimit.VEHICLE.get(Script.getNRPID(p))) {
+                        p.sendMessage(Component.text(Messages.ERROR + "Du hast Fahrzeug-Slots übrig!"));
+                        return;
+                    }
+
                     CarType carType = CarType.getCarTypeByName(si.getName());
                     assert carType != null;
                     Car car = Car.createCar(carType, new Location(p.getWorld(), 393 + new Random().nextInt(3), 76.5, 1090), p);
