@@ -32,6 +32,7 @@ public class StrafzettelCommand implements CommandExecutor {
                             String reason = String.valueOf(r).replaceFirst("  ", "");
                             Strafzettel.reasons.put(player, reason);
                             Strafzettel.prices.put(player, price);
+                            player.sendMessage(PREFIX + "Du hast ein Kennzeichen von §e" + price + "€ §7mit dem Grund §e" + reason + " §7erstellt.");
                         } else {
                             player.sendMessage(PREFIX + "Du musst einen Grund angeben!");
                         }

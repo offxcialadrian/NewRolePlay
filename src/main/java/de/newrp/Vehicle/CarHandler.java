@@ -113,6 +113,11 @@ public class CarHandler implements Listener {
         if (event.getVehicle() instanceof Boat) {
             if (event.getEntered() instanceof Player) {
                 Car car = Car.getCarByEntityID(event.getVehicle().getEntityId());
+                if (car == null) {
+                    event.setCancelled(true);
+                    event.getVehicle().remove();
+                }
+
                 Player player = (Player) event.getEntered();
                 if (CheckKFZ.isChecking(player)) {
                     CheckKFZ.check(player, car);
@@ -122,8 +127,9 @@ public class CarHandler implements Listener {
                     car.setStrafzettel(new Strafzettel(car.getCarID(), Strafzettel.reasons.get(player), Strafzettel.prices.get(player), Script.getNRPID(player)));
                     Strafzettel.reasons.remove(player);
                     Strafzettel.prices.remove(player);
+                    player.sendMessage(StrafzettelCommand.PREFIX + "Du hast den Strafzettel am Auto platziert.");
                     event.setCancelled(true);
-                }else {
+                } else {
                     if (SDuty.isSDuty(player)) {
                         event.setCancelled(true);
                         return;
@@ -132,7 +138,7 @@ public class CarHandler implements Listener {
                     if (car.getStrafzettel() != null) {
                         Strafzettel ticket = car.getStrafzettel();
                         if (car.isCarOwner(player)) {
-                            event.getEntered().sendMessage(StrafzettelCommand.PREFIX + "Dein Auto hat einen Strafzettel!");
+                            event.getEntered().sendMessage(StrafzettelCommand.PREFIX + "Dein Auto hat einen Strafzettel:");
                             event.getEntered().sendMessage(StrafzettelCommand.PREFIX + "Grund: §e" + ticket.getReason() + "§7 | Betrag: §e" + ticket.getPrice() + "€");
                         } else {
                             event.getEntered().sendMessage(StrafzettelCommand.PREFIX + "Das Auto hat einen Strafzettel!");

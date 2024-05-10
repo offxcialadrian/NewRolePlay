@@ -34,7 +34,7 @@ public class Strafzettel {
 
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
-                return new Strafzettel(rs.getInt("id"), rs.getString("betrag"), rs.getInt("grund"), rs.getInt("cop"));
+                return new Strafzettel(rs.getInt("id"), rs.getString("betrag").replaceAll("\"", ""), rs.getInt("grund"), rs.getInt("cop"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -43,7 +43,7 @@ public class Strafzettel {
     }
 
     public static void saveStrafzettel(int carID, String reason, int price, int copID) {
-        Script.executeAsyncUpdate("UPDATE strafzettel SET car_id=" + carID + ", betrag=" + price + ", grund=" + reason + ", cop_id=" + copID + "  WHERE id=" + carID);
+        Script.executeAsyncUpdate("INSERT INTO strafzettel (car_id, betrag, grund, cop_id) VALUES (" + carID + ", " + price + ", \"" + reason + "\", " + copID + ")");
     }
 
     public static boolean isTicketing(Player player) {
