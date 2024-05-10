@@ -119,6 +119,10 @@ public class Fahndung implements CommandExecutor, TabCompleter {
                 p.sendMessage(Messages.ERROR + "Die Straftat §e" + arg.replace("-"," ") + " §7existiert nicht.");
                 continue;
             }
+            if(getStraftatIDs(tg).contains(Straftat.getReasonID(arg))) {
+                p.sendMessage(Messages.ERROR + "Der Spieler ist bereits wegen §e" + arg.replace("-"," ") + " §7gefahndet.");
+                continue;
+            }
             sb.append(arg).append(" & ");
             Script.executeAsyncUpdate("INSERT INTO wanted (nrp_id, copID, wantedreason, time) VALUES ('" + Script.getNRPID(tg) + "', '" + Script.getNRPID(p) + "', '" + Straftat.getReasonID(arg) + "', '" + System.currentTimeMillis() + "')");
         }
