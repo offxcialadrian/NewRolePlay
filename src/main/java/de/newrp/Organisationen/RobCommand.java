@@ -82,7 +82,7 @@ public class RobCommand implements CommandExecutor {
 
                     cooldownsP.put(player, System.currentTimeMillis() + 10 * 60 * 1000);
 
-                    int money = Script.getMoney(player, PaymentType.CASH);
+                    int money = Script.getMoney(victim, PaymentType.CASH);
                     if (money > 500) money = 500;
                     money = Math.round(money * (0.4F + (new Random().nextFloat() / 3)));
                     Me.sendMessage(player, "greift in die Brieftasche von " + victim.getName() + ".");
