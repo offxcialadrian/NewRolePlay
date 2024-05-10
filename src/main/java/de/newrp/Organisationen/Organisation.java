@@ -373,28 +373,28 @@ public enum Organisation {
     }
 
     public List<Player> getMember() {
-        return getOrga(this);
+        return getOrga();
     }
 
-    private List<Player> getOrga(Organisation orga) {
-        if (!ORGA_MEMBER.containsKey(orga)) {
-            ORGA_MEMBER.put(orga, new ArrayList<>());
+    private List<Player> getOrga() {
+        if (!ORGA_MEMBER.containsKey(this)) {
+            ORGA_MEMBER.put(this, new ArrayList<>());
         }
-        return ORGA_MEMBER.get(orga);
+        return ORGA_MEMBER.get(this);
     }
 
     public void setMember(Player player) {
         if (Organisation.hasOrganisation(player)) {
-            Objects.requireNonNull(getOrga(Organisation.getOrganisation(player))).add(player);
+            getOrga().add(player);
         }
     }
 
     public void deleteMember(Player player) {
-        Objects.requireNonNull(getOrga(this)).remove(player);
+        getOrga().remove(player);
     }
 
     public Boolean isMember(Player player) {
-        return Objects.requireNonNull(getOrga(this)).contains(player);
+        return Objects.requireNonNull(getOrga()).contains(player);
     }
 
     public List<OfflinePlayer> getAllMembers() {

@@ -19,7 +19,6 @@ import de.newrp.discord.Discord;
 import de.newrp.discord.IJdaService;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.Member;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -86,6 +85,7 @@ public class Annehmen implements CommandExecutor {
             leader.sendMessage(Messages.INFO + "Nutze /salary [Spieler] [Gehalt], um " + Script.getName(p) + " ein Gehalt zu geben.");
             beruf.addMember(p, leader);
             beruf.setMember(p);
+            Beruf.getBeruf(p.getPlayer()).changeDuty(p, false);
             offer.remove(p.getName() + ".joinberuf");
             Achievement.BERUF_JOIN.grant(p);
             TeamSpeak.sync(Script.getNRPID(p));

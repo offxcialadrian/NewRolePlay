@@ -75,6 +75,7 @@ public class JoinBeruf implements CommandExecutor, Listener {
 
             Script.executeUpdate("INSERT INTO berufe (nrp_id, berufID, salary, abteilung, leader, coleader) VALUES ('" + Script.getNRPID(p) + "', '" + beruf.getID() + "', '0', '0', '1', '0')");
             beruf.setMember(p);
+            Beruf.getBeruf(p.getPlayer()).changeDuty(p, false);
             p.sendMessage(PREFIX + "Du bist nun Teil der " + beruf.getName() + ".");
             Script.sendTeamMessage(p, ChatColor.YELLOW, "ist nun Teil der " + beruf.getName() + ".", true);
             p.sendMessage(Messages.INFO + "Du hast automatisch die Leaderrechte erhalten.");

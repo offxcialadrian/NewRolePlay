@@ -116,6 +116,7 @@ public class CarHandler implements Listener {
                 if (car == null) {
                     event.setCancelled(true);
                     event.getVehicle().remove();
+                    return;
                 }
 
                 Player player = (Player) event.getEntered();
@@ -208,23 +209,25 @@ public class CarHandler implements Listener {
             event.setCancelled(true);
             Player player = (Player) event.getWhoClicked();
             ItemStack item = event.getCurrentItem();
-            String plate = Objects.requireNonNull(((TextComponent) Objects.requireNonNull(event.getCurrentItem()).getItemMeta().displayName())).content();
-            Car car = Car.getCarByLicenseplateCheckOwner(plate, player);
-            if (car != null) {
-                assert item != null;
-                if (item.getType() == Material.LIME_DYE) {
-                    car.setLocked(true);
-                    player.getWorld().playSound(car.getLocation(), Sound.BLOCK_STONE_BUTTON_CLICK_OFF, 1.0F, 0.9F);
-                    player.sendMessage(Component.text(Car.PREFIX + "Du hast deinen " + car.getCarType().getName() + " abgeschlossen."));
-                } else if (item.getType() == Material.RED_DYE) {
-                    car.setLocked(false);
-                    player.getWorld().playSound(car.getLocation(), Sound.BLOCK_STONE_BUTTON_CLICK_ON, 1.0F, 1.0F);
-                    player.sendMessage(Component.text(Car.PREFIX + "Du hast deinen " + car.getCarType().getName() + " aufgeschlossen."));
-                } else if (item.getType() == Material.ACACIA_BOAT || item.getType() == Material.BIRCH_BOAT || item.getType() == Material.JUNGLE_BOAT || item.getType() == Material.OAK_BOAT || item.getType() == Material.SPRUCE_BOAT || item.getType() == Material.DARK_OAK_BOAT) {
-                    player.performCommand("navi " + car.getLocation().getBlockX() + "/" + car.getLocation().getBlockY() + "/" + car.getLocation().getBlockZ());
+            String plate;
+            if (item != null) {
+                plate = Objects.requireNonNull(((TextComponent) item.getItemMeta().displayName())).content();
+                Car car = Car.getCarByLicenseplateCheckOwner(plate, player);
+                if (car != null) {
+                    if (item.getType() == Material.LIME_DYE) {
+                        car.setLocked(true);
+                        player.getWorld().playSound(car.getLocation(), Sound.BLOCK_STONE_BUTTON_CLICK_OFF, 1.0F, 0.9F);
+                        player.sendMessage(Component.text(Car.PREFIX + "Du hast deinen " + car.getCarType().getName() + " abgeschlossen."));
+                    } else if (item.getType() == Material.RED_DYE) {
+                        car.setLocked(false);
+                        player.getWorld().playSound(car.getLocation(), Sound.BLOCK_STONE_BUTTON_CLICK_ON, 1.0F, 1.0F);
+                        player.sendMessage(Component.text(Car.PREFIX + "Du hast deinen " + car.getCarType().getName() + " aufgeschlossen."));
+                    } else if (item.getType() == Material.ACACIA_BOAT || item.getType() == Material.BIRCH_BOAT || item.getType() == Material.JUNGLE_BOAT || item.getType() == Material.OAK_BOAT || item.getType() == Material.SPRUCE_BOAT || item.getType() == Material.DARK_OAK_BOAT) {
+                        player.performCommand("navi " + car.getLocation().getBlockX() + "/" + car.getLocation().getBlockY() + "/" + car.getLocation().getBlockZ());
+                    }
                 }
-            } // Hier könnte man noch eine automatische Bugmeldung hinzufügen
-            event.getInventory().close();
+                event.getInventory().close();
+            }
         }
     }
 
