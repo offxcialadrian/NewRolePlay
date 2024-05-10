@@ -11,7 +11,7 @@ import org.bukkit.inventory.ItemStack;
 
 public class Leitungswasser implements CommandExecutor {
 
-    private static final String PREFIX = "§8[§9Leitungswasser§8] §9" + Messages.ARROW + "§7";
+    private static final String PREFIX = "§8[§9Leitungswasser§8] §9" + Messages.ARROW + " §7";
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String s, String[] args) {

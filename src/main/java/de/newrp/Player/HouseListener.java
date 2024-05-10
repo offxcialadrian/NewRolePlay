@@ -4,7 +4,6 @@ import de.newrp.API.*;
 import de.newrp.GFB.GFB;
 import de.newrp.House.House;
 import de.newrp.House.HouseAddon;
-import de.newrp.House.InstallAddon;
 import de.newrp.Shop.PayShop;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -88,7 +87,7 @@ public class HouseListener implements Listener {
                 h.setOwner(Script.getNRPID(p));
                 h.updateSign();
                 Script.executeAsyncUpdate("INSERT INTO house_bewohner (houseID, mieterID, vermieter, miete, nebenkosten, immobilienmarkt) VALUES (" + h.getID() + ", " + Script.getNRPID(p) + ", TRUE, 0, 0, FALSE); ");
-                p.sendMessage(Script.PREFIX + "Du hast das Haus gekauft.");
+                p.sendMessage(Script.PREFIX + "§7Du hast das Haus gekauft.");
             } else {
                 p.sendMessage(Messages.ERROR + "Du hast nicht ausreichend Geld.");
             }

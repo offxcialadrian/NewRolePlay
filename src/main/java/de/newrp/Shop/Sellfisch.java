@@ -21,6 +21,8 @@ public class Sellfisch implements CommandExecutor {
 
     public static final HashMap<String, Long> COOLDOWN = new HashMap<>();
 
+    public static final String PREFIX = "§8[§9SellFisch§8]§9 " + Messages.ARROW + " §7";
+
     @Override
     public boolean onCommand(@NotNull CommandSender cs, @NotNull Command cmd, @NotNull String s, @NotNull String[] args) {
         Player p = (Player) cs;
@@ -67,6 +69,7 @@ public class Sellfisch implements CommandExecutor {
         p.getInventory().getItemInOffHand().setType(Material.AIR);
 
         int i = 0;
+        int c = 0;
         //count fish but ignore offhand
         Inventory inv = p.getInventory();
         for(int j = 0; j < inv.getSize(); j++) {
@@ -79,6 +82,7 @@ public class Sellfisch implements CommandExecutor {
             if(is.getType() == Material.TROPICAL_FISH) i += (int) (1.25*is.getAmount());
             if(is.getType() == Material.COD) i += is.getAmount();
             if(is.getType() == Material.SALMON) i += (int) (1.5*is.getAmount());
+            c += is.getAmount();
         }
 
         if (i == 0) {
@@ -99,7 +103,7 @@ public class Sellfisch implements CommandExecutor {
 
         }
 
-        p.sendMessage(Messages.INFO + "Du hast " + i + " Fische für " + price + "€ verkauft.");
+        p.sendMessage(PREFIX + "Du hast " + c + " Fische für " + price + "€ verkauft.");
         COOLDOWN.put(p.getName(), System.currentTimeMillis() + 1000 * 60 * 5);
         Script.addMoney(p, PaymentType.CASH, price);
 

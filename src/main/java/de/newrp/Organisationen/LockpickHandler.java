@@ -50,7 +50,7 @@ public class LockpickHandler implements Listener {
                             }
                         } else {
                             if (f.get(player) == 0) {
-                                Beruf.Berufe.POLICE.sendMessage(BreakinCommand.PREFIX + "Es wurde ein Alarm bei " + RobLocation.getRob(Organisation.getOrganisation(player), player.getLocation()) + " verzeichnet.");
+                                Beruf.Berufe.POLICE.sendMessage(BreakinCommand.PREFIX + "Es wurde ein Alarm bei " + Objects.requireNonNull(RobLocation.getRob(Organisation.getOrganisation(player), player.getLocation())).getName() + " verzeichnet.");
                                 alarm.put(player, 0);
                                 Location rob = Objects.requireNonNull(RobLocation.getRob(Organisation.getOrganisation(player), player.getLocation())).getLoc();
                                 rob.add(0, 4, 0);
