@@ -173,6 +173,7 @@ public class Schule implements CommandExecutor, Listener {
             }
 
             Script.removeMoney(p, PaymentType.BANK, gfb.getLevel(p)*120);
+            Stadtkasse.removeStadtkasse(75, "Schule");
             STUDIYING.put(p, gfb);
             STARTED.put(p, System.currentTimeMillis());
             p.sendMessage(PREFIX + "Du lernst nun für den GFB-Job " + gfb.getName() + ".");
