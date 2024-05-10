@@ -118,12 +118,14 @@ public enum Shops {
     }
 
     public static Shops getShopByLocation(Location loc, float distance) {
-        for(Shops shop : Shops.values()) {
-            if(shop.getLocation().distance(loc) <= distance) {
-                return shop;
+        Shops shop = null;
+        for(Shops s : Shops.values()) {
+            if (s.getLocation().distance(loc) <= distance) {
+                if (shop == null) shop = s;
+                else if (s.getLocation().distance(loc) < shop.getLocation().distance(loc)) shop = s;
             }
         }
-        return null;
+        return shop;
     }
 
     public int getKasse() {

@@ -1,138 +1,111 @@
 package de.newrp.Organisationen;
 
-import de.newrp.API.ItemBuilder;
 import de.newrp.API.Messages;
 import de.newrp.API.PaymentType;
 import de.newrp.API.Script;
+import de.newrp.Administrator.SDuty;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Chat.Me;
-import de.newrp.Government.Stadtkasse;
 import de.newrp.NewRoleplayMain;
-import net.kyori.adventure.text.TextComponent;
+import de.newrp.Player.AFK;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
+import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
-import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 public class RobCommand implements CommandExecutor {
 
-    HashMap<Organisation, Long> cooldowns = new HashMap<>();
+    public static String PREFIX = "§8[§4Rob§8] §4" + Messages.ARROW + " §7";
 
-    public static String PREFIX = "§8[§dRob§8] §d" + Messages.ARROW + " §7";
+    HashMap<Player, Long> cooldownsP = new HashMap<>();
+    HashMap<Player, Long> cooldownsV = new HashMap<>();
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
         if (sender instanceof Player) {
-            Player player = ((Player) sender).getPlayer();
+            Player player = (Player) sender;
 
-            assert player != null;
             if (Organisation.hasOrganisation(player)) {
-                if (Organisation.getRank(player) >= 2) {
-                    Organisation orga = Organisation.getOrganisation(player);
-                    if (RobLocation.getLocations(orga).isEmpty()) {
-                        player.sendMessage(Messages.ERROR + "Du kannst nichts ausrauben!");
+                if (cooldownsP.containsKey(player)) {
+                    if (cooldownsP.get(player) > System.currentTimeMillis()) {
+                        long left = cooldownsP.get(player) - System.currentTimeMillis();
+                        player.sendMessage(PREFIX + "Du kannst erst in " + TimeUnit.MILLISECONDS.toMinutes(left) + " Minuten wieder eine Person ausrauben!");
                         return true;
                     }
+                }
 
-                    if (player.getInventory().getItemInMainHand().getType() != Material.BLAZE_ROD) {
-                        player.sendMessage(PREFIX + "Du benötigst eine Brechstange zum Aufbrechen.");
-                        return true;
-                    }
-
-                    RobLocation rob = RobLocation.getRob(orga, player.getLocation());
-                    if (rob != null) {
-                        if (cooldowns.containsKey(orga)) {
-                            if (cooldowns.get(orga) > System.currentTimeMillis()) {
-                                long left = cooldowns.get(orga) - System.currentTimeMillis();
-                                player.sendMessage(PREFIX + "Ihr könnt einen Raub erst wieder in " + TimeUnit.MILLISECONDS.toMinutes(left) + " Minuten versuchen!");
-                                return true;
+                Player victim = null;
+                for (Player v : Bukkit.getServer().getOnlinePlayers()) {
+                    if (v != player) {
+                        if (!AFK.isAFK(v)) {
+                            if (!SDuty.isSDuty(v)) {
+                                double d = v.getLocation().distance(player.getLocation());
+                                if (d <= 1) {
+                                    if (victim == null) victim = v;
+                                    else if (d < victim.getLocation().distance(player.getLocation())) victim = v;
+                                }
                             }
                         }
-                        cooldowns.put(orga, System.currentTimeMillis() + 2 * 60 * 60 * 1000);
-
-                        orga.sendMessage(PREFIX + player.getName() + " beginnt bei " + rob.getName() + " aufzubrechen.");
-                        Me.sendMessage(player, "startet einen Einbruch.");
-
-                        LockpickHandler.c.put(player, 1);
-                        LockpickHandler.a.put(player, 1);
-                        LockpickHandler.f.put(player, 0);
-                        LockpickHandler.value.put(player, 0);
-                        LockpickHandler.pulver.put(player, 0);
-                        LockpickHandler.kraeuter.put(player, 0);
-                        LockpickHandler.next(player, rob.getType());
-
-                        Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> {
-                            if (player.getOpenInventory().title() instanceof TextComponent) {
-                                if (((TextComponent) player.getOpenInventory().title()).content().contains("Schloss")) {
-                                    player.closeInventory();
-
-                                    if (Objects.equals(rob.getType(), "Kasse")) {
-                                        if (LockpickHandler.value.get(player) > 0) {
-                                            Script.addMoney(player, PaymentType.CASH, LockpickHandler.value.get(player));
-                                            orga.sendMessage(PREFIX + player.getName() + " hat erfolgreich " + LockpickHandler.value.get(player) + "€ aus der Kasse gestohlen.");
-                                            Stadtkasse.removeStadtkasse(LockpickHandler.value.get(player), "Raub bei " + rob.getName() + " von " + player.getName());
-                                            Beruf.Berufe.GOVERNMENT.sendMessage(PREFIX + "Die Stadtkasse ist für den Raub bei " + rob.getName() + " aufgekommen.");
-                                            Beruf.Berufe.POLICE.sendMessage(PREFIX + "Der Raub bei " + rob.getName() + " konnte nicht verhindert werden.");
-                                            Beruf.Berufe.POLICE.sendMessage(PREFIX + "Aufnahmen zeigen, dass " + player.getName() + " verantwortlich ist."); // Kein Bug, zur Fairness nur bei Geldraub Aufnahme;
-                                        } else {
-                                            orga.sendMessage(PREFIX + player.getName() + " hat es nicht geschafft Geld aus der Kasse zu stehlen.");
-                                            Beruf.Berufe.POLICE.sendMessage(PREFIX + "Der Raub bei " + rob.getName() + " wurde verhindert.");
-                                        }
-                                    } else if (Objects.equals(rob.getType(), "Lager")) {
-                                        if (LockpickHandler.pulver.get(player) > 0 || LockpickHandler.kraeuter.get(player) > 0) {
-                                            for (int i = 0; i < LockpickHandler.pulver.get(player); i++) {
-                                                player.getInventory().addItem(new ItemBuilder(Material.SUGAR).setName(Drogen.PULVER.getName()).setLore("§7Reinheitsgrad: " + Drogen.DrugPurity.HIGH.getText()).build());
-                                            }
-                                            for (int i = 0; i < LockpickHandler.kraeuter.get(player); i++) {
-                                                player.getInventory().addItem(new ItemBuilder(Material.GREEN_DYE).setName(Drogen.KRÄUTER.getName()).setLore("§7Reinheitsgrad: " + Drogen.DrugPurity.HIGH.getText()).build());
-                                            }
-                                            if (LockpickHandler.pulver.get(player) > 0 && LockpickHandler.kraeuter.get(player) > 0) {
-                                                orga.sendMessage(PREFIX + player.getName() + " hat " + LockpickHandler.pulver.get(player) + "g Pulver und " + LockpickHandler.kraeuter.get(player) + "g Kräuter aus dem Lager gestohlen.");
-                                            } else if (LockpickHandler.pulver.get(player) > 0) {
-                                                orga.sendMessage(PREFIX + player.getName() + " hat " + LockpickHandler.pulver.get(player) + "g Pulver aus dem Lager gestohlen.");
-                                            } else {
-                                                orga.sendMessage(PREFIX + player.getName() + " hat " + LockpickHandler.kraeuter.get(player) + "g Kräuter aus dem Lager gestohlen.");
-                                            }
-                                            Beruf.Berufe.POLICE.sendMessage(PREFIX + "Der Raub bei " + rob.getName() + " konnte nicht verhindert werden.");
-                                        } else {
-                                            orga.sendMessage(PREFIX + player.getName() + " hat es nicht geschafft Drogen aus dem Lager zu stehlen.");
-                                            Beruf.Berufe.POLICE.sendMessage(PREFIX + "Der Raub bei " + rob.getName() + " wurde verhindert.");
-                                        }
-                                    }
-                                }
-                            }
-
-                            if (LockpickHandler.c.containsKey(player)) {
-                                ItemStack item = player.getInventory().getItemInMainHand();
-                                if (item.getType() == Material.BLAZE_ROD) {
-                                    player.getInventory().getItemInMainHand().setAmount(item.getAmount() - 1);
-                                } else {
-                                    for (ItemStack items : player.getInventory().getContents()) {
-                                        if (items != null && items.getType() == Material.BLAZE_ROD) {
-                                            items.setAmount(items.getAmount() - 1);
-                                        }
-                                    }
-                                }
-
-                                LockpickHandler.c.remove(player);
-                            }
-                        }, 40 * 20L);
-                    } else {
-                        player.sendMessage(Messages.ERROR + "Du bist nicht in der Nähe einer Kasse oder eines Lagers!");
                     }
+                }
+
+                if (victim == null) {
+                    player.sendMessage(PREFIX + "Es gibt keine Person zum Ausrauben in deiner Nähe!");
                 } else {
-                    player.sendMessage(Messages.ERROR + "Du musst mindestens Rang-2 sein um diesen Befehl zu verwenden!");
+                    if (Organisation.hasOrganisation(victim)) {
+                        if (Organisation.getOrganisation(player) == Organisation.getOrganisation(victim)) {
+                            player.sendMessage(PREFIX + "Du kannst deine eigenen Mitglieder nicht ausrauben!");
+                            return true;
+                        }
+                    }
+                    if (Beruf.hasBeruf(victim)) {
+                        Beruf.Berufe beruf = Beruf.getBeruf(victim);
+                        if (beruf == Beruf.Berufe.GOVERNMENT || beruf == Beruf.Berufe.POLICE || beruf == Beruf.Berufe.RETTUNGSDIENST) {
+                            player.sendMessage(PREFIX + "Du kannst Mitglieder des Staates nicht ausrauben!");
+                            return true;
+                        }
+                    }
+
+                    if (cooldownsV.containsKey(victim)) {
+                        if (cooldownsV.get(victim) > System.currentTimeMillis()) {
+                            player.sendMessage(PREFIX + "Diese Person kann gerade nicht ausgeraubt werden!");
+                            return true;
+                        }
+                    }
+
+                    cooldownsP.put(player, System.currentTimeMillis() + 10 * 60 * 1000);
+
+                    int money = Script.getMoney(player, PaymentType.CASH);
+                    if (money > 50) money = 50;
+                    Me.sendMessage(player, "greift in die Brieftasche von " + victim.getName() + ".");
+
+                    Player finalVictim = victim;
+                    Location finalLocation = victim.getLocation();
+                    int finalMoney = money;
+                    Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> {
+                        if (player.getLocation().distance(finalVictim.getLocation()) <= 2) {
+                            if (finalLocation.distance(finalVictim.getLocation()) <= 2) {
+                                Me.sendMessage(player, "nimmt etwas aus der Brieftasche von " + finalVictim.getName() + " heraus.");
+                                player.sendMessage(PREFIX + "Du hast " + finalMoney + "€ von " + finalVictim.getName() + " gestohlen.");
+                                Script.removeMoney(finalVictim, PaymentType.CASH, finalMoney);
+                                Script.addMoney(player, PaymentType.CASH, finalMoney);
+                                cooldownsV.put(player, System.currentTimeMillis() + 2 * 60 * 60 * 1000);
+                            } else {
+                                player.sendMessage(PREFIX + "Die Person hat sich zu viel bewegt!");
+                            }
+                        } else {
+                            player.sendMessage(PREFIX + "Du hast dich zu weit von der Person entfernt!");
+                        }
+                    }, 10 * 20L);
                 }
             } else {
-                player.sendMessage(Messages.ERROR + "Du bist in keiner Organisation!");
+                player.sendMessage(Messages.ERROR + "Du musst in einer Organisation sein um andere Personen auszurauben.");
             }
         }
         return true;

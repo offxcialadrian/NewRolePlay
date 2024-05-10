@@ -36,7 +36,7 @@ public class LockpickHandler implements Listener {
                         if (n == a.get(player)) {
                             if (Objects.equals(a.get(player), c.get(player))) {
                                 if (c.get(player) > 7) {
-                                    Organisation.getOrganisation(player).sendMessage(RobCommand.PREFIX + player.getName() + " ist der Einbruch gelungen.");
+                                    Organisation.getOrganisation(player).sendMessage(BreakinCommand.PREFIX + player.getName() + " ist der Einbruch gelungen.");
                                     event.getInventory().close();
                                     win(player, type);
                                 } else {
@@ -50,7 +50,7 @@ public class LockpickHandler implements Listener {
                             }
                         } else {
                             if (f.get(player) == 0) {
-                                Beruf.Berufe.POLICE.sendMessage(RobCommand.PREFIX + "Es wurde ein Alarm bei " + RobLocation.getRob(Organisation.getOrganisation(player), player.getLocation()) + " verzeichnet.");
+                                Beruf.Berufe.POLICE.sendMessage(BreakinCommand.PREFIX + "Es wurde ein Alarm bei " + RobLocation.getRob(Organisation.getOrganisation(player), player.getLocation()) + " verzeichnet.");
                                 alarm.put(player, 0);
                                 Location rob = Objects.requireNonNull(RobLocation.getRob(Organisation.getOrganisation(player), player.getLocation())).getLoc();
                                 rob.add(0, 4, 0);
@@ -67,12 +67,12 @@ public class LockpickHandler implements Listener {
                                 }.runTaskTimer(NewRoleplayMain.getInstance(), 0L, 2 * 20L);
                             }
                             if (f.get(player) == 2) {
-                                Organisation.getOrganisation(player).sendMessage(RobCommand.PREFIX + player.getName() + " ist der Einbruch nicht gelungen.");
+                                Organisation.getOrganisation(player).sendMessage(BreakinCommand.PREFIX + player.getName() + " ist der Einbruch nicht gelungen.");
                                 RobLocation rob = RobLocation.getRob(Organisation.getOrganisation(player), player.getLocation());
                                 if (rob == null) {
-                                    Beruf.Berufe.POLICE.sendMessage(RobCommand.PREFIX + "Der Raub wurde verhindert.");
+                                    Beruf.Berufe.POLICE.sendMessage(BreakinCommand.PREFIX + "Der Raub wurde verhindert.");
                                 } else {
-                                    Beruf.Berufe.POLICE.sendMessage(RobCommand.PREFIX + "Der Raub bei " + rob.getName() + " wurde verhindert.");
+                                    Beruf.Berufe.POLICE.sendMessage(BreakinCommand.PREFIX + "Der Raub bei " + rob.getName() + " wurde verhindert.");
                                 }
                                 player.getInventory().getItemInMainHand().setAmount(player.getInventory().getItemInMainHand().getAmount() - 1);
                                 LockpickHandler.c.remove(player);
@@ -87,7 +87,7 @@ public class LockpickHandler implements Listener {
                     } else if (display.endsWith("€")) {
                         int v = Integer.parseInt(display.substring(0, display.lastIndexOf("€")));
                         value.put(player, value.get(player) + v);
-                        player.sendMessage(RobCommand.PREFIX + "Du hast " + v + "€ aus der Kasse genommen.");
+                        player.sendMessage(BreakinCommand.PREFIX + "Du hast " + v + "€ aus der Kasse genommen.");
 
                         player.getInventory().close();
                         checkout.get(player).setItem(event.getSlot(), air);
@@ -96,10 +96,10 @@ public class LockpickHandler implements Listener {
                         int g = Integer.parseInt(display.substring(0, display.lastIndexOf("g")));
                         if (event.getCurrentItem().getType() == Material.SUGAR) {
                             pulver.put(player, pulver.get(player) + g);
-                            player.sendMessage(RobCommand.PREFIX + "Du hast " + g + "g Pulver aus dem Lager genommen.");
+                            player.sendMessage(BreakinCommand.PREFIX + "Du hast " + g + "g Pulver aus dem Lager genommen.");
                         } else {
                             kraeuter.put(player, kraeuter.get(player) + g);
-                            player.sendMessage(RobCommand.PREFIX + "Du hast " + g + "g Kräuter aus dem Lager genommen.");
+                            player.sendMessage(BreakinCommand.PREFIX + "Du hast " + g + "g Kräuter aus dem Lager genommen.");
                         }
 
                         player.getInventory().close();

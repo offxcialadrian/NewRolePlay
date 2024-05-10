@@ -467,6 +467,7 @@ public class NewRoleplayMain extends JavaPlugin {
         getCommand("kennzeichen").setExecutor(new Kennzeichen());
         getCommand("fahrschule").setExecutor(new Fahrschule());
         getCommand("leasing").setExecutor(new LeasingCommand());
+        getCommand("breakin").setExecutor(new BreakinCommand());
         getCommand("rob").setExecutor(new RobCommand());
     }
 
