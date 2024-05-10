@@ -19,6 +19,7 @@ import de.newrp.Shop.Shop;
 import de.newrp.Shop.ShopType;
 import de.newrp.Shop.Shops;
 import de.newrp.NewRoleplayMain;
+import net.citizensnpcs.api.CitizensAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -39,7 +40,8 @@ public class AsyncHour extends BukkitRunnable {
     @Override
     public void run() {
         //Aktie.update();
-        Schwarzmarkt.spawnRandom();
+        Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), CitizensAPI.getNPCRegistry()::deregisterAll, 2L);
+        Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), Schwarzmarkt::spawnRandom, 4L);
         Hologram.reload();
         LabBreakIn.repairDoors(false);
 
@@ -53,7 +55,7 @@ public class AsyncHour extends BukkitRunnable {
                 if (Script.getRandom(1, 3) == Script.getRandom(1, 3)) {
                     Shops[] b = new Shops[]{Shops.GUNSHOP, Shops.ANGELLADEN, Shops.DOENER, Shops.SUPERMARKT, Shops.APOTHEKE, Shops.APOTHEKE_AEKI,
                             Shops.BLUMENLADEN, Shops.SHOE_MALL, Shops.JAGDHUETTE, Shops.HANKYS, Shops.CAFE, Shops.FLOWER,
-                            Shops.GEMUESE, Shops.BAECKERI, Shops.IKEA};
+                            Shops.GEMUESE, Shops.BAECKEREI, Shops.IKEA};
                     new FeuerwehrEinsatz(null).start(b[Script.getRandom(0, (b.length - 1))]);
                 } else {
                     House h = House.HOUSES.get(Script.getRandom(0, House.HOUSES.size() - 1));

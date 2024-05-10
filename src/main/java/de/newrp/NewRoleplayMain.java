@@ -61,6 +61,7 @@ import de.newrp.features.roadblocks.impl.FactionBlockService;
 import de.newrp.features.roadblocks.listener.FactionBlockClickListener;
 import de.newrp.features.roadblocks.listener.FactionBlockDropItemListener;
 import de.newrp.features.roadblocks.listener.FactionBlockQuitListener;
+import net.citizensnpcs.api.CitizensAPI;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder;
@@ -160,7 +161,8 @@ public class NewRoleplayMain extends JavaPlugin {
         House.loadHouses();
         Blacklist.load();
         Plantage.loadAll();
-        Schwarzmarkt.spawnRandom();
+        Bukkit.getScheduler().runTaskLater(this, CitizensAPI.getNPCRegistry()::deregisterAll, 2L);
+        Bukkit.getScheduler().runTaskLater(this, Schwarzmarkt::spawnRandom, 4L);
         Zeitung.restoreZeitung();
         OrgSpray.FraktionSpray.init();
 
