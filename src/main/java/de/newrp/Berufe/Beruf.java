@@ -206,15 +206,15 @@ public class Beruf {
             if (!BERUF_MEMBER.containsKey(this)) {
                 BERUF_MEMBER.put(this, new HashMap<>());
             }
-            return new HashMap<>(BERUF_MEMBER.get(this));
+            return BERUF_MEMBER.get(this);
         }
 
         public void changeDuty(Player player, Boolean duty) {
-            BERUF_MEMBER.get(this).put(player, duty);
+            getBeruf().put(player, duty);
         }
 
         public Boolean isDuty(Player player) {
-            final HashMap<Player, Boolean> result = BERUF_MEMBER.get(this);
+            final HashMap<Player, Boolean> result = getBeruf();
             if (result == null) {
                 return false;
             }
@@ -222,13 +222,11 @@ public class Beruf {
         }
 
         public void setMember(Player player) {
-            if (Beruf.hasBeruf(player)) {
-                getBeruf().put(player, false);
-            }
+            getBeruf().put(player, false);
         }
 
         public void deleteMember(Player player) {
-            Objects.requireNonNull(getBeruf()).remove(player);
+            getBeruf().remove(player);
         }
 
         public Boolean isMember(Player player) {
