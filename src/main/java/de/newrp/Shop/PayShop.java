@@ -217,6 +217,12 @@ public class PayShop implements Listener {
                         p.sendMessage(Messages.ERROR + "Du hast kein Handy.");
                         return;
                     }
+
+                    if(!Mobile.getPhone(p).isDestroyed(p)) {
+                        p.sendMessage(Messages.ERROR + "Dein Handy ist nicht kaputt.");
+                        return;
+                    }
+
                     Mobile.getPhone(p).setDestroyed(p, false);
                     Mobile.getPhone(p).setAkku(p, Mobile.getPhone(p).getMaxAkku());
                     break;
@@ -396,6 +402,7 @@ public class PayShop implements Listener {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            Debug.debug("SQLException -> " + e.getMessage());
         }
     }
 

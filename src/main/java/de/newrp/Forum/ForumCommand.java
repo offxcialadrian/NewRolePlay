@@ -1,6 +1,7 @@
 package de.newrp.Forum;
 
 import de.newrp.API.Achievement;
+import de.newrp.API.Debug;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.NewRoleplayMain;
@@ -58,6 +59,7 @@ public class ForumCommand implements CommandExecutor {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            Debug.debug("SQLException -> " + e.getMessage());
             p.sendMessage(Messages.ERROR + "Verbindung zum Forum fehlgeschlagen. Bitte melde dies als Bug.");
         }
         return true;

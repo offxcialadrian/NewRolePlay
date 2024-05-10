@@ -151,6 +151,7 @@ public class HouseRegister implements CommandExecutor, Listener {
                                 }
                             } catch (SQLException e) {
                                 e.printStackTrace();
+                                Debug.debug("SQLException -> " + e.getMessage());
                             }
                         }
 

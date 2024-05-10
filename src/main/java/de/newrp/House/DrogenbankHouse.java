@@ -1,5 +1,6 @@
 package de.newrp.House;
 
+import de.newrp.API.Debug;
 import de.newrp.API.ItemBuilder;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
@@ -39,6 +40,7 @@ public class DrogenbankHouse implements CommandExecutor, Listener {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            Debug.debug("SQLException -> " + e.getMessage());
         }
         return 0;
     }

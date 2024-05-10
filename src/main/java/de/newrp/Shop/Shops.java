@@ -1,5 +1,6 @@
 package de.newrp.Shop;
 
+import de.newrp.API.Debug;
 import de.newrp.API.ItemBuilder;
 import de.newrp.API.Script;
 import de.newrp.NewRoleplayMain;
@@ -136,6 +137,7 @@ public enum Shops {
             }
         } catch (SQLException e1) {
             e1.printStackTrace();
+            Debug.debug("SQLException -> " + e1.getMessage());
         }
         return 0;
     }

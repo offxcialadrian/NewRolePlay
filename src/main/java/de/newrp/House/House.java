@@ -124,6 +124,7 @@ public class House {
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
+                Debug.debug("SQLException -> " + e.getMessage());
             }
         });
     }

@@ -25,8 +25,7 @@ public class SprungtuchCommand implements CommandExecutor {
             return false;
         }
 
-        final Abteilung.Abteilungen abteilung = Beruf.getAbteilung(player);
-        if(abteilung == Abteilung.Abteilungen.MEDIZINSTUDENT) {
+        if(Beruf.hasAbteilung(player, Abteilung.Abteilungen.FEUERWEHR) ) {
             player.sendMessage(Messages.NO_PERMISSION);
             return false;
         }
@@ -34,7 +33,7 @@ public class SprungtuchCommand implements CommandExecutor {
         final Player isSystemActive = this.factionBlockService.isSystemActive(faction);
 
         if(args.length > 0 && args[0].equalsIgnoreCase("reset")) {
-            if(abteilung == Abteilung.Abteilungen.OBERARZT || abteilung == Abteilung.Abteilungen.CHEFARZT || abteilung == Abteilung.Abteilungen.DIREKTOR) {
+            if(Beruf.hasAbteilung(player, Abteilung.Abteilungen.OBERARZT)) {
                 if(isSystemActive != null) {
                     this.factionBlockService.deactivateSystemForPlayer(isSystemActive, faction);
                 }

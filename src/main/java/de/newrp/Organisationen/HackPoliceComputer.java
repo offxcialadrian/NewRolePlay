@@ -56,7 +56,7 @@ public class HackPoliceComputer implements CommandExecutor, Listener {
 
         long now = System.currentTimeMillis();
         if (lastTime + TIMEOUT > now) {
-            p.sendMessage(Messages.ERROR + "Man kann erst in  " + TimeUnit.MILLISECONDS.toMinutes(lastTime + TIMEOUT - now) + " den Polizeicomputer wieder hacken.");
+            p.sendMessage(Messages.ERROR + "Man kann erst in  " + TimeUnit.MILLISECONDS.toMinutes(lastTime + TIMEOUT - now) + " Minuten den Polizeicomputer wieder hacken.");
             return true;
         }
 

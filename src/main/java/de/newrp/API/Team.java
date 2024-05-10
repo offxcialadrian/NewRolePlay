@@ -11,6 +11,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 public class Team {
 
@@ -26,6 +28,7 @@ public class Team {
         TeamspeakServerGroup group;
         int channelID;
         String color;
+        List<UUID> members;
 
         Teams(int id, String name, TeamspeakServerGroup group, int channelID, String color) {
             this.name = name;
@@ -33,6 +36,7 @@ public class Team {
             this.group = group;
             this.channelID = channelID;
             this.color = color;
+            this.members = new ArrayList<>();
         }
 
         public String getName() {
@@ -53,6 +57,10 @@ public class Team {
 
         public String getColor() {
             return color;
+        }
+
+        public List<UUID> getMembers() {
+            return members;
         }
 
         public static Teams getTeam(String name) {
@@ -81,31 +89,21 @@ public class Team {
                     members.add(Script.getOfflinePlayer(rs.getInt("nrp_id")));
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
-            }
-            return members;
-        }
-
-        public ArrayList<Player> getAllOnlineMembers() {
-            ArrayList<Player> members = new ArrayList<>();
-            try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
-                 ResultSet rs = stmt.executeQuery("SELECT * FROM teams WHERE team_id=" + this.getID())) {
-                while (rs.next()) {
-                    members.add(Script.getPlayer(rs.getInt("nrp_id")));
-                }
-            } catch (SQLException e) {
+                Debug.debug("SQLException -> " + e.getMessage());
                 e.printStackTrace();
             }
             return members;
         }
 
         public void addMember(Player p) {
+            this.members.add(p.getUniqueId());
             Script.executeUpdate("INSERT INTO teams (nrp_id, team_id, leader) VALUES (" + Script.getNRPID(p) + ", " + this.getID() + ", 0)");
             Forum.syncPermission(p);
             TeamSpeak.sync(Script.getNRPID(p));
         }
 
         public void removeMember(Player p) {
+            this.members.remove(p.getUniqueId());
             setTeamLeader(p, false);
             Script.executeUpdate("DELETE FROM teams WHERE nrp_id=" + Script.getNRPID(p));
         }
@@ -135,12 +133,21 @@ public class Team {
     }
 
     public static Teams getTeam(Player p) {
+        for (Teams team : Teams.values()) {
+            if(team.members.contains(p.getUniqueId())) {
+                return team;
+            }
+        }
+
         try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM teams WHERE nrp_id=" + Script.getNRPID(p))) {
             if (rs.next()) {
-                return Teams.getTeam(rs.getInt("team_id"));
+                final Teams team = Teams.getTeam(rs.getInt("team_id"));
+                team.members.add(p.getUniqueId());
+                return team;
             }
         } catch (SQLException e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         return null;
@@ -153,6 +160,7 @@ public class Team {
                 return Teams.getTeam(rs.getInt("team_id"));
             }
         } catch (SQLException e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         return null;
@@ -165,12 +173,18 @@ public class Team {
                 return Teams.getTeam(rs.getInt("team_id"));
             }
         } catch (SQLException e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         return null;
     }
 
     public static void removeTeam(Player p) {
+        final Teams teams = getTeam(p);
+        if(teams != null) {
+            teams.members.remove(p.getUniqueId());
+        }
+
         setTeamLeader(p, false);
         Script.executeUpdate("DELETE FROM teams WHERE nrp_id=" + Script.getNRPID(p));
     }
@@ -181,6 +195,7 @@ public class Team {
     }
 
     public static void setTeam(Player p, Teams team, boolean leader) {
+        team.members.add(p.getUniqueId());
         Script.executeUpdate("INSERT INTO teams (nrp_id, team_id, leader) VALUES (" + Script.getNRPID(p) + ", " + team.getID() + ", " + (leader ? 1 : 0) + ")");
     }
 }

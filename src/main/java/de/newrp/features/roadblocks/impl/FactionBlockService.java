@@ -50,6 +50,11 @@ public class FactionBlockService implements IFactionBlockService {
             return;
         }
 
+        if(getFactionBlockAmount(faction) >= getMaxFactionBlockAmount(faction)) {
+            player.sendMessage(getPrefix(faction) + "Das Limit ist erreicht!");
+            return;
+        }
+
         targetBlock.setType(faction == Beruf.Berufe.POLICE ? Material.STONE_BRICK_WALL : Material.SLIME_BLOCK, true);
         this.roadBlocks.get(faction).add(targetBlock);
         faction.sendMessage(getPrefix(faction) + Script.getName(player) + " hat ein " + getType(faction) + " platziert (" + getFactionBlockAmount(faction) + "/" + getMaxFactionBlockAmount(faction) + ")");
@@ -144,8 +149,8 @@ public class FactionBlockService implements IFactionBlockService {
 
     private ItemStack buildItemStack() {
         return new ItemBuilder(Material.STICK)
-                .setName("§bSystem Operator Item")
-                .setLore("§7§oDieses Item ist an das Fraktionsblock System gebunden")
+                .setName("§bBerufsblock Stock")
+                .setLore("§7§oDieses Item ist an das Berufsblock System gebunden")
                 .build();
     }
 }

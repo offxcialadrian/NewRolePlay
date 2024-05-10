@@ -19,6 +19,7 @@ public abstract class Database {
         try {
             return connection != null && !connection.isClosed();
         } catch (SQLException e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         return false;
@@ -35,6 +36,7 @@ public abstract class Database {
         try {
             connection.close();
         } catch (SQLException e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         return true;
@@ -49,6 +51,7 @@ public abstract class Database {
         try {
             statement = connection.createStatement();
         } catch (SQLException e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
 
@@ -56,6 +59,7 @@ public abstract class Database {
         try {
             result = statement.executeQuery(query);
         } catch (SQLException e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
 
@@ -70,12 +74,14 @@ public abstract class Database {
         try {
             statement = connection.createStatement();
         } catch (SQLException e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         int result = 0;
         try {
             result = statement.executeUpdate(query);
         } catch (SQLException e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         return result;

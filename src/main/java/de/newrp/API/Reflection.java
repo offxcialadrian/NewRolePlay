@@ -24,6 +24,7 @@ public class Reflection {
                     .getMethod("sendPacket", getNMSClass("Packet"))
                     .invoke(connection, packet);
         } catch (Exception e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
     }

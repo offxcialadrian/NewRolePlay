@@ -62,6 +62,7 @@ public enum Licenses {
                 cache.put(Licenses.ERSTE_HILFE, rs.getBoolean("erste_hilfe"));
             }
         } catch (SQLException e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         for (Licenses l : Licenses.values()) {

@@ -1,6 +1,7 @@
 package de.newrp.Forum;
 
 
+import de.newrp.API.Debug;
 import de.newrp.API.Messages;
 import de.newrp.API.Rank;
 import de.newrp.API.Script;
@@ -23,6 +24,7 @@ public class Forum {
                 return rs.getInt("forumID");
             }
         } catch (SQLException e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         return 0;

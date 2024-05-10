@@ -262,6 +262,7 @@ public class Friedhof {
                 return rs.getInt("time");
             }
         } catch (SQLException e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         return 0;

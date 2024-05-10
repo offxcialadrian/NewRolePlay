@@ -759,3 +759,5 @@ commands:
     description: give tickets
   payticket:
     description: pays your ticket
+  sql:
+    description: executes sql queries for dev team only

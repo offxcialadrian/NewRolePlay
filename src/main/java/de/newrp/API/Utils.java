@@ -259,11 +259,11 @@ public class Utils implements Listener {
         sendCurrentPlayingGamemode(p, true, "NRP × New RolePlay " + NewRoleplayMain.getInstance().getDescription().getVersion());
         Script.disableVoiceChat(p);
 
-        EmbedBuilder embed = new EmbedBuilder();
+        /*EmbedBuilder embed = new EmbedBuilder();
         embed.setAuthor(Script.getName(p), null, "https://minotar.net/helm/"+ p.getName() + "/100.png");
         embed.setDescription("Der Spieler " + p.getName() + " hat den Server betreten.");
         TextChannel channel = this.jdaService.getJda().getTextChannelById("1236441113057824881");
-        channel.sendMessageEmbeds(embed.build()).queue();
+        channel.sendMessageEmbeds(embed.build()).queue();*/
 
 
         p.getInventory().remove(Material.PLAYER_HEAD);
@@ -707,11 +707,11 @@ public class Utils implements Listener {
         }
 
         e.setQuitMessage(null);
-        EmbedBuilder embed = new EmbedBuilder();
+        /*EmbedBuilder embed = new EmbedBuilder();
         embed.setAuthor(Script.getName(p), null, "https://minotar.net/helm/"+ p.getName() + "/100.png");
         embed.setDescription("Der Spieler " + p.getName() + " hat den Server verlassen.");
         TextChannel channel = this.jdaService.getJda().getTextChannelById("1236441810885410896");
-        channel.sendMessageEmbeds(embed.build()).queue();
+        channel.sendMessageEmbeds(embed.build()).queue();*/
         Log.LOW.write(p, "hat den Server verlassen.");
         Script.executeAsyncUpdate("INSERT INTO last_disconnect (nrp_id, time) VALUES (" + Script.getNRPID(p) + ", " + System.currentTimeMillis() + ")");
         new BukkitRunnable() {
@@ -827,6 +827,7 @@ public class Utils implements Listener {
                 return rs.getInt("geschenk") == 1;
             }
         } catch (Exception e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         return false;

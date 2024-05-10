@@ -31,6 +31,7 @@ public class ParticleManager {
                 map.put(ParticleManager.ParticleType.SPOT, ParticleManager.ParticleWrapper.getParticleWrapperByID(rs.getInt("spotID")));
             }
         } catch (SQLException e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         return map;

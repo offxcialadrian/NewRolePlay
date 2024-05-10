@@ -66,6 +66,8 @@ public enum Health {
                 Script.executeAsyncUpdate("INSERT INTO health (id, bloodamount, thirst, fat, muscles) VALUES (" + id + ", 6, 20, 0, 0);");
             }
         } catch (SQLException e) {
+
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -82,6 +84,7 @@ public enum Health {
                 return rs.getFloat("bloodamount");
             }
         } catch (SQLException e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         return 0f;
@@ -169,6 +172,7 @@ public enum Health {
                 for (Health h : Health.values()) health.put(h, h.getDefault());
             }
         } catch (SQLException e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         return health;

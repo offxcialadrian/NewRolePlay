@@ -63,6 +63,7 @@ public class VertragAPI {
                 return new VertragAPI(id, from, to, bedingung, time);
             }
         } catch (SQLException e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         return null;
@@ -87,6 +88,7 @@ public class VertragAPI {
                 list.add(new VertragAPI(rs.getInt("id"), from, to, bedingung, time));
             }
         } catch (SQLException e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         return list;

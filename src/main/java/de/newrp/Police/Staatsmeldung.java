@@ -38,8 +38,8 @@ public class Staatsmeldung implements CommandExecutor {
             return true;
         }
 
-        if (!Beruf.hasAbteilung(p, Abteilung.Abteilungen.ABTEILUNGSLEITUNG)) {
-            p.sendMessage(Messages.ERROR + "Du bist kein Polizeidirektor!");
+        if (!Beruf.hasAbteilung(p, Abteilung.Abteilungen.ABTEILUNGSLEITUNG, Abteilung.Abteilungen.PRESSE)) {
+            p.sendMessage(Messages.ERROR + "Du bist nicht in der Presseabteilung!");
             return true;
         }
 

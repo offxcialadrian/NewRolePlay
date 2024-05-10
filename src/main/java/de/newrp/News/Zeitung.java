@@ -38,6 +38,7 @@ public class Zeitung implements CommandExecutor, Listener {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            Debug.debug("SQLException -> " + e.getMessage());
         }
         return 0;
     }
@@ -132,6 +133,7 @@ public class Zeitung implements CommandExecutor, Listener {
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
+                Debug.debug("SQLException -> " + e.getMessage());
             }
 
         }

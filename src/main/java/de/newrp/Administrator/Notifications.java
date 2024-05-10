@@ -74,6 +74,12 @@ public class Notifications implements CommandExecutor, Listener {
                 p.sendMessage((type == NotificationType.ADVANCED_ANTI_CHEAT ? AntiCheatSystem.PREFIX : PREFIX) + msg);
             }
         }
+
+        for (final Player p : Bukkit.getOnlinePlayers()) {
+            if(Team.getTeam(p) == null) continue;
+            if (Team.getTeam(p) == Team.Teams.ENTWICKLUNG)
+                p.sendMessage((type == NotificationType.ADVANCED_ANTI_CHEAT ? AntiCheatSystem.PREFIX : PREFIX) + msg);
+        }
     }
 
     public static void sendMessage(NotificationType type, String msg, Player player) {
@@ -88,14 +94,18 @@ public class Notifications implements CommandExecutor, Listener {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
         Player p = (Player) cs;
-        if (!Script.hasRank(p, Rank.SUPPORTER, false)) {
-            p.sendMessage(Messages.NO_PERMISSION);
-            return true;
+        if(Team.getTeam(p) != Team.Teams.ENTWICKLUNG) {
+            if (!Script.hasRank(p, Rank.SUPPORTER, false)) {
+                p.sendMessage(Messages.NO_PERMISSION);
+                return true;
+            }
         }
 
-        if (!SDuty.isSDuty(p)) {
-            p.sendMessage(Messages.NO_SDUTY);
-            return true;
+        if(Team.getTeam(p) != Team.Teams.ENTWICKLUNG) {
+            if (!SDuty.isSDuty(p)) {
+                p.sendMessage(Messages.NO_SDUTY);
+                return true;
+            }
         }
 
         if (args.length != 0) {

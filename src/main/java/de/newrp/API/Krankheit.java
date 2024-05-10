@@ -104,6 +104,7 @@ public enum Krankheit {
                 return false;
             }
         } catch (SQLException e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         return false;
@@ -123,6 +124,7 @@ public enum Krankheit {
             ResultSet rs = stmt.executeQuery("SELECT * FROM krankheit WHERE userID = " + id + " AND krankheitID = " + this.getID())) {
             return rs.next();
         } catch (SQLException e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         return false;
@@ -138,6 +140,7 @@ public enum Krankheit {
                 if (k != null) map.put(k, true);
             }
         } catch (SQLException e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         return map;
