@@ -77,12 +77,6 @@ public class PayShop implements Listener {
         }
 
         final ItemStack itemStack = si.getItemStack();
-        itemStack.setAmount(si.getItemStack().getAmount());
-
-        final ItemMeta meta = itemStack.getItemMeta();
-        meta.lore(Collections.emptyList());
-
-        itemStack.setItemMeta(meta);
 
         final int buyAmount = Buy.amount.getOrDefault(p.getName(), 1);
         for (int j = 0; j < buyAmount; j++) {
@@ -315,7 +309,12 @@ public class PayShop implements Listener {
             }
 
             if (si.addToInventory()) {
-                p.getInventory().addItem(itemStack.clone());
+                final ItemStack clonedItemStack = itemStack.clone();
+                Debug.debug("Adding item " + (clonedItemStack.hasItemMeta() ? ChatColor.stripColor(clonedItemStack.getItemMeta().getDisplayName()) : clonedItemStack.getType()) + " x" + clonedItemStack.getAmount() + " to " + Script.getName(p));
+                if(clonedItemStack.hasItemMeta() && !clonedItemStack.getItemMeta().getLore().isEmpty()) {
+                    Debug.debug("Item lore is " + String.join("\n", clonedItemStack.getItemMeta().getLore()));
+                }
+                p.getInventory().addItem(clonedItemStack);
             }
 
             if (type == PaymentType.BANK) {

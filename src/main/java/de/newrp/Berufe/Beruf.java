@@ -454,6 +454,7 @@ public class Beruf {
     public static boolean hasAbteilung(Player p, Abteilung.Abteilungen... abteilungen) {
         if(isLeader(p, true)) return true;
         if(getAbteilung(p) == null) return false;
+
         for (Abteilung.Abteilungen abteilung : abteilungen) {
             if(getAbteilung(p).equals(abteilung)) return true;
         }

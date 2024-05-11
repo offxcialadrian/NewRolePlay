@@ -271,6 +271,7 @@ public enum Shops {
             ShopItem bi = ShopItem.getItem(n.getKey());
             ItemStack i = bi.getItemStack();
             if(i == null) continue;
+            i = i.clone();
             int[] a = n.getValue();
             i.setAmount(bi.getItemStack().getAmount());
             if(i.getItemMeta().hasDisplayName()) {

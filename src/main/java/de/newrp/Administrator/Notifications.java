@@ -72,21 +72,26 @@ public class Notifications implements CommandExecutor, Listener {
     }
 
     public static void sendMessage(NotificationType type, String msg) {
-        final List<UUID> hasReceived = new ArrayList<>();
-        for (Player p : Script.getNRPTeam()) {
-            hasReceived.add(p.getUniqueId());
-            if (isNotificationEnabled(p, type)) {
-                p.sendMessage((type == NotificationType.ADVANCED_ANTI_CHEAT ? AntiCheatSystem.PREFIX : PREFIX) + msg);
+        Bukkit.getScheduler().runTaskAsynchronously(NewRoleplayMain.getInstance(), () -> {
+            final List<UUID> hasReceived = new ArrayList<>();
+            // members of the nrp team shouldn't receive sql errors etc to protect internal structure
+            if(type != NotificationType.DEBUG) {
+                for (Player p : Script.getNRPTeam()) {
+                    hasReceived.add(p.getUniqueId());
+                    if (isNotificationEnabled(p, type)) {
+                        p.sendMessage((type == NotificationType.ADVANCED_ANTI_CHEAT ? AntiCheatSystem.PREFIX : PREFIX) + msg);
+                    }
+                }
             }
-        }
 
-        for (final Player p : Bukkit.getOnlinePlayers()) {
-            if(hasReceived.contains(p.getUniqueId())) continue;
+            for (final Player p : Bukkit.getOnlinePlayers()) {
+                if(hasReceived.contains(p.getUniqueId())) continue;
 
-            if(Team.getTeam(p) == null) continue;
-            if (Team.getTeam(p) == Team.Teams.ENTWICKLUNG)
-                p.sendMessage((type == NotificationType.ADVANCED_ANTI_CHEAT ? AntiCheatSystem.PREFIX : PREFIX) + msg);
-        }
+                if(Team.getTeam(p) == null) continue;
+                if (Team.getTeam(p) == Team.Teams.ENTWICKLUNG)
+                    p.sendMessage((type == NotificationType.ADVANCED_ANTI_CHEAT ? AntiCheatSystem.PREFIX : PREFIX) + msg);
+            }
+        });
     }
 
     public static void sendMessage(NotificationType type, String msg, Player player) {

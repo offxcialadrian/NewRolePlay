@@ -39,6 +39,7 @@ public class AsyncHour extends BukkitRunnable {
     @Override
     public void run() {
         //Aktie.update();
+        Debug.debug("Async Hour tick");
         Schwarzmarkt.spawnRandom();
         Hologram.reload();
         LabBreakIn.repairDoors(false);

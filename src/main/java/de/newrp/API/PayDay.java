@@ -251,11 +251,6 @@ public class PayDay extends BukkitRunnable {
                 payday -= price;
             }
 
-            if(Team.getTeam(p) != null && Team.getTeam(p) == Team.Teams.ENTWICKLUNG) {
-                p.sendMessage("§8" + Messages.ARROW + " §7Entwickler-Gehalt: §a+100€");
-                payday += 100;
-            }
-
             if (payday > 0) {
                 p.sendMessage("§8" + Messages.ARROW + " §7Einkommenssteuer (" + einkommenssteuer + "%): §c-" + (int) Script.getPercent(einkommenssteuer, payday) + "€");
                 Stadtkasse.addStadtkasse((int) Script.getPercent(einkommenssteuer, payday), "Einkommenssteuer von " + Script.getName(p) + " erhalten", Steuern.Steuer.EINKOMMENSSTEUER);
@@ -269,6 +264,11 @@ public class PayDay extends BukkitRunnable {
             Script.addEXP(p, Script.getRandom(5, 10));
             if (payday >= 0) Script.addMoney(p, PaymentType.BANK, payday);
             else Script.removeMoney(p, PaymentType.BANK, payday);
+
+            if(Team.getTeam(p) != null && Team.getTeam(p) == Team.Teams.ENTWICKLUNG) {
+                p.sendMessage(Messages.INFO + "§7Als Entwickler erhältst du ein Extra-Gehalt von §a100€");
+                Script.addMoney(p, PaymentType.BANK, 100);
+            }
             setPayDayTime(p, 0);
             Script.executeAsyncUpdate("UPDATE payday SET money = 0 WHERE nrp_id = '" + Script.getNRPID(p) + "'");
             if (Script.getMoney(p, PaymentType.BANK) < 0) {

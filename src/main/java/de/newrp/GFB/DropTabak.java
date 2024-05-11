@@ -1,5 +1,6 @@
 package de.newrp.GFB;
 
+import de.newrp.API.HologramList;
 import de.newrp.API.Messages;
 import de.newrp.API.PayDay;
 import de.newrp.API.Script;
@@ -18,13 +19,18 @@ public class DropTabak implements CommandExecutor {
             p.sendMessage(Messages.ERROR + "Du bist in keinem Job.");
             return true;
         }
+
+        if(!Tabakplantage.mixedTobacco.containsKey(p.getName())) {
+            p.sendMessage(Tabakplantage.PREFIX + "Du hast keinen Tabak bei dir.");
+            return true;
+        }
         int tabak = Tabakplantage.mixedTobacco.get(p.getName());
         if (tabak < 1) {
             p.sendMessage(Tabakplantage.PREFIX + "Du hast keinen Tabak bei dir.");
             return true;
         }
 
-        if (p.getLocation().distance(new Location(p.getWorld(), -133, 69, -79)) >= 5) {
+        if (p.getLocation().distance(HologramList.DROPTABAK.getLocation()) >= 5) {
             p.sendMessage(Tabakplantage.PREFIX + "Du bist noch nicht an der Shishabar.");
             return true;
         }

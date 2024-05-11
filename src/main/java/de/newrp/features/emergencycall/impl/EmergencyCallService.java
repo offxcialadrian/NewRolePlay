@@ -5,6 +5,7 @@ import com.google.common.cache.CacheBuilder;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.Berufe.Beruf;
+import de.newrp.Berufe.Duty;
 import de.newrp.NewRoleplayMain;
 import de.newrp.features.emergencycall.IEmergencyCallService;
 import de.newrp.features.emergencycall.data.AcceptEmergencyCallMetadata;
@@ -150,6 +151,7 @@ public class EmergencyCallService implements IEmergencyCallService {
     public List<Player> getNearbyPlayersOfFactionToLocation(Location location, Beruf.Berufe faction) {
         return faction.getBeruf().keySet().stream()
                 .sorted(Comparator.comparingDouble((Player a) -> a.getLocation().distance(location)))
+                .filter(faction::isDuty)
                 .limit(2)
                 .collect(Collectors.toList());
     }

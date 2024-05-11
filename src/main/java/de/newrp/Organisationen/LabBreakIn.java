@@ -1,13 +1,11 @@
 package de.newrp.Organisationen;
 
-import de.newrp.API.ItemBuilder;
-import de.newrp.API.Messages;
-import de.newrp.API.Route;
-import de.newrp.API.Script;
+import de.newrp.API.*;
 import de.newrp.Administrator.BuildMode;
 import de.newrp.Berufe.Beruf;
 import de.newrp.NewRoleplayMain;
 import org.bukkit.*;
+import org.bukkit.Particle;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.BrewingStand;
@@ -244,6 +242,7 @@ public class LabBreakIn implements CommandExecutor, Listener {
         door.setOpen(open);
         state.setBlockData(door);
         state.update();
+        Debug.debug("Closing lab door");
         if (playSound) {
             block.getWorld().playSound(block.getLocation(), Sound.BLOCK_IRON_DOOR_OPEN, 1, 1);
         }

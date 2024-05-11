@@ -1017,6 +1017,7 @@ public class Script {
     }
 
     public static void executeAsyncUpdate(String sql) {
+        Debug.debug(sql);
         executeUpdate(sql);
         //Bukkit.getScheduler().runTaskAsynchronously(main.getInstance(), () -> ));
     }
@@ -1040,6 +1041,7 @@ public class Script {
                 return rs.getInt(paymentType.getName());
             }
         } catch (Exception e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         return 0;
@@ -1052,6 +1054,7 @@ public class Script {
                 return rs.getInt(paymentType.getName());
             }
         } catch (Exception e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         return 0;
@@ -1064,6 +1067,7 @@ public class Script {
                 return rs.getBoolean(bool);
             }
         } catch (Exception e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         return false;
@@ -1076,6 +1080,7 @@ public class Script {
                 return rs.getString(s);
             }
         } catch (Exception e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         return null;
@@ -1090,6 +1095,7 @@ public class Script {
                 executeUpdate("INSERT INTO " + dbName + " (nrp_id, " + s + ") VALUES (" + getNRPID(p) + ", '" + value + "')");
             }
         } catch (Exception e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         return null;
@@ -1104,6 +1110,7 @@ public class Script {
                 executeUpdate("INSERT INTO " + dbName + " (nrp_id, " + s + ") VALUES (" + getNRPID(p) + ", '" + value + "')");
             }
         } catch (Exception e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         return null;
@@ -1116,6 +1123,7 @@ public class Script {
                 return rs.getString(s);
             }
         } catch (Exception e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         return null;
@@ -1128,6 +1136,7 @@ public class Script {
                 return rs.getInt(s);
             }
         } catch (Exception e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         return 0;
@@ -1144,6 +1153,7 @@ public class Script {
                 return rs.getInt(s);
             }
         } catch (Exception e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         return 0;
@@ -1156,6 +1166,7 @@ public class Script {
                 return rs.getLong(s);
             }
         } catch (Exception e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         return 0;
@@ -1168,6 +1179,7 @@ public class Script {
                 return rs.getLong(s);
             }
         } catch (Exception e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         return 0;
@@ -1180,6 +1192,7 @@ public class Script {
                 return rs.getInt(s);
             }
         } catch (Exception e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         return 0;
@@ -1199,6 +1212,7 @@ public class Script {
                 executeAsyncUpdate("DELETE FROM offline_msg WHERE nrp_id='" + getNRPID(p) + "'");
             }
         } catch (Exception e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -1247,6 +1261,7 @@ public class Script {
                 return rs.getLong("time");
             }
         } catch (Exception e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         return 0;
@@ -1259,6 +1274,7 @@ public class Script {
                 return rs.getLong("time");
             }
         } catch (Exception e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         return 0;
@@ -1285,6 +1301,7 @@ public class Script {
                 }
             }
         } catch (Exception e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         return false;

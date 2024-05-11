@@ -635,6 +635,8 @@ public class NewRoleplayMain extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new FactionBlockDropItemListener(), this);
         Bukkit.getPluginManager().registerEvents(new FactionBlockQuitListener(), this);
         Bukkit.getPluginManager().registerEvents(new LockpickHandler(), this);
+        Bukkit.getPluginManager().registerEvents(new StartTransport(), this);
+        Bukkit.getPluginManager().registerEvents(new Tabakplantage(), this);
     }
 
     /**

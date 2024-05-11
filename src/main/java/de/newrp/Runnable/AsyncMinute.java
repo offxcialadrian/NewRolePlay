@@ -146,10 +146,10 @@ public class AsyncMinute extends BukkitRunnable {
             }
         }
 
+        Treuebonus.addTime();
 
         for (Player p : Bukkit.getOnlinePlayers()) {
             if (!AFK.isAFK(p) && !Passwort.isLocked(p)) {
-                Treuebonus.addTime();
                 Script.increaseActivePlayTime(p);
             }
             Script.increasePlayTime(p);

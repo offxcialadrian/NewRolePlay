@@ -143,8 +143,12 @@ public class Houseban implements CommandExecutor, Listener, TabCompleter {
                 return true;
             }
 
-            if (isHousebanned(tg, b)) {
+            if(Beruf.getBeruf(tg) == b) {
+                p.sendMessage(Messages.ERROR + "Du kannst Spieler von deinem Beruf kein Hausverbot geben");
+                return true;
+            }
 
+            if (isHousebanned(tg, b)) {
                 p.sendMessage(Messages.INFO + "Der Spieler hat bereits Hausverbot. Das Hausverbot wurde verlängert.");
 
                 long time = getTime(tg, b);
