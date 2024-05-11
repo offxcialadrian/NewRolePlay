@@ -31,6 +31,12 @@ public class Fahrschule implements CommandExecutor, Listener {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
+
+            if (player.getLocation().distance(HologramList.FAHRSCHULE.getLocation()) > 5) {
+                player.sendMessage(Component.text(PREFIX + "Du bist nicht in der Fahrschule!"));
+                return true;
+            }
+
             if (Licenses.FUEHRERSCHEIN.hasLicense(Script.getNRPID(player))) {
                 player.sendMessage(Component.text(PREFIX + "Du hast bereits deinen Führerschein!"));
                 return true;
