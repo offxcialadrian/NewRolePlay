@@ -38,20 +38,20 @@ public class Bankautomaten implements Listener {
     @EventHandler
     public void onInteract(PlayerInteractEvent e) {
         Player p = e.getPlayer();
-        if (!Organisation.hasOrganisation(p)) return;
         if(e.getClickedBlock() == null) return;
         if(e.getClickedBlock().getType() == Material.CYAN_BANNER) return;
         if (p.getInventory().getItemInMainHand().getType() != Material.TNT) return;
+        Organisation o = Organisation.getOrganisation(p);
+        if (o == null) return;
         ATM atm = ATM.getNearATM(p);
         if (atm == null) return;
-        Organisation o = Organisation.getOrganisation(p);
 
         if (cooldown.containsKey(o) && cooldown.get(o) > System.currentTimeMillis()) {
             p.sendMessage(Messages.ERROR + "Du kannst erst in " + Script.getRemainingTime(cooldown.get(o)) + " wieder einen Bankautomaten zerstören.");
             return;
         }
 
-        List<Player> cops = Beruf.Berufe.POLICE.getMembers().stream()
+        List<Player> cops = Beruf.Berufe.POLICE.getMember().stream()
                 .filter(Duty::isInDuty)
                 .filter(nearbyPlayer -> !SDuty.isSDuty(nearbyPlayer))
                 .filter(nearbyPlayer -> !AFK.isAFK(nearbyPlayer)).collect(Collectors.toList());
