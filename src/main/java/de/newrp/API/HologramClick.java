@@ -39,7 +39,7 @@ public class HologramClick implements Listener {
             if (name == null) return;
             name = ChatColor.stripColor(name);
             if (!name.startsWith("/")) return;
-            Notifications.sendMessage(Notifications.NotificationType.COMMAND, "§e" + Script.getName(e.getPlayer()) + " §7hat den Befehl §e" + name + " §7ausgeführt.", e.getPlayer());
+            Notifications.sendMessage(Notifications.NotificationType.COMMAND, "§e" + Script.getName(e.getPlayer()) + " §7hat den Befehl §e" + name + " §7ausgeführt.");
             String cmd = name.replace("/", "");
             Log.COMMAND.write(e.getPlayer(), "/" + cmd);
             e.getPlayer().performCommand(cmd);
