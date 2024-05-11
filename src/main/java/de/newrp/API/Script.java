@@ -438,7 +438,7 @@ public class Script {
                 return rs.getInt("level");
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            NewRoleplayMain.handleError(e);
         }
         return 0;
     }

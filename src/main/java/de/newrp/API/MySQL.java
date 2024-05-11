@@ -1,5 +1,7 @@
 package de.newrp.API;
 
+import de.newrp.NewRoleplayMain;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -34,7 +36,7 @@ public class MySQL extends Database {
             connection = DriverManager.getConnection(connectionURL,
                     this.user, this.password);
         } catch (SQLException e) {
-            e.printStackTrace();
+            NewRoleplayMain.handleError(e);
         }
         return connection;
     }

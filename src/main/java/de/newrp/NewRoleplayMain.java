@@ -74,6 +74,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.sql.Connection;
+import java.util.Arrays;
 
 public class NewRoleplayMain extends JavaPlugin {
 
@@ -692,6 +693,17 @@ public class NewRoleplayMain extends JavaPlugin {
 
     public static Connection getForumConnection() {
         return forumConnection;
+    }
+
+    public static void handleError(final Throwable exception) {
+        try {
+            Debug.debug("Exception -> " + exception.getMessage());
+            final String firstStackTrace = Arrays.stream(exception.getStackTrace()).findFirst().get().toString();
+            Debug.debug("StackTrace: " + firstStackTrace);
+            exception.printStackTrace();
+        } catch(final Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
 

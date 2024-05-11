@@ -50,7 +50,7 @@ public enum Log {
                 stmt.setInt(3, getImportance());
                 stmt.execute();
             } catch (SQLException e1) {
-                e1.printStackTrace();
+                NewRoleplayMain.handleError(e1);
             }
         });
     }

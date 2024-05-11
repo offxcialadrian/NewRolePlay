@@ -181,7 +181,7 @@ public enum Shops {
                 return rs.getInt("lager_max");
             }
         } catch (SQLException e1) {
-            e1.printStackTrace();
+            NewRoleplayMain.handleError(e1);
         }
         return 0;
     }

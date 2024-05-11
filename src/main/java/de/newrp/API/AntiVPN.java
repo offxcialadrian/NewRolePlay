@@ -46,7 +46,7 @@ public class AntiVPN implements Listener {
                 }
                 IP_CACHE.put(ip, isVPN);
             } catch (IOException e1) {
-                e1.printStackTrace();
+                NewRoleplayMain.handleError(e1);
             }
         });
     }

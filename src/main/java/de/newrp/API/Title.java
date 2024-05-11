@@ -1,5 +1,6 @@
 package de.newrp.API;
 
+import de.newrp.NewRoleplayMain;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -23,7 +24,7 @@ public class Title {
         try {
             return Class.forName("net.minecraft.server." + version + "." + name);
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            NewRoleplayMain.handleError(e);
             return null;
         }
     }
@@ -51,7 +52,7 @@ public class Title {
                 sendPacket(player, titlePacket);
             }
         } catch (Exception var11) {
-            var11.printStackTrace();
+            NewRoleplayMain.handleError(var11);
         }
     }
 
@@ -93,7 +94,7 @@ public class Title {
                 sendPacket(player, subtitlePacket);
             }
         } catch (Exception var11) {
-            var11.printStackTrace();
+            NewRoleplayMain.handleError(var11);
         }
     }
 }

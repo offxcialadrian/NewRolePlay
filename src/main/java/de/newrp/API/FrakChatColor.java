@@ -196,7 +196,7 @@ public class FrakChatColor implements CommandExecutor, Listener {
                 return rs.getString("color2");
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            NewRoleplayMain.handleError(e);
         }
         return "e";
     }
@@ -208,7 +208,7 @@ public class FrakChatColor implements CommandExecutor, Listener {
                 return rs.getString("color2");
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            NewRoleplayMain.handleError(e);
         }
         return "e";
     }
