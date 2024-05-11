@@ -311,9 +311,6 @@ public class PayShop implements Listener {
             if (si.addToInventory()) {
                 final ItemStack clonedItemStack = itemStack.clone();
                 Debug.debug("Adding item " + (clonedItemStack.hasItemMeta() ? ChatColor.stripColor(clonedItemStack.getItemMeta().getDisplayName()) : clonedItemStack.getType()) + " x" + clonedItemStack.getAmount() + " to " + Script.getName(p));
-                if(clonedItemStack.hasItemMeta() && !clonedItemStack.getItemMeta().getLore().isEmpty()) {
-                    Debug.debug("Item lore is " + String.join("\n", clonedItemStack.getItemMeta().getLore()));
-                }
                 p.getInventory().addItem(clonedItemStack);
             }
 

@@ -59,6 +59,7 @@ public class Trash implements Listener {
         }
         p.openInventory(inv);
         cache.put(p.getName(), e.getBlock().getLocation());
+        cooldowns.put(cache.get(p.getName()), System.currentTimeMillis());
     }
 
     @EventHandler

@@ -90,6 +90,12 @@ public class NewRoleplayMain extends JavaPlugin {
         Bukkit.getConsoleSender().sendMessage("§cNRP §8× §aStarting with version " + this.getDescription().getVersion() + "..");
 
         this.configService = new ConfigService();
+        Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
+            @Override
+            public void uncaughtException(Thread t, Throwable e) {
+                Debug.debug("Uncaught Exception -> " + e.getMessage());
+            }
+        });
 
         // Loads all configurations
         this.loadConfig();

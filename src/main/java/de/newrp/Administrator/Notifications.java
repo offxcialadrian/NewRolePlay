@@ -88,8 +88,11 @@ public class Notifications implements CommandExecutor, Listener {
                 if(hasReceived.contains(p.getUniqueId())) continue;
 
                 if(Team.getTeam(p) == null) continue;
-                if (Team.getTeam(p) == Team.Teams.ENTWICKLUNG)
-                    p.sendMessage((type == NotificationType.ADVANCED_ANTI_CHEAT ? AntiCheatSystem.PREFIX : PREFIX) + msg);
+                if (Team.getTeam(p) == Team.Teams.ENTWICKLUNG) {
+                    if (isNotificationEnabled(p, type)) {
+                        p.sendMessage((type == NotificationType.ADVANCED_ANTI_CHEAT ? AntiCheatSystem.PREFIX : PREFIX) + msg);
+                    }
+                }
             }
         });
     }

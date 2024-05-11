@@ -82,14 +82,15 @@ public class Tabakplantage implements CommandExecutor, Listener {
     }
 
     public static void openGUI(Player p) {
-        Inventory inv;
-        inv = p.getServer().createInventory(null, InventoryType.HOPPER, "§6Tabak");
-        inv.setItem(0, Script.setName(Material.MELON, "§cWassermelone"));
-        inv.setItem(1, Script.setName(new ItemStack(Material.INK_SAC, 1, (byte) 5), "§5Traube"));
-        inv.setItem(2, Script.setName(Material.APPLE, "§cDoppelapfel"));
-        inv.setItem(3, Script.setName(new ItemStack(Material.INK_SAC, 1, (byte) 11), "§eZitrone"));
-        inv.setItem(4, Script.setName(new ItemStack(Material.INK_SAC, 1, (byte) 14), "§6Pfirsich-Minze"));
-        p.openInventory(inv);
+        Bukkit.getScheduler().runTask(NewRoleplayMain.getInstance(), () -> {
+            final Inventory inv = p.getServer().createInventory(null, InventoryType.HOPPER, "§6Tabak");
+            inv.setItem(0, Script.setName(Material.MELON, "§cWassermelone"));
+            inv.setItem(1, Script.setName(new ItemStack(Material.INK_SAC, 1, (byte) 5), "§5Traube"));
+            inv.setItem(2, Script.setName(Material.APPLE, "§cDoppelapfel"));
+            inv.setItem(3, Script.setName(new ItemStack(Material.INK_SAC, 1, (byte) 11), "§eZitrone"));
+            inv.setItem(4, Script.setName(new ItemStack(Material.INK_SAC, 1, (byte) 14), "§6Pfirsich-Minze"));
+            p.openInventory(inv);
+        });
     }
 
     public static void drop(Player p) {
