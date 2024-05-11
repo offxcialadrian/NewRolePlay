@@ -5,12 +5,12 @@ import org.bukkit.TreeSpecies;
 
 public enum CarType {
 
-    OPPEL("Oppel", TreeSpecies.JUNGLE, Material.JUNGLE_BOAT, 500, 1.0, 0, Fuel.BENZIN, 2.0F, 6000, 79,1.0F, 2500, 100),
-    VOLTSWAGEN("Voltswagen", TreeSpecies.ACACIA, Material.ACACIA_BOAT, 700, 1.2, 0, Fuel.BENZIN, 1.8F, 14900, 113,1.2F, 5000,200),
-    NMW("NMW", TreeSpecies.DARK_OAK, Material.DARK_OAK_BOAT, 900, 1.4, 0, Fuel.BENZIN, 1.6F, 27500, 162,1.4F, 10000, 300),
-    AWDI("Awdi", TreeSpecies.BIRCH, Material.BIRCH_BOAT, 1100, 1.6, 0, Fuel.BENZIN, 1.4F, 52000, 197, 1.6F, 15000, 400),
-    MERCADAS("Mercadas", TreeSpecies.REDWOOD, Material.SPRUCE_BOAT, 1300, 1.8, 0, Fuel.BENZIN, 1.2F, 23400, 234,1.8F, 20000, 500),
-    PAWSCHE("Pawsche", TreeSpecies.GENERIC, Material.OAK_BOAT, 1500, 2.0, 0, Fuel.BENZIN, 1.0F, 23400, 271, 2.0F, 30000, 600);
+    OPPEL("Oppel", TreeSpecies.JUNGLE, Material.JUNGLE_BOAT, 500, 1.0, 0, Fuel.BENZIN, 2.0F, 7000, 79,1.0F, 2500, 100),
+    VOLTSWAGEN("Voltswagen", TreeSpecies.BIRCH, Material.BIRCH_BOAT, 700, 1.2, 0, Fuel.BENZIN, 1.8F, 12000, 113,1.2F, 5000,200),
+    NMW("NMW", TreeSpecies.ACACIA, Material.ACACIA_BOAT, 900, 1.4, 0, Fuel.BENZIN, 1.6F, 17000, 162,1.4F, 10000, 300),
+    AWDI("Awdi", TreeSpecies.REDWOOD, Material.SPRUCE_BOAT, 1100, 1.6, 0, Fuel.BENZIN, 1.4F, 25000, 197, 1.6F, 15000, 400),
+    MERCADAS("Mercadas", TreeSpecies.DARK_OAK, Material.DARK_OAK_BOAT, 1300, 1.8, 0, Fuel.BENZIN, 1.2F, 40000, 234,1.8F, 20000, 500),
+    PAWSCHE("Pawsche", TreeSpecies.GENERIC, Material.OAK_BOAT, 1500, 2.0, 0, Fuel.BENZIN, 1.0F, 60000, 271, 2.0F, 30000, 600);
 
     private final String name;
     private final TreeSpecies type;

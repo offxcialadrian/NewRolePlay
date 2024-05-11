@@ -44,8 +44,14 @@ public class AsyncHour extends BukkitRunnable {
         LabBreakIn.repairDoors(false);
 
         for(GangwarZones zone : GangwarZones.values()) {
-            zone.getOwner().sendMessage(GangwarCommand.PREFIX + "Die Organisation hat 100€ durch die Zone §e" + zone.getName() + " §7erhalten.");
-            zone.getOwner().addKasse(100);
+            if (zone.getOwner() != null) {
+                zone.getOwner().sendMessage(GangwarCommand.PREFIX + "Die Organisation hat 100€ durch die Zone §e" + zone.getName() + " §7erhalten.");
+                zone.getOwner().addKasse(100);
+            }
+        }
+
+        for (Beruf.Berufe berufe : Beruf.Berufe.values()) {
+            Stadtkasse.removeStadtkasse(berufe.getCarAmount() * berufe.getCarType().getTax() * 4, "Leasinggebühren " + berufe.getCarAmount() + "x " + berufe.getName());
         }
 
         if (Abteilung.Abteilungen.FEUERWEHR.getOnlineMembers().size() >= 2) {
