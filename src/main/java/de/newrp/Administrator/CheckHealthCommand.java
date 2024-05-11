@@ -41,7 +41,7 @@ public class CheckHealthCommand implements CommandExecutor {
             return false;
         }
 
-        player.sendMessage(PREFIX + Script.getName(player) + "' Zustand:");
+        player.sendMessage(PREFIX + Script.getName(targetPlayer) + "' Zustand:");
         player.spigot().sendMessage(HealthCommand.health(targetPlayer));
         player.spigot().sendMessage(HealthCommand.blood(targetPlayer));
         player.spigot().sendMessage(HealthCommand.hunger(targetPlayer));
