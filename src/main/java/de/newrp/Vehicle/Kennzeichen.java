@@ -1,17 +1,9 @@
 package de.newrp.Vehicle;
 
 import de.newrp.API.HologramList;
-import de.newrp.NewRoleplayMain;
 import de.newrp.API.PaymentType;
 import de.newrp.API.Script;
-import de.newrp.Shop.Shop;
-import de.newrp.Shop.ShopType;
-import de.newrp.Shop.Shops;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.TextComponent;
-import net.kyori.adventure.text.format.TextColor;
-import org.bukkit.Color;
-import org.bukkit.Location;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -20,7 +12,6 @@ import org.bukkit.entity.Boat;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -28,8 +19,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -46,6 +35,10 @@ public class Kennzeichen implements CommandExecutor, Listener {
                     p.sendMessage(PREFIX + "Du musst folgende Angaben machen: XX 0000");
                 } else {
                     if (args[0].length() == 2 && args[1].length() == 4) {
+                        if (args[0].equalsIgnoreCase("RP")) {
+                            p.sendMessage(PREFIX + "Das Label RP ist reserviert!");
+                            return true;
+                        }
                         if (Script.isInt(args[1])) {
                             int i = Integer.parseInt(args[1]);
                             String s1 = args[0];
@@ -108,17 +101,24 @@ public class Kennzeichen implements CommandExecutor, Listener {
             if (event.getRightClicked() instanceof Boat) {
                 Player player = event.getPlayer();
                 Car car = Car.getCarByEntityID(event.getRightClicked().getEntityId());
-                ItemStack plate = event.getPlayer().getInventory().getItemInMainHand();
-                String license = plate.getItemMeta().getDisplayName();
-                if (license.contains("Kennzeichen")) {
-                    player.sendMessage(PREFIX + "Das Kennzeichen ist unbeschriftet!");
-                } else {
-                    if (car.isCarOwner(player)) {
-                        car.setLicenseplate(license);
-                        plate.setAmount(plate.getAmount() - 1);
-                        player.sendMessage(PREFIX + "Das Kennzeichen deines " + car.getCarType().getName() + " wurde auf " + license + " gesetzt.");
+                if (car != null) {
+                    if (car.getLicenseplate().startsWith("N-RP-")) {
+                        player.sendMessage(PREFIX + "Du kannst geleaste Autos nicht umbeschriften!");
+                        return;
+                    }
+
+                    ItemStack plate = event.getPlayer().getInventory().getItemInMainHand();
+                    String license = plate.getItemMeta().getDisplayName();
+                    if (license.contains("Kennzeichen")) {
+                        player.sendMessage(PREFIX + "Das Kennzeichen ist unbeschriftet!");
                     } else {
-                        player.sendMessage(PREFIX + "Dieses Auto gehört dir nicht!");
+                        if (car.isCarOwner(player)) {
+                            car.setLicenseplate(license);
+                            plate.setAmount(plate.getAmount() - 1);
+                            player.sendMessage(PREFIX + "Das Kennzeichen deines " + car.getCarType().getName() + " wurde auf " + license + " gesetzt.");
+                        } else {
+                            player.sendMessage(PREFIX + "Dieses Auto gehört dir nicht!");
+                        }
                     }
                 }
                 event.setCancelled(true);

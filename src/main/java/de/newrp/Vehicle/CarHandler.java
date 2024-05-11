@@ -188,9 +188,11 @@ public class CarHandler implements Listener {
                 Player player = (Player) event.getEntity();
                 Car car = Car.getCarByEntityID(event.getVehicle().getEntityId());
                 if (car != null) {
-                    player.setVelocity(car.getVelocity().multiply(10));
-                    player.damage(Math.floor(car.getSpeed() * 20));
-                    car.crash(Math.floor(car.getSpeed() * 50));
+                    if (car.getSpeed() >= 0.1) {
+                        player.setVelocity(player.getLocation().getDirection().multiply(-2));
+                        player.damage(Math.floor(car.getSpeed() * 20));
+                        car.crash(Math.floor(car.getSpeed() * 20));
+                    }
                 }
             }
         }
@@ -278,8 +280,8 @@ public class CarHandler implements Listener {
                     double heal = car.getCarheal();
                     if (heal < car.getCarType().getCarheal()) {
                         car.setCarHeal(heal + 2);
-                        tool.setDurability((short) (tool.getDurability() + 2));
-                        if ((int) Math.round(heal) % 20 == 0) player.getWorld().playSound(car.getLocation(), Sound.BLOCK_ANVIL_USE, 1.0F, 1.0F);
+                        tool.setDurability((short) (tool.getDurability() + 1));
+                        if ((int) tool.getDurability() % 20 == 0) player.getWorld().playSound(car.getLocation(), Sound.BLOCK_ANVIL_USE, 1.0F, 1.0F);
                         if (tool.getDurability() > 238) {
                             tool.setAmount(0);
                             player.getWorld().playSound(car.getLocation(), Sound.ENTITY_ITEM_BREAK, 1.0F, 1.0F);

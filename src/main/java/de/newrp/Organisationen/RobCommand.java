@@ -13,6 +13,7 @@ import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.craftbukkit.v1_16_R3.inventory.CraftInventoryView;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -78,6 +79,11 @@ public class RobCommand implements CommandExecutor {
                             player.sendMessage(PREFIX + "Diese Person kann gerade nicht ausgeraubt werden!");
                             return true;
                         }
+                    }
+
+                    if (!(victim.getOpenInventory() instanceof CraftInventoryView)) {
+                        player.sendMessage(PREFIX + "Diese Person kann gerade nicht ausgeraubt werden!");
+                        return true;
                     }
 
                     cooldownsP.put(player, System.currentTimeMillis() + 10 * 60 * 1000);
