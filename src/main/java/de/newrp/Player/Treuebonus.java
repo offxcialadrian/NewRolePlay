@@ -30,9 +30,9 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 public class Treuebonus implements CommandExecutor, Listener {
-    public static final HashMap<UUID, Long> logout = new HashMap<>();
-    public static final HashMap<String, Integer> time = new HashMap<>();
-    public static ArrayList<String> wasDuty = new ArrayList<>();
+    public static final HashMap<Player, Long> logout = new HashMap<>();
+    public static final HashMap<Player, Integer> time = new HashMap<>();
+    public static ArrayList<Player> wasDuty = new ArrayList<>();
     public static final String prefix = "§8[§bTreuebonus§8]§b " + Messages.ARROW + " §7";
 
     public static void addTime() {
@@ -43,26 +43,26 @@ public class Treuebonus implements CommandExecutor, Listener {
 
     public static void addTime(Player p) {
         if (!AFK.isAFK(p)) {
-            if (!time.containsKey(p.getName())) {
-                Treuebonus.time.put(p.getName(), 0);
+            if (!time.containsKey(p)) {
+                Treuebonus.time.put(p, 0);
             }
-            int old = time.get(p.getName());
+            int old = time.get(p);
             if (old >= 120) {
                 p.sendMessage(prefix + "NRP × New RolePlay dankt dir für deine Treue und schenkt dir einen Treuepunkt! §8[§c" + (getPunkte(p) + 1) + "§8]");
                 p.sendMessage(Messages.INFO + "Mit /treuebonus kannst du dir tolle Geschenke aussuchen.");
 
                 add(p, true);
             } else {
-                time.put(p.getName(), (time.get(p.getName()) + 1));
+                time.put(p, (time.get(p) + 1));
             }
         }
     }
 
     public static int getMinutesToBonus(Player p) {
-        if (time.containsKey(p.getName())) {
-            return 120 - time.get(p.getName());
+        if (time.containsKey(p)) {
+            return 120 - time.get(p);
         } else {
-            Treuebonus.time.put(p.getName(), 0);
+            Treuebonus.time.put(p, 0);
             return 120;
         }
     }
@@ -114,7 +114,7 @@ public class Treuebonus implements CommandExecutor, Listener {
         });
 
         if (updateTime) {
-            Treuebonus.time.put(p.getName(), 0);
+            Treuebonus.time.put(p, 0);
         }
     }
 
@@ -122,7 +122,7 @@ public class Treuebonus implements CommandExecutor, Listener {
         int i = (getPunkte(p) - amount);
         if (i < 0) i = 0;
         Script.executeUpdate("UPDATE treuebonus SET punkte=" + i + " WHERE id=" + Script.getNRPID(p));
-        if (!Treuebonus.time.containsKey(p.getName())) Treuebonus.time.put(p.getName(), 0);
+        if (!Treuebonus.time.containsKey(p)) Treuebonus.time.put(p, 0);
     }
 
     @Override
@@ -156,21 +156,21 @@ public class Treuebonus implements CommandExecutor, Listener {
         if (Organisation.hasOrganisation(p)) {
             Organisation.getOrganisation(p).setMember(p);
         }
-        if (Treuebonus.logout.containsKey(p.getUniqueId())) {
-            long logout = Treuebonus.logout.get(p.getUniqueId());
+        if (Treuebonus.logout.containsKey(p)) {
+            long logout = Treuebonus.logout.get(p);
             long offtime = System.currentTimeMillis() - logout;
             int sec = (int) (offtime / 1000);
             if (sec <= 180) {
-                if(!Duty.isInDuty(p) && wasDuty.contains(p.getName())) {
+                if(!Duty.isInDuty(p) && wasDuty.contains(p)) {
                     Duty.setDuty(p);
-                    wasDuty.remove(p.getName());
+                    wasDuty.remove(p);
                 }
                 p.sendMessage(Treuebonus.prefix + "Da du innerhalb von 3 Minuten wieder eingeloggt hast, läuft dein Treuebonus weiter.");
             } else {
-                Treuebonus.time.put(p.getName(), 0);
+                Treuebonus.time.put(p, 0);
             }
         } else {
-            Treuebonus.time.put(p.getName(), 0);
+            Treuebonus.time.put(p, 0);
         }
     }
 
@@ -186,9 +186,9 @@ public class Treuebonus implements CommandExecutor, Listener {
         if (Organisation.hasOrganisation(p)) {
             Organisation.getOrganisation(p).deleteMember(p);
         }
-        Treuebonus.logout.put(e.getPlayer().getUniqueId(), System.currentTimeMillis());
+        Treuebonus.logout.put(e.getPlayer(), System.currentTimeMillis());
         if(Duty.isInDuty(e.getPlayer())) {
-            wasDuty.add(e.getPlayer().getName());
+            wasDuty.add(e.getPlayer());
             Duty.removeDuty(e.getPlayer());
             Beruf.getBeruf(e.getPlayer()).changeDuty(e.getPlayer(), false);
         }

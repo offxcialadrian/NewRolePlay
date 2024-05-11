@@ -1,8 +1,10 @@
 package de.newrp.Organisationen;
 
+import de.newrp.API.Log;
 import de.newrp.API.Messages;
 import de.newrp.API.PaymentType;
 import de.newrp.API.Script;
+import de.newrp.Administrator.Notifications;
 import de.newrp.Administrator.SDuty;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Chat.Me;
@@ -73,7 +75,10 @@ public class RobCommand implements CommandExecutor {
                             return true;
                         }
                     }
-
+                    if (Script.getLevel(victim) < 3) {
+                        player.sendMessage(PREFIX + "Du kannst nur Spieler über Level-3 ausrauben!");
+                        return true;
+                    }
                     if (cooldownsV.containsKey(victim)) {
                         if (cooldownsV.get(victim) > System.currentTimeMillis()) {
                             player.sendMessage(PREFIX + "Diese Person kann gerade nicht ausgeraubt werden!");
@@ -107,6 +112,9 @@ public class RobCommand implements CommandExecutor {
                                 Script.removeMoney(finalVictim, PaymentType.CASH, finalMoney);
                                 Script.addMoney(player, PaymentType.CASH, finalMoney);
                                 cooldownsV.put(finalVictim, System.currentTimeMillis() + 2 * 60 * 60 * 1000);
+                                Log.LOW.write(finalVictim, "bekommt von " + Script.getName(player) + " " + finalMoney + "€ gestohlen.");
+                                Log.LOW.write(player, "stiehlt von " + Script.getName(finalVictim) + " " + finalMoney + "€.");
+                                Notifications.sendMessage(Notifications.NotificationType.PAYMENT, Script.getName(player) + " hat " + Script.getName(finalVictim) + " " + finalMoney + "€ gestohlen. (CASH)");
                             } else {
                                 player.sendMessage(PREFIX + "Die Person hat sich zu viel bewegt!");
                             }

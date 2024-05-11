@@ -34,8 +34,13 @@ public class PayCommand implements CommandExecutor {
             return true;
         }
 
-        if(Script.getLevel(p) < 2) {
-            p.sendMessage(Messages.ERROR + "Du musst mindestens Level 2 sein, um Geld überweisen zu können.");
+        if (Script.getLevel(p) < 2) {
+            p.sendMessage(Messages.ERROR + "Du musst mindestens Level 2 sein, um Geld geben zu können.");
+            return true;
+        }
+
+        if (Script.getPlayTime(p, true) < 5) {
+            p.sendMessage(Messages.ERROR + "Du musst mindestens 5 Stunden aktiv gewesen sein, um Geld geben zu können.");
             return true;
         }
 
