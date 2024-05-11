@@ -31,7 +31,7 @@ public class CheckHealthCommand implements CommandExecutor {
         }
 
         if(args.length == 0) {
-            player.sendMessage(Messages.ERROR + "/checkhealth [Player]");
+            player.sendMessage(Messages.ERROR + "/checkhealth [Name]");
             return false;
         }
 

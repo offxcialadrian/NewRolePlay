@@ -18,7 +18,7 @@ public class Team {
 
 
     public enum Teams {
-        SOCIALMEDIA(1, "Social-Media-Team", TeamspeakServerGroup.SOCIALMEDIA, 16, "§b"),
+        SOCIALMEDIA(1, "Marketing-Team", TeamspeakServerGroup.SOCIALMEDIA, 16, "§b"),
         EVENT(2, "Event-Team", TeamspeakServerGroup.EVENTTEAM, 18, "§7"),
         BAU(3, "Bau-Team", TeamspeakServerGroup.BAUTEAM, 17, "§e"),
         ENTWICKLUNG(4, "Entwicklungs-Team", TeamspeakServerGroup.ENTWICKLUNG, 19, "§b");
