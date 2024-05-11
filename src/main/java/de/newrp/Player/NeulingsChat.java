@@ -19,6 +19,11 @@ public class NeulingsChat implements CommandExecutor {
             return true;
         }
 
+        if(args.length == 0) {
+            p.sendMessage(Messages.ERROR + "/nc [Nachricht]");
+            return true;
+        }
+
         for(Player all : Bukkit.getOnlinePlayers()) {
             if(Script.isNRPTeam(all) || Script.getLevel(all) <= 3) {
                 all.sendMessage("§8[§9NeulingsChat§8] §9» " + (Script.isNRPTeam(p)?"§f":"§7") + Script.getName(p) + "§8: §7" + String.join(" ", args));
