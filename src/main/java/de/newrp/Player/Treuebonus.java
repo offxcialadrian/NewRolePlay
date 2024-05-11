@@ -106,7 +106,7 @@ public class Treuebonus implements CommandExecutor, Listener {
                 // check if nothing was updated
                 if (updateStatement.executeUpdate() == 0) {
                     // create new entry
-                    Script.executeUpdate("INSERT INTO treuebonus(id, punkte, total) VALUES (" + unicaID + ", 1, 1)");
+                    Script.executeUpdate("INSERT INTO treuebonus(p) VALUES (" + unicaID + ", 1, 1)");
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
