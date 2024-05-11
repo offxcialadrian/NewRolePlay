@@ -90,6 +90,7 @@ public class Notifications implements CommandExecutor, Listener {
                 return notificationType;
             }
         }
+        return NotificationType.DEAD;
     }
 
     public static void sendMessage(NotificationType type, String msg) {
