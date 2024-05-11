@@ -3,6 +3,7 @@ package de.newrp.API;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.craftbukkit.libs.org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
@@ -24,14 +25,14 @@ public class DaylightCycle {
         try {
             json = IOUtils.toString(new URL("http://api.sunrise-sunset.org/json?lat=52.520008&lng=13.404954&formatted=0"));
         } catch (IOException e) {
-            e.printStackTrace();
+            NewRoleplayMain.handleError(e);
             throw new IllegalStateException(e);
         }
         if (json == null) {
             try {
                 json = IOUtils.toString(new URL("https://api.unicacity.de/daylightCycle/default_daylightCycle.json"));
             } catch (IOException e) {
-                e.printStackTrace();
+                NewRoleplayMain.handleError(e);
                 throw new IllegalStateException(e);
             }
         }
@@ -44,7 +45,7 @@ public class DaylightCycle {
             sunriseTime = sdf.parse(jsonObject.get("sunrise").getAsString());
             sunsetTime = sdf.parse(jsonObject.get("sunset").getAsString());
         } catch (ParseException e) {
-            e.printStackTrace();
+            NewRoleplayMain.handleError(e);
             sunriseTime = Calendar.getInstance().getTime();
             sunsetTime = Calendar.getInstance().getTime();
         }

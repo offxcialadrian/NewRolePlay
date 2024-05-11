@@ -4,7 +4,9 @@ import de.newrp.API.ItemBuilder;
 import de.newrp.API.Krankheit;
 import de.newrp.Shop.ShopItem;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
@@ -114,8 +116,9 @@ public enum Medikamente {
     }
 
     public static Medikamente getMedikamentByItemStack(ItemStack item) {
+        if(item.getItemMeta() == null) return null;
         for (Medikamente m : Medikamente.values()) {
-            if (m.getItemStack().isSimilar(item)) {
+            if(m.getItemStack().getItemMeta().getDisplayName().equalsIgnoreCase(item.getItemMeta().getDisplayName())) {
                 return m;
             }
         }
@@ -130,6 +133,27 @@ public enum Medikamente {
             }
         }
         return null;
+    }
+
+    public static int getAmountOfMedications(final Player player, final Medikamente medikamente) {
+        for(ItemStack is : player.getInventory().getContents()) {
+            if(is == null || is.getType() == Material.AIR) continue;
+            if(is.getItemMeta() == null) continue;;
+
+            if(is.getItemMeta().getDisplayName().equalsIgnoreCase(medikamente.getItemStack().getItemMeta().getDisplayName())) {
+                return is.getAmount();
+            }
+        }
+        return 0;
+    }
+
+    public static void removeMedication(Player p, Medikamente m) {
+        for(ItemStack is : p.getInventory().getContents()) {
+            if(is != null && is.getItemMeta().getDisplayName().equalsIgnoreCase(m.getItemStack().getItemMeta().getDisplayName())) {
+                is.setAmount(is.getAmount() - 1);
+                return;
+            }
+        }
     }
 
     public static List<Medikamente> getAllMedikamente() {

@@ -132,7 +132,7 @@ public enum GFB {
                 return 1;
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            NewRoleplayMain.handleError(e);
         }
         return 0;
     }

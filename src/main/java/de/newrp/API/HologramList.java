@@ -86,7 +86,9 @@ public enum HologramList {
     GAS_STATION_KH(84, "§8/§6buy", new Location(Script.WORLD, 435, 76, 1073, 90.0f, 0.0f)),
     GAS_STATION_GANG(85, "§8/§6buy", new Location(Script.WORLD, 534, 65, 1262, 90.0f, 0.0f)),
     FAHRSCHULE(86, "§8/§6fahrschule", new Location(Script.WORLD, 396, 76, 1124, 90.0f, 0.0f)),
-    KFZSTELLE(87, "§8/§6kennzeichen", new Location(Script.WORLD, 394, 76, 1085, 90.0f, 0.0f));
+    KFZSTELLE(87, "§8/§6kennzeichen", new Location(Script.WORLD, 394, 76, 1085, 90.0f, 0.0f)),
+    DM_JOIN(88, "§8/§6dm join", new Location(Script.WORLD, 433.5, 12, 1111.5)),
+    DROPTABAK(88, "§8/§6droptabak", new Location(Script.WORLD, 97, 65, 641));
 
     private final int id;
     private final String name;

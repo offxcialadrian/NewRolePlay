@@ -3,8 +3,10 @@ package de.newrp.features.emergencycall.impl;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import de.newrp.API.Messages;
+import de.newrp.API.Route;
 import de.newrp.API.Script;
 import de.newrp.Berufe.Beruf;
+import de.newrp.Berufe.Duty;
 import de.newrp.NewRoleplayMain;
 import de.newrp.features.emergencycall.IEmergencyCallService;
 import de.newrp.features.emergencycall.data.AcceptEmergencyCallMetadata;
@@ -42,7 +44,7 @@ public class EmergencyCallService implements IEmergencyCallService {
         final StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(getPrefix()).append("§6Achtung! Ein Notruf von ").append(Script.getName(player)).append(" ist eingegangen.")
                 .append("\n").append(getPrefix()).append("§6Vorfall§8: §6").append(reason)
-                .append("\n").append(buildNearbyPlayersString(location, targetFaction));
+                .append("\n").append(getPrefix() + buildNearbyPlayersString(location, targetFaction));
 
         for (Player member : targetFaction.getBeruf().keySet()) {
             member.sendMessage(stringBuilder.toString());
@@ -97,6 +99,7 @@ public class EmergencyCallService implements IEmergencyCallService {
         for (Player member : emergencyCall.faction().getBeruf().keySet()) {
             member.sendMessage(this.getPrefix() + Script.getName(player) + " hat den Notruf von " + Script.getName(emergencyCall.sender()) + " wieder geöffnet!");
         }
+        Route.invalidate(player);
     }
 
     @Override
@@ -150,6 +153,7 @@ public class EmergencyCallService implements IEmergencyCallService {
     public List<Player> getNearbyPlayersOfFactionToLocation(Location location, Beruf.Berufe faction) {
         return faction.getBeruf().keySet().stream()
                 .sorted(Comparator.comparingDouble((Player a) -> a.getLocation().distance(location)))
+                .filter(faction::isDuty)
                 .limit(2)
                 .collect(Collectors.toList());
     }
@@ -222,7 +226,7 @@ public class EmergencyCallService implements IEmergencyCallService {
         stringBuilder.append("§6Am nächsten sind: ");
         List<Player> nearbyPlayers = getNearbyPlayersOfFactionToLocation(location, faction);
         if(nearbyPlayers.isEmpty()) {
-            return "§6Kein Beamter ist in der Nähe";
+            return "§6Keine Person im Dienst ist in der Nähe";
         }
 
         final Player firstPlayer = nearbyPlayers.get(0);

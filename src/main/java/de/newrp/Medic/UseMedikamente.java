@@ -22,6 +22,7 @@ public class UseMedikamente implements Listener {
 
     public static HashMap<String, Integer> use = new HashMap<>();
     public static String PREFIX = "§8[§cMedikamente§8] §c" + Messages.ARROW + " §7";
+    private long lastUsedTimestamp = System.currentTimeMillis();
 
     @EventHandler
     public void onConsume(PlayerInteractEvent e) {

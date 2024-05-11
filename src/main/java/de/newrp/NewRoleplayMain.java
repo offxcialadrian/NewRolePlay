@@ -74,6 +74,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.sql.Connection;
+import java.util.Arrays;
 
 public class NewRoleplayMain extends JavaPlugin {
 
@@ -90,6 +91,12 @@ public class NewRoleplayMain extends JavaPlugin {
         Bukkit.getConsoleSender().sendMessage("§cNRP §8× §aStarting with version " + this.getDescription().getVersion() + "..");
 
         this.configService = new ConfigService();
+        Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
+            @Override
+            public void uncaughtException(Thread t, Throwable e) {
+                Debug.debug("Uncaught Exception -> " + e.getMessage());
+            }
+        });
 
         // Loads all configurations
         this.loadConfig();
@@ -486,6 +493,8 @@ public class NewRoleplayMain extends JavaPlugin {
         getCommand("payticket").setExecutor(new PayTicket());
         getCommand("sql").setExecutor(new SQLCommand());
         getCommand("checkhealth").setExecutor(new CheckHealthCommand());
+        getCommand("starttransport").setExecutor(new StartTransport());
+        getCommand("vehicleslot").setExecutor(new VehicleSlotsCommand());
     }
 
     /**
@@ -633,6 +642,8 @@ public class NewRoleplayMain extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new FactionBlockDropItemListener(), this);
         Bukkit.getPluginManager().registerEvents(new FactionBlockQuitListener(), this);
         Bukkit.getPluginManager().registerEvents(new LockpickHandler(), this);
+        Bukkit.getPluginManager().registerEvents(new StartTransport(), this);
+        Bukkit.getPluginManager().registerEvents(new Tabakplantage(), this);
     }
 
     /**
@@ -682,6 +693,17 @@ public class NewRoleplayMain extends JavaPlugin {
 
     public static Connection getForumConnection() {
         return forumConnection;
+    }
+
+    public static void handleError(final Throwable exception) {
+        try {
+            Debug.debug("Exception -> " + exception.getMessage());
+            final String firstStackTrace = Arrays.stream(exception.getStackTrace()).findFirst().get().toString();
+            Debug.debug("StackTrace: " + firstStackTrace);
+            exception.printStackTrace();
+        } catch(final Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
 

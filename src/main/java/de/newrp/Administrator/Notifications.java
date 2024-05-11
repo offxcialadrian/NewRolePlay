@@ -1,5 +1,6 @@
 package de.newrp.Administrator;
 
+import com.google.common.collect.Sets;
 import de.newrp.API.*;
 import de.newrp.NewRoleplayMain;
 import org.bukkit.Bukkit;
@@ -17,11 +18,11 @@ import org.bukkit.inventory.Inventory;
 
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class Notifications implements CommandExecutor, Listener {
+
+    private static final Map<UUID, Set<NotificationType>> NOTIFICATION_CACHE = new HashMap<>();
 
     public enum NotificationType {
         JOIN(1, "join", "Join-Notification"),
@@ -61,22 +62,45 @@ public class Notifications implements CommandExecutor, Listener {
 
     private static final String PREFIX = "§8[§aNotifications§8] §a" + Messages.ARROW + " ";
 
-    private static boolean isNotificationEnabled(Player p, NotificationType type) {
+    public static void loadNotificationsForPlayer(final Player player) {
         try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
-             ResultSet rs = stmt.executeQuery("SELECT * FROM notifications WHERE nrp_id = '" + Script.getNRPID(p) + "' AND notification_id = '" + type.getID() + "'")) {
-            return rs.next();
+             ResultSet rs = stmt.executeQuery("SELECT notification_id FROM notifications WHERE nrp_id = '" + Script.getNRPID(player) + "'")) {
+            while(rs.next()) {
+                if(NOTIFICATION_CACHE.containsKey(player.getUniqueId())) {
+                    NOTIFICATION_CACHE.put(player.getUniqueId(), Sets.newHashSet(getNotificationById(rs.getInt(1))));
+                } else {
+                    NOTIFICATION_CACHE.get(player.getUniqueId()).add(getNotificationById(rs.getInt(1)));
+                }
+            }
         } catch (Exception e) {
-            e.printStackTrace();
+            NewRoleplayMain.handleError(e);
+        }
+    }
+
+    private static boolean isNotificationEnabled(Player p, NotificationType type) {
+        if(NOTIFICATION_CACHE.containsKey(p.getUniqueId())) {
+            return NOTIFICATION_CACHE.get(p.getUniqueId()).contains(type);
         }
         return false;
     }
 
+    public static NotificationType getNotificationById(final int id) {
+        for (final NotificationType notificationType : NotificationType.values()) {
+            if(notificationType.id == id) {
+                return notificationType;
+            }
+        }
+    }
+
     public static void sendMessage(NotificationType type, String msg) {
         final List<UUID> hasReceived = new ArrayList<>();
-        for (Player p : Script.getNRPTeam()) {
-            hasReceived.add(p.getUniqueId());
-            if (isNotificationEnabled(p, type)) {
-                p.sendMessage((type == NotificationType.ADVANCED_ANTI_CHEAT ? AntiCheatSystem.PREFIX : PREFIX) + msg);
+        // members of the nrp team shouldn't receive sql errors etc to protect internal structure
+        if(type != NotificationType.DEBUG) {
+            for (Player p : Script.getNRPTeam()) {
+                hasReceived.add(p.getUniqueId());
+                if (isNotificationEnabled(p, type)) {
+                    p.sendMessage((type == NotificationType.ADVANCED_ANTI_CHEAT ? AntiCheatSystem.PREFIX : PREFIX) + msg);
+                }
             }
         }
 
@@ -84,8 +108,11 @@ public class Notifications implements CommandExecutor, Listener {
             if(hasReceived.contains(p.getUniqueId())) continue;
 
             if(Team.getTeam(p) == null) continue;
-            if (Team.getTeam(p) == Team.Teams.ENTWICKLUNG)
-                p.sendMessage((type == NotificationType.ADVANCED_ANTI_CHEAT ? AntiCheatSystem.PREFIX : PREFIX) + msg);
+            if (Team.getTeam(p) == Team.Teams.ENTWICKLUNG) {
+                if (isNotificationEnabled(p, type)) {
+                    p.sendMessage((type == NotificationType.ADVANCED_ANTI_CHEAT ? AntiCheatSystem.PREFIX : PREFIX) + msg);
+                }
+            }
         }
     }
 
@@ -139,6 +166,12 @@ public class Notifications implements CommandExecutor, Listener {
                 for (NotificationType type : NotificationType.values()) {
                     if (e.getCurrentItem().getItemMeta().getDisplayName().equals("§a" + type.getName())) {
                         Script.executeUpdate("INSERT INTO notifications (nrp_id, notification_id) VALUES ('" + Script.getNRPID(p) + "', '" + type.getID() + "')");
+                        if(NOTIFICATION_CACHE.containsKey(p.getUniqueId())) {
+                            NOTIFICATION_CACHE.get(p.getUniqueId()).add(type);
+                        } else {
+                            NOTIFICATION_CACHE.put(p.getUniqueId(), Sets.newHashSet(type));
+                        }
+
                         p.sendMessage(PREFIX + "Du hast die " + type.getName() + " aktiviert.");
                         e.getInventory().setItem(e.getSlot(), new ItemBuilder(Material.REDSTONE_BLOCK).setName("§c" + type.getName()).setLore(" §7" + Messages.ARROW + " Deaktiviere " + type.getName()).build());
                         return;
@@ -149,6 +182,11 @@ public class Notifications implements CommandExecutor, Listener {
                     if (e.getCurrentItem().getItemMeta().getDisplayName().equals("§c" + type.getName())) {
                         Script.executeUpdate("DELETE FROM notifications WHERE nrp_id = '" + Script.getNRPID(p) + "' AND notification_id = '" + type.getID() + "'");
                         p.sendMessage(PREFIX + "Du hast die " + type.getName() + " deaktiviert.");
+                        if(NOTIFICATION_CACHE.containsKey(p.getUniqueId())) {
+                            NOTIFICATION_CACHE.get(p.getUniqueId()).remove(type);
+                        } else {
+                            NOTIFICATION_CACHE.put(p.getUniqueId(), Sets.newHashSet());
+                        }
                         e.getInventory().setItem(e.getSlot(), new ItemBuilder(Material.EMERALD_BLOCK).setName("§a" + type.getName()).setLore(" §7" + Messages.ARROW + " Aktiviere " + type.getName()).build());
                         return;
                     }

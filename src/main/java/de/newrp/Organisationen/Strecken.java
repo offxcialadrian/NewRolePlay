@@ -21,6 +21,12 @@ public class Strecken implements CommandExecutor {
             return true;
         }
 
+        p.getInventory().getItemInMainHand();
+        if(p.getInventory().getItemInMainHand().getType() == Material.AIR || !p.getInventory().getItemInMainHand().hasItemMeta()) {
+            p.sendMessage(Messages.ERROR + "Du hast keine Substanz in der Hand.");
+            return true;
+        }
+
         Drogen droge = Drogen.getItemByName(ChatColor.stripColor(p.getInventory().getItemInMainHand().getItemMeta().getDisplayName()));
         if(droge == null) {
             p.sendMessage(Messages.ERROR + "Du hast keine Substanz in der Hand.");
@@ -72,7 +78,7 @@ public class Strecken implements CommandExecutor {
                 }
             }
         }
-        purity = Drogen.DrugPurity.getPurityByID(purity.getID() - 1);
+        purity = Drogen.DrugPurity.getPurityByID(purity.getID() + 1);
         for(int i = 0; i < (amountOfSubstanz*1.5); i++) {
             p.getInventory().addItem(new ItemBuilder(is.getType()).setName(is.getItemMeta().getDisplayName()).setLore("§7Reinheitsgrad: " + purity.getText()).build());
         }

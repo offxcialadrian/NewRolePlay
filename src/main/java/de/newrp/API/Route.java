@@ -191,7 +191,7 @@ public class Route {
                         this.cancel();
                     }
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    NewRoleplayMain.handleError(e);
                     this.cancel();
                 }
             }

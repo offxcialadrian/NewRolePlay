@@ -22,10 +22,11 @@ public class SprungtuchCommand implements CommandExecutor {
         final Beruf.Berufe faction = Beruf.getBeruf(player);
 
         if(faction != Beruf.Berufe.RETTUNGSDIENST) {
+            player.sendMessage(Messages.NO_PERMISSION);
             return false;
         }
 
-        if(Beruf.hasAbteilung(player, Abteilung.Abteilungen.FEUERWEHR) ) {
+        if(!Beruf.hasAbteilung(player, Abteilung.Abteilungen.FEUERWEHR) ) {
             player.sendMessage(Messages.NO_PERMISSION);
             return false;
         }

@@ -44,7 +44,7 @@ public enum Shops {
     NEWS_UBAHN(24, "Newsstand an der U-Bahn", "Newsstand an der U-Bahn", 5000, new Location(Script.WORLD, 336, 52, 1143, -269.4386f, 12.283148f), 2, 600, true, ShopType.NEWS),
     DOENER(25, "Dönerladen", "Dönerladen", 21000, new Location(Script.WORLD, 449, 65, 665, -270.5968f, 8.693133f), 10, 600, true, ShopType.FASTFOOD),
     ELEKTRO_GANG(27, "Elektroladen Gang", "Elektroladen Gang", 60000, new Location(Script.WORLD, 557, 64, 1270, -0.9939575f, 90.0f), 80, 600, true, ShopType.ELECTRONIC),
-    AUTODEALER(29, "Autohaus", "Autohaus", 130000, new Location(Script.WORLD, 411, 77, 1081, -180.1416f, 90.0f), 30, 600, true, ShopType.CARDEALER),
+    AUTODEALER(29, "Autohaus", "Autohaus", 130000, new Location(Script.WORLD, 411, 77, 1081, -180.1416f, 90.0f), 30, 600, false, ShopType.CARDEALER),
     BLUMENLADEN_GYM(30, "Blumenladen Fitnessstudio", "Blumenladen Fitnessstudio", 55000, new Location(Script.WORLD, 517, 66, 774, -1.5904541f, 90.0f), 15, 600, true, ShopType.FLOWER),
     HANKYS(34, "Hankys", "Hankys", 60000, new Location(Script.WORLD, 557, 64, 1270, -359.05908f, 12.675349f), 50, 600, true, ShopType.ELECTRONIC),
     JAGDHUETTE(35, "Jagdhütte", "Jagdhütte", 30000, new Location(Script.WORLD, 476, 70, 1186, 89.78363f, 89.33273f), 5, 600, true, ShopType.JAGDHUETTE),
@@ -181,7 +181,7 @@ public enum Shops {
                 return rs.getInt("lager_max");
             }
         } catch (SQLException e1) {
-            e1.printStackTrace();
+            NewRoleplayMain.handleError(e1);
         }
         return 0;
     }
@@ -271,6 +271,7 @@ public enum Shops {
             ShopItem bi = ShopItem.getItem(n.getKey());
             ItemStack i = bi.getItemStack();
             if(i == null) continue;
+            i = i.clone();
             int[] a = n.getValue();
             i.setAmount(bi.getItemStack().getAmount());
             if(i.getItemMeta().hasDisplayName()) {

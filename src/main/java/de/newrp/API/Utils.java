@@ -270,6 +270,13 @@ public class Utils implements Listener {
         if (Script.hasRank(p, Rank.SUPPORTER, false)) {
             Script.team.add(p);
         }
+
+        Bukkit.getScheduler().runTaskAsynchronously(NewRoleplayMain.getInstance(), () -> {
+            if(Script.isNRPTeam(p) || Team.getTeam(p) == Team.Teams.ENTWICKLUNG) {
+                Notifications.loadNotificationsForPlayer(p);
+            }
+        });
+
         if (!Krankheit.GEBROCHENES_BEIN.isInfected(Script.getNRPID(p))) {
             p.setWalkSpeed(0.2f);
             for (PotionEffect effect : p.getActivePotionEffects()) {

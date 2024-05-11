@@ -62,6 +62,7 @@ public class ReviveCommand implements CommandExecutor {
                 tg.getInventory().clear();
                 tg.getInventory().setContents(f.getInventoryContent());
             }
+            Script.updateListname(tg);
             if(!Script.hasRank(p, Rank.ADMINISTRATOR, false)) cooldown.put(p.getName(), System.currentTimeMillis());
             if (f.getCash() > 0) Script.setMoney(tg, PaymentType.CASH, f.getCash());
             return true;
@@ -143,6 +144,7 @@ public class ReviveCommand implements CommandExecutor {
             }
             Friedhof.revive(tg, loc);
             p.sendMessage("§7Du hast " + Script.getName(tg) + " erfolgreich wiederbelebt.");
+            Script.updateListname(tg);
 
             tg.resetPlayerWeather();
             Log.LOW.write(tg, "wurde von " + Script.getName(p) + " wiederbelebt.");

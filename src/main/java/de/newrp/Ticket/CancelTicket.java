@@ -122,7 +122,7 @@ public class CancelTicket implements CommandExecutor, Listener {
             Script.executeUpdate("INSERT INTO supporter_rating (id, ticketID, supporterID, rating, time) VALUES(NULL, " + ticketID + ", " + supporterID + ", " + rating + ", " + System.currentTimeMillis() + ")");
             p.sendMessage(TicketCommand.PREFIX + "Vielen Dank für deine Bewertung!");
             p.sendMessage(Messages.INFO + "Du hilfst uns damit, unseren Support zu verbessern.");
-            if(rating < 3 && Script.getLevel(p) <= 5) {
+            if(rating < 3 && Script.getLevel(p) <= 1) {
                 p.sendMessage(Script.PREFIX + "Es tut uns leid, dass du mit unserem Support nicht zufrieden warst.");
                 p.sendMessage(Messages.INFO + "Bitte melde dich bei einem Administrator, damit wir das Problem klären können.");
                 p.sendMessage(Messages.INFO + "Als Entschädigung erhältst du 3 Tage Premium.");

@@ -108,13 +108,14 @@ public class CarCommand implements CommandExecutor, TabCompleter {
                     case "sell":
                         if (Objects.requireNonNull(player).isInsideVehicle()) {
                             if (player.getVehicle() instanceof Boat) {
-                                if (player.getLocation().distance(HologramList.KFZSTELLE.getLocation()) <= 6) {
+                                if (player.getLocation().distance(HologramList.KFZSTELLE.getLocation()) <= 10) {
                                     Car car = Car.getCarByEntityID(Objects.requireNonNull(Objects.requireNonNull(player).getVehicle()).getEntityId());
                                     if (car.isCarOwner(player)) {
                                         if (args.length >= 2 && Objects.equals(args[1], "confirm")) {
                                             car.destroy(false);
                                             player.sendMessage(Component.text(Car.PREFIX + "Du hast deinen " + car.getCarType().getName() + " verkauft."));
                                             player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
+                                            // To-Do: Geld hinzufügen
                                             Cache.loadScoreboard(player);
                                         } else {
                                             player.sendMessage(Component.text(Car.PREFIX + "Verwende §6/car sell confirm §7um den Verkauf zu bestätigen!"));

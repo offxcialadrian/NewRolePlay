@@ -40,6 +40,11 @@ public class AcceptEmergencyCallCommand implements CommandExecutor {
             return false;
         }
 
+        if(!playerFaction.isDuty(player)) {
+            player.sendMessage(Messages.ERROR + "Du bist nicht im Dienst!");
+            return false;
+        }
+
         if(this.emergencyCallService.factionMemberHasAccepted(player)) {
             player.sendMessage(Messages.ERROR + "Du hast bereits einen aktiven Notruf!");
             return false;

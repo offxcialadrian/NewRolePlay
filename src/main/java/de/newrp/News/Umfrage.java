@@ -129,7 +129,7 @@ public class Umfrage {
             statement.setString(2, antwort);
             statement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            NewRoleplayMain.handleError(e);
         }
     }
 

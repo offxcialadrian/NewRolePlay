@@ -36,7 +36,7 @@ public class UseDrogenCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        if(args[0].startsWith("Schmerzmittel")) {
+        if(args[0].toLowerCase().startsWith("schmerzmittel")) {
             Medikamente m = Medikamente.getMedikament(args[0].replace("-", " "));
             if (m != null) {
                 Long lastUsage = UseDrogen.DRUG_COOLDOWN.get(p.getName());
@@ -50,6 +50,14 @@ public class UseDrogenCommand implements CommandExecutor, TabCompleter {
                     Script.sendActionBar(p, Messages.ERROR + "Du kannst keine Drogen konsumieren, wenn du gefesselt bist.");
                     return true;
                 }
+
+                final int amountOfMedicationsOfType = Medikamente.getAmountOfMedications(p, m);
+                if(amountOfMedicationsOfType == 0) {
+                    p.sendMessage(Messages.ERROR + "Du hast kein Schmerzmittel!");
+                    return true;
+                }
+                Medikamente.removeMedication(p, m);
+
                 if (m == Medikamente.SCHMERZMITTEL) {
                     if (Krankheit.ABHAENGIGKEIT.isInfected(Script.getNRPID(p))) {
                         p.sendMessage(UseMedikamente.PREFIX + "Das konsumieren von Schmerzmitteln hat bei dir keine Wirkung gezeigt.");
@@ -60,7 +68,6 @@ public class UseDrogenCommand implements CommandExecutor, TabCompleter {
                     }
                     Me.sendMessage(p, "nimmt ein Schmerzmittel ein.");
                     Script.playLocalSound(p.getLocation(), Sound.ENTITY_PLAYER_BURP, 5);
-                    p.getInventory().getItemInMainHand().setAmount(p.getInventory().getItemInMainHand().getAmount() - 1);
                     p.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 20 * 15, 1));
                     Drogen.addToAdiction(p);
                     return true;
@@ -68,10 +75,10 @@ public class UseDrogenCommand implements CommandExecutor, TabCompleter {
                     if (Krankheit.ABHAENGIGKEIT.isInfected(Script.getNRPID(p))) {
                         p.sendMessage(UseMedikamente.PREFIX + "Das konsumieren von Schmerzmitteln hat bei dir keine Wirkung gezeigt.");
                         Script.playLocalSound(p.getLocation(), Sound.ENTITY_PLAYER_BURP, 5);
-                        p.getInventory().getItemInMainHand().setAmount(p.getInventory().getItemInMainHand().getAmount() - 1);
                         p.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 20 * 5, 0));
                         return true;
                     }
+
                     Me.sendMessage(p, "nimmt ein Schmerzmittel ein.");
                     Script.playLocalSound(p.getLocation(), Sound.ENTITY_PLAYER_BURP, 5);
                     p.getInventory().getItemInMainHand().setAmount(p.getInventory().getItemInMainHand().getAmount() - 1);
@@ -139,6 +146,8 @@ public class UseDrogenCommand implements CommandExecutor, TabCompleter {
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         List<String> args1 = new ArrayList<>();
         for (Drogen drug : Drogen.values()) args1.add(drug.getName());
+        args1.add("Schmerzmittel");
+        args1.add("Schmerzmittel-(High)");
         String[] args2 = new String[] {"0", "1", "2", "3"};
         List<String> completions = new ArrayList<>();
         if (args.length == 1) {
