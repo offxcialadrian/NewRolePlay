@@ -168,7 +168,7 @@ public class AsyncMinute extends BukkitRunnable {
 
         for (Player p : Bukkit.getOnlinePlayers()) {
             if (Mobile.hasPhone(p) && Mobile.mobileIsOn(p) && !AFK.isAFK(p)) {
-                assert Mobile.getPhone(p) != null;
+                if (Mobile.getPhone(p) == null) return;
                 Mobile.getPhone(p).removeAkku(p, 1);
                 if (Mobile.getPhone(p).getAkku(p) <= 0 && Mobile.mobileIsOn(p)) {
                     p.sendMessage(Mobile.PREFIX + "Dein Handy ist ausgeschaltet, da der Akku leer ist.");
