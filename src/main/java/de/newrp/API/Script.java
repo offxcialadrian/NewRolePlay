@@ -559,7 +559,7 @@ public class Script {
     public static void removeSubtitle(Player p) {
         for (Organisation o : Organisation.values()) {
             if (Blacklist.isOnBlacklist(p, o)) {
-                for (Player members : o.getMembers()) {
+                for (Player members : o.getMember()) {
                     Script.setSubtitle(members, p.getUniqueId(), null);
                 }
             }
@@ -568,15 +568,19 @@ public class Script {
 
     public static void updateFahndungSubtitle(Player p) {
         if (Fahndung.isFahnded(p)) {
-            for (Player cops : Beruf.Berufe.POLICE.getMembers()) {
+            for (Player cops : Beruf.Berufe.POLICE.getMember()) {
                 Script.setSubtitle(cops, p.getUniqueId(), "§cFahndung: " + Fahndung.getWanteds(p) + " Wanted(s)");
+            }
+        } else {
+            for (Player cops : Beruf.Berufe.POLICE.getMember()) {
+                Script.setSubtitle(cops, p.getUniqueId(), null);
             }
         }
     }
 
     public static void updateHousebanSubtitle(Player p) {
         if (Houseban.isHousebanned(p, Beruf.Berufe.RETTUNGSDIENST)) {
-            for (Player medics : Beruf.Berufe.RETTUNGSDIENST.getMembers()) {
+            for (Player medics : Beruf.Berufe.RETTUNGSDIENST.getMember()) {
                 Script.setSubtitle(medics, p.getUniqueId(), "§cHausverbot: " + Houseban.getReason(p, Beruf.Berufe.RETTUNGSDIENST));
             }
         }
