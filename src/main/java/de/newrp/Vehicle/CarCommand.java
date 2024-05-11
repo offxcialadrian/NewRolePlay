@@ -32,7 +32,7 @@ public class CarCommand implements CommandExecutor, TabCompleter {
 
             if (args.length > 0) {
                 List<Car> cars;
-                switch (args[0]) {
+                switch (args[0].toLowerCase()) {
                     case "start":
                         if (Objects.requireNonNull(player).isInsideVehicle()) {
                             if (player.getVehicle() instanceof Boat) {

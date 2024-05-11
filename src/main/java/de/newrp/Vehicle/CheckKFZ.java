@@ -21,12 +21,16 @@ public class CheckKFZ implements CommandExecutor {
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         Player p = (Player) cs;
         if (!SDuty.isSDuty(p)) {
-            if (!kfz_check.contains(p)) {
-                kfz_check.add(p);
-                p.sendMessage(PREFIX + "Klicke nun auf ein Fahrzeug, um es zu überprüfen.");
-            } else {
-                kfz_check.remove(p);
-                p.sendMessage(PREFIX + "Du hast das Überprüfen beendet.");
+            if (Beruf.hasBeruf(p)) {
+                if (Beruf.getBeruf(p) == Beruf.Berufe.POLICE) {
+                    if (!kfz_check.contains(p)) {
+                        kfz_check.add(p);
+                        p.sendMessage(PREFIX + "Klicke nun auf ein Fahrzeug, um es zu überprüfen.");
+                    } else {
+                        kfz_check.remove(p);
+                        p.sendMessage(PREFIX + "Du hast das Überprüfen beendet.");
+                    }
+                }
             }
         } else {
             Car car = Car.getNearbyCar(p, 5);
@@ -54,7 +58,7 @@ public class CheckKFZ implements CommandExecutor {
             if (car == null) {
                 p.sendMessage(Messages.ERROR + "§cKein Fahrzeug gefunden.");
             } else {
-                p.sendMessage(PREFIX + "Kennzeichen: §8" + car.getLicenseplate() + " §7| Modell: §8" + car.getCarType().getName() + " §7| Besitzer: §8" + car.getOwner().getName());
+                p.sendMessage(PREFIX + "Kennzeichen: §7" + car.getLicenseplate() + " §8| Modell: §7" + car.getCarType().getName() + " §8| Besitzer: §7" + car.getOwner().getName());
             }
         } else if (Beruf.hasBeruf(p, Beruf.Berufe.POLICE)) {
             if (Duty.isInDuty(p)) {

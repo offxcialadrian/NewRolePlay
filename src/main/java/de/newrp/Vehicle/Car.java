@@ -1,6 +1,7 @@
 package de.newrp.Vehicle;
 
 import de.newrp.API.*;
+import de.newrp.Berufe.Beruf;
 import de.newrp.NewRoleplayMain;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -210,6 +211,12 @@ public class Car {
                     boat.setWoodType(type);
                     boat.setMaxSpeed(car.getCarType().getMaxSpeed());
                     car.setBoatEntity(boat);
+
+                    if (car.getLicenseplate().startsWith("N-RP-")) {
+                        if (Beruf.hasBeruf(p)) {
+                            car.setLicenseplate("N-RP-" + String.format("%02d", Beruf.getBeruf(p).getID()) + String.format("%02d", LeasingCommand.getC(Beruf.getBeruf(p))));
+                        }
+                    }
 
                     CARS.add(car);
                 });
@@ -488,8 +495,8 @@ public class Car {
 
     public String getLicenseplate() {
         String plate = licenseplate;
-        if (plate.length() == 0) {
-            return "X-00-00";
+        if (plate.isEmpty()) {
+            return "N-XX-0000";
         } else {
             return plate;
         }
@@ -613,13 +620,13 @@ public class Car {
             if (isCarOwner(p)) {
                 int v = getInsurance();
                 if (v > 0) {
-                    p.sendMessage("§eDeine Versicherung hat den Schaden ohne weitere Kosten übernommen. §8[" + (v - 1) + "§7/1§8]");
+                    p.sendMessage("§eDeine Versicherung hat den Schaden übernommen. §8[" + (v - 1) + "§7/1§8]");
                     Script.removeMoney(p, PaymentType.BANK, this.getCarType().getInsurance());
                     setInsurance(v - 1);
                     schrottplatz();
                 } else {
                     destroy(true);
-                    p.sendMessage(PREFIX + "Dein Fahrzeug hat ein Totalschaden erlitten.");
+                    p.sendMessage(PREFIX + "Dein Fahrzeug hat einen Totalschaden erlitten.");
                 }
             } else {
                 Player owner = getOwner();
@@ -690,8 +697,8 @@ public class Car {
         int max_x = 506;
         int min_x = 500;
 
-        int max_z = 1252;
-        int min_z = 1261;
+        int max_z = 1261;
+        int min_z = 1252;
 
         int x = Script.getRandom(min_x, max_x);
         int z = Script.getRandom(min_z, max_z);

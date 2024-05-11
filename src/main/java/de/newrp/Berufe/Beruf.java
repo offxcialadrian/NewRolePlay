@@ -7,6 +7,7 @@ import de.newrp.Forum.ForumGroup;
 import de.newrp.Government.Arbeitslosengeld;
 import de.newrp.TeamSpeak.TeamspeakServerGroup;
 import de.newrp.NewRoleplayMain;
+import de.newrp.Vehicle.CarType;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
@@ -23,10 +24,10 @@ public class Beruf {
     public static String PREFIX = "§8[§eBeruf§8] §e" + Messages.ARROW + " §7";
 
     public enum Berufe {
-        GOVERNMENT(1, "Regierung", new Location(Script.WORLD, 562, 88, 992, 270.80725f, 18.372393f),false, true, true, 56, TeamspeakServerGroup.GOVERNMENT, new ForumGroup[]{ForumGroup.GOVERNMENT, ForumGroup.GOVERNMENT_LEADER}),
-        NEWS(2, "News", new Location(Script.WORLD, 302, 67, 777, -24.381052f, 8.922394f), true, true, true, 95, TeamspeakServerGroup.NEWS, new ForumGroup[]{ForumGroup.NEWS, ForumGroup.NEWS_LEADER}),
-        POLICE(3, "Polizei", new Location(Script.WORLD, 420, 71, 819, 185.04346f, 15.860464f),false, true, true, 70, TeamspeakServerGroup.POLICE, new ForumGroup[]{ForumGroup.POLICE, ForumGroup.POLICE_LEADER}),
-        RETTUNGSDIENST(4, "Rettungsdienst", new Location(Script.WORLD, 263, 75, 1254, 189.6543f, 26.346867f),false, true,true, 83, TeamspeakServerGroup.RETTUNGSDIENST, new ForumGroup[]{ForumGroup.RETTUNGSDIENST, ForumGroup.RETTUNGSDIENST_LEADER});
+        GOVERNMENT(1, "Regierung", new Location(Script.WORLD, 562, 88, 992, 270.80725f, 18.372393f),false, true, true, 56, TeamspeakServerGroup.GOVERNMENT, new ForumGroup[]{ForumGroup.GOVERNMENT, ForumGroup.GOVERNMENT_LEADER}, CarType.MERCADAS, new Location(Script.WORLD,  466, 69, 981, 180, 0), 19),
+        NEWS(2, "News", new Location(Script.WORLD, 302, 67, 777, -24.381052f, 8.922394f), true, true, true, 95, TeamspeakServerGroup.NEWS, new ForumGroup[]{ForumGroup.NEWS, ForumGroup.NEWS_LEADER}, CarType.NMW, new Location(Script.WORLD, 283, 68, 741, -90, 0), 21),
+        POLICE(3, "Polizei", new Location(Script.WORLD, 420, 71, 819, 185.04346f, 15.860464f),false, true, true, 70, TeamspeakServerGroup.POLICE, new ForumGroup[]{ForumGroup.POLICE, ForumGroup.POLICE_LEADER}, CarType.AWDI, new Location(Script.WORLD, 431, 68, 859, 0, 0), 11),
+        RETTUNGSDIENST(4, "Rettungsdienst", new Location(Script.WORLD, 263, 75, 1254, 189.6543f, 26.346867f),false, true,true, 83, TeamspeakServerGroup.RETTUNGSDIENST, new ForumGroup[]{ForumGroup.RETTUNGSDIENST, ForumGroup.RETTUNGSDIENST_LEADER}, CarType.VOLTSWAGEN, new Location(Script.WORLD, 353, 75, 1253, 90, 0), 25);
 
         int id;
         private final String name;
@@ -37,8 +38,11 @@ public class Beruf {
         int channelid;
         TeamspeakServerGroup serverGroup;
         ForumGroup[] forumGroup;
+        CarType carType;
+        Location garage;
+        int width;
 
-        Berufe(int id, String name, Location loc, boolean kasse, boolean duty, boolean equip, int channelid, TeamspeakServerGroup serverGroup, ForumGroup[] forumGroup) {
+        Berufe(int id, String name, Location loc, boolean kasse, boolean duty, boolean equip, int channelid, TeamspeakServerGroup serverGroup, ForumGroup[] forumGroup, CarType carType, Location garage, int width) {
             this.id = id;
             this.name = name;
             this.loc = loc;
@@ -48,6 +52,9 @@ public class Beruf {
             this.channelid = channelid;
             this.serverGroup = serverGroup;
             this.forumGroup = forumGroup;
+            this.carType = carType;
+            this.garage = garage;
+            this.width = width;
         }
 
         public static Map<Berufe, HashMap<Player, Boolean>> BERUF_MEMBER = new ConcurrentHashMap<>();
@@ -74,6 +81,19 @@ public class Beruf {
 
         public Location getLoc() {
             return loc;
+        }
+
+        public CarType getCarType() {
+            return carType;
+        }
+
+        public Location getGarage() {
+            Location loc = new Location(Script.WORLD, this.garage.getX(), this.garage.getY(), this.garage.getZ(), this.garage.getYaw(), this.garage.getPitch());
+            return loc.add(new Random().nextInt(this.getGarageWidth()), 0 , 0);
+        }
+
+        public int getGarageWidth() {
+            return this.width;
         }
 
         public TeamspeakServerGroup getTeamspeakServerGroup() {
@@ -323,6 +343,38 @@ public class Beruf {
             for (Player members : getPlayersFromBeruf(this)) {
                 members.sendMessage("§8[§6" + getName() + "§8] §6» §7" + p.getName() + " hat den Beruf verlassen.");
             }
+        }
+
+        public int getCarAmount() {
+            try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
+                 ResultSet rs = stmt.executeQuery("SELECT * FROM berufe_cars WHERE beruf_id='" + this.getID() + "'")) {
+                if (rs.next()) {
+                    return rs.getInt("amount");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return 0;
+        }
+
+        public void setCarAmount(int a) {
+            Script.executeUpdate("UPDATE berufe_cars SET amount='" + a + "' WHERE beruf_id='"+ this.getID() + "'");
+        }
+
+        public int getLeasedAmount() {
+            try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
+                 ResultSet rs = stmt.executeQuery("SELECT * FROM berufe_cars WHERE beruf_id='" + this.getID() + "'")) {
+                if (rs.next()) {
+                    return rs.getInt("leased");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return 0;
+        }
+
+        public void setLeasedAmount(int l) {
+            Script.executeUpdate("UPDATE berufe_cars SET leased='" + l + "' WHERE beruf_id='"+ this.getID() + "'");
         }
 
         public static Berufe getBeruf(int id) {

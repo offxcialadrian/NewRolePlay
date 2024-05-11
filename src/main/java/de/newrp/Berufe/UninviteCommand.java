@@ -5,6 +5,7 @@ import de.newrp.API.Script;
 import de.newrp.Forum.Forum;
 import de.newrp.Organisationen.Organisation;
 import de.newrp.TeamSpeak.TeamSpeak;
+import de.newrp.Vehicle.Car;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -64,6 +65,20 @@ public class UninviteCommand implements CommandExecutor {
                 p.sendMessage(Messages.ERROR + "Du kannst den Leader nicht entlassen.");
                 return true;
             }
+
+            if (beruf.getLeasedAmount() > 0) {
+                if (tg.isOnline()) {
+                    for (Car car : Car.CARS) {
+                        if (car.getOwner() == tg.getPlayer()) {
+                            if (car.getLicenseplate().startsWith("N-RP-")) {
+                                p.sendMessage(Messages.ERROR + "Der Spieler hat noch einen Leasing-Vertrag.");
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+
             p.sendMessage(PREFIX + "Du hast " + tg.getName() + " aus der " + Beruf.getBeruf(p).getName() + " entlassen.");
 
             if(tg.isOnline() && tg.getPlayer() != null) {
