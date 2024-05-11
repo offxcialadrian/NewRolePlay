@@ -412,7 +412,16 @@ public class Car {
     }
 
     public float getFuel() {
-        return fuel;
+        return this.fuel;
+    }
+
+    public void removeFuel(float fuel) {
+        this.fuel = this.fuel - fuel;
+    }
+
+    public void setFuel(float fuel) {
+        Script.executeAsyncUpdate("UPDATE vehicle SET fuel=" + fuel + " WHERE id=" + this.carID);
+        this.fuel = fuel;
     }
 
     public boolean hasBomb() {
@@ -438,6 +447,10 @@ public class Car {
 
     public double getMileage() {
         return mileage;
+    }
+
+    public void addMileage(double miles) {
+        this.mileage = this.mileage + miles;
     }
 
     public void setMileage(double miles) {
