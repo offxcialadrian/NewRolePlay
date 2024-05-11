@@ -50,17 +50,19 @@ public class Fahndung implements CommandExecutor, TabCompleter {
 
 
         if(args.length == 0) {
-            p.sendMessage(Straftat.PREFIX + "Alle Fahndungen:");
-            for(Player all : Bukkit.getOnlinePlayers()) {
-                if(SDuty.isSDuty(all)) continue;
-                if(getStraftatIDs(all).isEmpty()) continue;
-                int wanteds = 0;
-                for(int i : getStraftatIDs(all)) {
-                    wanteds += Straftat.getWanteds(i);
+            Bukkit.getScheduler().runTaskAsynchronously(NewRoleplayMain.getInstance(), () -> {
+                p.sendMessage(Straftat.PREFIX + "Alle Fahndungen:");
+                for(Player all : Bukkit.getOnlinePlayers()) {
+                    if(SDuty.isSDuty(all)) continue;
+                    if(getStraftatIDs(all).isEmpty()) continue;
+                    int wanteds = 0;
+                    for(int i : getStraftatIDs(all)) {
+                        wanteds += Straftat.getWanteds(i);
+                    }
+                    if(wanteds == 0) continue;
+                    p.sendMessage("§8» §6" + Script.getName(all) + " §8× §6" + wanteds + " WantedPunkte" + (AFK.isAFK(all) ? " §8× §6AFK" : ""));
                 }
-                if(wanteds == 0) continue;
-                p.sendMessage("§8» §6" + Script.getName(all) + " §8× §6" + wanteds + " WantedPunkte" + (AFK.isAFK(all) ? " §8× §6AFK" : ""));
-            }
+            });
             return true;
         }
 
