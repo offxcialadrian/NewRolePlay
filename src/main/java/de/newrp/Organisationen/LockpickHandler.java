@@ -1,8 +1,11 @@
 package de.newrp.Organisationen;
 
+import de.newrp.API.Navi;
+import de.newrp.API.Route;
 import de.newrp.API.Script;
 import de.newrp.Berufe.Beruf;
 import de.newrp.NewRoleplayMain;
+import de.newrp.Player.NaviCommand;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.TextColor;
@@ -53,6 +56,7 @@ public class LockpickHandler implements Listener {
                                 Beruf.Berufe.POLICE.sendMessage(BreakinCommand.PREFIX + "Es wurde ein Alarm bei " + Objects.requireNonNull(RobLocation.getRob(Organisation.getOrganisation(player), player.getLocation())).getName() + " verzeichnet.");
                                 alarm.put(player, 0);
                                 Location rob = Objects.requireNonNull(RobLocation.getRob(Organisation.getOrganisation(player), player.getLocation())).getLoc();
+                                for (Player cop : Beruf.Berufe.POLICE.getMember()) new Route(cop.getName(), Script.getNRPID(cop), cop.getLocation(), rob).start();
                                 rob.add(0, 4, 0);
                                 new BukkitRunnable() {
                                     @Override
