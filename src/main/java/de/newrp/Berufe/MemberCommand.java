@@ -94,7 +94,7 @@ public class MemberCommand implements CommandExecutor, TabCompleter {
                 Beruf.Berufe beruf = Beruf.Berufe.getBeruf(args[0]);
                 if(beruf != null) {
                     p.sendMessage(PREFIX + "Mitglieder der " + beruf.getName() + ":");
-                    for(OfflinePlayer player : beruf.getAllMembers()) {
+                    for (OfflinePlayer player : beruf.getAllMembers()) {
                         p.sendMessage("§8" + Messages.ARROW + " §6" + player.getName() + " §8(§6" + Beruf.getAbteilung(player).getName() + "§8)" + (player.isOnline()? " §8[§aOnline§8] " + (AFK.isAFK(Script.getPlayer(Script.getNRPID(player)))?"§8[§6AFK§8]":"" ) : ""));
                     }
                     return;
@@ -103,8 +103,8 @@ public class MemberCommand implements CommandExecutor, TabCompleter {
                 Organisation org = Organisation.getOrganisation(args[0]);
                 if(org != null) {
                     p.sendMessage(PREFIX + "Mitglieder von " + org.getName() + ":");
-                    for(OfflinePlayer player : org.getAllMembers()) {
-                        p.sendMessage("§8" + Messages.ARROW + " §6" + player.getName() + " §8(§6" + Organisation.getRankName(player) + "§8)" + (player.isOnline()? " §8[§aOnline§8] " + (AFK.isAFK(Script.getPlayer(Script.getNRPID(player)))?"§8[§6AFK§8]":"" ) : ""));
+                    for (OfflinePlayer player : org.getAllMembers()) {
+                        p.sendMessage("§8" + Messages.ARROW + " §6" + player.getName() + " §8(§6" + Organisation.getRankName(player) + " [" + Organisation.getRank(player) + "]§8)" + (player.isOnline()? " §8[§aOnline§8] " + (AFK.isAFK(Script.getPlayer(Script.getNRPID(player)))?"§8[§6AFK§8]":"" ) : ""));
                     }
                     return;
                 }
@@ -120,7 +120,7 @@ public class MemberCommand implements CommandExecutor, TabCompleter {
                     return;
                 }
 
-                p.sendMessage(PREFIX + tg.getName() + " befindet sich in " + (Beruf.hasBeruf(tg)? Beruf.getBeruf(tg).getName() : Organisation.getOrganisation(tg).getName()) + ".");
+                p.sendMessage(PREFIX + tg.getName() + " befindet sich in " + (Beruf.hasBeruf(tg)? Beruf.getBeruf(tg).getName() : Organisation.getOrganisation(tg).getName()) + " als " + (Beruf.hasBeruf(tg)? Beruf.getAbteilung(tg).getName() : Organisation.getRankName(tg) + " [" + Organisation.getRank(tg) + "]") + ".");
             });
 
             return true;
