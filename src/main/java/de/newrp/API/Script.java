@@ -1021,7 +1021,6 @@ public class Script {
     }
 
     public static void executeAsyncUpdate(String sql) {
-        Debug.debug(sql);
         executeUpdate(sql);
         //Bukkit.getScheduler().runTaskAsynchronously(main.getInstance(), () -> ));
     }
