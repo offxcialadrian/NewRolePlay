@@ -5,6 +5,7 @@ import de.newrp.Berufe.Beruf;
 import de.newrp.Berufe.Duty;
 import de.newrp.Organisationen.Organisation;
 import de.newrp.NewRoleplayMain;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -30,9 +31,9 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 public class Treuebonus implements CommandExecutor, Listener {
-    public static final HashMap<Player, Long> logout = new HashMap<>();
-    public static final HashMap<Player, Integer> time = new HashMap<>();
-    public static ArrayList<Player> wasDuty = new ArrayList<>();
+    public static final HashMap<UUID, Long> logout = new HashMap<>();
+    public static final HashMap<UUID, Integer> time = new HashMap<>();
+    public static ArrayList<UUID> wasDuty = new ArrayList<>();
     public static final String prefix = "§8[§bTreuebonus§8]§b " + Messages.ARROW + " §7";
 
     public static void addTime() {
@@ -43,26 +44,26 @@ public class Treuebonus implements CommandExecutor, Listener {
 
     public static void addTime(Player p) {
         if (!AFK.isAFK(p)) {
-            if (!time.containsKey(p)) {
-                Treuebonus.time.put(p, 0);
+            if (!time.containsKey(p.getUniqueId())) {
+                Treuebonus.time.put(p.getUniqueId(), 0);
             }
-            int old = time.get(p);
+            int old = time.get(p.getUniqueId());
             if (old >= 120) {
                 p.sendMessage(prefix + "NRP × New RolePlay dankt dir für deine Treue und schenkt dir einen Treuepunkt! §8[§c" + (getPunkte(p) + 1) + "§8]");
                 p.sendMessage(Messages.INFO + "Mit /treuebonus kannst du dir tolle Geschenke aussuchen.");
 
                 add(p, true);
             } else {
-                time.put(p, (time.get(p) + 1));
+                time.put(p.getUniqueId(), (time.get(p.getUniqueId()) + 1));
             }
         }
     }
 
     public static int getMinutesToBonus(Player p) {
-        if (time.containsKey(p)) {
-            return 120 - time.get(p);
+        if (time.containsKey(p.getUniqueId())) {
+            return 120 - time.get(p.getUniqueId());
         } else {
-            Treuebonus.time.put(p, 0);
+            Treuebonus.time.put(p.getUniqueId(), 0);
             return 120;
         }
     }
@@ -101,7 +102,7 @@ public class Treuebonus implements CommandExecutor, Listener {
         Bukkit.getScheduler().runTaskAsynchronously(NewRoleplayMain.getInstance(), () -> {
             int unicaID = Script.getNRPID(p);
 
-            try (PreparedStatement updateStatement = NewRoleplayMain.getConnection().prepareStatement("UPDATE treuebonus SET punkte=punkte+1, total=total+1 WHERE id=?");) {
+            try (PreparedStatement updateStatement = NewRoleplayMain.getConnection().prepareStatement("UPDATE treuebonus SET punkte=punkte+1, total=total+1 WHERE id=?")) {
                 updateStatement.setInt(1, unicaID);
                 // check if nothing was updated
                 if (updateStatement.executeUpdate() == 0) {
@@ -114,7 +115,7 @@ public class Treuebonus implements CommandExecutor, Listener {
         });
 
         if (updateTime) {
-            Treuebonus.time.put(p, 0);
+            Treuebonus.time.put(p.getUniqueId(), 0);
         }
     }
 
@@ -122,7 +123,7 @@ public class Treuebonus implements CommandExecutor, Listener {
         int i = (getPunkte(p) - amount);
         if (i < 0) i = 0;
         Script.executeUpdate("UPDATE treuebonus SET punkte=" + i + " WHERE id=" + Script.getNRPID(p));
-        if (!Treuebonus.time.containsKey(p)) Treuebonus.time.put(p, 0);
+        if (!Treuebonus.time.containsKey(p.getUniqueId())) Treuebonus.time.put(p.getUniqueId(), 0);
     }
 
     @Override
@@ -156,21 +157,23 @@ public class Treuebonus implements CommandExecutor, Listener {
         if (Organisation.hasOrganisation(p)) {
             Organisation.getOrganisation(p).setMember(p);
         }
-        if (Treuebonus.logout.containsKey(p)) {
-            long logout = Treuebonus.logout.get(p);
+        if (Treuebonus.logout.containsKey(p.getUniqueId())) {
+            long logout = Treuebonus.logout.get(p.getUniqueId());
             long offtime = System.currentTimeMillis() - logout;
             int sec = (int) (offtime / 1000);
             if (sec <= 180) {
-                if(!Duty.isInDuty(p) && wasDuty.contains(p)) {
-                    Duty.setDuty(p);
-                    wasDuty.remove(p);
+                if (wasDuty.contains(p.getUniqueId())) {
+                    Beruf.getBeruf(p).changeDuty(p, true);
+                    Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> Duty.setDuty(p), 5L);
+                    Script.updateListname(p);
+                    wasDuty.remove(p.getUniqueId());
                 }
                 p.sendMessage(Treuebonus.prefix + "Da du innerhalb von 3 Minuten wieder eingeloggt hast, läuft dein Treuebonus weiter.");
             } else {
-                Treuebonus.time.put(p, 0);
+                Treuebonus.time.put(p.getUniqueId(), 0);
             }
         } else {
-            Treuebonus.time.put(p, 0);
+            Treuebonus.time.put(p.getUniqueId(), 0);
         }
     }
 
@@ -180,17 +183,17 @@ public class Treuebonus implements CommandExecutor, Listener {
 
         Script.setInt(p, "payday", "time", PayDay.getPayDayTime(p));
 
+        Treuebonus.logout.put(p.getUniqueId(), System.currentTimeMillis());
+        if (Duty.isInDuty(p)) {
+            wasDuty.add(p.getUniqueId());
+            Beruf.getBeruf(p).changeDuty(p, false);
+            Duty.removeDuty(p);
+        }
         if (Beruf.hasBeruf(p)) {
             Beruf.getBeruf(p).deleteMember(p);
         }
         if (Organisation.hasOrganisation(p)) {
             Organisation.getOrganisation(p).deleteMember(p);
-        }
-        Treuebonus.logout.put(e.getPlayer(), System.currentTimeMillis());
-        if(Duty.isInDuty(e.getPlayer())) {
-            wasDuty.add(e.getPlayer());
-            Duty.removeDuty(e.getPlayer());
-            Beruf.getBeruf(e.getPlayer()).changeDuty(e.getPlayer(), false);
         }
     }
 

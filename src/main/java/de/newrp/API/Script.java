@@ -559,8 +559,8 @@ public class Script {
     public static void removeSubtitle(Player p) {
         for (Organisation o : Organisation.values()) {
             if (Blacklist.isOnBlacklist(p, o)) {
-                for (Player members : o.getMember()) {
-                    Script.setSubtitle(members, p.getUniqueId(), null);
+                for (UUID members : o.getMember()) {
+                    Script.setSubtitle(Bukkit.getPlayer(members), p.getUniqueId(), null);
                 }
             }
         }
@@ -568,20 +568,20 @@ public class Script {
 
     public static void updateFahndungSubtitle(Player p) {
         if (Fahndung.isFahnded(p)) {
-            for (Player cops : Beruf.Berufe.POLICE.getMember()) {
-                Script.setSubtitle(cops, p.getUniqueId(), "§cFahndung: " + Fahndung.getWanteds(p) + " Wanted(s)");
+            for (UUID cops : Beruf.Berufe.POLICE.getMember()) {
+                Script.setSubtitle(Objects.requireNonNull(Bukkit.getPlayer(cops)), p.getUniqueId(), "§cFahndung: " + Fahndung.getWanteds(p) + " Wanted(s)");
             }
         } else {
-            for (Player cops : Beruf.Berufe.POLICE.getMember()) {
-                Script.setSubtitle(cops, p.getUniqueId(), null);
+            for (UUID cops : Beruf.Berufe.POLICE.getMember()) {
+                Script.setSubtitle(Objects.requireNonNull(Bukkit.getPlayer(cops)), p.getUniqueId(), null);
             }
         }
     }
 
     public static void updateHousebanSubtitle(Player p) {
         if (Houseban.isHousebanned(p, Beruf.Berufe.RETTUNGSDIENST)) {
-            for (Player medics : Beruf.Berufe.RETTUNGSDIENST.getMember()) {
-                Script.setSubtitle(medics, p.getUniqueId(), "§cHausverbot: " + Houseban.getReason(p, Beruf.Berufe.RETTUNGSDIENST));
+            for (UUID medics : Beruf.Berufe.RETTUNGSDIENST.getMember()) {
+                Script.setSubtitle(Objects.requireNonNull(Bukkit.getPlayer(medics)), p.getUniqueId(), "§cHausverbot: " + Houseban.getReason(p, Beruf.Berufe.RETTUNGSDIENST));
             }
         }
     }
@@ -1360,18 +1360,21 @@ public class Script {
     }
 
     public static boolean removeMoney(Player p, PaymentType paymentType, int amount) {
-        if (paymentType == PaymentType.CASH)
-            p.sendMessage(Messages.INFO + "Du hast " + amount + "€ Bargeld bezahlt.");
-        if (paymentType == PaymentType.BANK) {
-            if (Premium.hasPremium(p) && Mobile.hasPhone(p)) {
-                if (Mobile.mobileIsOn(p) && Mobile.hasConnection(p)) {
-                    p.sendMessage(Messages.INFO + "Du hast " + amount + "€ von deinem Konto bezahlt.");
+        if (amount <= getMoney(p, paymentType)) {
+            if (paymentType == PaymentType.CASH)
+                p.sendMessage(Messages.INFO + "Du hast " + amount + "€ Bargeld bezahlt.");
+            if (paymentType == PaymentType.BANK) {
+                if (Premium.hasPremium(p) && Mobile.hasPhone(p)) {
+                    if (Mobile.mobileIsOn(p) && Mobile.hasConnection(p)) {
+                        p.sendMessage(Messages.INFO + "Du hast " + amount + "€ von deinem Konto bezahlt.");
+                    }
                 }
             }
+            amount = Math.abs(amount);
+            executeUpdate("UPDATE money SET " + paymentType.getName() + "=" + (getMoney(p, paymentType) - amount) + " WHERE nrp_id=" + getNRPID(p));
+            return true;
         }
-        amount = Math.abs(amount);
-        executeUpdate("UPDATE money SET " + paymentType.getName() + "=" + (getMoney(p, paymentType) - amount) + " WHERE nrp_id=" + getNRPID(p));
-        return true;
+        return false;
     }
 
     public static void removeMoney(OfflinePlayer p, PaymentType paymentType, int amount) {

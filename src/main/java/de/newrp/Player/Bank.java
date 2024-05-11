@@ -132,19 +132,23 @@ public class Bank implements CommandExecutor, TabCompleter {
                     return true;
                 }
 
-                Script.removeMoney(p, PaymentType.BANK, betrag+Banken.getBankByPlayer(p).getTransactionKosten());
-                Script.addMoney(p, PaymentType.CASH, betrag);
-                p.sendMessage(PREFIX + "§8=== §6" + Banken.getBankByPlayer(p).getName() + " §8===");
-                p.sendMessage(PREFIX + "Alter Kontostand§8: §c" + (Script.getMoney(p, PaymentType.BANK) + betrag) + "€");
-                p.sendMessage(PREFIX + "Abgehoben§8: §c" + betrag + "€");
-                p.sendMessage(PREFIX + "Neuer Kontostand§8: §a" + Script.getMoney(p, PaymentType.BANK) + "€");
-                p.sendMessage(PREFIX + "§8=========");
-                atm.removeCash(betrag);
-                p.sendMessage(Messages.INFO + "Es wurden " + Banken.getBankByPlayer(p).getTransactionKosten() + "€ Transaktionskosten abgezogen.");
-                Notifications.sendMessage(Notifications.NotificationType.PAYMENT, Script.getName(p) + " hat " + betrag + "€ ausgezahlt.");
-                Log.NORMAL.write(p, "hat " + betrag + "€ ausgezahlt.");
-                Cashflow.addEntry(p, -betrag, "Auszahlung an ATM " + atm.getID());
-                return true;
+                if (Script.removeMoney(p, PaymentType.BANK, betrag + Banken.getBankByPlayer(p).getTransactionKosten())){
+                    Script.addMoney(p, PaymentType.CASH, betrag);
+                    p.sendMessage(PREFIX + "§8=== §6" + Banken.getBankByPlayer(p).getName() + " §8===");
+                    p.sendMessage(PREFIX + "Alter Kontostand§8: §c" + (Script.getMoney(p, PaymentType.BANK) + betrag) + "€");
+                    p.sendMessage(PREFIX + "Abgehoben§8: §c" + betrag + "€");
+                    p.sendMessage(PREFIX + "Neuer Kontostand§8: §a" + Script.getMoney(p, PaymentType.BANK) + "€");
+                    p.sendMessage(PREFIX + "§8=========");
+                    atm.removeCash(betrag);
+                    p.sendMessage(Messages.INFO + "Es wurden " + Banken.getBankByPlayer(p).getTransactionKosten() + "€ Transaktionskosten abgezogen.");
+                    Notifications.sendMessage(Notifications.NotificationType.PAYMENT, Script.getName(p) + " hat " + betrag + "€ ausgezahlt.");
+                    Log.NORMAL.write(p, "hat " + betrag + "€ ausgezahlt.");
+                    Cashflow.addEntry(p, -betrag, "Auszahlung an ATM " + atm.getID());
+                    return true;
+                } else {
+                    p.sendMessage(Messages.ERROR + "Du hast nicht genug Geld.");
+                    return true;
+                }
             }
         }
 

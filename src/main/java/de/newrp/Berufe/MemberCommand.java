@@ -20,6 +20,7 @@ import org.bukkit.util.StringUtil;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 public class MemberCommand implements CommandExecutor, TabCompleter {
 
@@ -35,8 +36,8 @@ public class MemberCommand implements CommandExecutor, TabCompleter {
                 Organisation org = Organisation.getOrganisation(p);
                 p.sendMessage(PREFIX + "Mitglieder von " + org.getName() + ":");
                 int i = 0;
-                for(OfflinePlayer player : org.getMember()) {
-                    p.sendMessage("§8" + Messages.ARROW + " §6" + player.getName() + " §8(§6" + Organisation.getRankName(player) + "§8) "+ (AFK.isAFK(Script.getPlayer(Script.getNRPID(player)))?"§8[§6AFK§8]":"" ));
+                for(UUID player : org.getMember()) {
+                    p.sendMessage("§8" + Messages.ARROW + " §6" + Bukkit.getOfflinePlayer(player).getName() + " §8(§6" + Organisation.getRankName(Bukkit.getOfflinePlayer(player)) + "§8) "+ (AFK.isAFK(Script.getPlayer(Script.getNRPID(Bukkit.getOfflinePlayer(player))))?"§8[§6AFK§8]":"" ));
                     i++;
                 }
                 p.sendMessage(PREFIX  + "§8" + Messages.ARROW + " §6" + i + " Mitglieder");
@@ -51,8 +52,8 @@ public class MemberCommand implements CommandExecutor, TabCompleter {
             Beruf.Berufe beruf = Beruf.getBeruf(p);
             p.sendMessage(PREFIX + "Mitglieder von " + beruf.getName() + ":");
             int i = 0;
-            for(OfflinePlayer player : beruf.getMember()) {
-                p.sendMessage("§8" + Messages.ARROW + " §6" + player.getName() + " §8(§6" + Beruf.getAbteilung(player).getName()+ "§8)" + (player.isOnline()? " §8[§aOnline§8] " + (AFK.isAFK(Script.getPlayer(Script.getNRPID(player)))?"§8[§6AFK§8]":"" ) : ""));
+            for (UUID player : beruf.getMember()) {
+                p.sendMessage("§8" + Messages.ARROW + " §6" + Bukkit.getOfflinePlayer(player).getName() + " §8(§6" + Beruf.getAbteilung(Bukkit.getOfflinePlayer(player)).getName()+ "§8)" + (Bukkit.getOfflinePlayer(player).isOnline()? " §8[§aOnline§8] " + (AFK.isAFK(Script.getPlayer(Script.getNRPID(Bukkit.getOfflinePlayer(player))))?"§8[§6AFK§8]":"" ) : ""));
                 i++;
             }
             p.sendMessage(PREFIX  + "§8" + Messages.ARROW + " §6" + i + " Mitglieder");
@@ -67,7 +68,7 @@ public class MemberCommand implements CommandExecutor, TabCompleter {
                         Organisation org = Organisation.getOrganisation(p);
                         p.sendMessage(PREFIX + "Mitglieder von " + org.getName() + ":");
                         int i = 0;
-                        for(OfflinePlayer player : org.getAllMembers()) {
+                        for (OfflinePlayer player : org.getAllMembers()) {
                             p.sendMessage("§8" + Messages.ARROW + " §6" + player.getName() + " §8(§6" + Organisation.getRankName(player) + "§8)" + (player.isOnline()? " §8[§aOnline§8] " + (AFK.isAFK(Script.getPlayer(Script.getNRPID(player)))?"§8[§6AFK§8]":"" ) : ""));
                             i++;
                         }

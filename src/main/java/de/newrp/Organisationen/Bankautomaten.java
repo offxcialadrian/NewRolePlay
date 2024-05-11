@@ -23,6 +23,7 @@ import org.bukkit.util.Vector;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class Bankautomaten implements Listener {
@@ -51,9 +52,9 @@ public class Bankautomaten implements Listener {
             return;
         }
 
-        List<Player> cops = Beruf.Berufe.POLICE.getMember().stream()
+        List<UUID> cops = Beruf.Berufe.POLICE.getMember().stream()
                 .filter(Duty::isInDuty)
-                .filter(nearbyPlayer -> !SDuty.isSDuty(nearbyPlayer))
+                .filter((nearbyPlayer) -> !SDuty.isSDuty(nearbyPlayer))
                 .filter(nearbyPlayer -> !AFK.isAFK(nearbyPlayer)).collect(Collectors.toList());
 
         if (cops.size() < 3 && !Script.isInTestMode()) {

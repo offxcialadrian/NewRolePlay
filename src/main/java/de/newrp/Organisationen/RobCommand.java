@@ -21,14 +21,15 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Random;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 public class RobCommand implements CommandExecutor {
 
     public static String PREFIX = "§8[§4Rob§8] §4" + Messages.ARROW + " §7";
 
-    HashMap<Player, Long> cooldownsP = new HashMap<>();
-    HashMap<Player, Long> cooldownsV = new HashMap<>();
+    HashMap<UUID, Long> cooldownsP = new HashMap<>();
+    HashMap<UUID, Long> cooldownsV = new HashMap<>();
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
@@ -36,9 +37,9 @@ public class RobCommand implements CommandExecutor {
             Player player = (Player) sender;
 
             if (Organisation.hasOrganisation(player)) {
-                if (cooldownsP.containsKey(player)) {
-                    if (cooldownsP.get(player) > System.currentTimeMillis()) {
-                        long left = cooldownsP.get(player) - System.currentTimeMillis();
+                if (cooldownsP.containsKey(player.getUniqueId())) {
+                    if (cooldownsP.get(player.getUniqueId()) > System.currentTimeMillis()) {
+                        long left = cooldownsP.get(player.getUniqueId()) - System.currentTimeMillis();
                         player.sendMessage(PREFIX + "Du kannst erst in " + TimeUnit.MILLISECONDS.toMinutes(left) + " Minuten wieder eine Person ausrauben!");
                         return true;
                     }
@@ -79,8 +80,8 @@ public class RobCommand implements CommandExecutor {
                         player.sendMessage(PREFIX + "Du kannst nur Spieler über Level-3 ausrauben!");
                         return true;
                     }
-                    if (cooldownsV.containsKey(victim)) {
-                        if (cooldownsV.get(victim) > System.currentTimeMillis()) {
+                    if (cooldownsV.containsKey(victim.getUniqueId())) {
+                        if (cooldownsV.get(victim.getUniqueId()) > System.currentTimeMillis()) {
                             player.sendMessage(PREFIX + "Diese Person kann gerade nicht ausgeraubt werden!");
                             return true;
                         }
@@ -91,7 +92,7 @@ public class RobCommand implements CommandExecutor {
                         return true;
                     }
 
-                    cooldownsP.put(player, System.currentTimeMillis() + 10 * 60 * 1000);
+                    cooldownsP.put(player.getUniqueId(), System.currentTimeMillis() + 10 * 60 * 1000);
 
                     int money = Script.getMoney(victim, PaymentType.CASH);
                     if (money > 500) money = 500;
@@ -111,7 +112,7 @@ public class RobCommand implements CommandExecutor {
                                 Script.addEXP(player, exp);
                                 Script.removeMoney(finalVictim, PaymentType.CASH, finalMoney);
                                 Script.addMoney(player, PaymentType.CASH, finalMoney);
-                                cooldownsV.put(finalVictim, System.currentTimeMillis() + 2 * 60 * 60 * 1000);
+                                cooldownsV.put(finalVictim.getUniqueId(), System.currentTimeMillis() + 2 * 60 * 60 * 1000);
                                 Log.LOW.write(finalVictim, "bekommt von " + Script.getName(player) + " " + finalMoney + "€ gestohlen.");
                                 Log.LOW.write(player, "stiehlt von " + Script.getName(finalVictim) + " " + finalMoney + "€.");
                                 Notifications.sendMessage(Notifications.NotificationType.PAYMENT, Script.getName(player) + " hat " + Script.getName(finalVictim) + " " + finalMoney + "€ gestohlen. (CASH)");

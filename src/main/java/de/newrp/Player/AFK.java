@@ -35,6 +35,10 @@ public class AFK implements CommandExecutor, Listener {
         return afk.containsKey(p.getName());
     }
 
+    public static boolean isAFK(UUID p) {
+        return afk.containsKey(Objects.requireNonNull(Bukkit.getPlayer(p)).getName());
+    }
+
     public static String getAFKTime(Player p) {
         return afk.get(p.getName());
     }

@@ -5,6 +5,7 @@ import de.newrp.Organisationen.Organisation;
 import de.newrp.Player.Mobile;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -122,9 +123,9 @@ public class Reinforcement implements CommandExecutor {
                 new Route(p.getName(), Script.getNRPID(p), p.getLocation(), new_reinforcement.get(tg.getName())).start();
                 if (Organisation.hasOrganisation(tg)) {
                     Organisation org = Organisation.getOrganisation(tg);
-                    if (org.getMember().contains(tg)) {
-                        for (Player member : org.getMember()) {
-                            member.sendMessage("§7➲ §a" + Organisation.getRankName(p) + " " + Script.getName(p) + " kommt zum Verstärkungsruf von " + Script.getName(tg) + "! §a" + "(ETA: " + calcETA(p.getLocation().distance(new_reinforcement.get(tg.getName()))) + " Sekunden)");
+                    if (org.getMember().contains(tg.getUniqueId())) {
+                        for (UUID member : org.getMember()) {
+                            Bukkit.getPlayer(member).sendMessage("§7➲ §a" + Organisation.getRankName(p) + " " + Script.getName(p) + " kommt zum Verstärkungsruf von " + Script.getName(tg) + "! §a" + "(ETA: " + calcETA(p.getLocation().distance(new_reinforcement.get(tg.getName()))) + " Sekunden)");
                         }
                     }
                     return true;
@@ -155,19 +156,19 @@ public class Reinforcement implements CommandExecutor {
             reinf_type.put(p.getName(), type);
             if (Organisation.hasOrganisation(p)) {
                 Organisation org = Organisation.getOrganisation(p);
-                if (org.getMember().contains(p)) {
-                    for (Player member : org.getMember()) {
-                        member.sendMessage("§c§l" + type.getName() + " §a" + Organisation.getRankName(p) + " " + Script.getName(p) + " benötigt Unterstützung! §8➥ §7" + Navi.getNextNaviLocation(p.getLocation()).getName() + " §7(" + (int) member.getLocation().distance(p.getLocation()) + "m)");
-                        OnMyWayLink(member, p);
-                        showRoute(member, p);
+                if (org.getMember().contains(p.getUniqueId())) {
+                    for (UUID member : org.getMember()) {
+                        Bukkit.getPlayer(member).sendMessage("§c§l" + type.getName() + " §a" + Organisation.getRankName(p) + " " + Script.getName(p) + " benötigt Unterstützung! §8➥ §7" + Navi.getNextNaviLocation(p.getLocation()).getName() + " §7(" + (int) Bukkit.getPlayer(member).getLocation().distance(p.getLocation()) + "m)");
+                        OnMyWayLink(Bukkit.getPlayer(member), p);
+                        showRoute(Bukkit.getPlayer(member), p);
                     }
                     return true;
                 }
             }
-            for (Player member : Objects.requireNonNull(beruf.getMember())) {
-                member.sendMessage("§c§l" + type.getName() + " §a" + Beruf.getAbteilung(p).getName() + " " + Script.getName(p) + " benötigt Unterstützung! §8➥ §7" + Navi.getNextNaviLocation(p.getLocation()).getName() + " §7(" + (int) member.getLocation().distance(p.getLocation()) + "m)");
-                OnMyWayLink(member, p);
-                showRoute(member, p);
+            for (UUID member : Objects.requireNonNull(beruf.getMember())) {
+                Objects.requireNonNull(Bukkit.getPlayer(member)).sendMessage("§c§l" + type.getName() + " §a" + Beruf.getAbteilung(p).getName() + " " + Script.getName(p) + " benötigt Unterstützung! §8➥ §7" + Navi.getNextNaviLocation(p.getLocation()).getName() + " §7(" + (int) Objects.requireNonNull(Bukkit.getPlayer(member)).getLocation().distance(p.getLocation()) + "m)");
+                OnMyWayLink(Objects.requireNonNull(Bukkit.getPlayer(member)), p);
+                showRoute(Objects.requireNonNull(Bukkit.getPlayer(member)), p);
             }
             return true;
         }
@@ -184,11 +185,11 @@ public class Reinforcement implements CommandExecutor {
 
         if (Organisation.hasOrganisation(p)) {
             Organisation org = Organisation.getOrganisation(p);
-            if (org.getMember().contains(p)) {
-                for (Player member : org.getMember()) {
-                    member.sendMessage("§c§l" + type.getName() + " §a" + org.getName() + " " + Script.getName(p) + " benötigt Unterstützung! §8➥ §7" + Navi.getNextNaviLocation(p.getLocation()).getName() + " §7(" + (int) member.getLocation().distance(p.getLocation()) + "m)");
-                    OnMyWayLink(member, p);
-                    showRoute(member, p);
+            if (org.getMember().contains(p.getUniqueId())) {
+                for (UUID member : org.getMember()) {
+                    Bukkit.getPlayer(member).sendMessage("§c§l" + type.getName() + " §a" + org.getName() + " " + Script.getName(p) + " benötigt Unterstützung! §8➥ §7" + Navi.getNextNaviLocation(p.getLocation()).getName() + " §7(" + (int) Bukkit.getPlayer(member).getLocation().distance(p.getLocation()) + "m)");
+                    OnMyWayLink(Bukkit.getPlayer(member), p);
+                    showRoute(Bukkit.getPlayer(member), p);
                 }
                 return true;
             }
@@ -201,19 +202,19 @@ public class Reinforcement implements CommandExecutor {
             }
 
             Set<Player> staatler = new HashSet<>();
-            staatler.addAll(Objects.requireNonNull(Beruf.Berufe.RETTUNGSDIENST.getMember()));
-            staatler.addAll(Objects.requireNonNull(Beruf.Berufe.POLICE.getMember()));
-            staatler.addAll(Objects.requireNonNull(Beruf.Berufe.GOVERNMENT.getMember()));
+            for (UUID uuid : Objects.requireNonNull(Beruf.Berufe.RETTUNGSDIENST.getMember())) staatler.add(Bukkit.getPlayer(uuid));
+            for (UUID uuid : Objects.requireNonNull(Beruf.Berufe.POLICE.getMember())) staatler.add(Bukkit.getPlayer(uuid));
+            for (UUID uuid : Objects.requireNonNull(Beruf.Berufe.GOVERNMENT.getMember())) staatler.add(Bukkit.getPlayer(uuid));
             for (Player member : staatler) {
                 member.sendMessage("§c§l" + type.getName() + " §a" + Beruf.getBeruf(p).getName() + " " + Script.getName(p) + " benötigt Unterstützung! §8➥ §7" + Navi.getNextNaviLocation(p.getLocation()).getName() + " §7(" + (int) member.getLocation().distance(p.getLocation()) + "m)");
                 OnMyWayLink(member, p);
                 showRoute(member, p);
             }
         } else {
-            for (Player member : Objects.requireNonNull(beruf.getMember())) {
-                member.sendMessage("§c§l" + type.getName() + " §a" + Beruf.getAbteilung(p).getName() + " " + Script.getName(p) + " benötigt Unterstützung! §8➥ §7" + Navi.getNextNaviLocation(p.getLocation()).getName() + " §7(" + (int) member.getLocation().distance(p.getLocation()) + "m)");
-                OnMyWayLink(member, p);
-                showRoute(member, p);
+            for (UUID member : Objects.requireNonNull(beruf.getMember())) {
+                Objects.requireNonNull(Bukkit.getPlayer(member)).sendMessage("§c§l" + type.getName() + " §a" + Beruf.getAbteilung(p).getName() + " " + Script.getName(p) + " benötigt Unterstützung! §8➥ §7" + Navi.getNextNaviLocation(p.getLocation()).getName() + " §7(" + (int) Objects.requireNonNull(Bukkit.getPlayer(member)).getLocation().distance(p.getLocation()) + "m)");
+                OnMyWayLink(Objects.requireNonNull(Bukkit.getPlayer(member)), p);
+                showRoute(Objects.requireNonNull(Bukkit.getPlayer(member)), p);
             }
         }
         return true;

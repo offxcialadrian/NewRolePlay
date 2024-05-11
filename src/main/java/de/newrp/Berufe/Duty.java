@@ -10,6 +10,9 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.Objects;
+import java.util.UUID;
+
 public class Duty implements CommandExecutor {
 
     public static String PREFIX = "§8[§eDuty§8] §e» §7";
@@ -132,6 +135,10 @@ public class Duty implements CommandExecutor {
         return beruf.isDuty(p);
     }
 
+    public static boolean isInDuty(UUID p) {
+        return isInDuty(Objects.requireNonNull(Bukkit.getPlayer(p)));
+    }
+
     public static void setDuty(Player p) {
         Bukkit.getScoreboardManager().getMainScoreboard().getTeam("player").removeEntry(p.getName());
         Beruf.getBeruf(p.getPlayer()).changeDuty(p, true);
@@ -141,5 +148,4 @@ public class Duty implements CommandExecutor {
         Bukkit.getScoreboardManager().getMainScoreboard().getTeam("player").addEntry(p.getName());
         Beruf.getBeruf(p.getPlayer()).changeDuty(p, false);
     }
-
 }

@@ -16,10 +16,7 @@ import org.bukkit.entity.Player;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 public enum Organisation {
@@ -55,7 +52,7 @@ public enum Organisation {
         this.fraktionSpray = fraktionSpray;
     }
 
-    public static Map<Organisation, List<Player>> ORGA_MEMBER = new ConcurrentHashMap<>();
+    public static Map<Organisation, List<UUID>> ORGA_MEMBER = new ConcurrentHashMap<>();
 
     public static String PREFIX = "§8[§eOrganisation§8] §e" + Messages.ARROW + " §7";
 
@@ -351,9 +348,9 @@ public enum Organisation {
     }
 
     public void sendMessage(String message) {
-        for (Player player : getMember()) {
-            if (player.isOnline()) {
-                player.sendMessage(message);
+        for (UUID player : getMember()) {
+            if (Objects.requireNonNull(Bukkit.getPlayer(player)).isOnline()) {
+                Objects.requireNonNull(Bukkit.getPlayer(player)).sendMessage(message);
             }
         }
     }
@@ -372,11 +369,11 @@ public enum Organisation {
         return list;
     }
 
-    public List<Player> getMember() {
+    public List<UUID> getMember() {
         return getOrga();
     }
 
-    private List<Player> getOrga() {
+    private List<UUID> getOrga() {
         if (!ORGA_MEMBER.containsKey(this)) {
             ORGA_MEMBER.put(this, new ArrayList<>());
         }
@@ -385,12 +382,12 @@ public enum Organisation {
 
     public void setMember(Player player) {
         if (Organisation.hasOrganisation(player)) {
-            getOrga().add(player);
+            getOrga().add(player.getUniqueId());
         }
     }
 
     public void deleteMember(Player player) {
-        getOrga().remove(player);
+        getOrga().remove(player.getUniqueId());
     }
 
     public Boolean isMember(Player player) {

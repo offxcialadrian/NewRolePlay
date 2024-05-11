@@ -12,6 +12,7 @@ import de.newrp.features.emergencycall.IEmergencyCallService;
 import de.newrp.features.emergencycall.data.AcceptEmergencyCallMetadata;
 import de.newrp.features.emergencycall.data.BlockPlayerInfo;
 import de.newrp.features.emergencycall.data.EmergencyCall;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -46,9 +47,9 @@ public class EmergencyCallService implements IEmergencyCallService {
                 .append("\n").append(getPrefix()).append("§6Vorfall§8: §6").append(reason)
                 .append("\n").append(getPrefix() + buildNearbyPlayersString(location, targetFaction));
 
-        for (Player member : targetFaction.getBeruf().keySet()) {
-            member.sendMessage(stringBuilder.toString());
-            Script.sendClickableMessage(member, getPrefix() + "§6Notruf annehmen und Route anzeigen", "/acceptnotruf " + player.getName(), "Klicke hier um den Notruf anzunehmen.");
+        for (UUID member : targetFaction.getBeruf().keySet()) {
+            Objects.requireNonNull(Bukkit.getPlayer(member)).sendMessage(stringBuilder.toString());
+            Script.sendClickableMessage(Objects.requireNonNull(Bukkit.getPlayer(member)), getPrefix() + "§6Notruf annehmen und Route anzeigen", "/acceptnotruf " + player.getName(), "Klicke hier um den Notruf anzunehmen.");
         }
     }
 
@@ -56,16 +57,16 @@ public class EmergencyCallService implements IEmergencyCallService {
     public void dropEmergencyCall(EmergencyCall emergencyCall) {
         final boolean hasBeenRemoved = this.emergencyCalls.remove(emergencyCall);
         if(hasBeenRemoved) {
-            for (Player member : emergencyCall.faction().getBeruf().keySet()) {
-                member.sendMessage(this.getPrefix() + "Der Notruf von " + Script.getName(emergencyCall.sender()) + " wurde abgebrochen");
+            for (UUID member : emergencyCall.faction().getBeruf().keySet()) {
+                Objects.requireNonNull(Bukkit.getPlayer(member)).sendMessage(this.getPrefix() + "Der Notruf von " + Script.getName(emergencyCall.sender()) + " wurde abgebrochen");
             }
         }
     }
 
     @Override
     public void doneEmergencyCall(Player player, EmergencyCall emergencyCall) {
-        for (Player member : emergencyCall.faction().getBeruf().keySet()) {
-            member.sendMessage(this.getPrefix() + Script.getName(player) + " hat den Notruf von " + Script.getName(emergencyCall.sender()) + " abgeschlossen");
+        for (UUID member : emergencyCall.faction().getBeruf().keySet()) {
+            Objects.requireNonNull(Bukkit.getPlayer(member)).sendMessage(this.getPrefix() + Script.getName(player) + " hat den Notruf von " + Script.getName(emergencyCall.sender()) + " abgeschlossen");
         }
         this.emergencyCalls.remove(emergencyCall);
     }
@@ -96,8 +97,8 @@ public class EmergencyCallService implements IEmergencyCallService {
     @Override
     public void requeueAcceptedEmergencyCall(Player player, EmergencyCall emergencyCall) {
         emergencyCall.acceptEmergencyCallMetadata(null);
-        for (Player member : emergencyCall.faction().getBeruf().keySet()) {
-            member.sendMessage(this.getPrefix() + Script.getName(player) + " hat den Notruf von " + Script.getName(emergencyCall.sender()) + " wieder geöffnet!");
+        for (UUID member : emergencyCall.faction().getBeruf().keySet()) {
+            Objects.requireNonNull(Bukkit.getPlayer(member)).sendMessage(this.getPrefix() + Script.getName(player) + " hat den Notruf von " + Script.getName(emergencyCall.sender()) + " wieder geöffnet!");
         }
         Route.invalidate(player);
     }
@@ -152,9 +153,10 @@ public class EmergencyCallService implements IEmergencyCallService {
     @Override
     public List<Player> getNearbyPlayersOfFactionToLocation(Location location, Beruf.Berufe faction) {
         return faction.getBeruf().keySet().stream()
-                .sorted(Comparator.comparingDouble((Player a) -> a.getLocation().distance(location)))
+                .sorted(Comparator.comparingDouble((a) -> Objects.requireNonNull(Bukkit.getPlayer(a)).getLocation().distance(location)))
                 .filter(faction::isDuty)
                 .limit(2)
+                .map(Bukkit::getPlayer)
                 .collect(Collectors.toList());
     }
 

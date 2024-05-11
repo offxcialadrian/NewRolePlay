@@ -57,7 +57,7 @@ public class Beruf {
             this.width = width;
         }
 
-        public static Map<Berufe, HashMap<Player, Boolean>> BERUF_MEMBER = new ConcurrentHashMap<>();
+        public static Map<Berufe, HashMap<UUID, Boolean>> BERUF_MEMBER = new ConcurrentHashMap<>();
 
         public int getID() {
             return id;
@@ -199,8 +199,8 @@ public class Beruf {
         }
 
         public void sendMessage(String message) {
-            for (Player all : getBeruf().keySet()) {
-                all.sendMessage(message);
+            for (UUID all : getBeruf().keySet()) {
+                Objects.requireNonNull(Bukkit.getPlayer(all)).sendMessage(message);
             }
         }
 
@@ -218,11 +218,11 @@ public class Beruf {
             return list;
         }
 
-        public List<Player> getMember() {
+        public List<UUID> getMember() {
             return new ArrayList<>(getBeruf().keySet());
         }
 
-        public HashMap<Player, Boolean> getBeruf() {
+        public HashMap<UUID, Boolean> getBeruf() {
             if (!BERUF_MEMBER.containsKey(this)) {
                 BERUF_MEMBER.put(this, new HashMap<>());
             }
@@ -230,11 +230,19 @@ public class Beruf {
         }
 
         public void changeDuty(Player player, Boolean duty) {
-            getBeruf().put(player, duty);
+            getBeruf().put(player.getUniqueId(), duty);
         }
 
         public Boolean isDuty(Player player) {
-            final HashMap<Player, Boolean> result = getBeruf();
+            final HashMap<UUID, Boolean> result = getBeruf();
+            if (result == null) {
+                return false;
+            }
+            return result.getOrDefault(player.getUniqueId(), false);
+        }
+
+        public Boolean isDuty(UUID player) {
+            final HashMap<UUID, Boolean> result = getBeruf();
             if (result == null) {
                 return false;
             }
@@ -242,15 +250,15 @@ public class Beruf {
         }
 
         public void setMember(Player player) {
-            getBeruf().put(player, false);
+            getBeruf().put(player.getUniqueId(), false);
         }
 
         public void deleteMember(Player player) {
-            getBeruf().remove(player);
+            getBeruf().remove(player.getUniqueId());
         }
 
         public Boolean isMember(Player player) {
-            return Objects.requireNonNull(getBeruf()).containsKey(player);
+            return Objects.requireNonNull(getBeruf()).containsKey(player.getUniqueId());
         }
 
         public List<OfflinePlayer> getAllMembers() {

@@ -56,7 +56,7 @@ public class LockpickHandler implements Listener {
                                 Beruf.Berufe.POLICE.sendMessage(BreakinCommand.PREFIX + "Es wurde ein Alarm bei " + Objects.requireNonNull(RobLocation.getRob(Organisation.getOrganisation(player), player.getLocation())).getName() + " verzeichnet.");
                                 alarm.put(player, 0);
                                 Location rob = Objects.requireNonNull(RobLocation.getRob(Organisation.getOrganisation(player), player.getLocation())).getLoc();
-                                for (Player cop : Beruf.Berufe.POLICE.getMember()) new Route(cop.getName(), Script.getNRPID(cop), cop.getLocation(), rob).start();
+                                for (UUID cop : Beruf.Berufe.POLICE.getMember()) new Route(Objects.requireNonNull(Bukkit.getPlayer(cop)).getName(), Script.getNRPID(Objects.requireNonNull(Bukkit.getPlayer(cop))), Objects.requireNonNull(Bukkit.getPlayer(cop)).getLocation(), rob).start();
                                 rob.add(0, 4, 0);
                                 new BukkitRunnable() {
                                     @Override
