@@ -66,7 +66,7 @@ public class Notifications implements CommandExecutor, Listener {
         try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT notification_id FROM notifications WHERE nrp_id = '" + Script.getNRPID(player) + "'")) {
             while(rs.next()) {
-                if(NOTIFICATION_CACHE.containsKey(player.getUniqueId())) {
+                if(!NOTIFICATION_CACHE.containsKey(player.getUniqueId())) {
                     NOTIFICATION_CACHE.put(player.getUniqueId(), Sets.newHashSet(getNotificationById(rs.getInt(1))));
                 } else {
                     NOTIFICATION_CACHE.get(player.getUniqueId()).add(getNotificationById(rs.getInt(1)));
@@ -130,6 +130,7 @@ public class Notifications implements CommandExecutor, Listener {
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
         Player p = (Player) cs;
         if(Team.getTeam(p) != Team.Teams.ENTWICKLUNG) {
+            Bukkit.getLogger().info(Team.getTeam(p).getName() + "");
             if (!Script.hasRank(p, Rank.SUPPORTER, false)) {
                 p.sendMessage(Messages.NO_PERMISSION);
                 return true;
