@@ -276,6 +276,7 @@ public class PayDay extends BukkitRunnable {
                 Script.addMoney(p, PaymentType.BANK, 100);
             }
             setPayDayTime(p, 0);
+            setPayDayPay(p, 0);
             Script.executeAsyncUpdate("UPDATE payday SET money = 0 WHERE nrp_id = '" + Script.getNRPID(p) + "'");
             if (Script.getMoney(p, PaymentType.BANK) < 0) {
                 p.sendMessage("§8[§cBank§8] §c" + Messages.ARROW + " §7Dein Konto ist überzogen. Du musst den Betrag innerhalb von 7 Tagen ausgleichen.");
@@ -311,6 +312,10 @@ public class PayDay extends BukkitRunnable {
 
     public static int getPayDayPay(Player p) {
         return paydayMoney.get(p);
+    }
+
+    public static void setPayDayPay(Player p, int money) {
+        paydayMoney.put(p, money);
     }
 
     public static void addPayDayTime(Player p) {

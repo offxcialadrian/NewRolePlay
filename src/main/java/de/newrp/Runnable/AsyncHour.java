@@ -44,7 +44,7 @@ public class AsyncHour extends BukkitRunnable {
         Hologram.reload();
         LabBreakIn.repairDoors(false);
 
-        for(GangwarZones zone : GangwarZones.values()) {
+        for (GangwarZones zone : GangwarZones.values()) {
             if (zone.getOwner() != null) {
                 zone.getOwner().sendMessage(GangwarCommand.PREFIX + "Die Organisation hat 100€ durch die Zone §e" + zone.getName() + " §7erhalten.");
                 zone.getOwner().addKasse(100);
