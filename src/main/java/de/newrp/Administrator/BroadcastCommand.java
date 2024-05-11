@@ -1,14 +1,13 @@
 package de.newrp.Administrator;
 
-import de.newrp.API.Log;
-import de.newrp.API.Messages;
-import de.newrp.API.Rank;
-import de.newrp.API.Script;
+import de.newrp.API.*;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import java.util.Arrays;
 
 public class BroadcastCommand implements CommandExecutor {
 
@@ -29,26 +28,22 @@ public class BroadcastCommand implements CommandExecutor {
             p.sendMessage(Messages.ERROR + "/broadcast [Nachricht]");
             return true;
         }
+        final String msg = String.join(" ", Arrays.copyOfRange(args, args[0].equalsIgnoreCase("confirm") ? 1 : 0, args.length));
+        Debug.debug("BC msg " + msg);
 
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < args.length; i++) {
-            if (i > 0) {
-                sb.append(" ");
+        if(args[0].equalsIgnoreCase("confirm")) {
+            for(Player all : Bukkit.getOnlinePlayers()) {
+                all.sendMessage(" ");
+                all.sendMessage(" §7§m--------- §8[§c§lANKÜNDIGUNG§8] §7§m---------");
+                all.sendMessage("   §c" + Script.getName(p) + " §8» §c" + msg);
+                all.sendMessage(" §7§m-------------------------------------");
+                all.sendMessage(" ");
             }
-            sb.append(args[i]);
+            Log.HIGH.write(p, "hat einen Broadcast gesendet (" + msg + ")");
+            return true;
         }
 
-        String msg = sb.toString().trim();
-        for(Player all : Bukkit.getOnlinePlayers()) {
-            all.sendMessage(" ");
-            all.sendMessage(" §7§m--------- §8[§c§lANKÜNDIGUNG§8] §7§m---------");
-            all.sendMessage("   §c" + Script.getName(p) + " §8» §c" + msg);
-            all.sendMessage(" §7§m-------------------------------------");
-            all.sendMessage(" ");
-        }
-        Log.HIGH.write(p, "hat einen Broadcast gesendet (" + msg + ")");
-
-
+        Script.sendClickableMessage(p, "§8" + Messages.ARROW + " §cKlicke hier um deine Broadcast abzuschicken!", "/bc confirm " + msg, "§cKlicke hier um die Broadcast abzuschicken!");
         return false;
     }
 }
