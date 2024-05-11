@@ -97,17 +97,20 @@ public class Bank implements CommandExecutor, TabCompleter {
                     return true;
                 }
 
-                Script.removeMoney(p, PaymentType.CASH, betrag);
-                Script.addMoney(p, PaymentType.BANK, betrag);
-                p.sendMessage(PREFIX + "§8=== §6" + Banken.getBankByPlayer(p).getName() + " §8===");
-                p.sendMessage(PREFIX + "Alter Kontostand§8: §c" + (Script.getMoney(p, PaymentType.BANK) - betrag) + "€");
-                p.sendMessage(PREFIX + "Eingezahlt§8: §a" + betrag + "€");
-                p.sendMessage(PREFIX + "Neuer Kontostand§8: §a" + Script.getMoney(p, PaymentType.BANK) + "€");
-                p.sendMessage(PREFIX + "§8=========");
-                atm.addCash(betrag);
-                Notifications.sendMessage(Notifications.NotificationType.PAYMENT, Script.getName(p) + " hat " + betrag + "€ eingezahlt.");
-                Log.NORMAL.write(p, "hat " + betrag + "€ eingezahlt.");
-                Cashflow.addEntry(p, betrag, "Einzahlung an ATM " + atm.getID());
+                if (Script.removeMoney(p, PaymentType.CASH, betrag)) {
+                    Script.addMoney(p, PaymentType.BANK, betrag);
+                    p.sendMessage(PREFIX + "§8=== §6" + Banken.getBankByPlayer(p).getName() + " §8===");
+                    p.sendMessage(PREFIX + "Alter Kontostand§8: §c" + (Script.getMoney(p, PaymentType.BANK) - betrag) + "€");
+                    p.sendMessage(PREFIX + "Eingezahlt§8: §a" + betrag + "€");
+                    p.sendMessage(PREFIX + "Neuer Kontostand§8: §a" + Script.getMoney(p, PaymentType.BANK) + "€");
+                    p.sendMessage(PREFIX + "§8=========");
+                    atm.addCash(betrag);
+                    Notifications.sendMessage(Notifications.NotificationType.PAYMENT, Script.getName(p) + " hat " + betrag + "€ eingezahlt.");
+                    Log.NORMAL.write(p, "hat " + betrag + "€ eingezahlt.");
+                    Cashflow.addEntry(p, betrag, "Einzahlung an ATM " + atm.getID());
+                } else {
+                    p.sendMessage(Messages.ERROR + "Du hast nicht genug Geld.");
+                }
                 return true;
             }
 
@@ -144,11 +147,10 @@ public class Bank implements CommandExecutor, TabCompleter {
                     Notifications.sendMessage(Notifications.NotificationType.PAYMENT, Script.getName(p) + " hat " + betrag + "€ ausgezahlt.");
                     Log.NORMAL.write(p, "hat " + betrag + "€ ausgezahlt.");
                     Cashflow.addEntry(p, -betrag, "Auszahlung an ATM " + atm.getID());
-                    return true;
                 } else {
                     p.sendMessage(Messages.ERROR + "Du hast nicht genug Geld.");
-                    return true;
                 }
+                return true;
             }
         }
 
@@ -206,15 +208,18 @@ public class Bank implements CommandExecutor, TabCompleter {
                     return true;
                 }
 
-                cooldown.put(p, (System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(2)));
-                Script.removeMoney(p, PaymentType.BANK, (totalcost));
-                Stadtkasse.addStadtkasse(betrag, "Einzahlung von " + Script.getName(p) + " Verwendungszweck: " + reason, null);
-                p.sendMessage(PREFIX + "Du hast " + betrag + "€ an die Stadtkasse überwiesen. Verwendungszweck: " + reason);
-                p.sendMessage(Messages.INFO + "Es wurden " + Banken.getBankByPlayer(p).getTransactionKosten() + "€ Transaktionskosten abgezogen.");
-                Notifications.sendMessage(Notifications.NotificationType.PAYMENT, Script.getName(p) + " hat " + betrag + "€ an Stadtkasse überwiesen. Verwendungszweck: " + reason);
-                Log.NORMAL.write(p, "hat " + betrag + "€ an " + "Stadtkasse" + " überwiesen. Verwendungszweck: " + reason);
-                Cashflow.addEntry(p, -totalcost, "Überweisung an Stadtkasse Verwendungszweck: " + reason);
-                Me.sendMessage(p, "tätigt eine Überweisung.");
+                if (Script.removeMoney(p, PaymentType.BANK, (totalcost))) {
+                    cooldown.put(p, (System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(2)));
+                    Stadtkasse.addStadtkasse(betrag, "Einzahlung von " + Script.getName(p) + " Verwendungszweck: " + reason, null);
+                    p.sendMessage(PREFIX + "Du hast " + betrag + "€ an die Stadtkasse überwiesen. Verwendungszweck: " + reason);
+                    p.sendMessage(Messages.INFO + "Es wurden " + Banken.getBankByPlayer(p).getTransactionKosten() + "€ Transaktionskosten abgezogen.");
+                    Notifications.sendMessage(Notifications.NotificationType.PAYMENT, Script.getName(p) + " hat " + betrag + "€ an Stadtkasse überwiesen. Verwendungszweck: " + reason);
+                    Log.NORMAL.write(p, "hat " + betrag + "€ an " + "Stadtkasse" + " überwiesen. Verwendungszweck: " + reason);
+                    Cashflow.addEntry(p, -totalcost, "Überweisung an Stadtkasse Verwendungszweck: " + reason);
+                    Me.sendMessage(p, "tätigt eine Überweisung.");
+                } else {
+                    p.sendMessage(Messages.ERROR + "Du hast nicht genug Geld.");
+                }
                 return true;
             }
 
@@ -255,16 +260,19 @@ public class Bank implements CommandExecutor, TabCompleter {
                     return true;
                 }
 
-                cooldown.put(p, (System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(2)));
-                Script.removeMoney(p, PaymentType.BANK, (totalcost));
-                Beruf.Berufe.NEWS.addKasse(betrag);
-                Beruf.Berufe.NEWS.sendMessage(PREFIX + "Die News-Agency hat " + betrag + "€ von " + Script.getName(p) + " erhalten. Verwendungszweck: " + reason);
-                p.sendMessage(PREFIX + "Du hast " + betrag + "€ an die Stadtkasse überwiesen. Verwendungszweck: " + reason);
-                p.sendMessage(Messages.INFO + "Es wurden " + Banken.getBankByPlayer(p).getTransactionKosten() + "€ Transaktionskosten abgezogen.");
-                Notifications.sendMessage(Notifications.NotificationType.PAYMENT, Script.getName(p) + " hat " + betrag + "€ an Stadtkasse überwiesen. Verwendungszweck: " + reason);
-                Log.NORMAL.write(p, "hat " + betrag + "€ an " + "Stadtkasse" + " überwiesen. Verwendungszweck: " + reason);
-                Cashflow.addEntry(p, -totalcost, "Überweisung an Stadtkasse Verwendungszweck: " + reason);
-                Me.sendMessage(p, "tätigt eine Überweisung.");
+                if (Script.removeMoney(p, PaymentType.BANK, (totalcost))) {
+                    cooldown.put(p, (System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(2)));
+                    Beruf.Berufe.NEWS.addKasse(betrag);
+                    Beruf.Berufe.NEWS.sendMessage(PREFIX + "Die News-Agency hat " + betrag + "€ von " + Script.getName(p) + " erhalten. Verwendungszweck: " + reason);
+                    p.sendMessage(PREFIX + "Du hast " + betrag + "€ an die Stadtkasse überwiesen. Verwendungszweck: " + reason);
+                    p.sendMessage(Messages.INFO + "Es wurden " + Banken.getBankByPlayer(p).getTransactionKosten() + "€ Transaktionskosten abgezogen.");
+                    Notifications.sendMessage(Notifications.NotificationType.PAYMENT, Script.getName(p) + " hat " + betrag + "€ an Stadtkasse überwiesen. Verwendungszweck: " + reason);
+                    Log.NORMAL.write(p, "hat " + betrag + "€ an " + "Stadtkasse" + " überwiesen. Verwendungszweck: " + reason);
+                    Cashflow.addEntry(p, -totalcost, "Überweisung an Stadtkasse Verwendungszweck: " + reason);
+                    Me.sendMessage(p, "tätigt eine Überweisung.");
+                } else {
+                    p.sendMessage(Messages.ERROR + "Du hast nicht genug Geld.");
+                }
                 return true;
             }
 
@@ -319,22 +327,25 @@ public class Bank implements CommandExecutor, TabCompleter {
                 return true;
             }
 
-            cooldown.put(p, (System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(2)));
-            Script.removeMoney(p, PaymentType.BANK, (totalcost));
-            Script.addMoney(Script.getNRPID(tg), PaymentType.BANK, betrag);
-            p.sendMessage(PREFIX + "Du hast " + betrag + "€ an " + tg.getName() + " überwiesen. Verwendungszweck: " + reason);
-            p.sendMessage(Messages.INFO + "Es wurden " + Banken.getBankByPlayer(p).getTransactionKosten() + "€ Transaktionskosten abgezogen.");
-            Notifications.sendMessage(Notifications.NotificationType.PAYMENT, Script.getName(p) + " hat " + betrag + "€ an " + tg.getName() + " überwiesen. Verwendungszweck: " + reason);
-            if(tg.isOnline()) {
-                tg.getPlayer().sendMessage(PREFIX + "Du hast " + betrag + "€ von " + Script.getName(p) + " erhalten. Verwendungszweck: " + reason);
+            if (Script.removeMoney(p, PaymentType.BANK, (totalcost))) {
+                cooldown.put(p, (System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(2)));
+                Script.addMoney(Script.getNRPID(tg), PaymentType.BANK, betrag);
+                p.sendMessage(PREFIX + "Du hast " + betrag + "€ an " + tg.getName() + " überwiesen. Verwendungszweck: " + reason);
+                p.sendMessage(Messages.INFO + "Es wurden " + Banken.getBankByPlayer(p).getTransactionKosten() + "€ Transaktionskosten abgezogen.");
+                Notifications.sendMessage(Notifications.NotificationType.PAYMENT, Script.getName(p) + " hat " + betrag + "€ an " + tg.getName() + " überwiesen. Verwendungszweck: " + reason);
+                if (tg.isOnline()) {
+                    tg.getPlayer().sendMessage(PREFIX + "Du hast " + betrag + "€ von " + Script.getName(p) + " erhalten. Verwendungszweck: " + reason);
+                } else {
+                    Script.addOfflineMessage(tg, PREFIX + "Du hast " + betrag + "€ von " + Script.getName(p) + " erhalten. Verwendungszweck: " + reason);
+                }
+                Log.NORMAL.write(p, "hat " + betrag + "€ an " + tg.getName() + " überwiesen. Verwendungszweck: " + reason);
+                Log.NORMAL.write(tg, "hat " + betrag + "€ von " + Script.getName(p) + " erhalten. Verwendungszweck: " + reason);
+                Cashflow.addEntry(p, -totalcost, "Überweisung an " + tg.getName() + " Verwendungszweck: " + reason);
+                Cashflow.addEntry(tg, betrag, "Überweisung von " + Script.getName(p) + " Verwendungszweck: " + reason);
+                Me.sendMessage(p, "tätigt eine Überweisung.");
             } else {
-                Script.addOfflineMessage(tg, PREFIX + "Du hast " + betrag + "€ von " + Script.getName(p) + " erhalten. Verwendungszweck: " + reason);
+                p.sendMessage(Messages.ERROR + "Du hast nicht genug Geld.");
             }
-            Log.NORMAL.write(p, "hat " + betrag + "€ an " + tg.getName() + " überwiesen. Verwendungszweck: " + reason);
-            Log.NORMAL.write(tg, "hat " + betrag + "€ von " + Script.getName(p) + " erhalten. Verwendungszweck: " + reason);
-            Cashflow.addEntry(p, -totalcost, "Überweisung an " + tg.getName() + " Verwendungszweck: " + reason);
-            Cashflow.addEntry(tg, betrag, "Überweisung von " + Script.getName(p) + " Verwendungszweck: " + reason);
-            Me.sendMessage(p, "tätigt eine Überweisung.");
             return true;
         }
 
