@@ -14,12 +14,18 @@ import de.newrp.Shop.Shops;
 import de.newrp.Shop.gym.GymBuyHandler;
 import de.newrp.NewRoleplayMain;
 import de.newrp.Vehicle.Car;
+import org.apache.commons.collections4.bag.HashBag;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.HashMap;
+
 public class PayDay extends BukkitRunnable {
+
+    public static HashMap<Player, Integer> paydayTime = new HashMap<>();
+    public static HashMap<Player, Integer> paydayMoney = new HashMap<>();
 
     @Override
     public void run() {
@@ -296,15 +302,15 @@ public class PayDay extends BukkitRunnable {
     }
 
     public static int getPayDayTime(Player p) {
-        return Script.getInt(p, "payday", "time");
+        return paydayTime.get(p);
     }
 
     public static void setPayDayTime(Player p, int time) {
-        Script.setInt(p, "payday", "time", time);
+        paydayTime.put(p, time);
     }
 
     public static int getPayDayPay(Player p) {
-        return Script.getInt(p, "payday", "money");
+        return paydayMoney.get(p);
     }
 
     public static void addPayDayTime(Player p) {
@@ -312,6 +318,7 @@ public class PayDay extends BukkitRunnable {
     }
 
     public static void addPayDay(Player p, int money) {
+        paydayMoney.put(p, paydayMoney.get(p) + money);
         Script.setInt(p, "payday", "money", getPayDayPay(p) + money);
         p.sendMessage(GFB.PREFIX + "Du bekommst dein Gehalt von " + money + "€ am PayDay.");
     }

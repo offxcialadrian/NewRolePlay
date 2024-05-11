@@ -146,6 +146,10 @@ public class Treuebonus implements CommandExecutor, Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
         Player p = e.getPlayer();
+
+        PayDay.paydayTime.put(p, Script.getInt(p, "payday", "time"));
+        PayDay.paydayMoney.put(p, Script.getInt(p, "payday", "money"));
+
         if (Beruf.hasBeruf(p)) {
             Beruf.getBeruf(p).setMember(p);
         }
@@ -173,6 +177,9 @@ public class Treuebonus implements CommandExecutor, Listener {
     @EventHandler
     public void onQuit(PlayerQuitEvent e) {
         Player p = e.getPlayer();
+
+        Script.setInt(p, "payday", "time", PayDay.getPayDayTime(p));
+
         if (Beruf.hasBeruf(p)) {
             Beruf.getBeruf(p).deleteMember(p);
         }

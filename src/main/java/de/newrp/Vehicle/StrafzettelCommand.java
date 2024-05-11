@@ -38,7 +38,7 @@ public class StrafzettelCommand implements CommandExecutor {
                         }
                         return true;
                     } else {
-                        player.sendMessage(PREFIX + "Du musst einen Preis angeben!");
+                        player.sendMessage(PREFIX + "/strafzettel [Preis] [Grund]!");
                         return true;
                     }
                 }
