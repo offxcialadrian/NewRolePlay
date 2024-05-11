@@ -742,6 +742,7 @@ commands:
     aliases: [ drivingschool ]
   leasing:
     description: lease a car
+    aliases: [ garage ]
   breakin:
     description: break into a location
     aliases: [ einbrechen, lockpick ]

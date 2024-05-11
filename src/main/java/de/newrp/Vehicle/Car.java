@@ -633,9 +633,12 @@ public class Car {
             if (isCarOwner(p)) {
                 int v = getInsurance();
                 if (v > 0) {
-                    p.sendMessage("§eDeine Versicherung hat den Schaden übernommen. §8[" + (v - 1) + "§7/1§8]");
+                    p.sendMessage(PREFIX + "Deine Versicherung hat den Schaden übernommen. §8[" + (v - 1) + "§7/1§8]");
                     Script.removeMoney(p, PaymentType.BANK, this.getCarType().getInsurance());
                     setInsurance(v - 1);
+                    schrottplatz();
+                } else if (getLicenseplate().startsWith("N-RP-")) {
+                    p.sendMessage(PREFIX + "Die Versicherung deiner Institution hat den Schaden übernommen.");
                     schrottplatz();
                 } else {
                     destroy(true);
