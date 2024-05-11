@@ -1649,7 +1649,7 @@ public class Script {
     }
 
     public static void increasePlayTime(Player p) {
-        executeAsyncUpdate("UPDATE playtime SET minutes=minutes+1 WHERE nrp_id=" + getNRPID(p));
+        /*executeAsyncUpdate("UPDATE playtime SET minutes=minutes+1 WHERE nrp_id=" + getNRPID(p));
         try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM playtime WHERE nrp_id=" + getNRPID(p))) {
             if (rs.next()) {
@@ -1659,7 +1659,7 @@ public class Script {
             }
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     public static void removeWeapons(Player p) {
@@ -1688,7 +1688,7 @@ public class Script {
     }
 
     public static void increaseActivePlayTime(Player p) {
-        executeAsyncUpdate("UPDATE playtime SET a_minutes=a_minutes+1 WHERE nrp_id=" + getNRPID(p));
+        /*executeAsyncUpdate("UPDATE playtime SET a_minutes=a_minutes+1 WHERE nrp_id=" + getNRPID(p));
         try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM playtime WHERE nrp_id=" + getNRPID(p))) {
             if (rs.next()) {
@@ -1708,8 +1708,7 @@ public class Script {
         if (getActivePlayTime(p, true) % 150 == 0 && getActivePlayTime(p, false) == 0) {
             p.sendMessage(PREFIX + "Du erhältst als Dankeschön für deine Treue 3 Tage Premium");
             Premium.addPremiumStorage(p, TimeUnit.DAYS.toMillis(3), true);
-        }
-
+        }*/
     }
 
     public static String getLastChar(String s) {
