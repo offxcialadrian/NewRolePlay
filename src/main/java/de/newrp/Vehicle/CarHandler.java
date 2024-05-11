@@ -97,8 +97,8 @@ public class CarHandler implements Listener {
                             Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> car.setVelocity(car.getLocation().getDirection().setY(-1)), 2L);
                         }
 
-                        car.setMileage(car.getMileage() + speed);
-                        if (car.getFuel() > 0) car.fill((float) (speed * -0.001 * carType.getConsumption()));
+                        car.addMileage(speed);
+                        if (car.getFuel() > 0) car.removeFuel((float) (speed * 0.001 * carType.getConsumption()));
                     }
                 }
             }
@@ -204,6 +204,8 @@ public class CarHandler implements Listener {
             Car car = Car.getCarByEntityID(event.getVehicle().getEntityId());
             if (car !=  null) {
                 car.setSpeed(0D);
+                car.setFuel(car.getFuel());
+                car.setMileage(car.getMileage());
                 ((Player) event.getExited()).setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
                 Cache.loadScoreboard((Player) event.getExited());
                 car.saveLocation(car.getLocation());
