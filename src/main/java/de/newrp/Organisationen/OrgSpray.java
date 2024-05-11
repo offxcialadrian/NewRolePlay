@@ -237,7 +237,7 @@ public class OrgSpray implements Listener {
             banner.setPatterns(Organisation.getOrganisation(p).getFraktionSpray().getPattern());
             m.remove(p.getName());
             p.sendMessage(PREFIX + "Du hast das Graffiti mit deiner Organisationsflagge übersprayt.");
-            f.sendMessage(PREFIX + p.getName() + " hat das Graffiti mit der Flagge der Organisation übersprayt.");
+            f.sendMessage(PREFIX + p.getName() + " hat ein Graffiti mit der Flagge der Organisation übersprayt.");
             f.addExp(Script.getRandom(5, 10));
             Script.addEXP(p, Script.getRandom(3, 5));
         } else {
