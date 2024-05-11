@@ -128,18 +128,18 @@ public class Mobile implements Listener {
         }
 
         public void setAkku(Player p, int akku) {
-            Script.executeAsyncUpdate("UPDATE phone SET akku = " + akku + " WHERE nrp_id = " + Script.getNRPID(p));
+            //Script.executeAsyncUpdate("UPDATE phone SET akku = " + akku + " WHERE nrp_id = " + Script.getNRPID(p));
         }
 
         public void addAkku(Player p, int akku) {
             akku = getAkku(p) + akku;
-            Script.executeAsyncUpdate("UPDATE phone SET akku = " + akku + " WHERE nrp_id = " + Script.getNRPID(p));
+            //Script.executeAsyncUpdate("UPDATE phone SET akku = " + akku + " WHERE nrp_id = " + Script.getNRPID(p));
         }
 
         public void removeAkku(Player p, int akku) {
             akku = getAkku(p) - akku;
             if(akku <= 0) return;
-            Script.executeAsyncUpdate("UPDATE phone SET akku = " + akku + " WHERE nrp_id = " + Script.getNRPID(p));
+            //Script.executeAsyncUpdate("UPDATE phone SET akku = " + akku + " WHERE nrp_id = " + Script.getNRPID(p));
         }
 
         public boolean isDestroyed(Player p) {
