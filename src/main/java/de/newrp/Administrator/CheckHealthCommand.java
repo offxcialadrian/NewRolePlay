@@ -27,18 +27,23 @@ public class CheckHealthCommand implements CommandExecutor {
 
         if(faction != Beruf.Berufe.RETTUNGSDIENST && !SDuty.isSDuty(player)) {
             player.sendMessage(Messages.NO_PERMISSION);
-            return false;
+            return true;
         }
 
         if(args.length == 0) {
             player.sendMessage(Messages.ERROR + "/checkhealth [Name]");
-            return false;
+            return true;
         }
 
         final Player targetPlayer = Bukkit.getPlayer(args[0]);
         if(targetPlayer == null) {
             player.sendMessage(Messages.PLAYER_NOT_FOUND);
-            return false;
+            return true;
+        }
+
+        if (player.getLocation().distance(targetPlayer.getLocation()) > 3) {
+            player.sendMessage(Messages.ERROR + "Der Spieler ist zu weit von dir entfernt!");
+            return true;
         }
 
         player.sendMessage(PREFIX + Script.getName(targetPlayer) + "' Zustand:");
@@ -48,6 +53,6 @@ public class CheckHealthCommand implements CommandExecutor {
         player.spigot().sendMessage(HealthCommand.thirst(targetPlayer));
         player.spigot().sendMessage(HealthCommand.fat(targetPlayer));
         player.spigot().sendMessage(HealthCommand.muscle(targetPlayer));
-        return false;
+        return true;
     }
 }
