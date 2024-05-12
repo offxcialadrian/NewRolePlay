@@ -28,8 +28,8 @@ public class RobCommand implements CommandExecutor {
 
     public static String PREFIX = "§8[§4Rob§8] §4" + Messages.ARROW + " §7";
 
-    HashMap<UUID, Long> cooldownsP = new HashMap<>();
-    HashMap<UUID, Long> cooldownsV = new HashMap<>();
+    public static HashMap<UUID, Long> cooldownsP = new HashMap<>();
+    public static HashMap<UUID, Long> cooldownsV = new HashMap<>();
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {

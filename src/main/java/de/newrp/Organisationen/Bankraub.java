@@ -34,7 +34,7 @@ import java.util.stream.Collectors;
 
 public class Bankraub implements CommandExecutor, Listener {
 
-    private static long lastTime;
+    public static long lastTime;
     private static long cooldown;
     private static final long TIMEOUT = TimeUnit.HOURS.toMillis(5);
     private static final long TIMEOUT_2 = TimeUnit.SECONDS.toMillis(45);

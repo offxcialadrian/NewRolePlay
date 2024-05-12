@@ -26,7 +26,7 @@ public class BreakinCommand implements CommandExecutor {
 
     public static String PREFIX = "§8[§dBreak-in§8] §d" + Messages.ARROW + " §7";
 
-    HashMap<Organisation, Long> cooldowns = new HashMap<>();
+    public static HashMap<Organisation, Long> cooldowns = new HashMap<>();
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
