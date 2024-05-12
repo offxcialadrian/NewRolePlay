@@ -124,7 +124,10 @@ public class PremiumCommand implements CommandExecutor {
     public static boolean hasPremiumStored(Player p) {
         try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM premium_storage WHERE nrp_id=" + Script.getNRPID(p))) {
-            if (rs.next()) {
+            while (rs.next()) {
+                if(rs.getLong("expires") == 0) {
+                    return true;
+                }
                 if (rs.getLong("expires") > System.currentTimeMillis()) {
                     return true;
                 }

@@ -286,7 +286,7 @@ public class PayShop implements Listener {
                     }
 
                     if (Car.getCars(p).size() >= SlotLimit.VEHICLE.get(Script.getNRPID(p))) {
-                        p.sendMessage(Component.text(Messages.ERROR + "Du hast Fahrzeug-Slots übrig!"));
+                        p.sendMessage(Component.text(Messages.ERROR + "Du hast keine Fahrzeug-Slots übrig!"));
                         return;
                     }
 

@@ -125,8 +125,8 @@ public class Houseban implements CommandExecutor, Listener, TabCompleter {
             for (int unicacid : getHousebannedNRPIDs(b)) {
                 OfflinePlayer banned = Script.getOfflinePlayer(unicacid);
                 sb.append("\n  §7»§6 ").append(Script.getNameInDB(banned)).append(" §8×§6 ").append(getReason(banned, b).getName()).append(" §8×§6 ").append(DATE_FORMAT.format(new Date(getTime(banned, b))));
-                p.sendMessage(sb.toString());
             }
+            p.sendMessage(sb.toString());
             return true;
         }
 
