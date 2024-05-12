@@ -768,3 +768,6 @@ commands:
     description: starts a equip transport
   vehicleslot:
     description: grants a vehicleslot
+  cooldown:
+    description: shows the players cooldowns
+    aliases: [ cooldowns, cd ]

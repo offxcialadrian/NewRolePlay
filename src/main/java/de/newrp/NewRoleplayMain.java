@@ -7,6 +7,7 @@ import de.newrp.Call.CallCommand;
 import de.newrp.Call.HangupCommand;
 import de.newrp.Call.PickupCommand;
 import de.newrp.Chat.*;
+import de.newrp.Player.CooldownCommand;
 import de.newrp.Commands.DiscordCommand;
 import de.newrp.Commands.Test;
 import de.newrp.Entertainment.*;
@@ -496,6 +497,7 @@ public class NewRoleplayMain extends JavaPlugin {
         getCommand("checkhealth").setExecutor(new CheckHealthCommand());
         getCommand("starttransport").setExecutor(new StartTransport());
         getCommand("vehicleslot").setExecutor(new VehicleSlotsCommand());
+        getCommand("cooldown").setExecutor(new CooldownCommand());
     }
 
     /**

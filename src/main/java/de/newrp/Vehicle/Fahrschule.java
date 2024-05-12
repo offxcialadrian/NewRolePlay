@@ -16,12 +16,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Random;
+import java.util.UUID;
 
 public class Fahrschule implements CommandExecutor, Listener {
 
@@ -41,41 +43,50 @@ public class Fahrschule implements CommandExecutor, Listener {
                 player.sendMessage(Component.text(PREFIX + "Du hast bereits deinen Führerschein!"));
                 return true;
             }
-            if (index.containsKey(player)) {
-                player.sendMessage(Component.text(PREFIX + "Du bist bereits in der Fahrschule!"));
+            if (guis.containsKey(player.getUniqueId())) {
+                player.openInventory(guis.get(player.getUniqueId()));
                 return true;
+            } else {
+                if (index.containsKey(player.getUniqueId())) {
+                    player.sendMessage(Component.text(PREFIX + "Du bist bereits in der Fahrschule!"));
+                    return true;
+                }
             }
 
             int level = Script.getLevel(player);
             if (level >= 3) {
                 if (level > 48) level = 48;
                 int amount = 3000 + level * 250;
-                if (Script.removeMoney(player, PaymentType.BANK, amount)) {
-                    Stadtkasse.addStadtkasse(amount, "Fahrschule " + player.getName(), Steuern.Steuer.MEHRWERTSTEUER);
-                    index.put(player, 0);
-                    player.playSound(HologramList.FAHRSCHULE.getLocation(), Sound.BLOCK_BELL_USE, 1.0F, 1.0F);
-                    player.sendMessage(Component.text(PREFIX + "Willkommen zur Neustädter Fahrschule, bei uns bringen wir euch nicht nur zur Prüfung, sondern auch sicher ans Ziel!"));
-                    Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> player.sendMessage(Component.text(PREFIX + "Heute werden wir uns mit den wichtigsten Regeln des Straßenverkehrs befassen.")), 6 * 20L);
-                    Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> player.sendMessage(Component.text(PREFIX + "Es ist entscheidend, dass ihr diese Regeln versteht und befolgt, um sicher unterwegs zu sein.")), 10 * 20L);
-                    Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> player.sendMessage(Component.text(PREFIX + "Erstens, die Grundregel: Fahrt immer defensiv.")), 16 * 20L);
-                    Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> player.sendMessage(Component.text(PREFIX + "Das bedeutet, dass ihr eure Umgebung stets im Blick habt und bereit seid, auf unvorhergesehene Situationen zu reagieren.")), 20 * 20L);
-                    Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> player.sendMessage(Component.text(PREFIX + "Zweitens, beachtet die Verkehrszeichen. Sie geben wichtige Hinweise zur Geschwindigkeit, Vorfahrt und anderen Verkehrsanweisungen.")), 26 * 20L);
-                    Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> player.sendMessage(Component.text(PREFIX + "Wenn ihr diese Zeichen nicht kennt, könnt ihr schnell in Schwierigkeiten geraten.")), 30 * 20L);
-                    Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> player.sendMessage(Component.text(PREFIX + "Drittens, haltet immer einen sicheren Abstand zum Fahrzeug vor euch.")), 36 * 20L);
-                    Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> player.sendMessage(Component.text(PREFIX + "Das gibt euch genug Reaktionszeit, um zu bremsen, wenn nötig.")), 40 * 20L);
-                    Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> player.sendMessage(Component.text(PREFIX + "Viertens, nutzt eure Blinker.")), 46 * 20L);
-                    Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> player.sendMessage(Component.text(PREFIX + "Sie signalisieren anderen Verkehrsteilnehmern eure Absichten und tragen zur Sicherheit aller bei.")), 50 * 20L);
-                    Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> player.sendMessage(Component.text(PREFIX + "Und schließlich, passt eure Geschwindigkeit den Straßenbedingungen an.")), 56 * 20L);
-                    Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> player.sendMessage(Component.text(PREFIX + "Ob Regen, Schnee oder glatte Straßen, fahrt immer vorsichtig und mit angemessener Geschwindigkeit.")), 60 * 20L);
-                    Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> player.sendMessage(Component.text(PREFIX + "Das sind nur einige der wichtigsten Regeln des Straßenverkehrs, die wir heute behandelt haben.")), 66 * 20L);
-                    Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> player.sendMessage(Component.text(PREFIX + "Denkt immer daran, dass Sicherheit an erster Stelle steht.")), 70 * 20L);
-                    Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> player.sendMessage(Component.text(PREFIX + "Gut, dann lasst uns nun überprüfen, was ihr heute verstanden habt!")), 75 * 20L);
 
-                    Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> {
-                        questions(player);
-                    }, 79 * 20L);
+                if (args.length > 0 && args[0].equalsIgnoreCase("confirm")) {
+                    if (Script.getMoney(player, PaymentType.BANK) >= amount) {
+                        index.put(player.getUniqueId(), 0);
+                        player.playSound(HologramList.FAHRSCHULE.getLocation(), Sound.BLOCK_BELL_USE, 1.0F, 1.0F);
+                        player.sendMessage(Component.text(PREFIX + "Willkommen zur Neustädter Fahrschule, bei uns bringen wir euch nicht nur zur Prüfung, sondern auch sicher ans Ziel!"));
+                        Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> player.sendMessage(Component.text(PREFIX + "Heute werden wir uns mit den wichtigsten Regeln des Straßenverkehrs befassen.")), 6 * 20L);
+                        Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> player.sendMessage(Component.text(PREFIX + "Es ist entscheidend, dass ihr diese Regeln versteht und befolgt, um sicher unterwegs zu sein.")), 10 * 20L);
+                        Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> player.sendMessage(Component.text(PREFIX + "Erstens, die Grundregel: Fahrt immer defensiv.")), 16 * 20L);
+                        Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> player.sendMessage(Component.text(PREFIX + "Das bedeutet, dass ihr eure Umgebung stets im Blick habt und bereit seid, auf unvorhergesehene Situationen zu reagieren.")), 20 * 20L);
+                        Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> player.sendMessage(Component.text(PREFIX + "Zweitens, beachtet die Verkehrszeichen. Sie geben wichtige Hinweise zur Geschwindigkeit, Vorfahrt und anderen Verkehrsanweisungen.")), 26 * 20L);
+                        Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> player.sendMessage(Component.text(PREFIX + "Wenn ihr diese Zeichen nicht kennt, könnt ihr schnell in Schwierigkeiten geraten.")), 30 * 20L);
+                        Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> player.sendMessage(Component.text(PREFIX + "Drittens, haltet immer einen sicheren Abstand zum Fahrzeug vor euch.")), 36 * 20L);
+                        Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> player.sendMessage(Component.text(PREFIX + "Das gibt euch genug Reaktionszeit, um zu bremsen, wenn nötig.")), 40 * 20L);
+                        Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> player.sendMessage(Component.text(PREFIX + "Viertens, nutzt eure Blinker.")), 46 * 20L);
+                        Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> player.sendMessage(Component.text(PREFIX + "Sie signalisieren anderen Verkehrsteilnehmern eure Absichten und tragen zur Sicherheit aller bei.")), 50 * 20L);
+                        Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> player.sendMessage(Component.text(PREFIX + "Und schließlich, passt eure Geschwindigkeit den Straßenbedingungen an.")), 56 * 20L);
+                        Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> player.sendMessage(Component.text(PREFIX + "Ob Regen, Schnee oder glatte Straßen, fahrt immer vorsichtig und mit angemessener Geschwindigkeit.")), 60 * 20L);
+                        Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> player.sendMessage(Component.text(PREFIX + "Das sind nur einige der wichtigsten Regeln des Straßenverkehrs, die wir heute behandelt haben.")), 66 * 20L);
+                        Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> player.sendMessage(Component.text(PREFIX + "Denkt immer daran, dass Sicherheit an erster Stelle steht.")), 70 * 20L);
+                        Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> player.sendMessage(Component.text(PREFIX + "Gut, dann lasst uns nun überprüfen, was ihr heute verstanden habt!")), 75 * 20L);
+
+                        Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> {
+                            questions(player);
+                        }, 79 * 20L);
+                    } else {
+                        player.sendMessage(Component.text(PREFIX + "Du brauchst " + amount + "€ um mit der Fahrschule beginnen zu können!"));
+                    }
                 } else {
-                    player.sendMessage(Component.text(PREFIX + "Du brauchst " + amount + "€ um mit der Fahrschule beginnen zu können!"));
+                    player.sendMessage(Component.text(PREFIX + "Deine Fahrschule kostet " + amount + "€ verwende §6/fahrschule confirm §7um sie zu beginnen."));
                 }
             } else {
                 player.sendMessage(Component.text(PREFIX + "Du musst mindestens Level-3 sein um die Fahrschule zu beginnen!"));
@@ -86,7 +97,7 @@ public class Fahrschule implements CommandExecutor, Listener {
 
     private static void questions(Player player) {
         player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1.0F, 1.0F);
-        switch (index.get(player)) {
+        switch (index.get(player.getUniqueId())) {
             case 0:
                 question(player, "Was bedeutet es, defensiv zu fahren?", "Schnell und aggressiv fahren, um Zeit zu sparen.", "Die Umgebung stets im Blick haben und bereit sein.", "Andere Verkehrsteilnehmer schikanieren und Vorfahrt erzwingen.");
                 break;
@@ -129,19 +140,28 @@ public class Fahrschule implements CommandExecutor, Listener {
                 Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> player.sendMessage(Component.text(PREFIX + "Ansonsten kannst du an jeder Tankstelle mit §6/tanken (Menge) §7tanken.")), 67 * 20L);
                 Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> player.sendMessage(Component.text(PREFIX + "Das war dann auch schon alles, du kannst dein Auto mit §6/car stop§7 bremsen, wenn du soweit bist.")), 74 * 20L);
                 Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> {
-                    player.sendMessage(Component.text(PREFIX + "Herzlichen Glückwunsch, du hast deine Führerschein-Prüfung bestanden!"));
-                    Script.addEXP(player, 10 + new Random().nextInt(20));
-                    Licenses.FUEHRERSCHEIN.grant(Script.getNRPID(player));
                     player.teleport(new Location(player.getWorld(), 404, 77, 1120));
-                    index.remove(player);
                     car.destroy(false);
+                    int level = Script.getLevel(player);
+                    if (level > 48) level = 48;
+                    int amount = 3000 + level * 250;
+                    if (Script.removeMoney(player, PaymentType.BANK, amount)) {
+                        Stadtkasse.addStadtkasse(amount, "Fahrschule " + player.getName(), Steuern.Steuer.MEHRWERTSTEUER);
+                        player.sendMessage(Component.text(PREFIX + "Herzlichen Glückwunsch, du hast deine Führerschein-Prüfung bestanden!"));
+                        Script.addEXP(player, 10 + new Random().nextInt(20));
+                        Licenses.FUEHRERSCHEIN.grant(Script.getNRPID(player));
+                    } else {
+                        player.sendMessage(PREFIX + "Du hast nicht genug Geld, um deinen Führerschein zu bezahlen!");
+                    }
+                    index.remove(player.getUniqueId());
+                    guis.remove(player.getUniqueId());
                     player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
                     Cache.loadScoreboard(player);
                 }, 100 * 20L);
         }
     }
 
-    private static HashMap<Player, Integer> index = new HashMap<>();
+    private static final HashMap<UUID, Integer> index = new HashMap<>();
 
     private static void question(Player player, String q, String asw1, String asw2, String asw3) {
         Inventory gui = Bukkit.createInventory(player, 18, "Fahrschule");
@@ -157,8 +177,11 @@ public class Fahrschule implements CommandExecutor, Listener {
         ItemStack answer3 = new ItemStack(Material.EMERALD);
         Script.setName(answer3, "§a" + asw3);
         gui.setItem(16, answer3);
+        guis.put(player.getUniqueId(), gui);
         player.openInventory(gui);
     }
+
+    private static final HashMap<UUID, Inventory> guis = new HashMap<>();
 
     @EventHandler
     public static void onAnswer(InventoryClickEvent event) {
@@ -166,7 +189,7 @@ public class Fahrschule implements CommandExecutor, Listener {
             event.setCancelled(true);
             if (event.getSlot() == 10 || event.getSlot() == 13 || event.getSlot() == 16) {
                 Player player = (Player) event.getWhoClicked();
-                index.put(player, index.get(player) + 1);
+                index.put(player.getUniqueId(), index.get(player.getUniqueId()) + 1);
                 questions(player);
             }
         }
