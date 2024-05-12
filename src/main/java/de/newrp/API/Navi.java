@@ -65,7 +65,7 @@ public enum Navi {
     DOENERBUDE("Dönerbude", new Location(Script.WORLD, 445, 64, 664)),
     SINALOA("Sinaloa-Kartell", new Location(Script.WORLD, 667, 70, 1094, 78.44797f, 42.449993f)),
     BLUMENLADEN_GANG("Blumenladen (Gang)", new Location(Script.WORLD, 513, 63, 1317, -355.5548f, 16.964155f)),
-    SHISHABAR("Shishabar", new Location(Script.WORLD, 424, 66, 918, 0.0f, 0.0f)),
+    SHISHABAR("Shishabar", new Location(Script.WORLD, 709, 65, 1218, 0.0f, 0.0f)),
     TABAKPLANTAGE("Tabakplantage", new Location(Script.WORLD, 94, 66, 628, 29.992523f, 7.2927737f)),
     CAFE_X3("Cafe am X3", new Location(Script.WORLD, 750, 72, 926, 0.0f, 0.0f)),
     CAFE_AEKI("Cafe im AEKI", new Location(Script.WORLD, 688, 138, 908, 0.0f, 0.0f)),
