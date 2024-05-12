@@ -64,6 +64,8 @@ public class AsyncMinute extends BukkitRunnable {
             }
         }
 
+        Treuebonus.addTime();
+
 
         if (Calendar.getInstance().get(Calendar.MONTH) == Calendar.JANUARY && Calendar.getInstance().get(Calendar.DAY_OF_MONTH) == 15 && Calendar.getInstance().get(Calendar.HOUR_OF_DAY) == 18 && Calendar.getInstance().get(Calendar.MINUTE) == 0) {
             Wahlen.getWahlResult();
@@ -145,8 +147,6 @@ public class AsyncMinute extends BukkitRunnable {
                 if(!Premium.hasPremium(p)) Title.sendTitle(p, 50, 100, 50, "§6 " + Messages.ARROW + " Vote für uns! «", "§8/§6vote");
             }
         }
-
-        Treuebonus.addTime();
 
         for (Player p : Bukkit.getOnlinePlayers()) {
             if (!AFK.isAFK(p) && !Passwort.isLocked(p)) {
