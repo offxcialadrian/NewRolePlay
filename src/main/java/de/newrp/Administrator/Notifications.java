@@ -106,6 +106,7 @@ public class Notifications implements CommandExecutor, Listener {
         }
 
         for (UUID member : Team.Teams.ENTWICKLUNG.getMembers()) {
+            if(hasReceived.contains(member)) continue;
             final Player p = Bukkit.getPlayer(member);
             if(p == null) continue;
 
