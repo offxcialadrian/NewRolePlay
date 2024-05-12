@@ -41,9 +41,11 @@ public class CheckHealthCommand implements CommandExecutor {
             return true;
         }
 
-        if (player.getLocation().distance(targetPlayer.getLocation()) > 3) {
-            player.sendMessage(Messages.ERROR + "Der Spieler ist zu weit von dir entfernt!");
-            return true;
+        if (!SDuty.isSDuty(player)) {
+            if (player.getLocation().distance(targetPlayer.getLocation()) > 3) {
+                player.sendMessage(Messages.ERROR + "Der Spieler ist zu weit von dir entfernt!");
+                return true;
+            }
         }
 
         player.sendMessage(PREFIX + Script.getName(targetPlayer) + "' Zustand:");
