@@ -105,14 +105,12 @@ public class Notifications implements CommandExecutor, Listener {
             }
         }
 
-        for (final Player p : Bukkit.getOnlinePlayers()) {
-            if (hasReceived.contains(p.getUniqueId())) continue;
+        for (UUID member : Team.Teams.ENTWICKLUNG.getMembers()) {
+            final Player p = Bukkit.getPlayer(member);
+            if(p == null) continue;
 
-            if (Team.getTeam(p) == null) continue;
-            if (Team.getTeam(p) == Team.Teams.ENTWICKLUNG) {
-                if (isNotificationEnabled(p, type)) {
-                    p.sendMessage((type == NotificationType.ADVANCED_ANTI_CHEAT ? AntiCheatSystem.PREFIX : PREFIX) + msg);
-                }
+            if (isNotificationEnabled(p, type)) {
+                p.sendMessage((type == NotificationType.ADVANCED_ANTI_CHEAT ? AntiCheatSystem.PREFIX : PREFIX) + msg);
             }
         }
     }
