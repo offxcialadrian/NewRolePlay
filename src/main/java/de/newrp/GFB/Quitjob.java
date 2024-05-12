@@ -11,6 +11,9 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+
+import java.util.Objects;
 
 public class Quitjob implements CommandExecutor {
 
@@ -102,7 +105,11 @@ public class Quitjob implements CommandExecutor {
                 Cache.loadInventory(p);
                 p.sendMessage(GFB.PREFIX + "Du hast den Job §6Imker §7verlassen.");
                 break;
-
+            case TABAKPLANTAGE:
+                Cache.loadInventory(p);
+                for (ItemStack is : p.getInventory().getContents()) if (Objects.requireNonNull(is).getItemMeta().hasDisplayName()) if (is.getItemMeta().getDisplayName().equals("§7Tabakschere")) p.getInventory().remove(is);
+                p.sendMessage(GFB.PREFIX + "Du hast den Job §6Tabakplantage §7verlassen.");
+                break;
         }
 
         return false;

@@ -69,7 +69,6 @@ public class Tabakplantage implements CommandExecutor, Listener {
             }
         }
 
-        p.getInventory().remove(Material.SHEARS);
         int i = (Premium.hasPremium(p) ? GFB.TABAKPLANTAGE.getLevel(p)+10 : GFB.TABAKPLANTAGE.getLevel(p)+6);
         p.getInventory().addItem(Script.setNameAndLore(Material.SHEARS, "§7Tabakschere", "§9" + i + "/" + i));
         p.sendMessage(PREFIX + "Ernte Tabak und lege es zum trocknen auf die Steintische.\n" +
