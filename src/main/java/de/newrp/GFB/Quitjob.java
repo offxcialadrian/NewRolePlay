@@ -107,7 +107,17 @@ public class Quitjob implements CommandExecutor {
                 break;
             case TABAKPLANTAGE:
                 Cache.loadInventory(p);
-                for (ItemStack is : p.getInventory().getContents()) if (Objects.requireNonNull(is).getItemMeta().hasDisplayName()) if (is.getItemMeta().getDisplayName().equals("§7Tabakschere")) p.getInventory().remove(is);
+                for (ItemStack is : p.getInventory().getContents()) {
+                    if (is != null) {
+                        if (is.getItemMeta() != null) {
+                            if (is.getItemMeta().hasDisplayName()) {
+                                if (is.getItemMeta().getDisplayName().equals("§7Tabakschere")) {
+                                    p.getInventory().remove(is);
+                                }
+                            }
+                        }
+                    }
+                }
                 p.sendMessage(GFB.PREFIX + "Du hast den Job §6Tabakplantage §7verlassen.");
                 break;
         }
