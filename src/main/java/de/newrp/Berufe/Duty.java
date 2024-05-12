@@ -146,6 +146,9 @@ public class Duty implements CommandExecutor {
 
     public static void removeDuty(Player p) {
         Bukkit.getScoreboardManager().getMainScoreboard().getTeam("player").addEntry(p.getName());
-        Beruf.getBeruf(p.getPlayer()).changeDuty(p, false);
+        final Beruf.Berufe berufe = Beruf.getBeruf(p.getPlayer());
+        if(berufe != null) {
+            berufe.changeDuty(p, false);
+        }
     }
 }

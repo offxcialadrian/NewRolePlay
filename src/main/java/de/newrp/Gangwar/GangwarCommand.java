@@ -75,7 +75,7 @@ public class GangwarCommand implements CommandExecutor, Listener {
             return true;
         }
 
-        if((Calendar.getInstance().get(Calendar.HOUR_OF_DAY) < 20 || Calendar.getInstance().get(Calendar.HOUR_OF_DAY) > 21) && !Script.isInTestMode()) {
+        if((Calendar.getInstance().get(Calendar.HOUR_OF_DAY) < 21 || Calendar.getInstance().get(Calendar.HOUR_OF_DAY) > 22) && !Script.isInTestMode()) {
             p.sendMessage(Messages.ERROR + "Der Gangwar kann nur zwischen 20 und 21 Uhr stattfinden.");
             return true;
         }

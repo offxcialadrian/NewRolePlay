@@ -91,7 +91,11 @@ public class Friedhof {
         FRIEDHOF.put(p.getName(), f);
         Location[] locs = new Location[]{new Location(Script.WORLD, 222, 75, 673, 92.5503f, -2.699904f)};
 
-        Debug.debug("dead: " + p.getName() + " " + p.getKiller() + " " + p.getLastDamageCause().getCause().name());
+        try {
+            Debug.debug("dead: " + p.getName() + " " + p.getKiller() + " " + p.getLastDamageCause().getCause().name());
+        } catch(Exception exception) {
+            NewRoleplayMain.handleError(exception);
+        }
         if(p.getKiller() != null) {
             p.getKiller().sendMessage(Messages.INFO + "§c§lKILL! §fDu hast §6" + Script.getName(p) + " §fgetötet");
         }
@@ -148,29 +152,30 @@ public class Friedhof {
     }
 
     public static void revive(Player p, Location teleportLoc) {
-        Friedhof f = getDead(p);
-        if (f == null) return;
-        if(Corpse.npcMap.containsKey(p)) Corpse.removeNPC(p);
-        if(teleportLoc == null) Duty.removeDuty(p);
+        try {
+            Friedhof f = getDead(p);
+            if (f == null) return;
+            if(Corpse.npcMap.containsKey(p)) Corpse.removeNPC(p);
+            if(teleportLoc == null) Duty.removeDuty(p);
 
-        Bukkit.getScheduler().cancelTask(f.getTaskID());
-        FRIEDHOF.remove(p.getName());
+            Bukkit.getScheduler().cancelTask(f.getTaskID());
+            FRIEDHOF.remove(p.getName());
 
-        int id = f.getUserID();
-        Script.executeAsyncUpdate("DELETE FROM friedhof WHERE id = " + id);
+            int id = f.getUserID();
+            Script.executeAsyncUpdate("DELETE FROM friedhof WHERE id = " + id);
 
-        Script.sendActionBar(p, "§eDu lebst nun wieder.");
-        p.resetPlayerWeather();
-        Script.resetPotionEffects(p);
+            Script.sendActionBar(p, "§eDu lebst nun wieder.");
+            p.resetPlayerWeather();
+            Script.resetPotionEffects(p);
 
-        Chair.NO_TELEPORT.add(p.getName());
-        if (p.isInsideVehicle()) p.leaveVehicle();
+            Chair.NO_TELEPORT.add(p.getName());
+            if (p.isInsideVehicle()) p.leaveVehicle();
 
-        p.setSaturation(20f);
-        p.setFoodLevel(20);
-        p.setNoDamageTicks(0);
-        p.setFireTicks(0);
-        Log.NORMAL.write(p, "lebt nun wieder.");
+            p.setSaturation(20f);
+            p.setFoodLevel(20);
+            p.setNoDamageTicks(0);
+            p.setFireTicks(0);
+            Log.NORMAL.write(p, "lebt nun wieder.");
             if (teleportLoc != null) {
                 p.setHealth(20D);
                 p.teleport(teleportLoc);
@@ -207,7 +212,10 @@ public class Friedhof {
             if(Checkpoints.hasCheckpoints(p)) {
                 p.teleport(new Location(Script.WORLD, 485, 9, 562, -269.20435f, 6.000005f));
             }
+        } catch(final Exception exception) {
+            NewRoleplayMain.handleError(exception);
         }
+    }
 
     public static Friedhof getDead(Player p) {
         return FRIEDHOF.get(p.getName());
