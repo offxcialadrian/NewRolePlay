@@ -47,8 +47,7 @@ public class Treuebonus implements CommandExecutor, Listener {
     public static void addTime(Player p) {
         if (!AFK.isAFK(p)) {
             Treuebonus.time.putIfAbsent(p.getUniqueId(), 0);
-            int old = time.get(p.getUniqueId());
-            if (old >= 120) {
+            if (time.get(p.getUniqueId()) >= 120) {
                 p.sendMessage(prefix + "NRP × New RolePlay dankt dir für deine Treue und schenkt dir einen Treuepunkt! §8[§c" + (Treuebonus.points.get(p.getUniqueId()) + 1) + "§8]");
                 p.sendMessage(Messages.INFO + "Mit /treuebonus kannst du dir tolle Geschenke aussuchen.");
 
@@ -107,10 +106,11 @@ public class Treuebonus implements CommandExecutor, Listener {
     }
 
     public static void add(Player p, boolean updateTime) {
-        Treuebonus.points.put(p.getUniqueId(), Treuebonus.time.get(p.getUniqueId()) + 1);
+        Treuebonus.time.put(p.getUniqueId(), Treuebonus.time.get(p.getUniqueId()) + 1);
 
         if (updateTime) {
             Treuebonus.time.put(p.getUniqueId(), 0);
+            Treuebonus.points.put(p.getUniqueId(), Treuebonus.total.get(p.getUniqueId()) + 1);
             Treuebonus.total.put(p.getUniqueId(), Treuebonus.total.get(p.getUniqueId()) + 1);
         }
     }

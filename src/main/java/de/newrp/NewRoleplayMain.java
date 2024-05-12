@@ -153,6 +153,7 @@ public class NewRoleplayMain extends JavaPlugin {
 
         new AsyncHealth().runTaskTimerAsynchronously(this, 120 * 20L, 120 * 20L);
         new PayDay().runTaskTimerAsynchronously(this, 60 * 20L, 60 * 20L);
+        Bukkit.getScheduler().runTaskTimer(getInstance(), () -> Treuebonus.addTime(), 60 * 20L, 60 * 20L);
         new AsyncMinute().runTaskTimerAsynchronously(this, 60 * 20L, 60 * 20L);
         new AsyncHour().runTaskTimerAsynchronously(this, 60 * 60 * 20L, 60 * 60 * 20L);
         new SyncHour().runTaskTimer(this, 60 * 60 * 20L, 60 * 60 * 20L);
