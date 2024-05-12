@@ -4,6 +4,7 @@ import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.Berufe.Abteilung;
 import de.newrp.Berufe.Beruf;
+import de.newrp.Berufe.Duty;
 import de.newrp.dependencies.DependencyContainer;
 import de.newrp.features.roadblocks.IFactionBlockService;
 import org.bukkit.command.Command;
@@ -26,8 +27,12 @@ public class RoadBlockCommand implements CommandExecutor {
             return false;
         }
 
+        if(!Duty.isInDuty(player)) {
+            player.sendMessage(Messages.ERROR + "Du bist nicht im Dienst!");
+            return false;
+        }
+
         final Abteilung.Abteilungen abteilung = Beruf.getAbteilung(player);
-        //if(!Beruf.hasAbteilung(player, Abteilung.Abteilungen.PRESSE, Abteilung.Abteilungen.AUSBILDER, Abteilung.Abteilungen.SEK, Abteilung.Abteilungen.ABTEILUNGSLEITUNG)) {
         if(!Beruf.hasAbteilung(player, Abteilung.Abteilungen.PRESSE, Abteilung.Abteilungen.AUSBILDER, Abteilung.Abteilungen.SEK, Abteilung.Abteilungen.ABTEILUNGSLEITUNG)) {
             player.sendMessage(Messages.NO_PERMISSION);
             return false;

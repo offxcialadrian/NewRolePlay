@@ -4,6 +4,7 @@ import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.Berufe.Abteilung;
 import de.newrp.Berufe.Beruf;
+import de.newrp.Berufe.Duty;
 import de.newrp.dependencies.DependencyContainer;
 import de.newrp.features.roadblocks.IFactionBlockService;
 import org.bukkit.command.Command;
@@ -23,6 +24,11 @@ public class SprungtuchCommand implements CommandExecutor {
 
         if(faction != Beruf.Berufe.RETTUNGSDIENST) {
             player.sendMessage(Messages.NO_PERMISSION);
+            return false;
+        }
+
+        if(!Duty.isInDuty(player)) {
+            player.sendMessage(Messages.ERROR + "Du bist nicht im Dienst!");
             return false;
         }
 
