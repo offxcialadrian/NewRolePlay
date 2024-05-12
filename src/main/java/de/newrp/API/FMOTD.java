@@ -31,13 +31,13 @@ public class FMOTD implements CommandExecutor {
             sb.append(args[i]);
         }
 
-        String nachricht = sb.toString();
+        String nachricht = sb.toString().replace("&", "§");
         if(Beruf.getBeruf(p) != null) {
             Beruf.getBeruf(p).setMOTD(nachricht);
             Beruf.getBeruf(p).sendMessage(Beruf.PREFIX + Script.getName(p) + " hat die Nachricht des Tages geändert: §f" + nachricht);
         } else {
             Organisation.getOrganisation(p).setMOTD(nachricht);
-            Organisation.getOrganisation(p).sendMessage(Organisation.PREFIX + Script.getName(p) + " hat die Nachricht des Tages geändert: §f" + nachricht);
+            Organisation.getOrganisation(p).sendMessage(Organisation.PREFIX + Script.getName(p) + " hat die Nachricht des Tages geändert: §7" + nachricht);
         }
 
         return false;

@@ -173,10 +173,10 @@ public class Beruf {
         }
 
         public void setMOTD(String motd) {
-            if(getMOTD() == null) {
-                Script.executeUpdate("INSERT INTO berufe_motd (berufID, motd) VALUES ('" + this.id + "', '" + motd + "')");
+            if (getMOTD() == null) {
+                Script.executeUpdate("INSERT INTO berufe_motd (berufeID, motd) VALUES ('" + this.id + "', '" + motd + "')");
             } else {
-                Script.executeUpdate("UPDATE berufe_motd SET motd='" + motd + "' WHERE berufID='" + this.id + "'");
+                Script.executeUpdate("UPDATE berufe_motd SET motd='" + motd + "' WHERE berufeID='" + this.id + "'");
             }
         }
 
