@@ -131,7 +131,7 @@ public class Gips implements Listener {
         Player p = (Player) e.getEntity();
         if (e.getDamage() > 15) {
             Krankheit.GEBROCHENES_BEIN.add(Script.getNRPID(p));
-            Me.sendMessage(p, (Script.getGender(p) == Gender.MALE ? "sein" : "ihr") + " Bein hat geknackt.");
+            Me.sendMessage(p,"hat sich " + (Script.getGender(p) == Gender.MALE ? "sein" : "ihr") + " Bein gebrochen.");
             p.setWalkSpeed(0.1F);
             p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 40, 1, false, false));
             p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20, 1, false, false));
@@ -209,7 +209,7 @@ public class Gips implements Listener {
 
         if (Script.getRandom(1, 100) <= Health.getMuscleLevel(Script.getNRPID(d)) / 2) {
             if (!Krankheit.GEBROCHENER_ARM.isInfected(Script.getNRPID(d))) {
-                Me.sendMessage(d, (Script.getGender(d) == Gender.MALE ? "sein" : "ihr") + " Arm hat geknackt.");
+                Me.sendMessage(p,"hat sich " + (Script.getGender(p) == Gender.MALE ? "sein" : "ihr") + "en Arm gebrochen.");
                 Krankheit.GEBROCHENER_ARM.add(Script.getNRPID(d));
                 d.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 160, 1, false, false));
                 d.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 80, 1, false, false));
@@ -218,7 +218,7 @@ public class Gips implements Listener {
 
         if (Script.getRandom(1, 100) <= Health.getMuscleLevel(Script.getNRPID(d))) {
             if (!Krankheit.GEBROCHENER_ARM.isInfected(Script.getNRPID(d))) {
-                Me.sendMessage(p, (Script.getGender(p) == Gender.MALE ? "sein" : "ihr") + " Arm hat geknackt.");
+                Me.sendMessage(p,"hat sich " + (Script.getGender(p) == Gender.MALE ? "sein" : "ihr") + "en Arm gebrochen.");
                 Krankheit.GEBROCHENER_ARM.add(Script.getNRPID(p));
                 p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 160, 1, false, false));
                 p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 80, 1, false, false));
