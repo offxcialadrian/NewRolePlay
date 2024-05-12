@@ -45,7 +45,7 @@ public class EmergencyCallService implements IEmergencyCallService {
         final StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(getPrefix()).append("§6Achtung! Ein Notruf von ").append(Script.getName(player)).append(" ist eingegangen.")
                 .append("\n").append(getPrefix()).append("§6Vorfall§8: §6").append(reason)
-                .append("\n").append(getPrefix() + buildNearbyPlayersString(location, targetFaction));
+                .append("\n").append(buildNearbyPlayersString(location, targetFaction));
 
         for (UUID member : targetFaction.getBeruf().keySet()) {
             Objects.requireNonNull(Bukkit.getPlayer(member)).sendMessage(stringBuilder.toString());
@@ -228,7 +228,7 @@ public class EmergencyCallService implements IEmergencyCallService {
         stringBuilder.append("§6Am nächsten sind: ");
         List<Player> nearbyPlayers = getNearbyPlayersOfFactionToLocation(location, faction);
         if(nearbyPlayers.isEmpty()) {
-            return "§6Keine Person im Dienst ist in der Nähe";
+            return stringBuilder.toString() + "§6Keine Person im Dienst ist in der Nähe";
         }
 
         final Player firstPlayer = nearbyPlayers.get(0);
