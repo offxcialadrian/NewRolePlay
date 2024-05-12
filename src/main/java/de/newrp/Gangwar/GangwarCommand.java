@@ -213,7 +213,10 @@ public class GangwarCommand implements CommandExecutor, Listener {
         }
 
         o.sendMessage(PREFIX + "Deine Organisation hat den Gangwar in der Zone " + zone.getName() + " gewonnen.");
+        o.addExp(points.get(o));
         other.sendMessage(PREFIX + "Deine Organisation hat den Gangwar in der Zone " + zone.getName() + " verloren.");
+        other.addExp(points.get(other) / 2);
+
         if(zone.getOwner() != o) {
             zone.setOwner(o);
         }

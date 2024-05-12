@@ -43,7 +43,6 @@ public class AsyncHour extends BukkitRunnable {
             Debug.debug("Async Hour tick");
             Schwarzmarkt.spawnRandom();
             Hologram.reload();
-            LabBreakIn.repairDoors(false);
 
             for (GangwarZones zone : GangwarZones.values()) {
                 if (zone.getOwner() != null) {
@@ -85,7 +84,7 @@ public class AsyncHour extends BukkitRunnable {
                     Script.removeMoney(p, PaymentType.BANK, sum);
 
                     Script.executeAsyncUpdate("DELETE FROM loans WHERE id=" + id);
-                    if(p.isOnline()) {
+                    if (p.isOnline()) {
                         Player player = p.getPlayer();
                         player.sendMessage(Loan.PREFIX + "Dein Kredit wurde abbezahlt.");
                     } else {
@@ -96,11 +95,11 @@ public class AsyncHour extends BukkitRunnable {
                 e.printStackTrace();
             }
 
-            for(Shops shop : Shops.values()) {
+            for (Shops shop : Shops.values()) {
                 if (shop.getOwner() == 0) continue;
                 int runningcost = 0;
                 HashMap<Integer, ItemStack> c = shop.getItems();
-                if(shop.getType() != ShopType.HOTEL) {
+                if (shop.getType() != ShopType.HOTEL) {
                     for (Map.Entry<Integer, ItemStack> n : c.entrySet()) {
                         ItemStack is = n.getValue();
                         if (is == null) {
@@ -112,58 +111,57 @@ public class AsyncHour extends BukkitRunnable {
                 } else {
                     Hotel.Hotels hotel = Hotel.Hotels.getHotelByShop(shop);
                     assert hotel != null;
-                    for(Hotel.Rooms room : hotel.getRentedRooms()) {
-                        runningcost += room.getPrice()/2;
+                    for (Hotel.Rooms room : hotel.getRentedRooms()) {
+                        runningcost += room.getPrice() / 2;
                     }
                 }
                 int totalcost = runningcost + shop.getRent();
-                if(shop.getKasse() >= totalcost) {
+                if (shop.getKasse() >= totalcost) {
                     shop.removeKasse(runningcost);
                     shop.removeKasse(shop.getRent());
                     Stadtkasse.addStadtkasse(shop.getRent(), "Miete von " + shop.getPublicName(), null);
-                    if(Script.getPlayer(shop.getOwner()) != null) {
+                    if (Script.getPlayer(shop.getOwner()) != null) {
                         Script.getPlayer(shop.getOwner()).sendMessage(Shop.PREFIX + "Dein Shop §e" + shop.getPublicName() + " §7hat §e" + shop.getRent() + "€ §7Miete und §e" + shop.getRunningCost() + "€ §7Betriebskosten verloren.");
                     }
                 } else {
                     Abteilung.Abteilungen.FINANZAMT.sendMessage(Shop.PREFIX + "Der Shop §e" + shop.getPublicName() + " §7hat nicht genug Geld für die Betriebskosten und Miete (Verdacht auf Steuerhinterziehung).");
-                    if(Script.getPlayer(shop.getOwner()) != null) {
+                    if (Script.getPlayer(shop.getOwner()) != null) {
                         Script.getPlayer(shop.getOwner()).sendMessage(Shop.PREFIX + "Dein Shop §e" + shop.getPublicName() + " §7hat nicht genug Kapital um Miete und Betriebskosten zu bezahlen. Eine Meldung ans Finanzamt wurde abgesetzt.");
                         Script.getPlayer(shop.getOwner()).sendMessage(Shop.PREFIX + "Beachte bitte, dass es eine Schließung deines Shops und eine Strafanzeige zur Folge haben kann.");
                     }
                 }
             }
 
-            for(Organisation o : Organisation.values()) {
+            for (Organisation o : Organisation.values()) {
                 int i = 0;
-                for(Player all : o.getMembers()) {
-                    if(!AFK.isAFK(all)) {
+                for (Player all : o.getMembers()) {
+                    if (!AFK.isAFK(all)) {
                         i += 10;
                     }
                 }
-                if(i == 0) continue;
+                if (i == 0) continue;
                 o.addExp(i);
             }
 
-            for(Player all : Bukkit.getOnlinePlayers()) {
-                if(!BuildMode.isInBuildMode(all)) all.getInventory().remove(Material.PLAYER_HEAD);
+            for (Player all : Bukkit.getOnlinePlayers()) {
+                if (!BuildMode.isInBuildMode(all)) all.getInventory().remove(Material.PLAYER_HEAD);
                 all.getInventory().getHelmet().setType(Material.AIR);
-                if(!Script.WORLD.hasStorm()) return;
-                if(AFK.isAFK(all)) continue;
-                if(SDuty.isSDuty(all)) continue;
-                if(Krankheit.ABHAENGIGKEIT.isInfected(Script.getNRPID(all))) {
+                if (!Script.WORLD.hasStorm()) return;
+                if (AFK.isAFK(all)) continue;
+                if (SDuty.isSDuty(all)) continue;
+                if (Krankheit.ABHAENGIGKEIT.isInfected(Script.getNRPID(all))) {
                     all.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 20 * 5, 1));
                     all.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 20 * 5, 1));
                     all.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20 * 5, 1));
                     all.sendMessage(Messages.INFO + "Du hast Entzugserscheinungen. Lasse dich von einem Arzt behandeln.");
                 }
-                if(Script.getRandom(1, 100) > 3) continue;
-                if(Script.WORLD.getHighestBlockYAt(all.getLocation()) <= all.getLocation().getY()) {
+                if (Script.getRandom(1, 100) > 3) continue;
+                if (Script.WORLD.getHighestBlockYAt(all.getLocation()) <= all.getLocation().getY()) {
                     Krankheit.HUSTEN.add(Script.getNRPID(all));
                 }
             }
-        } catch(final Exception exception) {
-            NewRoleplayMain.handleError(exception);
+        } catch (Exception e) {
+            NewRoleplayMain.handleError(e);
         }
-
     }
 }
