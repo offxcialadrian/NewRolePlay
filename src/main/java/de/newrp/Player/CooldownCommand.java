@@ -31,9 +31,9 @@ public class CooldownCommand implements CommandExecutor {
                     }
                 }
                 if (LabBreakIn.cooldown != 0) {
-                    if (System.currentTimeMillis() - LabBreakIn.cooldown > 0) {
+                    if ((LabBreakIn.cooldown - System.currentTimeMillis() + 10800000) > 0) {
                         cd = true;
-                        player.sendMessage(PREFIX + "Labor: §5" + TimeUnit.MILLISECONDS.toMinutes(System.currentTimeMillis() - LabBreakIn.cooldown) + "min");
+                        player.sendMessage(PREFIX + "Labor: §5" + TimeUnit.MILLISECONDS.toMinutes(LabBreakIn.cooldown - System.currentTimeMillis() + 10800000) + "min");
                     }
                 }
                 if (BreakinCommand.cooldowns.containsKey(orga)) {
@@ -43,9 +43,9 @@ public class CooldownCommand implements CommandExecutor {
                     }
                 }
                 if (Bankraub.lastTime != 0) {
-                    if (System.currentTimeMillis() - Bankraub.lastTime > 0) {
+                    if ((Bankraub.lastTime - System.currentTimeMillis() + 18000000) > 0) {
                         cd = true;
-                        player.sendMessage(PREFIX + "Staatsbank: §5" + TimeUnit.MILLISECONDS.toMinutes(System.currentTimeMillis() - Bankraub.lastTime) + "min");
+                        player.sendMessage(PREFIX + "Staatsbank: §5" + TimeUnit.MILLISECONDS.toMinutes(Bankraub.lastTime - System.currentTimeMillis() + 18000000) + "min");
                     }
                 }
                 if (Bankautomaten.cooldown.containsKey(orga)) {
