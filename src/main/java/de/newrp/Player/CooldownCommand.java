@@ -25,20 +25,28 @@ public class CooldownCommand implements CommandExecutor {
 
                 player.sendMessage(PREFIX + "Aktuelle Cooldowns für §5" + orga.getName() + "§7:");
                 if (RobCommand.cooldownsP.containsKey(player.getUniqueId())) {
-                    cd = true;
-                    player.sendMessage(PREFIX + "Rob: §5" + TimeUnit.MILLISECONDS.toMinutes(RobCommand.cooldownsP.get(player.getUniqueId()) - System.currentTimeMillis()) + "min");
+                    if (RobCommand.cooldownsP.get(player.getUniqueId()) - System.currentTimeMillis() > 0) {
+                        cd = true;
+                        player.sendMessage(PREFIX + "Rob: §5" + TimeUnit.MILLISECONDS.toMinutes(RobCommand.cooldownsP.get(player.getUniqueId()) - System.currentTimeMillis()) + "min");
+                    }
                 }
                 if (LabBreakIn.cooldown != 0) {
-                    cd = true;
-                    player.sendMessage(PREFIX + "Labor: §5" + TimeUnit.MILLISECONDS.toMinutes(LabBreakIn.cooldown - System.currentTimeMillis()) + "min");
+                    if (System.currentTimeMillis() - LabBreakIn.cooldown > 0) {
+                        cd = true;
+                        player.sendMessage(PREFIX + "Labor: §5" + TimeUnit.MILLISECONDS.toMinutes(System.currentTimeMillis() - LabBreakIn.cooldown) + "min");
+                    }
                 }
                 if (BreakinCommand.cooldowns.containsKey(orga)) {
-                    cd = true;
-                    player.sendMessage(PREFIX + "Break-In: §5" + TimeUnit.MILLISECONDS.toMinutes(BreakinCommand.cooldowns.get(orga) - System.currentTimeMillis()) + "min");
+                    if (BreakinCommand.cooldowns.get(orga) - System.currentTimeMillis() > 0) {
+                        cd = true;
+                        player.sendMessage(PREFIX + "Break-In: §5" + TimeUnit.MILLISECONDS.toMinutes(BreakinCommand.cooldowns.get(orga) - System.currentTimeMillis()) + "min");
+                    }
                 }
                 if (Bankraub.lastTime != 0) {
-                    cd = true;
-                    player.sendMessage(PREFIX + "Staatsbank: §5" + TimeUnit.MILLISECONDS.toMinutes(Bankraub.lastTime - System.currentTimeMillis()) + "min");
+                    if (System.currentTimeMillis() - Bankraub.lastTime > 0) {
+                        cd = true;
+                        player.sendMessage(PREFIX + "Staatsbank: §5" + TimeUnit.MILLISECONDS.toMinutes(System.currentTimeMillis() - Bankraub.lastTime) + "min");
+                    }
                 }
 
                 if (!cd) player.sendMessage(PREFIX + "Es gibt aktuell keine Cooldowns!");
