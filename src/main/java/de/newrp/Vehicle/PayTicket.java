@@ -1,6 +1,7 @@
 package de.newrp.Vehicle;
 
 
+import de.newrp.API.Debug;
 import de.newrp.API.Messages;
 import de.newrp.API.PaymentType;
 import de.newrp.API.Script;
@@ -41,11 +42,12 @@ public class PayTicket implements CommandExecutor {
 
         p.sendMessage(StrafzettelCommand.PREFIX + "Du hast den Strafzettel bezahlt.");
         Beruf.Berufe.POLICE.sendMessage(StrafzettelCommand.PREFIX + Script.getName(p) + " hat seinen Strafzettel am Auto mit dem Kennzeichen §e" + car.getLicenseplate() + " §7bezahlt!");
-        car.setStrafzettel(null);
 
         Script.executeAsyncUpdate("DELETE FROM strafzettel WHERE id=" + car.getCarID());
         Script.removeMoney(p, PaymentType.BANK, price);
         Stadtkasse.addStadtkasse(strafzettel.getPrice(), "Strafzettel von " + Script.getName(p), null);
+        Debug.debug("Paid Strafzettel @ " + car.getLicenseplate() + " for " + car.getStrafzettel().getPrice()  + "€ with type " + car.getCarType().getName());
+        car.setStrafzettel(null);
         return true;
     }
 }

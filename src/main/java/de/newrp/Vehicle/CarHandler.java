@@ -1,6 +1,7 @@
 package de.newrp.Vehicle;
 
 import de.newrp.API.Cache;
+import de.newrp.API.Debug;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.Administrator.SDuty;
@@ -131,6 +132,7 @@ public class CarHandler implements Listener {
                     Beruf.Berufe.POLICE.sendMessage(StrafzettelCommand.PREFIX + Script.getName(player) + " hat ein Strafzettel an einem §e" + car.getCarType().getName() + " §7mit Kennzeichen §e" + car.getLicenseplate() + " §7platziert!" +
                             "\n" + StrafzettelCommand.PREFIX + "Grund: §e" + car.getStrafzettel().getReason() +
                             "\n" + StrafzettelCommand.PREFIX + "Preis: §e" + car.getStrafzettel().getPrice() + "€");
+                    Debug.debug("Added strafzettel to " + car.getLicenseplate() + " by " + Script.getName(player));
                     event.setCancelled(true);
                 } else {
                     if (SDuty.isSDuty(player)) {
