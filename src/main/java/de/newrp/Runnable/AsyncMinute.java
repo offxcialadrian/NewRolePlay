@@ -6,6 +6,7 @@ import de.newrp.Entertainment.Lotto;
 import de.newrp.Gangwar.GangwarCommand;
 import de.newrp.Government.Wahlen;
 import de.newrp.News.BreakingNews;
+import de.newrp.Organisationen.MaskHandler;
 import de.newrp.Player.*;
 import de.newrp.Ticket.Ticket;
 import de.newrp.Ticket.TicketCommand;
@@ -13,6 +14,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.*;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -146,6 +148,9 @@ public class AsyncMinute extends BukkitRunnable {
         }
 
         for (Player p : Bukkit.getOnlinePlayers()) {
+            if (MaskHandler.masks.containsKey(p.getUniqueId())) {
+                if (MaskHandler.masks.get(p.getUniqueId()) < System.currentTimeMillis()) p.getInventory().setItem(EquipmentSlot.HEAD, new ItemStack(Material.AIR));
+            }
             if (!AFK.isAFK(p) && !Passwort.isLocked(p)) {
                 Script.increaseActivePlayTime(p);
             }

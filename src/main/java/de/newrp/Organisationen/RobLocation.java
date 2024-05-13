@@ -29,7 +29,7 @@ public enum RobLocation {
     ARCADE("Arcade", new Location(Script.WORLD, 401, 67, 750), Organisation.BRATERSTWO, "Kasse"),
     GELDWAGEN("Geldwagen", new Location(Script.WORLD, 909, 76, 912), Organisation.BRATERSTWO, "Kasse"),
     BAR("Bar", new Location(Script.WORLD, 699, 69, 865), Organisation.BRATERSTWO, "Lager"),
-    SUPPENKUECHE("Suppenküche", new Location(Script.WORLD, 867, 83, 952), Organisation.BRATERSTWO, "Lager");
+    NOODLES("Noodles", new Location(Script.WORLD, 867, 83, 952), Organisation.BRATERSTWO, "Lager");
 
     private final String name;
     private final Location loc;

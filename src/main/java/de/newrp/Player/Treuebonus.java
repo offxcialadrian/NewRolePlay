@@ -3,6 +3,7 @@ package de.newrp.Player;
 import de.newrp.API.*;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Berufe.Duty;
+import de.newrp.Organisationen.MaskHandler;
 import de.newrp.Organisationen.Organisation;
 import de.newrp.NewRoleplayMain;
 import net.kyori.adventure.text.Component;
@@ -18,6 +19,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
@@ -27,6 +29,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -140,6 +143,10 @@ public class Treuebonus implements CommandExecutor, Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
         Player p = e.getPlayer();
+
+        if (MaskHandler.masks.containsKey(p.getUniqueId())) {
+            if (MaskHandler.masks.get(p.getUniqueId()) < System.currentTimeMillis()) p.getInventory().setItem(EquipmentSlot.HEAD, new ItemStack(Material.AIR));
+        }
 
         PayDay.paydayTime.put(p, Script.getInt(p, "payday", "time"));
         PayDay.paydayMoney.put(p, Script.getInt(p, "payday", "money"));
