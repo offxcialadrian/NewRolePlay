@@ -1,5 +1,6 @@
 package de.newrp.Organisationen;
 
+import com.comphenix.protocol.PacketType;
 import de.newrp.API.Navi;
 import de.newrp.API.Route;
 import de.newrp.API.Script;
@@ -13,6 +14,7 @@ import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryPickupItemEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
@@ -291,5 +293,17 @@ public class LockpickHandler implements Listener {
         }
 
         player.openInventory(checkout.get(player));
+    }
+
+    @EventHandler
+    public static void onDamage(EntityDamageEvent event) {
+        if (event.getEntity() instanceof Player) {
+            Player player = (Player) event.getEntity();
+            if (player.getOpenInventory().title() instanceof TextComponent) {
+                if (((TextComponent) player.getOpenInventory().title()).content().contains("Schloss")) {
+                    player.closeInventory();
+                }
+            }
+        }
     }
 }

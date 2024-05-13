@@ -771,3 +771,6 @@ commands:
   cooldown:
     description: shows the players cooldowns
     aliases: [ cooldowns, cd ]
+  fraktionschat:
+    description: alias for /b & /o
+    aliases: [ fchat, f ]

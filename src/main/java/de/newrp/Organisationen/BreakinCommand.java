@@ -80,7 +80,7 @@ public class BreakinCommand implements CommandExecutor {
                                             orga.sendMessage(PREFIX + player.getName() + " hat erfolgreich " + LockpickHandler.value.get(player) + "€ aus der Kasse gestohlen.");
                                             Script.addMoney(player, PaymentType.CASH, LockpickHandler.value.get(player));
                                             Stadtkasse.removeStadtkasse(LockpickHandler.value.get(player), "Raub bei " + rob.getName() + " von " + player.getName());
-                                            orga.addExp(LockpickHandler.value.get(player) / 80);
+                                            orga.addExp(LockpickHandler.value.get(player) / 60);
                                             Beruf.Berufe.GOVERNMENT.sendMessage(PREFIX + "Die Stadtkasse ist für den Raub bei " + rob.getName() + " aufgekommen.");
                                             Beruf.Berufe.POLICE.sendMessage(PREFIX + "Der Raub bei " + rob.getName() + " konnte nicht verhindert werden.");
                                             Beruf.Berufe.POLICE.sendMessage(PREFIX + "Aufnahmen zeigen, dass " + player.getName() + " verantwortlich ist."); // Kein Bug, zur Fairness nur bei Geldraub Aufnahme;
