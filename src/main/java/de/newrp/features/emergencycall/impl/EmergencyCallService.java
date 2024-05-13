@@ -58,7 +58,7 @@ public class EmergencyCallService implements IEmergencyCallService {
         final boolean hasBeenRemoved = this.emergencyCalls.remove(emergencyCall);
         if(hasBeenRemoved) {
             for (UUID member : emergencyCall.faction().getBeruf().keySet()) {
-                Objects.requireNonNull(Bukkit.getPlayer(member)).sendMessage(this.getPrefix() + "Der Notruf von " + Script.getName(emergencyCall.sender()) + " wurde abgebrochen");
+                Objects.requireNonNull(Bukkit.getPlayer(member)).sendMessage(this.getPrefix() + "Der Notruf von " + Script.getName(emergencyCall.sender()) + " wurde abgebrochen.");
             }
         }
     }
