@@ -1,9 +1,6 @@
 package de.newrp.Shop;
 
-import de.newrp.API.Messages;
-import de.newrp.API.PaymentType;
-import de.newrp.API.Script;
-import de.newrp.API.SlotLimit;
+import de.newrp.API.*;
 import de.newrp.Administrator.Notifications;
 import de.newrp.Berufe.Abteilung;
 import de.newrp.Berufe.Beruf;
@@ -377,6 +374,7 @@ public class Shop implements CommandExecutor, Listener, TabCompleter {
             if(is.getType() == Material.WRITTEN_BOOK) {
                 si = ShopItem.Zeitung;
             } else {
+                Debug.debug("Getting shop item " + is.getType() + " for shop " + s.getPublicName());
                 si = ShopItem.getShopItem(is);
             }
 

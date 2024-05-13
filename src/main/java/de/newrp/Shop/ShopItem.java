@@ -179,25 +179,29 @@ public enum ShopItem {
 
     public static ShopItem getShopItem(ItemStack is) {
         if (is == null) return null;
-        if (!is.hasItemMeta()) return null;
-        if (!is.getItemMeta().hasDisplayName()) return null;
+        if (!is.hasItemMeta()) {
+            Debug.debug("[ShopItem] " + is.getType() + " has no itemMeta");
+            return null;
+        }
+        if (!is.getItemMeta().hasDisplayName()) {
+            Debug.debug("[ShopItem] " + is.getType() + " has no displayName");
+            return null;
+        }
 
         String displayName = is.getItemMeta().getDisplayName();
-        if (is.getItemMeta().hasDisplayName()) {
-            for (ShopItem a : values()) {
-                ItemStack businessItem = a.getItemStack();
-                if (businessItem == null) continue;
+        for (ShopItem a : values()) {
+            ItemStack businessItem = a.getItemStack();
+            if (businessItem == null) continue;
 
-                ItemMeta itemMeta = businessItem.getItemMeta();
-                if (itemMeta == null) continue;
-                if (!itemMeta.hasDisplayName()) continue;
+            ItemMeta itemMeta = businessItem.getItemMeta();
+            if (itemMeta == null) continue;
+            if (!itemMeta.hasDisplayName()) continue;
 
-                if (businessItem.getItemMeta().getDisplayName().equals(displayName)) return a;
-            }
+            if (itemMeta.getDisplayName().equals(displayName)) return a;
         }
 
 
-
+        Debug.debug("Couldnt find a item that matches " + is.getType());
         return null;
     }
 
