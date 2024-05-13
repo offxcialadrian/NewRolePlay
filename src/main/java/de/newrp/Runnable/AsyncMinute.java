@@ -165,9 +165,12 @@ public class AsyncMinute extends BukkitRunnable {
 
         for (Player p : Bukkit.getOnlinePlayers()) {
             if (Mobile.hasPhone(p) && Mobile.mobileIsOn(p) && !AFK.isAFK(p)) {
-                if (Mobile.getPhone(p) == null) return;
-                Mobile.getPhone(p).removeAkku(p, 1);
-                if (Mobile.getPhone(p).getAkku(p) <= 0 && Mobile.mobileIsOn(p)) {
+                final Mobile.Phones phones = Mobile.getPhone(p);
+                if (phones == null) return;
+
+               phones.removeAkku(p, 1);
+               final int akku = phones.getAkku(p);
+                if (akku <= 0) {
                     p.sendMessage(Mobile.PREFIX + "Dein Handy ist ausgeschaltet, da der Akku leer ist.");
                     ItemStack is = Mobile.getPhone(p).getItem();
                     p.getInventory().removeItem(new ItemStack(Material.IRON_INGOT));
@@ -176,16 +179,16 @@ public class AsyncMinute extends BukkitRunnable {
                     p.getInventory().addItem(is);
                     continue;
                 }
-                if (Script.getPercentage(Mobile.getPhone(p).getAkku(p), Mobile.getPhone(p).getMaxAkku()) <= 10 && !battery.containsKey(p.getName()) && !battery.get(p.getName()).equals(10)) {
+                /*if (Script.getPercentage(akku, phones.getMaxAkku()) <= 10 && !battery.containsKey(p.getName()) && !battery.get(p.getName()).equals(10)) {
                     p.sendMessage(Mobile.PREFIX + "Dein Handy hat nur noch " + Mobile.getPhone(p).getAkku(p) + "% Akku.");
                     battery.put(p.getName(), 10);
                     continue;
                 }
-                if (Script.getPercentage(Mobile.getPhone(p).getAkku(p), Mobile.getPhone(p).getMaxAkku()) <= 10 && !battery.containsKey(p.getName()) && !battery.get(p.getName()).equals(20)) {
+                if (Script.getPercentage(akku, Mobile.getPhone(p).getMaxAkku()) <= 10 && !battery.containsKey(p.getName()) && !battery.get(p.getName()).equals(20)) {
                     p.sendMessage(Mobile.PREFIX + "Dein Handy hat nur noch " + Mobile.getPhone(p).getAkku(p) + "% Akku.");
                     battery.put(p.getName(), 20);
                     continue;
-                }
+                }*/
             }
             if (SMSCommand.waitingForMessage.contains(p.getName()) && Mobile.mobileIsOn(p) && Mobile.hasConnection(p)) {
                 p.sendMessage(SMSCommand.PREFIX + "Du hast eine neue Nachricht erhalten.");
