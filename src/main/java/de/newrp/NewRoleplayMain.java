@@ -499,6 +499,7 @@ public class NewRoleplayMain extends JavaPlugin {
         getCommand("vehicleslot").setExecutor(new VehicleSlotsCommand());
         getCommand("cooldown").setExecutor(new CooldownCommand());
         getCommand("fraktionschat").setExecutor(new FChatCommand());
+        getCommand("showtps").setExecutor(new TpsCommand());
     }
 
     /**

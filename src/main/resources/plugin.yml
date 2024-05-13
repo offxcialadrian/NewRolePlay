@@ -774,3 +774,5 @@ commands:
   fraktionschat:
     description: alias for /b & /o
     aliases: [ fchat, f ]
+  showtps:
+    description: Shows tps
