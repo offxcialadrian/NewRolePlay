@@ -52,11 +52,11 @@ public class DebugCommand implements CommandExecutor, TabCompleter {
             Script.sendTeamMessage(p, ChatColor.YELLOW, "hat das Scoreboard von " + Script.getName(tg) + " zurückgesetzt.", true);
             tg.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
             Cache.resetScoreboard(tg);
-        } else if (args[1].equalsIgnoreCase("Inventar")) {
+        } else if (args[1].equalsIgnoreCase("inventar")) {
             p.sendMessage("§e" + Messages.ARROW + " Du hast das Inventar von " + Script.getName(tg) + " zurückgesetzt.");
             tg.sendMessage("§e" + Messages.ARROW + " " + Messages.RANK_PREFIX(p) + " hat dein Inventar zurückgesetzt.");
             Script.sendTeamMessage(p, ChatColor.YELLOW, "hat das Inventar von " + Script.getName(tg) + " zurückgesetzt.", true);
-            Cache.resetInventory(tg);
+            Cache.loadInventory(tg);
         }
 
         return false;

@@ -160,7 +160,32 @@ public class CarHandler implements Listener {
                             event.getEntered().sendMessage(Component.text(Car.PREFIX + "Der " + car.getCarType().getName() + " ist abgeschlossen!"));
                         }
 
-                        event.setCancelled(true);
+                        if(car.getCarType() != CarType.PAWSCHE && car.getCarType() != CarType.AWDI && car.getCarType() != CarType.MERCADAS) {
+                            event.setCancelled(true);
+                        } else {
+                            event.getEntered().sendMessage(Component.text(Car.PREFIX + "Du hast deinen " + car.getCarType().getName() + " über Keyless-Go geöffnet!"));
+                            Cache.saveScoreboard(player);
+                            player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
+                            car.setCarSidebar();
+                            new BukkitRunnable() {
+                                @Override
+                                public void run() {
+                                    //noinspection ConstantValue
+                                    if (car != null && car.getPassengers().contains(player)) {
+                                        car.updateCarSidebar();
+                                    } else {
+                                        player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
+                                        cancel();
+                                    }
+                                }
+                            }.runTaskTimer(NewRoleplayMain.getInstance(), 5L, 5L);
+
+                            if (car.isCarOwner(player)) {
+                                event.getEntered().sendMessage(Component.text(Car.PREFIX + "Du bist in deinen " + car.getCarType().getName() + " eingestiegen!"));
+                            } else {
+                                event.getEntered().sendMessage(Component.text(Car.PREFIX + "Du bist in den " + car.getCarType().getName() + " eingestiegen!"));
+                            }
+                        }
                     } else {
                         Cache.saveScoreboard(player);
                         player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());

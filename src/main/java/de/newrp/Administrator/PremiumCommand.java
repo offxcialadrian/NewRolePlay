@@ -49,7 +49,7 @@ public class PremiumCommand implements CommandExecutor {
             return true;
         }
 
-        if(!Script.hasRank(p, Rank.OWNER, false) || !SDuty.isSDuty(p)) {
+        if(!Script.hasRank(p, Rank.ADMINISTRATOR, false) || !SDuty.isSDuty(p)) {
 
             if(args.length == 2) {
                 if(args[0].equalsIgnoreCase("activate")) {

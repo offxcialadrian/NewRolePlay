@@ -63,7 +63,7 @@ public class SQLCommand implements CommandExecutor {
 
                     player.sendMessage(getPrefix() + schema.get());
                     Bukkit.getLogger().info("SELECT * FROM " + tableName + whereClause);
-                    try(final PreparedStatement statement = NewRoleplayMain.getConnection().prepareStatement("SELECT * FROM " + tableName + whereClause)) {
+                    try(final PreparedStatement statement = NewRoleplayMain.getConnection().prepareStatement("SELECT * FROM " + tableName + whereClause + " LIMIT 50")) {
                         try(final ResultSet resultSet = statement.executeQuery()) {
                             final ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
                             final int columnCount = resultSetMetaData.getColumnCount();

@@ -1,6 +1,7 @@
 package de.newrp.Player;
 
 import de.newrp.API.*;
+import de.newrp.Administrator.SDuty;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Chat.Me;
 import de.newrp.Government.Stadtkasse;
@@ -401,6 +402,8 @@ public class Mobile implements Listener {
         }
 
         openGUI(p);
+        AFK.setAFK(p, false);
+        if(!SDuty.isSDuty(p)) Script.sendLocalMessage(5, p, "§a§o  " + Script.getName(p) + " ist wieder anwesend.");
 
     }
 

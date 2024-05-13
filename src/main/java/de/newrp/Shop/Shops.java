@@ -4,6 +4,7 @@ import de.newrp.API.Debug;
 import de.newrp.API.ItemBuilder;
 import de.newrp.API.Script;
 import de.newrp.NewRoleplayMain;
+import de.newrp.Player.Hotel;
 import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -102,7 +103,25 @@ public enum Shops {
     }
 
     public int getRunningCost() {
-        return this.running_cost;
+        int runningcost = 0;
+        HashMap<Integer, ItemStack> c = this.getItems();
+        if (this.getType() != ShopType.HOTEL) {
+            for (Map.Entry<Integer, ItemStack> n : c.entrySet()) {
+                ItemStack is = n.getValue();
+                if (is == null) {
+                    continue;
+                }
+                runningcost += 10;
+            }
+            if (this.acceptCard()) runningcost += 20;
+        } else {
+            Hotel.Hotels hotel = Hotel.Hotels.getHotelByShop(this);
+            assert hotel != null;
+            for (Hotel.Rooms room : hotel.getRentedRooms()) {
+                runningcost += room.getPrice() / 2;
+            }
+        }
+        return runningcost;
     }
 
     public boolean hasLager() {
