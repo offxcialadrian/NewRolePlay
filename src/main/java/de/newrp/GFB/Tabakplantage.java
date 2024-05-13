@@ -158,6 +158,23 @@ public class Tabakplantage implements CommandExecutor, Listener {
         }
     }
 
+    public static void respawnPlantage(final Location from, final Location to)  {
+        final List<Block> grassBlock = new ArrayList<>();
+        for (final Block block : Script.getBlocksBetween(from, to)) {
+            if(block.getType() == Material.GRASS_BLOCK) {
+                grassBlock.add(block);
+            }
+        }
+
+        for (final Block block : grassBlock) {
+            final Block firstLargeFern = block.getRelative(BlockFace.UP);
+            firstLargeFern.setType(Material.LARGE_FERN, false);
+
+            final Block secondLargeFern = firstLargeFern.getRelative(BlockFace.UP);
+            secondLargeFern.setType(Material.LARGE_FERN, false);
+        }
+    }
+
     public static void pickUp(Player p) {
         Location loc = LOCATION.get(p.getName());
         ArrayList<Item> items = ITEMS.get(loc);

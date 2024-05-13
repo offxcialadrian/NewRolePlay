@@ -402,8 +402,10 @@ public class Mobile implements Listener {
         }
 
         openGUI(p);
-        AFK.setAFK(p, false);
-        if(!SDuty.isSDuty(p)) Script.sendLocalMessage(5, p, "§a§o  " + Script.getName(p) + " ist wieder anwesend.");
+        if(AFK.isAFK(p.getUniqueId())) {
+            AFK.setAFK(p, false);
+            if(!SDuty.isSDuty(p)) Script.sendLocalMessage(5, p, "§a§o  " + Script.getName(p) + " ist wieder anwesend.");
+        }
 
     }
 

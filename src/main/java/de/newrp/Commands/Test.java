@@ -2,6 +2,7 @@ package de.newrp.Commands;
 
 import de.newrp.API.*;
 import de.newrp.Administrator.SDuty;
+import de.newrp.GFB.Tabakplantage;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -33,6 +34,10 @@ public class Test implements CommandExecutor, Listener {
             p.sendMessage(Messages.NO_SDUTY);
             return true;
         }
+
+        Tabakplantage.respawnPlantage(new Location(Script.WORLD, 105, 65.0, 625), new Location(Script.WORLD, 118, 67, 656));
+
+        /*
 
         if(args.length == 2 && args[0].equalsIgnoreCase("drink")) {
             if(!Script.isInt(args[1])) {
@@ -75,12 +80,12 @@ public class Test implements CommandExecutor, Listener {
         // Gib den Block an den berechneten Koordinaten zurück
 
 
-        /*try {
+        try {
             Bukkit.getScoreboardManager().getMainScoreboard().getTeam("player").addEntry(p.getName());
         } catch (Exception e) {
             Debug.debug("Error: " + e.getMessage());
             e.printStackTrace();
-        }*/
+        }
 
         for(String entries : ScoreboardManager.MAIN.getTeam("player").getEntries()) {
             Debug.debug(entries);
@@ -101,7 +106,7 @@ public class Test implements CommandExecutor, Listener {
         for(int i = 0; i < inv.getSize(); i++) {
             inv.setItem(i, new ItemBuilder(Material.WHITE_STAINED_GLASS_PANE).setName("§8» §r" + i).setAmount(i).build());
         }
-        p.openInventory(inv);
+        p.openInventory(inv);*/
 
         return false;
     }
