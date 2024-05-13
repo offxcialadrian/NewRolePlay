@@ -219,7 +219,7 @@ public class LeasingCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-        String[] args1 = new String[] {"add", "hinzufügen", "remove", "entfernen", "give", "geben", "take", "nehmen", "info"};
+        String[] args1 = new String[] {"add", "hinzufügen", "remove", "entfernen", "give", "geben", "take", "nehmen", "info", "list"};
         List<String> args2 = new ArrayList<>();
         for (Player player : Bukkit.getOnlinePlayers()) args2.add(player.getName());
         List<String> completions = new ArrayList<>();
