@@ -225,7 +225,7 @@ public class Treuebonus implements CommandExecutor, Listener {
                             p.sendMessage(Treuebonus.prefix + "Du hast +1000 Exp eingelöst.");
                             Script.addEXP(p, 1000);
                         } else {
-                            p.sendMessage(Treuebonus.prefix + "Das kostet " + price + " Treuepunkte! (Dir fehlen §9" + (price - punkte) + "§b Punkte)");
+                            p.sendMessage(Treuebonus.prefix + "Das kostet " + price + " Treuepunkte! (Dir fehlen §9" + (price - punkte) + " Punkte§7)");
                         }
                         break;
                     }
@@ -237,7 +237,7 @@ public class Treuebonus implements CommandExecutor, Listener {
                             p.sendMessage(Treuebonus.prefix + "Du hast 2500$ eingelöst.");
                             Script.addMoney(p, PaymentType.BANK, 2500);
                         } else {
-                            p.sendMessage(Treuebonus.prefix + "Das kostet " + price + " Treuepunkte! (Dir fehlen §9" + (price - punkte) + "§b Punkte)");
+                            p.sendMessage(Treuebonus.prefix + "Das kostet " + price + " Treuepunkte! (Dir fehlen §9" + (price - punkte) + " Punkte§7)");
                         }
                         break;
                     }
@@ -249,7 +249,7 @@ public class Treuebonus implements CommandExecutor, Listener {
                             p.sendMessage(Treuebonus.prefix + "Du hast 7 Tage Premium eingelöst.");
                             Premium.addPremiumStorage(p, TimeUnit.DAYS.toMillis(7), true);
                         } else {
-                            p.sendMessage(Treuebonus.prefix + "Das kostet " + price + " Treuepunkte! (Dir fehlen §9" + (price - punkte) + "§b Punkte)");
+                            p.sendMessage(Treuebonus.prefix + "Das kostet " + price + " Treuepunkte! (Dir fehlen §9" + (price - punkte) + " Punkte§7)");
                         }
                         break;
                     }
@@ -264,7 +264,7 @@ public class Treuebonus implements CommandExecutor, Listener {
                                 Script.setEXP(Script.getNRPID(p), 0);
                             }
                         } else {
-                            p.sendMessage(Treuebonus.prefix + "Das kostet " + price + " Treuepunkte! (Dir fehlen §9" + (price - punkte) + "§b Punkte)");
+                            p.sendMessage(Treuebonus.prefix + "Das kostet " + price + " Treuepunkte! (Dir fehlen §9" + (price - punkte) + " Punkte§7)");
                         }
                         break;
                     }
