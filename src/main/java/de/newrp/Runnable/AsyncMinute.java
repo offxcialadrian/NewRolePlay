@@ -7,13 +7,17 @@ import de.newrp.Gangwar.GangwarCommand;
 import de.newrp.Government.Wahlen;
 import de.newrp.News.BreakingNews;
 import de.newrp.Organisationen.MaskHandler;
-import de.newrp.Player.*;
+import de.newrp.Player.AFK;
+import de.newrp.Player.Mobile;
+import de.newrp.Player.Passwort;
+import de.newrp.Player.SMSCommand;
 import de.newrp.Ticket.Ticket;
 import de.newrp.Ticket.TicketCommand;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
-import org.bukkit.entity.*;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
@@ -149,7 +153,11 @@ public class AsyncMinute extends BukkitRunnable {
 
         for (Player p : Bukkit.getOnlinePlayers()) {
             if (MaskHandler.masks.containsKey(p.getUniqueId())) {
-                if (MaskHandler.masks.get(p.getUniqueId()) < System.currentTimeMillis()) p.getInventory().setItem(EquipmentSlot.HEAD, new ItemStack(Material.AIR));
+                if (MaskHandler.masks.get(p.getUniqueId()) < System.currentTimeMillis()) {
+                    MaskHandler.masks.remove(p.getUniqueId());
+                    p.getInventory().setItem(EquipmentSlot.HEAD, new ItemStack(Material.AIR));
+                    p.sendMessage(Component.text(MaskHandler.PREFIX + "Deine Maske wurde aufgebraucht."));
+                }
             }
             if (!AFK.isAFK(p) && !Passwort.isLocked(p)) {
                 Script.increaseActivePlayTime(p);
