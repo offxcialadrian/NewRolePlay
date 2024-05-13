@@ -57,7 +57,7 @@ public class ReviveCommand implements CommandExecutor {
             tg.sendMessage(PREFIX + "Du wurdest von " + Messages.RANK_PREFIX(p) + " wiederbelebt.");
             Friedhof.revive(tg, f.getDeathLocation());
             Script.sendTeamMessage(p, ChatColor.RED, "hat " + Script.getName(tg) + " wiederbelebt.", true);
-            if(Corpse.npcMap.containsKey(p)) Corpse.removeNPC(p);
+            if(Corpse.npcMap.containsKey(p.getUniqueId())) Corpse.removeNPC(p);
             if (f.getInventoryContent() != null) {
                 tg.getInventory().clear();
                 tg.getInventory().setContents(f.getInventoryContent());
@@ -137,7 +137,7 @@ public class ReviveCommand implements CommandExecutor {
                 p.sendMessage(Messages.ERROR + "Du bist zuweit von der Leiche weg.");
                 return;
             }
-            if(Corpse.npcMap.containsKey(p)) Corpse.removeNPC(p);
+            if(Corpse.npcMap.containsKey(p.getUniqueId())) Corpse.removeNPC(p);
             if (!Friedhof.isDead(tg)) {
                 p.sendMessage(Messages.ERROR + "Die Person lebt bereits.");
                 return;

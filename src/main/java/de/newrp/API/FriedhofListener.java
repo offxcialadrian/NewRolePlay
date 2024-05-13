@@ -136,7 +136,7 @@ public class FriedhofListener implements Listener {
                     Script.executeAsyncUpdate("INSERT INTO friedhof (id, time) VALUES (" + f.getUserID() + ", " + duration + ") ON DUPLICATE KEY UPDATE time = " + duration);
                 }
             }
-            if(Corpse.npcMap.containsKey(p)) Corpse.removeNPC(p);
+            if(Corpse.npcMap.containsKey(p.getUniqueId())) Corpse.removeNPC(p);
             if (f.getTaskID() != 0) Bukkit.getScheduler().cancelTask(f.getTaskID());
             Friedhof.FRIEDHOF.remove(p.getName());
         }

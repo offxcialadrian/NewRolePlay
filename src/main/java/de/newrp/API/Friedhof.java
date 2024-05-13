@@ -155,7 +155,7 @@ public class Friedhof {
         try {
             Friedhof f = getDead(p);
             if (f == null) return;
-            if(Corpse.npcMap.containsKey(p)) Corpse.removeNPC(p);
+            if(Corpse.npcMap.containsKey(p.getUniqueId())) Corpse.removeNPC(p);
             if(teleportLoc == null) Duty.removeDuty(p);
 
             Bukkit.getScheduler().cancelTask(f.getTaskID());
