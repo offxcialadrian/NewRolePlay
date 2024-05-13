@@ -23,6 +23,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public class LeasingCommand implements CommandExecutor, TabCompleter {
@@ -120,7 +121,18 @@ public class LeasingCommand implements CommandExecutor, TabCompleter {
                                     if (args.length >= 2) {
                                         Player target = Script.getPlayer(args[1]);
                                         if (target == null) {
-                                            player.sendMessage(Messages.ERROR + "Spieler " + args[1] + " konnte nicht gefunden werden!");
+                                            Bukkit.getScheduler().runTaskAsynchronously(NewRoleplayMain.getInstance(), () -> {
+                                                final List<LeasingData> allCars = getCarList(beruf);
+                                                final Optional<LeasingData> leasingDataForArgPlayer = allCars.stream().filter(e -> e.userName().equalsIgnoreCase(args[1])).findFirst();
+                                                if(!leasingDataForArgPlayer.isPresent()) {
+                                                    player.sendMessage(Messages.ERROR + "Spieler " + args[1] + " hat keinen aktiven Leasingvertrag!");
+                                                    return;
+                                                }
+
+                                                Script.executeAsyncUpdate("DELETE FROM vehicle WHERE id=" + leasingDataForArgPlayer.get().carId());
+                                                beruf.setLeasedAmount(beruf.getLeasedAmount() - 1);
+                                                player.sendMessage(PREFIX + "Du hast den " + beruf.getCarType().getName() + " von " + args[1] + " zurückgestellt. (" + beruf.getLeasedAmount() + "/" + beruf.getCarAmount() + ")");
+                                            });
                                         } else {
                                             Car car = getCar(target, beruf);
                                             if (car != null) {
@@ -195,7 +207,7 @@ public class LeasingCommand implements CommandExecutor, TabCompleter {
     private List<LeasingData> getCarList(final Beruf.Berufe faction) {
         final List<LeasingData> list = new ArrayList<>();
         try(final Statement statement = NewRoleplayMain.getConnection().createStatement();
-            final ResultSet resultSet = statement.executeQuery("select v.id, nid.uuid, nid.name, v.kennzeichen from vehicle v left join nrp_id nid on nid.id=v.owner where kennzeichen like 'N-RP-0'" + faction.getID())) {
+            final ResultSet resultSet = statement.executeQuery("select v.id, nid.uuid, nid.name, v.kennzeichen from vehicle v left join nrp_id nid on nid.id=v.owner where kennzeichen like 'N-RP-0" + faction.getID() + "%'")) {
             while(resultSet.next()) {
                 list.add(new LeasingData(resultSet.getString(3), UUID.fromString(resultSet.getString(2)), resultSet.getInt(1), resultSet.getString(4)));
             }
