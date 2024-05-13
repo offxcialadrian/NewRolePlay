@@ -41,8 +41,6 @@ public class AsyncHour extends BukkitRunnable {
         try {
             //Aktie.update();
             Debug.debug("Async Hour tick");
-            Schwarzmarkt.spawnRandom();
-            Hologram.reload();
 
             for (GangwarZones zone : GangwarZones.values()) {
                 if (zone.getOwner() != null) {
@@ -52,7 +50,7 @@ public class AsyncHour extends BukkitRunnable {
             }
 
             for (Beruf.Berufe berufe : Beruf.Berufe.values()) {
-                Stadtkasse.removeStadtkasse(berufe.getCarAmount() * (berufe.getCarType().getTax() * 4), "Leasinggebühren " + berufe.getCarAmount() + "x " + berufe.getName());
+                Stadtkasse.removeStadtkasse(berufe.getCarAmount() * (berufe.getCarType().getTax() * 2), "Leasinggebühren " + berufe.getCarAmount() + "x " + berufe.getName());
             }
 
             if (Abteilung.Abteilungen.FEUERWEHR.getOnlineMembers().size() >= 2) {
@@ -74,7 +72,7 @@ public class AsyncHour extends BukkitRunnable {
                 while (rs.next()) {
                     OfflinePlayer p = Script.getOfflinePlayer(rs.getInt("userID"));
                     int amount = rs.getInt("amount");
-                    double interest = rs.getDouble("interest");
+                    double interest = rs.getDouble("zins");
                     int id = rs.getInt("id");
 
                     int sum = (int) (amount + Script.getPercent(interest, amount));

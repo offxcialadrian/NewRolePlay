@@ -112,13 +112,15 @@ public class FriedhofListener implements Listener {
             Call.hangup(p);
         }
 
-        if(p.getLastDamageCause().getCause() == EntityDamageEvent.DamageCause.WITHER) {
-            Health.THIRST.add(Script.getNRPID(p), (Health.THIRST.getMax()/2));
+        if(p.getLastDamageCause() != null) {
+            if (p.getLastDamageCause().getCause() == EntityDamageEvent.DamageCause.WITHER) {
+                Health.THIRST.add(Script.getNRPID(p), (Health.THIRST.getMax() / 2));
+            }
         }
         Player killer = p.getKiller();
         Friedhof friedhof = new Friedhof(Script.getNRPID(p), p.getName(), deathLocation, System.currentTimeMillis(), deathtime, cash, inventoryContent);
         Friedhof.setDead(p, friedhof);
-        Notifications.sendMessage(Notifications.NotificationType.DEAD, Script.getName(p) + " ist gestorben " + (killer!=null ? Messages.ARROW + " " + Script.getName(killer):Messages.ARROW + " " + p.getLastDamageCause().getCause().name()));
+        Notifications.sendMessage(Notifications.NotificationType.DEAD, Script.getName(p) + " ist gestorben " + (killer!=null ? Messages.ARROW + " " + Script.getName(killer):Messages.ARROW + " " + (p.getLastDamageCause() != null?p.getLastDamageCause().getCause().name():"")));
     }
 
     @EventHandler
@@ -168,14 +170,12 @@ public class FriedhofListener implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
-        Bukkit.getScheduler().runTaskAsynchronously(NewRoleplayMain.getInstance(), () -> {
-            Player p = e.getPlayer();
-            int id = Script.getNRPID(p);
-            int i = Friedhof.getDeathtimeDatabase(p);
-            if (i > 0) {
-                Friedhof.setDead(p, new Friedhof(id, p.getName(), null, System.currentTimeMillis(), i,  0, null));
-            }
-        });
+        Player p = e.getPlayer();
+        int id = Script.getNRPID(p);
+        int i = Friedhof.getDeathtimeDatabase(p);
+        if (i > 0) {
+            Friedhof.setDead(p, new Friedhof(id, p.getName(), null, System.currentTimeMillis(), i,  0, null));
+        }
     }
 
     @EventHandler

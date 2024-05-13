@@ -43,6 +43,7 @@ import de.newrp.dependencies.DependencyContainer;
 import de.newrp.discord.IJdaService;
 import de.newrp.discord.events.GuildReadyListener;
 import de.newrp.discord.impl.JdaService;
+import de.newrp.discord.listeners.SupportListener;
 import de.newrp.discord.listeners.VerifyListener;
 import de.newrp.features.deathmatcharena.IDeathmatchArenaService;
 import de.newrp.features.deathmatcharena.commands.DeathmatchArenaCommand;
@@ -162,7 +163,7 @@ public class NewRoleplayMain extends JavaPlugin {
         new SyncMinute().runTaskTimer(this, 60 * 20L, 60 * 20L);
         new AsyncPlantation().runTaskTimerAsynchronously(this, 60 * 20L, 60 * 20L);
         new Sync15Sek().runTaskTimer(this, 15 * 20L, 15 * 20L);
-        new Async2Min().runTaskTimer(this, 120 * 20L, 120 * 20L);
+        //new Async2Min().runTaskTimer(this, 120 * 20L, 120 * 20L);
 
         ScoreboardManager.initMainScoreboard();
         Hologram.reload();
@@ -185,7 +186,10 @@ public class NewRoleplayMain extends JavaPlugin {
 
         builder.addEventListeners(new VerifyListener());
         builder.addEventListeners(new GuildReadyListener());
+        builder.addEventListeners(new SupportListener());
         builder.build();
+
+        Script.executeUpdate("DELETE FROM log WHERE time > DATE_SUB(CURDATE(), INTERVAL 45 DAY);");
 
         Bukkit.getConsoleSender().sendMessage("§cNRP §8× §astarting complete..");
         Bukkit.getConsoleSender().sendMessage("§cNRP §8× §aViel Erfolg heute..");

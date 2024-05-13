@@ -1,5 +1,7 @@
 package de.newrp.Runnable;
 
+import de.newrp.API.Hologram;
+import de.newrp.API.Schwarzmarkt;
 import de.newrp.API.Weather;
 import de.newrp.NewRoleplayMain;
 import de.newrp.Organisationen.LabBreakIn;
@@ -11,6 +13,8 @@ public class SyncHour extends BukkitRunnable {
         try {
             LabBreakIn.repairDoors(false);
             Weather.updateWeather();
+            Schwarzmarkt.spawnRandom();
+            Hologram.reload();
         } catch (Exception e) {
             NewRoleplayMain.handleError(e);
         }

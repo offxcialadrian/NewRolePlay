@@ -65,7 +65,7 @@ public class AFK implements CommandExecutor, Listener {
             p.setCollidable(true);
             p.setCanPickupItems(true);
             Bukkit.getScoreboardManager().getMainScoreboard().getTeam("zzznopush").removeEntry(p.getName());
-            Bukkit.getScoreboardManager().getMainScoreboard().getTeam("player").removeEntry(p.getName());
+            Bukkit.getScoreboardManager().getMainScoreboard().getTeam("player").addEntry(p.getName());
         }
 
         new BukkitRunnable() {

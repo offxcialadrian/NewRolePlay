@@ -297,12 +297,14 @@ public class Utils implements Listener {
                 e.getPlayer().sendMessage(Messages.INFO + "Aufgrund deines Status als " + Script.getRank(p).getName(p) + " hast du automatisch einen Premium-Account.");
             Script.sendActionBar(e.getPlayer(), "§7Willkommen zurück auf §eNewRP§7!");
             p.sendMessage(TippOfTheDay.PREFIX + TippOfTheDay.getRandomTipp());
-            if (Script.haveBirthDay(p)) {
-                if (!hasOpenPresent(p)) {
-                    p.sendMessage(Messages.INFO + "§lDas Team von New RolePlay wünscht dir alles Gute zum Geburtstag!");
-                    p.sendMessage(Messages.INFO + "Als Geschenk erhältst du 500 Exp Premium!");
-                    Script.executeAsyncUpdate("UPDATE birthday SET geschenk = 1 WHERE id = " + Script.getNRPID(p));
-                    Script.addEXP(p, 500);
+            if(Licenses.PERSONALAUSWEIS.hasLicense(Script.getNRPID(p))) {
+                if (Script.haveBirthDay(p)) {
+                    if (!hasOpenPresent(p)) {
+                        p.sendMessage(Messages.INFO + "§lDas Team von New RolePlay wünscht dir alles Gute zum Geburtstag!");
+                        p.sendMessage(Messages.INFO + "Als Geschenk erhältst du 500 Exp Premium!");
+                        Script.executeAsyncUpdate("UPDATE birthday SET geschenk = 1 WHERE id = " + Script.getNRPID(p));
+                        Script.addEXP(p, 500);
+                    }
                 }
             }
 

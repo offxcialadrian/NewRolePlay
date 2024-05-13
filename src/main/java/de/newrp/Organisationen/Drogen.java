@@ -146,7 +146,12 @@ public enum Drogen {
     }
 
     public static void healAddiction(Player p) {
-        if(getAddictionHeal(p) < 2 && !Premium.hasPremium(p)) {
+        if(Premium.hasPremium(p)) {
+            Script.executeAsyncUpdate("DELETE FROM drug_addiction WHERE nrp_id = " + Script.getNRPID(p));
+            Krankheit.ABHAENGIGKEIT.remove(Script.getNRPID(p));
+            return;
+        }
+        if(getAddictionHeal(p) < 2) {
             Script.executeAsyncUpdate("INSERT INTO drug_addiction (nrp_id, time, heal) VALUES (" + Script.getNRPID(p) + ", " + System.currentTimeMillis() + ", true)");
         } else {
             Script.executeAsyncUpdate("DELETE FROM drug_addiction WHERE nrp_id = " + Script.getNRPID(p));
