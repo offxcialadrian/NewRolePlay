@@ -1,8 +1,11 @@
 package de.newrp.Vehicle;
 
 import de.newrp.API.Cache;
+import de.newrp.API.Debug;
+import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.Administrator.SDuty;
+import de.newrp.Berufe.Beruf;
 import de.newrp.NewRoleplayMain;
 import de.newrp.Shop.ShopItem;
 import net.kyori.adventure.text.Component;
@@ -126,6 +129,10 @@ public class CarHandler implements Listener {
                     Strafzettel.reasons.remove(player);
                     Strafzettel.prices.remove(player);
                     player.sendMessage(StrafzettelCommand.PREFIX + "Du hast den Strafzettel am Auto platziert.");
+                    Beruf.Berufe.POLICE.sendMessage(StrafzettelCommand.PREFIX + Script.getName(player) + " hat ein Strafzettel an einem §e" + car.getCarType().getName() + " §7mit Kennzeichen §e" + car.getLicenseplate() + " §7platziert!" +
+                            "\n" + StrafzettelCommand.PREFIX + "Grund: §e" + car.getStrafzettel().getReason() +
+                            "\n" + StrafzettelCommand.PREFIX + "Preis: §e" + car.getStrafzettel().getPrice() + "€");
+                    Debug.debug("Added strafzettel to " + car.getLicenseplate() + " by " + Script.getName(player));
                     event.setCancelled(true);
                 } else {
                     if (SDuty.isSDuty(player)) {
@@ -136,8 +143,9 @@ public class CarHandler implements Listener {
                     if (car.getStrafzettel() != null) {
                         Strafzettel ticket = car.getStrafzettel();
                         if (car.isCarOwner(player)) {
-                            event.getEntered().sendMessage(StrafzettelCommand.PREFIX + "Dein Auto hat einen Strafzettel:");
-                            event.getEntered().sendMessage(StrafzettelCommand.PREFIX + "Grund: §e" + ticket.getReason() + "§7 | Betrag: §e" + ticket.getPrice() + "€");
+                            event.getEntered().sendMessage(StrafzettelCommand.PREFIX + "Dein Auto hat einen Strafzettel!" +
+                                    "\n" + StrafzettelCommand.PREFIX + "Grund: §e" + ticket.getReason() + "§7 | Preis: §e" + ticket.getPrice() + "€");
+                            event.getEntered().sendMessage(Messages.INFO + "Bezahle dein Strafzettel mit /payticket");
                         } else {
                             event.getEntered().sendMessage(StrafzettelCommand.PREFIX + "Das Auto hat einen Strafzettel!");
                         }

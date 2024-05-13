@@ -83,9 +83,9 @@ public enum ShopItem {
     MONATSFAHRASUSWEIS(93, "§6UBahn-Ticket [30 Fahrten]", new ItemBuilder(Material.PAPER).setName("§6UBahn-Ticket [30 Fahrten]").setLore("Verbleibende Fahrten: 30").build(), 1, 1, 1, 20, 5100, false, false, false, new ShopType[] {ShopType.NEWS}),
     FALLSCHIRM(94, "§7Fallschirm", new ItemBuilder(Material.ELYTRA).setName("§7Fallschirm").build(), 5, 1, 1, 600, 4100, false, true, false, new ShopType[] {ShopType.GUNSHOP}),
     KABELBINDER(95, "§7Kabelbinder", new ItemBuilder(Material.STRING).setName("§7Kabelbinder").build(), 3, 1, 1, 100, 1900, false, true, false, new ShopType[] {ShopType.GUNSHOP, ShopType.SUPERMARKET}),
-    JAGDFLINTE(96, "§7Guardian", new ItemStack(Material.DIAMOND_HOE), 5, 1, 1, 5500, 10000, false, false, false, new ShopType[] {ShopType.JAGDHUETTE}),
+    JAGDFLINTE(96, "§7Guardian", new ItemBuilder(Material.DIAMOND_HOE).setName("§7Guardian").build(), 5, 1, 1, 5500, 10000, false, false, false, new ShopType[] {ShopType.JAGDHUETTE}),
     SCHROT(97, "§7Schrot (" + Weapon.JAGDFLINTE.getName() + ")", new ItemBuilder(Material.ARROW).setAmount(Weapon.JAGDFLINTE.getMagazineSize()).build(), 2, 1, 1, 50, 4500, false, false, false, new ShopType[] {ShopType.GUNSHOP}),
-    DEAGLE(98, "§7Ivory", new ItemStack(Material.GOLDEN_HOE), 15, 1, 1, 4000, 16600, false, false, false, new ShopType[] {ShopType.GUNSHOP}),
+    DEAGLE(98, "§7Ivory", new ItemBuilder(Material.GOLDEN_HOE).setName("§7Ivory").build(), 15, 1, 1, 4000, 16600, false, false, false, new ShopType[] {ShopType.GUNSHOP}),
     AMMO_50AE(99, "§7.50AE Munition (" + Weapon.DESERT_EAGLE.getName() + ")", new ItemBuilder(Material.ARROW).setAmount(Weapon.DESERT_EAGLE.getMagazineSize()).build(), 2, 1, 1, 25, 4500, false, false, false, new ShopType[] {ShopType.GUNSHOP}),
     ANGELRUTE(100, "§7Angelrute", new ItemBuilder(Material.FISHING_ROD).setName("§7Angelrute").build(), 10, 1, 1, 25, 1590, false, true, false, new ShopType[] {ShopType.ANGELSHOP}),
     STEAK(101, "§fSteak", new ItemBuilder(Material.COOKED_BEEF).setName("§fSteak").setAmount(8).build(), 2, 1, 20, 2, 2000, false, true, false, new ShopType[] {ShopType.FASTFOOD}),
@@ -179,25 +179,22 @@ public enum ShopItem {
 
     public static ShopItem getShopItem(ItemStack is) {
         if (is == null) return null;
-        if (!is.hasItemMeta()) return null;
-        if (!is.getItemMeta().hasDisplayName()) return null;
+        if (!is.hasItemMeta()) {
+            Debug.debug("[ShopItem] " + is.getType() + " has no itemMeta");
+            return null;
+        }
+        if (!is.getItemMeta().hasDisplayName()) {
+            Debug.debug("[ShopItem] " + is.getType() + " has no displayName");
+            return null;
+        }
 
         String displayName = is.getItemMeta().getDisplayName();
-        if (is.getItemMeta().hasDisplayName()) {
-            for (ShopItem a : values()) {
-                ItemStack businessItem = a.getItemStack();
-                if (businessItem == null) continue;
-
-                ItemMeta itemMeta = businessItem.getItemMeta();
-                if (itemMeta == null) continue;
-                if (!itemMeta.hasDisplayName()) continue;
-
-                if (businessItem.getItemMeta().getDisplayName().equals(displayName)) return a;
-            }
+        for (ShopItem a : values()) {
+            if (a.getName().equals(displayName)) return a;
         }
 
 
-
+        Debug.debug("Couldnt find a item that matches " + is.getType());
         return null;
     }
 

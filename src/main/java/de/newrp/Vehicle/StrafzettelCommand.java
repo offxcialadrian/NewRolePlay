@@ -1,6 +1,7 @@
 package de.newrp.Vehicle;
 
 import de.newrp.API.Messages;
+import de.newrp.API.Script;
 import de.newrp.Berufe.Beruf;
 import lombok.Getter;
 import org.bukkit.command.Command;
@@ -8,6 +9,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Arrays;
 
 @Getter
 public class StrafzettelCommand implements CommandExecutor {
@@ -18,32 +21,35 @@ public class StrafzettelCommand implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
-
-            if (Beruf.hasBeruf(player)) {
-                if (Beruf.getBeruf(player) == Beruf.Berufe.POLICE) {
-                    if (args.length >= 1) {
-                        if (args.length >= 2) {
-                            StringBuilder r = new StringBuilder();
-                            int price = Integer.parseInt(args[0]);
-                            args[0] = "";
-                            for (String arg : args) {
-                                r.append(" ").append(arg);
-                            }
-                            String reason = String.valueOf(r).replaceFirst("  ", "");
-                            Strafzettel.reasons.put(player, reason);
-                            Strafzettel.prices.put(player, price);
-                            player.sendMessage(PREFIX + "Du hast ein Kennzeichen von §e" + price + "€ §7mit dem Grund §e" + reason + " §7erstellt.");
-                        } else {
-                            player.sendMessage(PREFIX + "Du musst einen Grund angeben!");
-                        }
-                        return true;
-                    } else {
-                        player.sendMessage(PREFIX + "/strafzettel [Preis] [Grund]!");
-                        return true;
-                    }
-                }
+            final Beruf.Berufe faction = Beruf.getBeruf(player);
+            if(faction != Beruf.Berufe.POLICE) {
+                player.sendMessage(Messages.ERROR + "Du bist kein Polizist!");
+                return false;
             }
-            player.sendMessage(Messages.ERROR + "Du bist kein Polizist!");
+
+            if(args.length < 2) {
+                player.sendMessage(PREFIX + "/strafzettel [Preis] [Grund]!");
+                return false;
+            }
+
+            final String reason = String.join(" ",  Arrays.copyOfRange(args, 1, args.length));
+
+            if(!Script.isInt(args[0])) {
+                player.sendMessage(PREFIX + "§cDer Preis muss eine Zahl sein!");
+                return false;
+            }
+
+            int price = Integer.parseInt(args[0]);
+
+            if(price <= 0) {
+                player.sendMessage(PREFIX + "§cDu kannst keinen Strafzettel mit einem so geringen Preis erstellen!");
+                return false;
+            }
+
+            Strafzettel.reasons.put(player, reason);
+            Strafzettel.prices.put(player, price);
+            player.sendMessage(PREFIX + "Du hast ein Strafzettel von §e" + price + "€ §7mit dem Grund §e" + reason + " §7erstellt.");
+            player.sendMessage(Messages.INFO + "Rechtsklicke jetzt das Auto, um den Strafzettel anzulegen");
         }
         return true;
     }

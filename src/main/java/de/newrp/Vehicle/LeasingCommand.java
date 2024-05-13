@@ -5,6 +5,10 @@ import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Government.Stadtkasse;
+import de.newrp.NewRoleplayMain;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.experimental.Accessors;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -13,9 +17,14 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import sun.java2d.ScreenUpdateManager;
 
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 public class LeasingCommand implements CommandExecutor, TabCompleter {
 
@@ -35,10 +44,10 @@ public class LeasingCommand implements CommandExecutor, TabCompleter {
                         if (args.length > 0 ) {
                             switch (args[0].toLowerCase()) {
                                 case "info":
-                                    player.sendMessage(PREFIX + "Vergeben: §2" + beruf.getLeasedAmount() + "x");
-                                    player.sendMessage(PREFIX + "Insgesamt: §2" + beruf.getCarAmount() + "x");
-                                    player.sendMessage(PREFIX + "Preis: §2" + beruf.getCarType().getPrice() + "€");
-                                    player.sendMessage(PREFIX + "Gebühren: §2" + beruf.getCarType().getTax() * 4 + "€");
+                                    player.sendMessage(PREFIX + "Autos im Besitz: §2" + beruf.getCarAmount() + "x");
+                                    player.sendMessage(PREFIX + "Vergebene Autos: §2" + beruf.getLeasedAmount() + "x");
+                                    player.sendMessage(PREFIX + "Preis pro Auto: §2" + beruf.getCarType().getPrice() + "€");
+                                    player.sendMessage(PREFIX + "Gebühren pro Stunde: §2" + beruf.getCarAmount() * (beruf.getCarType().getTax() * 4) + "€");
                                     break;
                                 case "add":
                                 case "hinzufügen":
@@ -112,7 +121,18 @@ public class LeasingCommand implements CommandExecutor, TabCompleter {
                                     if (args.length >= 2) {
                                         Player target = Script.getPlayer(args[1]);
                                         if (target == null) {
-                                            player.sendMessage(Messages.ERROR + "Spieler " + args[1] + " konnte nicht gefunden werden!");
+                                            Bukkit.getScheduler().runTaskAsynchronously(NewRoleplayMain.getInstance(), () -> {
+                                                final List<LeasingData> allCars = getCarList(beruf);
+                                                final Optional<LeasingData> leasingDataForArgPlayer = allCars.stream().filter(e -> e.userName().equalsIgnoreCase(args[1])).findFirst();
+                                                if(!leasingDataForArgPlayer.isPresent()) {
+                                                    player.sendMessage(Messages.ERROR + "Spieler " + args[1] + " hat keinen aktiven Leasingvertrag!");
+                                                    return;
+                                                }
+
+                                                Script.executeAsyncUpdate("DELETE FROM vehicle WHERE id=" + leasingDataForArgPlayer.get().carId());
+                                                beruf.setLeasedAmount(beruf.getLeasedAmount() - 1);
+                                                player.sendMessage(PREFIX + "Du hast den " + beruf.getCarType().getName() + " von " + args[1] + " zurückgestellt. (" + beruf.getLeasedAmount() + "/" + beruf.getCarAmount() + ")");
+                                            });
                                         } else {
                                             Car car = getCar(target, beruf);
                                             if (car != null) {
@@ -126,12 +146,26 @@ public class LeasingCommand implements CommandExecutor, TabCompleter {
                                         }
                                     }
                                     break;
+                                case "list":
+                                    Bukkit.getScheduler().runTaskAsynchronously(NewRoleplayMain.getInstance(), () -> {
+                                        final List<LeasingData> output = getCarList(beruf);
+                                        if(output.isEmpty()) {
+                                            player.sendMessage(PREFIX + "Aktuell sind keine Autos vergeben");
+                                            return;
+                                        }
+
+                                        player.sendMessage(PREFIX + "Folgende Spieler haben ein aktives Leasing");
+                                        for (LeasingData leasingData : output) {
+                                            Script.sendClickableMessage(player, PREFIX + leasingData.userName() + " hat einen aktiven Leasingvertrag (" + leasingData.licensePlate() + ")", "/leasing take " + leasingData.userName(), "§cAuto wegnehmen");
+                                        }
+                                    });
+                                    break;
                                 default:
                                     player.sendMessage(PREFIX + args[0] + " ist als Argument ungültig!");
                                     break;
                             }
                         } else {
-                            player.sendMessage(Messages.ERROR + "/leasing [info/add/remove/give/take]");
+                            player.sendMessage(Messages.ERROR + "/leasing [info/list/add/remove/give/take]");
                         }
                     } else {
                         player.sendMessage(Messages.ERROR + "Du bist kein Leader!");
@@ -170,6 +204,19 @@ public class LeasingCommand implements CommandExecutor, TabCompleter {
         return c;
     }
 
+    private List<LeasingData> getCarList(final Beruf.Berufe faction) {
+        final List<LeasingData> list = new ArrayList<>();
+        try(final Statement statement = NewRoleplayMain.getConnection().createStatement();
+            final ResultSet resultSet = statement.executeQuery("select v.id, nid.uuid, nid.name, v.kennzeichen from vehicle v left join nrp_id nid on nid.id=v.owner where kennzeichen like 'N-RP-0" + faction.getID() + "%'")) {
+            while(resultSet.next()) {
+                list.add(new LeasingData(resultSet.getString(3), UUID.fromString(resultSet.getString(2)), resultSet.getInt(1), resultSet.getString(4)));
+            }
+        } catch(final Exception exception) {
+            NewRoleplayMain.handleError(exception);
+        }
+        return list;
+    }
+
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         String[] args1 = new String[] {"add", "hinzufügen", "remove", "entfernen", "give", "geben", "take", "nehmen", "info"};
@@ -179,5 +226,15 @@ public class LeasingCommand implements CommandExecutor, TabCompleter {
         if (args.length == 1) for (String string : args1) if (string.toLowerCase().startsWith(args[0].toLowerCase())) completions.add(string);
         if (args.length == 2) for (String string : args2) if (string.toLowerCase().startsWith(args[1].toLowerCase())) completions.add(string);
         return completions;
+    }
+
+    @Data
+    @Accessors(fluent = true)
+    @AllArgsConstructor
+    protected static class LeasingData {
+        private final String userName;
+        private final UUID uuid;
+        private final int carId;
+        private String licensePlate;
     }
 }
