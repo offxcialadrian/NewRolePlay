@@ -400,6 +400,11 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
         long untilLong = new Date().getTime() + v.getDuration();
         if (punishment == Punishment.BAN || secondaryPunishment == Punishment.BAN) {
             if (v.getDuration() == 0) {
+                if(getBanUntil(tg) == 0) {
+                    p.sendMessage(Messages.ERROR + "Der Spieler hat bereits einen permanenten Bann!");
+                    return;
+                }
+
                 p.sendMessage(PREFIX + "Du hast " + tg.getName() + " für " + v.getName() + " gebannt.");
                 Script.sendTeamMessage(p, ChatColor.RED, "hat " + tg.getName() + " für " + v.getName() + " gebannt.", true);
                 Script.executeUpdate("INSERT INTO `ban` (id, ban_id, nrp_id, since, until, reason, banned_by) VALUES (NULL, '" + generatePunishID() + "', '" + Script.getNRPID(tg) + "', '" + System.currentTimeMillis() + "', " + (v.getDuration() > 0 ? untilLong : "NULL") + ", '" + v.getName() + "', '" + Script.getNRPID(p) + "');");

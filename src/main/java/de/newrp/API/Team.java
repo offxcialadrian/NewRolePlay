@@ -109,6 +109,7 @@ public class Team {
         }
 
         public void removeMember(OfflinePlayer p) {
+            this.members.remove(p.getUniqueId());
             setTeamLeader(p, false);
             Script.executeUpdate("DELETE FROM teams WHERE nrp_id=" + Script.getNRPID(p));
             Forum.syncPermission(p);
