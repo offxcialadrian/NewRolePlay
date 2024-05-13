@@ -146,6 +146,12 @@ public class Treuebonus implements CommandExecutor, Listener {
 
         if (MaskHandler.masks.containsKey(p.getUniqueId())) {
             if (MaskHandler.masks.get(p.getUniqueId()) < System.currentTimeMillis()) p.getInventory().setItem(EquipmentSlot.HEAD, new ItemStack(Material.AIR));
+        } else {
+            if (p.getInventory().getItem(EquipmentSlot.HEAD) != null) {
+                if (Objects.requireNonNull(p.getInventory().getItem(EquipmentSlot.HEAD)).getType() == Material.CARVED_PUMPKIN) {
+                    p.getInventory().setItem(EquipmentSlot.HEAD, new ItemStack(Material.AIR));
+                }
+            }
         }
 
         PayDay.paydayTime.put(p, Script.getInt(p, "payday", "time"));
