@@ -325,7 +325,7 @@ public class Shop implements CommandExecutor, Listener, TabCompleter {
 
             Inventory inv = Bukkit.createInventory(null, 9*3, "§7Sortiment " + shop.getPublicName());
             for(ShopItem si : ShopItem.values()) {
-                ItemStack is = si.getItemStack();
+                ItemStack is = si.getItemStack().clone();
                 if(is == null && si == ShopItem.Zeitung && !shop.isInShop(ShopItem.Zeitung)) {
                     is = Script.setNameAndLore(Material.WRITTEN_BOOK, "§9Zeitung", "§8» §6Lizensierungsgebühr: §6" + si.getLicensePrice() + "€", "§8» §6Einkaufspreis: §6" + si.getBuyPrice() + "€");
                 } else if(is == null && si == ShopItem.Zeitung && shop.isInShop(ShopItem.Zeitung)) {
