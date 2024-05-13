@@ -32,7 +32,7 @@ public class MaskHandler implements Listener {
             if (event.getNewItem() != null) {
                 if (event.getNewItem().getType() == Material.CARVED_PUMPKIN) {
                     if (Objects.requireNonNull(event.getOldItem()).getType() == Material.AIR) {
-                        masks.put(event.getPlayer().getUniqueId(), System.currentTimeMillis() + 1 * 60 * 1000);
+                        masks.put(event.getPlayer().getUniqueId(), System.currentTimeMillis() + 10 * 60 * 1000);
                         event.getPlayer().sendMessage(Component.text(PREFIX + "Du hast dir eine Maske übergezogen."));
                     }
                 }
