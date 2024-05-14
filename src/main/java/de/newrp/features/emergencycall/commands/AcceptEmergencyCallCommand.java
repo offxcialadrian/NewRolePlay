@@ -34,12 +34,6 @@ public class AcceptEmergencyCallCommand implements CommandExecutor {
             player.sendMessage(Messages.NO_PERMISSION);
             return false;
         }
-
-        if(args.length < 1) {
-            player.sendMessage(Messages.ERROR + "/acceptnotruf [Spieler]");
-            return false;
-        }
-
         if(!playerFaction.isDuty(player)) {
             player.sendMessage(Messages.ERROR + "Du bist nicht im Dienst!");
             return false;
@@ -50,21 +44,39 @@ public class AcceptEmergencyCallCommand implements CommandExecutor {
             return false;
         }
 
-        final String targetPlayerString = args[0];
-        final Player targetPlayer = Bukkit.getPlayer(targetPlayerString);
-        if(targetPlayer == null) {
-            player.sendMessage(Messages.ERROR + "Der Spieler ist nicht online");
-            return false;
+        EmergencyCall emergencyCall = null;
+        Player targetPlayer;
+
+
+        if(args.length > 0) {
+            final String targetPlayerString = args[0];
+            targetPlayer = Bukkit.getPlayer(targetPlayerString);
+            if(targetPlayer == null) {
+                player.sendMessage(Messages.ERROR + "Der Spieler ist nicht online");
+                return false;
+            }
+
+            final Optional<EmergencyCall> emergencyCallOptional = this.emergencyCallService.getEmergencyCallByPlayer(targetPlayer, playerFaction);
+
+            if(!emergencyCallOptional.isPresent()) {
+                player.sendMessage(Messages.ERROR + "Dieser Spieler hat keinen aktiven Notruf!");
+                return false;
+            }
+
+            emergencyCall = emergencyCallOptional.get();
+        } else {
+            final Optional<EmergencyCall> emergencyCallOptional = this.emergencyCallService.getAllOpenEmergencyCallsForFaction(playerFaction).stream().findFirst();
+
+            if(!emergencyCallOptional.isPresent()) {
+                player.sendMessage(Messages.ERROR + "Es gibt keinen aktiven Notruf");
+                return false;
+            }
+
+            emergencyCall = emergencyCallOptional.get();
+            targetPlayer = emergencyCall.sender();
         }
 
-        final Optional<EmergencyCall> emergencyCallOptional = this.emergencyCallService.getEmergencyCallByPlayer(targetPlayer, playerFaction);
 
-        if(!emergencyCallOptional.isPresent()) {
-            player.sendMessage(Messages.ERROR + "Dieser Spieler hat keinen aktiven Notruf");
-            return false;
-        }
-
-        final EmergencyCall emergencyCall = emergencyCallOptional.get();
         if(this.emergencyCallService.hasBeenAccepted(emergencyCall)) {
             player.sendMessage(Messages.ERROR + "Dieser Notruf wurde bereits angenommen");
             return false;

@@ -8,10 +8,12 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.BlockState;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Item;
+import org.bukkit.entity.Minecart;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -170,11 +172,9 @@ public class Tabakplantage implements CommandExecutor, Listener {
         for (final Block block : grassBlock) {
             final Block firstLargeFern = block.getRelative(BlockFace.UP);
             firstLargeFern.setType(Material.LARGE_FERN, false);
-            firstLargeFern.getState().setData(new MaterialData(Material.LARGE_FERN, (byte) 3));
 
             final Block secondLargeFern = firstLargeFern.getRelative(BlockFace.UP);
-            secondLargeFern.setType(Material.LARGE_FERN, false);
-            firstLargeFern.getState().setData(new MaterialData(Material.LARGE_FERN, (byte) 10));
+            secondLargeFern.setBlockData(Material.LARGE_FERN.createBlockData("[half=upper]"));
         }
         Debug.debug("Tabakplantage respawned");
     }
