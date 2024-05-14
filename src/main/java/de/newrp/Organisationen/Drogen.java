@@ -2,6 +2,7 @@ package de.newrp.Organisationen;
 
 import de.newrp.API.*;
 import de.newrp.Chat.Me;
+import de.newrp.Gangwar.GangwarCommand;
 import de.newrp.Police.Handschellen;
 import de.newrp.NewRoleplayMain;
 import de.newrp.dependencies.DependencyContainer;
@@ -185,9 +186,11 @@ public enum Drogen {
         test.put(p.getName(), this);
         taskID.put(p.getName(), task);
 
-        if(Krankheit.ABHAENGIGKEIT.isInfected(id)) {
-            p.sendMessage(Messages.INFO + "Du hast eine Abhängigkeit entwickelt. Das Konsumieren hat keine Wirkung gezeigt.");
-            return;
+        if(!GangwarCommand.isInGangwar(p) && !DependencyContainer.getContainer().getDependency(IDeathmatchArenaService.class).isInDeathmatch(p.getPlayer(), false)) {
+            if(Krankheit.ABHAENGIGKEIT.isInfected(id)) {
+                p.sendMessage(Messages.INFO + "Du hast eine Abhängigkeit entwickelt. Das Konsumieren hat keine Wirkung gezeigt.");
+                return;
+            }
         }
 
         Drogen.addToAdiction(p);
