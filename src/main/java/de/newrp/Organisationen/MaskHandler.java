@@ -2,6 +2,7 @@ package de.newrp.Organisationen;
 
 import com.destroystokyo.paper.event.player.PlayerArmorChangeEvent;
 import de.newrp.API.Messages;
+import de.newrp.API.Script;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -52,7 +53,7 @@ public class MaskHandler implements Listener {
                         }
                         int amount = Objects.requireNonNull(event.getPlayer().getInventory().getItem(event.getHand())).getAmount();
                         Objects.requireNonNull(event.getPlayer().getInventory().getItem(event.getHand())).setAmount(amount - 1);
-                        event.getPlayer().getInventory().setItem(EquipmentSlot.HEAD, new ItemStack(Material.CARVED_PUMPKIN));
+                        event.getPlayer().getInventory().setItem(EquipmentSlot.HEAD, Script.setName(new ItemStack(Material.CARVED_PUMPKIN), "§7Maske"));
                     }
                 }
             }
