@@ -6,6 +6,7 @@ import de.newrp.Berufe.Beruf;
 import de.newrp.Berufe.Houseban;
 import de.newrp.Government.Wahlen;
 import de.newrp.Organisationen.Blacklist;
+import de.newrp.Organisationen.MaskHandler;
 import de.newrp.Organisationen.Organisation;
 import de.newrp.Police.Fahndung;
 import de.newrp.NewRoleplayMain;
@@ -258,6 +259,11 @@ public class Utils implements Listener {
         sendServerBanner(p, "https://newrp.de/images/-tablist.png");
         sendCurrentPlayingGamemode(p, true, "NRP × New RolePlay " + NewRoleplayMain.getInstance().getDescription().getVersion());
         Script.disableVoiceChat(p);
+        try {
+            MaskHandler.clearMasksOutOfEnderchest(p);
+        } catch(final Exception exception) {
+            NewRoleplayMain.handleError(exception);
+        }
 
         /*EmbedBuilder embed = new EmbedBuilder();
         embed.setAuthor(Script.getName(p), null, "https://minotar.net/helm/"+ p.getName() + "/100.png");

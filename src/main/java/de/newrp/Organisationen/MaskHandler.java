@@ -1,6 +1,7 @@
 package de.newrp.Organisationen;
 
 import com.destroystokyo.paper.event.player.PlayerArmorChangeEvent;
+import de.newrp.API.Debug;
 import de.newrp.API.Messages;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
@@ -11,6 +12,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
@@ -73,6 +75,22 @@ public class MaskHandler implements Listener {
                     }
                 }
             }
+        }
+    }
+
+    public static void clearMasksOutOfEnderchest(final Player player) {
+        final Inventory inventory = player.getEnderChest();
+        for (ItemStack content : inventory.getContents()) {
+            if(content == null) {
+                continue;
+            }
+
+            if(content.getType() !=  Material.CARVED_PUMPKIN) {
+                continue;
+            }
+
+            inventory.remove(content);
+            Debug.debug("Removing mask with amount " + content.getAmount() + " from " + player.getName());
         }
     }
 }
