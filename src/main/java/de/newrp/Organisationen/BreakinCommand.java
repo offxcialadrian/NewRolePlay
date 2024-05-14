@@ -71,44 +71,46 @@ public class BreakinCommand implements CommandExecutor {
                         LockpickHandler.next(player, rob.getType());
 
                         Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> {
-                            if (player.getOpenInventory().title() instanceof TextComponent) {
-                                if (((TextComponent) player.getOpenInventory().title()).content().contains("Schloss")) {
-                                    player.closeInventory();
+                            boolean done = false;
+                            if (player.getOpenInventory().title() instanceof TextComponent)
+                                done = ((TextComponent) player.getOpenInventory().title()).content().contains("Schloss");
+                            if (done) player.closeInventory();
+                            else done = (LockpickHandler.value.get(player) > 0 || LockpickHandler.pulver.get(player) > 0 || LockpickHandler.kraeuter.get(player) > 0);
 
-                                    if (Objects.equals(rob.getType(), "Kasse")) {
-                                        if (LockpickHandler.value.get(player) > 0) {
-                                            orga.sendMessage(PREFIX + player.getName() + " hat erfolgreich " + LockpickHandler.value.get(player) + "€ aus der Kasse gestohlen.");
-                                            Script.addMoney(player, PaymentType.CASH, LockpickHandler.value.get(player));
-                                            Stadtkasse.removeStadtkasse(LockpickHandler.value.get(player), "Raub bei " + rob.getName() + " von " + player.getName());
-                                            orga.addExp(LockpickHandler.value.get(player) / 60);
-                                            Beruf.Berufe.GOVERNMENT.sendMessage(PREFIX + "Die Stadtkasse ist für den Raub bei " + rob.getName() + " aufgekommen.");
-                                            Beruf.Berufe.POLICE.sendMessage(PREFIX + "Der Raub bei " + rob.getName() + " konnte nicht verhindert werden.");
-                                            Beruf.Berufe.POLICE.sendMessage(PREFIX + "Aufnahmen zeigen, dass " + player.getName() + " verantwortlich ist."); // Kein Bug, zur Fairness nur bei Geldraub Aufnahme;
-                                        } else {
-                                            orga.sendMessage(PREFIX + player.getName() + " hat es nicht geschafft Geld aus der Kasse zu stehlen.");
-                                            Beruf.Berufe.POLICE.sendMessage(PREFIX + "Der Raub bei " + rob.getName() + " wurde verhindert.");
+                            if (done) {
+                                if (Objects.equals(rob.getType(), "Kasse")) {
+                                    if (LockpickHandler.value.get(player) > 0) {
+                                        orga.sendMessage(PREFIX + player.getName() + " hat erfolgreich " + LockpickHandler.value.get(player) + "€ aus der Kasse gestohlen.");
+                                        Script.addMoney(player, PaymentType.CASH, LockpickHandler.value.get(player));
+                                        Stadtkasse.removeStadtkasse(LockpickHandler.value.get(player), "Raub bei " + rob.getName() + " von " + player.getName());
+                                        orga.addExp(LockpickHandler.value.get(player) / 60);
+                                        Beruf.Berufe.GOVERNMENT.sendMessage(PREFIX + "Die Stadtkasse ist für den Raub bei " + rob.getName() + " aufgekommen.");
+                                        Beruf.Berufe.POLICE.sendMessage(PREFIX + "Der Raub bei " + rob.getName() + " konnte nicht verhindert werden.");
+                                        Beruf.Berufe.POLICE.sendMessage(PREFIX + "Aufnahmen zeigen, dass " + player.getName() + " verantwortlich ist."); // Kein Bug, zur Fairness nur bei Geldraub Aufnahme;
+                                    } else {
+                                        orga.sendMessage(PREFIX + player.getName() + " hat es nicht geschafft Geld aus der Kasse zu stehlen.");
+                                        Beruf.Berufe.POLICE.sendMessage(PREFIX + "Der Raub bei " + rob.getName() + " wurde verhindert.");
+                                    }
+                                } else if (Objects.equals(rob.getType(), "Lager")) {
+                                    if (LockpickHandler.pulver.get(player) > 0 || LockpickHandler.kraeuter.get(player) > 0) {
+                                        for (int i = 0; i < LockpickHandler.pulver.get(player); i++) {
+                                            player.getInventory().addItem(new ItemBuilder(Material.SUGAR).setName(Drogen.PULVER.getName()).setLore("§7Reinheitsgrad: " + Drogen.DrugPurity.HIGH.getText()).build());
                                         }
-                                    } else if (Objects.equals(rob.getType(), "Lager")) {
-                                        if (LockpickHandler.pulver.get(player) > 0 || LockpickHandler.kraeuter.get(player) > 0) {
-                                            for (int i = 0; i < LockpickHandler.pulver.get(player); i++) {
-                                                player.getInventory().addItem(new ItemBuilder(Material.SUGAR).setName(Drogen.PULVER.getName()).setLore("§7Reinheitsgrad: " + Drogen.DrugPurity.HIGH.getText()).build());
-                                            }
-                                            for (int i = 0; i < LockpickHandler.kraeuter.get(player); i++) {
-                                                player.getInventory().addItem(new ItemBuilder(Material.GREEN_DYE).setName(Drogen.KRÄUTER.getName()).setLore("§7Reinheitsgrad: " + Drogen.DrugPurity.HIGH.getText()).build());
-                                            }
-                                            if (LockpickHandler.pulver.get(player) > 0 && LockpickHandler.kraeuter.get(player) > 0) {
-                                                orga.sendMessage(PREFIX + player.getName() + " hat " + LockpickHandler.pulver.get(player) + "g Pulver und " + LockpickHandler.kraeuter.get(player) + "g Kräuter aus dem Lager gestohlen.");
-                                            } else if (LockpickHandler.pulver.get(player) > 0) {
-                                                orga.sendMessage(PREFIX + player.getName() + " hat " + LockpickHandler.pulver.get(player) + "g Pulver aus dem Lager gestohlen.");
-                                            } else {
-                                                orga.sendMessage(PREFIX + player.getName() + " hat " + LockpickHandler.kraeuter.get(player) + "g Kräuter aus dem Lager gestohlen.");
-                                            }
-                                            orga.addExp((LockpickHandler.pulver.get(player) + LockpickHandler.kraeuter.get(player)) / 4);
-                                            Beruf.Berufe.POLICE.sendMessage(PREFIX + "Der Raub bei " + rob.getName() + " konnte nicht verhindert werden.");
-                                        } else {
-                                            orga.sendMessage(PREFIX + player.getName() + " hat es nicht geschafft Drogen aus dem Lager zu stehlen.");
-                                            Beruf.Berufe.POLICE.sendMessage(PREFIX + "Der Raub bei " + rob.getName() + " wurde verhindert.");
+                                        for (int i = 0; i < LockpickHandler.kraeuter.get(player); i++) {
+                                            player.getInventory().addItem(new ItemBuilder(Material.GREEN_DYE).setName(Drogen.KRÄUTER.getName()).setLore("§7Reinheitsgrad: " + Drogen.DrugPurity.HIGH.getText()).build());
                                         }
+                                        if (LockpickHandler.pulver.get(player) > 0 && LockpickHandler.kraeuter.get(player) > 0) {
+                                            orga.sendMessage(PREFIX + player.getName() + " hat " + LockpickHandler.pulver.get(player) + "g Pulver und " + LockpickHandler.kraeuter.get(player) + "g Kräuter aus dem Lager gestohlen.");
+                                        } else if (LockpickHandler.pulver.get(player) > 0) {
+                                            orga.sendMessage(PREFIX + player.getName() + " hat " + LockpickHandler.pulver.get(player) + "g Pulver aus dem Lager gestohlen.");
+                                        } else {
+                                            orga.sendMessage(PREFIX + player.getName() + " hat " + LockpickHandler.kraeuter.get(player) + "g Kräuter aus dem Lager gestohlen.");
+                                        }
+                                        orga.addExp((LockpickHandler.pulver.get(player) + LockpickHandler.kraeuter.get(player)) / 4);
+                                        Beruf.Berufe.POLICE.sendMessage(PREFIX + "Der Raub bei " + rob.getName() + " konnte nicht verhindert werden.");
+                                    } else {
+                                        orga.sendMessage(PREFIX + player.getName() + " hat es nicht geschafft Drogen aus dem Lager zu stehlen.");
+                                        Beruf.Berufe.POLICE.sendMessage(PREFIX + "Der Raub bei " + rob.getName() + " wurde verhindert.");
                                     }
                                 }
                             }
@@ -127,6 +129,7 @@ public class BreakinCommand implements CommandExecutor {
 
                                 LockpickHandler.c.remove(player);
                             }
+
                         }, 40 * 20L);
                     } else {
                         player.sendMessage(PREFIX + "Du bist nicht in der Nähe einer Kasse oder eines Lagers!");
