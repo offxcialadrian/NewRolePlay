@@ -5,6 +5,7 @@ import de.newrp.API.PaymentType;
 import de.newrp.API.Rank;
 import de.newrp.API.Script;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -32,7 +33,7 @@ public class SetBargeld implements CommandExecutor {
             return true;
         }
 
-        Player tg = Script.getPlayer(args[0]);
+        OfflinePlayer tg = Script.getOfflinePlayer(args[0]);
         if (tg == null) {
             p.sendMessage(Messages.PLAYER_NOT_FOUND);
             return true;
@@ -48,7 +49,8 @@ public class SetBargeld implements CommandExecutor {
 
         Script.setMoney(tg, PaymentType.CASH, money);
         p.sendMessage(PREFIX + "Du hast " + Script.getName(tg) + " Bargeld auf " + money + "€ gesetzt.");
-        tg.sendMessage(PREFIX + "Dein Bargeld wurde von " + Script.getName(p) + " auf " + money + "€ gesetzt.");
+        if(tg.getPlayer() != null) tg.getPlayer().sendMessage(PREFIX + "Dein Bargeld wurde von " + Messages.RANK_PREFIX(p) + " auf " + money + "€ gesetzt.");
+        else Script.addOfflineMessage(tg, PREFIX + "Dein Bargeld wurde von " + Messages.RANK_PREFIX(p) + " auf " + money + "€ gesetzt.");
         for (Player all : Bukkit.getOnlinePlayers()) {
             if (Script.hasRank(all, Rank.OWNER, false)) {
                 all.sendMessage(PREFIX + Script.getName(p) + " hat " + Script.getName(tg) + " Bargeld auf " + money + "€ gesetzt.");

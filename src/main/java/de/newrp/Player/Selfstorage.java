@@ -149,6 +149,11 @@ public class Selfstorage implements CommandExecutor, Listener {
                 return true;
             }
 
+            if(Script.getLevel(p) < 3 || Script.getPlayTime(p, true) < 25) {
+                p.sendMessage(Messages.ERROR + "Du musst mindestens Level 3 sein und 25 Stunden gespielt haben, um einen Selfstorage-Room zu mieten.");
+                return true;
+            }
+
             Rooms free = getFreeRoom();
             setSelfstorage(p, free.getID());
             p.sendMessage(PREFIX + "Du hast einen Selfstorage-Room gemietet. Dein Raum ist §6" + free.getName() + "§7.");

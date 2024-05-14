@@ -376,15 +376,19 @@ public class Annehmen implements CommandExecutor {
         } else if(offer.containsKey(p.getName() + ".rezept")) {
             Player tg = Script.getPlayer(offer.get(p.getName() + ".rezept"));
             Medikamente m = Medikamente.getMedikament(offer.get(p.getName() + ".rezept.medikament"));
+            int amount = (offer.containsKey(p.getName() + ".rezept.anzahl") ? Integer.parseInt(offer.get(p.getName() + ".rezept.anzahl")) : 1);
             if (m == null) return true;
             p.sendMessage(ACCEPTED + "Du hast ein Rezept für " + m.getName() + " erhalten.");
             tg.sendMessage(ACCEPTED + Script.getName(p) + " hat das Rezept genommen.");
-            p.getInventory().addItem(m.getRezept());
-            Log.NORMAL.write(p, "hat ein Rezept für " + m.getName() + " von " + Script.getName(tg) + " erhalten.");
-            Log.NORMAL.write(tg, "hat ein Rezept für " + m.getName() + " an " + Script.getName(p) + " gegeben.");
-            Beruf.Berufe.RETTUNGSDIENST.sendMessage(Rezept.PREFIX + Script.getName(tg) + " hat " + Script.getName(p) + " ein Rezept für " + m.getName() + " ausgestellt.");
+            for(int i = 0; i < amount; i++) {
+                p.getInventory().addItem(m.getRezept());
+            }
+            Log.NORMAL.write(p, "hat " + amount + "x Rezept für " + m.getName() + " von " + Script.getName(tg) + " erhalten.");
+            Log.NORMAL.write(tg, "hat " + amount + "x Rezept für " + m.getName() + " an " + Script.getName(p) + " gegeben.");
+            Beruf.Berufe.RETTUNGSDIENST.sendMessage(Rezept.PREFIX + Script.getName(tg) + " hat " + Script.getName(p) + " " + amount + "x Rezept für " + m.getName() + " ausgestellt.");
             offer.remove(p.getName() + ".rezept");
             offer.remove(p.getName() + ".medikament");
+            offer.remove(p.getName() + ".rezept.anzahl");
             Stadtkasse.removeStadtkasse(30, "Rezeptausstellung an " + Script.getName(p));
             Achievement.REZEPT.grant(p);
 

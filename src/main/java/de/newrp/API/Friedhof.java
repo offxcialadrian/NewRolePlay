@@ -93,7 +93,7 @@ public class Friedhof {
         Location[] locs = new Location[]{new Location(Script.WORLD, 222, 75, 673, 92.5503f, -2.699904f)};
 
         try {
-            Debug.debug("dead: " + p.getName() + " " + p.getKiller() + " " + p.getLastDamageCause().getCause().name());
+            if(p.getLastDamageCause() != null) Debug.debug("dead: " + p.getName() + " " + p.getKiller() + " " + p.getLastDamageCause().getCause().name());
         } catch(Exception exception) {
             NewRoleplayMain.handleError(exception);
         }

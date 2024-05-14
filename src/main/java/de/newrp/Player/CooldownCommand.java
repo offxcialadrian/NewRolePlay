@@ -54,10 +54,6 @@ public class CooldownCommand implements CommandExecutor {
                         player.sendMessage(PREFIX + "ATM-Sprengung: §5" + TimeUnit.MILLISECONDS.toMinutes(Bankautomaten.cooldown.get(orga) - System.currentTimeMillis()) + "min");
                     }
                 }
-                if(Bankautomaten.cooldown.containsKey(orga) && Bankautomaten.cooldown.get(orga) > System.currentTimeMillis()) {
-                    cd = true;
-                    player.sendMessage(PREFIX + "Bankautomat: §5" + TimeUnit.MILLISECONDS.toMinutes(Bankautomaten.cooldown.get(orga) - System.currentTimeMillis()) + "min");
-                }
 
                 if (!cd) player.sendMessage(PREFIX + "Es gibt aktuell keine Cooldowns!");
                 return true;

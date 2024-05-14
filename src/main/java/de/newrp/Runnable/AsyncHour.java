@@ -68,7 +68,7 @@ public class AsyncHour extends BukkitRunnable {
             }
 
             try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
-                 ResultSet rs = stmt.executeQuery("SELECT * FROM loans WHERE time>" + System.currentTimeMillis())) {
+                 ResultSet rs = stmt.executeQuery("SELECT * FROM loans WHERE time < " + System.currentTimeMillis())) {
                 while (rs.next()) {
                     OfflinePlayer p = Script.getOfflinePlayer(rs.getInt("userID"));
                     int amount = rs.getInt("amount");

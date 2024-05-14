@@ -52,7 +52,7 @@ import static de.newrp.API.Rank.SUPPORTER;
 
 public class Utils implements Listener {
 
-    private static final Material[] DROP_BLACKLIST = new Material[]{Material.WOODEN_HOE, Material.LEAD, Material.ANDESITE_SLAB, Material.SHIELD, Material.LEATHER_CHESTPLATE, Material.WITHER_SKELETON_SKULL};
+    private static final Material[] DROP_BLACKLIST = new Material[]{Material.WOODEN_HOE, Material.LEAD, Material.ANDESITE_SLAB, Material.SHIELD, Material.LEATHER_CHESTPLATE, Material.WITHER_SKELETON_SKULL, Material.LEVER};
     private static final String[] BLOCKED_COMMANDS = new String[]{
             "/minecraft", "/spi", "/protocol", "/rl", "/restart", "/bukkit", "/version", "/icanhasbukkit", "/xp",
             "/toggledownfall", "/testfor", "/recipe", "/effect", "/enchant", "/deop", "/defaultgamemode", "/ban-ip",

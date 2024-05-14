@@ -53,8 +53,8 @@ public class Rezept implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        if(args.length != 2) {
-            p.sendMessage(Messages.ERROR + "/rezept [Name] [Medikament]");
+        if(args.length != 2 && args.length != 3) {
+            p.sendMessage(Messages.ERROR + "/rezept [Name] [Medikament] [Anzahl]");
             return true;
         }
 
@@ -94,8 +94,28 @@ public class Rezept implements CommandExecutor, TabCompleter {
             return true;
         }
 
+        if(args.length == 3) {
+            try {
+                int amount = Integer.parseInt(args[2]);
+                if(amount < 1) {
+                    p.sendMessage(Messages.ERROR + "Die Anzahl muss mindestens 1 sein.");
+                    return true;
+                }
+                if(amount > 64) {
+                    p.sendMessage(Messages.ERROR + "Die Anzahl darf maximal 64 sein.");
+                    return true;
+                }
+            } catch (NumberFormatException e) {
+                p.sendMessage(Messages.ERROR + "Die Anzahl muss eine Zahl sein.");
+                return true;
+            }
+        }
+
         Annehmen.offer.put(tg.getName() + ".rezept", p.getName());
         Annehmen.offer.put(tg.getName() + ".rezept.medikament", m.getName());
+        if(args.length == 3) {
+            Annehmen.offer.put(tg.getName() + ".rezept.anzahl", args[2]);
+        }
         p.sendMessage(PREFIX + "Du hast " + Script.getName(tg) + " ein Rezept für " + m.getName() + " angeboten.");
         tg.sendMessage(PREFIX + Script.getName(p) + " hat dir ein Rezept für " + m.getName() + " angeboten.");
         Script.sendAcceptMessage(tg);
