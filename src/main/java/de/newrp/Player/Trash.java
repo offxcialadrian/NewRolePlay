@@ -101,7 +101,6 @@ public class Trash implements Listener {
         Action action = e.getAction();
         Player p = e.getPlayer();
         if (action == Action.RIGHT_CLICK_BLOCK && e.getHand() == EquipmentSlot.HAND) {
-            p.sendMessage("Block data: " + e.getClickedBlock().getType().toString() + " " + e.getClickedBlock().getBlockData().getAsString());
             if (e.getClickedBlock().getType().equals(Material.CAULDRON)) {
                 Bukkit.getServer().getPluginManager().callEvent(new TrashcanEmptyEvent(p, e.getClickedBlock()));
             }
