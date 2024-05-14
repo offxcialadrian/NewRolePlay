@@ -85,7 +85,7 @@ public class Friedhof {
                 Player killer = p.getKiller();
                 killer.getInventory().addItem(Equip.Stuff.SCHWERE_SCHUTZWESTE.getItem());
                 killer.getInventory().addItem(Equip.Stuff.EINSATZSCHILD.getItem());
-                killer.getInventory().addItem(Equip.Stuff.EINSAZTZSCHILD_2.getItem());
+                killer.getInventory().addItem(Equip.Stuff.EINSATZSCHILD_2.getItem());
                 killer.getInventory().addItem(Equip.Stuff.TAZER.getItem());
             }
         }
