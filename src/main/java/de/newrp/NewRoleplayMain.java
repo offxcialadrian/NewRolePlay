@@ -63,6 +63,7 @@ import de.newrp.features.roadblocks.impl.FactionBlockService;
 import de.newrp.features.roadblocks.listener.FactionBlockClickListener;
 import de.newrp.features.roadblocks.listener.FactionBlockDropItemListener;
 import de.newrp.features.roadblocks.listener.FactionBlockQuitListener;
+import de.newrp.features.scoreboards.config.ScoreboardConfig;
 import net.citizensnpcs.api.CitizensAPI;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Activity;
@@ -687,6 +688,11 @@ public class NewRoleplayMain extends JavaPlugin {
         this.configService.saveConfig(dmConfigFile, new DeathmatchArenaConfig(), false);
         DependencyContainer.getContainer().add(DeathmatchArenaConfig.class, this.configService.readConfig(dmConfigFile, DeathmatchArenaConfig.class));
         Bukkit.getLogger().info("Successfully read Deathmatch Configuration!");
+
+        final File scoreboardConfigFile = new File(pluginFolder, "scoreboard.json");
+        this.configService.saveConfig(scoreboardConfigFile, new ScoreboardConfig(), false);
+        DependencyContainer.getContainer().add(ScoreboardConfig.class, this.configService.readConfig(scoreboardConfigFile, ScoreboardConfig.class));
+        Bukkit.getLogger().info("Successfully read Scoreboard Configuration!");
     }
 
     public static boolean isTest() {
