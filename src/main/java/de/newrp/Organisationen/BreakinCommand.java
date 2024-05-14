@@ -140,7 +140,7 @@ public class BreakinCommand implements CommandExecutor {
                         player.sendMessage(PREFIX + "Du bist nicht in der Nähe einer Kasse oder eines Lagers!");
                     }
                 } else {
-                    player.sendMessage(Messages.ERROR + "Du musst mindestens Rang-2 sein um einzubrechen!");
+                    player.sendMessage(Messages.ERROR + "Du musst mindestens Rang 2 sein um einzubrechen!");
                 }
             } else {
                 player.sendMessage(Messages.ERROR + "Du bist in keiner Organisation!");
