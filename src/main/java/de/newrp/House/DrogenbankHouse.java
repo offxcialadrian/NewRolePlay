@@ -29,7 +29,7 @@ public class DrogenbankHouse implements CommandExecutor, Listener {
 
     public static HashMap<String, Integer> drug_amount = new HashMap<>();
     public static HashMap<String, House> h = new HashMap<>();
-    public static String PREFIX = "§8[§cDrogenbank§8] §c» §7";
+    public static String PREFIX = "§8[§cHausbank§8] §c» §7";
 
 
     public static int getDrogenAmount(House h, Drogen droge, Drogen.DrugPurity purity) {

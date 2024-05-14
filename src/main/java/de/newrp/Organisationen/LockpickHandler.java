@@ -93,7 +93,7 @@ public class LockpickHandler implements Listener {
                     } else if (display.endsWith("€")) {
                         int v = Integer.parseInt(display.substring(0, display.lastIndexOf("€")));
                         value.put(player, value.get(player) + v);
-                        player.sendMessage(BreakinCommand.PREFIX + "Du hast " + v + "€ aus der Kasse genommen.");
+                        Script.sendActionBar(player, BreakinCommand.PREFIX + "Du hast " + v + "€ aus der Kasse genommen.");
 
                         player.getInventory().close();
                         checkout.get(player).setItem(event.getSlot(), air);
@@ -102,10 +102,10 @@ public class LockpickHandler implements Listener {
                         int g = Integer.parseInt(display.substring(0, display.lastIndexOf("g")));
                         if (event.getCurrentItem().getType() == Material.SUGAR) {
                             pulver.put(player, pulver.get(player) + g);
-                            player.sendMessage(BreakinCommand.PREFIX + "Du hast " + g + "g Pulver aus dem Lager genommen.");
+                            Script.sendActionBar(player, BreakinCommand.PREFIX + "Du hast " + g + "g Pulver aus dem Lager genommen.");
                         } else {
                             kraeuter.put(player, kraeuter.get(player) + g);
-                            player.sendMessage(BreakinCommand.PREFIX + "Du hast " + g + "g Kräuter aus dem Lager genommen.");
+                            Script.sendActionBar(player, BreakinCommand.PREFIX + "Du hast " + g + "g Kräuter aus dem Lager genommen.");
                         }
 
                         player.getInventory().close();

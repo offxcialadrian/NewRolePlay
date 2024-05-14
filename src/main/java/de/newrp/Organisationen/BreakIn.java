@@ -70,7 +70,7 @@ public class BreakIn implements Listener {
 
         House house = House.getNearHouse(p.getLocation(), 3);
         if (house == null) {
-            p.sendMessage(PREFIX + "Du kannst hier nicht einbrechen.");
+            Script.sendActionBar(p, PREFIX + "Du kannst hier nicht einbrechen.");
             return;
         }
 

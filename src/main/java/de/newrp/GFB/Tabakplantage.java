@@ -22,6 +22,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.material.MaterialData;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -169,10 +170,13 @@ public class Tabakplantage implements CommandExecutor, Listener {
         for (final Block block : grassBlock) {
             final Block firstLargeFern = block.getRelative(BlockFace.UP);
             firstLargeFern.setType(Material.LARGE_FERN, false);
+            firstLargeFern.getState().setData(new MaterialData(Material.LARGE_FERN, (byte) 3));
 
             final Block secondLargeFern = firstLargeFern.getRelative(BlockFace.UP);
             secondLargeFern.setType(Material.LARGE_FERN, false);
+            firstLargeFern.getState().setData(new MaterialData(Material.LARGE_FERN, (byte) 10));
         }
+        Debug.debug("Tabakplantage respawned");
     }
 
     public static void pickUp(Player p) {

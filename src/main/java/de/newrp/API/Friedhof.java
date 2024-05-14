@@ -51,6 +51,7 @@ public class Friedhof {
     }
 
     public static void setDead(Player p, Friedhof f) {
+        Debug.debug("starting set dead");
         if (FRIEDHOF.containsKey(p.getName())) {
             Friedhof old_f = FRIEDHOF.get(p.getName());
             if (old_f.getTaskID() != 0) {
