@@ -3,6 +3,7 @@ package de.newrp.features.emergencycall.impl;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import de.newrp.API.Messages;
+import de.newrp.API.Navi;
 import de.newrp.API.Route;
 import de.newrp.API.Script;
 import de.newrp.Berufe.Beruf;
@@ -45,6 +46,7 @@ public class EmergencyCallService implements IEmergencyCallService {
         final StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(getPrefix()).append("§6Achtung! Ein Notruf von ").append(Script.getName(player)).append(" ist eingegangen.")
                 .append("\n").append(getPrefix()).append("§6Vorfall§8: §6").append(reason)
+                .append("\n").append(getPrefix()).append("§6Position§8: §6").append(Navi.getNextNaviLocation(location))
                 .append("\n").append(buildNearbyPlayersString(location, targetFaction));
 
         for (UUID member : targetFaction.getBeruf().keySet()) {
