@@ -87,7 +87,8 @@ public class OrganisationKasse implements CommandExecutor, TabCompleter {
                         return true;
                     }
 
-                    Organisation.getOrganisation(p).removeExp(Math.max(10, amount/200));
+                    final int expToLose = Math.max(1, (int) Math.floor((double) amount / 1000));
+                    Organisation.getOrganisation(p).removeExp(expToLose);
                     atm.removeCash(amount);
                     Organisation.getOrganisation(p).removeKasse(amount);
                     Script.addMoney(p, PaymentType.CASH, amount);
@@ -115,7 +116,8 @@ public class OrganisationKasse implements CommandExecutor, TabCompleter {
                     }
 
 
-                    Organisation.getOrganisation(p).addExp(amount/1000);
+                    final int expToGain = (int) Math.floor((double) amount / 1000);
+                    Organisation.getOrganisation(p).addExp(expToGain);
                     atm.addCash(amount);
                     Organisation.getOrganisation(p).addKasse(amount);
                     Script.removeMoney(p, PaymentType.CASH, amount);
