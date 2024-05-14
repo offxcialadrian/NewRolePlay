@@ -66,6 +66,13 @@ public class Capture implements CommandExecutor, Listener {
 
                         if (progress.get(p.getName()) >= 30) {
 
+                            for(Location l : GangwarCommand.captures.get(Organisation.getOrganisation(p))) {
+                                if(l.equals(loc)) {
+                                    p.sendMessage(Messages.ERROR + "Du hast diesen Punkt bereits eingenommen.");
+                                    return;
+                                }
+                            }
+
                             ArrayList<Location> o_locs = GangwarCommand.captures.get(GangwarCommand.getOpponent(Organisation.getOrganisation(p)));
                             o_locs.remove(loc);
                             GangwarCommand.captures.replace(GangwarCommand.getOpponent(Organisation.getOrganisation(p)), o_locs);

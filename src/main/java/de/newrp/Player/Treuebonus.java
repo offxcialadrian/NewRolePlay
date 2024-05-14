@@ -131,7 +131,7 @@ public class Treuebonus implements CommandExecutor, Listener {
             Inventory inv = p.getServer().createInventory(null, InventoryType.HOPPER, "§bTreuebonus §8[§c" + Treuebonus.points.get(p.getUniqueId()) + "§8]");
             int price = 15 * ((Script.getLevel(p) / 5) + 1);
             inv.setItem(0, Script.setNameAndLore(Material.EXPERIENCE_BOTTLE, "§6+1000 Exp", "§c10 Treuepunkte"));
-            inv.setItem(1, Script.setNameAndLore(Material.GOLD_INGOT, "§6+2500$", "§c12 Treuepunkte"));
+            inv.setItem(1, Script.setNameAndLore(Material.GOLD_INGOT, "§6+2500€", "§c12 Treuepunkte"));
             inv.setItem(2, Script.setNameAndLore(Material.DIAMOND, "§67 Tage Premium", "§c24 Treuepunkte"));
             inv.setItem(3, Script.setNameAndLore(Material.DIAMOND, "§6+1 Level", "§c" + price + " Treuepunkte"));
 
@@ -229,7 +229,7 @@ public class Treuebonus implements CommandExecutor, Listener {
                         }
                         break;
                     }
-                    case "§6+2500$": {
+                    case "§6+2500€": {
                         int price = 12;
                         int punkte = Treuebonus.points.get(p.getUniqueId());
                         if (punkte >= price) {

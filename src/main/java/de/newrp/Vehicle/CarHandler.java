@@ -158,12 +158,15 @@ public class CarHandler implements Listener {
                             event.getEntered().sendMessage(Component.text(Car.PREFIX + "Dein " + car.getCarType().getName() + " ist abgeschlossen!"));
                         } else {
                             event.getEntered().sendMessage(Component.text(Car.PREFIX + "Der " + car.getCarType().getName() + " ist abgeschlossen!"));
+                            event.setCancelled(true);
+                            return;
                         }
 
                         if(car.getCarType() != CarType.PAWSCHE && car.getCarType() != CarType.AWDI && car.getCarType() != CarType.MERCADAS) {
                             event.setCancelled(true);
-                        } else {
+                        } else if(car.isCarOwner(player)) {
                             event.getEntered().sendMessage(Component.text(Car.PREFIX + "Du hast deinen " + car.getCarType().getName() + " über Keyless-Go geöffnet!"));
+                            car.setLocked(false);
                             Cache.saveScoreboard(player);
                             player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
                             car.setCarSidebar();

@@ -67,8 +67,8 @@ public class FriedhofListener implements Listener {
         //Sekunden
         int deathtime = (GangwarCommand.isInGangwar(p)?120:480);
 
-        boolean explosion = p.getLastDamageCause().getCause() == EntityDamageEvent.DamageCause.BLOCK_EXPLOSION ||
-                p.getLastDamageCause().getCause() == EntityDamageEvent.DamageCause.ENTITY_EXPLOSION;
+       /*boolean explosion = p.getLastDamageCause().getCause() == EntityDamageEvent.DamageCause.BLOCK_EXPLOSION ||
+                p.getLastDamageCause().getCause() == EntityDamageEvent.DamageCause.ENTITY_EXPLOSION;*/
 
         World w = p.getWorld();
         Location deathLocation = p.getLocation();
@@ -78,38 +78,23 @@ public class FriedhofListener implements Listener {
         meta.setOwningPlayer(p);
         meta.setDisplayName("§6" + p.getName());
         head.setItemMeta(meta);
-        /*Item item = w.dropItemNaturally(deathLocation, head);
-        if (deathtime > 480 || explosion) {
-            item.setCustomName("§8✟" + p.getName());
-        } else {
-            item.setCustomName("§7✟" + p.getName());
-        }
-        item.setCustomNameVisible(true);
-        item.setVelocity(item.getVelocity().zero());
-        item.setPickupDelay(Integer.MAX_VALUE);*/
         Corpse.spawnNPC(p);
         int cash = Script.getMoney(p, PaymentType.CASH);
         Script.setMoney(p, PaymentType.CASH, 0);
 
         ItemStack[] inventoryContent = p.getInventory().getContents();
         p.getInventory().clear();
-
-        p.getItemOnCursor();
         p.getItemOnCursor().setType(Material.AIR);
 
 
         if(Call.isOnCall(p)) {
             if (Call.isWaitingForCall(p)) {
                 Call.deny(p);
-                return;
-            }
-
-            if (Call.getParticipants(Call.getCallIDByPlayer(p)).size() == 1) {
+            } else if (Call.getParticipants(Call.getCallIDByPlayer(p)).size() == 1) {
                 Call.abort(p);
-                return;
+            } else {
+                Call.hangup(p);
             }
-
-            Call.hangup(p);
         }
 
         if(p.getLastDamageCause() != null) {
@@ -117,9 +102,10 @@ public class FriedhofListener implements Listener {
                 Health.THIRST.add(Script.getNRPID(p), (Health.THIRST.getMax() / 2));
             }
         }
-        Player killer = p.getKiller();
+
         Friedhof friedhof = new Friedhof(Script.getNRPID(p), p.getName(), deathLocation, System.currentTimeMillis(), deathtime, cash, inventoryContent);
         Friedhof.setDead(p, friedhof);
+        Player killer = p.getKiller();
         Notifications.sendMessage(Notifications.NotificationType.DEAD, Script.getName(p) + " ist gestorben " + (killer!=null ? Messages.ARROW + " " + Script.getName(killer):Messages.ARROW + " " + (p.getLastDamageCause() != null?p.getLastDamageCause().getCause().name():"")));
     }
 

@@ -125,7 +125,7 @@ public class Reinforcement implements CommandExecutor {
                     Organisation org = Organisation.getOrganisation(tg);
                     if (org.getMember().contains(tg.getUniqueId())) {
                         for (UUID member : org.getMember()) {
-                            Bukkit.getPlayer(member).sendMessage("§7➲ §a" + Organisation.getRankName(p) + " " + Script.getName(p) + " kommt zum Verstärkungsruf von " + Script.getName(tg) + "! §a" + "(ETA: " + calcETA(p.getLocation().distance(new_reinforcement.get(tg.getName()))) + " Sekunden)");
+                            Bukkit.getPlayer(member).sendMessage("§7➲ §a" + Organisation.getRankName(p) + " " + Script.getName(p) + " kommt zum Verstärkungsruf von " + Script.getName(tg) + "! §a" + "(ETA: " + calcETA(p.getLocation().distance(new_reinforcement.get(tg.getName()))) + " Sekunden & " + (int) p.getLocation().distance(new_reinforcement.get(tg.getName())) + "m)");
                         }
                     }
                     return true;
@@ -136,10 +136,10 @@ public class Reinforcement implements CommandExecutor {
                     for (Beruf.Berufe berufe : Beruf.Berufe.values()) {
                         if (berufe != Beruf.Berufe.RETTUNGSDIENST && berufe != Beruf.Berufe.POLICE && berufe != Beruf.Berufe.GOVERNMENT)
                             continue;
-                        berufe.sendMessage("§7➲ §a" + Beruf.getBeruf(p).getName() + " " + Script.getName(p) + " kommt zum Verstärkungsruf von " + Script.getName(tg) + "! §7" + "(ETA: " + calcETA(p.getLocation().distance(new_reinforcement.get(tg.getName()))) + " Sekunden)");
+                        berufe.sendMessage("§7➲ §a" + Beruf.getBeruf(p).getName() + " " + Script.getName(p) + " kommt zum Verstärkungsruf von " + Script.getName(tg) + "! §7" + "(ETA: " + calcETA(p.getLocation().distance(new_reinforcement.get(tg.getName()))) + " Sekunden & " + (int) p.getLocation().distance(new_reinforcement.get(tg.getName())) + "m)");
                     }
                 } else {
-                    beruf.sendMessage("§7➲ §a" + Beruf.getAbteilung(p).getName() + " " + Script.getName(p) + " kommt zum Verstärkungsruf von " + Script.getName(tg) + "! §7" + "(ETA: " + calcETA(p.getLocation().distance(new_reinforcement.get(tg.getName()))) + " Sekunden)");
+                    beruf.sendMessage("§7➲ §a" + Beruf.getAbteilung(p).getName() + " " + Script.getName(p) + " kommt zum Verstärkungsruf von " + Script.getName(tg) + "! §7" + "(ETA: " + calcETA(p.getLocation().distance(new_reinforcement.get(tg.getName()))) + " Sekunden & " + (int) p.getLocation().distance(new_reinforcement.get(tg.getName())) + "m)");
                 }
             }
             return true;
@@ -235,6 +235,7 @@ public class Reinforcement implements CommandExecutor {
         x.setClickEvent(clickEvent);
         p.spigot().sendMessage(x);
     }
+
 
     private static int calcETA(double meter) {
         return (int) (meter / 6.0);

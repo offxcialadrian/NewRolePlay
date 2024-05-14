@@ -14,7 +14,7 @@ public class SyncHour extends BukkitRunnable {
     @Override
     public void run() {
         try {
-            LabBreakIn.repairDoors(false);
+            if(LabBreakIn.brokeIn == null) LabBreakIn.repairDoors(false);
             Weather.updateWeather();
             Schwarzmarkt.spawnRandom();
             Hologram.reload();
