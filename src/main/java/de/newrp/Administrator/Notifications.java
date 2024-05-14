@@ -119,7 +119,7 @@ public class Notifications implements CommandExecutor, Listener {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
         Player p = (Player) cs;
-        if(Team.getTeam(p) != Team.Teams.ENTWICKLUNG) {
+        if(Team.getTeam(p) == null || Team.getTeam(p) != Team.Teams.ENTWICKLUNG) {
             Bukkit.getLogger().info(Team.getTeam(p).getName() + "");
             if (!Script.hasRank(p, Rank.SUPPORTER, false)) {
                 p.sendMessage(Messages.NO_PERMISSION);

@@ -139,6 +139,7 @@ public enum Drogen {
 
     public static void addToAdiction(Player p) {
         if(DependencyContainer.getContainer().getDependency(IDeathmatchArenaService.class).isInDeathmatch(p.getPlayer(), false)) return;
+        if(GangwarCommand.isInGangwar(p)) return;
         Script.executeAsyncUpdate("INSERT INTO drug_addiction (nrp_id, time, heal) VALUES (" + Script.getNRPID(p) + ", " + System.currentTimeMillis() + ", false)");
         if(getAddiction(p) >= (Premium.hasPremium(p)?Script.getRandom(40, 50):Script.getRandom(30, 40)) && !Krankheit.ABHAENGIGKEIT.isInfected(Script.getNRPID(p))) {
             Krankheit.ABHAENGIGKEIT.add(Script.getNRPID(p));
