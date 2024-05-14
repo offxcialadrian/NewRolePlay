@@ -86,7 +86,11 @@ public class BreakinCommand implements CommandExecutor {
                                         orga.addExp(LockpickHandler.value.get(player) / 60);
                                         Beruf.Berufe.GOVERNMENT.sendMessage(PREFIX + "Die Stadtkasse ist für den Raub bei " + rob.getName() + " aufgekommen.");
                                         Beruf.Berufe.POLICE.sendMessage(PREFIX + "Der Raub bei " + rob.getName() + " konnte nicht verhindert werden.");
-                                        Beruf.Berufe.POLICE.sendMessage(PREFIX + "Aufnahmen zeigen, dass " + player.getName() + " verantwortlich ist."); // Kein Bug, zur Fairness nur bei Geldraub Aufnahme;
+                                        if(MaskHandler.masks.containsKey(player.getUniqueId())) {
+                                            Beruf.Berufe.POLICE.sendMessage(PREFIX + "Eine maskierte Person ist für den Raub verantwortlich.");
+                                        } else {
+                                            Beruf.Berufe.POLICE.sendMessage(PREFIX + "Aufnahmen zeigen, dass " + player.getName() + " verantwortlich ist.");
+                                        }
                                     } else {
                                         orga.sendMessage(PREFIX + player.getName() + " hat es nicht geschafft Geld aus der Kasse zu stehlen.");
                                         Beruf.Berufe.POLICE.sendMessage(PREFIX + "Der Raub bei " + rob.getName() + " wurde verhindert.");
