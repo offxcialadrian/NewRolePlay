@@ -2,8 +2,6 @@ package de.newrp.Organisationen;
 
 import de.newrp.API.*;
 import de.newrp.Administrator.Notifications;
-import de.newrp.Berufe.Beruf;
-import de.newrp.Vehicle.Car;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -28,8 +26,10 @@ public class OrganisationKasse implements CommandExecutor, TabCompleter {
         }
 
         if (!Organisation.isLeader(p, true) && !args[0].equalsIgnoreCase("einzahlen")) {
-            p.sendMessage(Messages.ERROR + "Du bist kein Leader.");
-            return true;
+            if(Organisation.getRank(p) < 4) {
+                p.sendMessage(Messages.NO_PERMISSION);
+                return true;
+            }
         }
 
         if (args.length == 0) {
