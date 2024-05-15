@@ -153,7 +153,14 @@ public class Houseban implements CommandExecutor, Listener, TabCompleter {
                 p.sendMessage(Messages.INFO + "Der Spieler hat bereits Hausverbot. Das Hausverbot wurde verlängert.");
 
                 long time = getTime(tg, b);
-                final String reasonName = getReason(tg, b) + " & " + reason.getName();
+                final String oldReason = getReason(tg, b);
+                String reasonName = oldReason;
+                if(oldReason.contains(reason.getName())) {
+                    p.sendMessage(Messages.INFO + "Das Hausverbot wurde verlängert");
+                } else {
+                    reasonName = reasonName + " & " + reason.getName();
+                }
+
                 Script.executeUpdate("DELETE FROM housebans WHERE userID = " + Script.getNRPID(tg) + " AND beruf = " + b.getID());
                 time += reason.getDuration() + ((long) reason.getDuration() * 24 * 60 * 60 * 1000);
                 try (PreparedStatement statement = NewRoleplayMain.getConnection().prepareStatement(
@@ -178,7 +185,7 @@ public class Houseban implements CommandExecutor, Listener, TabCompleter {
             try (PreparedStatement statement = NewRoleplayMain.getConnection().prepareStatement(
                     "INSERT INTO housebans(userID, reason, beruf, time) VALUES(?, ?, ?, ?)")) {
                 statement.setInt(1, id);
-                statement.setInt(2, reason.getID());
+                statement.setString(2, reason.getName());
                 statement.setInt(3, b.getID());
                 statement.setLong(4, time);
                 statement.executeUpdate();
