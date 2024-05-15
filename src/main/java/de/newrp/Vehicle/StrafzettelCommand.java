@@ -24,26 +24,30 @@ public class StrafzettelCommand implements CommandExecutor {
             final Beruf.Berufe faction = Beruf.getBeruf(player);
             if(faction != Beruf.Berufe.POLICE) {
                 player.sendMessage(Messages.ERROR + "Du bist kein Polizist!");
-                return false;
+                return true;
             }
 
-            if(args.length < 2) {
-                player.sendMessage(PREFIX + "/strafzettel [Preis] [Grund]!");
-                return false;
+            if(args.length == 0) {
+                player.sendMessage(PREFIX + "/strafzettel [Preis/remove] ([Grund])!");
+                return true;
+            } else if (args[0].equalsIgnoreCase("remove")) {
+                Strafzettel.removes.add(player);
+                player.sendMessage(Messages.INFO + "Rechtsklicke jetzt das Auto, um den Strafzettel zu entfernen");
+                return true;
             }
 
             final String reason = String.join(" ",  Arrays.copyOfRange(args, 1, args.length));
 
             if(!Script.isInt(args[0])) {
                 player.sendMessage(PREFIX + "§cDer Preis muss eine Zahl sein!");
-                return false;
+                return true;
             }
 
             int price = Integer.parseInt(args[0]);
 
             if(price <= 0) {
                 player.sendMessage(PREFIX + "§cDu kannst keinen Strafzettel mit einem so geringen Preis erstellen!");
-                return false;
+                return true;
             }
 
             Strafzettel.reasons.put(player, reason);
