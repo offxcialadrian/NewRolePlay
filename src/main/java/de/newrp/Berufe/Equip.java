@@ -387,7 +387,7 @@ public class Equip implements CommandExecutor, Listener {
                     p.sendMessage(PREFIX + "Du hast dich mit " + stuff.getName() + " ausgerüstet.");
                     Beruf.getBeruf(p).sendLeaderMessage("§8[§e" + Beruf.getBeruf(p).getName() + "§8] §e» " + Script.getName(p) + " hat sich mit " + stuff.getName() + " ausgerüstet.");
                     Log.LOW.write(p, "hat sich mit " + w.getName() + " ausgerüstet.");
-                    Notifications.sendMessage(Notifications.NotificationType.PAYMENT, "§a" + p.getName() + " hat sich mit " + w.getName() + " ausgerüstet.");
+                    Notifications.sendMessage(Notifications.NotificationType.PAYMENT, "§a" + Script.getName(p) + " hat sich mit " + w.getName() + " ausgerüstet.");
                     return;
                 }
 
@@ -397,7 +397,7 @@ public class Equip implements CommandExecutor, Listener {
                         p.sendMessage(PREFIX + "Du hast dich mit einer " + w.getName() + " ausgerüstet.");
                         Beruf.getBeruf(p).sendLeaderMessage("§8[§e" + Beruf.getBeruf(p).getName() + "§8] §e» " + Script.getName(p) + " hat sich mit einer " + w.getName() + " ausgerüstet.");
                         Log.LOW.write(p, "hat sich mit einer " + w.getName() + " ausgerüstet.");
-                        Notifications.sendMessage(Notifications.NotificationType.PAYMENT, "§a" + p.getName() + " hat sich mit einer " + w.getName() + " ausgerüstet.");
+                        Notifications.sendMessage(Notifications.NotificationType.PAYMENT, "§a" + Script.getName(p) + " hat sich mit einer " + w.getName() + " ausgerüstet.");
                         p.closeInventory();
                         return;
                     }
@@ -408,7 +408,7 @@ public class Equip implements CommandExecutor, Listener {
                 p.sendMessage(PREFIX + "Du hast dich mit " + stuff.getName() + " ausgerüstet.");
                 Beruf.getBeruf(p).sendLeaderMessage("§8[§e" + Beruf.getBeruf(p).getName() + "§8] §e» " + Script.getName(p) + " hat sich mit " + stuff.getName() + " ausgerüstet.");
                 Log.LOW.write(p, "hat sich mit " + stuff.getName() + " ausgerüstet.");
-                Notifications.sendMessage(Notifications.NotificationType.PAYMENT, "§a" + p.getName() + " hat sich mit " + stuff.getName() + " ausgerüstet.");
+                Notifications.sendMessage(Notifications.NotificationType.PAYMENT, "§a" + Script.getName(p) + " hat sich mit " + stuff.getName() + " ausgerüstet.");
             } else if (Organisation.hasOrganisation(p)) {
                 de.newrp.Organisationen.Stuff stuff = de.newrp.Organisationen.Stuff.getStuff(ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName()));
                 if (stuff == null) return;
@@ -429,7 +429,7 @@ public class Equip implements CommandExecutor, Listener {
                         p.sendMessage(PREFIX + "Du hast dich mit einer " + w.getName() + " ausgerüstet.");
                         orga.sendLeaderMessage("§8[§e" + orga.getName() + "§8] §e» " + Script.getName(p) + " hat sich mit einer " + w.getName() + " ausgerüstet.");
                         Log.LOW.write(p, "hat sich mit einer " + w.getName() + " ausgerüstet.");
-                        Notifications.sendMessage(Notifications.NotificationType.PAYMENT, "§a" + p.getName() + " hat sich mit einer " + w.getName() + " ausgerüstet.");
+                        Notifications.sendMessage(Notifications.NotificationType.PAYMENT, "§a" + Script.getName(p) + " hat sich mit einer " + w.getName() + " ausgerüstet.");
                         p.closeInventory();
                         orga.removeKasse(stuff.getCost());
                         return;
@@ -441,7 +441,7 @@ public class Equip implements CommandExecutor, Listener {
                 p.sendMessage(PREFIX + "Du hast dich mit " + stuff.getName() + " ausgerüstet.");
                 orga.sendLeaderMessage("§8[§e" + orga.getName() + "§8] §e» " + Script.getName(p) + " hat sich mit " + stuff.getName() + " ausgerüstet.");
                 Log.LOW.write(p, "hat sich mit " + stuff.getName() + " ausgerüstet.");
-                Notifications.sendMessage(Notifications.NotificationType.PAYMENT, "§a" + p.getName() + " hat sich mit " + stuff.getName() + " ausgerüstet.");
+                Notifications.sendMessage(Notifications.NotificationType.PAYMENT, "§a" + Script.getName(p) + " hat sich mit " + stuff.getName() + " ausgerüstet.");
                 orga.removeKasse(stuff.getCost());
             }
 
