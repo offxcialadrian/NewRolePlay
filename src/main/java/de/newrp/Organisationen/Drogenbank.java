@@ -252,7 +252,7 @@ public class Drogenbank implements CommandExecutor, Listener {
             }
             removeDrogen(Organisation.getOrganisation(p), droge, purity, amount2);
             p.sendMessage(Organisation.PREFIX + "Du hast " + amount2 + "g " + droge.getName() + " mit dem Reinheitsgrad " + purity.getText() + " aus der Drogenbank genommen.");
-            Organisation.getOrganisation(p).sendMessage(Organisation.PREFIX + "Es wurden " + amount + "g " + droge.getName() + " mit dem Reinheitsgrad " + purity.getText() + " von " + Script.getName(p) + " aus der Drogenbank genommen.");
+            Organisation.getOrganisation(p).sendMessage(Organisation.PREFIX + "Es wurden " + amount2 + "g " + droge.getName() + " mit dem Reinheitsgrad " + purity.getText() + " von " + Script.getName(p) + " aus der Drogenbank genommen.");
             p.getInventory().addItem(new ItemBuilder(droge.getMaterial()).setName(droge.getName()).setLore("§7Reinheitsgrad: " + purity.getText()).setAmount(amount2).build());
             drug_amount.remove(p.getName());
         }
