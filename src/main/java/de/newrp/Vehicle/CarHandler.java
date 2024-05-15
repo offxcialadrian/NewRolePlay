@@ -4,6 +4,7 @@ import de.newrp.API.Cache;
 import de.newrp.API.Debug;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
+import de.newrp.Administrator.Notifications;
 import de.newrp.Administrator.SDuty;
 import de.newrp.Berufe.Beruf;
 import de.newrp.NewRoleplayMain;
@@ -131,13 +132,25 @@ public class CarHandler implements Listener {
                         return;
                     }
                     car.setStrafzettel(new Strafzettel(car.getCarID(), Strafzettel.reasons.get(player), Strafzettel.prices.get(player), Script.getNRPID(player)));
-                    Strafzettel.reasons.remove(player);
-                    Strafzettel.prices.remove(player);
                     player.sendMessage(StrafzettelCommand.PREFIX + "Du hast den Strafzettel am Auto platziert.");
                     Beruf.Berufe.POLICE.sendMessage(StrafzettelCommand.PREFIX + Script.getName(player) + " hat ein Strafzettel an einem §e" + car.getCarType().getName() + " §7mit Kennzeichen §e" + car.getLicenseplate() + " §7platziert!" +
                             "\n" + StrafzettelCommand.PREFIX + "Grund: §e" + car.getStrafzettel().getReason() +
                             "\n" + StrafzettelCommand.PREFIX + "Preis: §e" + car.getStrafzettel().getPrice() + "€");
                     Debug.debug("Added strafzettel to " + car.getLicenseplate() + " by " + Script.getName(player));
+                    Notifications.sendMessage(Notifications.NotificationType.PAYMENT, "§aStrafzettel an " + car.getLicenseplate() + " von " + player.getName() + " für " + Strafzettel.reasons.get(player) + " [" + Strafzettel.prices.get(player) + "€] gegeben.");
+                    Strafzettel.reasons.remove(player);
+                    Strafzettel.prices.remove(player);
+                    event.setCancelled(true);
+                } else if (Strafzettel.isRemoving(player)) {
+                    if (car.getStrafzettel() != null) {
+                        car.removeStrafzettel();
+                        car.setStrafzettel(null);
+                        player.sendMessage(StrafzettelCommand.PREFIX + "Du hast den Strafzettel vom Auto entfernt.");
+                        Notifications.sendMessage(Notifications.NotificationType.PAYMENT, "§aStrafzettel an " + car.getLicenseplate() + " von " + player.getName() + " entfernt.");
+                    } else {
+                        player.sendMessage(StrafzettelCommand.PREFIX + "Dieses Auto hat keinen Strafzettel!");
+                    }
+                    Strafzettel.removes.remove(player);
                     event.setCancelled(true);
                 } else {
                     if (SDuty.isSDuty(player)) {
