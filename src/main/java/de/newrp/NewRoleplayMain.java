@@ -89,6 +89,7 @@ public class NewRoleplayMain extends JavaPlugin {
 
     private IConfigService configService;
     private MainConfig mainConfig;
+    private static MySQL forumConnectionProvider;
 
     public void onEnable() {
         Bukkit.getConsoleSender().sendMessage("§cNRP §8× §aStarting with version " + this.getDescription().getVersion() + "..");
@@ -123,8 +124,8 @@ public class NewRoleplayMain extends JavaPlugin {
         }
 
         try {
-            MySQL forumDatabase = new MySQL(this.mainConfig.getForumConnection().getHostname(), this.mainConfig.getForumConnection().getPort(), this.mainConfig.getForumConnection().getDatabase(), this.mainConfig.getForumConnection().getUsername(), this.mainConfig.getForumConnection().getPassword());
-            NewRoleplayMain.forumConnection = forumDatabase.openConnection();
+            forumConnectionProvider = new MySQL(this.mainConfig.getForumConnection().getHostname(), this.mainConfig.getForumConnection().getPort(), this.mainConfig.getForumConnection().getDatabase(), this.mainConfig.getForumConnection().getUsername(), this.mainConfig.getForumConnection().getPassword());
+            NewRoleplayMain.forumConnection = forumConnectionProvider.openConnection();
             Bukkit.getConsoleSender().sendMessage("§cNRP §8× §aVerbindung zur Forum-Datenbank hergestellt.");
         } catch (Exception e1) {
             Bukkit.getConsoleSender().sendMessage("§cNRP §8× §cVerbindung zur Forum-Datenbank konnte nicht hergestellt werden.");
@@ -708,6 +709,13 @@ public class NewRoleplayMain extends JavaPlugin {
     }
 
     public static Connection getForumConnection() {
+        try {
+            if(forumConnection.isClosed() || forumConnection == null) {
+                forumConnection = forumConnectionProvider.openConnection();
+            }
+        } catch(final Exception exception) {
+            handleError(exception);
+        }
         return forumConnection;
     }
 
