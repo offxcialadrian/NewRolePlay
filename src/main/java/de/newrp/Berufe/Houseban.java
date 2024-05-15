@@ -89,6 +89,7 @@ public class Houseban implements CommandExecutor, Listener, TabCompleter {
             return null;
         }
 
+
         public static Reasons getReasonByID(int id) {
             for (Reasons r : Reasons.values()) {
                 if (r.getID() == id) return r;
@@ -113,7 +114,7 @@ public class Houseban implements CommandExecutor, Listener, TabCompleter {
             StringBuilder sb = new StringBuilder();
             for (Player all : Bukkit.getOnlinePlayers()) {
                 if (!isHousebanned(all, b)) continue;
-                sb.append("§7»§6 ").append(all.getName()).append(" §8×§6 ").append(getReason(all, b).getName()).append(" §8×§6 ").append(DATE_FORMAT.format(new Date(getTime(all, b)))).append(" Uhr\n");
+                sb.append("§7»§6 ").append(all.getName()).append(" §8×§6 ").append(getReason(all, b)).append(" §8×§6 ").append(DATE_FORMAT.format(new Date(getTime(all, b)))).append(" Uhr\n");
             }
             p.sendMessage(sb.toString());
             return true;
@@ -124,7 +125,7 @@ public class Houseban implements CommandExecutor, Listener, TabCompleter {
             p.sendMessage("§8===§6 Hausverbote §8===");
             for (int unicacid : getHousebannedNRPIDs(b)) {
                 OfflinePlayer banned = Script.getOfflinePlayer(unicacid);
-                sb.append("\n  §7»§6 ").append(Script.getNameInDB(banned)).append(" §8×§6 ").append(getReason(banned, b).getName()).append(" §8×§6 ").append(DATE_FORMAT.format(new Date(getTime(banned, b))));
+                sb.append("\n  §7»§6 ").append(Script.getNameInDB(banned)).append(" §8×§6 ").append(getReason(banned, b)).append(" §8×§6 ").append(DATE_FORMAT.format(new Date(getTime(banned, b))));
             }
             p.sendMessage(sb.toString());
             return true;
@@ -152,12 +153,13 @@ public class Houseban implements CommandExecutor, Listener, TabCompleter {
                 p.sendMessage(Messages.INFO + "Der Spieler hat bereits Hausverbot. Das Hausverbot wurde verlängert.");
 
                 long time = getTime(tg, b);
+                final String reasonName = getReason(tg, b) + " & " + reason.getName();
                 Script.executeUpdate("DELETE FROM housebans WHERE userID = " + Script.getNRPID(tg) + " AND beruf = " + b.getID());
                 time += reason.getDuration() + ((long) reason.getDuration() * 24 * 60 * 60 * 1000);
                 try (PreparedStatement statement = NewRoleplayMain.getConnection().prepareStatement(
                         "INSERT INTO housebans(userID, reason, beruf, time) VALUES(?, ?, ?, ?)")) {
                     statement.setInt(1, Script.getNRPID(tg));
-                    statement.setInt(2, reason.getID());
+                    statement.setString(2, reasonName);
                     statement.setInt(3, b.getID());
                     statement.setLong(4, time);
                     statement.executeUpdate();
@@ -244,7 +246,7 @@ public class Houseban implements CommandExecutor, Listener, TabCompleter {
             try (PreparedStatement statement = NewRoleplayMain.getConnection().prepareStatement(
                     "INSERT INTO housebans(userID, reason, time, beruf) VALUES(?, ?, ?, ?)")) {
                 statement.setInt(1, id);
-                statement.setInt(2, reason.getID());
+                statement.setString(2, reason.getName());
                 statement.setLong(3, time);
                 statement.setInt(4, b.getID());
                 statement.executeUpdate();
@@ -352,7 +354,7 @@ public class Houseban implements CommandExecutor, Listener, TabCompleter {
         return list;
     }
 
-    public static Reasons getReason(Player p, Beruf.Berufe b) {
+    public static String  getReason(Player p, Beruf.Berufe b) {
         int id = Script.getNRPID(p);
         try (PreparedStatement statement = NewRoleplayMain.getConnection().prepareStatement(
                 "SELECT reason FROM housebans WHERE userID = ? AND beruf = ?")) {
@@ -360,7 +362,7 @@ public class Houseban implements CommandExecutor, Listener, TabCompleter {
             statement.setInt(2, b.getID());
             try (ResultSet rs = statement.executeQuery()) {
                 if (rs.next()) {
-                    return Reasons.getReasonByID(rs.getInt("reason"));
+                    return rs.getString("reason");
                 }
             }
         } catch (SQLException e) {
@@ -369,7 +371,7 @@ public class Houseban implements CommandExecutor, Listener, TabCompleter {
         return null;
     }
 
-    private static Reasons getReason(OfflinePlayer p, Beruf.Berufe b) {
+    private static String getReason(OfflinePlayer p, Beruf.Berufe b) {
         int id = Script.getNRPID(p);
         try (PreparedStatement statement = NewRoleplayMain.getConnection().prepareStatement(
                 "SELECT reason FROM housebans WHERE userID = ? AND beruf = ?")) {
@@ -377,7 +379,7 @@ public class Houseban implements CommandExecutor, Listener, TabCompleter {
             statement.setInt(2, b.getID());
             try (ResultSet rs = statement.executeQuery()) {
                 if (rs.next()) {
-                    return Reasons.getReasonByID(rs.getInt("reason"));
+                    return rs.getString("reason");
                 }
             }
         } catch (SQLException e) {
