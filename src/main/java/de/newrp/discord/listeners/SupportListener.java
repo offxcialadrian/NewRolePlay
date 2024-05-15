@@ -9,7 +9,7 @@ public class SupportListener extends ListenerAdapter {
     @Override
     public void onGuildVoiceUpdate(GuildVoiceUpdateEvent event) {
         if (event.getChannelJoined().getId().equals("1183386776165961821")) {
-            Script.sendTeamMessage("Der User " + event.getEntity().getEffectiveName() + " hat den Discord-Support betreten.");
+            Script.sendTeamMessage(Script.PREFIX + "Der User " + event.getEntity().getEffectiveName() + " hat den Discord-Support betreten.");
         }
     }
 

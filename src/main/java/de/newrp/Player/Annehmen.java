@@ -205,10 +205,10 @@ public class Annehmen implements CommandExecutor {
                 return true;
             }
 
-            Licenses.ERSTE_HILFE.grant(Script.getNRPID(medic));
+            Licenses.ERSTE_HILFE.grant(Script.getNRPID(p));
             p.sendMessage(ACCEPTED + "Du hast den Erste-Hilfe-Schein erfolgreich erworben.");
             Beruf.Berufe.RETTUNGSDIENST.sendMessage(Beruf.PREFIX + Script.getName(medic) + " hat " + Script.getName(p) + " einen Erste-Hilfe-Schein ausgestellt.");
-            Script.executeAsyncUpdate("INSERT INTO erste_hilfe (nrp_id, awarded) VALUES (" + Script.getNRPID(medic) + ", " + System.currentTimeMillis() + ");");
+            Script.executeAsyncUpdate("INSERT INTO erste_hilfe (nrp_id, awarded) VALUES (" + Script.getNRPID(p) + ", " + System.currentTimeMillis() + ");");
             Script.removeMoney(p, PaymentType.CASH, 250);
             Stadtkasse.addStadtkasse(250, "Erste-Hilfe-Kurs von " + Script.getName(p), null);
             offer.remove(p.getName() + ".erstehilfeschein");
@@ -389,7 +389,7 @@ public class Annehmen implements CommandExecutor {
             offer.remove(p.getName() + ".rezept");
             offer.remove(p.getName() + ".medikament");
             offer.remove(p.getName() + ".rezept.anzahl");
-            Stadtkasse.removeStadtkasse(30, "Rezeptausstellung an " + Script.getName(p));
+            Stadtkasse.removeStadtkasse(30*amount, "Rezeptausstellung an " + Script.getName(p));
             Achievement.REZEPT.grant(p);
 
         } else if(offer.containsKey(p.getName() + ".house.rent")) {

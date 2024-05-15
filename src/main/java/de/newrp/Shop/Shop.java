@@ -171,6 +171,7 @@ public class Shop implements CommandExecutor, Listener, TabCompleter {
             buyer.sendMessage(PREFIX + Script.getName(p) + " hat dir angeboten seinen Shop " + shop.getPublicName() + " für " + price + "€ zu kaufen.");
 
             buyer.sendMessage(Messages.INFO + "Miete (Gebäude): " + shop.getRent() + "€");
+            buyer.sendMessage(Messages.INFO + "Betriebskosten: " + shop.getRunningCost() + "€");
             buyer.sendMessage(Messages.INFO + "Lager: " + shop.getLager() + "/" + shop.getLagerSize());
             buyer.sendMessage(Messages.INFO + "Kasse: " + shop.getKasse() + "€");
             if(shop.getKasse()<=0) {
@@ -184,6 +185,7 @@ public class Shop implements CommandExecutor, Listener, TabCompleter {
         if(args.length == 1 && args[0].equalsIgnoreCase("info")) {
             p.sendMessage(PREFIX + "=== " + shop.getPublicName() + " ===");
             p.sendMessage("§8» " + "§6Miete (Gebäude): " + shop.getRent() + "€");
+            p.sendMessage("§8» " + "Betriebskosten: " + shop.getRunningCost() + "€");
             p.sendMessage("§8» " + "§6Lager: " + shop.getLager() + "/" + shop.getLagerSize());
             p.sendMessage("§8» " + "§6Preise:");
             HashMap<Integer, int[]> c = Shops.getShopItemData(shop);
@@ -297,7 +299,7 @@ public class Shop implements CommandExecutor, Listener, TabCompleter {
                 return true;
             }
 
-            int price = 21000;
+            int price = 7500;
 
             if(shop.getKasse() < price) {
                 p.sendMessage(Messages.ERROR + "Du hast nicht genug Geld.");

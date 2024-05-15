@@ -85,7 +85,7 @@ public class BreakinCommand implements CommandExecutor {
                                         Script.addMoney(player, PaymentType.CASH, LockpickHandler.value.get(player));
                                         Stadtkasse.removeStadtkasse(LockpickHandler.value.get(player), "Raub bei " + rob.getName() + " von " + player.getName());
                                         orga.addExp(LockpickHandler.value.get(player) / 60);
-                                        Beruf.Berufe.GOVERNMENT.sendMessage(PREFIX + "Die Stadtkasse ist für den Raub bei " + rob.getName() + " aufgekommen.");
+                                        Beruf.Berufe.GOVERNMENT.sendMessage(PREFIX + "Die Stadtkasse ist für den Raub bei " + rob.getName() + " aufgekommen und hat " + LockpickHandler.value.get(player) + "€ verloren.");
                                         Beruf.Berufe.POLICE.sendMessage(PREFIX + "Der Raub bei " + rob.getName() + " konnte nicht verhindert werden.");
                                         if(MaskHandler.masks.containsKey(player.getUniqueId())) {
                                             Beruf.Berufe.POLICE.sendMessage(PREFIX + "Eine maskierte Person ist für den Raub verantwortlich.");

@@ -130,7 +130,7 @@ public class Stadtkasse implements CommandExecutor {
         if (betrag == 0) return;
         SteuerNotification.sendNotification(grund + " " + Messages.ARROW + " " + betrag + "€" + (steuer != null && !grund.contains(steuer.getName()) ? " (" + steuer.getName() + ")" : ""));
         Script.executeAsyncUpdate("UPDATE city SET money = money + " + betrag);
-        Script.executeAsyncUpdate("INSERT INTO stadtkasse (betrag, grund, steuerID, steuerPercentage) VALUES (" + betrag + ", '" + grund + "', " + (steuer != null ? steuer.getID() : "NULL") + ", " + (steuer != null ? steuer.getPercentage() : "NULL") + ")");
+        Script.executeAsyncUpdate("INSERT INTO stadtkasse (betrag, grund, steuerID, steuerPercentage, time) VALUES (" + betrag + ", '" + grund + "', " + (steuer != null ? steuer.getID() : "NULL") + ", " + (steuer != null ? steuer.getPercentage() : "NULL") + ", NOW())");
         new BukkitRunnable() {
             @Override
             public void run() {

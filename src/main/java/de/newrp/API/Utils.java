@@ -330,7 +330,7 @@ public class Utils implements Listener {
 
             if(Houseban.isHousebanned(p, Beruf.Berufe.RETTUNGSDIENST)) {
                 for(Player medics : Beruf.Berufe.RETTUNGSDIENST.getMembers()) {
-                    Script.setSubtitle(medics, p.getUniqueId(), "§cHausverbot: " + Houseban.getReason(p, Beruf.Berufe.RETTUNGSDIENST));
+                    Script.setSubtitle(medics, p.getUniqueId(), "§cHausverbot: " + Houseban.getReason(p, Beruf.Berufe.RETTUNGSDIENST).getName());
                 }
             }
 

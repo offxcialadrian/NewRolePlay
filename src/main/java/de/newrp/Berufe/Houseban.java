@@ -27,7 +27,7 @@ public class Houseban implements CommandExecutor, Listener, TabCompleter {
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd.MM.yyyy HH:mm");
     private static String PREFIX = "§8[§6Hausverbot§8] §7»§7 ";
 
-    enum Reasons {
+    public enum Reasons {
         LEICHENBEWACHUNG(1, "Leichenbewachung", new String[]{"leichenbewachung", "leichen", "leiche", "lb"}, 7),
         GEWALTANWENDUNG(2, "Gewaltanwendung", new String[]{"gewaltanwendung", "gewalt", "ga"}, 7),
         VANDALISMUS(3, "Vandalismus", new String[]{"vandalismus", "vanda", "va"}, 3),

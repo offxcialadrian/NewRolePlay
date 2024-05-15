@@ -125,6 +125,11 @@ public class CarHandler implements Listener {
                     CheckKFZ.kfz_check.remove(player);
                     event.setCancelled(true);
                 } else if (Strafzettel.isTicketing(player)) {
+                    if(Script.getNRPID(car.getOwner())==1) {
+                        player.sendMessage(StrafzettelCommand.PREFIX + "Du kannst diesem Auto keinen Strafzettel geben.");
+                        event.setCancelled(true);
+                        return;
+                    }
                     car.setStrafzettel(new Strafzettel(car.getCarID(), Strafzettel.reasons.get(player), Strafzettel.prices.get(player), Script.getNRPID(player)));
                     Strafzettel.reasons.remove(player);
                     Strafzettel.prices.remove(player);
