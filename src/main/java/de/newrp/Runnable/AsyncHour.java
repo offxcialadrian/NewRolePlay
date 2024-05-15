@@ -103,9 +103,9 @@ public class AsyncHour extends BukkitRunnable {
                         if (is == null) {
                             continue;
                         }
-                        runningcost += 10;
+                        runningcost += 5;
                     }
-                    if (shop.acceptCard()) runningcost += 20;
+                    if (shop.acceptCard()) runningcost += 5;
                 } else {
                     Hotel.Hotels hotel = Hotel.Hotels.getHotelByShop(shop);
                     assert hotel != null;

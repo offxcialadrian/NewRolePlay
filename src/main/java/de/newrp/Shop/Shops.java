@@ -25,7 +25,7 @@ public enum Shops {
     AEKI_CAFE(3, "Café am AEKI", "Café am AEKI", 10000, new Location(Script.WORLD, 688, 138, 908), 0, 600, true, ShopType.CAFE),
     GUNSHOP(4, "Schmid und Schmiedt Waffenladen", "Schmid und Schmiedt Waffenladen", 219000, new Location(Script.WORLD, 453, 69, 929), 30, 600, true, ShopType.GUNSHOP),
     SATURN(5, "Hankys", "Hankys", 80000, new Location(Script.WORLD, 865, 74, 964), 10, 600, true, ShopType.ELECTRONIC),
-    SUPERMARKT(6, "Supermarkt", "Supermarkt", 149000, new Location(Script.WORLD, 640, 68, 861), 50, 600, true, ShopType.SUPERMARKET),
+    SUPERMARKT(6, "Supermarkt", "Supermarkt", 149000, new Location(Script.WORLD, 640, 68, 861), 25, 600, true, ShopType.SUPERMARKET),
     MUSIK(7, "Musikladen", "Musikladen", 25000, new Location(Script.WORLD, 864, 74, 905), 0, 600, true, ShopType.MUSIC),
     FLOWER(8, "Blumenladen", "Blumenladen", 50000, new Location(Script.WORLD, 866, 74, 950), 10, 600, true, ShopType.FLOWER),
     APOTHEKE(9, "Apotheke", "Apotheke", 45000, new Location(Script.WORLD, 346, 76, 1079), 15, 600, true, ShopType.PHARMACY),
@@ -111,9 +111,9 @@ public enum Shops {
                 if (is == null) {
                     continue;
                 }
-                runningcost += 10;
+                runningcost += 5;
             }
-            if (this.acceptCard()) runningcost += 20;
+            if (this.acceptCard()) runningcost += 5;
         } else {
             Hotel.Hotels hotel = Hotel.Hotels.getHotelByShop(this);
             assert hotel != null;

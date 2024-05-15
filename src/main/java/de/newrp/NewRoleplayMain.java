@@ -191,6 +191,7 @@ public class NewRoleplayMain extends JavaPlugin {
         builder.build();
 
         Script.executeUpdate("DELETE FROM log WHERE time > DATE_SUB(CURDATE(), INTERVAL 45 DAY);");
+        Script.executeUpdate("DELETE FROM stadtkasse WHERE time > DATE_SUB(CURDATE(), INTERVAL 30 DAY);");
 
         Bukkit.getConsoleSender().sendMessage("§cNRP §8× §astarting complete..");
         Bukkit.getConsoleSender().sendMessage("§cNRP §8× §aViel Erfolg heute..");
