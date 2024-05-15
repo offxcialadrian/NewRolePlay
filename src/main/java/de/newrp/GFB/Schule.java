@@ -100,8 +100,8 @@ public class Schule implements CommandExecutor, Listener {
             return true;
         }
 
-        if(Calendar.getInstance().get(Calendar.HOUR_OF_DAY) == 23 && Calendar.getInstance().get(Calendar.MINUTE) < 45) {
-            p.sendMessage(Messages.ERROR + "Du kannst die Schule nicht mehr betreten, da der Server in 60 Sekunden neu startet.");
+        if(Calendar.getInstance().get(Calendar.HOUR_OF_DAY) == 23 && Calendar.getInstance().get(Calendar.MINUTE) > 45) {
+            p.sendMessage(Messages.ERROR + "Du kannst die Schule nicht mehr betreten, da der Server bald neu startet.");
             return true;
         }
 
