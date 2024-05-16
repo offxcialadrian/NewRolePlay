@@ -4,7 +4,8 @@ import de.newrp.API.*;
 import de.newrp.Administrator.SDuty;
 import de.newrp.Berufe.Beruf;
 import de.newrp.News.NewsCommand;
-import de.newrp.main;
+import de.newrp.NewRoleplayMain;
+import de.newrp.Organisationen.Organisation;
 import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -55,7 +56,7 @@ public class Wahlen implements CommandExecutor, Listener {
 
                 if (Beruf.getBeruf(p) == Beruf.Berufe.NEWS && !SDuty.isSDuty(p)) {
                     p.sendMessage(PREFIX + "Aktuelle Hochrechnungen:");
-                    try (Statement stmt = main.getConnection().createStatement();
+                    try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
                          ResultSet rs = stmt.executeQuery("SELECT * FROM wahlen WHERE quartal = '" + getCurrentQuartal() + "' AND year = '" + Calendar.getInstance().get(Calendar.YEAR) + "'")) {
                         if (rs.next()) {
                             do {
@@ -233,6 +234,8 @@ public class Wahlen implements CommandExecutor, Listener {
                 NewsCommand.wahlenNewsActive = false;
                 if (Beruf.hasBeruf(winner) && Beruf.getBeruf(winner) != Beruf.Berufe.GOVERNMENT)
                     Beruf.getBeruf(winner).removeMember(winner);
+                if(Organisation.hasOrganisation(winner))
+                    Organisation.getOrganisation(winner).removeMember(winner);
                 if (Beruf.getBeruf(winner) != Beruf.Berufe.GOVERNMENT) Beruf.Berufe.GOVERNMENT.addMember(winner);
                 Beruf.setLeader(winner, true);
                 Achievement.WAHL_GEWONNEN.grant(winner);
@@ -241,7 +244,7 @@ public class Wahlen implements CommandExecutor, Listener {
 
 
             }
-        }.runTaskLater(main.getInstance(), 20L * 60 * 10);
+        }.runTaskLater(NewRoleplayMain.getInstance(), 20L * 60 * 10);
     }
 
     public static String getNextElection() {
@@ -267,7 +270,7 @@ public class Wahlen implements CommandExecutor, Listener {
     }
 
     public static int getTotalVotes() {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT COUNT(*) AS total FROM votes WHERE quartal = '" + getCurrentQuartal() + "' AND year = '" + Calendar.getInstance().get(Calendar.YEAR) + "'")) {
             if (rs.next()) {
                 return rs.getInt("total");
@@ -281,7 +284,7 @@ public class Wahlen implements CommandExecutor, Listener {
     public static void sendWahlGUI(Player p) {
         p.sendMessage(PREFIX + "Lade Wahl...");
         p.sendMessage(Messages.INFO + "Niemand kann sehen, wen du wählst. Auch nicht die Administration.");
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM wahlen WHERE quartal = '" + getCurrentQuartal() + "' AND year = '" + Calendar.getInstance().get(Calendar.YEAR) + "'")) {
             if (rs.next()) {
                 Inventory inv = Bukkit.createInventory(null, 54, "§8[§6Wahlen§8]");
@@ -311,7 +314,7 @@ public class Wahlen implements CommandExecutor, Listener {
     }
 
     public static int getVote(Player p) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM votes WHERE quartal = " + getCurrentQuartal() + " AND year = " + Calendar.getInstance().get(Calendar.YEAR) + " AND nrp_id = " + Script.getNRPID(p))) {
             if (rs.next()) {
                 return rs.getInt("president");
@@ -323,7 +326,7 @@ public class Wahlen implements CommandExecutor, Listener {
     }
 
     public static int getVote(OfflinePlayer p) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM votes WHERE quartal = " + getCurrentQuartal() + " AND year = " + Calendar.getInstance().get(Calendar.YEAR) + " AND nrp_id = " + Script.getNRPID(p))) {
             if (rs.next()) {
                 return rs.getInt("president");
@@ -335,7 +338,7 @@ public class Wahlen implements CommandExecutor, Listener {
     }
 
     public static int getWinner() {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM wahlen WHERE quartal = '" + getCurrentQuartal() + "' AND year = '" + Calendar.getInstance().get(Calendar.YEAR) + "' ORDER BY votings DESC")) {
             if (rs.next()) {
                 int i = 0;
@@ -375,7 +378,7 @@ public class Wahlen implements CommandExecutor, Listener {
 
     public static List<Integer> getEvenPlayers(OfflinePlayer p) {
         List<Integer> list = new ArrayList<>();
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM wahlen WHERE quartal = '" + getCurrentQuartal() + "' AND year = '" + Calendar.getInstance().get(Calendar.YEAR) + "' AND votings= '" + getVotes(p) + "'")) {
             if (rs.next()) {
                 do {
@@ -391,7 +394,7 @@ public class Wahlen implements CommandExecutor, Listener {
 
     public static ArrayList<OfflinePlayer> getPlayers() {
         ArrayList<OfflinePlayer> list = new ArrayList<>();
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM wahlen WHERE quartal = '" + getCurrentQuartal() + "' AND year = '" + Calendar.getInstance().get(Calendar.YEAR) + "'")) {
             if (rs.next()) {
                 do {
@@ -414,7 +417,7 @@ public class Wahlen implements CommandExecutor, Listener {
     }
 
     public static boolean hasApplied(Player p) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM wahlen WHERE nrp_id = '" + Script.getNRPID(p) + "' AND quartal = '" + getCurrentQuartal() + "' AND year = '" + Calendar.getInstance().get(Calendar.YEAR) + "'")) {
             return rs.next();
         } catch (Exception e) {
@@ -424,7 +427,7 @@ public class Wahlen implements CommandExecutor, Listener {
     }
 
     public static boolean hasApplied(OfflinePlayer p) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM wahlen WHERE nrp_id = '" + Script.getNRPID(p) + "' AND quartal = '" + getCurrentQuartal() + "' AND year = '" + Calendar.getInstance().get(Calendar.YEAR) + "'")) {
             return rs.next();
         } catch (Exception e) {
@@ -434,7 +437,7 @@ public class Wahlen implements CommandExecutor, Listener {
     }
 
     public static int getWahlApplications() {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM wahlen WHERE quartal = '" + getCurrentQuartal() + "' AND year = '" + Calendar.getInstance().get(Calendar.YEAR) + "'")) {
             if (rs.next()) {
                 int i = 0;

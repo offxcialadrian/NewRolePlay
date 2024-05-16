@@ -1,11 +1,7 @@
 package de.newrp.GFB;
 
-import com.github.theholywaffle.teamspeak3.api.wrapper.Message;
-import de.newrp.API.Achievement;
-import de.newrp.API.Messages;
-import de.newrp.API.Premium;
-import de.newrp.API.Script;
-import de.newrp.main;
+import de.newrp.API.*;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -69,7 +65,7 @@ public enum GFB {
     }
 
     public int getExp(Player p) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM gfb_level WHERE nrp_id='" + Script.getNRPID(p) + "' AND gfb_id=" + this.id)) {
             if (rs.next()) {
                 return rs.getInt("exp");
@@ -79,6 +75,7 @@ public enum GFB {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            Debug.debug("SQLException -> " + e.getMessage());
         }
         return 0;
     }
@@ -100,10 +97,11 @@ public enum GFB {
             p.sendMessage(PREFIX + "Du bist beim GFB " + this.getName() + " nun Level " + (getLevel(p)) + "!");
             return;
         }
-        try (Statement stmt = main.getConnection().createStatement()) {
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement()) {
             stmt.executeUpdate("UPDATE gfb_level SET exp=" + (getExp(p) + exp) + " WHERE nrp_id='" + Script.getNRPID(p) + "' AND gfb_id=" + this.id);
         } catch (SQLException e) {
             e.printStackTrace();
+            Debug.debug("SQLException -> " + e.getMessage());
         }
         p.sendMessage(PREFIX + "Du hast " + exp + " Exp für den Job " + this.name + " erhalten (" + getExp(p) + "/" + getLevelCost(getLevel(p)) + ")");
     }
@@ -115,16 +113,17 @@ public enum GFB {
             p.sendMessage(PREFIX + "Du bist beim GFB " + this.getName() + " nun Level " + (getLevel(p) - 1) + "!");
             return;
         }
-        try (Statement stmt = main.getConnection().createStatement()) {
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement()) {
             stmt.executeUpdate("UPDATE gfb_level SET exp=" + (getExp(p) - exp) + " WHERE nrp_id='" + Script.getNRPID(p) + "' AND gfb_id=" + this.id);
         } catch (SQLException e) {
             e.printStackTrace();
+            Debug.debug("SQLException -> " + e.getMessage());
         }
         p.sendMessage(PREFIX + "Du hast " + exp + " Exp für den Job " + this.name + " verloren (" + getExp(p) + "/" + getLevelCost(getLevel(p)) + ")");
     }
 
     public int getLevel(Player p) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM gfb_level WHERE nrp_id='" + Script.getNRPID(p) + "' AND gfb_id=" + this.id)) {
             if (rs.next()) {
                 return rs.getInt("level");
@@ -133,7 +132,7 @@ public enum GFB {
                 return 1;
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            NewRoleplayMain.handleError(e);
         }
         return 0;
     }

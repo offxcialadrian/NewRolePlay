@@ -1,7 +1,7 @@
 package de.newrp.API;
 
 import de.newrp.Administrator.AntiCheatSystem;
-import de.newrp.main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.libs.org.apache.commons.io.IOUtils;
 import org.bukkit.entity.Player;
@@ -32,7 +32,7 @@ public class AntiVPN implements Listener {
             }
             return;
         }
-        Bukkit.getScheduler().runTaskAsynchronously(main.getInstance(), () -> {
+        Bukkit.getScheduler().runTaskAsynchronously(NewRoleplayMain.getInstance(), () -> {
             if (ip.equals("127.0.0.1")) return;
             try {
                 URLConnection conn = new URL("https://blackbox.ipinfo.app/lookup/" + ip).openConnection();
@@ -40,13 +40,13 @@ public class AntiVPN implements Listener {
                 String lookup = IOUtils.toString(conn.getInputStream());
                 boolean isVPN = lookup.equals("Y");
                 if (isVPN) {
-                    Bukkit.getScheduler().runTask(main.getInstance(), () -> {
+                    Bukkit.getScheduler().runTask(NewRoleplayMain.getInstance(), () -> {
                         Script.sendTeamMessage(AntiCheatSystem.PREFIX + "Bei " + Script.getName(p) + " wurde eine VPN entdeckt.");
                     });
                 }
                 IP_CACHE.put(ip, isVPN);
             } catch (IOException e1) {
-                e1.printStackTrace();
+                NewRoleplayMain.handleError(e1);
             }
         });
     }

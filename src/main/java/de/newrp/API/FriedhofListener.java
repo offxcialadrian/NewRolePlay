@@ -2,12 +2,13 @@ package de.newrp.API;
 
 import de.newrp.Administrator.Notifications;
 import de.newrp.Administrator.SDuty;
-import de.newrp.Berufe.Beruf;
 import de.newrp.Call.Call;
 import de.newrp.Gangwar.GangwarCommand;
-import de.newrp.Organisationen.Organisation;
 import de.newrp.Player.Fesseln;
-import de.newrp.main;
+import de.newrp.NewRoleplayMain;
+import de.newrp.dependencies.DependencyContainer;
+import de.newrp.features.deathmatcharena.IDeathmatchArenaService;
+import de.newrp.features.deathmatcharena.data.DeathmatchArenaStats;
 import org.bukkit.*;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
@@ -31,6 +32,7 @@ import java.util.concurrent.TimeUnit;
 public class FriedhofListener implements Listener {
 
     public static final HashMap<String, EntityDamageEvent.DamageCause> DEATH_REASON = new HashMap<>();
+    private final IDeathmatchArenaService deathmatchArenaService = DependencyContainer.getContainer().getDependency(IDeathmatchArenaService.class);
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void onDeath(PlayerDeathEvent e) {
@@ -38,16 +40,35 @@ public class FriedhofListener implements Listener {
 
         Player p = e.getEntity();
 
+        if(this.deathmatchArenaService.isInDeathmatch(p.getPlayer(), false)) {
+            p.sendMessage(Messages.INFO + "Weil du in der Deathmatch Arena bist, bist du direkt respawned");
+            final DeathmatchArenaStats stats = this.deathmatchArenaService.getStats(p);
+            if(stats != null) {
+                stats.deaths(stats.deaths() + 1);
+            }
+
+            if(p.getKiller() == null) {
+                this.deathmatchArenaService.sendMessageToArenaMembers(this.deathmatchArenaService.getPrefix() + Script.getName(p) + " ist gestorben");
+            } else {
+                this.deathmatchArenaService.sendMessageToArenaMembers(this.deathmatchArenaService.getPrefix() + Script.getName(p) + " wurde von " + Script.getName(p.getKiller()) + " getötet");
+                final DeathmatchArenaStats killerStats = this.deathmatchArenaService.getStats(p.getKiller());
+                if(killerStats != null) {
+                    killerStats.kills(killerStats.kills() + 1);
+                }
+
+            }
+            return;
+        }
+
         Chair.NO_TELEPORT.add(p.getName());
         if (p.isInsideVehicle()) p.leaveVehicle();
         if(Fesseln.isTiedUp(p)) Fesseln.untie(p);
 
-
         //Sekunden
         int deathtime = (GangwarCommand.isInGangwar(p)?120:480);
 
-        boolean explosion = p.getLastDamageCause().getCause() == EntityDamageEvent.DamageCause.BLOCK_EXPLOSION ||
-                p.getLastDamageCause().getCause() == EntityDamageEvent.DamageCause.ENTITY_EXPLOSION;
+       /*boolean explosion = p.getLastDamageCause().getCause() == EntityDamageEvent.DamageCause.BLOCK_EXPLOSION ||
+                p.getLastDamageCause().getCause() == EntityDamageEvent.DamageCause.ENTITY_EXPLOSION;*/
 
         World w = p.getWorld();
         Location deathLocation = p.getLocation();
@@ -57,47 +78,35 @@ public class FriedhofListener implements Listener {
         meta.setOwningPlayer(p);
         meta.setDisplayName("§6" + p.getName());
         head.setItemMeta(meta);
-        /*Item item = w.dropItemNaturally(deathLocation, head);
-        if (deathtime > 480 || explosion) {
-            item.setCustomName("§8✟" + p.getName());
-        } else {
-            item.setCustomName("§7✟" + p.getName());
-        }
-        item.setCustomNameVisible(true);
-        item.setVelocity(item.getVelocity().zero());
-        item.setPickupDelay(Integer.MAX_VALUE);*/
         Corpse.spawnNPC(p);
         int cash = Script.getMoney(p, PaymentType.CASH);
         Script.setMoney(p, PaymentType.CASH, 0);
 
         ItemStack[] inventoryContent = p.getInventory().getContents();
         p.getInventory().clear();
-
-        p.getItemOnCursor();
         p.getItemOnCursor().setType(Material.AIR);
 
 
         if(Call.isOnCall(p)) {
             if (Call.isWaitingForCall(p)) {
                 Call.deny(p);
-                return;
-            }
-
-            if (Call.getParticipants(Call.getCallIDByPlayer(p)).size() == 1) {
+            } else if (Call.getParticipants(Call.getCallIDByPlayer(p)).size() == 1) {
                 Call.abort(p);
-                return;
+            } else {
+                Call.hangup(p);
             }
-
-            Call.hangup(p);
         }
 
-        if(p.getLastDamageCause().getCause() == EntityDamageEvent.DamageCause.WITHER) {
-            Health.THIRST.add(Script.getNRPID(p), (Health.THIRST.getMax()/2));
+        if(p.getLastDamageCause() != null) {
+            if (p.getLastDamageCause().getCause() == EntityDamageEvent.DamageCause.WITHER) {
+                Health.THIRST.add(Script.getNRPID(p), (Health.THIRST.getMax() / 2));
+            }
         }
-        Player killer = p.getKiller();
+
         Friedhof friedhof = new Friedhof(Script.getNRPID(p), p.getName(), deathLocation, System.currentTimeMillis(), deathtime, cash, inventoryContent);
         Friedhof.setDead(p, friedhof);
-        Notifications.sendMessage(Notifications.NotificationType.DEAD, Script.getName(p) + " ist gestorben " + (killer!=null ? Messages.ARROW + " " + Script.getName(killer):Messages.ARROW + " " + p.getLastDamageCause().getCause().name()));
+        Player killer = p.getKiller();
+        Notifications.sendMessage(Notifications.NotificationType.DEAD, Script.getName(p) + " ist gestorben " + (killer!=null ? Messages.ARROW + " " + Script.getName(killer):Messages.ARROW + " " + (p.getLastDamageCause() != null?p.getLastDamageCause().getCause().name():"")));
     }
 
     @EventHandler
@@ -115,7 +124,7 @@ public class FriedhofListener implements Listener {
                     Script.executeAsyncUpdate("INSERT INTO friedhof (id, time) VALUES (" + f.getUserID() + ", " + duration + ") ON DUPLICATE KEY UPDATE time = " + duration);
                 }
             }
-            if(Corpse.npcMap.containsKey(p)) Corpse.removeNPC(p);
+            if(Corpse.npcMap.containsKey(p.getUniqueId())) Corpse.removeNPC(p);
             if (f.getTaskID() != 0) Bukkit.getScheduler().cancelTask(f.getTaskID());
             Friedhof.FRIEDHOF.remove(p.getName());
         }
@@ -135,6 +144,9 @@ public class FriedhofListener implements Listener {
     public void onEntityDamageEntity(EntityDamageByEntityEvent e) {
         if (e.getEntity() instanceof Player) {
             Player p = (Player) e.getEntity();
+            if(!(e.getDamager() instanceof Player)) {
+                return;
+            }
             Player damager = (Player) e.getDamager();
             if (Friedhof.isDead(p) || Friedhof.isDead(damager)) {
                 e.setCancelled(true);
@@ -144,14 +156,12 @@ public class FriedhofListener implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
-        Bukkit.getScheduler().runTaskAsynchronously(main.getInstance(), () -> {
-            Player p = e.getPlayer();
-            int id = Script.getNRPID(p);
-            int i = Friedhof.getDeathtimeDatabase(p);
-            if (i > 0) {
-                Friedhof.setDead(p, new Friedhof(id, p.getName(), null, System.currentTimeMillis(), i,  0, null));
-            }
-        });
+        Player p = e.getPlayer();
+        int id = Script.getNRPID(p);
+        int i = Friedhof.getDeathtimeDatabase(p);
+        if (i > 0) {
+            Friedhof.setDead(p, new Friedhof(id, p.getName(), null, System.currentTimeMillis(), i,  0, null));
+        }
     }
 
     @EventHandler

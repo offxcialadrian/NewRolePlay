@@ -1,12 +1,30 @@
 package de.newrp.Vehicle;
 
-import de.newrp.main;
+import de.newrp.API.Messages;
+import de.newrp.API.Script;
+import de.newrp.Berufe.Beruf;
+import de.newrp.NewRoleplayMain;
+import lombok.Getter;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 
+@Getter
 public class Strafzettel {
+
+    public static HashMap<Player, String> reasons = new HashMap<>();
+    public static HashMap<Player, Integer> prices = new HashMap<>();
+    public static List<Player> removes = new ArrayList<>();
 
     private final int carID;
     private final String reason;
@@ -21,12 +39,12 @@ public class Strafzettel {
     }
 
     public static Strafzettel loadStrafzettel(int carID) {
-        try (PreparedStatement stmt = main.getConnection().prepareStatement("SELECT id, reason, preis, cop FROM strafzettel WHERE id = ? ")) {
+        try (PreparedStatement stmt = NewRoleplayMain.getConnection().prepareStatement("SELECT car_id, betrag, grund, cop_id FROM strafzettel WHERE id = ? ")) {
             stmt.setInt(1, carID);
 
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
-                return new Strafzettel(rs.getInt("id"), rs.getString("reason"), rs.getInt("preis"), rs.getInt("cop"));
+                return new Strafzettel(rs.getInt("id"), rs.getString("betrag").replaceAll("\"", ""), rs.getInt("grund"), rs.getInt("cop"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -34,19 +52,19 @@ public class Strafzettel {
         return null;
     }
 
-    public int getCarID() {
-        return carID;
+    public static void saveStrafzettel(int carID, String reason, int price, int copID) {
+        Script.executeAsyncUpdate("INSERT INTO strafzettel (car_id, betrag, grund, cop_id) VALUES (" + carID + ", " + price + ", \"" + reason + "\", " + copID + ")");
     }
 
-    public String getReason() {
-        return reason;
+    public static void deleteStrafzettel(int carID) {
+        Script.executeAsyncUpdate("DELETE FROM strafzettel WHERE car_id=" + carID);
     }
 
-    public int getPrice() {
-        return price;
+    public static boolean isTicketing(Player player) {
+        return reasons.containsKey(player);
     }
 
-    public int getCopID() {
-        return copID;
+    public static boolean isRemoving(Player player) {
+        return removes.contains(player);
     }
 }

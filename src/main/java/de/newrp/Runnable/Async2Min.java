@@ -9,8 +9,8 @@ public class Async2Min extends BukkitRunnable {
 
     @Override
     public void run() {
-        for (Player p : Bukkit.getOnlinePlayers()) {
+        /*for (Player p : Bukkit.getOnlinePlayers()) {
             if (!AFK.isAFK(p)) AFK.updateAFK(p);
-        }
+        }*/
     }
 }

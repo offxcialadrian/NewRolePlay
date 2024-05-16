@@ -5,6 +5,7 @@ import de.newrp.API.Script;
 import de.newrp.Administrator.BuildMode;
 import de.newrp.Administrator.GoTo;
 import de.newrp.Administrator.SDuty;
+import de.newrp.NewRoleplayMain;
 import de.newrp.Organisationen.Organisation;
 import de.newrp.Player.AFK;
 import org.bukkit.Bukkit;
@@ -19,6 +20,7 @@ import org.bukkit.util.StringUtil;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 public class MemberCommand implements CommandExecutor, TabCompleter {
 
@@ -34,8 +36,8 @@ public class MemberCommand implements CommandExecutor, TabCompleter {
                 Organisation org = Organisation.getOrganisation(p);
                 p.sendMessage(PREFIX + "Mitglieder von " + org.getName() + ":");
                 int i = 0;
-                for(OfflinePlayer player : org.getMembers()) {
-                    p.sendMessage("§8" + Messages.ARROW + " §6" + player.getName() + " §8(§6" + Organisation.getRankName(player) + "§8) "+ (AFK.isAFK(Script.getPlayer(Script.getNRPID(player)))?"§8[§6AFK§8]":"" ));
+                for(UUID player : org.getMember()) {
+                    p.sendMessage("§8" + Messages.ARROW + " §6" + Bukkit.getOfflinePlayer(player).getName() + " §8(§6" + Organisation.getRankName(Bukkit.getOfflinePlayer(player)) + "§8) "+ (AFK.isAFK(Script.getPlayer(Script.getNRPID(Bukkit.getOfflinePlayer(player))))?"§8[§6AFK§8]":"" ));
                     i++;
                 }
                 p.sendMessage(PREFIX  + "§8" + Messages.ARROW + " §6" + i + " Mitglieder");
@@ -50,8 +52,8 @@ public class MemberCommand implements CommandExecutor, TabCompleter {
             Beruf.Berufe beruf = Beruf.getBeruf(p);
             p.sendMessage(PREFIX + "Mitglieder von " + beruf.getName() + ":");
             int i = 0;
-            for(OfflinePlayer player : beruf.getMembers()) {
-                p.sendMessage("§8" + Messages.ARROW + " §6" + player.getName() + " §8(§6" + Beruf.getAbteilung(player).getName()+ "§8)" + (player.isOnline()? " §8[§aOnline§8] " + (AFK.isAFK(Script.getPlayer(Script.getNRPID(player)))?"§8[§6AFK§8]":"" ) : ""));
+            for (UUID player : beruf.getMember()) {
+                p.sendMessage("§8" + Messages.ARROW + " §6" + Bukkit.getOfflinePlayer(player).getName() + " §8(§6" + Beruf.getAbteilung(Bukkit.getOfflinePlayer(player)).getName()+ "§8)" + (Bukkit.getOfflinePlayer(player).isOnline()? " §8[§aOnline§8] " + (AFK.isAFK(Script.getPlayer(Script.getNRPID(Bukkit.getOfflinePlayer(player))))?"§8[§6AFK§8]":"" ) : ""));
                 i++;
             }
             p.sendMessage(PREFIX  + "§8" + Messages.ARROW + " §6" + i + " Mitglieder");
@@ -60,63 +62,67 @@ public class MemberCommand implements CommandExecutor, TabCompleter {
         }
 
         if(args.length == 1) {
-
             if(args[0].equalsIgnoreCase("all")) {
-                if(Organisation.hasOrganisation(p)) {
-                    Organisation org = Organisation.getOrganisation(p);
+                Bukkit.getScheduler().runTaskAsynchronously(NewRoleplayMain.getInstance(), () -> {
+                    if(Organisation.hasOrganisation(p)) {
+                        Organisation org = Organisation.getOrganisation(p);
+                        p.sendMessage(PREFIX + "Mitglieder von " + org.getName() + ":");
+                        int i = 0;
+                        for (OfflinePlayer player : org.getAllMembers()) {
+                            p.sendMessage("§8" + Messages.ARROW + " §6" + player.getName() + " §8(§6" + Organisation.getRankName(player) + "§8)" + (player.isOnline()? " §8[§aOnline§8] " + (AFK.isAFK(Script.getPlayer(Script.getNRPID(player)))?"§8[§6AFK§8]":"" ) : ""));
+                            i++;
+                        }
+                        p.sendMessage(PREFIX  + "§8" + Messages.ARROW + " §6" + i + " Mitglieder");
+                        return;
+                    }
+
+                    if(Beruf.hasBeruf(p)) {
+                        Beruf.Berufe beruf = Beruf.getBeruf(p);
+                        p.sendMessage(PREFIX + "Mitglieder von " + beruf.getName() + ":");
+                        int i = 0;
+                        for(OfflinePlayer player : beruf.getAllMembers()) {
+                            p.sendMessage("§8" + Messages.ARROW + " §6" + player.getName() + " §8(§6" + Beruf.getAbteilung(player).getName()+ "§8)" + (player.isOnline()? " §8[§aOnline§8] " + (AFK.isAFK(Script.getPlayer(Script.getNRPID(player)))?"§8[§6AFK§8]":"" ) : ""));
+                            i++;
+                        }
+                        p.sendMessage(PREFIX  + "§8" + Messages.ARROW + " §6" + i + " Mitglieder");
+                        return;
+                    }
+                });
+            }
+
+            Bukkit.getScheduler().runTaskAsynchronously(NewRoleplayMain.getInstance(), () -> {
+                Beruf.Berufe beruf = Beruf.Berufe.getBeruf(args[0]);
+                if(beruf != null) {
+                    p.sendMessage(PREFIX + "Mitglieder der " + beruf.getName() + ":");
+                    for (OfflinePlayer player : beruf.getAllMembers()) {
+                        p.sendMessage("§8" + Messages.ARROW + " §6" + player.getName() + " §8(§6" + Beruf.getAbteilung(player).getName() + "§8)" + (player.isOnline()? " §8[§aOnline§8] " + (AFK.isAFK(Script.getPlayer(Script.getNRPID(player)))?"§8[§6AFK§8]":"" ) : ""));
+                    }
+                    return;
+                }
+
+                Organisation org = Organisation.getOrganisation(args[0]);
+                if(org != null) {
                     p.sendMessage(PREFIX + "Mitglieder von " + org.getName() + ":");
-                    int i = 0;
-                    for(OfflinePlayer player : org.getAllMembers()) {
-                        p.sendMessage("§8" + Messages.ARROW + " §6" + player.getName() + " §8(§6" + Organisation.getRankName(player) + "§8)" + (player.isOnline()? " §8[§aOnline§8] " + (AFK.isAFK(Script.getPlayer(Script.getNRPID(player)))?"§8[§6AFK§8]":"" ) : ""));
-                        i++;
+                    for (OfflinePlayer player : org.getAllMembers()) {
+                        p.sendMessage("§8" + Messages.ARROW + " §6" + player.getName() + " §8(§6" + Organisation.getRankName(player) + " [" + Organisation.getRank(player) + "]§8)" + (player.isOnline()? " §8[§aOnline§8] " + (AFK.isAFK(Script.getPlayer(Script.getNRPID(player)))?"§8[§6AFK§8]":"" ) : ""));
                     }
-                    p.sendMessage(PREFIX  + "§8" + Messages.ARROW + " §6" + i + " Mitglieder");
-                    return true;
+                    return;
                 }
 
-                if(Beruf.hasBeruf(p)) {
-                    Beruf.Berufe beruf = Beruf.getBeruf(p);
-                    p.sendMessage(PREFIX + "Mitglieder von " + beruf.getName() + ":");
-                    int i = 0;
-                    for(OfflinePlayer player : beruf.getAllMembers()) {
-                        p.sendMessage("§8" + Messages.ARROW + " §6" + player.getName() + " §8(§6" + Beruf.getAbteilung(player).getName()+ "§8)" + (player.isOnline()? " §8[§aOnline§8] " + (AFK.isAFK(Script.getPlayer(Script.getNRPID(player)))?"§8[§6AFK§8]":"" ) : ""));
-                        i++;
-                    }
-                    p.sendMessage(PREFIX  + "§8" + Messages.ARROW + " §6" + i + " Mitglieder");
-                    return true;
+                OfflinePlayer tg = Script.getOfflinePlayer(args[0]);
+                if(Script.getNRPID(tg) == 0) {
+                    p.sendMessage(Messages.ERROR + "Spieler oder Beruf nicht gefunden.");
+                    return;
                 }
-            }
 
-            Beruf.Berufe beruf = Beruf.Berufe.getBeruf(args[0]);
-            if(beruf != null) {
-                p.sendMessage(PREFIX + "Mitglieder der " + beruf.getName() + ":");
-                for(OfflinePlayer player : beruf.getAllMembers()) {
-                    p.sendMessage("§8" + Messages.ARROW + " §6" + player.getName() + " §8(§6" + Beruf.getAbteilung(player).getName() + "§8)" + (player.isOnline()? " §8[§aOnline§8] " + (AFK.isAFK(Script.getPlayer(Script.getNRPID(player)))?"§8[§6AFK§8]":"" ) : ""));
+                if(!Beruf.hasBeruf(tg) && !Organisation.hasOrganisation(tg)) {
+                    p.sendMessage(Messages.ERROR + tg.getName() + " hat keinen Beruf oder ist in keiner Organisation.");
+                    return;
                 }
-                return true;
-            }
 
-            Organisation org = Organisation.getOrganisation(args[0]);
-            if(org != null) {
-                p.sendMessage(PREFIX + "Mitglieder von " + org.getName() + ":");
-                for(OfflinePlayer player : org.getAllMembers()) {
-                    p.sendMessage("§8" + Messages.ARROW + " §6" + player.getName() + " §8(§6" + Organisation.getRankName(player) + "§8)" + (player.isOnline()? " §8[§aOnline§8] " + (AFK.isAFK(Script.getPlayer(Script.getNRPID(player)))?"§8[§6AFK§8]":"" ) : ""));
-                }
-                return true;
-            }
+                p.sendMessage(PREFIX + tg.getName() + " befindet sich in " + (Beruf.hasBeruf(tg)? Beruf.getBeruf(tg).getName() : Organisation.getOrganisation(tg).getName()) + " als " + (Beruf.hasBeruf(tg)? Beruf.getAbteilung(tg).getName() : Organisation.getRankName(tg) + " [" + Organisation.getRank(tg) + "]") + ".");
+            });
 
-            OfflinePlayer tg = Script.getOfflinePlayer(args[0]);
-            if(Script.getNRPID(tg) == 0) {
-                p.sendMessage(Messages.ERROR + "Spieler oder Beruf nicht gefunden.");
-                return true;
-            }
-
-            if(!Beruf.hasBeruf(tg) && !Organisation.hasOrganisation(tg)) {
-                p.sendMessage(Messages.ERROR + tg.getName() + " hat keinen Beruf oder ist in keiner Organisation.");
-                return true;
-            }
-
-            p.sendMessage(PREFIX + tg.getName() + " befindet sich in " + (Beruf.hasBeruf(tg)? Beruf.getBeruf(tg).getName() : Organisation.getOrganisation(tg).getName()) + ".");
             return true;
         }
 

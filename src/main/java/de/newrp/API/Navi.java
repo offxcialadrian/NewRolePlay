@@ -63,10 +63,14 @@ public enum Navi {
     BLUMENHANDLUNG("Blumenhandlung", new Location(Script.WORLD, 316, 76, 932, -181.94073f, 90.0f)),
     HOTEL("Hotel", new Location(Script.WORLD, 246, 66, 971, -89.51709f, 1.3498956f)),
     DOENERBUDE("Dönerbude", new Location(Script.WORLD, 445, 64, 664)),
-    SINAOLA("Sinaola-Kartell", new Location(Script.WORLD, 667, 70, 1094, 78.44797f, 42.449993f)),
+    SINALOA("Sinaloa-Kartell", new Location(Script.WORLD, 667, 70, 1094, 78.44797f, 42.449993f)),
     BLUMENLADEN_GANG("Blumenladen (Gang)", new Location(Script.WORLD, 513, 63, 1317, -355.5548f, 16.964155f)),
-    SHISHABAR("Shishabar", new Location(Script.WORLD, 424, 66, 918, 0.0f, 0.0f)),
-    TABAKPLANTAGE("Tabakplantage", new Location(Script.WORLD, 405, 65, 634, 0.0f, 0.0f));
+    SHISHABAR("Shishabar", new Location(Script.WORLD, 709, 65, 1218, 0.0f, 0.0f)),
+    TABAKPLANTAGE("Tabakplantage", new Location(Script.WORLD, 94, 66, 628, 29.992523f, 7.2927737f)),
+    CAFE_X3("Cafe am X3", new Location(Script.WORLD, 750, 72, 926, 0.0f, 0.0f)),
+    CAFE_AEKI("Cafe im AEKI", new Location(Script.WORLD, 688, 138, 908, 0.0f, 0.0f)),
+    CAFE_SH("Cafe Stadthalle", new Location(Script.WORLD, 620, 68, 1027, 0.0f, 0.0f)),
+    DM_ARENA("Deathmatch Arena", new Location(Script.WORLD, 436, 14, 1117));
 
 
     private final String name;

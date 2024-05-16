@@ -3,8 +3,10 @@ package de.newrp.Player;
 import de.newrp.API.*;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Berufe.Duty;
+import de.newrp.Organisationen.MaskHandler;
 import de.newrp.Organisationen.Organisation;
-import de.newrp.main;
+import de.newrp.NewRoleplayMain;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -17,6 +19,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
@@ -26,13 +29,16 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 public class Treuebonus implements CommandExecutor, Listener {
     public static final HashMap<UUID, Long> logout = new HashMap<>();
-    public static final HashMap<String, Integer> time = new HashMap<>();
-    public static ArrayList<String> wasDuty = new ArrayList<>();
+    public static final HashMap<UUID, Integer> time = new HashMap<>();
+    public static final HashMap<UUID, Integer> points = new HashMap<>();
+    public static final HashMap<UUID, Integer> total = new HashMap<>();
+    public static ArrayList<UUID> wasDuty = new ArrayList<>();
     public static final String prefix = "§8[§bTreuebonus§8]§b " + Messages.ARROW + " §7";
 
     public static void addTime() {
@@ -43,37 +49,34 @@ public class Treuebonus implements CommandExecutor, Listener {
 
     public static void addTime(Player p) {
         if (!AFK.isAFK(p)) {
-            if (!time.containsKey(p.getName())) {
-                Treuebonus.time.put(p.getName(), 0);
-            }
-            int old = time.get(p.getName());
-            if (old >= 120) {
-                p.sendMessage(prefix + "NRP × New RolePlay dankt dir für deine Treue und schenkt dir einen Treuepunkt! §8[§c" + (getPunkte(p) + 1) + "§8]");
+            Treuebonus.time.putIfAbsent(p.getUniqueId(), 0);
+            if (time.get(p.getUniqueId()) >= 120) {
+                p.sendMessage(prefix + "NRP × New RolePlay dankt dir für deine Treue und schenkt dir einen Treuepunkt! §8[§c" + (Treuebonus.points.get(p.getUniqueId()) + 1) + "§8]");
                 p.sendMessage(Messages.INFO + "Mit /treuebonus kannst du dir tolle Geschenke aussuchen.");
 
                 add(p, true);
             } else {
-                time.put(p.getName(), (time.get(p.getName()) + 1));
+                add(p, false);
             }
         }
     }
 
     public static int getMinutesToBonus(Player p) {
-        if (time.containsKey(p.getName())) {
-            return 120 - time.get(p.getName());
+        if (time.containsKey(p.getUniqueId())) {
+            return 120 - time.get(p.getUniqueId());
         } else {
-            Treuebonus.time.put(p.getName(), 0);
+            Treuebonus.time.put(p.getUniqueId(), 0);
             return 120;
         }
     }
 
     public static int getPunkte(Player p) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT punkte FROM treuebonus WHERE id=" + Script.getNRPID(p))) {
             if (rs.next()) {
                 return rs.getInt("punkte");
             } else {
-                Script.executeUpdate("INSERT INTO treuebonus (id) VALUES (" + Script.getNRPID(p) + ");");
+                Script.executeUpdate("INSERT INTO treuebonus (id, punkte, total) VALUES (" + Script.getNRPID(p) + ", 0, 0)");
                 return 0;
             }
         } catch (SQLException e) {
@@ -82,13 +85,17 @@ public class Treuebonus implements CommandExecutor, Listener {
         return 0;
     }
 
-    public static int getTotalPunkte(Player p) {
-        try (Statement stmt = main.getConnection().createStatement();
+    public static void setPunkte(Player p, int punkte) {
+        Script.executeUpdate("UPDATE treuebonus SET punkte=" + punkte + " WHERE id=" + Script.getNRPID(p));
+    }
+
+    public static int getTotal(Player p) {
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT total FROM treuebonus WHERE id=" + Script.getNRPID(p))) {
             if (rs.next()) {
                 return rs.getInt("total");
             } else {
-                Script.executeUpdate("INSERT INTO treuebonus (id) VALUES (" + Script.getNRPID(p) + ");");
+                Script.executeUpdate("INSERT INTO treuebonus (id, punkte, total) VALUES (" + Script.getNRPID(p) + ", 0, 0)");
                 return 0;
             }
         } catch (SQLException e) {
@@ -97,44 +104,34 @@ public class Treuebonus implements CommandExecutor, Listener {
         return 0;
     }
 
-    public static void add(Player p, boolean updateTime) {
-        Bukkit.getScheduler().runTaskAsynchronously(main.getInstance(), () -> {
-            int unicaID = Script.getNRPID(p);
+    public static void setTotal(Player p, int total) {
+        Script.executeUpdate("UPDATE treuebonus SET total=" + total + " WHERE id=" + Script.getNRPID(p));
+    }
 
-            try (PreparedStatement updateStatement = main.getConnection().prepareStatement("UPDATE treuebonus SET punkte=punkte+1, total=total+1 WHERE id=?");) {
-                updateStatement.setInt(1, unicaID);
-                // check if nothing was updated
-                if (updateStatement.executeUpdate() == 0) {
-                    // create new entry
-                    Script.executeUpdate("INSERT INTO treuebonus(id, punkte, total) VALUES (" + unicaID + ", 1, 1)");
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        });
+    public static void add(Player p, boolean updateTime) {
+        Treuebonus.time.put(p.getUniqueId(), Treuebonus.time.get(p.getUniqueId()) + 1);
 
         if (updateTime) {
-            Treuebonus.time.put(p.getName(), 0);
+            Treuebonus.time.put(p.getUniqueId(), 0);
+            Treuebonus.points.put(p.getUniqueId(), Treuebonus.total.get(p.getUniqueId()) + 1);
+            Treuebonus.total.put(p.getUniqueId(), Treuebonus.total.get(p.getUniqueId()) + 1);
         }
     }
 
     public static void remove(Player p, int amount) {
-        int i = (getPunkte(p) - amount);
-        if (i < 0) i = 0;
-        Script.executeUpdate("UPDATE treuebonus SET punkte=" + i + " WHERE id=" + Script.getNRPID(p));
-        if (!Treuebonus.time.containsKey(p.getName())) Treuebonus.time.put(p.getName(), 0);
+        Treuebonus.points.put(p.getUniqueId(), Treuebonus.points.get(p.getUniqueId()) - amount);
     }
 
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         Player p = (Player) cs;
         if (args.length != 0) {
-            p.sendMessage(prefix + "Du hast in " + getMinutesToBonus(p) + "min deinen nächsten Treuebonus. §8[§c" + getPunkte(p) + " Punkte§8]");
+            p.sendMessage(prefix + "Du hast in " + getMinutesToBonus(p) + "min deinen nächsten Treuebonus. §8[§c" + Treuebonus.points.get(p.getUniqueId()) + " Punkte§8]");
         } else {
-            Inventory inv = p.getServer().createInventory(null, InventoryType.HOPPER, "§bTreuebonus §8[§c" + getPunkte(p) + "§8]");
+            Inventory inv = p.getServer().createInventory(null, InventoryType.HOPPER, "§bTreuebonus §8[§c" + Treuebonus.points.get(p.getUniqueId()) + "§8]");
             int price = 15 * ((Script.getLevel(p) / 5) + 1);
             inv.setItem(0, Script.setNameAndLore(Material.EXPERIENCE_BOTTLE, "§6+1000 Exp", "§c10 Treuepunkte"));
-            inv.setItem(1, Script.setNameAndLore(Material.GOLD_INGOT, "§6+2500$", "§c12 Treuepunkte"));
+            inv.setItem(1, Script.setNameAndLore(Material.GOLD_INGOT, "§6+2500€", "§c12 Treuepunkte"));
             inv.setItem(2, Script.setNameAndLore(Material.DIAMOND, "§67 Tage Premium", "§c24 Treuepunkte"));
             inv.setItem(3, Script.setNameAndLore(Material.DIAMOND, "§6+1 Level", "§c" + price + " Treuepunkte"));
 
@@ -146,44 +143,67 @@ public class Treuebonus implements CommandExecutor, Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
         Player p = e.getPlayer();
+
+        if (MaskHandler.masks.containsKey(p.getUniqueId())) {
+            if (MaskHandler.masks.get(p.getUniqueId()) < System.currentTimeMillis()) p.getInventory().setItem(EquipmentSlot.HEAD, new ItemStack(Material.AIR));
+        } else {
+            if (p.getInventory().getItem(EquipmentSlot.HEAD) != null) {
+                if (Objects.requireNonNull(p.getInventory().getItem(EquipmentSlot.HEAD)).getType() == Material.CARVED_PUMPKIN) {
+                    p.getInventory().setItem(EquipmentSlot.HEAD, new ItemStack(Material.AIR));
+                }
+            }
+        }
+
+        PayDay.paydayTime.put(p, Script.getInt(p, "payday", "time"));
+        PayDay.paydayMoney.put(p, Script.getInt(p, "payday", "money"));
+
         if (Beruf.hasBeruf(p)) {
             Beruf.getBeruf(p).setMember(p);
         }
         if (Organisation.hasOrganisation(p)) {
             Organisation.getOrganisation(p).setMember(p);
         }
+        Treuebonus.points.put(p.getUniqueId(), Treuebonus.getPunkte(p));
+        Treuebonus.total.put(p.getUniqueId(), Treuebonus.getTotal(p));
         if (Treuebonus.logout.containsKey(p.getUniqueId())) {
             long logout = Treuebonus.logout.get(p.getUniqueId());
             long offtime = System.currentTimeMillis() - logout;
             int sec = (int) (offtime / 1000);
             if (sec <= 180) {
-                if(!Duty.isInDuty(p) && wasDuty.contains(p.getName())) {
-                    Duty.setDuty(p);
-                    wasDuty.remove(p.getName());
+                if (wasDuty.contains(p.getUniqueId())) {
+                    Beruf.getBeruf(p).changeDuty(p, true);
+                    Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> Duty.setDuty(p), 5L);
+                    Script.updateListname(p);
+                    wasDuty.remove(p.getUniqueId());
                 }
                 p.sendMessage(Treuebonus.prefix + "Da du innerhalb von 3 Minuten wieder eingeloggt hast, läuft dein Treuebonus weiter.");
             } else {
-                Treuebonus.time.put(p.getName(), 0);
+                Treuebonus.time.put(p.getUniqueId(), 0);
             }
         } else {
-            Treuebonus.time.put(p.getName(), 0);
+            Treuebonus.time.put(p.getUniqueId(), 0);
         }
     }
 
     @EventHandler
     public void onQuit(PlayerQuitEvent e) {
         Player p = e.getPlayer();
+
+        Script.setInt(p, "payday", "time", PayDay.getPayDayTime(p));
+
+        Treuebonus.logout.put(p.getUniqueId(), System.currentTimeMillis());
+        Treuebonus.setPunkte(p, Treuebonus.points.get(p.getUniqueId()));
+        Treuebonus.setTotal(p, Treuebonus.total.get(p.getUniqueId()));
+        if (Duty.isInDuty(p)) {
+            wasDuty.add(p.getUniqueId());
+            Beruf.getBeruf(p).changeDuty(p, false);
+            Duty.removeDuty(p);
+        }
         if (Beruf.hasBeruf(p)) {
             Beruf.getBeruf(p).deleteMember(p);
         }
         if (Organisation.hasOrganisation(p)) {
             Organisation.getOrganisation(p).deleteMember(p);
-        }
-        Treuebonus.logout.put(e.getPlayer().getUniqueId(), System.currentTimeMillis());
-        if(Duty.isInDuty(e.getPlayer())) {
-            wasDuty.add(e.getPlayer().getName());
-            Duty.removeDuty(e.getPlayer());
-            Beruf.getBeruf(e.getPlayer()).changeDuty(e.getPlayer(), false);
         }
     }
 
@@ -199,43 +219,43 @@ public class Treuebonus implements CommandExecutor, Listener {
                 switch (is.getItemMeta().getDisplayName()) {
                     case "§6+1000 Exp": {
                         int price = 10;
-                        int punkte = Treuebonus.getPunkte(p);
+                        int punkte = Treuebonus.points.get(p.getUniqueId());
                         if (punkte >= price) {
                             Treuebonus.remove(p, price);
                             p.sendMessage(Treuebonus.prefix + "Du hast +1000 Exp eingelöst.");
                             Script.addEXP(p, 1000);
                         } else {
-                            p.sendMessage(Treuebonus.prefix + "Das kostet " + price + " Treuepunkte! (Dir fehlen §9" + (price - punkte) + "§b Punkte)");
+                            p.sendMessage(Treuebonus.prefix + "Das kostet " + price + " Treuepunkte! (Dir fehlen §9" + (price - punkte) + " Punkte§7)");
                         }
                         break;
                     }
-                    case "§6+2500$": {
+                    case "§6+2500€": {
                         int price = 12;
-                        int punkte = Treuebonus.getPunkte(p);
+                        int punkte = Treuebonus.points.get(p.getUniqueId());
                         if (punkte >= price) {
                             Treuebonus.remove(p, price);
                             p.sendMessage(Treuebonus.prefix + "Du hast 2500$ eingelöst.");
                             Script.addMoney(p, PaymentType.BANK, 2500);
                         } else {
-                            p.sendMessage(Treuebonus.prefix + "Das kostet " + price + " Treuepunkte! (Dir fehlen §9" + (price - punkte) + "§b Punkte)");
+                            p.sendMessage(Treuebonus.prefix + "Das kostet " + price + " Treuepunkte! (Dir fehlen §9" + (price - punkte) + " Punkte§7)");
                         }
                         break;
                     }
                     case "§67 Tage Premium": {
                         int price = 24;
-                        int punkte = Treuebonus.getPunkte(p);
+                        int punkte = Treuebonus.points.get(p.getUniqueId());
                         if (punkte >= price) {
                             Treuebonus.remove(p, price);
                             p.sendMessage(Treuebonus.prefix + "Du hast 7 Tage Premium eingelöst.");
                             Premium.addPremiumStorage(p, TimeUnit.DAYS.toMillis(7), true);
                         } else {
-                            p.sendMessage(Treuebonus.prefix + "Das kostet " + price + " Treuepunkte! (Dir fehlen §9" + (price - punkte) + "§b Punkte)");
+                            p.sendMessage(Treuebonus.prefix + "Das kostet " + price + " Treuepunkte! (Dir fehlen §9" + (price - punkte) + " Punkte§7)");
                         }
                         break;
                     }
                     case "§6+1 Level": {
                         int price = 15 * ((Script.getLevel(p) / 5) + 1);
-                        int punkte = Treuebonus.getPunkte(p);
+                        int punkte = Treuebonus.points.get(p.getUniqueId());
                         if (punkte >= price) {
                             Treuebonus.remove(p, price);
                             p.sendMessage(Treuebonus.prefix + "Du hast +1 Level eingelöst.");
@@ -244,7 +264,7 @@ public class Treuebonus implements CommandExecutor, Listener {
                                 Script.setEXP(Script.getNRPID(p), 0);
                             }
                         } else {
-                            p.sendMessage(Treuebonus.prefix + "Das kostet " + price + " Treuepunkte! (Dir fehlen §9" + (price - punkte) + "§b Punkte)");
+                            p.sendMessage(Treuebonus.prefix + "Das kostet " + price + " Treuepunkte! (Dir fehlen §9" + (price - punkte) + " Punkte§7)");
                         }
                         break;
                     }

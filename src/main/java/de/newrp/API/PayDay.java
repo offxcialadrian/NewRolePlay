@@ -10,16 +10,22 @@ import de.newrp.Government.Steuern;
 import de.newrp.House.House;
 import de.newrp.Organisationen.Organisation;
 import de.newrp.Player.*;
-import de.newrp.Shop.Buy;
 import de.newrp.Shop.Shops;
 import de.newrp.Shop.gym.GymBuyHandler;
-import de.newrp.main;
+import de.newrp.NewRoleplayMain;
+import de.newrp.Vehicle.Car;
+import org.apache.commons.collections4.bag.HashBag;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.HashMap;
+
 public class PayDay extends BukkitRunnable {
+
+    public static HashMap<Player, Integer> paydayTime = new HashMap<>();
+    public static HashMap<Player, Integer> paydayMoney = new HashMap<>();
 
     @Override
     public void run() {
@@ -40,8 +46,11 @@ public class PayDay extends BukkitRunnable {
 
             int payday = 0;
             int interest = (Script.getMoney(p, PaymentType.BANK) > 0 ? (int) (Banken.getBankByPlayer(p).getInterest() * Script.getMoney(p, PaymentType.BANK)) : (int) (0.02 * Script.getMoney(p, PaymentType.BANK)));
-            if (Script.getMoney(p, PaymentType.BANK) > 50000) interest = interest / 2;
-            if (Script.getMoney(p, PaymentType.BANK) > 100000) interest = interest / 3;
+            if(interest > 500) {
+                interest = 500;
+            }
+            /*if (Script.getMoney(p, PaymentType.BANK) > 50000) interest = interest / 2;
+            if (Script.getMoney(p, PaymentType.BANK) > 100000) interest = interest / 3;*/
             double einkommenssteuer = Steuern.Steuer.EINKOMMENSSTEUER.getPercentage();
             double arbeitslosenversicherung = Steuern.Steuer.ARBEITSLOSENVERSICHERUNG.getPercentage();
             double lohnsteuer = Steuern.Steuer.LOHNSTEUER.getPercentage();
@@ -79,7 +88,7 @@ public class PayDay extends BukkitRunnable {
                 payday += salary;
                 if (!Beruf.getBeruf(p).hasKasse()) {
                     if (Stadtkasse.getStadtkasse() < salary) {
-                        Beruf.Berufe.NEWS.sendMessage("§8[§eBerufskasse§8] §eDie Stadtkasse ist Insolvent!");
+                        Beruf.Berufe.NEWS.sendMessage("§8[§eStadtkasse§8] §eDie Stadtkasse ist Insolvent!");
                         for (Beruf.Berufe beruf : Beruf.Berufe.values()) {
                             if (!beruf.hasKasse()) {
                                 for (OfflinePlayer members : beruf.getAllMembers()) {
@@ -163,6 +172,15 @@ public class PayDay extends BukkitRunnable {
                 }
             }
 
+            if (!Car.getCars(p).isEmpty()) {
+                int kfz = 0;
+                for (Car car : Car.getCars(p)) {
+                    if (!car.getLicenseplate().startsWith("N-RP-")) kfz += car.getCarType().getTax();
+                }
+                p.sendMessage("§8" + Messages.ARROW + " §7KFZ-Steuer: §c-" + kfz + "€");
+                Stadtkasse.addStadtkasse(kfz, "KFZ-Steuer von " + Script.getName(p) + " erhalten", Steuern.Steuer.KFZSTEUER);
+                payday -= kfz;
+            }
 
             if(!Beruf.hasBeruf(p) || Beruf.getBeruf(p) != Beruf.Berufe.NEWS) {
                 int rundfunk = (int) (Steuern.Steuer.RUNDFUNKBEITRAG.getPercentage());
@@ -252,7 +270,13 @@ public class PayDay extends BukkitRunnable {
             Script.addEXP(p, Script.getRandom(5, 10));
             if (payday >= 0) Script.addMoney(p, PaymentType.BANK, payday);
             else Script.removeMoney(p, PaymentType.BANK, payday);
+
+            if(Team.getTeam(p) != null && Team.getTeam(p) == Team.Teams.ENTWICKLUNG) {
+                p.sendMessage(Messages.INFO + "§7Als Entwickler erhältst du ein Extra-Gehalt von §a100€");
+                Script.addMoney(p, PaymentType.BANK, 100);
+            }
             setPayDayTime(p, 0);
+            setPayDayPay(p, 0);
             Script.executeAsyncUpdate("UPDATE payday SET money = 0 WHERE nrp_id = '" + Script.getNRPID(p) + "'");
             if (Script.getMoney(p, PaymentType.BANK) < 0) {
                 p.sendMessage("§8[§cBank§8] §c" + Messages.ARROW + " §7Dein Konto ist überzogen. Du musst den Betrag innerhalb von 7 Tagen ausgleichen.");
@@ -274,20 +298,24 @@ public class PayDay extends BukkitRunnable {
                 public void run() {
                     SDuty.updateScoreboard();
                 }
-            }.runTaskLater(main.getInstance(), 20L);
+            }.runTaskLater(NewRoleplayMain.getInstance(), 20L);
         }
     }
 
     public static int getPayDayTime(Player p) {
-        return Script.getInt(p, "payday", "time");
+        return paydayTime.get(p);
     }
 
     public static void setPayDayTime(Player p, int time) {
-        Script.setInt(p, "payday", "time", time);
+        paydayTime.put(p, time);
     }
 
     public static int getPayDayPay(Player p) {
-        return Script.getInt(p, "payday", "money");
+        return paydayMoney.get(p);
+    }
+
+    public static void setPayDayPay(Player p, int money) {
+        paydayMoney.put(p, money);
     }
 
     public static void addPayDayTime(Player p) {
@@ -295,6 +323,7 @@ public class PayDay extends BukkitRunnable {
     }
 
     public static void addPayDay(Player p, int money) {
+        paydayMoney.put(p, paydayMoney.get(p) + money);
         Script.setInt(p, "payday", "money", getPayDayPay(p) + money);
         p.sendMessage(GFB.PREFIX + "Du bekommst dein Gehalt von " + money + "€ am PayDay.");
     }

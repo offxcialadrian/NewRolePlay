@@ -1,10 +1,11 @@
 package de.newrp.House;
 
+import de.newrp.API.Debug;
 import de.newrp.API.ItemBuilder;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.Organisationen.Drogen;
-import de.newrp.main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -28,23 +29,24 @@ public class DrogenbankHouse implements CommandExecutor, Listener {
 
     public static HashMap<String, Integer> drug_amount = new HashMap<>();
     public static HashMap<String, House> h = new HashMap<>();
-    public static String PREFIX = "§8[§cDrogenbank§8] §c» §7";
+    public static String PREFIX = "§8[§cHausbank§8] §c» §7";
 
 
     public static int getDrogenAmount(House h, Drogen droge, Drogen.DrugPurity purity) {
-        try (Statement stmt = main.getConnection().createStatement()) {
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement()) {
             ResultSet rs = stmt.executeQuery("SELECT amount FROM drugbank_house WHERE house = '" + h.getID() + "' AND drug = '" + droge.getID() + "' AND purity = '" + purity.getID() + "'");
             if (rs.next()) {
                 return rs.getInt("amount");
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            Debug.debug("SQLException -> " + e.getMessage());
         }
         return 0;
     }
 
     public static int getDrogenAmount(House h, Drogen droge) {
-        try (Statement stmt = main.getConnection().createStatement()) {
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement()) {
             ResultSet rs = stmt.executeQuery("SELECT amount FROM drugbank_house WHERE house = '" + h.getID() + "' AND drug = '" + droge.getID() + "'");
             if (rs.next()) {
                 return rs.getInt("amount");
@@ -58,13 +60,13 @@ public class DrogenbankHouse implements CommandExecutor, Listener {
 
     public static void addDrogen(House h, Drogen droge, Drogen.DrugPurity purity, int amount) {
         if (getDrogenAmount(h, droge, purity) == 0) {
-            try (Statement stmt = main.getConnection().createStatement()) {
+            try (Statement stmt = NewRoleplayMain.getConnection().createStatement()) {
                 stmt.executeUpdate("INSERT INTO drugbank_house (house, drug, purity, amount) VALUES ('" + h.getID() + "', '" + droge.getID() + "', '" + purity.getID() + "', '" + amount + "')");
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         } else {
-            try (Statement stmt = main.getConnection().createStatement()) {
+            try (Statement stmt = NewRoleplayMain.getConnection().createStatement()) {
                 stmt.executeUpdate("UPDATE drugbank_house SET amount = amount + " + amount + " WHERE house = '" + h.getID() + "' AND drug = '" + droge.getID() + "' AND purity = '" + purity.getID() + "'");
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -74,7 +76,7 @@ public class DrogenbankHouse implements CommandExecutor, Listener {
 
     public static void removeDrogen(House h, Drogen droge, Drogen.DrugPurity purity, int amount) {
         if (getDrogenAmount(h, droge, purity) == 0) return;
-        try (Statement stmt = main.getConnection().createStatement()) {
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement()) {
             stmt.executeUpdate("UPDATE drugbank_house SET amount = amount - " + amount + " WHERE house = '" + h.getID() + "' AND drug = '" + droge.getID() + "' AND purity = '" + purity.getID() + "'");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -83,13 +85,13 @@ public class DrogenbankHouse implements CommandExecutor, Listener {
 
     public static void setDrogen(House h, Drogen droge, Drogen.DrugPurity purity, int amount) {
         if (getDrogenAmount(h, droge, purity) == 0) {
-            try (Statement stmt = main.getConnection().createStatement()) {
+            try (Statement stmt = NewRoleplayMain.getConnection().createStatement()) {
                 stmt.executeUpdate("INSERT INTO drugbank_house (house, drug, purity, amount) VALUES ('" + h.getID() + "', '" + droge.getID() + "', '" + purity.getID() + "', '" + amount + "')");
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         } else {
-            try (Statement stmt = main.getConnection().createStatement()) {
+            try (Statement stmt = NewRoleplayMain.getConnection().createStatement()) {
                 stmt.executeUpdate("UPDATE drugbank_house SET amount = " + amount + " WHERE house = '" + h.getID() + "' AND drug = '" + droge.getID() + "' AND purity = '" + purity.getID() + "'");
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -98,7 +100,7 @@ public class DrogenbankHouse implements CommandExecutor, Listener {
     }
 
     public static void clearDrogen(House h) {
-        try (Statement stmt = main.getConnection().createStatement()) {
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement()) {
             stmt.executeUpdate("DELETE FROM drugbank_house WHERE house = '" + h.getID() + "'");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -106,7 +108,7 @@ public class DrogenbankHouse implements CommandExecutor, Listener {
     }
 
     public static void clearDrogen(House h, Drogen droge) {
-        try (Statement stmt = main.getConnection().createStatement()) {
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement()) {
             stmt.executeUpdate("DELETE FROM drugbank_house WHERE house = '" + h.getID() + "' AND drug = '" + droge.getID() + "'");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -114,7 +116,7 @@ public class DrogenbankHouse implements CommandExecutor, Listener {
     }
 
     public static void clearDrogen(House h, Drogen.DrugPurity purity) {
-        try (Statement stmt = main.getConnection().createStatement()) {
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement()) {
             stmt.executeUpdate("DELETE FROM drugbank_house WHERE house = '" + h.getID() + "' AND purity = '" + purity.getID() + "'");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -122,7 +124,7 @@ public class DrogenbankHouse implements CommandExecutor, Listener {
     }
 
     public static void clearDrogen(House h, Drogen droge, Drogen.DrugPurity purity) {
-        try (Statement stmt = main.getConnection().createStatement()) {
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement()) {
             stmt.executeUpdate("DELETE FROM drugbank_house WHERE house = '" + h.getID() + "' AND drug = '" + droge.getID() + "' AND purity = '" + purity.getID() + "'");
         } catch (SQLException e) {
             e.printStackTrace();

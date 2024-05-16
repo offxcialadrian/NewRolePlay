@@ -35,14 +35,18 @@ public class Drone implements Listener {
     public static ArrayList<String> drone = new ArrayList<>();
     public static HashMap<String, Long> cooldown = new HashMap<>();
 
-    public static void start(Player p) {
+    public static void start(Player p, Beruf.Berufe beruf) {
         location.put(p.getName(), p.getLocation());
         drone.add(p.getName());
         cooldown.put(p.getName(), System.currentTimeMillis() + 1000L);
         Cache.saveInventory(p);
         p.getInventory().clear();
         p.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1));
-        p.getInventory().setHelmet(new ItemStack(Material.WITHER_SKELETON_SKULL));
+        if(beruf == Beruf.Berufe.NEWS) {
+            p.getInventory().setHelmet(new ItemStack(Material.SKELETON_SKULL));
+        } else {
+            p.getInventory().setHelmet(new ItemStack(Material.WITHER_SKELETON_SKULL));
+        }
         p.setAllowFlight(true);
         p.setFlying(true);
         p.setFlySpeed(2f);
@@ -160,10 +164,11 @@ public class Drone implements Listener {
 
         if (!e.getPlayer().getInventory().getItemInMainHand().getItemMeta().getDisplayName().startsWith("§7Drohne")) return;
         if (e.getAction() != Action.RIGHT_CLICK_BLOCK && e.getAction() != Action.RIGHT_CLICK_AIR) return;
-        if (Beruf.getBeruf(e.getPlayer()) == null) return;
+        final Beruf.Berufe beruf = Beruf.getBeruf(e.getPlayer());
+        if (beruf == null) return;
         Player p = e.getPlayer();
         p.getInventory().getItemInMainHand().setAmount(p.getInventory().getItemInMainHand().getAmount() - 1);
-        Beruf.getBeruf(p).sendMessage(PREFIX + Beruf.getAbteilung(p).getName() + " " + Script.getName(p) + " hat eine Drohne gestartet.");
-        start(p);
+        beruf.sendMessage(PREFIX + Beruf.getAbteilung(p).getName() + " " + Script.getName(p) + " hat eine Drohne gestartet.");
+        start(p, beruf);
     }
 }

@@ -1,13 +1,14 @@
 package de.newrp.Shop;
 
+import de.newrp.API.Debug;
 import de.newrp.API.ItemBuilder;
 import de.newrp.API.Script;
 import de.newrp.API.ShishaType;
 import de.newrp.House.HouseAddon;
 import de.newrp.Medic.Medikamente;
-import de.newrp.News.Zeitung;
+import de.newrp.Vehicle.CarType;
 import de.newrp.Waffen.Weapon;
-import de.newrp.main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -17,8 +18,6 @@ import org.bukkit.inventory.meta.LeatherArmorMeta;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
-import static de.newrp.News.Zeitung.getLatestZeitungID;
 
 public enum ShopItem {
 
@@ -39,20 +38,20 @@ public enum ShopItem {
     ESPRESSO(46, "§rEspresso", new ItemBuilder(Material.FLOWER_POT).setName("§rEspresso").build(), 3, 2, 25, 4, 2100, true, true, false, new ShopType[] {ShopType.CAFE}),
     CRAPPUCHINO(47, "§rCrappuchino", new ItemBuilder(Material.FLOWER_POT).setName("§rCrappuchino").build(), 3, 2, 25, 3, 1800, true, true, false, new ShopType[] {ShopType.CAFE}),
     Zeitung(48, de.newrp.News.Zeitung.zeitung.getItemMeta().getDisplayName(), de.newrp.News.Zeitung.zeitung, 3, 2, 25, de.newrp.News.Zeitung.getBuyPrice(), 1800, true, false, false, new ShopType[] {ShopType.CAFE, ShopType.SUPERMARKET, ShopType.NEWS}),
-    SCHMERZMITTEL(49, "§fSchmerzmittel", new ItemBuilder(Material.PAPER).setName("§fSchmerzmittel").setAmount(Medikamente.SCHMERZMITTEL.getNeeded()).build(), 2, 2, 25, 45, 4900, true, true, false, new ShopType[] {ShopType.PHARMACY}),
+    SCHMERZMITTEL(49, "§fSchmerzmittel", new ItemBuilder(Material.PAPER).setName("§fSchmerzmittel").setAmount(Medikamente.SCHMERZMITTEL.getNeeded()).build(), 10, 2, 25, 45, 4900, true, true, false, new ShopType[] {ShopType.PHARMACY}),
     BASEBALLSCHLAEGER(50, "§7Baseballschläger", new ItemBuilder(Material.BONE).setName("§7Baseballschläger").build(), 5, 1, 1, 750, 4500, false, true, false, new ShopType[] {ShopType.GUNSHOP}),
     SAMSUNG_HANDY(52, "§cSamstar", new ItemBuilder(Material.GOLD_INGOT).setName("§cSamstar").build(), 5, 1, 1, 100, 3500, false, false, false, new ShopType[] {ShopType.ELECTRONIC}),
     HUAWEI_HANDY(53, "§cHawaii P55", new ItemBuilder(Material.IRON_INGOT).setName("§cHawaii P55").build(), 5, 1, 1, 50, 600, false, false, false, new ShopType[] {ShopType.ELECTRONIC}),
     APPLE_HANDY(55, "§cyouPhone 15", new ItemBuilder(Material.NETHERITE_INGOT).setName("§cyouPhone 15").build(), 5, 1, 1, 300, 11000, false, false, false, new ShopType[] {ShopType.ELECTRONIC}),
     MAP(56, "§7Karte", new ItemBuilder(Material.MAP).setName("§7Karte").build(), 3, 1, 1, 10, 1100, false, true, false, new ShopType[] {ShopType.SUPERMARKET, ShopType.NEWS}),
     VERBAND(57, "§7Verband", new ItemBuilder(Material.PAPER).setName("§7Verband").build(), 3, 1, 1, 60, 4300, false, true, false, new ShopType[] {ShopType.PHARMACY}),
-    TRINKWASSER(58, "§7Trinkwasser", new ItemBuilder(Material.POTION).setName("§7Trinkwasser").build(), 3, 1, 1, 2, 500, false, true, false, new ShopType[] {ShopType.SUPERMARKET, ShopType.CAFE, ShopType.NEWS}),
+    TRINKWASSER(58, "§7Trinkwasser", new ItemBuilder(Material.POTION).setName("§7Trinkwasser").build(), 1, 1, 1, 2, 500, false, true, false, new ShopType[] {ShopType.SUPERMARKET, ShopType.CAFE, ShopType.NEWS}),
     AMMO_762MM(59, "§7.762mm Munition (" + Weapon.AK47.getName() + ")", new ItemBuilder(Material.ARROW).setAmount(Weapon.AK47.getMagazineSize()).build(), 1, 1, 1, 30, 3000, false, false, false, new ShopType[] {ShopType.GUNSHOP}),
-    KEVLAR(51, "§7Schutzweste", Script.kevlar(1), 20, 1, 1, 2900, 14900, false, true, false, new ShopType[] {ShopType.GUNSHOP}),
-    SCHMERZMITTEL_HIGH(60, "§fSchmerzmittel (High)", new ItemBuilder(Material.PAPER).setName("§fSchmerzmittel (High)").setAmount(Medikamente.SCHMERZMITTEL_HIGH.getNeeded()).build(), 2, 2, 25, 65, 6100, true, true, false, new ShopType[] {ShopType.PHARMACY, ShopType.SUPERMARKET}),
-    ANTIBIOTIKA(61, "§fAntibiotika", new ItemBuilder(Material.PAPER).setName("§fAntibiotika").setAmount(Medikamente.ANTIBIOTIKA.getNeeded()).build(), 5, 2, 25, 75, 4900, true, true, false, new ShopType[] {ShopType.PHARMACY}),
-    HUSTENSAFT(62, "§fHustensaft", new ItemBuilder(Material.PAPER).setName("§fHustensaft").setAmount(Medikamente.HUSTENSAFT.getNeeded()).build(), 5, 2, 25, 60, 3400, true, true, false, new ShopType[] {ShopType.PHARMACY}),
-    ENTZUENDUNGSHEMMENDE_SALBE(63, "§fEntzündungshemmende Salbe", new ItemBuilder(Material.PAPER).setName("§fEntzündungshemmende Salbe").setAmount(Medikamente.ENTZUENDUNGSHEMMENDE_SALBE.getNeeded()).build(), 5, 2, 25, 30, 2600, true, true, false, new ShopType[] {ShopType.PHARMACY}),
+    KEVLAR(51, "§7Schutzweste", Script.kevlar(1), 20, 1, 1, 500, 14900, false, true, false, new ShopType[] {ShopType.GUNSHOP}),
+    SCHMERZMITTEL_HIGH(60, "§fSchmerzmittel (High)", new ItemBuilder(Material.PAPER).setName("§fSchmerzmittel (High)").setAmount(Medikamente.SCHMERZMITTEL_HIGH.getNeeded()).build(), 10, 2, 25, 65, 6100, true, true, false, new ShopType[] {ShopType.PHARMACY }),
+    ANTIBIOTIKA(61, "§fAntibiotika", new ItemBuilder(Material.PAPER).setName("§fAntibiotika").setAmount(Medikamente.ANTIBIOTIKA.getNeeded()).build(), 10, 2, 25, 75, 4900, true, true, false, new ShopType[] {ShopType.PHARMACY}),
+    HUSTENSAFT(62, "§fHustensaft", new ItemBuilder(Material.PAPER).setName("§fHustensaft").setAmount(Medikamente.HUSTENSAFT.getNeeded()).build(), 10, 2, 25, 60, 3400, true, true, false, new ShopType[] {ShopType.PHARMACY}),
+    ENTZUENDUNGSHEMMENDE_SALBE(63, "§fEntzündungshemmende Salbe", new ItemBuilder(Material.PAPER).setName("§fEntzündungshemmende Salbe").setAmount(Medikamente.ENTZUENDUNGSHEMMENDE_SALBE.getNeeded()).build(), 10, 2, 25, 30, 2600, true, true, false, new ShopType[] {ShopType.PHARMACY}),
     CD_1(65, "§6Gold", new ItemStack(Material.MUSIC_DISC_11), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.MUSIC}),
     CD_2(66, "§6Green", new ItemStack(Material.MUSIC_DISC_13), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.MUSIC}),
     CD_3(67, "§6Blocks", new ItemStack(Material.MUSIC_DISC_BLOCKS), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.MUSIC}),
@@ -84,9 +83,9 @@ public enum ShopItem {
     MONATSFAHRASUSWEIS(93, "§6UBahn-Ticket [30 Fahrten]", new ItemBuilder(Material.PAPER).setName("§6UBahn-Ticket [30 Fahrten]").setLore("Verbleibende Fahrten: 30").build(), 1, 1, 1, 20, 5100, false, false, false, new ShopType[] {ShopType.NEWS}),
     FALLSCHIRM(94, "§7Fallschirm", new ItemBuilder(Material.ELYTRA).setName("§7Fallschirm").build(), 5, 1, 1, 600, 4100, false, true, false, new ShopType[] {ShopType.GUNSHOP}),
     KABELBINDER(95, "§7Kabelbinder", new ItemBuilder(Material.STRING).setName("§7Kabelbinder").build(), 3, 1, 1, 100, 1900, false, true, false, new ShopType[] {ShopType.GUNSHOP, ShopType.SUPERMARKET}),
-    JAGDFLINTE(96, "§7Guardian", new ItemStack(Material.DIAMOND_HOE), 5, 1, 1, 5500, 10000, false, false, false, new ShopType[] {ShopType.JAGDHUETTE}),
+    JAGDFLINTE(96, "§7Guardian", new ItemBuilder(Material.DIAMOND_HOE).setName("§7Guardian").build(), 5, 1, 1, 5500, 10000, false, false, false, new ShopType[] {ShopType.JAGDHUETTE}),
     SCHROT(97, "§7Schrot (" + Weapon.JAGDFLINTE.getName() + ")", new ItemBuilder(Material.ARROW).setAmount(Weapon.JAGDFLINTE.getMagazineSize()).build(), 2, 1, 1, 50, 4500, false, false, false, new ShopType[] {ShopType.GUNSHOP}),
-    DEAGLE(98, "§7Ivory", new ItemStack(Material.GOLDEN_HOE), 15, 1, 1, 4000, 16600, false, false, false, new ShopType[] {ShopType.GUNSHOP}),
+    DEAGLE(98, "§7Ivory", new ItemBuilder(Material.GOLDEN_HOE).setName("§7Ivory").build(), 15, 1, 1, 4000, 16600, false, false, false, new ShopType[] {ShopType.GUNSHOP}),
     AMMO_50AE(99, "§7.50AE Munition (" + Weapon.DESERT_EAGLE.getName() + ")", new ItemBuilder(Material.ARROW).setAmount(Weapon.DESERT_EAGLE.getMagazineSize()).build(), 2, 1, 1, 25, 4500, false, false, false, new ShopType[] {ShopType.GUNSHOP}),
     ANGELRUTE(100, "§7Angelrute", new ItemBuilder(Material.FISHING_ROD).setName("§7Angelrute").build(), 10, 1, 1, 25, 1590, false, true, false, new ShopType[] {ShopType.ANGELSHOP}),
     STEAK(101, "§fSteak", new ItemBuilder(Material.COOKED_BEEF).setName("§fSteak").setAmount(8).build(), 2, 1, 20, 2, 2000, false, true, false, new ShopType[] {ShopType.FASTFOOD}),
@@ -108,13 +107,24 @@ public enum ShopItem {
     HANDY_REPAIR(117, "§7Handy Reparatur", new ItemBuilder(Material.ANVIL).setName("§7Handy Reparatur").build(), 1, 1, 1, 25, 5000, false, false, false, new ShopType[] {ShopType.ELECTRONIC}),
     POWERBANK(118, "§3Powerbank", Script.setNameAndLore(Material.NAME_TAG, "§3Powerbank", "§c5§7/§c5"), 1, 1, 1, 10, 5000, false, true, false, new ShopType[] {ShopType.ELECTRONIC}),
     MEHL(119, "§fMehl", new ItemBuilder(Material.WHITE_DYE).setName("§fMehl").build(), 2, 1, 20, 20, 2000, false, true, false, new ShopType[] {ShopType.SUPERMARKET}),
-    MASK(120, "§7Maske", new ItemBuilder(Material.CARVED_PUMPKIN).setName("§7Maske").build(), 1, 1, 1, 10, 500, false, true, false, new ShopType[] {ShopType.SUPERMARKET}),
+    MASK(120, "§7Maske", new ItemBuilder(Material.CARVED_PUMPKIN).setName("§7Maske").build(), 1, 1, 1, 250, 500, false, true, false, new ShopType[] {ShopType.SUPERMARKET}),
     SHISHA_1(121, "§6Shisha " + ShishaType.DOPPELAPFEL, Script.setNameAndLore(Material.STICK, "§6Shisha " + ShishaType.DOPPELAPFEL.getName(), "§c" + ShishaType.DOPPELAPFEL.getName(), "§7" + ShishaType.DOPPELAPFEL.getDuration() + "/" + ShishaType.DOPPELAPFEL.getDuration()), 1, 1, 1, 10, 500, false, true, false, new ShopType[] {ShopType.SHISHA}),
     SHISHA_2(122, "§6Shisha " + ShishaType.PFIRSICH_MINZE, Script.setNameAndLore(Material.STICK, "§6Shisha " + ShishaType.PFIRSICH_MINZE.getName(), "§c" + ShishaType.PFIRSICH_MINZE.getName(), "§7" + ShishaType.PFIRSICH_MINZE.getDuration() + "/" + ShishaType.PFIRSICH_MINZE.getDuration()), 1, 1, 1, 10, 500, false, true, false, new ShopType[] {ShopType.SHISHA}),
     SHISHA_3(123, "§6Shisha " + ShishaType.WASSERMELONE, Script.setNameAndLore(Material.STICK, "§6Shisha " + ShishaType.WASSERMELONE.getName(), "§c" + ShishaType.WASSERMELONE.getName(), "§7" + ShishaType.WASSERMELONE.getDuration() + "/" + ShishaType.WASSERMELONE.getDuration()), 1, 1, 1, 10, 500, false, true, false, new ShopType[] {ShopType.SHISHA}),
     SHISHA_4(124, "§6Shisha " + ShishaType.ZITRONE, Script.setNameAndLore(Material.STICK, "§6Shisha " + ShishaType.ZITRONE.getName(), "§c" + ShishaType.ZITRONE.getName(), "§7" + ShishaType.ZITRONE.getDuration() + "/" + ShishaType.ZITRONE.getDuration()), 1, 1, 1, 10, 500, false, true, false, new ShopType[] {ShopType.SHISHA}),
     SHISHA_5(125, "§6Shisha " + ShishaType.SPECIAL, Script.setNameAndLore(Material.STICK, "§6Shisha " + ShishaType.SPECIAL.getName(), "§c" + ShishaType.SPECIAL.getName(), "§7" + ShishaType.SPECIAL.getDuration() + "/" + ShishaType.SPECIAL.getDuration()), 1, 1, 1, 10, 500, false, true, false, new ShopType[] {ShopType.SHISHA}),
-    SHISHA_6(126, "§6Shisha " + ShishaType.TRAUBE, Script.setNameAndLore(Material.STICK, "§6Shisha " + ShishaType.TRAUBE.getName(), "§c" + ShishaType.TRAUBE.getName(), "§7" + ShishaType.TRAUBE.getDuration() + "/" + ShishaType.TRAUBE.getDuration()), 1, 1, 1, 10, 500, false, true, false, new ShopType[] {ShopType.SHISHA});
+    SHISHA_6(126, "§6Shisha " + ShishaType.TRAUBE, Script.setNameAndLore(Material.STICK, "§6Shisha " + ShishaType.TRAUBE.getName(), "§c" + ShishaType.TRAUBE.getName(), "§7" + ShishaType.TRAUBE.getDuration() + "/" + ShishaType.TRAUBE.getDuration()), 1, 1, 1, 10, 500, false, true, false, new ShopType[] {ShopType.SHISHA}),
+    SCHWERE_KEVLAR(127, "§7Schwere Schutzweste", Script.kevlar(2), 20, 1, 1, 1000, 14900, false, true, false, new ShopType[] {ShopType.GUNSHOP}),
+    OPPEL(128,CarType.OPPEL.getName(), Script.setName(new ItemStack(CarType.OPPEL.getMaterial(), 1), "§e" + CarType.OPPEL.getName()), 1, 1, 1, 7000, 10000, false, false, false, new ShopType[] {ShopType.CARDEALER}),
+    VOLTSWAGEN(129, CarType.VOLTSWAGEN.getName(), Script.setName(new ItemStack(CarType.VOLTSWAGEN.getMaterial(), 1), "§e" + CarType.VOLTSWAGEN.getName()), 1, 1, 1, 12000, 8000, false, false, false, new ShopType[] {ShopType.CARDEALER}),
+    NMW(130, CarType.NMW.getName(), Script.setName(new ItemStack(CarType.NMW.getMaterial(), 1), "§e" + CarType.NMW.getName()), 1, 1, 1, 17000, 14000, false, false, false, new ShopType[] {ShopType.CARDEALER}),
+    AWDI(131, CarType.AWDI.getName(), Script.setName(new ItemStack(CarType.AWDI.getMaterial(), 1), "§e" + CarType.AWDI.getName()), 1, 1, 1, 25000, 20000, false, false, false, new ShopType[] {ShopType.CARDEALER}),
+    MERCADAS(132, CarType.MERCADAS.getName(), Script.setName(new ItemStack(CarType.MERCADAS.getMaterial(), 1), "§e" + CarType.MERCADAS.getName()), 1, 1, 1, 40000, 40000, false, false, false, new ShopType[] {ShopType.CARDEALER}),
+    PAWSCHE(133, CarType.PAWSCHE.getName(), Script.setName(new ItemStack(CarType.PAWSCHE.getMaterial(), 1), "§e" + CarType.PAWSCHE.getName()), 1, 1, 1, 60000, 70000, false, false, false, new ShopType[] {ShopType.CARDEALER}),
+    KANISTER(134, "Kanister", Script.setName(new ItemStack(Material.RED_SHULKER_BOX, 1), "§cKanister"), 1, 1, 1, 50, 1200, false, true, false, new ShopType[] {ShopType.GAS_STATION}),
+    INSURANCE(135, "Versicherung", Script.setName(new ItemStack(Material.PAPER, 1), "§aVersicherung"), 1, 1, 1, 1000, 5400, false, true, false, new ShopType[] {ShopType.CARDEALER}),
+    LICENSE(136, "Kennzeichen", Script.setName(new ItemStack(Material.NAME_TAG, 1), "§bKennzeichen"), 1, 1, 1, 1500, 3600, false, true, false, new ShopType[] {ShopType.CARDEALER}),
+    TOOLS(137, "Werkzeug", Script.setName(new ItemStack(Material.SHEARS, 1), "§7Werkzeug"), 1, 1, 1, 100, 500, false, true, false, new ShopType[] {ShopType.GAS_STATION});
 
 
     private final int id;
@@ -169,25 +179,22 @@ public enum ShopItem {
 
     public static ShopItem getShopItem(ItemStack is) {
         if (is == null) return null;
-        if (!is.hasItemMeta()) return null;
-        if (!is.getItemMeta().hasDisplayName()) return null;
+        if (!is.hasItemMeta()) {
+            Debug.debug("[ShopItem] " + is.getType() + " has no itemMeta");
+            return null;
+        }
+        if (!is.getItemMeta().hasDisplayName()) {
+            Debug.debug("[ShopItem] " + is.getType() + " has no displayName");
+            return null;
+        }
 
         String displayName = is.getItemMeta().getDisplayName();
-        if (is.getItemMeta().hasDisplayName()) {
-            for (ShopItem a : values()) {
-                ItemStack businessItem = a.getItemStack();
-                if (businessItem == null) continue;
-
-                ItemMeta itemMeta = businessItem.getItemMeta();
-                if (itemMeta == null) continue;
-                if (!itemMeta.hasDisplayName()) continue;
-
-                if (businessItem.getItemMeta().getDisplayName().equals(displayName)) return a;
-            }
+        for (ShopItem a : values()) {
+            if (a.getName().equals(displayName)) return a;
         }
 
 
-
+        Debug.debug("Couldnt find a item that matches " + is.getType());
         return null;
     }
 
@@ -238,15 +245,16 @@ public enum ShopItem {
     }
 
     public void setPrice(Shops b, int price) {
-        try (Statement stmt = main.getConnection().createStatement()) {
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement()) {
             stmt.executeUpdate("UPDATE shopprice SET price=" + price + " WHERE shopID=" + b.getID() + " AND itemID=" + getID());
         } catch (SQLException e) {
             e.printStackTrace();
+            Debug.debug("SQLException -> " + e.getMessage());
         }
     }
 
     public int getPrice(Shops b) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT price FROM shopprice WHERE shopID=" + b.getID() + " AND itemID=" + getID())) {
             if (rs.next()) {
                 return rs.getInt("price");

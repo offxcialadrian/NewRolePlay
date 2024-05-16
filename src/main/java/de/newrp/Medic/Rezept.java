@@ -9,8 +9,10 @@ import de.newrp.Berufe.Abteilung;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Berufe.Duty;
 import de.newrp.Player.Annehmen;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -51,8 +53,8 @@ public class Rezept implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        if(args.length != 2) {
-            p.sendMessage(Messages.ERROR + "/rezept [Name] [Medikament]");
+        if(args.length != 2 && args.length != 3) {
+            p.sendMessage(Messages.ERROR + "/rezept [Name] [Medikament] [Anzahl]");
             return true;
         }
 
@@ -92,8 +94,28 @@ public class Rezept implements CommandExecutor, TabCompleter {
             return true;
         }
 
+        if(args.length == 3) {
+            try {
+                int amount = Integer.parseInt(args[2]);
+                if(amount < 1) {
+                    p.sendMessage(Messages.ERROR + "Die Anzahl muss mindestens 1 sein.");
+                    return true;
+                }
+                if(amount > 64) {
+                    p.sendMessage(Messages.ERROR + "Die Anzahl darf maximal 64 sein.");
+                    return true;
+                }
+            } catch (NumberFormatException e) {
+                p.sendMessage(Messages.ERROR + "Die Anzahl muss eine Zahl sein.");
+                return true;
+            }
+        }
+
         Annehmen.offer.put(tg.getName() + ".rezept", p.getName());
         Annehmen.offer.put(tg.getName() + ".rezept.medikament", m.getName());
+        if(args.length == 3) {
+            Annehmen.offer.put(tg.getName() + ".rezept.anzahl", args[2]);
+        }
         p.sendMessage(PREFIX + "Du hast " + Script.getName(tg) + " ein Rezept für " + m.getName() + " angeboten.");
         tg.sendMessage(PREFIX + Script.getName(p) + " hat dir ein Rezept für " + m.getName() + " angeboten.");
         Script.sendAcceptMessage(tg);
@@ -103,11 +125,26 @@ public class Rezept implements CommandExecutor, TabCompleter {
 
     public static boolean hasRezept(Player p, Medikamente m) {
         for(ItemStack is : p.getInventory().getContents()) {
-            if(is != null && is.getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.stripColor(m.getRezept().getItemMeta().getDisplayName()))) {
+            if(is == null || is.getType() == Material.AIR) continue;
+            if(is.getItemMeta() == null) continue;;
+
+            if(is.getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.stripColor(m.getRezept().getItemMeta().getDisplayName()))) {
                 return true;
             }
         }
         return false;
+    }
+
+    public static int getAmountOfRecipes(final Player player, final Medikamente medikamente) {
+        for(ItemStack is : player.getInventory().getContents()) {
+            if(is == null || is.getType() == Material.AIR) continue;
+            if(is.getItemMeta() == null) continue;;
+
+            if(is.getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.stripColor(medikamente.getRezept().getItemMeta().getDisplayName()))) {
+                return is.getAmount();
+            }
+        }
+        return 0;
     }
 
     public static void removeRezept(Player p, Medikamente m) {

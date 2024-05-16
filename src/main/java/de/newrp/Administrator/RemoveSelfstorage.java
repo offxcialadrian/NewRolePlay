@@ -34,7 +34,7 @@ public class RemoveSelfstorage implements CommandExecutor {
             return true;
         }
 
-        OfflinePlayer tg = Script.getPlayer(args[0]);
+        OfflinePlayer tg = Script.getOfflinePlayer(args[0]);
 
         if(Script.getNRPID(tg) == 0) {
             p.sendMessage(Messages.PLAYER_NOT_FOUND);

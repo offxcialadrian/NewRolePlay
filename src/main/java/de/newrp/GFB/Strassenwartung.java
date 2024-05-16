@@ -1,7 +1,7 @@
 package de.newrp.GFB;
 
 import de.newrp.API.*;
-import de.newrp.main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.data.type.Slab;
@@ -17,7 +17,6 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
-import java.text.DecimalFormat;
 import java.util.HashMap;
 
 public class Strassenwartung implements CommandExecutor, Listener {
@@ -107,7 +106,7 @@ public class Strassenwartung implements CommandExecutor, Listener {
                     TOTAL_SCORE.remove(p.getName());
                 }
             }
-        }.runTaskLater(main.getInstance(), (15L * GFB.STRASSENWARTUNG.getLevel(p)) * 60 * 20L);
+        }.runTaskLater(NewRoleplayMain.getInstance(), (15L * GFB.STRASSENWARTUNG.getLevel(p)) * 60 * 20L);
 
         return false;
     }

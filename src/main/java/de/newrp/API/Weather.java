@@ -1,5 +1,7 @@
 package de.newrp.API;
 
+import de.newrp.NewRoleplayMain;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -60,7 +62,7 @@ public enum Weather {
             return response.toString();
 
         } catch (IOException e) {
-            e.printStackTrace();
+            NewRoleplayMain.handleError(e);
         }
         return null;
     }

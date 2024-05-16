@@ -8,7 +8,7 @@ import de.newrp.Berufe.Beruf;
 import de.newrp.Berufe.Duty;
 import de.newrp.Government.Straftat;
 import de.newrp.Player.AFK;
-import de.newrp.main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -50,17 +50,19 @@ public class Fahndung implements CommandExecutor, TabCompleter {
 
 
         if(args.length == 0) {
-            p.sendMessage(Straftat.PREFIX + "Alle Fahndungen:");
-            for(Player all : Bukkit.getOnlinePlayers()) {
-                if(SDuty.isSDuty(all)) continue;
-                if(getStraftatIDs(all).isEmpty()) continue;
-                int wanteds = 0;
-                for(int i : getStraftatIDs(all)) {
-                    wanteds += Straftat.getWanteds(i);
+            Bukkit.getScheduler().runTaskAsynchronously(NewRoleplayMain.getInstance(), () -> {
+                p.sendMessage(Straftat.PREFIX + "Alle Fahndungen:");
+                for(Player all : Bukkit.getOnlinePlayers()) {
+                    if(SDuty.isSDuty(all)) continue;
+                    if(getStraftatIDs(all).isEmpty()) continue;
+                    int wanteds = 0;
+                    for(int i : getStraftatIDs(all)) {
+                        wanteds += Straftat.getWanteds(i);
+                    }
+                    if(wanteds == 0) continue;
+                    p.sendMessage("§8» §6" + Script.getName(all) + " §8× §6" + wanteds + " WantedPunkte" + (AFK.isAFK(all) ? " §8× §6AFK" : ""));
                 }
-                if(wanteds == 0) continue;
-                p.sendMessage("§8» §6" + Script.getName(all) + " §8× §6" + wanteds + " WantedPunkte" + (AFK.isAFK(all) ? " §8× §6AFK" : ""));
-            }
+            });
             return true;
         }
 
@@ -106,7 +108,7 @@ public class Fahndung implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        if(Beruf.getBeruf(tg) == Beruf.Berufe.GOVERNMENT) {
+        if(Beruf.getBeruf(tg) == Beruf.Berufe.GOVERNMENT && Duty.isInDuty(tg)) {
             p.sendMessage(Messages.ERROR + "Du kannst keine Regierungsmitglieder fahnden.");
             return true;
         }
@@ -117,6 +119,10 @@ public class Fahndung implements CommandExecutor, TabCompleter {
             if(arg.equalsIgnoreCase(args[0])) continue;
             if(!Straftat.straftatExists(arg.replace("-"," "))) {
                 p.sendMessage(Messages.ERROR + "Die Straftat §e" + arg.replace("-"," ") + " §7existiert nicht.");
+                continue;
+            }
+            if(getStraftatIDs(tg).contains(Straftat.getReasonID(arg))) {
+                p.sendMessage(Messages.ERROR + "Der Spieler ist bereits wegen §e" + arg.replace("-"," ") + " §7gefahndet.");
                 continue;
             }
             sb.append(arg).append(" & ");
@@ -148,7 +154,7 @@ public class Fahndung implements CommandExecutor, TabCompleter {
     }
 
     public static long getFahndedTime(Player p) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM wanted WHERE nrp_id=" + Script.getNRPID(p) + " ORDER BY id ASC LIMIT 1")) {
             if (rs.next()) {
                 return (System.currentTimeMillis() - rs.getLong("time"));
@@ -204,7 +210,7 @@ public class Fahndung implements CommandExecutor, TabCompleter {
 
     public static List<Player> getList() {
         List<Player> list = new ArrayList<>();
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM wanted")) {
             if (rs.next()) {
                 do {
@@ -219,7 +225,7 @@ public class Fahndung implements CommandExecutor, TabCompleter {
 
     public static List<Integer> getStraftatIDs(Player p) {
         List<Integer> list = new ArrayList<>();
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM wanted WHERE nrp_id=" + Script.getNRPID(p))) {
             while (rs.next()) {
                list.add(rs.getInt("wantedreason"));
@@ -232,7 +238,7 @@ public class Fahndung implements CommandExecutor, TabCompleter {
 
     public static List<Integer> getStraftatIDs(OfflinePlayer p) {
         List<Integer> list = new ArrayList<>();
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM wanted WHERE nrp_id=" + Script.getNRPID(p))) {
             while (rs.next()) {
                 list.add(rs.getInt("wantedreason"));
@@ -244,7 +250,7 @@ public class Fahndung implements CommandExecutor, TabCompleter {
     }
 
     public static int getStraftatID(OfflinePlayer p) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM wanted WHERE nrp_id=" + Script.getNRPID(p))) {
             if (rs.next()) {
                 return rs.getInt("wantedreason");

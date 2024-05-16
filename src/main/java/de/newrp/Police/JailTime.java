@@ -3,7 +3,7 @@ package de.newrp.Police;
 import de.newrp.API.Friedhof;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
-import de.newrp.main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -24,11 +24,11 @@ public class JailTime implements CommandExecutor, Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
         Player p = e.getPlayer();
-        Bukkit.getScheduler().runTaskAsynchronously(main.getInstance(), () -> {
+        Bukkit.getScheduler().runTaskAsynchronously(NewRoleplayMain.getInstance(), () -> {
             int time = Jail.getJailtimeDatabase(p);
             if (time > 0 && !Friedhof.isDead(p)) {
                 p.sendMessage(Jail.PREFIX + "Deine Gefängnisstrafe ist noch nicht vorbei.");
-                Bukkit.getScheduler().runTask(main.getInstance(), () -> Jail.arrest(p, time, false));
+                Bukkit.getScheduler().runTask(NewRoleplayMain.getInstance(), () -> Jail.arrest(p, time, false));
                 Script.executeAsyncUpdate("DELETE FROM jail WHERE nrp_id=" + Script.getNRPID(p));
             }
         });

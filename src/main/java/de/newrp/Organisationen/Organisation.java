@@ -7,7 +7,7 @@ import de.newrp.Berufe.Duty;
 import de.newrp.Berufe.Equip;
 import de.newrp.Forum.ForumGroup;
 import de.newrp.TeamSpeak.TeamspeakServerGroup;
-import de.newrp.main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
@@ -16,16 +16,13 @@ import org.bukkit.entity.Player;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 public enum Organisation {
 
     FALCONE(1, "Falcone-Famiglia",  true, false, false, 158, new Location(Script.WORLD, 761, 119, 847, 258.50473f, 17.865908f), TeamspeakServerGroup.FALCONE,  new ForumGroup[]{ForumGroup.FALCONE, ForumGroup.FALCONE_LEADER}, OrgSpray.FraktionSpray.FALCONE),
-    KARTELL(2, "puertoricanisches-Kartell",  true, false, false, 119, new Location(Script.WORLD, 230, 68, 1110, 1.5193672f, 16.320272f), TeamspeakServerGroup.KARTELL,  new ForumGroup[]{ForumGroup.KARTELL, ForumGroup.KARTELL_LEADER}, OrgSpray.FraktionSpray.KARTELL),
+    KARTELL(2, "Puertoricanisches-Kartell",  true, false, false, 119, new Location(Script.WORLD, 230, 68, 1110, 1.5193672f, 16.320272f), TeamspeakServerGroup.KARTELL,  new ForumGroup[]{ForumGroup.KARTELL, ForumGroup.KARTELL_LEADER}, OrgSpray.FraktionSpray.KARTELL),
     BRATERSTWO(3, "Braterstwo",  true, false, false, 143, new Location(Script.WORLD, 556, 77, 1268, -263.88275f, 10.649914f), TeamspeakServerGroup.BRATERSTWO,  new ForumGroup[]{ForumGroup.BRATERSTWO, ForumGroup.BRATERSTWO_LEADER}, OrgSpray.FraktionSpray.BRATERSTWO),
     CORLEONE(4, "Corleone-Familie",  true, false, false, 131, new Location(Script.WORLD, 183, 104, 479, -268.55347f, 14.808363f), TeamspeakServerGroup.CORLEONE,  new ForumGroup[]{ForumGroup.CORLEONE, ForumGroup.CORLEONE_LEADER}, OrgSpray.FraktionSpray.CORLEONE),
     //GROVE(5, "Grove-Street",  true, false, false, 170, new Location(Script.WORLD, 752, 54, 1266, 193.52417f, 13.093105f), TeamspeakServerGroup.GROVE,  new ForumGroup[]{ForumGroup.GROVE, ForumGroup.GROVE_LEADER}, OrgSpray.FraktionSpray.GROVE),
@@ -55,12 +52,12 @@ public enum Organisation {
         this.fraktionSpray = fraktionSpray;
     }
 
-    public static Map<Organisation, List<Player>> ORGA_MEMBER = new ConcurrentHashMap<>();
+    public static Map<Organisation, List<UUID>> ORGA_MEMBER = new ConcurrentHashMap<>();
 
     public static String PREFIX = "§8[§eOrganisation§8] §e" + Messages.ARROW + " §7";
 
     public int getLevel() {
-        try(Statement stmt = main.getConnection().createStatement();
+        try(Statement stmt = NewRoleplayMain.getConnection().createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM organisation_level WHERE organisationID='" + this.id + "'")) {
             if(rs.next()) {
                 return rs.getInt("level");
@@ -96,7 +93,7 @@ public enum Organisation {
     }
 
     public String getMOTD() {
-        try(Statement stmt = main.getConnection().createStatement();
+        try(Statement stmt = NewRoleplayMain.getConnection().createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM organisation_motd WHERE organisationID='" + this.id + "'")) {
             if(rs.next()) {
                 return rs.getString("motd");
@@ -116,7 +113,7 @@ public enum Organisation {
     }
 
     public int getExp() {
-        try(Statement stmt = main.getConnection().createStatement();
+        try(Statement stmt = NewRoleplayMain.getConnection().createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM organisation_level WHERE organisationID='" + this.id + "'")) {
             if(rs.next()) {
                 return rs.getInt("exp");
@@ -154,7 +151,7 @@ public enum Organisation {
 
     public ArrayList<Location> getDoors() {
         ArrayList<Location> locs = new ArrayList<>();
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT orgID, x, y, z FROM orgadoor WHERE orgID=" + this.id)) {
             while (rs.next()) {
                 int x = rs.getInt("x");
@@ -310,7 +307,7 @@ public enum Organisation {
 
 
     public int getKasse() {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM organisation_kasse WHERE organisationID='" + this.id + "'")) {
             if (rs.next()) {
                 return rs.getInt("kasse");
@@ -351,9 +348,9 @@ public enum Organisation {
     }
 
     public void sendMessage(String message) {
-        for (Player player : getMember()) {
-            if (player.isOnline()) {
-                player.sendMessage(message);
+        for (UUID player : getMember()) {
+            if (Objects.requireNonNull(Bukkit.getPlayer(player)).isOnline()) {
+                Objects.requireNonNull(Bukkit.getPlayer(player)).sendMessage(message);
             }
         }
     }
@@ -372,34 +369,34 @@ public enum Organisation {
         return list;
     }
 
-    public List<Player> getMember() {
-        return getOrga(this);
+    public List<UUID> getMember() {
+        return getOrga();
     }
 
-    private List<Player> getOrga(Organisation orga) {
-        if (!ORGA_MEMBER.containsKey(orga)) {
-            ORGA_MEMBER.put(orga, new ArrayList<>());
+    private List<UUID> getOrga() {
+        if (!ORGA_MEMBER.containsKey(this)) {
+            ORGA_MEMBER.put(this, new ArrayList<>());
         }
-        return ORGA_MEMBER.get(orga);
+        return ORGA_MEMBER.get(this);
     }
 
     public void setMember(Player player) {
         if (Organisation.hasOrganisation(player)) {
-            Objects.requireNonNull(getOrga(Organisation.getOrganisation(player))).add(player);
+            getOrga().add(player.getUniqueId());
         }
     }
 
     public void deleteMember(Player player) {
-        Objects.requireNonNull(getOrga(this)).remove(player);
+        getOrga().remove(player.getUniqueId());
     }
 
     public Boolean isMember(Player player) {
-        return Objects.requireNonNull(getOrga(this)).contains(player);
+        return Objects.requireNonNull(getOrga()).contains(player);
     }
 
     public List<OfflinePlayer> getAllMembers() {
         List<OfflinePlayer> list = new ArrayList<>();
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM organisation WHERE organisationID='" + this.id + "' ORDER BY rank ASC")) {
             if (rs.next()) {
                 do {
@@ -434,7 +431,7 @@ public enum Organisation {
 
     public List<OfflinePlayer> getAllLeaders() {
         List<OfflinePlayer> list = new ArrayList<>();
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM organisation WHERE organisationID='" + this.id + "' AND leader=1")) {
             if (rs.next()) {
                 do {
@@ -506,7 +503,7 @@ public enum Organisation {
     }
 
     public static String getRankName(Player p) {
-        try(Statement stmt = main.getConnection().createStatement();
+        try(Statement stmt = NewRoleplayMain.getConnection().createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM organisation_rankname WHERE organisationID='" + Organisation.getOrganisation(p).getID() + "' AND rank='" + Organisation.getRank(p) + "' AND gender='" + Script.getGender(p).getName().charAt(0)+"'")) {
             if(rs.next()) {
                 return rs.getString("name").replace("-"," ");
@@ -518,7 +515,7 @@ public enum Organisation {
     }
 
     public static String getRankName(OfflinePlayer p) {
-        try(Statement stmt = main.getConnection().createStatement();
+        try(Statement stmt = NewRoleplayMain.getConnection().createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM organisation_rankname WHERE organisationID='" + Organisation.getOrganisation(p).getID() + "' AND rank='" + Organisation.getRank(p) + "' AND gender='" + Script.getGender(p).getName().charAt(0) + "'")) {
             if(rs.next()) {
                 return rs.getString("name").replace("-"," ");
@@ -530,7 +527,7 @@ public enum Organisation {
     }
 
     public String getRankName(int rank, Gender g) {
-        try(Statement stmt = main.getConnection().createStatement();
+        try(Statement stmt = NewRoleplayMain.getConnection().createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM organisation_rankname WHERE organisationID='" + this.id + "' AND rank='" + rank + "' AND gender='" + g.getName().charAt(0) + "'")) {
             if(rs.next()) {
                 return rs.getString("name").replace("-"," ");

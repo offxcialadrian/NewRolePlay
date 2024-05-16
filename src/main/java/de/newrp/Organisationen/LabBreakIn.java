@@ -1,13 +1,11 @@
 package de.newrp.Organisationen;
 
-import de.newrp.API.ItemBuilder;
-import de.newrp.API.Messages;
-import de.newrp.API.Route;
-import de.newrp.API.Script;
+import de.newrp.API.*;
 import de.newrp.Administrator.BuildMode;
 import de.newrp.Berufe.Beruf;
-import de.newrp.main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.*;
+import org.bukkit.Particle;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.BrewingStand;
@@ -148,7 +146,7 @@ public class LabBreakIn implements CommandExecutor, Listener {
 
     private static void spawnParticles(Location loc) {
         final Location clonedLoc = loc.clone().add(0.5, 1, 0.5);
-        schedulerID = Bukkit.getScheduler().scheduleSyncRepeatingTask(main.getInstance(), () -> {
+        schedulerID = Bukkit.getScheduler().scheduleSyncRepeatingTask(NewRoleplayMain.getInstance(), () -> {
             new de.newrp.API.Particle(org.bukkit.Particle.ENCHANTMENT_TABLE, clonedLoc, false, 0.2F, 0.2F, 0.2F, .1F, Script.getRandom(4, 8)).sendAll();
             clonedLoc.getWorld().playSound(loc, Sound.BLOCK_BREWING_STAND_BREW, 1, 1);
         }, 0L, 10L);
@@ -244,6 +242,7 @@ public class LabBreakIn implements CommandExecutor, Listener {
         door.setOpen(open);
         state.setBlockData(door);
         state.update();
+        Debug.debug("Closing lab door");
         if (playSound) {
             block.getWorld().playSound(block.getLocation(), Sound.BLOCK_IRON_DOOR_OPEN, 1, 1);
         }
@@ -269,7 +268,7 @@ public class LabBreakIn implements CommandExecutor, Listener {
             cooldown_check = difference < TimeUnit.HOURS.toMillis(3);
         }
         if (cooldown_check) {
-            p.sendMessage(PREFIX + "Das Labor hat derzeit keine Materialien zur Verfügung. (" + TimeUnit.MILLISECONDS.toMinutes(difference) + " Minuten verbleibend)");
+            p.sendMessage(PREFIX + "Das Labor hat derzeit keine Materialien zur Verfügung. (" + TimeUnit.MILLISECONDS.toMinutes((3 * 60 * 60 * 1000) - difference) + " Minuten verbleibend)");
             return;
         }
         long currentTime = System.currentTimeMillis();

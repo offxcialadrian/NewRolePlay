@@ -3,18 +3,13 @@ package de.newrp.Votifier;
 import de.newrp.API.*;
 import de.newrp.Waffen.Waffen;
 import de.newrp.Waffen.Weapon;
-import de.newrp.main;
+import de.newrp.NewRoleplayMain;
 import net.md_5.bungee.api.ChatColor;
-import net.minecraft.server.v1_16_R3.IChatBaseComponent;
-import net.minecraft.server.v1_16_R3.IChatBaseComponent.ChatSerializer;
-import net.minecraft.server.v1_16_R3.PacketPlayOutChat;
 import org.bukkit.*;
-import org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.util.*;
@@ -113,7 +108,7 @@ public enum Votekiste {
 
         Debug.debug("reached another another step");
 
-        final int taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(main.getInstance(), new Runnable() {
+        final int taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(NewRoleplayMain.getInstance(), new Runnable() {
             int interval = 2;
             int count = 0;
             int tick = 0;
@@ -164,7 +159,7 @@ public enum Votekiste {
             }
         }, 1L, 1L);
 
-        final BukkitTask taskId1 = Bukkit.getScheduler().runTaskLater(main.getInstance(), () -> {
+        final BukkitTask taskId1 = Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> {
             Bukkit.getScheduler().cancelTask(taskId);
             p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1F, 1F);
             tasks.remove(p.getName());

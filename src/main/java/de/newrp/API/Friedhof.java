@@ -1,17 +1,14 @@
 package de.newrp.API;
 
 import de.newrp.Administrator.Checkpoints;
-import de.newrp.Berufe.AcceptNotruf;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Berufe.Duty;
 import de.newrp.Berufe.Equip;
 import de.newrp.GFB.Schule;
 import de.newrp.Gangwar.GangwarCommand;
-import de.newrp.Organisationen.Organisation;
-import de.newrp.Player.Notruf;
 import de.newrp.Player.Spawnchange;
 import de.newrp.Police.StartTransport;
-import de.newrp.main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
@@ -54,6 +51,7 @@ public class Friedhof {
     }
 
     public static void setDead(Player p, Friedhof f) {
+        Debug.debug("starting set dead");
         if (FRIEDHOF.containsKey(p.getName())) {
             Friedhof old_f = FRIEDHOF.get(p.getName());
             if (old_f.getTaskID() != 0) {
@@ -66,7 +64,7 @@ public class Friedhof {
             Schule.STARTED.remove(p);
         }
 
-        final int taskID = Bukkit.getScheduler().scheduleSyncDelayedTask(main.getInstance(), () -> {
+        final int taskID = Bukkit.getScheduler().scheduleSyncDelayedTask(NewRoleplayMain.getInstance(), () -> {
             if (p.isOnline()) revive(p, null);
         }, f.getDeathtimeLeft() * 20L);
         f.setTaskID(taskID);
@@ -87,27 +85,22 @@ public class Friedhof {
                 Player killer = p.getKiller();
                 killer.getInventory().addItem(Equip.Stuff.SCHWERE_SCHUTZWESTE.getItem());
                 killer.getInventory().addItem(Equip.Stuff.EINSATZSCHILD.getItem());
-                killer.getInventory().addItem(Equip.Stuff.EINSAZTZSCHILD_2.getItem());
+                killer.getInventory().addItem(Equip.Stuff.EINSATZSCHILD_2.getItem());
                 killer.getInventory().addItem(Equip.Stuff.TAZER.getItem());
             }
         }
-
-        if(AcceptNotruf.accept.containsKey(p)) {
-            AcceptNotruf.reOpenNotruf(p);
-        }
-
-        if(Notruf.call.containsKey(p)) {
-            AcceptNotruf.deleteNotruf(p);
-        }
-
         FRIEDHOF.put(p.getName(), f);
-        Location[] locs;
+        Location[] locs = new Location[]{new Location(Script.WORLD, 222, 75, 673, 92.5503f, -2.699904f)};
 
-        Debug.debug("dead: " + p.getName() + " " + p.getKiller() + " " + p.getLastDamageCause().getCause().name());
-        p.getKiller().sendMessage(Messages.INFO + "§c§lKILL! §6" + Script.getName(p) + " §fdu hast getötet!");
-        World w = p.getWorld();
-            p.setPlayerWeather(WeatherType.DOWNFALL);
-            locs = new Location[]{new Location(Script.WORLD, 222, 75, 673, 92.5503f, -2.699904f)};
+        try {
+            if(p.getLastDamageCause() != null) Debug.debug("dead: " + p.getName() + " " + p.getKiller() + " " + p.getLastDamageCause().getCause().name());
+        } catch(Exception exception) {
+            NewRoleplayMain.handleError(exception);
+        }
+        if(p.getKiller() != null) {
+            p.getKiller().sendMessage(Messages.INFO + "§c§lKILL! §fDu hast §6" + Script.getName(p) + " §fgetötet");
+        }
+        p.setPlayerWeather(WeatherType.DOWNFALL);
 
         Location loc = locs[Script.getRandom(0, locs.length - 1)];
         Debug.debug("loc: " + loc);
@@ -156,33 +149,34 @@ public class Friedhof {
                     cancel();
                 }
             }
-        }.runTaskTimer(main.getInstance(), 20L, 20L);
+        }.runTaskTimer(NewRoleplayMain.getInstance(), 20L, 20L);
     }
 
     public static void revive(Player p, Location teleportLoc) {
-        Friedhof f = getDead(p);
-        if (f == null) return;
-        if(Corpse.npcMap.containsKey(p)) Corpse.removeNPC(p);
-        if(teleportLoc == null) Duty.removeDuty(p);
+        try {
+            Friedhof f = getDead(p);
+            if (f == null) return;
+            if(Corpse.npcMap.containsKey(p.getUniqueId())) Corpse.removeNPC(p);
+            if(teleportLoc == null) Duty.removeDuty(p);
 
-        Bukkit.getScheduler().cancelTask(f.getTaskID());
-        FRIEDHOF.remove(p.getName());
+            Bukkit.getScheduler().cancelTask(f.getTaskID());
+            FRIEDHOF.remove(p.getName());
 
-        int id = f.getUserID();
-        Script.executeAsyncUpdate("DELETE FROM friedhof WHERE id = " + id);
+            int id = f.getUserID();
+            Script.executeAsyncUpdate("DELETE FROM friedhof WHERE id = " + id);
 
-        Script.sendActionBar(p, "§eDu lebst nun wieder.");
-        p.resetPlayerWeather();
-        Script.resetPotionEffects(p);
+            Script.sendActionBar(p, "§eDu lebst nun wieder.");
+            p.resetPlayerWeather();
+            Script.resetPotionEffects(p);
 
-        Chair.NO_TELEPORT.add(p.getName());
-        if (p.isInsideVehicle()) p.leaveVehicle();
+            Chair.NO_TELEPORT.add(p.getName());
+            if (p.isInsideVehicle()) p.leaveVehicle();
 
-        p.setSaturation(20f);
-        p.setFoodLevel(20);
-        p.setNoDamageTicks(0);
-        p.setFireTicks(0);
-        Log.NORMAL.write(p, "lebt nun wieder.");
+            p.setSaturation(20f);
+            p.setFoodLevel(20);
+            p.setNoDamageTicks(0);
+            p.setFireTicks(0);
+            Log.NORMAL.write(p, "lebt nun wieder.");
             if (teleportLoc != null) {
                 p.setHealth(20D);
                 p.teleport(teleportLoc);
@@ -206,7 +200,7 @@ public class Friedhof {
                     public void run() {
                         p.sendMessage(Messages.INFO + "Du lebst nun wieder!");
                     }
-                }.runTaskLater(main.getInstance(), 20L * 2);
+                }.runTaskLater(NewRoleplayMain.getInstance(), 20L * 2);
                 p.setHealth(p.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
 
                 if(!GangwarCommand.isInGangwar(p)) {
@@ -219,7 +213,10 @@ public class Friedhof {
             if(Checkpoints.hasCheckpoints(p)) {
                 p.teleport(new Location(Script.WORLD, 485, 9, 562, -269.20435f, 6.000005f));
             }
+        } catch(final Exception exception) {
+            NewRoleplayMain.handleError(exception);
         }
+    }
 
     public static Friedhof getDead(Player p) {
         return FRIEDHOF.get(p.getName());
@@ -242,7 +239,7 @@ public class Friedhof {
             int taskID = f.getTaskID();
             Bukkit.getScheduler().cancelTask(taskID);
 
-            taskID = Bukkit.getScheduler().scheduleSyncDelayedTask(main.getInstance(), () -> {
+            taskID = Bukkit.getScheduler().scheduleSyncDelayedTask(NewRoleplayMain.getInstance(), () -> {
                 if (p.isOnline()) revive(p, null);
             }, (left - seconds) * 20L);
             f.setTaskID(taskID);
@@ -257,7 +254,7 @@ public class Friedhof {
         int left = this.getDeathtimeLeft();
 
         Bukkit.getScheduler().cancelTask(taskID);
-        taskID = Bukkit.getScheduler().scheduleSyncDelayedTask(main.getInstance(), () -> {
+        taskID = Bukkit.getScheduler().scheduleSyncDelayedTask(NewRoleplayMain.getInstance(), () -> {
             if (p.isOnline()) revive(p, null);
         }, (left + seconds) * 20L);
 
@@ -268,12 +265,13 @@ public class Friedhof {
     }
 
     public static int getDeathtimeDatabase(Player p) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT time FROM friedhof WHERE id=" + Script.getNRPID(p))) {
             if (rs.next()) {
                 return rs.getInt("time");
             }
         } catch (SQLException e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         return 0;

@@ -13,6 +13,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class CheckActiveMembers implements CommandExecutor {
     @Override
@@ -26,19 +27,19 @@ public class CheckActiveMembers implements CommandExecutor {
 
         StringBuilder sb = new StringBuilder("§8[§6Aktive Mitglieder§8] §6" + Messages.ARROW);
         for(Beruf.Berufe b : Beruf.Berufe.values()) {
-            ArrayList<Player> members = new ArrayList<>(b.getMembers());
+            ArrayList<UUID> members = new ArrayList<>(b.getBeruf().keySet());
             members.removeIf(member -> member == null);
             members.removeIf(AFK::isAFK);
             members.removeIf(member -> !Duty.isInDuty(member));
             members.removeIf(SDuty::isSDuty);
-            sb.append("\n§8» §e").append(b.getName()).append("§8: §7").append(members.size()).append("§8/§7").append(b.getMembers().size());
+            sb.append("\n§8» §e").append(b.getName()).append("§8: §7").append(members.size());
         }
         for(Organisation o : Organisation.values()) {
-            ArrayList<Player> members = new ArrayList<>(o.getMembers());
+            ArrayList<UUID> members = new ArrayList<>(o.getMember());
             members.removeIf(member -> member == null);
             members.removeIf(AFK::isAFK);
             members.removeIf(SDuty::isSDuty);
-            sb.append("\n§8» §e").append(o.getName()).append("§8: §7").append(members.size()).append("§8/§7").append(o.getMembers().size());
+            sb.append("\n§8» §e").append(o.getName()).append("§8: §7").append(members.size());
         }
 
         p.sendMessage(sb.toString());

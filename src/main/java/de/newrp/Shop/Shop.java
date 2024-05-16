@@ -1,9 +1,6 @@
 package de.newrp.Shop;
 
-import de.newrp.API.Messages;
-import de.newrp.API.PaymentType;
-import de.newrp.API.Script;
-import de.newrp.API.SlotLimit;
+import de.newrp.API.*;
 import de.newrp.Administrator.Notifications;
 import de.newrp.Berufe.Abteilung;
 import de.newrp.Berufe.Beruf;
@@ -17,6 +14,7 @@ import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -24,12 +22,10 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
-public class Shop implements CommandExecutor, Listener {
+public class Shop implements CommandExecutor, Listener, TabCompleter {
 
     public static String PREFIX = "§8[§6Shop§8] » §7";
     private static HashMap<Player, Integer> priceMap = new HashMap<>();
@@ -175,8 +171,8 @@ public class Shop implements CommandExecutor, Listener {
             buyer.sendMessage(PREFIX + Script.getName(p) + " hat dir angeboten seinen Shop " + shop.getPublicName() + " für " + price + "€ zu kaufen.");
 
             buyer.sendMessage(Messages.INFO + "Miete (Gebäude): " + shop.getRent() + "€");
-            buyer.sendMessage(Messages.INFO + "Lager: " + shop.getLager() + "/" + shop.getLagerSize());
             buyer.sendMessage(Messages.INFO + "Betriebskosten: " + shop.getRunningCost() + "€");
+            buyer.sendMessage(Messages.INFO + "Lager: " + shop.getLager() + "/" + shop.getLagerSize());
             buyer.sendMessage(Messages.INFO + "Kasse: " + shop.getKasse() + "€");
             if(shop.getKasse()<=0) {
                 buyer.sendMessage(Messages.INFO + "§c§lBitte beachte, dass der Shop derzeit Schulden hat, welche du übernehmen würdest.");
@@ -188,8 +184,8 @@ public class Shop implements CommandExecutor, Listener {
 
         if(args.length == 1 && args[0].equalsIgnoreCase("info")) {
             p.sendMessage(PREFIX + "=== " + shop.getPublicName() + " ===");
-            p.sendMessage("§8» " + "§6Betriebskosten: " + shop.getRunningCost() + "€");
             p.sendMessage("§8» " + "§6Miete (Gebäude): " + shop.getRent() + "€");
+            p.sendMessage("§8» " + "Betriebskosten: " + shop.getRunningCost() + "€");
             p.sendMessage("§8» " + "§6Lager: " + shop.getLager() + "/" + shop.getLagerSize());
             p.sendMessage("§8» " + "§6Preise:");
             HashMap<Integer, int[]> c = Shops.getShopItemData(shop);
@@ -303,7 +299,7 @@ public class Shop implements CommandExecutor, Listener {
                 return true;
             }
 
-            int price = 21000;
+            int price = 7500;
 
             if(shop.getKasse() < price) {
                 p.sendMessage(Messages.ERROR + "Du hast nicht genug Geld.");
@@ -328,7 +324,7 @@ public class Shop implements CommandExecutor, Listener {
 
             Inventory inv = Bukkit.createInventory(null, 9*3, "§7Sortiment " + shop.getPublicName());
             for(ShopItem si : ShopItem.values()) {
-                ItemStack is = si.getItemStack();
+                ItemStack is = si.getItemStack().clone();
                 if(is == null && si == ShopItem.Zeitung && !shop.isInShop(ShopItem.Zeitung)) {
                     is = Script.setNameAndLore(Material.WRITTEN_BOOK, "§9Zeitung", "§8» §6Lizensierungsgebühr: §6" + si.getLicensePrice() + "€", "§8» §6Einkaufspreis: §6" + si.getBuyPrice() + "€");
                 } else if(is == null && si == ShopItem.Zeitung && shop.isInShop(ShopItem.Zeitung)) {
@@ -380,6 +376,7 @@ public class Shop implements CommandExecutor, Listener {
             if(is.getType() == Material.WRITTEN_BOOK) {
                 si = ShopItem.Zeitung;
             } else {
+                Debug.debug("Getting shop item " + is.getType() + " for shop " + s.getPublicName());
                 si = ShopItem.getShopItem(is);
             }
 
@@ -470,6 +467,17 @@ public class Shop implements CommandExecutor, Listener {
         return false;
     }
 
-
-
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        String[] args1 = new String[] {"kasse", "sell", "karte", "info", "setprice", "upgradelager", "sortiment"};
+        String[] args2 = new String[] {};
+        List<String> completions = new ArrayList<>();
+        if (args.length == 1) {
+            for (String string : args1) if (string.toLowerCase().startsWith(args[0].toLowerCase())) completions.add(string);
+        } else if (args.length == 2) {
+            if (args[0].equalsIgnoreCase("kasse")) args2 = new String[] {"einzahlen", "auszahlen"};
+            for (String string : args2) if (string.toLowerCase().startsWith(args[1].toLowerCase())) completions.add(string);
+        }
+        return completions;
+    }
 }

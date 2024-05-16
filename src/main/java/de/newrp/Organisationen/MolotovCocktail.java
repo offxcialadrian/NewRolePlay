@@ -7,7 +7,7 @@ import de.newrp.Berufe.Abteilung;
 import de.newrp.Berufe.Beruf;
 import de.newrp.House.House;
 import de.newrp.Medic.FeuerwehrEinsatz;
-import de.newrp.main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -51,7 +51,7 @@ public class MolotovCocktail implements CommandExecutor, Listener {
             }
             cooldowns.put(e.getPlayer().getName(), time);
             e.getItemDrop().setPickupDelay(Integer.MAX_VALUE);
-            Bukkit.getScheduler().runTaskLater(main.getInstance(), () -> {
+            Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> {
                 startFire(e.getPlayer().getLocation());
                 e.getItemDrop().remove();
             }, 2 * 27L);
@@ -75,7 +75,7 @@ public class MolotovCocktail implements CommandExecutor, Listener {
                 final Item i = e.getPlayer().getWorld().dropItemNaturally(e.getPlayer().getLocation(), Script.molotov());
                 i.setVelocity(e.getPlayer().getLocation().getDirection().multiply(1.2F));
                 i.setPickupDelay(Integer.MAX_VALUE);
-                Bukkit.getScheduler().runTaskLater(main.getInstance(), () -> {
+                Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> {
                     startFire(i.getLocation());
                     i.remove();
                 }, 2 * 27L);
@@ -132,7 +132,7 @@ public class MolotovCocktail implements CommandExecutor, Listener {
                     count++;
                 }
                 if (l.getBlock().getType().equals(Material.AIR) && (l.getBlockY() - loc.getBlockY() < 5)) {
-                    Bukkit.getScheduler().runTask(main.getInstance(), () -> {
+                    Bukkit.getScheduler().runTask(NewRoleplayMain.getInstance(), () -> {
                         Block setFire = b.getWorld().getBlockAt(l);
                         setFire.setType(Material.FIRE);
                         if (setFire.getType().equals(Material.FIRE)) {
@@ -297,7 +297,7 @@ public class MolotovCocktail implements CommandExecutor, Listener {
                         count++;
                     }
                     if (l.getBlock().getType().equals(Material.AIR) && (l.getBlockY() - loc.getBlockY() < 5)) {
-                        Bukkit.getScheduler().runTask(main.getInstance(), () -> {
+                        Bukkit.getScheduler().runTask(NewRoleplayMain.getInstance(), () -> {
                             Block setFire = b.getWorld().getBlockAt(l);
                             setFire.setType(Material.FIRE);
                             if (setFire.getType().equals(Material.FIRE)) {

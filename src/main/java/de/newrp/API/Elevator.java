@@ -1,7 +1,7 @@
 package de.newrp.API;
 
 import de.newrp.Player.AFK;
-import de.newrp.main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -303,7 +303,7 @@ public class Elevator implements Listener {
                             cancel();
                         }
                     }
-                }.runTaskTimer(main.getInstance(), 20, 20);
+                }.runTaskTimer(NewRoleplayMain.getInstance(), 20, 20);
             }
         }
     }

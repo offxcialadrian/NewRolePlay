@@ -1,17 +1,19 @@
 package de.newrp.GFB;
 
 import de.newrp.API.*;
-import de.newrp.main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.BlockState;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Item;
+import org.bukkit.entity.Minecart;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -22,6 +24,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.material.MaterialData;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -42,7 +45,7 @@ public class Tabakplantage implements CommandExecutor, Listener {
     public static final HashMap<String, Long> DRYING = new HashMap<>();
     static final HashMap<Location, ArrayList<Item>> ITEMS = new HashMap<>();
     static final HashMap<String, Location> LOCATION = new HashMap<>();
-    private static final List<Block> BLOCKS_BETWEEN = Script.getBlocksBetween(new Location(Script.WORLD, 443, 65, 650), new Location(Script.WORLD, 436, 65, 658));
+    private static final List<Block> BLOCKS_BETWEEN = Script.getBlocksBetween(new Location(Script.WORLD, 111, 66, 627), new Location(Script.WORLD, 112, 67, 644));
 
     @Override
     public boolean onCommand(@NotNull CommandSender cs, @NotNull Command cmd, @NotNull String s, @NotNull String[] args) {
@@ -69,7 +72,6 @@ public class Tabakplantage implements CommandExecutor, Listener {
             }
         }
 
-        p.getInventory().remove(Material.SHEARS);
         int i = (Premium.hasPremium(p) ? GFB.TABAKPLANTAGE.getLevel(p)+10 : GFB.TABAKPLANTAGE.getLevel(p)+6);
         p.getInventory().addItem(Script.setNameAndLore(Material.SHEARS, "§7Tabakschere", "§9" + i + "/" + i));
         p.sendMessage(PREFIX + "Ernte Tabak und lege es zum trocknen auf die Steintische.\n" +
@@ -82,14 +84,15 @@ public class Tabakplantage implements CommandExecutor, Listener {
     }
 
     public static void openGUI(Player p) {
-        Inventory inv;
-        inv = p.getServer().createInventory(null, InventoryType.HOPPER, "§6Tabak");
-        inv.setItem(0, Script.setName(Material.MELON, "§cWassermelone"));
-        inv.setItem(1, Script.setName(new ItemStack(Material.INK_SAC, 1, (byte) 5), "§5Traube"));
-        inv.setItem(2, Script.setName(Material.APPLE, "§cDoppelapfel"));
-        inv.setItem(3, Script.setName(new ItemStack(Material.INK_SAC, 1, (byte) 11), "§eZitrone"));
-        inv.setItem(4, Script.setName(new ItemStack(Material.INK_SAC, 1, (byte) 14), "§6Pfirsich-Minze"));
-        p.openInventory(inv);
+        Bukkit.getScheduler().runTask(NewRoleplayMain.getInstance(), () -> {
+            final Inventory inv = p.getServer().createInventory(null, InventoryType.HOPPER, "§6Tabak");
+            inv.setItem(0, Script.setName(Material.MELON, "§cWassermelone"));
+            inv.setItem(1, Script.setName(new ItemStack(Material.INK_SAC, 1, (byte) 5), "§5Traube"));
+            inv.setItem(2, Script.setName(Material.APPLE, "§cDoppelapfel"));
+            inv.setItem(3, Script.setName(new ItemStack(Material.INK_SAC, 1, (byte) 11), "§eZitrone"));
+            inv.setItem(4, Script.setName(new ItemStack(Material.INK_SAC, 1, (byte) 14), "§6Pfirsich-Minze"));
+            p.openInventory(inv);
+        });
     }
 
     public static void drop(Player p) {
@@ -106,7 +109,7 @@ public class Tabakplantage implements CommandExecutor, Listener {
                     itemMeta.setDisplayName(p.getName());
                     itemStack.setItemMeta(itemMeta);
 
-                    Item item = p.getWorld().dropItemNaturally(loc.clone().add(0.5, 0, .5), itemStack);
+                    Item item = p.getWorld().dropItemNaturally(loc.clone().add(0.5, 0.5, .5), itemStack);
                     item.setCustomName(p.getName());
                     item.setCustomNameVisible(false);
                     item.setVelocity(item.getVelocity().zero());
@@ -116,10 +119,10 @@ public class Tabakplantage implements CommandExecutor, Listener {
                 ITEMS.put(loc, items);
                 DRYING.put(p.getName(), System.currentTimeMillis() + TimeUnit.SECONDS.toMillis(210));
                 LOCATION.put(p.getName(), loc);
-                Bukkit.getScheduler().runTaskLater(main.getInstance(), () -> {
+                Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> {
                     if (p.isOnline()) {
                         p.sendMessage(PREFIX + "Der Tabak ist nun getrocknet.\n" + PREFIX + "Hol den Tabak nun ab für den nächsten Schritt.");
-                        new Route(p.getName(), Script.getNRPID(p), p.getLocation(), new Location(p.getWorld(), 434, 64, 654), PREFIX + "Du hast den Tabak aufgesammelt.", () -> pickUp(p)).start();
+                        new Route(p.getName(), Script.getNRPID(p), p.getLocation(), new Location(p.getWorld(), 112, 66, 646), PREFIX + "Du hast den Tabak aufgesammelt.", () -> pickUp(p)).start();
                         Location loc1 = LOCATION.get(p.getName());
                         ArrayList<Item> items1 = ITEMS.get(loc1);
                         int tabak1 = items1.size();
@@ -158,6 +161,24 @@ public class Tabakplantage implements CommandExecutor, Listener {
         }
     }
 
+    public static void respawnPlantage(final Location from, final Location to)  {
+        final List<Block> grassBlock = new ArrayList<>();
+        for (final Block block : Script.getBlocksBetween(from, to)) {
+            if(block.getType() == Material.GRASS_BLOCK) {
+                grassBlock.add(block);
+            }
+        }
+
+        for (final Block block : grassBlock) {
+            final Block firstLargeFern = block.getRelative(BlockFace.UP);
+            firstLargeFern.setType(Material.LARGE_FERN, false);
+
+            final Block secondLargeFern = firstLargeFern.getRelative(BlockFace.UP);
+            secondLargeFern.setBlockData(Material.LARGE_FERN.createBlockData("[half=upper]"));
+        }
+        Debug.debug("Tabakplantage respawned");
+    }
+
     public static void pickUp(Player p) {
         Location loc = LOCATION.get(p.getName());
         ArrayList<Item> items = ITEMS.get(loc);
@@ -171,8 +192,10 @@ public class Tabakplantage implements CommandExecutor, Listener {
         ITEMS.remove(loc);
         DRYING.remove(p.getName());
         driedTobacco.put(p.getName(), tabak);
-        p.sendMessage(PREFIX + "Bring den getrockneten Tabak nun zum Mischen für den Geschmack.");
-        new Route(p.getName(), Script.getNRPID(p), p.getLocation(), new Location(p.getWorld(), 383, 64, 674), PREFIX + "Wähle die Geschmacksrichtung.", () -> openGUI(p)).start();
+        Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> {
+            p.sendMessage(PREFIX + "Bring den getrockneten Tabak nun zum Mischen für den Geschmack.");
+            new Route(p.getName(), Script.getNRPID(p), p.getLocation(), new Location(p.getWorld(), 99, 66, 628), PREFIX + "Wähle die Geschmacksrichtung.", () -> openGUI(p)).start();
+        }, 20);
     }
 
     @EventHandler
@@ -187,7 +210,7 @@ public class Tabakplantage implements CommandExecutor, Listener {
                 return;
             }
 
-            if (!Script.isInRegion(b.getLocation(), new Location(p.getWorld(), 430, 66, 632), new Location(p.getWorld(), 389, 63, 676))) {
+            if (!Script.isInRegion(b.getLocation(), new Location(p.getWorld(), 121, 69, 621), new Location(p.getWorld(), 100, 66, 662))) {
                 return;
             }
 
@@ -209,7 +232,7 @@ public class Tabakplantage implements CommandExecutor, Listener {
                 if (left == 1) {
                     is.setAmount(0);
 
-                    new Route(p.getName(), Script.getNRPID(p), p.getLocation(), new Location(p.getWorld(), 434, 64, 654), PREFIX + "Du hast den frischen Tabak zum Trocknen ausgelegt.", () -> Bukkit.getScheduler().runTask(main.getInstance(), () -> drop(p))).start();
+                    new Route(p.getName(), Script.getNRPID(p), p.getLocation(), new Location(p.getWorld(), 112, 66, 646), PREFIX + "Du hast den frischen Tabak zum Trocknen ausgelegt.", () -> Bukkit.getScheduler().runTask(NewRoleplayMain.getInstance(), () -> drop(p))).start();
                     p.sendMessage(PREFIX + "Bring die " + total + " Tabakpflanzen nun zum Trocknen.");
                 } else {
                     short r = (short) (is.getType().getMaxDurability() / 8);
@@ -217,6 +240,7 @@ public class Tabakplantage implements CommandExecutor, Listener {
                     ItemMeta meta = is.getItemMeta();
                     meta.setLore(Collections.singletonList("§9" + (left - 1) + "/" + total));
                     is.setItemMeta(meta);
+                    p.sendMessage(PREFIX + "Du hast eine Tabakpflanze geerntet, " + (left - 1) + " Stück " + (left - 1 == 1 ? "ist" : "sind") + " verbleibend");
                 }
             } else {
                 e.setCancelled(true);
@@ -257,9 +281,9 @@ public class Tabakplantage implements CommandExecutor, Listener {
                 Player p = (Player) e.getWhoClicked();
                 int tabak = driedTobacco.get(p.getName());
                 p.sendMessage(PREFIX + "Du hast " + tabak + "g Tabak mit der Geschmacksrichtung " + type.getName() + " hergestellt.\n" +
-                        PREFIX + "Bringe es nun zur Shishabar und gib es mit §8/§6droptabak §7ab.");
+                        PREFIX + "Bringe es nun weg und gib es mit §8/§6droptabak §7ab.");
                 mixedTobacco.put(p.getName(), tabak);
-                new Route(p.getName(), Script.getNRPID(p), p.getLocation(), Navi.SHISHABAR.getLocation()).start();
+                new Route(p.getName(), Script.getNRPID(p), p.getLocation(), HologramList.DROPTABAK.getLocation()).start();
             }
         }
     }

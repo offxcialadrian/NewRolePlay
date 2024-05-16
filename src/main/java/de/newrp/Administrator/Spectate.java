@@ -3,7 +3,7 @@ package de.newrp.Administrator;
 import de.newrp.API.Messages;
 import de.newrp.API.Rank;
 import de.newrp.API.Script;
-import de.newrp.main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -13,7 +13,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.*;
 
@@ -34,14 +33,14 @@ public class Spectate implements CommandExecutor, Listener {
         p.setGameMode(GameMode.SPECTATOR);
         spawn.put(p.getName(), p.getLocation());
         spectate.put(p, p.getName());
-        for (Player online : Bukkit.getOnlinePlayers()) online.hidePlayer(main.getInstance(), p);
+        for (Player online : Bukkit.getOnlinePlayers()) online.hidePlayer(NewRoleplayMain.getInstance(), p);
     }
 
     public static void unvanish(Player p) {
         if (spawn.get(p.getName()) != null) p.teleport(spawn.get(p.getName()));
         spawn.remove(p.getName());
         p.setGameMode((BuildMode.isInBuildMode(p) ? GameMode.CREATIVE : GameMode.SURVIVAL));
-        for (Player online : Bukkit.getOnlinePlayers()) online.showPlayer(main.getInstance(), p);
+        for (Player online : Bukkit.getOnlinePlayers()) online.showPlayer(NewRoleplayMain.getInstance(), p);
         spectate.remove(p.getName());
     }
 
@@ -117,13 +116,13 @@ public class Spectate implements CommandExecutor, Listener {
         admin.setGameMode(GameMode.SPECTATOR);
         spawn.put(admin.getName(), admin.getLocation());
         admin.teleport(target.getLocation().add(0, 3, 0));
-        Bukkit.getScheduler().runTaskLater(main.getInstance(), () -> admin.setSpectatorTarget(target), 5L);
+        Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> admin.setSpectatorTarget(target), 5L);
         if (message) {
             admin.sendMessage(PREFIX + "Du beobachtest nun " + Script.getName(target) + ".");
             Script.sendTeamMessage(admin, ChatColor.RED, "beobachtet nun " + Script.getName(target) + ".", true);
         }
         spectate.put(admin, target.getName());
-        for (Player online : Bukkit.getOnlinePlayers()) online.hidePlayer(main.getInstance(), admin);
+        for (Player online : Bukkit.getOnlinePlayers()) online.hidePlayer(NewRoleplayMain.getInstance(), admin);
     }
 
     public void removeSpectate(Player admin) {
@@ -131,7 +130,7 @@ public class Spectate implements CommandExecutor, Listener {
         spawn.remove(admin.getName());
         admin.setSpectatorTarget(null);
         admin.setGameMode(GameMode.SURVIVAL);
-        for (Player online : Bukkit.getOnlinePlayers()) online.showPlayer(main.getInstance(), admin);
+        for (Player online : Bukkit.getOnlinePlayers()) online.showPlayer(NewRoleplayMain.getInstance(), admin);
         Script.sendTeamMessage(admin, ChatColor.RED, "beobachtet nun nicht mehr.", true);
         spectate.remove(admin);
         if(Script.hasRank(admin, Rank.ADMINISTRATOR, false)) {
@@ -209,7 +208,7 @@ public class Spectate implements CommandExecutor, Listener {
     public void onJoin(PlayerJoinEvent e) {
         Player p = e.getPlayer();
         for (Entry<Player, String> ent : Spectate.spectate.entrySet()) {
-            p.hidePlayer(main.getInstance(), ent.getKey());
+            p.hidePlayer(NewRoleplayMain.getInstance(), ent.getKey());
         }
     }
 

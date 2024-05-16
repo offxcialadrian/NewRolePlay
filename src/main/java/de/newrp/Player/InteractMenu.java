@@ -9,18 +9,19 @@ import de.newrp.Berufe.Equip;
 import de.newrp.Chat.Me;
 import de.newrp.GFB.GFB;
 import de.newrp.House.House;
+import de.newrp.NewRoleplayMain;
 import de.newrp.Organisationen.Drogen;
-import de.newrp.Police.Fahndung;
 import de.newrp.Police.Handschellen;
-import de.newrp.Police.Policecomputer;
 import de.newrp.Ticket.TicketCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.block.data.type.Bed;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -29,6 +30,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class InteractMenu implements Listener {
 
@@ -235,7 +237,7 @@ public class InteractMenu implements Listener {
                     public void run() {
                         p.setPassenger(tg);
                     }
-                }.runTaskLater(de.newrp.main.getInstance(), 5L);
+                }.runTaskLater(NewRoleplayMain.getInstance(), 5L);
                 break;
             case "Handschellen öffnen":
                 if (Fesseln.isTiedUp(p)) {
@@ -389,7 +391,7 @@ public class InteractMenu implements Listener {
                         progressBar(16, p);
                         LEVEL.replace(p.getName(), LEVEL.get(p.getName()) + 1);
                     }
-                }.runTaskTimer(de.newrp.main.getInstance(), 0L, 20L);
+                }.runTaskTimer(NewRoleplayMain.getInstance(), 0L, 20L);
                 break;
             case "Drogentest":
                 if (!Duty.isInDuty(p)) {
@@ -454,4 +456,12 @@ public class InteractMenu implements Listener {
         Script.sendActionBar(p, "§cFesseln öffnen.. §8» §a" + sb.toString());
     }
 
+    @EventHandler
+    public static void onBed(PlayerInteractEvent event) {
+        if (event.getClickedBlock() != null) {
+            if (event.getClickedBlock().getBlockData() instanceof Bed) {
+                event.setCancelled(true);
+            }
+        }
+    }
 }

@@ -10,9 +10,15 @@ import de.newrp.House.House;
 import de.newrp.House.HouseAddon;
 import de.newrp.Medic.Medikamente;
 import de.newrp.Medic.Rezept;
+import de.newrp.NewRoleplayMain;
 import de.newrp.Organisationen.Organisation;
 import de.newrp.Shop.Shops;
 import de.newrp.TeamSpeak.TeamSpeak;
+import de.newrp.dependencies.DependencyContainer;
+import de.newrp.discord.Discord;
+import de.newrp.discord.IJdaService;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.entities.Guild;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -79,6 +85,7 @@ public class Annehmen implements CommandExecutor {
             leader.sendMessage(Messages.INFO + "Nutze /salary [Spieler] [Gehalt], um " + Script.getName(p) + " ein Gehalt zu geben.");
             beruf.addMember(p, leader);
             beruf.setMember(p);
+            Beruf.getBeruf(p.getPlayer()).changeDuty(p, false);
             offer.remove(p.getName() + ".joinberuf");
             Achievement.BERUF_JOIN.grant(p);
             TeamSpeak.sync(Script.getNRPID(p));
@@ -198,13 +205,36 @@ public class Annehmen implements CommandExecutor {
                 return true;
             }
 
-            Licenses.ERSTE_HILFE.grant(Script.getNRPID(medic));
+            Licenses.ERSTE_HILFE.grant(Script.getNRPID(p));
             p.sendMessage(ACCEPTED + "Du hast den Erste-Hilfe-Schein erfolgreich erworben.");
             Beruf.Berufe.RETTUNGSDIENST.sendMessage(Beruf.PREFIX + Script.getName(medic) + " hat " + Script.getName(p) + " einen Erste-Hilfe-Schein ausgestellt.");
-            Script.executeAsyncUpdate("INSERT INTO erste_hilfe (nrp_id, awarded) VALUES (" + Script.getNRPID(medic) + ", " + System.currentTimeMillis() + ");");
+            Script.executeAsyncUpdate("INSERT INTO erste_hilfe (nrp_id, awarded) VALUES (" + Script.getNRPID(p) + ", " + System.currentTimeMillis() + ");");
             Script.removeMoney(p, PaymentType.CASH, 250);
             Stadtkasse.addStadtkasse(250, "Erste-Hilfe-Kurs von " + Script.getName(p), null);
             offer.remove(p.getName() + ".erstehilfeschein");
+
+        } else if(offer.containsKey(p.getName() + ".dcverify")) {
+            Bukkit.getScheduler().runTaskAsynchronously(NewRoleplayMain.getInstance(), () -> {
+                int userID = Script.getNRPID(p);
+                JDA jda = DependencyContainer.getContainer().getDependency(IJdaService.class).getJda();
+                Guild guild = jda.getGuildById("1183386774374981662");
+
+                guild.retrieveMemberById(offer.get(p.getName() + ".dcverify")).queue(member -> {
+                    if (member == null) {
+                        p.sendMessage(Messages.ERROR + "Der Benutzer konnte nicht gefunden werden.");
+                        return;
+                    }
+
+                    if (Discord.getDiscordID(userID) != 0) {
+                        p.sendMessage(Messages.ERROR + "§cDu hast dich bereits verifiziert.");
+                        return;
+                    }
+
+                    Discord.verify(userID, member);
+                    p.sendMessage(Discord.PREFIX + "Du hast deinen Minecraft Account mit deinem Discord-Account verbunden.");
+                    Achievement.DISCORD.grant(p);
+                });
+            });
 
         } else if(offer.containsKey(p.getName() + ".sellhouse")) {
             Player seller = Script.getPlayer(offer.get(p.getName() + ".sellhouse"));
@@ -250,9 +280,12 @@ public class Annehmen implements CommandExecutor {
             Script.addMoney(seller, PaymentType.BANK, add);
             house.setOwner(Script.getNRPID(p));
             house.updateSign();
-            for(HouseAddon addon : house.getAddons()) {
-                house.removeAddon(addon);
+            if (!house.getAddons().isEmpty()) {
+                for (HouseAddon addon : house.getAddons()) {
+                    house.removeAddon(addon);
+                }
             }
+            if (house.livesInHouse(p)) house.removeMieter(Script.getNRPID(p));
             house.setSlots(1);
             Script.executeAsyncUpdate("INSERT INTO house_bewohner (houseID, mieterID, vermieter, miete, nebenkosten, immobilienmarkt) VALUES (" + houseID + ", " + Script.getNRPID(p) + ", " + true + ", " + 0 + ", 0, FALSE);");
             p.sendMessage(ACCEPTED + "Du hast das Haus erfolgreich gekauft.");
@@ -343,16 +376,20 @@ public class Annehmen implements CommandExecutor {
         } else if(offer.containsKey(p.getName() + ".rezept")) {
             Player tg = Script.getPlayer(offer.get(p.getName() + ".rezept"));
             Medikamente m = Medikamente.getMedikament(offer.get(p.getName() + ".rezept.medikament"));
+            int amount = (offer.containsKey(p.getName() + ".rezept.anzahl") ? Integer.parseInt(offer.get(p.getName() + ".rezept.anzahl")) : 1);
             if (m == null) return true;
             p.sendMessage(ACCEPTED + "Du hast ein Rezept für " + m.getName() + " erhalten.");
             tg.sendMessage(ACCEPTED + Script.getName(p) + " hat das Rezept genommen.");
-            p.getInventory().addItem(m.getRezept());
-            Log.NORMAL.write(p, "hat ein Rezept für " + m.getName() + " von " + Script.getName(tg) + " erhalten.");
-            Log.NORMAL.write(tg, "hat ein Rezept für " + m.getName() + " an " + Script.getName(p) + " gegeben.");
-            Beruf.Berufe.RETTUNGSDIENST.sendMessage(Rezept.PREFIX + Script.getName(tg) + " hat " + Script.getName(p) + " ein Rezept für " + m.getName() + " ausgestellt.");
+            for(int i = 0; i < amount; i++) {
+                p.getInventory().addItem(m.getRezept());
+            }
+            Log.NORMAL.write(p, "hat " + amount + "x Rezept für " + m.getName() + " von " + Script.getName(tg) + " erhalten.");
+            Log.NORMAL.write(tg, "hat " + amount + "x Rezept für " + m.getName() + " an " + Script.getName(p) + " gegeben.");
+            Beruf.Berufe.RETTUNGSDIENST.sendMessage(Rezept.PREFIX + Script.getName(tg) + " hat " + Script.getName(p) + " " + amount + "x Rezept für " + m.getName() + " ausgestellt.");
             offer.remove(p.getName() + ".rezept");
             offer.remove(p.getName() + ".medikament");
-            Stadtkasse.removeStadtkasse(30, "Rezeptausstellung an " + Script.getName(p));
+            offer.remove(p.getName() + ".rezept.anzahl");
+            Stadtkasse.removeStadtkasse(10*amount, "Rezeptausstellung an " + Script.getName(p));
             Achievement.REZEPT.grant(p);
 
         } else if(offer.containsKey(p.getName() + ".house.rent")) {

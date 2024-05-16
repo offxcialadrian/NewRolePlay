@@ -1,106 +1,183 @@
 package de.newrp.Vehicle;
 
-import de.newrp.API.Messages;
-import de.newrp.Shop.Shop;
-import de.newrp.Shop.ShopType;
-import de.newrp.Shop.Shops;
+import de.newrp.API.*;
+import de.newrp.Shop.gasstations.GasStationBuyHandler;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
+import org.bukkit.Bukkit;
 import org.bukkit.Color;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Boat;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
-public class CarCommand implements @Nullable CommandExecutor {
-
-    private static Component PREFIX = Component.text("[").color(TextColor.color(Color.GRAY.asRGB()))
-                                .append(Component.text("Auto").color(TextColor.color(Color.ORANGE.asRGB())))
-                                .append(Component.text("] ").color(TextColor.color(Color.GRAY.asRGB())));
+public class CarCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
-        if (!(sender instanceof Player)) {
-            return true;
-        }
+        if (sender instanceof Player) {
+            Player player = ((Player) sender).getPlayer();
 
-        final Player player = (Player) sender;
-        if (args.length > 0) {
-            switch (args[0].toLowerCase()) {
-                case "start":
-                    if (Objects.requireNonNull(player).isInsideVehicle()) {
-                        CarHandler.cars.put((Boat) player.getVehicle(), true);
-                        player.sendMessage(PREFIX.append(Component.text("Du hast deinen Motor gestartet.")
-                                .color(TextColor.color(Color.SILVER.asRGB()))));
-                    } else {
-                        player.sendMessage(PREFIX.append(Component.text("Du befindest dich nicht in einem Auto!")
-                                .color(TextColor.color(Color.SILVER.asRGB()))));
-                    }
-                    break;
-                case "stop":
-                    if (Objects.requireNonNull(player).isInsideVehicle()) {
-                        if (player.getVehicle() instanceof Boat) {
-                            CarHandler.cars.put((Boat) player.getVehicle(), false);
-                            player.sendMessage(PREFIX.append(Component.text("Du hast deinen Motor angehalten.")
-                                    .color(TextColor.color(Color.SILVER.asRGB()))));
+            if (args.length > 0) {
+                List<Car> cars;
+                switch (args[0].toLowerCase()) {
+                    case "start":
+                        if (Objects.requireNonNull(player).isInsideVehicle()) {
+                            if (player.getVehicle() instanceof Boat) {
+                                if (GasStationBuyHandler.refuels.containsKey(player)) {
+                                    player.sendMessage(Component.text(Car.PREFIX + "Du hast noch nicht bezahlt!"));
+                                } else {
+                                    Car car = Car.getCarByEntityID(Objects.requireNonNull(player.getVehicle()).getEntityId());
+                                    car.setStarted(true);
+                                    car.setVelocity(car.getLocation().getDirection().multiply(0.2));
+                                    player.sendMessage(Component.text(Car.PREFIX + "Du hast deinen Motor gestartet."));
+                                }
+                            }
+                        } else {
+                            player.sendMessage(Component.text(Car.PREFIX + "Du befindest dich nicht in einem Auto!"));
                         }
-                    } else {
-                        player.sendMessage(PREFIX.append(Component.text("Du befindest dich nicht in einem Auto!")
-                                .color(TextColor.color(Color.SILVER.asRGB()))));
-                    }
-                    break;
-                case "fill":
-                    if(!player.isInsideVehicle()) {
-                        player.sendMessage(Messages.ERROR + "Du sitzt in keinem Auto!");
-                        return true;
-                    }
-                    final Shops shop = Shops.getShopByLocation(player.getLocation(), 10.0f);
-                    if(shop == null) {
-                        player.sendMessage(Messages.ERROR + "Du bist bei keiner Tankstelle!");
-                        return true;
-                    }
-
-                    if(shop.getType() != ShopType.GAS_STATION) {
-                        player.sendMessage(Messages.ERROR + "Du bist bei keiner Tankstelle!");
-                        return true;
-                    }
-
-                    // To-Do: Warten bis die Autologik fertig ist von ramses
-
-                    final Car playerCar = Car.getCarByEntityID(player.getVehicle().getEntityId());
-                    if(playerCar == null) {
-                        player.sendMessage(Messages.ERROR + "Du sitzt in keinem Auto!");
-                        return true;
-                    }
-
-                    if(playerCar.getOwner().getUniqueId() != player.getUniqueId()) {
-                        player.sendMessage(Messages.ERROR + "Das ist nicht dein Auto.");
-                        return true;
-                    }
-
-                    final int fuelToBeFilled = 100 - playerCar.getFuel();
-                    if(fuelToBeFilled >= 100) {
-                        player.sendMessage(Messages.ERROR + "Dein Auto ist bereits vollgetankt");
-                        return true;
-                    }
-                    break;
-                default:
-                    // Fehlermeldung für falsches Argument anzeigen
-                    break;
+                        break;
+                    case "stop":
+                        if (Objects.requireNonNull(player).isInsideVehicle()) {
+                            if (player.getVehicle() instanceof Boat) {
+                                Car.getCarByEntityID(Objects.requireNonNull(player.getVehicle()).getEntityId()).setStarted(false);
+                                player.sendMessage(Component.text(Car.PREFIX + "Du hast deinen Motor angehalten."));
+                            }
+                        } else {
+                            player.sendMessage(Component.text(Car.PREFIX + "Du befindest dich nicht in einem Auto!"));
+                        }
+                        break;
+                    case "lock":
+                    case "open":
+                        cars = Car.getCars(player);
+                        if (cars.isEmpty()) {
+                            Objects.requireNonNull(player).sendMessage(Component.text(Messages.ERROR + "Du besitzt keine Autos!"));
+                        } else {
+                            Inventory gui = Bukkit.createInventory(player, 9, "Fahrzeuge");
+                            assert player != null;
+                            for (Car car : cars) {
+                                double distance = car.getLocation().distance(player.getLocation());
+                                if (Premium.hasPremium(player) ? distance < 10 : distance < 5) {
+                                    ItemStack lock;
+                                    if (car.isLocked()) {
+                                        lock = new ItemStack(Material.RED_DYE);
+                                    } else {
+                                        lock = new ItemStack(Material.LIME_DYE);
+                                    }
+                                    ItemMeta lockMeta = lock.getItemMeta();
+                                    lockMeta.displayName(Component.text(car.getLicenseplate()).color(TextColor.color(Color.ORANGE.asRGB())));
+                                    lock.setItemMeta(lockMeta);
+                                    gui.addItem(lock);
+                                }
+                            }
+                            Objects.requireNonNull(player).openInventory(gui);
+                        }
+                        break;
+                    case "find":
+                        cars = Car.getCars(player);
+                        if (cars.isEmpty()) {
+                            Objects.requireNonNull(player).sendMessage(Component.text(Messages.ERROR + "Du besitzt keine Autos!"));
+                        } else {
+                            Inventory gui = Bukkit.createInventory(player, 9, "Fahrzeuge");
+                            for (Car car : cars) {
+                                ItemStack icon = new ItemStack(car.getCarType().getMaterial());
+                                ItemMeta iconMeta = icon.getItemMeta();
+                                iconMeta.displayName(Component.text(car.getLicenseplate()).color(TextColor.color(Color.ORANGE.asRGB())));
+                                icon.setItemMeta(iconMeta);
+                                gui.addItem(icon);
+                            }
+                            Objects.requireNonNull(player).openInventory(gui);
+                        }
+                        break;
+                    case "fill":
+                        assert player != null;
+                        player.performCommand("tanken");
+                        break;
+                    case "sell":
+                        if (Objects.requireNonNull(player).isInsideVehicle()) {
+                            if (player.getVehicle() instanceof Boat) {
+                                if (player.getLocation().distance(HologramList.KFZSTELLE.getLocation()) <= 10) {
+                                    Car car = Car.getCarByEntityID(Objects.requireNonNull(Objects.requireNonNull(player).getVehicle()).getEntityId());
+                                    if (car.isCarOwner(player)) {
+                                        if (args.length >= 2 && Objects.equals(args[1], "confirm")) {
+                                            car.destroy(false);
+                                            player.sendMessage(Component.text(Car.PREFIX + "Du hast deinen " + car.getCarType().getName() + " verkauft."));
+                                            player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
+                                            // To-Do: Geld hinzufügen
+                                            Cache.loadScoreboard(player);
+                                        } else {
+                                            player.sendMessage(Component.text(Car.PREFIX + "Verwende §6/car sell confirm §7um den Verkauf zu bestätigen!"));
+                                        }
+                                    } else {
+                                        player.sendMessage(Component.text(Car.PREFIX + "Du kannst kein fremdes Auto verkaufen!"));
+                                    }
+                                } else {
+                                    player.sendMessage(Component.text(Car.PREFIX + "Du kannst dein Auto nur bei einer KFZ-Anmeldestelle verkaufen!"));
+                                }
+                            }
+                        } else {
+                            player.sendMessage(Component.text(Car.PREFIX + "Du befindest dich nicht in einem Auto!"));
+                        }
+                        break;
+                    case "teleport":
+                        assert player != null;
+                        if (Script.hasRank(player, Rank.SUPPORTER, false)) {
+                            if (args.length >= 2) {
+                                if (!args[1].startsWith("N-")) args[1] = "N-" + args[1];
+                                Car car = Car.getCarByLicenseplate(args[1]);
+                                if (car != null) {
+                                    car.getBoatEntity().teleport(player.getLocation());
+                                    player.sendMessage(Component.text(Car.PREFIX + "Du hast das Auto N-" + args[1].replaceFirst("N-", "") + " zu dir teleportiert."));
+                                } else {
+                                    player.sendMessage(Component.text(Messages.ERROR + "N-" + args[1].replaceFirst("N-", "") + " ist kein gültiges Kennzeichen!"));
+                                }
+                            } else {
+                                player.sendMessage(Component.text(Messages.ERROR + "Du musst ein Kennzeichen angeben!"));
+                            }
+                            break;
+                        }
+                    default:
+                        Objects.requireNonNull(player).sendMessage(Component.text(Messages.ERROR + "/car [start/stop/lock/find/fill/sell]"));
+                        break;
+                }
+            } else {
+                Objects.requireNonNull(player).sendMessage(Component.text(Messages.ERROR + "/car [start/stop/lock/find/fill/sell]"));
             }
-        } else {
-            // Nur exemplarisch, ansonsten Fehlermeldung für fehlende Argumente anzeigen
-            Boat car = (Boat) Objects.requireNonNull(player).getWorld().spawnEntity(player.getLocation().add(0, 0.5, 0), EntityType.BOAT);
-            car.setCustomName(player.getName());
-            CarHandler.cars.putIfAbsent(car, false);
         }
 
         return true;
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        List<String> args1 = Arrays.asList("start", "stop", "lock", "open", "find", "fill", "sell", "teleport");
+        List<String> args2 = new ArrayList<>();
+        List<String> completions = new ArrayList<>();
+        if (args.length == 1) for (String string : args1) if (string.toLowerCase().startsWith(args[0].toLowerCase())) completions.add(string);
+        if (args.length == 2) {
+            if (args[0].equalsIgnoreCase("teleport")) {
+                if (Script.hasRank((Player) sender, Rank.SUPPORTER, false)) {
+                    for (Car car : Car.CARS) {
+                        if (args[1].startsWith("N-") || args[1].isEmpty()) args2.add(car.getLicenseplate());
+                        else if (args[1].startsWith("N") && args[1].length() == 1) args2.add(car.getLicenseplate());
+                        else args2.add(car.getLicenseplate().replaceFirst("N-", ""));
+                    }
+                    for (String string : args2) if (string.toLowerCase().startsWith(args[1].toLowerCase())) completions.add(string);
+                }
+            }
+        }
+        return completions;
     }
 }

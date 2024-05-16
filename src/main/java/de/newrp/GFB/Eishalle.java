@@ -3,7 +3,7 @@ package de.newrp.GFB;
 import de.newrp.API.Messages;
 import de.newrp.API.PayDay;
 import de.newrp.API.Script;
-import de.newrp.main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -19,16 +19,25 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
 
 public class Eishalle implements CommandExecutor, Listener {
 
     private static String PREFIX = "§8[§bEishalle§8] §b" + Messages.ARROW + " §7";
+    public static HashMap<String, Long> antispam = new HashMap<>();
     public static HashMap<String, Long> cooldown = new HashMap<>();
     public static Player CURRENT = null;
 
     @Override
     public boolean onCommand(@NotNull CommandSender cs, @NotNull Command cmd, @NotNull String s, @NotNull String[] args) {
         Player p = (Player) cs;
+
+        if (antispam.containsKey(p.getName())) {
+            if (antispam.get(p.getName()) > System.currentTimeMillis()) {
+                return true;
+            }
+        }
+        antispam.put(p.getName(), System.currentTimeMillis() + 3 * 1000);
 
         if(args.length != 0) {
             p.sendMessage(Messages.ERROR + "/eishalle");
@@ -78,7 +87,7 @@ public class Eishalle implements CommandExecutor, Listener {
                     }
                 }
             }
-        }.runTaskLater(main.getInstance(), 3 * 60 * 20L);
+        }.runTaskLater(NewRoleplayMain.getInstance(), 3 * 60 * 20L);
         return false;
     }
 

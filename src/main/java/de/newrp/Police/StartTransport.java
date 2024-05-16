@@ -3,6 +3,7 @@ package de.newrp.Police;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.Berufe.Beruf;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -11,12 +12,13 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
-public class StartTransport implements CommandExecutor {
+public class StartTransport implements CommandExecutor, Listener {
 
     public static boolean isActive = false;
     public static Player executor = null;
@@ -61,7 +63,7 @@ public class StartTransport implements CommandExecutor {
 
         executor = p;
         cooldown = true;
-        Bukkit.broadcastMessage("§8[§6News§8] §6" + Messages.ARROW + "Berichten zufolge kommt in kürze ein Waffentransport der Polizei am Hafen an. Bitte meiden Sie den Hafenbereich und halten Sie sich an die Anweisungen der Polizei.");
+        Bukkit.broadcastMessage("§8[§6News§8] §6" + Messages.ARROW + " §lBerichten zufolge kommt in kürze ein Waffentransport der Polizei am Hafen an. Bitte meiden Sie den Hafenbereich und halten Sie sich an die Anweisungen der Polizei.");
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -71,7 +73,7 @@ public class StartTransport implements CommandExecutor {
                 StartTransport.LEVEL = 0;
                 StartTransport.add = 0;
             }
-        }.runTaskLater(de.newrp.main.getInstance(), 20*60*15);
+        }.runTaskLater(NewRoleplayMain.getInstance(), 20*60*15);
 
         return false;
     }
@@ -101,7 +103,7 @@ public class StartTransport implements CommandExecutor {
                 LEVEL++;
                 progressBar(p);
             }
-        }.runTaskTimer(de.newrp.main.getInstance(), 0, 20);
+        }.runTaskTimer(NewRoleplayMain.getInstance(), 0, 20);
 
     }
 

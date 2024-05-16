@@ -1,7 +1,8 @@
 package de.newrp.Administrator;
 
+import com.google.common.collect.Sets;
 import de.newrp.API.*;
-import de.newrp.main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -17,8 +18,11 @@ import org.bukkit.inventory.Inventory;
 
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.*;
 
 public class Notifications implements CommandExecutor, Listener {
+
+    private static final Map<UUID, Set<NotificationType>> NOTIFICATION_CACHE = new HashMap<>();
 
     public enum NotificationType {
         JOIN(1, "join", "Join-Notification"),
@@ -58,29 +62,56 @@ public class Notifications implements CommandExecutor, Listener {
 
     private static final String PREFIX = "§8[§aNotifications§8] §a" + Messages.ARROW + " ";
 
-    private static boolean isNotificationEnabled(Player p, NotificationType type) {
-        try (Statement stmt = main.getConnection().createStatement();
-             ResultSet rs = stmt.executeQuery("SELECT * FROM notifications WHERE nrp_id = '" + Script.getNRPID(p) + "' AND notification_id = '" + type.getID() + "'")) {
-            return rs.next();
+    public static void loadNotificationsForPlayer(final Player player) {
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT notification_id FROM notifications WHERE nrp_id = '" + Script.getNRPID(player) + "'")) {
+            while(rs.next()) {
+                if(!NOTIFICATION_CACHE.containsKey(player.getUniqueId())) {
+                    NOTIFICATION_CACHE.put(player.getUniqueId(), Sets.newHashSet(getNotificationById(rs.getInt(1))));
+                } else {
+                    NOTIFICATION_CACHE.get(player.getUniqueId()).add(getNotificationById(rs.getInt(1)));
+                }
+            }
         } catch (Exception e) {
-            e.printStackTrace();
+            NewRoleplayMain.handleError(e);
+        }
+    }
+
+    private static boolean isNotificationEnabled(Player p, NotificationType type) {
+        if(NOTIFICATION_CACHE.containsKey(p.getUniqueId())) {
+            return NOTIFICATION_CACHE.get(p.getUniqueId()).contains(type);
         }
         return false;
     }
 
-    public static void sendMessage(NotificationType type, String msg) {
-        for (Player p : Script.getNRPTeam()) {
-            if (isNotificationEnabled(p, type)) {
-                p.sendMessage((type == NotificationType.ADVANCED_ANTI_CHEAT ? AntiCheatSystem.PREFIX : PREFIX) + msg);
+    public static NotificationType getNotificationById(final int id) {
+        for (final NotificationType notificationType : NotificationType.values()) {
+            if(notificationType.id == id) {
+                return notificationType;
             }
         }
+        return NotificationType.DEAD;
     }
 
-    public static void sendMessage(NotificationType type, String msg, Player player) {
-        for (Player p : Script.getNRPTeam()) {
-            if (isNotificationEnabled(p, type)) {
-                if (p != player)
+    public static void sendMessage(NotificationType type, String msg) {
+        final List<UUID> hasReceived = new ArrayList<>();
+        // members of the nrp team shouldn't receive sql errors etc to protect internal structure
+        if (type != NotificationType.DEBUG) {
+            for (Player p : Script.getNRPTeam()) {
+                hasReceived.add(p.getUniqueId());
+                if (isNotificationEnabled(p, type)) {
                     p.sendMessage((type == NotificationType.ADVANCED_ANTI_CHEAT ? AntiCheatSystem.PREFIX : PREFIX) + msg);
+                }
+            }
+        }
+
+        for (UUID member : Team.Teams.ENTWICKLUNG.getMembers()) {
+            if(hasReceived.contains(member)) continue;
+            final Player p = Bukkit.getPlayer(member);
+            if(p == null) continue;
+
+            if (isNotificationEnabled(p, type)) {
+                p.sendMessage((type == NotificationType.ADVANCED_ANTI_CHEAT ? AntiCheatSystem.PREFIX : PREFIX) + msg);
             }
         }
     }
@@ -88,14 +119,19 @@ public class Notifications implements CommandExecutor, Listener {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
         Player p = (Player) cs;
-        if (!Script.hasRank(p, Rank.SUPPORTER, false)) {
-            p.sendMessage(Messages.NO_PERMISSION);
-            return true;
+        if(Team.getTeam(p) == null || Team.getTeam(p) != Team.Teams.ENTWICKLUNG) {
+            Bukkit.getLogger().info(Team.getTeam(p).getName() + "");
+            if (!Script.hasRank(p, Rank.SUPPORTER, false)) {
+                p.sendMessage(Messages.NO_PERMISSION);
+                return true;
+            }
         }
 
-        if (!SDuty.isSDuty(p)) {
-            p.sendMessage(Messages.NO_SDUTY);
-            return true;
+        if(Team.getTeam(p) != Team.Teams.ENTWICKLUNG) {
+            if (!SDuty.isSDuty(p)) {
+                p.sendMessage(Messages.NO_SDUTY);
+                return true;
+            }
         }
 
         if (args.length != 0) {
@@ -122,6 +158,12 @@ public class Notifications implements CommandExecutor, Listener {
                 for (NotificationType type : NotificationType.values()) {
                     if (e.getCurrentItem().getItemMeta().getDisplayName().equals("§a" + type.getName())) {
                         Script.executeUpdate("INSERT INTO notifications (nrp_id, notification_id) VALUES ('" + Script.getNRPID(p) + "', '" + type.getID() + "')");
+                        if(NOTIFICATION_CACHE.containsKey(p.getUniqueId())) {
+                            NOTIFICATION_CACHE.get(p.getUniqueId()).add(type);
+                        } else {
+                            NOTIFICATION_CACHE.put(p.getUniqueId(), Sets.newHashSet(type));
+                        }
+
                         p.sendMessage(PREFIX + "Du hast die " + type.getName() + " aktiviert.");
                         e.getInventory().setItem(e.getSlot(), new ItemBuilder(Material.REDSTONE_BLOCK).setName("§c" + type.getName()).setLore(" §7" + Messages.ARROW + " Deaktiviere " + type.getName()).build());
                         return;
@@ -132,6 +174,11 @@ public class Notifications implements CommandExecutor, Listener {
                     if (e.getCurrentItem().getItemMeta().getDisplayName().equals("§c" + type.getName())) {
                         Script.executeUpdate("DELETE FROM notifications WHERE nrp_id = '" + Script.getNRPID(p) + "' AND notification_id = '" + type.getID() + "'");
                         p.sendMessage(PREFIX + "Du hast die " + type.getName() + " deaktiviert.");
+                        if(NOTIFICATION_CACHE.containsKey(p.getUniqueId())) {
+                            NOTIFICATION_CACHE.get(p.getUniqueId()).remove(type);
+                        } else {
+                            NOTIFICATION_CACHE.put(p.getUniqueId(), Sets.newHashSet());
+                        }
                         e.getInventory().setItem(e.getSlot(), new ItemBuilder(Material.EMERALD_BLOCK).setName("§a" + type.getName()).setLore(" §7" + Messages.ARROW + " Aktiviere " + type.getName()).build());
                         return;
                     }
@@ -147,7 +194,6 @@ public class Notifications implements CommandExecutor, Listener {
 
     @EventHandler
     public void onCommand(PlayerCommandPreprocessEvent e) {
-        Log.COMMAND.write(e.getPlayer(), e.getMessage());
         if (e.getMessage().startsWith("/sudo")) return;
         if (e.getMessage().startsWith("/passwort")) return;
         if (e.getMessage().startsWith("/password")) return;
@@ -156,12 +202,13 @@ public class Notifications implements CommandExecutor, Listener {
         if (e.getMessage().startsWith("/rnrp")) return;
         if (e.getMessage().startsWith("/nrp")) return;
         if (e.getMessage().startsWith("/tc")) return;
+        Log.COMMAND.write(e.getPlayer(), e.getMessage());
         if (e.getMessage().startsWith("/op") || e.getMessage().startsWith("/deop") || e.getMessage().startsWith("/gamemode") || e.getMessage().startsWith("/punish") || e.getMessage().startsWith("/nrp") || e.getMessage().startsWith("/setsupporter") ||
             e.getMessage().startsWith("/rnrp") || e.getMessage().startsWith("/tp")) {
             if (!Script.isNRPTeam(e.getPlayer()))
                 sendMessage(NotificationType.ADVANCED_ANTI_CHEAT, "§c" + Script.getName(e.getPlayer()) +  " hat versucht einen Team-Befehl auszuführen (" + e.getMessage() + ")");
     }
-        sendMessage(NotificationType.COMMAND, "§e" + Script.getName(e.getPlayer()) + " §7hat den Befehl §e" + e.getMessage() + " §7ausgeführt.", e.getPlayer());
+        sendMessage(NotificationType.COMMAND, "§e" + Script.getName(e.getPlayer()) + " §7hat den Befehl §e" + e.getMessage() + " §7ausgeführt.");
     }
 
 

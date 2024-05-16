@@ -54,16 +54,13 @@ public class BlackListCommand implements CommandExecutor, Listener, TabCompleter
     }
 
     public enum Reasons {
-        GANGZONE("Gangzones", 500, 50, new Organisation[] {Organisation.CORLEONE, Organisation.BRATERSTWO}),
-        ORGASCHÄDIGUNG("Organisationsschädigung", 800, 60, new Organisation[] {Organisation.CORLEONE, Organisation.BRATERSTWO}),
-        LEADERMORD("Leadermord", 1000, 65, new Organisation[] {Organisation.CORLEONE, Organisation.BRATERSTWO}),
+        GANGZONE("Gangzones", 500, 50, new Organisation[] {Organisation.CORLEONE, Organisation.BRATERSTWO, Organisation.KARTELL}),
+        ORGASCHÄDIGUNG("Organisationsschädigung", 800, 60, new Organisation[] {Organisation.CORLEONE, Organisation.BRATERSTWO, Organisation.KARTELL}),
         BLUTRACHE("Blutrache", 300, 25, new Organisation[] {Organisation.CORLEONE}),
-        LEICHENBEWACHUNG("Leichenbewachung", 400, 20, new Organisation[] {Organisation.CORLEONE, Organisation.BRATERSTWO}),
-        LEADERMORD_KARTELL("Leadermord", 300, 50, new Organisation[] {Organisation.KARTELL}),
-        GANGZONE_KARTELL("Gangzone", 750, 35, new Organisation[] {Organisation.KARTELL}),
-        FRAK_KARTELL("Fraktionsschädigung", 300, 50, new Organisation[] {Organisation.KARTELL}),
+        VOGELFREI("Vogelfrei", 1, 0, new Organisation[] {Organisation.CORLEONE, Organisation.BRATERSTWO, Organisation.KARTELL, Organisation.FALCONE, Organisation.SINALOA}),
+        LEICHENBEWACHUNG("Leichenbewachung", 600, 20, new Organisation[] {Organisation.CORLEONE, Organisation.BRATERSTWO, Organisation.KARTELL}),
+        LEADERMORD_KARTELL("Leadermord", 1000, 50, new Organisation[] {Organisation.CORLEONE, Organisation.BRATERSTWO, Organisation.KARTELL}),
         PROVOKATION_KARTELL("Provokation", 250, 10, new Organisation[] {Organisation.KARTELL}),
-        LB_KARTELL("Leichenbewachung", 500, 25, new Organisation[] {Organisation.KARTELL}),
         VERRAT_BRATERS("Verrat", 800, 25, new Organisation[] {Organisation.BRATERSTWO}),
         Vendetta_FALCONE("Vendetta", 600, 50, new Organisation[] {Organisation.FALCONE}),
         Tradimento_FALCONE("Tradimento", 500, 50, new Organisation[] {Organisation.FALCONE}),

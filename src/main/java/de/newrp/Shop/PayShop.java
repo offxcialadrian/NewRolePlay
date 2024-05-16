@@ -9,12 +9,16 @@ import de.newrp.House.House;
 import de.newrp.House.HouseAddon;
 import de.newrp.Medic.Medikamente;
 import de.newrp.Medic.Rezept;
+import de.newrp.NewRoleplayMain;
 import de.newrp.Player.Banken;
 import de.newrp.Player.Mobile;
+import de.newrp.Vehicle.Car;
+import de.newrp.Vehicle.CarType;
 import de.newrp.Waffen.Waffen;
 import de.newrp.Waffen.Weapon;
-import de.newrp.main;
+import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -29,6 +33,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Random;
 
 import static de.newrp.News.Zeitung.getLatestZeitungID;
 import static de.newrp.Waffen.GetGun.haveGun;
@@ -41,12 +46,8 @@ public class PayShop implements Listener {
 
 
     public static void pay(Player p, PaymentType type, ShopItem si, Shops s) {
-        int price = (Buy.amount.containsKey(p.getName()) ? si.getPrice(s) * Buy.amount.get(p.getName()) : si.getPrice(s));
-        ItemStack i = si.getItemStack();
-        i.setAmount(si.getItemStack().getAmount());
-        ItemMeta meta = i.getItemMeta();
-        meta.setLore(Collections.emptyList());
-        i.setItemMeta(meta);
+        final int price = (Buy.amount.containsKey(p.getName()) ? si.getPrice(s) * Buy.amount.get(p.getName()) : si.getPrice(s));
+        final int singlePrice = si.getPrice(s);
 
         if (type == PaymentType.BANK && !s.acceptCard()) {
             BuyClick.sendMessage(p, "Wir akzeptieren leider keine Kartenzahlung.");
@@ -69,14 +70,16 @@ public class PayShop implements Listener {
             return;
         }
 
-        HouseAddon addon = HouseAddon.getHausAddonByName(ChatColor.stripColor(si.getName()));
+        final HouseAddon addon = HouseAddon.getHausAddonByName(ChatColor.stripColor(si.getName()));
         if (addon != null && !House.hasHouse(Script.getNRPID(p))) {
             p.sendMessage(Messages.ERROR + "Du hast kein Haus.");
             return;
         }
 
-        int amount = (Buy.amount.getOrDefault(p.getName(), 1));
-        for (int j = 0; j < amount; j++) {
+        final ItemStack itemStack = si.getItemStack();
+
+        final int buyAmount = Buy.amount.getOrDefault(p.getName(), 1);
+        for (int j = 0; j < buyAmount; j++) {
             switch (si) {
                 case LOTTOSCHEIN:
                     BuyClick.sendMessage(p, "Die Lottoziehung findet jeden Mittwoch und Sonntag um 18 Uhr statt.");
@@ -207,6 +210,12 @@ public class PayShop implements Listener {
                         p.sendMessage(Messages.ERROR + "Du hast kein Handy.");
                         return;
                     }
+
+                    if(!Mobile.getPhone(p).isDestroyed(p)) {
+                        p.sendMessage(Messages.ERROR + "Dein Handy ist nicht kaputt.");
+                        return;
+                    }
+
                     Mobile.getPhone(p).setDestroyed(p, false);
                     Mobile.getPhone(p).setAkku(p, Mobile.getPhone(p).getMaxAkku());
                     break;
@@ -234,23 +243,22 @@ public class PayShop implements Listener {
                     Medikamente m = Medikamente.getMedikament(ChatColor.stripColor(si.getName()));
                     if (m == null) {
                         Script.sendBugReport(p, "medikament is null in PayShop.java and si = " + si.getName());
-                        return;
+                        break;
                     }
-                    if (!Rezept.hasRezept(p, m) && m.isRezeptNeeded()) {
-                        Rezept.removeRezept(p, m);
-                        p.sendMessage(Messages.ERROR + "Du hast kein Rezept für " + si.getName() + "§c.");
+
+                    final int amountOfRecipes = Rezept.getAmountOfRecipes(p, m);
+                    if(amountOfRecipes < buyAmount && m.isRezeptNeeded()) {
+                        p.sendMessage(Messages.ERROR + "Du hast nicht genügend Rezepte!");
                         return;
                     }
 
+                    Rezept.removeRezept(p, m);
 
-                    if (Rezept.hasRezept(p, m) && m.insurancePays()) {
-                        Rezept.removeRezept(p, m);
+                    if (m.insurancePays()) {
                         p.sendMessage(Messages.INFO + "Deine Krankenversicherung hat die Kosten für das Medikament übernommen.");
-                        Script.addMoney(p, PaymentType.BANK, price);
-                        Stadtkasse.removeStadtkasse(price, "Kostenübernahme durch Krankenversicherung an " + Script.getName(p));
+                        Script.addMoney(p, PaymentType.BANK, singlePrice);
+                        Stadtkasse.removeStadtkasse(singlePrice, "Kostenübernahme durch Krankenversicherung an " + Script.getName(p));
                     }
-
-                    if (Rezept.hasRezept(p, m)) Rezept.removeRezept(p, m);
                     break;
                 case EINZELFAHRASUSWEIS:
                     p.getInventory().addItem(new ItemBuilder(Material.PAPER).setName("§6UBahn-Ticket [Einzelfahrausweis]").setLore("Verbleibende Fahrten: 1").build());
@@ -261,16 +269,39 @@ public class PayShop implements Listener {
                 case MONATSFAHRASUSWEIS:
                     p.getInventory().addItem(new ItemBuilder(Material.PAPER).setName("§6UBahn-Ticket [30 Fahrten]").setLore("Verbleibende Fahrten: 30").build());
                     break;
-
                 case WATER_BUCKET:
                     p.getInventory().addItem(Script.setNameAndLore(new ItemStack(Material.WATER_BUCKET), "§9Wasser", "§65/5"));
                     break;
                 case DUENGER:
                     p.getInventory().addItem(Script.setNameAndLore(new ItemStack(Material.INK_SAC), "§7Dünger", "§65/5"));
                     break;
+                case OPPEL:
+                case VOLTSWAGEN:
+                case NMW:
+                case AWDI:
+                case MERCADAS:
+                case PAWSCHE:
+                    if (!Licenses.FUEHRERSCHEIN.hasLicense(Script.getNRPID(p))) {
+                        p.sendMessage(Component.text(Car.PREFIX + "Du hast keinen Führerschein!"));
+                        return;
+                    }
+
+                    if (Car.getCars(p).size() >= SlotLimit.VEHICLE.get(Script.getNRPID(p))) {
+                        p.sendMessage(Component.text(Messages.ERROR + "Du hast keine Fahrzeug-Slots übrig!"));
+                        return;
+                    }
+
+                    CarType carType = CarType.getCarTypeByName(si.getName());
+                    assert carType != null;
+                    Car car = Car.createCar(carType, new Location(p.getWorld(), 393 + new Random().nextInt(3), 76.5, 1090), p);
+                    assert car != null;
+                    car.setActivated(true);
+                    p.sendMessage(Component.text(Car.PREFIX + "Du hast dir einen neuen " + si.getName() + " gekauft."));
+                    BuyClick.sendMessage(p, "Hier sind die Schlüssel, dann viel Spaß!");
+                    break;
             }
 
-            if (Mobile.isPhone(i) && !Mobile.hasCloud(p)) {
+            if (Mobile.isPhone(itemStack) && !Mobile.hasCloud(p)) {
                 p.sendMessage(Messages.ERROR + "Du hast deine Daten nicht in der Cloud gespeichert.");
                 Script.executeAsyncUpdate("DELETE FROM handy_settings WHERE nrp_id = " + Script.getNRPID(p));
                 Script.executeAsyncUpdate("DELETE FROM call_history WHERE nrp_id = " + Script.getNRPID(p));
@@ -278,32 +309,51 @@ public class PayShop implements Listener {
                 Script.executeUpdate("DELETE FROM missed_calls WHERE toID = " + Script.getNRPID(p));
             }
 
-            if (si.addToInventory()) p.getInventory().addItem(i.clone());
+            if (si.addToInventory()) {
+                final ItemStack clonedItemStack = itemStack.clone();
+                Debug.debug("Adding item " + (clonedItemStack.hasItemMeta() ? ChatColor.stripColor(clonedItemStack.getItemMeta().getDisplayName()) : clonedItemStack.getType()) + " x" + clonedItemStack.getAmount() + " to " + Script.getName(p));
+                p.getInventory().addItem(clonedItemStack);
+            }
 
             if (type == PaymentType.BANK) {
                 Cashflow.addEntry(p, -price, "Einkauf: " + si.getName());
             }
 
             s.removeLager(si.getSize());
-
         }
 
         Script.removeMoney(p, type, price);
-        double mwst = Steuern.Steuer.MEHRWERTSTEUER.getPercentage();
-        int add = price - (int) Script.getPercent(mwst, price - (si.getBuyPrice() * amount)) + (type == PaymentType.BANK ? -(int) Script.getPercent(2, price) : 0);
+        final double mwst = Steuern.Steuer.MEHRWERTSTEUER.getPercentage();
+        final int bankTransferFee = (int) Script.getPercent(2, price);
+        final int buyPrice = si.getBuyPrice() * buyAmount;
+        Debug.debug("MWST = " + mwst + ", " +
+                "bankTransferFee = " + bankTransferFee + ", " +
+                "paid price = " + price + ", " +
+                "buyPriceSingle = " + si.getBuyPrice() + ", " +
+                "buyPriceTimes" + buyAmount + " = " + buyPrice);
+
+        Debug.debug("Price before mwst (" + mwst + ") is " + (price - buyPrice));
+
+        int shopMoney = (price - buyPrice) - (int) Script.getPercent(mwst, price - buyPrice);
+
+        Debug.debug("Price after mwst is " + shopMoney);
+        if(type == PaymentType.BANK) {
+            shopMoney -= bankTransferFee;
+        }
+
         if (s.getOwner() > 0) {
-            s.addKasse(add);
-            s.removeKasse(si.getBuyPrice());
+            s.addKasse(shopMoney);
             Log.NORMAL.write(p, "hat " + si.getName() + " für " + price + "€ gekauft.");
-            if (Script.getOfflinePlayer(s.getOwner()).isOnline())
-                Script.sendActionBar(Script.getPlayer(s.getOwner()), Shop.PREFIX + "Dein Shop §6" + s.getPublicName() + " §7hat §6" + (add - si.getBuyPrice()) + "€ §7Gewinn gemacht aus dem Verkauf von §6" + si.getName() + " §7(§6" + price + "€§7)");
+            if (Script.getOfflinePlayer(s.getOwner()).isOnline()) {
+                Script.sendActionBar(Script.getPlayer(s.getOwner()), Shop.PREFIX + "Dein Shop §6" + s.getPublicName() + " §7hat §6" + shopMoney + "€ §7Gewinn gemacht aus dem Verkauf von §6" + buyAmount + "x " + si.getName() + " §7(§6" + price + "€§7)");
+            }
         } else {
-            Stadtkasse.addStadtkasse(add, "Gewinn aus dem Verkauf von " + si.getName() + " (Shop: " + s.getPublicName() + ")", null);
+            Stadtkasse.addStadtkasse(shopMoney, "Gewinn aus dem Verkauf von " + si.getName() + " (Shop: " + s.getPublicName() + ")", null);
             Stadtkasse.removeStadtkasse(si.getBuyPrice(), "Einkauf von " + si.getName() + " (Shop: " + s.getPublicName() + ")");
             Log.NORMAL.write(p, "hat " + si.getName() + " für " + price + "€ gekauft.");
         }
         BuyClick.sendMessage(p, "Vielen Dank für Ihren Einkauf!");
-        Stadtkasse.addStadtkasse((int) Script.getPercent(mwst, price - si.getBuyPrice() * amount), "Mehrwertsteuer aus dem Verkauf von " + si.getName() + " (Shop: " + s.getPublicName() + ")", Steuern.Steuer.MEHRWERTSTEUER);
+        Stadtkasse.addStadtkasse((int) Script.getPercent(mwst, price - si.getBuyPrice() * buyAmount), "Mehrwertsteuer aus dem Verkauf von " + si.getName() + " (Shop: " + s.getPublicName() + ")", Steuern.Steuer.MEHRWERTSTEUER);
 
         Achievement.EINKAUFEN.grant(p);
         Buy.amount.remove(p.getName());
@@ -338,7 +388,7 @@ public class PayShop implements Listener {
     }
 
     private static void Zeitung(Player p) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM zeitung WHERE id=" + getLatestZeitungID())) {
             if (rs.next()) {
                 String[] pages = rs.getString("content").split("/\\{new_page}/");
@@ -354,6 +404,7 @@ public class PayShop implements Listener {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            Debug.debug("SQLException -> " + e.getMessage());
         }
     }
 

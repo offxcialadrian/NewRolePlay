@@ -1,6 +1,7 @@
 package de.newrp.Gangwar;
 
 import de.newrp.API.*;
+import de.newrp.Organisationen.Drogen;
 import de.newrp.Organisationen.Organisation;
 import de.newrp.Waffen.Waffen;
 import de.newrp.Waffen.Weapon;
@@ -213,7 +214,10 @@ public class GangwarCommand implements CommandExecutor, Listener {
         }
 
         o.sendMessage(PREFIX + "Deine Organisation hat den Gangwar in der Zone " + zone.getName() + " gewonnen.");
+        o.addExp(points.get(o));
         other.sendMessage(PREFIX + "Deine Organisation hat den Gangwar in der Zone " + zone.getName() + " verloren.");
+        other.addExp(points.get(other) / 2);
+
         if(zone.getOwner() != o) {
             zone.setOwner(o);
         }
@@ -288,6 +292,21 @@ public class GangwarCommand implements CommandExecutor, Listener {
             if(w == Weapon.SNIPER) continue;
 
             p.getInventory().addItem(Waffen.setAmmo(w.getWeapon(), w.getMagazineSize(), 500));
+        }
+        for (final Drogen drug : Drogen.values()) {
+            if(drug == Drogen.ANTIBIOTIKA) {
+                continue;
+            }
+
+            if(drug == Drogen.ECSTASY) {
+                continue;
+            }
+
+            if(drug == Drogen.KRISTALLE) {
+                continue;
+            }
+
+            p.getInventory().addItem(new ItemBuilder(drug.getMaterial()).setName(drug.getName()).setLore("§7Reinheitsgrad: " + Drogen.DrugPurity.HIGH.getText()).setAmount(20).build());
         }
         p.getInventory().addItem(new ItemBuilder(Material.BREAD).setAmount(32).build());
     }

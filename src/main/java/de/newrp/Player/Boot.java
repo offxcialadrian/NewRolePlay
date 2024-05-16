@@ -4,8 +4,7 @@ import de.newrp.API.Messages;
 import de.newrp.API.PaymentType;
 import de.newrp.API.Script;
 import de.newrp.Chat.Me;
-import de.newrp.main;
-import org.bukkit.Bukkit;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -65,7 +64,7 @@ public class Boot implements CommandExecutor {
                 LEVEL.put(p.getName(), LEVEL.get(p.getName()) + 1);
                 progressBar(16, p);
             }
-        }.runTaskTimer(main.getInstance(), 0, 20);
+        }.runTaskTimer(NewRoleplayMain.getInstance(), 0, 20);
 
         return false;
     }

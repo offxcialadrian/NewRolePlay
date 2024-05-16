@@ -3,7 +3,7 @@ package de.newrp.Gangwar;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.Organisationen.Organisation;
-import de.newrp.main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -66,6 +66,13 @@ public class Capture implements CommandExecutor, Listener {
 
                         if (progress.get(p.getName()) >= 30) {
 
+                            for(Location l : GangwarCommand.captures.get(Organisation.getOrganisation(p))) {
+                                if(l.equals(loc)) {
+                                    p.sendMessage(Messages.ERROR + "Du hast diesen Punkt bereits eingenommen.");
+                                    return;
+                                }
+                            }
+
                             ArrayList<Location> o_locs = GangwarCommand.captures.get(GangwarCommand.getOpponent(Organisation.getOrganisation(p)));
                             o_locs.remove(loc);
                             GangwarCommand.captures.replace(GangwarCommand.getOpponent(Organisation.getOrganisation(p)), o_locs);
@@ -85,7 +92,7 @@ public class Capture implements CommandExecutor, Listener {
                             progress.replace(p.getName(), progress.get(p.getName()) + 1);
                         }
                     }
-                }.runTaskTimer(main.getInstance(), 0, 20);
+                }.runTaskTimer(NewRoleplayMain.getInstance(), 0, 20);
 
             }
         }

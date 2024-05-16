@@ -1,7 +1,6 @@
 package de.newrp.API;
 
 import de.newrp.Organisationen.SchwarzmarktListener;
-import de.newrp.Waffen.Weapon;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.trait.SkinTrait;
@@ -20,7 +19,7 @@ public enum Schwarzmarkt {
     WALD(6, "Wald", new Location(Script.WORLD, 477, 64, 1182, -0.783306f, 2.5498862f)),
     UBAHN(7, "U-Bahn", new Location(Script.WORLD, 603, 57, 950, -60.532288f, 7.363153f)),
     CASINO(8, "Casino", new Location(Script.WORLD, 802, 110, 849, -180.53113f, 3.600285f)),
-    MOTEL(9, "Motel", new Location(Script.WORLD, 807, 64, 1227, -61.73477f, 7.3633313f));
+    MOTEL(9, "Motel", new Location(Script.WORLD, 808, 64, 1228, -61.73477f, 7.3633313f));
 
     public static final String PREFIX = "§8[§cSchwarzmarkt§8]§c " + Messages.ARROW + " §7";
     public static Schwarzmarkt CURRENT_LOCATION = null;

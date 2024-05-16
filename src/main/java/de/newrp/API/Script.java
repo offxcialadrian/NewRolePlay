@@ -10,17 +10,15 @@ import de.newrp.Berufe.*;
 import de.newrp.Forum.Forum;
 import de.newrp.House.House;
 import de.newrp.Organisationen.Blacklist;
-import de.newrp.Organisationen.Drogen;
 import de.newrp.Organisationen.Organisation;
 import de.newrp.Player.AFK;
 import de.newrp.Player.Mobile;
-import de.newrp.Player.Passwort;
 import de.newrp.Police.Fahndung;
 import de.newrp.TeamSpeak.TeamSpeak;
 import de.newrp.Ticket.TicketCommand;
 import de.newrp.Votifier.VoteListener;
 import de.newrp.Waffen.Weapon;
-import de.newrp.main;
+import de.newrp.NewRoleplayMain;
 import me.arcaniax.hdb.api.HeadDatabaseAPI;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -30,7 +28,6 @@ import net.md_5.bungee.api.chat.TextComponent;
 import net.minecraft.server.v1_16_R3.NBTTagCompound;
 import net.minecraft.server.v1_16_R3.NBTTagList;
 import org.bukkit.*;
-import org.bukkit.block.Banner;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.banner.Pattern;
@@ -46,11 +43,9 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
-import org.json.simple.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -129,12 +124,13 @@ public class Script {
     public static List<OfflinePlayer> getAllNRPTeam() {
         //select all nrp_ids from ranks
         List<OfflinePlayer> players = new ArrayList<>();
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT nrp_id FROM ranks")) {
             while (rs.next()) {
                 players.add(Script.getOfflinePlayer(rs.getInt("nrp_id")));
             }
         } catch (Exception e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         //sort list by rank
@@ -211,7 +207,7 @@ public class Script {
     }
 
     public static ItemStack kevlar(int lvl) {
-        ItemStack is = new ItemStack(Material.LEATHER_CHESTPLATE, 1, (short) (lvl == 1 ? 50 : 30));
+        ItemStack is = new ItemStack(Material.LEATHER_CHESTPLATE, 1, (short) (lvl == 1 ? 30 : 0));
         ItemMeta meta = is.getItemMeta();
         meta.setDisplayName("§7" + (lvl == 2 ? "Schwere " : "") + "Schutzweste");
         LeatherArmorMeta armormeta = (LeatherArmorMeta) meta;
@@ -280,12 +276,13 @@ public class Script {
     }
 
     public static boolean isWhitelistedIP(String ip) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM whitelisted_ips WHERE ip=" + ip)) {
             if (rs.next()) {
                 return true;
             }
         } catch (Exception e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         return false;
@@ -300,10 +297,11 @@ public class Script {
     }
 
     public static boolean isWhitelistedName(String name) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM whitelist WHERE name='" + name + "'")) {
             return rs.next();
         } catch (Exception e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         return true;
@@ -384,31 +382,33 @@ public class Script {
     }
 
     public static Rank getRank(Player p) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT rank_id FROM ranks WHERE nrp_id=" + getNRPID(p))) {
             if (rs.next()) {
                 return Rank.getRankByID(rs.getInt("rank_id"));
             }
         } catch (Exception e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         return PLAYER;
     }
 
     public static Rank getRank(int p) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT rank_id FROM ranks WHERE nrp_id=" + p)) {
             if (rs.next()) {
                 return Rank.getRankByID(rs.getInt("rank_id"));
             }
         } catch (Exception e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         return PLAYER;
     }
 
     public static Rank getRank(OfflinePlayer p) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT rank_id FROM ranks WHERE nrp_id=" + getNRPID(p))) {
             if (rs.next()) {
                 return Rank.getRankByID(rs.getInt("rank_id"));
@@ -420,7 +420,7 @@ public class Script {
     }
 
     public static int getLevel(Player name) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT level FROM level WHERE nrp_id=" + getNRPID(name))) {
             if (rs.next()) {
                 return rs.getInt("level");
@@ -432,13 +432,13 @@ public class Script {
     }
 
     public static int getLevel(OfflinePlayer name) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT level FROM level WHERE nrp_id=" + getNRPID(name))) {
             if (rs.next()) {
                 return rs.getInt("level");
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            NewRoleplayMain.handleError(e);
         }
         return 0;
     }
@@ -559,8 +559,8 @@ public class Script {
     public static void removeSubtitle(Player p) {
         for (Organisation o : Organisation.values()) {
             if (Blacklist.isOnBlacklist(p, o)) {
-                for (Player members : o.getMembers()) {
-                    Script.setSubtitle(members, p.getUniqueId(), null);
+                for (UUID members : o.getMember()) {
+                    Script.setSubtitle(Bukkit.getPlayer(members), p.getUniqueId(), null);
                 }
             }
         }
@@ -568,16 +568,20 @@ public class Script {
 
     public static void updateFahndungSubtitle(Player p) {
         if (Fahndung.isFahnded(p)) {
-            for (Player cops : Beruf.Berufe.POLICE.getMembers()) {
-                Script.setSubtitle(cops, p.getUniqueId(), "§cFahndung: " + Fahndung.getWanteds(p) + " Wanted(s)");
+            for (UUID cops : Beruf.Berufe.POLICE.getMember()) {
+                Script.setSubtitle(Objects.requireNonNull(Bukkit.getPlayer(cops)), p.getUniqueId(), "§cFahndung: " + Fahndung.getWanteds(p) + " Wanted(s)");
+            }
+        } else {
+            for (UUID cops : Beruf.Berufe.POLICE.getMember()) {
+                Script.setSubtitle(Objects.requireNonNull(Bukkit.getPlayer(cops)), p.getUniqueId(), null);
             }
         }
     }
 
     public static void updateHousebanSubtitle(Player p) {
         if (Houseban.isHousebanned(p, Beruf.Berufe.RETTUNGSDIENST)) {
-            for (Player medics : Beruf.Berufe.RETTUNGSDIENST.getMembers()) {
-                Script.setSubtitle(medics, p.getUniqueId(), "§cHausverbot: " + Houseban.getReason(p, Beruf.Berufe.RETTUNGSDIENST));
+            for (UUID medics : Beruf.Berufe.RETTUNGSDIENST.getMember()) {
+                Script.setSubtitle(Objects.requireNonNull(Bukkit.getPlayer(medics)), p.getUniqueId(), "§cHausverbot: " + Houseban.getReason(p, Beruf.Berufe.RETTUNGSDIENST));
             }
         }
     }
@@ -674,7 +678,7 @@ public class Script {
     }
 
     public static int getNRPID(Player p) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT id FROM nrp_id WHERE uuid='" + p.getUniqueId() + "'")) {
             if (rs.next()) {
                 return rs.getInt("id");
@@ -687,7 +691,7 @@ public class Script {
 
 
     public static int getNRPID(OfflinePlayer p) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT id FROM nrp_id WHERE uuid='" + p.getUniqueId() + "'")) {
             if (rs.next()) {
                 return rs.getInt("id");
@@ -699,7 +703,7 @@ public class Script {
     }
 
     public static int getNRPID(String p) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT id FROM nrp_id WHERE name='" + p + "'")) {
             if (rs.next()) {
                 return rs.getInt("id");
@@ -728,7 +732,7 @@ public class Script {
     }
 
     public static String getNameInDB(Player p) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT name FROM nrp_id WHERE uuid='" + p.getUniqueId() + "'")) {
             if (rs.next()) {
                 return rs.getString("name");
@@ -740,7 +744,7 @@ public class Script {
     }
 
     public static String getNameInDB(OfflinePlayer p) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT name FROM nrp_id WHERE uuid='" + p.getUniqueId() + "'")) {
             if (rs.next()) {
                 return rs.getString("name");
@@ -752,7 +756,7 @@ public class Script {
     }
 
     public static String getNameInDB(int id) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT name FROM nrp_id WHERE id=" + id)) {
             if (rs.next()) {
                 return rs.getString("name");
@@ -831,7 +835,7 @@ public class Script {
     }
 
     public static String getBirthday(int id) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT day, month, year FROM birthday WHERE id=" + id)) {
             if (rs.next()) {
                 int month = rs.getInt("month");
@@ -867,7 +871,7 @@ public class Script {
     }
 
     public static void setBirthDay(Player p, int tag, int monat, int jahr, int control) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT id FROM birthday WHERE id=" + getNRPID(p))) {
             if (rs.next()) {
                 executeUpdate("UPDATE birthday SET year=" + jahr + ", month=" + monat + ", day=" + tag + ", control=" + control + ", geschenk=FALSE WHERE id=" + getNRPID(p));
@@ -880,7 +884,7 @@ public class Script {
     }
 
     public static Integer getAge(int id) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT day, month, year FROM birthday WHERE id=" + id)) {
             if (rs.next()) {
                 int month = rs.getInt("month");
@@ -917,7 +921,7 @@ public class Script {
     }
 
     public static void executeUpdate(String sql) {
-        try (Statement stmt = main.getConnection().createStatement()) {
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement()) {
             stmt.executeUpdate(sql);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -927,7 +931,7 @@ public class Script {
     }
 
     public static void executeForumUpdate(String sql) {
-        try (Statement stmt = main.getForumConnection().createStatement()) {
+        try (Statement stmt = NewRoleplayMain.getForumConnection().createStatement()) {
             stmt.executeUpdate(sql);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -948,12 +952,12 @@ public class Script {
     }
 
     public static boolean isInTestMode() {
-        return main.isTest();
+        return NewRoleplayMain.isTest();
     }
 
 
     public static Gender getGender(Player p) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM gender WHERE nrp_id='" + getNRPID(p) + "'")) {
             if (rs.next()) {
                 if (rs.getString("gender").equals("m")) return Gender.MALE;
@@ -966,7 +970,7 @@ public class Script {
     }
 
     public static Gender getGender(OfflinePlayer p) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM gender WHERE nrp_id='" + getNRPID(p) + "'")) {
             if (rs.next()) {
                 if (rs.getString("gender").equals("m")) return Gender.MALE;
@@ -1022,7 +1026,7 @@ public class Script {
     }
 
     public static int getMoney(Player p, PaymentType paymentType) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM money WHERE nrp_id='" + getNRPID(p) + "'")) {
             if (rs.next()) {
                 return rs.getInt(paymentType.getName());
@@ -1034,55 +1038,59 @@ public class Script {
     }
 
     public static int getMoney(OfflinePlayer p, PaymentType paymentType) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM money WHERE nrp_id='" + getNRPID(p) + "'")) {
             if (rs.next()) {
                 return rs.getInt(paymentType.getName());
             }
         } catch (Exception e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         return 0;
     }
 
     public static int getMoney(int id, PaymentType paymentType) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM money WHERE nrp_id='" + id + "'")) {
             if (rs.next()) {
                 return rs.getInt(paymentType.getName());
             }
         } catch (Exception e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         return 0;
     }
 
     public static boolean getBoolean(Player p, String dbName, String bool) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM " + dbName + " WHERE nrp_id='" + getNRPID(p) + "'")) {
             if (rs.next()) {
                 return rs.getBoolean(bool);
             }
         } catch (Exception e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         return false;
     }
 
     public static String getString(Player p, String dbName, String s) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM " + dbName + " WHERE nrp_id='" + getNRPID(p) + "'")) {
             if (rs.next()) {
                 return rs.getString(s);
             }
         } catch (Exception e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         return null;
     }
 
     public static String setString(Player p, String dbName, String s, String value) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM " + dbName + " WHERE nrp_id='" + getNRPID(p) + "'")) {
             if (rs.next()) {
                 executeUpdate("UPDATE " + dbName + " SET " + s + "='" + value + "' WHERE nrp_id='" + getNRPID(p) + "'");
@@ -1090,13 +1098,14 @@ public class Script {
                 executeUpdate("INSERT INTO " + dbName + " (nrp_id, " + s + ") VALUES (" + getNRPID(p) + ", '" + value + "')");
             }
         } catch (Exception e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         return null;
     }
 
     public static String setString(OfflinePlayer p, String dbName, String s, String value) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM " + dbName + " WHERE nrp_id='" + getNRPID(p) + "'")) {
             if (rs.next()) {
                 executeUpdate("UPDATE " + dbName + " SET " + s + "='" + value + "' WHERE nrp_id='" + getNRPID(p) + "'");
@@ -1104,30 +1113,33 @@ public class Script {
                 executeUpdate("INSERT INTO " + dbName + " (nrp_id, " + s + ") VALUES (" + getNRPID(p) + ", '" + value + "')");
             }
         } catch (Exception e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         return null;
     }
 
     public static String getString(OfflinePlayer p, String dbName, String s) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM " + dbName + " WHERE nrp_id='" + getNRPID(p) + "'")) {
             if (rs.next()) {
                 return rs.getString(s);
             }
         } catch (Exception e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         return null;
     }
 
     public static int getInt(Player p, String dbName, String s) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM " + dbName + " WHERE nrp_id='" + getNRPID(p) + "'")) {
             if (rs.next()) {
                 return rs.getInt(s);
             }
         } catch (Exception e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         return 0;
@@ -1138,48 +1150,52 @@ public class Script {
     }
 
     public static int getInt(OfflinePlayer p, String dbName, String s) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM " + dbName + " WHERE nrp_id='" + getNRPID(p) + "'")) {
             if (rs.next()) {
                 return rs.getInt(s);
             }
         } catch (Exception e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         return 0;
     }
 
     public static long getLong(Player p, String dbName, String s) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM " + dbName + " WHERE nrp_id='" + getNRPID(p) + "'")) {
             if (rs.next()) {
                 return rs.getLong(s);
             }
         } catch (Exception e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         return 0;
     }
 
     public static long getLong(OfflinePlayer p, String dbName, String s) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM " + dbName + " WHERE nrp_id='" + getNRPID(p) + "'")) {
             if (rs.next()) {
                 return rs.getLong(s);
             }
         } catch (Exception e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         return 0;
     }
 
     public static int getInt(Player p, String dbName, int s) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM " + dbName + " WHERE nrp_id='" + getNRPID(p) + "'")) {
             if (rs.next()) {
                 return rs.getInt(s);
             }
         } catch (Exception e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         return 0;
@@ -1187,7 +1203,7 @@ public class Script {
 
 
     public static void sendOfflineMessages(Player p) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM offline_msg WHERE nrp_id='" + getNRPID(p) + "'")) {
             if (rs.next()) {
                 p.sendMessage(PREFIX + "Du hast Nachrichten erhalten während du Offline warst:");
@@ -1199,6 +1215,7 @@ public class Script {
                 executeAsyncUpdate("DELETE FROM offline_msg WHERE nrp_id='" + getNRPID(p) + "'");
             }
         } catch (Exception e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -1241,35 +1258,37 @@ public class Script {
     }
 
     public static long getLastDisconnect(OfflinePlayer p) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM last_disconnect WHERE nrp_id='" + getNRPID(p) + "' ORDER BY id DESC LIMIT 1")) {
             if (rs.next()) {
                 return rs.getLong("time");
             }
         } catch (Exception e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         return 0;
     }
 
     public static long getLastDeadOfficer() {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM last_officer_dead")) {
             if (rs.next()) {
                 return rs.getLong("time");
             }
         } catch (Exception e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         return 0;
     }
 
     public static void performCommand(Player p, String command) {
-        Bukkit.getScheduler().runTask(main.getInstance(), () -> p.performCommand(command));
+        Bukkit.getScheduler().runTask(NewRoleplayMain.getInstance(), () -> p.performCommand(command));
     }
 
     public static boolean haveBirthDay(Player p) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT day, month FROM birthday WHERE id=" + Script.getNRPID(p))) {
             if (rs.next()) {
                 int month = rs.getInt("month");
@@ -1285,6 +1304,7 @@ public class Script {
                 }
             }
         } catch (Exception e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         return false;
@@ -1338,17 +1358,22 @@ public class Script {
             Script.sendTeamMessage(AntiCheatSystem.PREFIX + "Verdächtige Geldmenge: " + p.getName() + " (" + getMoney(p, paymentType) + "€)");
     }
 
-    public static void removeMoney(Player p, PaymentType paymentType, int amount) {
-        if (paymentType == PaymentType.CASH) p.sendMessage(Messages.INFO + "Du hast " + amount + "€ Bargeld bezahlt.");
-        if (paymentType == PaymentType.BANK) {
-            if (Premium.hasPremium(p) && Mobile.hasPhone(p)) {
-                if (Mobile.mobileIsOn(p) && Mobile.hasConnection(p)) {
-                    p.sendMessage(Messages.INFO + "Du hast " + amount + "€ von deinem Konto bezahlt.");
+    public static boolean removeMoney(Player p, PaymentType paymentType, int amount) {
+        if (amount <= getMoney(p, paymentType)) {
+            if (paymentType == PaymentType.CASH)
+                p.sendMessage(Messages.INFO + "Du hast " + amount + "€ Bargeld bezahlt.");
+            if (paymentType == PaymentType.BANK) {
+                if (Premium.hasPremium(p) && Mobile.hasPhone(p)) {
+                    if (Mobile.mobileIsOn(p) && Mobile.hasConnection(p)) {
+                        p.sendMessage(Messages.INFO + "Du hast " + amount + "€ von deinem Konto bezahlt.");
+                    }
                 }
             }
+            amount = Math.abs(amount);
+            executeUpdate("UPDATE money SET " + paymentType.getName() + "=" + (getMoney(p, paymentType) - amount) + " WHERE nrp_id=" + getNRPID(p));
+            return true;
         }
-        amount = Math.abs(amount);
-        executeUpdate("UPDATE money SET " + paymentType.getName() + "=" + (getMoney(p, paymentType) - amount) + " WHERE nrp_id=" + getNRPID(p));
+        return false;
     }
 
     public static void removeMoney(OfflinePlayer p, PaymentType paymentType, int amount) {
@@ -1390,7 +1415,7 @@ public class Script {
 
     public static Player getPlayer(int id) {
         if (id == 0) return null;
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM nrp_id WHERE id='" + id + "'")) {
             if (rs.next()) {
                 return Bukkit.getPlayer(UUID.fromString(rs.getString("uuid")));
@@ -1404,7 +1429,7 @@ public class Script {
 
     public static OfflinePlayer getOfflinePlayer(int id) {
         if (id == 0) return null;
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM nrp_id WHERE id='" + id + "'")) {
             if (rs.next()) {
                 return Bukkit.getOfflinePlayer(UUID.fromString(rs.getString("uuid")));
@@ -1448,7 +1473,7 @@ public class Script {
     }
 
     public static void playLocalSound(Location loc, Sound sound, int radius) {
-        Bukkit.getScheduler().runTaskAsynchronously(main.getInstance(), () -> {
+        Bukkit.getScheduler().runTaskAsynchronously(NewRoleplayMain.getInstance(), () -> {
             for (Player online : Bukkit.getOnlinePlayers()) {
                 if (isInRange(loc, online.getLocation(), radius)) {
                     online.playSound(loc, sound, 1.0F, 1.0F);
@@ -1458,7 +1483,7 @@ public class Script {
     }
 
     public static void playLocalSound(Location loc, Sound sound, int radius, float f, float f2) {
-        Bukkit.getScheduler().runTaskAsynchronously(main.getInstance(), () -> {
+        Bukkit.getScheduler().runTaskAsynchronously(NewRoleplayMain.getInstance(), () -> {
             for (Player online : Bukkit.getOnlinePlayers()) {
                 if (isInRange(loc, online.getLocation(), radius)) {
                     online.playSound(loc, sound, f, f2);
@@ -1476,7 +1501,7 @@ public class Script {
     }
 
     public static boolean canOpenGeschenk(Player p) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT geschenk FROM birthday WHERE id=" + getNRPID(p))) {
             if (rs.next()) {
                 return rs.getBoolean("geschenk");
@@ -1510,9 +1535,9 @@ public class Script {
     public static void startEvent(Event e, boolean message) {
         if (e == null) {
             executeUpdate("UPDATE serversettings SET event='none'");
-            main.event = null;
+            NewRoleplayMain.event = null;
         } else {
-            main.event = e;
+            NewRoleplayMain.event = e;
             if (e.equals(Event.LASERTAG)) {
                 if (message) {
                     Bukkit.broadcastMessage("§8[§6Event§8]§6 Es hat ein §lLasertag §r§6begonnen!");
@@ -1527,6 +1552,7 @@ public class Script {
                     Bukkit.broadcastMessage("§8[§6Event§8]§6 Es hat das Vote-Event §7(§lDouble XP§7)§6 §r§6begonnen!");
                 executeAsyncUpdate("UPDATE serversettings SET event='" + e.getName() + "'");
                 Vote.startVoteRamble();
+                startEvent(Event.VOTE, false);
             } else if (e.equals(Event.DOUBLE_XP_WEEKEND)) {
                 if (message) Bukkit.broadcastMessage("§8[§6Event§8]§6 Es hat ein §lDouble XP-Event §r§6begonnen!");
                 executeAsyncUpdate("UPDATE serversettings SET event='" + e.getName() + "'");
@@ -1627,8 +1653,8 @@ public class Script {
     }
 
     public static void increasePlayTime(Player p) {
-        executeAsyncUpdate("UPDATE playtime SET minutes=minutes+1 WHERE nrp_id=" + getNRPID(p));
-        try (Statement stmt = main.getConnection().createStatement();
+        /*executeAsyncUpdate("UPDATE playtime SET minutes=minutes+1 WHERE nrp_id=" + getNRPID(p));
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM playtime WHERE nrp_id=" + getNRPID(p))) {
             if (rs.next()) {
                 if (rs.getInt("minutes") == 59) {
@@ -1637,7 +1663,7 @@ public class Script {
             }
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     public static void removeWeapons(Player p) {
@@ -1666,8 +1692,8 @@ public class Script {
     }
 
     public static void increaseActivePlayTime(Player p) {
-        executeAsyncUpdate("UPDATE playtime SET a_minutes=a_minutes+1 WHERE nrp_id=" + getNRPID(p));
-        try (Statement stmt = main.getConnection().createStatement();
+        /*executeAsyncUpdate("UPDATE playtime SET a_minutes=a_minutes+1 WHERE nrp_id=" + getNRPID(p));
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM playtime WHERE nrp_id=" + getNRPID(p))) {
             if (rs.next()) {
                 if (rs.getInt("a_minutes") == 59) {
@@ -1686,8 +1712,7 @@ public class Script {
         if (getActivePlayTime(p, true) % 150 == 0 && getActivePlayTime(p, false) == 0) {
             p.sendMessage(PREFIX + "Du erhältst als Dankeschön für deine Treue 3 Tage Premium");
             Premium.addPremiumStorage(p, TimeUnit.DAYS.toMillis(3), true);
-        }
-
+        }*/
     }
 
     public static String getLastChar(String s) {
@@ -1724,7 +1749,7 @@ public class Script {
     }
 
     public static int getExp(String name) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT exp FROM level WHERE nrp_id=" + getNRPID(name))) {
             if (rs.next()) {
                 return rs.getInt("exp");
@@ -1768,24 +1793,20 @@ public class Script {
     }
 
     public static void addEXP(Player p, int exp) {
-        if (level_cooldown.containsKey(p.getName())) return;
-        level_cooldown.put(p.getName(), System.currentTimeMillis());
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                level_cooldown.remove(p.getName());
-            }
-        }.runTaskLater(main.getInstance(), 20 * 5);
         if (exp > 200) {
             Script.sendTeamMessage(AntiCheatSystem.PREFIX + "Verdacht auf Exp-Cheat bei " + Script.getName(p) + " (+" + exp + " Exp)");
         }
         int id = getNRPID(p);
-        if (main.event == Event.TRIPPLE_XP) {
-            exp *= 3;
-            p.sendMessage(" §a+" + exp + " Exp! §7(§6§lTRIPPLE EXP§7)");
-        } else if (main.event == Event.DOUBLE_XP || main.event == Event.DOUBLE_XP_WEEKEND) {
-            exp *= 2;
-            p.sendMessage(" §a+" + exp + " Exp! §7(§6§lDOUBLE EXP§7)");
+        if (Script.getLevel(p) > 1) {
+            if (NewRoleplayMain.event == Event.TRIPPLE_XP) {
+                exp *= 3;
+                p.sendMessage(" §a+" + exp + " Exp! §7(§6§lTRIPPLE EXP§7)");
+            } else if (NewRoleplayMain.event == Event.DOUBLE_XP || NewRoleplayMain.event == Event.DOUBLE_XP_WEEKEND) {
+                exp *= 2;
+                p.sendMessage(" §a+" + exp + " Exp! §7(§6§lDOUBLE EXP§7)");
+            } else {
+                p.sendMessage(" §a+" + exp + " Exp!");
+            }
         } else {
             p.sendMessage(" §a+" + exp + " Exp!");
         }
@@ -1904,7 +1925,7 @@ public class Script {
     }
 
     public static int getExp(int id) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT exp FROM level WHERE nrp_id=" + id)) {
             if (rs.next()) {
                 return rs.getInt("exp");
@@ -1916,7 +1937,7 @@ public class Script {
     }
 
     public static int getExp(Player p) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT exp FROM level WHERE nrp_id=" + getNRPID(p))) {
             if (rs.next()) {
                 return rs.getInt("exp");
@@ -1945,7 +1966,7 @@ public class Script {
     }
 
     public static boolean checkIfEntryExists(String table, String column, String value) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM " + table + " WHERE " + column + "='" + value + "'")) {
             return rs.next();
         } catch (SQLException e) {
@@ -2121,7 +2142,7 @@ public class Script {
     }
 
     public static int getPlayTime(Player p, boolean hours) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM playtime WHERE nrp_id=" + getNRPID(p))) {
             if (rs.next()) {
                 return rs.getInt(hours ? "hours" : "minutes");
@@ -2138,7 +2159,7 @@ public class Script {
     }
 
     public static int getBuiltBlocks(OfflinePlayer p) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT COUNT(id) AS total FROM baulog WHERE nrp_id=" + getNRPID(p))) {
             if (rs.next()) {
                 return rs.getInt("total");
@@ -2150,7 +2171,7 @@ public class Script {
     }
 
     public static int getPreReleaseVotes(OfflinePlayer p) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT COUNT(id) AS total FROM preReleaseVote WHERE username=" + p.getName())) {
             if (rs.next()) {
                 return rs.getInt("total");
@@ -2162,7 +2183,7 @@ public class Script {
     }
 
     public static int getBuiltOnlyPlacedBlocks(OfflinePlayer p) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT COUNT(id) AS total FROM baulog WHERE nrp_id=" + getNRPID(p) + " AND removed=1")) {
             if (rs.next()) {
                 return rs.getInt("total");
@@ -2174,7 +2195,7 @@ public class Script {
     }
 
     public static int getActivePlayTime(Player p, boolean hours) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM playtime WHERE nrp_id=" + getNRPID(p))) {
             if (rs.next()) {
                 return rs.getInt(hours ? "a_hours" : "a_minutes");
@@ -2186,7 +2207,7 @@ public class Script {
     }
 
     public static int getActivePlayTime(OfflinePlayer p, boolean hours) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM playtime WHERE nrp_id=" + getNRPID(p))) {
             if (rs.next()) {
                 return rs.getInt(hours ? "a_hours" : "a_minutes");
@@ -2198,7 +2219,7 @@ public class Script {
     }
 
     public static int getPlayTime(OfflinePlayer p, boolean hours) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM playtime WHERE nrp_id=" + getNRPID(p))) {
             if (rs.next()) {
                 return rs.getInt(hours ? "hours" : "minutes");
@@ -2249,14 +2270,14 @@ public class Script {
         new BukkitRunnable() {
             @Override
             public void run() {
-                String header = "\n§5§lNEW ROLEPLAY\n";
+                String header = "\n§5§lNEW ROLEPLAY\n§6§lTHE NEXT BIG THING\n";
                 String footer;
                 int online = Bukkit.getOnlinePlayers().size();
-                footer = "\n§6Version §8» §6" + main.getInstance().getDescription().getVersion() + "\n§6§lTHE NEXT BIG THING\n§cOnline §8» §c" + online + " Spieler\n";
+                footer = "\n§6Version §8» §6" + NewRoleplayMain.getInstance().getDescription().getVersion() + "\n§cOnline §8» §c" + online + " Spieler\n";
                 p.setPlayerListHeader(header);
                 p.setPlayerListFooter(footer);
             }
-        }.runTaskLater(main.getInstance(), 20);
+        }.runTaskLater(NewRoleplayMain.getInstance(), 20);
 
 
     }

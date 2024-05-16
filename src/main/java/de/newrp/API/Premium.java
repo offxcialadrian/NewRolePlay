@@ -1,6 +1,6 @@
 package de.newrp.API;
 
-import de.newrp.main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
@@ -14,7 +14,7 @@ public class Premium {
 
     public static boolean hasPremium(Player p) {
         if(Script.hasRank(p, Rank.MODERATOR, false)) return true;
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM premium WHERE nrp_id=" + Script.getNRPID(p) + " ORDER BY id DESC LIMIT 1;")) {
             if (rs.next()) {
                 if (rs.getLong("until") > System.currentTimeMillis()) {
@@ -22,6 +22,7 @@ public class Premium {
                 }
             }
         } catch (Exception e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         return false;
@@ -29,7 +30,7 @@ public class Premium {
 
     public static boolean hasPremium(Integer id) {
         if(Script.hasRank(id, Rank.MODERATOR, false)) return true;
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM premium WHERE nrp_id=" + id + " ORDER BY id DESC LIMIT 1;")) {
             if (rs.next()) {
                 if (rs.getLong("until") > System.currentTimeMillis()) {
@@ -37,6 +38,7 @@ public class Premium {
                 }
             }
         } catch (Exception e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         return false;
@@ -44,7 +46,7 @@ public class Premium {
 
     public static long getPremiumTime(Player p) {
         if(Script.hasRank(p, Rank.MODERATOR, false)) return 0;
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM premium WHERE nrp_id=" + Script.getNRPID(p) + " ORDER BY id DESC LIMIT 1;")) {
             if (rs.next()) {
                 if (rs.getLong("until") > System.currentTimeMillis()) {
@@ -52,6 +54,7 @@ public class Premium {
                 }
             }
         } catch (Exception e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         return 0;
@@ -59,7 +62,7 @@ public class Premium {
 
     public static long getPremiumTime(OfflinePlayer p) {
         if(Script.hasRank(p, Rank.MODERATOR, false)) return 0;
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM premium WHERE nrp_id=" + Script.getNRPID(p) + " ORDER BY id DESC LIMIT 1;")) {
             if (rs.next()) {
                 if (rs.getLong("until") > System.currentTimeMillis()) {
@@ -67,6 +70,7 @@ public class Premium {
                 }
             }
         } catch (Exception e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         return 0;
@@ -74,7 +78,7 @@ public class Premium {
 
     public static boolean hasPremium(OfflinePlayer p) {
         if(Script.hasRank(p, Rank.MODERATOR, false)) return true;
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM premium WHERE nrp_id=" + Script.getNRPID(p) + " ORDER BY id DESC LIMIT 1;")) {
             if (rs.next()) {
                 if (rs.getLong("until") > System.currentTimeMillis()) {
@@ -82,6 +86,7 @@ public class Premium {
                 }
             }
         } catch (Exception e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         return false;
@@ -90,7 +95,7 @@ public class Premium {
     public static void addPremium(Player p, long time) {
         p.sendMessage(PREFIX + "Du hast §b" + TimeUnit.MILLISECONDS.toDays(time) + " Tage §7Premium erhalten.");
         if(hasPremium(p)) {
-            try (Statement stmt = main.getConnection().createStatement();
+            try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
                  ResultSet rs = stmt.executeQuery("SELECT * FROM premium WHERE nrp_id=" + Script.getNRPID(p) + " ORDER BY id DESC LIMIT 1;")) {
                 if (rs.next()) {
                     if (rs.getLong("until") > System.currentTimeMillis()) {
@@ -99,6 +104,7 @@ public class Premium {
                     }
                 }
             } catch (Exception e) {
+                Debug.debug("SQLException -> " + e.getMessage());
                 e.printStackTrace();
             }
         } else {
@@ -108,7 +114,7 @@ public class Premium {
 
     public static void addPremium(OfflinePlayer p, long time) {
         if(hasPremium(p)) {
-            try (Statement stmt = main.getConnection().createStatement();
+            try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
                  ResultSet rs = stmt.executeQuery("SELECT * FROM premium WHERE nrp_id=" + Script.getNRPID(p) + " ORDER BY id DESC LIMIT 1;")) {
                 if (rs.next()) {
                     if (rs.getLong("until") > System.currentTimeMillis()) {
@@ -117,6 +123,7 @@ public class Premium {
                     }
                 }
             } catch (Exception e) {
+                Debug.debug("SQLException -> " + e.getMessage());
                 e.printStackTrace();
             }
         } else {

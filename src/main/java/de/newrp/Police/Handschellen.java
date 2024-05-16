@@ -1,19 +1,14 @@
 package de.newrp.Police;
 
 import de.newrp.API.Debug;
-import de.newrp.API.Krankheit;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.Administrator.SDuty;
-import de.newrp.Berufe.Abteilung;
-import de.newrp.Berufe.Beruf;
 import de.newrp.Berufe.Drone;
 import de.newrp.Berufe.Duty;
 import de.newrp.Chat.Me;
 import de.newrp.Player.AFK;
-import de.newrp.Player.AntiOfflineFlucht;
 import de.newrp.Player.Fesseln;
-import de.newrp.main;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.EntityType;
@@ -31,13 +26,11 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffectType;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
 
 public class Handschellen implements Listener {
     private static final Set<String> CUFFED = new HashSet<>();

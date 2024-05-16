@@ -59,9 +59,12 @@ public class NewsCommand implements CommandExecutor {
 
         if(wahlenNewsActive) wahlenNews = true;
 
-        Bukkit.broadcastMessage(msg.toString());
+        for(Player all : Bukkit.getOnlinePlayers()) {
+            all.sendMessage(msg.toString());
+        }
         Script.sendTeamMessage(NEWS + "Diese News wurde geschaltet von " + Script.getName(p));
         Beruf.Berufe.NEWS.sendMessage(NEWS + "Diese News wurde geschaltet von " + Script.getName(p));
+        Script.addEXP(p, Script.getRandom(4, 8));
 
         return false;
     }

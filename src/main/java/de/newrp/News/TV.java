@@ -4,7 +4,7 @@ import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.API.SlotLimit;
 import de.newrp.House.House;
-import de.newrp.main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -24,7 +24,7 @@ import java.util.HashMap;
 
 public class TV implements CommandExecutor, Listener {
 
-    public static HashMap<String, Location> tvs = new HashMap<>();
+    public static HashMap<Player, Location> tvs = new HashMap<>();
     public static String PREFIX = "§8[§6TV§8] §6" + Messages.ARROW + " §7";
 
     @Override
@@ -36,17 +36,17 @@ public class TV implements CommandExecutor, Listener {
             return true;
         }
 
-        if (tvs.containsKey(p.getName())) {
+        if (tvs.containsKey(p)) {
             p.sendMessage(PREFIX + "Du hast den Fernseher ausgeschaltet.");
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    p.teleport(tvs.get(p.getName()));
-                    tvs.remove(p.getName());
                     p.setSpectatorTarget(null);
+                    p.teleport(tvs.get(p));
+                    tvs.remove(p);
                     p.setGameMode(GameMode.SURVIVAL);
                 }
-            }.runTaskLater(main.getInstance(), 5L);
+            }.runTaskLater(NewRoleplayMain.getInstance(), 5L);
             return true;
         }
 
@@ -67,10 +67,10 @@ public class TV implements CommandExecutor, Listener {
             return true;
         }
 
-        tvs.put(p.getName(), p.getLocation());
+        tvs.put(p, p.getLocation());
         p.setGameMode(GameMode.SPECTATOR);
         p.teleport(camera.getLocation().add(0, 3, 0));
-        Bukkit.getScheduler().runTaskLater(main.getInstance(), () -> p.setSpectatorTarget(camera), 5L);
+        Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> p.setSpectatorTarget(camera), 5L);
 
         return false;
     }
@@ -78,11 +78,13 @@ public class TV implements CommandExecutor, Listener {
     @EventHandler
     public void onQuit(PlayerQuitEvent e) {
         Player p = e.getPlayer();
-        p.sendMessage(PREFIX + "Du hast den Fernseher ausgeschaltet.");
-        p.teleport(tvs.get(p.getName()));
-        tvs.remove(p.getName());
-        p.setSpectatorTarget(null);
-        p.setGameMode(GameMode.SURVIVAL);
+        if(tvs.containsKey(p.getName())) {
+            p.sendMessage(PREFIX + "Du hast den Fernseher ausgeschaltet.");
+            p.teleport(tvs.get(p.getName()));
+            tvs.remove(p.getName());
+            p.setSpectatorTarget(null);
+            p.setGameMode(GameMode.SURVIVAL);
+        }
     }
 
     @EventHandler

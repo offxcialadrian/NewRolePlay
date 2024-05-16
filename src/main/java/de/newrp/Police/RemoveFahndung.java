@@ -23,7 +23,7 @@ public class RemoveFahndung implements CommandExecutor {
         }
 
         if (!SDuty.isSDuty(p)) {
-            if (!Beruf.getBeruf(p).equals(Beruf.Berufe.GOVERNMENT) && !Beruf.getBeruf(p).equals(Beruf.Berufe.POLICE) && !SDuty.isSDuty(p)) {
+            if (!Beruf.getBeruf(p).equals(Beruf.Berufe.POLICE) && !SDuty.isSDuty(p)) {
                 p.sendMessage(Messages.NO_PERMISSION);
                 return true;
             }

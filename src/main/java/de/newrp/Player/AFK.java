@@ -1,15 +1,12 @@
 package de.newrp.Player;
 
-import de.newrp.API.Debug;
-import de.newrp.API.Log;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.Administrator.SDuty;
 import de.newrp.GFB.Schule;
-import de.newrp.main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -19,10 +16,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.*;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scoreboard.Team;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -38,6 +33,10 @@ public class AFK implements CommandExecutor, Listener {
 
     public static boolean isAFK(Player p) {
         return afk.containsKey(p.getName());
+    }
+
+    public static boolean isAFK(UUID p) {
+        return afk.containsKey(Objects.requireNonNull(Bukkit.getPlayer(p)).getName());
     }
 
     public static String getAFKTime(Player p) {
@@ -66,7 +65,7 @@ public class AFK implements CommandExecutor, Listener {
             p.setCollidable(true);
             p.setCanPickupItems(true);
             Bukkit.getScoreboardManager().getMainScoreboard().getTeam("zzznopush").removeEntry(p.getName());
-            Bukkit.getScoreboardManager().getMainScoreboard().getTeam("player").removeEntry(p.getName());
+            Bukkit.getScoreboardManager().getMainScoreboard().getTeam("player").addEntry(p.getName());
         }
 
         new BukkitRunnable() {
@@ -74,7 +73,7 @@ public class AFK implements CommandExecutor, Listener {
             public void run() {
                 SDuty.updateScoreboard();
             }
-        }.runTaskLater(main.getInstance(), 20L);
+        }.runTaskLater(NewRoleplayMain.getInstance(), 20L);
     }
 
     public static void updateAFK(Player p) {
@@ -97,7 +96,7 @@ public class AFK implements CommandExecutor, Listener {
             loc.remove(p);
             return;
         }
-        Bukkit.getScheduler().runTask(main.getInstance(), () -> AFK.setAFK(p, true));
+        Bukkit.getScheduler().runTask(NewRoleplayMain.getInstance(), () -> AFK.setAFK(p, true));
         if(!SDuty.isSDuty(p)) Script.sendLocalMessage(5, p, "§a§o  " + Script.getName(p) + " ist nun abwesend.");
         p.sendMessage(PREFIX + "Du bist nun im AFK-Modus.");
     }
@@ -147,6 +146,9 @@ public class AFK implements CommandExecutor, Listener {
             if(Script.isInTestMode()) {
                 //Script.sendActionBar((((Player) e.getEntity()).getPlayer()), Messages.INFO + "WORK IN PROGRESS " + ((Player) e.getEntity()).getName());
             }
+            if(!(e.getDamager() instanceof Player)) {
+                return;
+            }
             Player damager = (Player) e.getDamager();
             if(isAFK((Player) e.getEntity())) e.setCancelled(true);
             if(e.isCancelled()) return;
@@ -189,6 +191,7 @@ public class AFK implements CommandExecutor, Listener {
     @EventHandler
     public void onInteract(PlayerInteractEvent e) {
         if (e.getAction() == Action.PHYSICAL) return;
+        if (e.getAction() == Action.RIGHT_CLICK_BLOCK) return;
 
         Player p = e.getPlayer();
         lastActions.add(p.getName());

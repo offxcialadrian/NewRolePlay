@@ -6,7 +6,7 @@ import de.newrp.Berufe.Beruf;
 import de.newrp.Berufe.Duty;
 import de.newrp.Government.Stadtkasse;
 import de.newrp.Player.AFK;
-import de.newrp.main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -23,6 +23,7 @@ import org.bukkit.util.Vector;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class Bankautomaten implements Listener {
@@ -38,28 +39,28 @@ public class Bankautomaten implements Listener {
     @EventHandler
     public void onInteract(PlayerInteractEvent e) {
         Player p = e.getPlayer();
-        if (!Organisation.hasOrganisation(p)) return;
         if(e.getClickedBlock() == null) return;
+        if(e.getClickedBlock().getType() == Material.CYAN_BANNER) return;
         if (p.getInventory().getItemInMainHand().getType() != Material.TNT) return;
+        Organisation o = Organisation.getOrganisation(p);
+        if (o == null) return;
         ATM atm = ATM.getNearATM(p);
         if (atm == null) return;
-        Organisation o = Organisation.getOrganisation(p);
 
         if (cooldown.containsKey(o) && cooldown.get(o) > System.currentTimeMillis()) {
             p.sendMessage(Messages.ERROR + "Du kannst erst in " + Script.getRemainingTime(cooldown.get(o)) + " wieder einen Bankautomaten zerstören.");
             return;
         }
 
-        List<Player> cops = Beruf.Berufe.POLICE.getMembers().stream()
+        List<UUID> cops = Beruf.Berufe.POLICE.getMember().stream()
                 .filter(Duty::isInDuty)
-                .filter(nearbyPlayer -> !SDuty.isSDuty(nearbyPlayer))
+                .filter((nearbyPlayer) -> !SDuty.isSDuty(nearbyPlayer))
                 .filter(nearbyPlayer -> !AFK.isAFK(nearbyPlayer)).collect(Collectors.toList());
 
         if (cops.size() < 3 && !Script.isInTestMode()) {
             p.sendMessage(Messages.ERROR + "Es braucht mindestens 3 Beamte um einen Bankautomaten zu zerstören.");
             return;
         }
-
 
         cooldown.put(o, System.currentTimeMillis() + 10800000);
         cooldownATM.put(atm, System.currentTimeMillis() + 3600000);
@@ -128,13 +129,13 @@ public class Bankautomaten implements Listener {
                             win.remove(p);
                             Stadtkasse.removeStadtkasse(1000, "Wiederherstellung Bankautomat");
                         }
-                    }.runTaskLater(main.getInstance(), 20L * 60 * 60);
+                    }.runTaskLater(NewRoleplayMain.getInstance(), 20L * 60 * 60);
                 } else {
                     progressBar(90, p);
                     progress.replace(p.getName(), progress.get(p.getName()) + 1);
                 }
             }
-        }.runTaskTimer(main.getInstance(), 20L, 20L);
+        }.runTaskTimer(NewRoleplayMain.getInstance(), 20L, 20L);
     }
 
     private static void progressBar(double required_progress, Player p) {

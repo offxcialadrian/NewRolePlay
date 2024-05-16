@@ -21,6 +21,12 @@ public class Strecken implements CommandExecutor {
             return true;
         }
 
+        p.getInventory().getItemInMainHand();
+        if(p.getInventory().getItemInMainHand().getType() == Material.AIR || !p.getInventory().getItemInMainHand().hasItemMeta()) {
+            p.sendMessage(Messages.ERROR + "Du hast keine Substanz in der Hand.");
+            return true;
+        }
+
         Drogen droge = Drogen.getItemByName(ChatColor.stripColor(p.getInventory().getItemInMainHand().getItemMeta().getDisplayName()));
         if(droge == null) {
             p.sendMessage(Messages.ERROR + "Du hast keine Substanz in der Hand.");
@@ -38,8 +44,8 @@ public class Strecken implements CommandExecutor {
         for(ItemStack is : p.getInventory().getContents()) {
             if(is == null) continue;
             if(is.getItemMeta() == null) continue;
-            if(is.getItemMeta().getDisplayName().equalsIgnoreCase("§fMehl")) amountOfMehl = is.getAmount();
-            if(is.getItemMeta().getDisplayName().equalsIgnoreCase(droge.getName()) && (Drogen.DrugPurity.getPurityByName(is.getItemMeta().getLore().get(0).replace("§7Reinheitsgrad: ", "")) == purity)) amountOfSubstanz = is.getAmount();
+            if(is.getItemMeta().getDisplayName().equalsIgnoreCase("§fMehl")) amountOfMehl += is.getAmount();
+            if(is.getItemMeta().getDisplayName().equalsIgnoreCase(droge.getName()) && (Drogen.DrugPurity.getPurityByName(is.getItemMeta().getLore().get(0).replace("§7Reinheitsgrad: ", "")) == purity)) amountOfSubstanz += is.getAmount();
         }
 
         if(amountOfMehl == 0) {
@@ -52,8 +58,8 @@ public class Strecken implements CommandExecutor {
             return true;
         }
 
-        if(amountOfMehl < amountOfSubstanz/5) {
-            p.sendMessage(Messages.ERROR + "Du benötigst mindestens 5x so viel Mehl wie Substanz.");
+        if(amountOfMehl < amountOfSubstanz) {
+            p.sendMessage(Messages.ERROR + "Du benötigst mindestens so viel Mehl wie Substanz.");
             return true;
         }
 
@@ -63,8 +69,8 @@ public class Strecken implements CommandExecutor {
             if(item == null) continue;
             if(item.getItemMeta() == null) continue;
             if(item.getItemMeta().getDisplayName().equalsIgnoreCase("§fMehl")) {
-                if(item.getAmount() > amountOfSubstanz/5) {
-                    item.setAmount(item.getAmount() - amountOfSubstanz/5);
+                if(item.getAmount() > amountOfSubstanz) {
+                    item.setAmount(item.getAmount() - amountOfSubstanz);
                     break;
                 } else {
                     amountOfMehl -= item.getAmount();
@@ -72,7 +78,7 @@ public class Strecken implements CommandExecutor {
                 }
             }
         }
-        purity = Drogen.DrugPurity.getPurityByID(purity.getID() - 1);
+        purity = Drogen.DrugPurity.getPurityByID(purity.getID() + 1);
         for(int i = 0; i < (amountOfSubstanz*1.5); i++) {
             p.getInventory().addItem(new ItemBuilder(is.getType()).setName(is.getItemMeta().getDisplayName()).setLore("§7Reinheitsgrad: " + purity.getText()).build());
         }

@@ -2,7 +2,7 @@ package de.newrp.API;
 
 
 import de.newrp.API.ParticleManager.ParticleWrapper;
-import de.newrp.main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -191,11 +191,11 @@ public class Route {
                         this.cancel();
                     }
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    NewRoleplayMain.handleError(e);
                     this.cancel();
                 }
             }
-        }.runTaskTimerAsynchronously(main.getInstance(), 0L, 10L);
+        }.runTaskTimerAsynchronously(NewRoleplayMain.getInstance(), 0L, 10L);
         ROUTES.put(getUsername(), this);
     }
 

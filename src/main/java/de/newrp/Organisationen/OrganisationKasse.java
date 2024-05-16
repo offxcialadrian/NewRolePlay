@@ -2,13 +2,17 @@ package de.newrp.Organisationen;
 
 import de.newrp.API.*;
 import de.newrp.Administrator.Notifications;
-import de.newrp.Berufe.Beruf;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
-public class OrganisationKasse implements CommandExecutor {
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+public class OrganisationKasse implements CommandExecutor, TabCompleter {
 
     private static final String PREFIX = "§8[§eOrganisationKasse§8] §e» §7";
 
@@ -22,8 +26,10 @@ public class OrganisationKasse implements CommandExecutor {
         }
 
         if (!Organisation.isLeader(p, true) && !args[0].equalsIgnoreCase("einzahlen")) {
-            p.sendMessage(Messages.ERROR + "Du bist kein Leader.");
-            return true;
+            if(Organisation.getRank(p) < 4) {
+                p.sendMessage(Messages.NO_PERMISSION);
+                return true;
+            }
         }
 
         if (args.length == 0) {
@@ -81,7 +87,8 @@ public class OrganisationKasse implements CommandExecutor {
                         return true;
                     }
 
-                    Organisation.getOrganisation(p).removeExp(Math.max(10, amount/200));
+                    final int expToLose = Math.max(1, (int) Math.floor((double) amount / 1000));
+                    Organisation.getOrganisation(p).removeExp(expToLose);
                     atm.removeCash(amount);
                     Organisation.getOrganisation(p).removeKasse(amount);
                     Script.addMoney(p, PaymentType.CASH, amount);
@@ -109,7 +116,8 @@ public class OrganisationKasse implements CommandExecutor {
                     }
 
 
-                    Organisation.getOrganisation(p).addExp(amount/1000);
+                    final int expToGain = (int) Math.floor((double) amount / 1000);
+                    Organisation.getOrganisation(p).addExp(expToGain);
                     atm.addCash(amount);
                     Organisation.getOrganisation(p).addKasse(amount);
                     Script.removeMoney(p, PaymentType.CASH, amount);
@@ -128,5 +136,13 @@ public class OrganisationKasse implements CommandExecutor {
         }
 
         return false;
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        List<String> args1 = Arrays.asList("einzahlen", "auszahlen", "info");
+        List<String> completions = new ArrayList<>();
+        if (args.length == 1) for (String string : args1) if (string.toLowerCase().startsWith(args[0].toLowerCase())) completions.add(string);
+        return completions;
     }
 }

@@ -1,11 +1,8 @@
 package de.newrp.Medic;
 
 import de.newrp.API.*;
-import de.newrp.GFB.GFB;
 import de.newrp.GFB.Lagerarbeiter;
-import de.newrp.main;
-import de.newrp.Administrator.BuildMode;
-import de.newrp.Administrator.SDuty;
+import de.newrp.NewRoleplayMain;
 import de.newrp.Chat.Me;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -94,7 +91,7 @@ public class Gips implements Listener {
                         rightClicked.removePotionEffect(e.getType());
                     }
                 }
-            }.runTaskLater(main.getInstance(), 20L * 10);
+            }.runTaskLater(NewRoleplayMain.getInstance(), 20L * 10);
 
             BANDAGE_COOLDOWN.put(rightClicked.getName(), time);
             LAST_CLICK.remove(p.getName());
@@ -134,7 +131,7 @@ public class Gips implements Listener {
         Player p = (Player) e.getEntity();
         if (e.getDamage() > 15) {
             Krankheit.GEBROCHENES_BEIN.add(Script.getNRPID(p));
-            Me.sendMessage(p, (Script.getGender(p) == Gender.MALE ? "sein" : "ihr") + " Bein hat geknackt.");
+            Me.sendMessage(p,"hat sich " + (Script.getGender(p) == Gender.MALE ? "sein" : "ihr") + " Bein gebrochen.");
             p.setWalkSpeed(0.1F);
             p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 40, 1, false, false));
             p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20, 1, false, false));
@@ -145,9 +142,7 @@ public class Gips implements Listener {
     public void onJoin(PlayerJoinEvent e) {
         Player p = e.getPlayer();
         if (Krankheit.GEBROCHENES_BEIN.isInfected(Script.getNRPID(p)) && !p.hasPotionEffect(PotionEffectType.HEAL)) {
-            /*p.setWalkSpeed(0.1F);
-            p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 280, 1, false, false));
-            p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20, 1, false, false));*/
+            p.setWalkSpeed(0.1F);
         }
     }
 
@@ -205,7 +200,7 @@ public class Gips implements Listener {
                 public void run() {
                     hits.remove(d);
                 }
-            }.runTaskLater(main.getInstance(), 20 * 5);
+            }.runTaskLater(NewRoleplayMain.getInstance(), 20 * 5);
         } else {
             hits.put(d, hits.get(d) + 1);
         }
@@ -214,7 +209,7 @@ public class Gips implements Listener {
 
         if (Script.getRandom(1, 100) <= Health.getMuscleLevel(Script.getNRPID(d)) / 2) {
             if (!Krankheit.GEBROCHENER_ARM.isInfected(Script.getNRPID(d))) {
-                Me.sendMessage(d, (Script.getGender(d) == Gender.MALE ? "sein" : "ihr") + " Arm hat geknackt.");
+                Me.sendMessage(p,"hat sich " + (Script.getGender(p) == Gender.MALE ? "sein" : "ihr") + "en Arm gebrochen.");
                 Krankheit.GEBROCHENER_ARM.add(Script.getNRPID(d));
                 d.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 160, 1, false, false));
                 d.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 80, 1, false, false));
@@ -223,7 +218,7 @@ public class Gips implements Listener {
 
         if (Script.getRandom(1, 100) <= Health.getMuscleLevel(Script.getNRPID(d))) {
             if (!Krankheit.GEBROCHENER_ARM.isInfected(Script.getNRPID(d))) {
-                Me.sendMessage(p, (Script.getGender(p) == Gender.MALE ? "sein" : "ihr") + " Arm hat geknackt.");
+                Me.sendMessage(p,"hat sich " + (Script.getGender(p) == Gender.MALE ? "sein" : "ihr") + "en Arm gebrochen.");
                 Krankheit.GEBROCHENER_ARM.add(Script.getNRPID(p));
                 p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 160, 1, false, false));
                 p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 80, 1, false, false));

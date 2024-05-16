@@ -10,6 +10,9 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.Objects;
+import java.util.UUID;
+
 public class Duty implements CommandExecutor {
 
     public static String PREFIX = "§8[§eDuty§8] §e» §7";
@@ -47,8 +50,8 @@ public class Duty implements CommandExecutor {
             }
 
             Bukkit.getScoreboardManager().getMainScoreboard().getTeam("dmedic").addEntry(p.getName());
-            Beruf.Berufe.RETTUNGSDIENST.sendMessage(PREFIX + Script.getName(p) + " hat den Dienst betreten.");
             Beruf.getBeruf(p.getPlayer()).changeDuty(p, true);
+            Beruf.Berufe.RETTUNGSDIENST.sendMessage(PREFIX + Script.getName(p) + " hat den Dienst betreten.");
             Script.updateListname(p);
             return true;
 
@@ -69,8 +72,8 @@ public class Duty implements CommandExecutor {
             }
 
             Bukkit.getScoreboardManager().getMainScoreboard().getTeam("cpolice").addEntry(p.getName());
-            Beruf.Berufe.POLICE.sendMessage(PREFIX + Script.getName(p) + " hat den Dienst betreten.");
             Beruf.getBeruf(p.getPlayer()).changeDuty(p, true);
+            Beruf.Berufe.POLICE.sendMessage(PREFIX + Script.getName(p) + " hat den Dienst betreten.");
             Script.updateListname(p);
             return true;
         }
@@ -91,8 +94,8 @@ public class Duty implements CommandExecutor {
             }
 
             Bukkit.getScoreboardManager().getMainScoreboard().getTeam("enews").addEntry(p.getName());
-            Beruf.Berufe.NEWS.sendMessage(PREFIX + Script.getName(p) + " hat den Dienst betreten.");
             Beruf.getBeruf(p.getPlayer()).changeDuty(p, true);
+            Beruf.Berufe.NEWS.sendMessage(PREFIX + Script.getName(p) + " hat den Dienst betreten.");
             Script.updateListname(p);
             return true;
         }
@@ -112,8 +115,8 @@ public class Duty implements CommandExecutor {
             }
 
             Bukkit.getScoreboardManager().getMainScoreboard().getTeam("bgovernment").addEntry(p.getName());
-            Beruf.Berufe.GOVERNMENT.sendMessage(PREFIX + Script.getName(p) + " hat den Dienst betreten.");
             Beruf.getBeruf(p.getPlayer()).changeDuty(p, true);
+            Beruf.Berufe.GOVERNMENT.sendMessage(PREFIX + Script.getName(p) + " hat den Dienst betreten.");
             Script.updateListname(p);
             return true;
         }
@@ -132,6 +135,10 @@ public class Duty implements CommandExecutor {
         return beruf.isDuty(p);
     }
 
+    public static boolean isInDuty(UUID p) {
+        return isInDuty(Objects.requireNonNull(Bukkit.getPlayer(p)));
+    }
+
     public static void setDuty(Player p) {
         Bukkit.getScoreboardManager().getMainScoreboard().getTeam("player").removeEntry(p.getName());
         Beruf.getBeruf(p.getPlayer()).changeDuty(p, true);
@@ -139,7 +146,9 @@ public class Duty implements CommandExecutor {
 
     public static void removeDuty(Player p) {
         Bukkit.getScoreboardManager().getMainScoreboard().getTeam("player").addEntry(p.getName());
-        Beruf.getBeruf(p.getPlayer()).changeDuty(p, false);
+        final Beruf.Berufe berufe = Beruf.getBeruf(p.getPlayer());
+        if(berufe != null) {
+            berufe.changeDuty(p, false);
+        }
     }
-
 }

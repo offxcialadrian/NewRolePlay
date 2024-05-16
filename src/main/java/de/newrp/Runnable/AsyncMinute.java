@@ -1,33 +1,30 @@
 package de.newrp.Runnable;
 
 import de.newrp.API.*;
+import de.newrp.Administrator.SDuty;
 import de.newrp.Chat.Me;
-import de.newrp.Commands.Test;
 import de.newrp.Entertainment.Lotto;
 import de.newrp.Gangwar.GangwarCommand;
 import de.newrp.Government.Wahlen;
 import de.newrp.News.BreakingNews;
-import de.newrp.Player.*;
-import de.newrp.Ticket.AcceptTicket;
+import de.newrp.Organisationen.MaskHandler;
+import de.newrp.Player.AFK;
+import de.newrp.Player.Mobile;
+import de.newrp.Player.Passwort;
+import de.newrp.Player.SMSCommand;
 import de.newrp.Ticket.Ticket;
 import de.newrp.Ticket.TicketCommand;
-import de.newrp.Ticket.TicketTopic;
-import de.newrp.Votifier.VoteCommand;
-import de.newrp.Votifier.VoteListener;
-import de.newrp.Votifier.VoteShop;
-import net.citizensnpcs.api.CitizensAPI;
-import net.citizensnpcs.api.npc.NPC;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
-import org.bukkit.entity.*;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -67,13 +64,12 @@ public class AsyncMinute extends BukkitRunnable {
         Corpse.reloadNPCAll();
 
         if (GangwarCommand.gangwarIsActive()) {
-            if (Calendar.getInstance().get(Calendar.HOUR_OF_DAY) > 21) {
+            if (Calendar.getInstance().get(Calendar.HOUR_OF_DAY) > 22) {
                 GangwarCommand.endGangwar();
             } else {
                 GangwarCommand.processGangwar();
             }
         }
-
 
         if (Calendar.getInstance().get(Calendar.MONTH) == Calendar.JANUARY && Calendar.getInstance().get(Calendar.DAY_OF_MONTH) == 15 && Calendar.getInstance().get(Calendar.HOUR_OF_DAY) == 18 && Calendar.getInstance().get(Calendar.MINUTE) == 0) {
             Wahlen.getWahlResult();
@@ -97,28 +93,42 @@ public class AsyncMinute extends BukkitRunnable {
             Wahlen.getWahlResult();
         }
 
-        if (Calendar.getInstance().get(Calendar.MINUTE) == 0 || Calendar.getInstance().get(Calendar.MINUTE) == 20 || Calendar.getInstance().get(Calendar.MINUTE) == 40) {
+        if (Calendar.getInstance().get(Calendar.MINUTE) == 0 || Calendar.getInstance().get(Calendar.MINUTE) == 15 || Calendar.getInstance().get(Calendar.MINUTE) == 30 || Calendar.getInstance().get(Calendar.MINUTE) == 45) {
             for (Player p : Bukkit.getOnlinePlayers()) {
                 if (Premium.hasPremium(p)) continue;
                 String advert = advertises[Script.getRandom(0, advertises.length - 1)];
                 p.sendMessage(advert);
-                //Title.sendTitle(p, 20, 100, 20, advert);
+                Title.sendTitle(p, 20, 100, 20, advert.split(Messages.ARROW)[0], advert.split(Messages.ARROW)[1]);
                 Script.sendActionBar(p, "§8[§cWerbung§8] §c" + Messages.ARROW + " §7Mit Premium erhältst du keine Werbung.");
             }
         }
 
+        for (Map.Entry<Integer, Ticket.Queue> ent : queue.entrySet()) {
+            Player ticketer = ent.getValue().getReporter();
+            ticketer.sendMessage(TicketCommand.PREFIX + "Bitte warte... Dein Ticket wird in Kürze bearbeitet.");
+            int amount = 0;
+            for (Map.Entry<Integer, Ticket.Queue> ent2 : queue.entrySet()) {
+                if (ent2.getKey() < ent.getKey()) amount++;
+            }
+            if (amount == 0) {
+                ticketer.sendMessage(TicketCommand.PREFIX + "Du bist als nächstes dran.");
+            } else {
+                ticketer.sendMessage(TicketCommand.PREFIX + "Du bist in der Warteschlange an Position " + amount + ".");
+            }
+        }
 
         if (Calendar.getInstance().get(Calendar.MINUTE) % 2 == 0) {
             int amount = 0;
-            for (Map.Entry<Integer, Ticket.Queue> ent : queue.entrySet()) {
+            for (Map.Entry<Integer, Ticket.Queue> ignored : queue.entrySet()) {
                 amount++;
             }
             if (amount > 0) {
                 for (Player nrp : Script.getNRPTeam()) {
                     Title.sendTitle(nrp, 20, 100, 20, "§8[§6Tickets§8] §6" + Messages.ARROW + " §7Es sind noch " + amount + " Tickets offen.");
-                    nrp.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20 * 5, 1, false, false));
                     nrp.sendMessage("§8[§6Tickets§8] §6" + Messages.ARROW + " §7Es sind noch " + amount + " Tickets offen.");
+                    nrp.playSound(nrp.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
                     nrp.sendMessage(Messages.INFO + "Bitte beachte, dass die Bearbeitung von Tickets eine hohe Priorität hat.");
+                    if(SDuty.isSDuty(nrp)) nrp.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 12 * 20, 2, false, false));
                 }
             }
             /*for(Entity e : Script.WORLD.getEntities()) {
@@ -143,10 +153,16 @@ public class AsyncMinute extends BukkitRunnable {
             }
         }
 
-
         for (Player p : Bukkit.getOnlinePlayers()) {
+            if(!AFK.isAFK(p)) AFK.updateAFK(p);
+            if (MaskHandler.masks.containsKey(p.getUniqueId())) {
+                if (MaskHandler.masks.get(p.getUniqueId()) < System.currentTimeMillis()) {
+                    MaskHandler.masks.remove(p.getUniqueId());
+                    p.getInventory().setItem(EquipmentSlot.HEAD, new ItemStack(Material.AIR));
+                    p.sendMessage(Component.text(MaskHandler.PREFIX + "Deine Maske wurde aufgebraucht."));
+                }
+            }
             if (!AFK.isAFK(p) && !Passwort.isLocked(p)) {
-                Treuebonus.addTime();
                 Script.increaseActivePlayTime(p);
             }
             Script.increasePlayTime(p);
@@ -165,9 +181,12 @@ public class AsyncMinute extends BukkitRunnable {
 
         for (Player p : Bukkit.getOnlinePlayers()) {
             if (Mobile.hasPhone(p) && Mobile.mobileIsOn(p) && !AFK.isAFK(p)) {
-                assert Mobile.getPhone(p) != null;
-                Mobile.getPhone(p).removeAkku(p, 1);
-                if (Mobile.getPhone(p).getAkku(p) <= 0 && Mobile.mobileIsOn(p)) {
+                final Mobile.Phones phones = Mobile.getPhone(p);
+                if (phones == null) return;
+
+               phones.removeAkku(p, 1);
+               final int akku = phones.getAkku(p);
+                if (akku <= 0) {
                     p.sendMessage(Mobile.PREFIX + "Dein Handy ist ausgeschaltet, da der Akku leer ist.");
                     ItemStack is = Mobile.getPhone(p).getItem();
                     p.getInventory().removeItem(new ItemStack(Material.IRON_INGOT));
@@ -176,16 +195,16 @@ public class AsyncMinute extends BukkitRunnable {
                     p.getInventory().addItem(is);
                     continue;
                 }
-                if (Script.getPercentage(Mobile.getPhone(p).getAkku(p), Mobile.getPhone(p).getMaxAkku()) <= 10 && !battery.containsKey(p.getName()) && !battery.get(p.getName()).equals(10)) {
+                /*if (Script.getPercentage(akku, phones.getMaxAkku()) <= 10 && !battery.containsKey(p.getName()) && !battery.get(p.getName()).equals(10)) {
                     p.sendMessage(Mobile.PREFIX + "Dein Handy hat nur noch " + Mobile.getPhone(p).getAkku(p) + "% Akku.");
                     battery.put(p.getName(), 10);
                     continue;
                 }
-                if (Script.getPercentage(Mobile.getPhone(p).getAkku(p), Mobile.getPhone(p).getMaxAkku()) <= 10 && !battery.containsKey(p.getName()) && !battery.get(p.getName()).equals(20)) {
+                if (Script.getPercentage(akku, Mobile.getPhone(p).getMaxAkku()) <= 10 && !battery.containsKey(p.getName()) && !battery.get(p.getName()).equals(20)) {
                     p.sendMessage(Mobile.PREFIX + "Dein Handy hat nur noch " + Mobile.getPhone(p).getAkku(p) + "% Akku.");
                     battery.put(p.getName(), 20);
                     continue;
-                }
+                }*/
             }
             if (SMSCommand.waitingForMessage.contains(p.getName()) && Mobile.mobileIsOn(p) && Mobile.hasConnection(p)) {
                 p.sendMessage(SMSCommand.PREFIX + "Du hast eine neue Nachricht erhalten.");

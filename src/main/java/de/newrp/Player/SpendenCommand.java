@@ -7,10 +7,14 @@ import de.newrp.API.Script;
 import de.newrp.Administrator.Notifications;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Government.Stadtkasse;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import java.util.Objects;
+import java.util.UUID;
 
 public class SpendenCommand implements CommandExecutor {
 
@@ -51,6 +55,11 @@ public class SpendenCommand implements CommandExecutor {
         Stadtkasse.addStadtkasse(amount, "Spende von " + Script.getName(p), null);
         p.sendMessage(PREFIX + "Du hast " + amount + "€ gespendet.");
         Beruf.Berufe.GOVERNMENT.sendMessage(PREFIX + Script.getName(p) + " hat der Stadtkasse " + amount + "€ gespendet.");
+        for (UUID player : Beruf.Berufe.POLICE.getMember()) {
+            if(Beruf.isLeader(Bukkit.getPlayer(player), true)) {
+                Objects.requireNonNull(Bukkit.getPlayer(player)).sendMessage(PREFIX + Script.getName(p) + " hat der Stadtkasse " + amount + "€ gespendet.");
+            }
+        }
         Notifications.sendMessage(Notifications.NotificationType.PAYMENT, Script.getName(p) + " hat der Stadtkasse " + amount + "€ gespendet.");
 
         return false;

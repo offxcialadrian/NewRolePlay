@@ -3,7 +3,7 @@ package de.newrp.API;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
-import de.newrp.main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.sql.ResultSet;
@@ -45,7 +45,8 @@ public enum Achievement {
     DROHNEN_DESTROYER(31, "Drohnenzerstörer", "§rZerstöre eine Drohne", 50, null, false),
     BIENENSTICH(32, "Bienenstich", "§rWerde von einer Biene gestochen", 50, null, false),
     SHISHA(33, "Shisha", "§rRauche eine Shisha", 50, null, false),
-    TRASHCAN(34, "Mülltone", "§rDurchwühle eine Mülltonne", 50, null, false);
+    TRASHCAN(34, "Mülltone", "§rDurchwühle eine Mülltonne", 50, null, false),
+    DISCORD(35, "Discord", "§rVerbinde dich mit unserem Discord-Server", 50, null, false);
 
 
 
@@ -116,7 +117,7 @@ public enum Achievement {
                     public void run() {
                         p.sendMessage("§8[§aErklärung§8] §6» " + Achievement.this.getExplanation().replace("\n", "\n§8[§aErklärung§8] §6» "));
                     }
-                }.runTaskLater(main.getInstance(), 10*20L);
+                }.runTaskLater(NewRoleplayMain.getInstance(), 10*20L);
             }
         }
     }
@@ -150,7 +151,7 @@ public enum Achievement {
         for (Achievement a : all) {
             map.put(a, false);
         }
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT achievementID FROM achievements WHERE userID=" + id + " AND done=TRUE")) {
             while (rs.next()) {
                 Achievement a = Achievement.getAchievementByID(rs.getInt("achievementID"));
@@ -159,6 +160,7 @@ public enum Achievement {
                 }
             }
         } catch (SQLException e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         return map;

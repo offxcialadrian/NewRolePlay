@@ -10,7 +10,6 @@ import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -145,6 +144,10 @@ public class GetGun implements CommandExecutor, Listener {
                     }
                     if (w != null) {
                         WeaponData wdata = WeaponData.getWeaponData(id, w);
+                        if(Script.haveGunInInventory(p, wdata.getWeapon())) {
+                            p.sendMessage(Messages.ERROR + "Du kannst nur eine Waffe vom selben Typen bei dir tragen!");
+                            return;
+                        }
                         if (wdata.getWear() > 0) {
                             p.getInventory().addItem(Waffen.setAmmo(w.getWeapon(), 0, 0));
                             w.removeWear(id, 1);

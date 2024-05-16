@@ -4,7 +4,9 @@ import de.newrp.API.ItemBuilder;
 import de.newrp.API.Krankheit;
 import de.newrp.Shop.ShopItem;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
@@ -14,10 +16,10 @@ import java.util.List;
 public enum Medikamente {
 
     HUSTENSAFT(1, "Hustensaft", ShopItem.HUSTENSAFT, new ItemBuilder(Material.PAPER).setName("§fHustensaft").build(), new ItemBuilder(Material.PAPER).setName("Rezept für Hustensaft").build() ,Krankheit.HUSTEN, 10, false, true),
-    SCHMERZMITTEL(2, "Schmerzmittel", ShopItem.SCHMERZMITTEL, new ItemBuilder(Material.PAPER).setName("§fSchmerzmittel").build(), new ItemBuilder(Material.PAPER).setName("Rezept für Schmerzmittel").build(), null, 10, false, false),
-    SCHMERZMITTEL_HIGH(3, "Schmerzmittel (High)", ShopItem.SCHMERZMITTEL_HIGH, new ItemBuilder(Material.PAPER).setName("§fSchmerzmittel (High)").build(), new ItemBuilder(Material.PAPER).setName("Rezept für Schmerzmittel (High)").build(), null, 10, true, true),
+    SCHMERZMITTEL(2, "Schmerzmittel", ShopItem.SCHMERZMITTEL, new ItemBuilder(Material.PAPER).setName("§fSchmerzmittel").build(), new ItemBuilder(Material.PAPER).setName("Rezept für Schmerzmittel").build(), null, 10, false, true),
+    SCHMERZMITTEL_HIGH(3, "Schmerzmittel (High)", ShopItem.SCHMERZMITTEL_HIGH, new ItemBuilder(Material.PAPER).setName("§fSchmerzmittel (High)").build(), new ItemBuilder(Material.PAPER).setName("Rezept für Schmerzmittel (High)").build(), null, 10, true, false),
     ANTIBIOTIKA(4, "Antibiotika", ShopItem.ANTIBIOTIKA, new ItemBuilder(Material.PAPER).setName("§fAntibiotika").build(), new ItemBuilder(Material.PAPER).setName("Rezept für Antibiotika").build(), Krankheit.CHOLERA, 10, true, true),
-    ENTZUENDUNGSHEMMENDE_SALBE(5, "Entzündungshemmende Salbe", ShopItem.ENTZUENDUNGSHEMMENDE_SALBE, new ItemBuilder(Material.PAPER).setName("§fEntzündungshemmende Salbe").build(), new ItemBuilder(Material.PAPER).setName("Rezept für Entzündungshemmende Salbe").build(), null, 10, true, true);
+    ENTZUENDUNGSHEMMENDE_SALBE(5, "Entzündungshemmende Salbe", ShopItem.ENTZUENDUNGSHEMMENDE_SALBE, new ItemBuilder(Material.PAPER).setName("§fEntzündungshemmende Salbe").build(), new ItemBuilder(Material.PAPER).setName("Rezept für Entzündungshemmende Salbe").build(), Krankheit.ENTZUENDUNG, 10, true, true);
 
     private int id;
     private String name;
@@ -114,8 +116,9 @@ public enum Medikamente {
     }
 
     public static Medikamente getMedikamentByItemStack(ItemStack item) {
+        if(item.getItemMeta() == null) return null;
         for (Medikamente m : Medikamente.values()) {
-            if (m.getItemStack().isSimilar(item)) {
+            if(m.getItemStack().getItemMeta().getDisplayName().equalsIgnoreCase(item.getItemMeta().getDisplayName())) {
                 return m;
             }
         }
@@ -130,6 +133,27 @@ public enum Medikamente {
             }
         }
         return null;
+    }
+
+    public static int getAmountOfMedications(final Player player, final Medikamente medikamente) {
+        for(ItemStack is : player.getInventory().getContents()) {
+            if(is == null || is.getType() == Material.AIR) continue;
+            if(is.getItemMeta() == null) continue;;
+
+            if(is.getItemMeta().getDisplayName().equalsIgnoreCase(medikamente.getItemStack().getItemMeta().getDisplayName())) {
+                return is.getAmount();
+            }
+        }
+        return 0;
+    }
+
+    public static void removeMedication(Player p, Medikamente m) {
+        for(ItemStack is : p.getInventory().getContents()) {
+            if(is != null && is.getItemMeta().getDisplayName().equalsIgnoreCase(m.getItemStack().getItemMeta().getDisplayName())) {
+                is.setAmount(is.getAmount() - 1);
+                return;
+            }
+        }
     }
 
     public static List<Medikamente> getAllMedikamente() {

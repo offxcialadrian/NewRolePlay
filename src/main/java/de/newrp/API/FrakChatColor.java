@@ -3,7 +3,7 @@ package de.newrp.API;
 import de.newrp.Administrator.Notifications;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Organisationen.Organisation;
-import de.newrp.main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -164,49 +164,51 @@ public class FrakChatColor implements CommandExecutor, Listener {
     }
 
     public static String getNameColor(Beruf.Berufe b) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM beruf_chat_color WHERE berufID=" + b.getID())) {
             if (rs.next()) {
                 return rs.getString("color1");
             }
         } catch (Exception e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         return "e";
     }
 
     public static String getNameColor(Organisation o) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM org_chat_color WHERE orgID=" + o.getID())) {
             if (rs.next()) {
                 return rs.getString("color1");
             }
         } catch (Exception e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         return "e";
     }
 
     public static String getTextColor(Beruf.Berufe b) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM beruf_chat_color WHERE berufID=" + b.getID())) {
             if (rs.next()) {
                 return rs.getString("color2");
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            NewRoleplayMain.handleError(e);
         }
         return "e";
     }
 
     public static String getTextColor(Organisation o) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM org_chat_color WHERE orgID=" + o.getID())) {
             if (rs.next()) {
                 return rs.getString("color2");
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            NewRoleplayMain.handleError(e);
         }
         return "e";
     }

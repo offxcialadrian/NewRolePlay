@@ -4,7 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
-import de.newrp.main;
+import de.newrp.NewRoleplayMain;
 
 public enum Sperre {
 
@@ -69,12 +69,13 @@ public enum Sperre {
         for (Sperre sperre : Sperre.values()) {
             sperren.put(sperre, 0L);
             if (sperre.active()) {
-                try (Statement stmt = main.getConnection().createStatement();
+                try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
                      ResultSet rs = stmt.executeQuery("SELECT time FROM " + sperre.getDatabaseName() + " WHERE id=" + id)) {
                     if (rs.next()) {
                         sperren.put(sperre, (rs.getLong("time") > System.currentTimeMillis() ? rs.getLong("time") : 0L));
                     }
                 } catch (SQLException e1) {
+                    Debug.debug("SQLException -> " + e1.getMessage());
                     e1.printStackTrace();
                 }
             }

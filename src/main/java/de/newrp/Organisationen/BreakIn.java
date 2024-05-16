@@ -6,15 +6,13 @@ import de.newrp.API.Script;
 import de.newrp.Berufe.Beruf;
 import de.newrp.House.House;
 import de.newrp.House.HouseAddon;
-import de.newrp.Player.Notruf;
 import de.newrp.Police.Handschellen;
-import de.newrp.main;
+import de.newrp.NewRoleplayMain;
+import de.newrp.dependencies.DependencyContainer;
+import de.newrp.features.emergencycall.IEmergencyCallService;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.block.data.type.Door;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -24,7 +22,6 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,6 +31,7 @@ public class BreakIn implements Listener {
     private static final Map<String, Long> TOTAL_COOLDOWN = new HashMap<>();
     private static final Map<String, House> HOUSES = new HashMap<>();
     private static final HashMap<String, Double> progress = new HashMap<>();
+    private final IEmergencyCallService emergencyCallService = DependencyContainer.getContainer().getDependency(IEmergencyCallService.class);
 
     Location[] labor = new Location[] { new Location(Script.WORLD, 374, 76, 1312), new Location(Script.WORLD, 374, 75, 1312), new Location(Script.WORLD, 375, 76, 1312), new Location(Script.WORLD, 375, 75, 1312)};
 
@@ -72,12 +70,12 @@ public class BreakIn implements Listener {
 
         House house = House.getNearHouse(p.getLocation(), 3);
         if (house == null) {
-            p.sendMessage(PREFIX + "Du kannst hier nicht einbrechen.");
+            Script.sendActionBar(p, PREFIX + "Du kannst hier nicht einbrechen.");
             return;
         }
 
         if (house.hasAddon(HouseAddon.ALARM)) {
-            Bukkit.getScheduler().runTaskLater(main.getInstance(), () -> Beruf.Berufe.POLICE.sendMessage(Notruf.PREFIX + "Es wurde ein Einbruch bei Haus " + house.getID() + " gemeldet."), 10 * 20L);
+            Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> Beruf.Berufe.POLICE.sendMessage(this.emergencyCallService.getPrefix() + "Es wurde ein Einbruch bei Haus " + house.getID() + " gemeldet."), 10 * 20L);
         }
 
 
@@ -129,13 +127,14 @@ public class BreakIn implements Listener {
                 p.sendMessage(PREFIX + "Du hast alles. Verschwinde nun bevor die Polizei eintrifft!");
                 p.getInventory().getItemInMainHand().setAmount(p.getInventory().getItemInMainHand().getAmount() - 1);
                 Script.addMoney(p, PaymentType.CASH, (int) (geld));
+
                 house.setKasse(house.getKasse() - (int) (geld));
                 COOLDOWNS.remove(p.getName());
                 HOUSES.remove(p.getName());
                 TOTAL_COOLDOWN.put(p.getName(), System.currentTimeMillis());
                 progress.remove(p.getName());
                 if(house.hasAddon(HouseAddon.ALARM)) {
-                    Beruf.Berufe.POLICE.sendMessage(Notruf.PREFIX + "Ein Einbruch bei Haus " + house.getID() + " wurde gemeldet.");
+                    Beruf.Berufe.POLICE.sendMessage(emergencyCallService.getPrefix() + "Ein Einbruch bei Haus " + house.getID() + " wurde gemeldet.");
                 }
                 if(Organisation.hasOrganisation(p)) {
                     Organisation.getOrganisation(p).addExp(Script.getRandom(5, 7));
@@ -144,7 +143,7 @@ public class BreakIn implements Listener {
                 return;
 
             }
-        }.runTaskTimer(main.getInstance(), 20L, 20L);
+        }.runTaskTimer(NewRoleplayMain.getInstance(), 20L, 20L);
         return;
 
     }

@@ -1,5 +1,6 @@
 package de.newrp.API;
 
+import de.newrp.NewRoleplayMain;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -24,6 +25,7 @@ public class Reflection {
                     .getMethod("sendPacket", getNMSClass("Packet"))
                     .invoke(connection, packet);
         } catch (Exception e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -33,7 +35,7 @@ public class Reflection {
         try {
             re = clazz.getDeclaredField(field);
         } catch (NoSuchFieldException | SecurityException e) {
-            e.printStackTrace();
+            NewRoleplayMain.handleError(e);
         }
         return re;
     }
@@ -53,7 +55,7 @@ public class Reflection {
                     .getMethod("sendPacket", getNMSClass("Packet"))
                     .invoke(connection, packet);
         } catch (Exception e) {
-            e.printStackTrace();
+            NewRoleplayMain.handleError(e);
         }
     }
 
@@ -68,7 +70,7 @@ public class Reflection {
         try {
             clazz = Class.forName(fullName);
         } catch (Exception e) {
-            e.printStackTrace();
+            NewRoleplayMain.handleError(e);
         }
         return clazz;
     }
@@ -79,7 +81,7 @@ public class Reflection {
         try {
             clazz = Class.forName(fullName);
         } catch (Exception e) {
-            e.printStackTrace();
+            NewRoleplayMain.handleError(e);
         }
         return clazz;
     }
@@ -91,7 +93,7 @@ public class Reflection {
             re = METHOD_ASNMSCOPY.invoke(null, i);
         } catch (IllegalAccessException | IllegalArgumentException
                  | InvocationTargetException e) {
-            e.printStackTrace();
+            NewRoleplayMain.handleError(e);
         }
 
         return re;
@@ -107,7 +109,7 @@ public class Reflection {
         try {
             re = clazz.getConstructor(param);
         } catch (Exception e) {
-            e.printStackTrace();
+            NewRoleplayMain.handleError(e);
         }
         return re;
     }
@@ -118,7 +120,7 @@ public class Reflection {
         try {
             object = getMethod(entity.getClass(), "getHandle").invoke(entity);
         } catch (Exception e) {
-            e.printStackTrace();
+            NewRoleplayMain.handleError(e);
         }
 
         return object;

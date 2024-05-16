@@ -1,8 +1,5 @@
 package de.newrp.Organisationen;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -15,7 +12,7 @@ import de.newrp.Berufe.Beruf;
 import de.newrp.Berufe.Duty;
 import de.newrp.Player.AFK;
 import de.newrp.Police.Fahndung;
-import de.newrp.main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -59,7 +56,7 @@ public class HackPoliceComputer implements CommandExecutor, Listener {
 
         long now = System.currentTimeMillis();
         if (lastTime + TIMEOUT > now) {
-            p.sendMessage(Messages.ERROR + "Man kann erst in  " + TimeUnit.MILLISECONDS.toMinutes(lastTime + TIMEOUT - now) + " den Polizeicomputer wieder hacken.");
+            p.sendMessage(Messages.ERROR + "Man kann erst in  " + TimeUnit.MILLISECONDS.toMinutes(lastTime + TIMEOUT - now) + " Minuten den Polizeicomputer wieder hacken.");
             return true;
         }
 
@@ -135,7 +132,7 @@ public class HackPoliceComputer implements CommandExecutor, Listener {
                 lastTime = now;
                 hacker = null;
             }
-        }.runTaskLater(main.getInstance(), lengthInSeconds * 20L);
+        }.runTaskLater(NewRoleplayMain.getInstance(), lengthInSeconds * 20L);
         schedulerID = task.getTaskId();
         return true;
     }

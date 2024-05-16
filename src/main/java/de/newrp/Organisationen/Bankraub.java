@@ -1,6 +1,6 @@
 package de.newrp.Organisationen;
 
-import de.newrp.main;
+import de.newrp.NewRoleplayMain;
 import de.newrp.API.Log;
 import de.newrp.API.Messages;
 import de.newrp.API.PaymentType;
@@ -34,7 +34,7 @@ import java.util.stream.Collectors;
 
 public class Bankraub implements CommandExecutor, Listener {
 
-    private static long lastTime;
+    public static long lastTime;
     private static long cooldown;
     private static final long TIMEOUT = TimeUnit.HOURS.toMillis(5);
     private static final long TIMEOUT_2 = TimeUnit.SECONDS.toMillis(45);
@@ -185,7 +185,7 @@ public class Bankraub implements CommandExecutor, Listener {
                     public void run() {
                         state.update();
                     }
-                }.runTaskLater(main.getInstance(), 1L);
+                }.runTaskLater(NewRoleplayMain.getInstance(), 1L);
                 stopMiniGame(false);
             } else if (e.getClickedBlock().getType().equals(Material.DROPPER)) {
                 if (cooldown + TIMEOUT_2 < time2) {
@@ -199,7 +199,7 @@ public class Bankraub implements CommandExecutor, Listener {
                         public void run() {
                             state.update();
                         }
-                    }.runTaskLater(main.getInstance(), 1L);
+                    }.runTaskLater(NewRoleplayMain.getInstance(), 1L);
                     cooldown = time2;
                     Script.sendActionBar(p, "§aDu hast den richtigen Tresor angeklickt.");
                     calcLoc();
@@ -242,7 +242,7 @@ public class Bankraub implements CommandExecutor, Listener {
                     state.update();
 
                 }
-            }.runTaskLater(main.getInstance(), 1L);
+            }.runTaskLater(NewRoleplayMain.getInstance(), 1L);
         } else {
             stopMiniGame(true);
         }

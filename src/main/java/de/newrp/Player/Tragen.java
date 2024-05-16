@@ -1,10 +1,9 @@
 package de.newrp.Player;
 
-import de.newrp.API.Debug;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.Chat.Me;
-import de.newrp.main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -16,7 +15,6 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.spigotmc.event.entity.EntityDismountEvent;
 
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
@@ -39,8 +37,7 @@ public class Tragen implements CommandExecutor, Listener {
             p.sendMessage(PREFIX + "Du hast " + Script.getName(tg) + " abgesetzt.");
             tg.sendMessage(PREFIX + "Du wurdest von " + Script.getName(p) + " abgesetzt.");
             Me.sendMessage(p, "hat " + Script.getName(tg) + " abgesetzt.");
-            tg.sendMessage(Messages.INFO + "Sneake nun, um von " + Script.getName(p) + " abgesetzt zu werden.");
-            p.getPassenger().eject();
+            p.eject();
             tragen.remove(p);
             return true;
         }
@@ -85,7 +82,7 @@ public class Tragen implements CommandExecutor, Listener {
 
         Tragen.tragenTasks.put(tg, task);
 
-        task.runTaskLater(main.getInstance(), 5L);
+        task.runTaskLater(NewRoleplayMain.getInstance(), 5L);
     }
 
 

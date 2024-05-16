@@ -25,6 +25,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 public class SDuty implements CommandExecutor, Listener {
 
@@ -70,6 +71,10 @@ public class SDuty implements CommandExecutor, Listener {
 
     public static Boolean isSDuty(Player p) {
         return sduty.contains(p.getName());
+    }
+
+    public static Boolean isSDuty(UUID p) {
+        return sduty.contains(Bukkit.getPlayer(p).getName());
     }
 
     public static void removeSDuty(Player p) {

@@ -4,7 +4,7 @@ import de.newrp.API.*;
 import de.newrp.Administrator.SDuty;
 import de.newrp.Berufe.Abteilung;
 import de.newrp.Berufe.Beruf;
-import de.newrp.main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -97,7 +97,7 @@ public class Stadtkasse implements CommandExecutor {
     }
 
     public static int getStadtkasse() {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM city")) {
             if (rs.next()) {
                 return rs.getInt("money");
@@ -119,7 +119,7 @@ public class Stadtkasse implements CommandExecutor {
             public void run() {
                 SDuty.updateScoreboard();
             }
-        }.runTaskLater(main.getInstance(), 20L);
+        }.runTaskLater(NewRoleplayMain.getInstance(), 20L);
     }
 
     public static void setStadtkasse(int betrag) {
@@ -130,17 +130,17 @@ public class Stadtkasse implements CommandExecutor {
         if (betrag == 0) return;
         SteuerNotification.sendNotification(grund + " " + Messages.ARROW + " " + betrag + "€" + (steuer != null && !grund.contains(steuer.getName()) ? " (" + steuer.getName() + ")" : ""));
         Script.executeAsyncUpdate("UPDATE city SET money = money + " + betrag);
-        Script.executeAsyncUpdate("INSERT INTO stadtkasse (betrag, grund, steuerID, steuerPercentage) VALUES (" + betrag + ", '" + grund + "', " + (steuer != null ? steuer.getID() : "NULL") + ", " + (steuer != null ? steuer.getPercentage() : "NULL") + ")");
+        Script.executeAsyncUpdate("INSERT INTO stadtkasse (betrag, grund, steuerID, steuerPercentage, time) VALUES (" + betrag + ", '" + grund + "', " + (steuer != null ? steuer.getID() : "NULL") + ", " + (steuer != null ? steuer.getPercentage() : "NULL") + ", NOW())");
         new BukkitRunnable() {
             @Override
             public void run() {
                 SDuty.updateScoreboard();
             }
-        }.runTaskLater(main.getInstance(), 20L);
+        }.runTaskLater(NewRoleplayMain.getInstance(), 20L);
     }
 
     public static int getArbeitslosengeld() {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM city")) {
             if (rs.next()) {
                 return rs.getInt("arbeitslosengeld");

@@ -22,6 +22,7 @@ public class UseMedikamente implements Listener {
 
     public static HashMap<String, Integer> use = new HashMap<>();
     public static String PREFIX = "§8[§cMedikamente§8] §c" + Messages.ARROW + " §7";
+    private long lastUsedTimestamp = System.currentTimeMillis();
 
     @EventHandler
     public void onConsume(PlayerInteractEvent e) {
@@ -50,7 +51,6 @@ public class UseMedikamente implements Listener {
                     p.sendMessage(PREFIX + "Das konsumieren von Schmerzmitteln hat bei dir keine Wirkung gezeigt.");
                     Script.playLocalSound(p.getLocation(), Sound.ENTITY_PLAYER_BURP, 5);
                     p.getInventory().getItemInMainHand().setAmount(p.getInventory().getItemInMainHand().getAmount() - 1);
-                    p.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 220 * 20, 2, false, false));
                     p.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 20 * 5, 0));
                     return;
                 }

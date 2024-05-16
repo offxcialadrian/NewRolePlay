@@ -1,10 +1,12 @@
 package de.newrp.Organisationen;
 
 import de.newrp.API.*;
-import de.newrp.Berufe.Equip;
 import de.newrp.Chat.Me;
+import de.newrp.Gangwar.GangwarCommand;
 import de.newrp.Police.Handschellen;
-import de.newrp.main;
+import de.newrp.NewRoleplayMain;
+import de.newrp.dependencies.DependencyContainer;
+import de.newrp.features.deathmatcharena.IDeathmatchArenaService;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -107,7 +109,7 @@ public enum Drogen {
 
     public static int getAddiction(Player p) {
         int i = 0;
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM drug_addiction WHERE nrp_id='" + Script.getNRPID(p) + "' AND heal = false")) {
             while (rs.next()) {
                 if (rs.getLong("time") + TimeUnit.DAYS.toMillis(5) > System.currentTimeMillis()) {
@@ -122,7 +124,7 @@ public enum Drogen {
 
     public static int getAddictionHeal(Player p) {
         int i = 0;
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM drug_addiction WHERE nrp_id='" + Script.getNRPID(p) + "' AND heal = true")) {
             while (rs.next()) {
                 if (rs.getLong("time") + TimeUnit.DAYS.toMillis(5) > System.currentTimeMillis()) {
@@ -136,15 +138,22 @@ public enum Drogen {
     }
 
     public static void addToAdiction(Player p) {
+        if(DependencyContainer.getContainer().getDependency(IDeathmatchArenaService.class).isInDeathmatch(p.getPlayer(), false)) return;
+        if(GangwarCommand.isInGangwar(p)) return;
         Script.executeAsyncUpdate("INSERT INTO drug_addiction (nrp_id, time, heal) VALUES (" + Script.getNRPID(p) + ", " + System.currentTimeMillis() + ", false)");
-        if(getAddiction(p) >= Script.getRandom(40, 50) && !Krankheit.ABHAENGIGKEIT.isInfected(Script.getNRPID(p))) {
+        if(getAddiction(p) >= (Premium.hasPremium(p)?Script.getRandom(40, 50):Script.getRandom(30, 40)) && !Krankheit.ABHAENGIGKEIT.isInfected(Script.getNRPID(p))) {
             Krankheit.ABHAENGIGKEIT.add(Script.getNRPID(p));
             p.sendMessage(Messages.INFO + "Du hast eine Abhängigkeit entwickelt. Lasse dich von einem Arzt behandeln.");
         }
     }
 
     public static void healAddiction(Player p) {
-        if(getAddictionHeal(p) < 2 && !Premium.hasPremium(p)) {
+        if(Premium.hasPremium(p)) {
+            Script.executeAsyncUpdate("DELETE FROM drug_addiction WHERE nrp_id = " + Script.getNRPID(p));
+            Krankheit.ABHAENGIGKEIT.remove(Script.getNRPID(p));
+            return;
+        }
+        if(getAddictionHeal(p) < 2) {
             Script.executeAsyncUpdate("INSERT INTO drug_addiction (nrp_id, time, heal) VALUES (" + Script.getNRPID(p) + ", " + System.currentTimeMillis() + ", true)");
         } else {
             Script.executeAsyncUpdate("DELETE FROM drug_addiction WHERE nrp_id = " + Script.getNRPID(p));
@@ -169,7 +178,7 @@ public enum Drogen {
             taskID.remove(p.getName());
         }
 
-        int task = Bukkit.getScheduler().scheduleSyncDelayedTask(main.getInstance(), () -> {
+        int task = Bukkit.getScheduler().scheduleSyncDelayedTask(NewRoleplayMain.getInstance(), () -> {
             if(!test.containsKey(p.getName())) return;
             test.remove(p.getName());
             taskID.remove(p.getName());
@@ -178,9 +187,11 @@ public enum Drogen {
         test.put(p.getName(), this);
         taskID.put(p.getName(), task);
 
-        if(Krankheit.ABHAENGIGKEIT.isInfected(id)) {
-            p.sendMessage(Messages.INFO + "Du hast eine Abhängigkeit entwickelt. Das Konsumieren hat keine Wirkung gezeigt.");
-            return;
+        if(!GangwarCommand.isInGangwar(p) && !DependencyContainer.getContainer().getDependency(IDeathmatchArenaService.class).isInDeathmatch(p.getPlayer(), false)) {
+            if(Krankheit.ABHAENGIGKEIT.isInfected(id)) {
+                p.sendMessage(Messages.INFO + "Du hast eine Abhängigkeit entwickelt. Das Konsumieren hat keine Wirkung gezeigt.");
+                return;
+            }
         }
 
         Drogen.addToAdiction(p);

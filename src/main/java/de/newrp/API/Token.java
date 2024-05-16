@@ -1,6 +1,6 @@
 package de.newrp.API;
 
-import de.newrp.main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.entity.Player;
 
 import java.sql.ResultSet;
@@ -43,19 +43,20 @@ public enum Token {
     }
 
     public int get(int id) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT " + this.getName() + " FROM change_token WHERE id=" + id)) {
             if (rs.next()) {
                 return rs.getInt(this.getName());
             }
         } catch (SQLException e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         return getDefaultValue(Script.getPlayer(id));
     }
 
     public void add(int id, int amount) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT " + this.getName() + " FROM change_token WHERE id=" + id)) {
             if (rs.next()) {
                 Script.executeAsyncUpdate("UPDATE change_token SET " + this.getName() + "=" + (rs.getInt(this.getName()) + amount) + " WHERE id=" + id);
@@ -63,12 +64,13 @@ public enum Token {
                 Script.executeAsyncUpdate("INSERT INTO change_token (id, " + this.getName() + ") VALUES (" + id + ", " + (1 + amount) + ");");
             }
         } catch (SQLException e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
     }
 
     public void remove(int id, int amount) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT " + this.getName() + " FROM change_token WHERE id=" + id)) {
             if (rs.next()) {
                 int i = (rs.getInt(this.getName()) - amount);
@@ -78,6 +80,7 @@ public enum Token {
                 Script.executeAsyncUpdate("INSERT INTO change_token (id, " + this.getName() + ") VALUES (" + id + ", " + (1 - amount) + ");");
             }
         } catch (SQLException e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
     }

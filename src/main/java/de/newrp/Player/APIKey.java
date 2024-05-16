@@ -28,7 +28,7 @@ public class APIKey implements CommandExecutor {
                 return true;
             }
 
-            p.sendMessage(PREFIX + "Du hast bereits einen API-Key. Du kannst diesen nicht zurücksetzen.");
+            p.sendMessage(PREFIX + "Du hast bereits einen API-Key. Du kannst diesen nicht zurücksetzen. Dein API-Key ist §6" + Script.getAPIKey(p) + "§7.");
             return true;
         }
 

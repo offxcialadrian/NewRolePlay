@@ -2,7 +2,7 @@ package de.newrp.Administrator;
 
 import de.newrp.API.*;
 import de.newrp.Police.Handschellen;
-import de.newrp.main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -178,7 +178,7 @@ public class BuildMode implements CommandExecutor, Listener {
         p.setGameMode(GameMode.SURVIVAL);
         Log.NORMAL.write(p, "hat den BuildMode verlassen.");
         for (Player online : Bukkit.getOnlinePlayers()) {
-            online.showPlayer(main.getInstance(), p);
+            online.showPlayer(NewRoleplayMain.getInstance(), p);
         }
         if (SDuty.isSDuty(p) && Script.hasRank(p, Rank.ADMINISTRATOR, false)) {
             p.setAllowFlight(true);
@@ -219,7 +219,7 @@ public class BuildMode implements CommandExecutor, Listener {
             if (!Script.hasRank(online, Rank.SUPPORTER, false)) {
                 if (Team.getTeam(online) != Team.Teams.BAU) {
                     Debug.debug("hiding " + p.getName() + " from " + online.getName());
-                    online.hidePlayer(main.getInstance(), p);
+                    online.hidePlayer(NewRoleplayMain.getInstance(), p);
                 }
             }
         }

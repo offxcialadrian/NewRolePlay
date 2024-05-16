@@ -6,17 +6,13 @@ import de.newrp.Berufe.Beruf;
 import de.newrp.Berufe.Duty;
 import de.newrp.Chat.Me;
 import de.newrp.Waffen.Waffen;
-import de.newrp.main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -61,11 +57,12 @@ public class ReviveCommand implements CommandExecutor {
             tg.sendMessage(PREFIX + "Du wurdest von " + Messages.RANK_PREFIX(p) + " wiederbelebt.");
             Friedhof.revive(tg, f.getDeathLocation());
             Script.sendTeamMessage(p, ChatColor.RED, "hat " + Script.getName(tg) + " wiederbelebt.", true);
-            if(Corpse.npcMap.containsKey(p)) Corpse.removeNPC(p);
+            if(Corpse.npcMap.containsKey(p.getUniqueId())) Corpse.removeNPC(p);
             if (f.getInventoryContent() != null) {
                 tg.getInventory().clear();
                 tg.getInventory().setContents(f.getInventoryContent());
             }
+            Script.updateListname(tg);
             if(!Script.hasRank(p, Rank.ADMINISTRATOR, false)) cooldown.put(p.getName(), System.currentTimeMillis());
             if (f.getCash() > 0) Script.setMoney(tg, PaymentType.CASH, f.getCash());
             return true;
@@ -135,18 +132,19 @@ public class ReviveCommand implements CommandExecutor {
         cooldowns.put(p.getName(), time);
         cooldowns.put(tg.getName(), time);
         final Location loc = p.getLocation();
-        Bukkit.getScheduler().runTaskLater(main.getInstance(), () -> {
+        Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> {
             if (p.getLocation().distance(f.getDeathLocation()) > 3D) {
                 p.sendMessage(Messages.ERROR + "Du bist zuweit von der Leiche weg.");
                 return;
             }
-            if(Corpse.npcMap.containsKey(p)) Corpse.removeNPC(p);
+            if(Corpse.npcMap.containsKey(p.getUniqueId())) Corpse.removeNPC(p);
             if (!Friedhof.isDead(tg)) {
                 p.sendMessage(Messages.ERROR + "Die Person lebt bereits.");
                 return;
             }
             Friedhof.revive(tg, loc);
             p.sendMessage("§7Du hast " + Script.getName(tg) + " erfolgreich wiederbelebt.");
+            Script.updateListname(tg);
 
             tg.resetPlayerWeather();
             Log.LOW.write(tg, "wurde von " + Script.getName(p) + " wiederbelebt.");

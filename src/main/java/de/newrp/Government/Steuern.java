@@ -4,7 +4,7 @@ import de.newrp.API.Log;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.Berufe.Beruf;
-import de.newrp.main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -42,7 +42,8 @@ public class Steuern implements CommandExecutor, TabCompleter {
         GRUNDSTEUER(8, "Grundsteuer", "grundsteuer", "Die Grundsteuer wird jeden PayDay auf jedes Haus erhoben."),
         HAUSVERKAUFSSTEUER(9, "Haus Verkaufssteuer", "haus_verkaufssteuer", "Die Haus Verkaufssteuer wird auf jeden Verkauf eines Hauses erhoben."),
         KRANKENVERSICHERUNG(10, "Krankenversicherung", "krankenversicherung", "Die Krankenversicherung wird auf dein Gehalt am PayDay erhoben."),
-        RUNDFUNKBEITRAG(11, "Rundfunkbeitrag", "rundfunk", "Der Rundfunkbeitrag wird jeden PayDay erhoben.");
+        RUNDFUNKBEITRAG(11, "Rundfunkbeitrag", "rundfunk", "Der Rundfunkbeitrag wird jeden PayDay erhoben."),
+        KFZSTEUER(12, "KFZ-Steuer", "kfzsteuer", "Die KFZ-Steuer wird jeden PayDay von den Fahrzeugen erhoben.");
 
         private final int id;
         private final String name;
@@ -73,7 +74,7 @@ public class Steuern implements CommandExecutor, TabCompleter {
         }
 
         public double getPercentage() {
-            try (Statement stmt = main.getConnection().createStatement();
+            try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
                  ResultSet rs = stmt.executeQuery("SELECT * FROM city")) {
                 if (rs.next()) {
                     return rs.getDouble(this.dbname);

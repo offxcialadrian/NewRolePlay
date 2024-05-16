@@ -1,6 +1,6 @@
 package de.newrp.API;
 
-import de.newrp.main;
+import de.newrp.NewRoleplayMain;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -52,7 +52,7 @@ public enum Licenses {
 
     public static Map<Licenses, Boolean> getLicenses(Integer id) {
         Map<Licenses, Boolean> cache = new HashMap<>();
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT personalausweis, waffenschein, fuehrerschein, angelschein, erste_hilfe FROM licenses WHERE id=" + id)) {
             if (rs.next()) {
                 cache.put(Licenses.PERSONALAUSWEIS, rs.getBoolean("personalausweis"));
@@ -62,6 +62,7 @@ public enum Licenses {
                 cache.put(Licenses.ERSTE_HILFE, rs.getBoolean("erste_hilfe"));
             }
         } catch (SQLException e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         for (Licenses l : Licenses.values()) {

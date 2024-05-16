@@ -1,7 +1,6 @@
 package de.newrp.GFB;
 
 import de.newrp.API.*;
-import de.newrp.main;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -14,13 +13,10 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -145,7 +141,7 @@ public class Imker implements CommandExecutor, Listener {
             GFB.CURRENT.remove(p.getName());
             honeys.remove(p.getName());
             GFB.IMKER.addExp(p, TOTAL_SCORE.get(p.getName())*Script.getRandom(2,3));
-            Script.addEXP(p, GFB.IMKER.getLevel(p) + TOTAL_SCORE.get(p.getName())*Script.getRandom(1, 2)*3);
+            Script.addEXP(p, GFB.IMKER.getLevel(p) + TOTAL_SCORE.get(p.getName())*Script.getRandom(1, 2)*2);
             PayDay.addPayDay(p, (GFB.IMKER.getLevel(p) + TOTAL_SCORE.get(p.getName())*2));
             TOTAL_SCORE.remove(p.getName());
             return;

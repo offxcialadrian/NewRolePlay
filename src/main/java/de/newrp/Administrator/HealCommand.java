@@ -39,6 +39,8 @@ public class HealCommand implements CommandExecutor {
             Log.NORMAL.write(p, "hat sich geheilt.");
             p.setHealth(p.getMaxHealth());
             p.setFoodLevel(20);
+            Health.BLOOD.set(Script.getNRPID(p), Health.BLOOD.getMax());
+            Health.BLEEDING.remove(p.getName());
             p.setFireTicks(0);
             Script.unfreeze(p);
 
@@ -71,6 +73,8 @@ public class HealCommand implements CommandExecutor {
         tg.setHealth(tg.getMaxHealth());
         tg.setFoodLevel(20);
         tg.setFireTicks(0);
+        Health.BLOOD.set(Script.getNRPID(tg), Health.BLOOD.getMax());
+        Health.BLEEDING.remove(tg.getName());
         Krankheit.GEBROCHENER_ARM.remove(Script.getNRPID(tg));
         Krankheit.GEBROCHENES_BEIN.remove(Script.getNRPID(tg));
         Health.THIRST.set(Script.getNRPID(tg), Health.THIRST.getMax());

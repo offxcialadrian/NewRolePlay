@@ -5,7 +5,7 @@ import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.Berufe.Abteilung;
 import de.newrp.Berufe.Beruf;
-import de.newrp.main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -69,7 +69,7 @@ public class Straftat implements CommandExecutor {
             return true;
         }
 
-        try (Statement stmt = main.getConnection().createStatement()) {
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement()) {
             stmt.executeUpdate("INSERT INTO wanted_reason (reason, amount) VALUES ('" + grund + "', " + wantedPunkte + ")");
             p.sendMessage(PREFIX + "Der Fahndungsgrund wurde erfolgreich hinzugefügt.");
             Script.sendTeamMessage(PREFIX + Script.getName(p) + " hat die Straftat §6" + grund + " §7mit §6" + wantedPunkte + " WantedPunkten §7hinzugefügt.");
@@ -86,7 +86,7 @@ public class Straftat implements CommandExecutor {
     }
 
     public static void sendAllReason(Player p) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM wanted_reason")) {
             if (rs.next()) {
                 do {
@@ -100,7 +100,7 @@ public class Straftat implements CommandExecutor {
 
     public static List<String> getAllReason() {
         List<String> list = new ArrayList<>();
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM wanted_reason")) {
             if (rs.next()) {
                 do {
@@ -115,7 +115,7 @@ public class Straftat implements CommandExecutor {
 
     public static boolean straftatExists(String reason) {
         reason = reason.replace("-", " ");
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM wanted_reason WHERE reason = '" + reason + "'")) {
             if (rs.next()) {
                 return true;
@@ -128,8 +128,8 @@ public class Straftat implements CommandExecutor {
 
 
     public static boolean isStraftat(int id) {
-        try (Statement stmt = main.getConnection().createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM wanted_reason WHERE id=" + id)) {
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT * FROM wanted_reason WHERE id=" + id)) {
             if(rs.next()) {
                 return true;
             }
@@ -140,7 +140,7 @@ public class Straftat implements CommandExecutor {
     }
 
     public static int getWanteds(int id) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM wanted_reason WHERE id = '" + id + "' ORDER BY amount DESC")) {
             if (rs.next()) {
                 return rs.getInt("amount");
@@ -156,7 +156,7 @@ public class Straftat implements CommandExecutor {
     }
 
     public static String getReason(int id) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM wanted_reason WHERE id = '" + id + "'")) {
             if (rs.next()) {
                 return rs.getString("reason");
@@ -169,7 +169,7 @@ public class Straftat implements CommandExecutor {
 
     public static String getReason(String s) {
         s = s.replace("-", " ");
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM wanted_reason WHERE reason = '" + s + "'")) {
             if (rs.next()) {
                 return rs.getString("reason");
@@ -182,7 +182,7 @@ public class Straftat implements CommandExecutor {
 
     public static int getReasonID(String s) {
         s = s.replace("-", " ");
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM wanted_reason WHERE reason = '" + s + "'")) {
             if (rs.next()) {
                 return rs.getInt("id");

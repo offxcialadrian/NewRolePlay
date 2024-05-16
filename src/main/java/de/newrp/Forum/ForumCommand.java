@@ -1,9 +1,10 @@
 package de.newrp.Forum;
 
 import de.newrp.API.Achievement;
+import de.newrp.API.Debug;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
-import de.newrp.main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -45,7 +46,7 @@ public class ForumCommand implements CommandExecutor {
         }
 
         p.sendMessage(Forum.prefix + "§cEs wurde keine Verbindung zum Forum gefunden. Versuche Verifikation...");
-        try (Statement stmt = main.getForumConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getForumConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT userID, username FROM wcf1_user WHERE username='" + Script.getName(p) + "'")) {
             if (rs.next()) {
                 Script.executeUpdate("INSERT INTO forum (id, forumID) VALUES (" + Script.getNRPID(p) + ", " + rs.getInt("userID") + ")");
@@ -58,6 +59,7 @@ public class ForumCommand implements CommandExecutor {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            Debug.debug("SQLException -> " + e.getMessage());
             p.sendMessage(Messages.ERROR + "Verbindung zum Forum fehlgeschlagen. Bitte melde dies als Bug.");
         }
         return true;

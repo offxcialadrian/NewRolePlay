@@ -3,7 +3,7 @@ package de.newrp.Organisationen;
 import de.newrp.API.ItemBuilder;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
-import de.newrp.main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.*;
 import org.bukkit.block.Banner;
 import org.bukkit.block.Block;
@@ -237,7 +237,7 @@ public class OrgSpray implements Listener {
             banner.setPatterns(Organisation.getOrganisation(p).getFraktionSpray().getPattern());
             m.remove(p.getName());
             p.sendMessage(PREFIX + "Du hast das Graffiti mit deiner Organisationsflagge übersprayt.");
-            f.sendMessage(PREFIX + p.getName() + " hat das Graffiti mit der Flagge der Organisation übersprayt.");
+            f.sendMessage(PREFIX + p.getName() + " hat ein Graffiti mit der Flagge der Organisation übersprayt.");
             f.addExp(Script.getRandom(5, 10));
             Script.addEXP(p, Script.getRandom(3, 5));
         } else {
@@ -266,7 +266,7 @@ public class OrgSpray implements Listener {
 
         public static void init() {
             World w = Script.WORLD;
-            try (Statement stmt = main.getConnection().createStatement();
+            try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
                  ResultSet rs = stmt.executeQuery("SELECT x, y, z, org FROM graffiti")) {
                 while (rs.next()) {
                     Location loc = new Location(w, rs.getInt("x"), rs.getInt("y"), rs.getInt("z"));

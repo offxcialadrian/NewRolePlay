@@ -6,7 +6,7 @@ import de.newrp.API.Messages;
 import de.newrp.API.Rank;
 import de.newrp.API.Script;
 import de.newrp.Berufe.Beruf;
-import de.newrp.main;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
@@ -18,12 +18,13 @@ public class Forum {
     public static final String prefix = "§8[§eForum§8]§6 ";
 
     public static int getForumID(int id) {
-        try (Statement stmt = main.getConnection().createStatement();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT forumID FROM forum WHERE id=" + id)) {
             if (rs.next()) {
                 return rs.getInt("forumID");
             }
         } catch (SQLException e) {
+            Debug.debug("SQLException -> " + e.getMessage());
             e.printStackTrace();
         }
         return 0;
