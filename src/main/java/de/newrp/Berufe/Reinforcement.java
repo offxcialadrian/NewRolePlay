@@ -27,7 +27,7 @@ public class Reinforcement implements CommandExecutor {
         MEDIC(4, "Arzt benötigt!", "-m", true),
         LEICHENBEWACHUNG(5, "Leichenbewachung!", "-lb", true),
         PFANDNAHME(6, "Pfandnahme!", "-gn", true),
-        RAMMEN(7, "Rammen!", "-r", true),
+        RAMMEN(7, "Rammen!", "-r", false),
         PLANT(8, "Plant!", "-p", false),
         TRAINING_NORMAL(9, "Training!", "-t", false),
         TRAINING_BUENDNIS(10, "Training!", "-td", true);

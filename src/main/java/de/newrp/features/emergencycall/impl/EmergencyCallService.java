@@ -46,7 +46,7 @@ public class EmergencyCallService implements IEmergencyCallService {
         final StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(getPrefix()).append("§6Achtung! Ein Notruf von ").append(Script.getName(player)).append(" ist eingegangen.")
                 .append("\n").append(getPrefix()).append("§6Vorfall§8: §6").append(reason)
-                .append("\n").append(getPrefix()).append("§6Position§8: §6").append(Navi.getNextNaviLocation(location))
+                .append("\n").append(getPrefix()).append("§6Position§8: §6").append(Navi.getNextNaviLocation(location).getName())
                 .append("\n").append(buildNearbyPlayersString(location, targetFaction));
 
         for (UUID member : targetFaction.getBeruf().keySet()) {

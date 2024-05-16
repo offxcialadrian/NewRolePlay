@@ -5,6 +5,7 @@ import de.newrp.Administrator.SDuty;
 import de.newrp.Berufe.Beruf;
 import de.newrp.News.NewsCommand;
 import de.newrp.NewRoleplayMain;
+import de.newrp.Organisationen.Organisation;
 import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -233,6 +234,8 @@ public class Wahlen implements CommandExecutor, Listener {
                 NewsCommand.wahlenNewsActive = false;
                 if (Beruf.hasBeruf(winner) && Beruf.getBeruf(winner) != Beruf.Berufe.GOVERNMENT)
                     Beruf.getBeruf(winner).removeMember(winner);
+                if(Organisation.hasOrganisation(winner))
+                    Organisation.getOrganisation(winner).removeMember(winner);
                 if (Beruf.getBeruf(winner) != Beruf.Berufe.GOVERNMENT) Beruf.Berufe.GOVERNMENT.addMember(winner);
                 Beruf.setLeader(winner, true);
                 Achievement.WAHL_GEWONNEN.grant(winner);

@@ -389,7 +389,7 @@ public class Annehmen implements CommandExecutor {
             offer.remove(p.getName() + ".rezept");
             offer.remove(p.getName() + ".medikament");
             offer.remove(p.getName() + ".rezept.anzahl");
-            Stadtkasse.removeStadtkasse(30*amount, "Rezeptausstellung an " + Script.getName(p));
+            Stadtkasse.removeStadtkasse(10*amount, "Rezeptausstellung an " + Script.getName(p));
             Achievement.REZEPT.grant(p);
 
         } else if(offer.containsKey(p.getName() + ".house.rent")) {

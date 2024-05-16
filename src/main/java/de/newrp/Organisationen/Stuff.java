@@ -11,8 +11,8 @@ import org.bukkit.inventory.ItemStack;
 public enum Stuff {
 
     BROT(1, Equip.Stuff.BROT.getName(), Equip.Stuff.BROT.getItem(), 1, 4),
-    WASSER(2, Equip.Stuff.TRINKWASSER.getName(), Equip.Stuff.TRINKWASSER.getItem(), 1, 2),
-    BASEY(3, "Baseballschläger", Baseballschlaeger.getItem(), 3, 250),
+    WASSER(2, Equip.Stuff.TRINKWASSER.getName(), Equip.Stuff.TRINKWASSER.getItem(), 2, 2),
+    BASEY(3, "Baseballschläger", Baseballschlaeger.getItem(), 2, 250),
     PISTOLE(4, Weapon.PISTOLE.getName(), Weapon.PISTOLE.getWeapon(), 3, 350),
     STRIKER(5, Weapon.MP7.getName(), Weapon.MP7.getWeapon(), 4, 700),
     BRECHI(6, "Brechstange", Script.brechstange(), 5, 250),

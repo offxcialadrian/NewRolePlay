@@ -128,7 +128,7 @@ public class AsyncMinute extends BukkitRunnable {
                     nrp.sendMessage("§8[§6Tickets§8] §6" + Messages.ARROW + " §7Es sind noch " + amount + " Tickets offen.");
                     nrp.playSound(nrp.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
                     nrp.sendMessage(Messages.INFO + "Bitte beachte, dass die Bearbeitung von Tickets eine hohe Priorität hat.");
-                    if(SDuty.isSDuty(nrp)) nrp.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20 * 5, 1, false, false));
+                    if(SDuty.isSDuty(nrp)) nrp.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 12 * 20, 2, false, false));
                 }
             }
             /*for(Entity e : Script.WORLD.getEntities()) {

@@ -57,7 +57,7 @@ public class BreakinCommand implements CommandExecutor {
                             return true;
                         }
 
-                        cooldowns.put(orga, System.currentTimeMillis() + 2 * 60 * 60 * 1000);
+                        cooldowns.put(orga, System.currentTimeMillis() + 3 * 60 * 60 * 1000);
 
                         Beruf.Berufe.POLICE.sendMessage(PREFIX + "Ein Einbruch bei " + rob.getName() + " wurde gemeldet.");
                         orga.sendMessage(PREFIX + player.getName() + " beginnt bei " + rob.getName() + " aufzubrechen.");
