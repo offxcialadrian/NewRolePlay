@@ -36,17 +36,17 @@ public class Equip implements CommandExecutor, Listener {
     public static final String PREFIX = "§8[§eEquip§8] §e» §7";
 
     public enum Stuff {
-        PISTOLE(1, "Glory", new ItemBuilder(Material.IRON_HORSE_ARMOR).setName("§7Glory").build(), 500, 0, null, Beruf.Berufe.POLICE, false),
-        SCHUTZWESTE(2, "Schutzweste", Script.kevlar(1), 700, 0, null, Beruf.Berufe.POLICE, false),
-        HANDSCHELLEN(3, "Handschellen", Script.setName(new ItemStack(Material.LEAD, 2), "§7Handschellen"), 50, 0, null, Beruf.Berufe.POLICE, true),
-        TAZER(4, "Tazer", Script.tazer(), 250, 0, null, Beruf.Berufe.POLICE, true),
+        PISTOLE(1, "Glory", new ItemBuilder(Material.IRON_HORSE_ARMOR).setName("§7Glory").build(), 300, 0, null, Beruf.Berufe.POLICE, false),
+        SCHUTZWESTE(2, "Schutzweste", Script.kevlar(1), 500, 0, null, Beruf.Berufe.POLICE, false),
+        HANDSCHELLEN(3, "Handschellen", Script.setName(new ItemStack(Material.LEAD, 2), "§7Handschellen"), 10, 0, null, Beruf.Berufe.POLICE, true),
+        TAZER(4, "Tazer", Script.tazer(), 100, 0, null, Beruf.Berufe.POLICE, true),
         DONUT(5, "Donut", new ItemBuilder(Material.COOKIE).setAmount(16).setName("§7Donut").build(), 1, 0, null, Beruf.Berufe.POLICE, false),
-        MP7(6, "Striker", new ItemBuilder(Material.GOLDEN_HORSE_ARMOR).setName("§7Striker").build(), 800, 0, new Abteilung.Abteilungen[]{Abteilung.Abteilungen.SEK, Abteilung.Abteilungen.ABTEILUNGSLEITUNG}, Beruf.Berufe.POLICE, true),
+        MP7(6, "Striker", new ItemBuilder(Material.GOLDEN_HORSE_ARMOR).setName("§7Striker").build(), 600, 0, new Abteilung.Abteilungen[]{Abteilung.Abteilungen.SEK, Abteilung.Abteilungen.ABTEILUNGSLEITUNG}, Beruf.Berufe.POLICE, true),
         EINSATZSCHILD(7, "Einsatzschild", Script.einsatzschild(1), 1000, 0, new Abteilung.Abteilungen[]{Abteilung.Abteilungen.SEK, Abteilung.Abteilungen.ABTEILUNGSLEITUNG}, Beruf.Berufe.POLICE, true),
-        EINSATZSCHILD_2(8, "Schweres Einsatzschild", Script.einsatzschild(2), 1700, 0, new Abteilung.Abteilungen[]{Abteilung.Abteilungen.SEK, Abteilung.Abteilungen.ABTEILUNGSLEITUNG}, Beruf.Berufe.POLICE, true),
-        RAUCHGRANATE(9, "Rauchgranate", Script.rauchgranate(), 300, 0, new Abteilung.Abteilungen[]{Abteilung.Abteilungen.SEK, Abteilung.Abteilungen.ABTEILUNGSLEITUNG}, Beruf.Berufe.POLICE, true),
-        FLASHBANG(10, "Flashbang", Script.flashbang(), 250, 0, new Abteilung.Abteilungen[]{Abteilung.Abteilungen.SEK, Abteilung.Abteilungen.ABTEILUNGSLEITUNG}, Beruf.Berufe.POLICE, true),
-        FALLSCHIRM(11, "Fallschirm", Script.fallschirm(), 500, 0, new Abteilung.Abteilungen[]{Abteilung.Abteilungen.SEK, Abteilung.Abteilungen.ABTEILUNGSLEITUNG}, Beruf.Berufe.POLICE, false),
+        EINSATZSCHILD_2(8, "Schweres Einsatzschild", Script.einsatzschild(2), 1300, 0, new Abteilung.Abteilungen[]{Abteilung.Abteilungen.SEK, Abteilung.Abteilungen.ABTEILUNGSLEITUNG}, Beruf.Berufe.POLICE, true),
+        RAUCHGRANATE(9, "Rauchgranate", Script.rauchgranate(), 200, 0, new Abteilung.Abteilungen[]{Abteilung.Abteilungen.SEK, Abteilung.Abteilungen.ABTEILUNGSLEITUNG}, Beruf.Berufe.POLICE, true),
+        FLASHBANG(10, "Flashbang", Script.flashbang(), 150, 0, new Abteilung.Abteilungen[]{Abteilung.Abteilungen.SEK, Abteilung.Abteilungen.ABTEILUNGSLEITUNG}, Beruf.Berufe.POLICE, true),
+        FALLSCHIRM(11, "Fallschirm", Script.fallschirm(), 300, 0, new Abteilung.Abteilungen[]{Abteilung.Abteilungen.SEK, Abteilung.Abteilungen.ABTEILUNGSLEITUNG}, Beruf.Berufe.POLICE, false),
         ZEITUNG(12, "Buch und Stift", Script.setName(new ItemStack(Material.WRITABLE_BOOK), "§7Buch und Stift"), 20, 0, new Abteilung.Abteilungen[]{Abteilung.Abteilungen.JOURNALIST}, Beruf.Berufe.NEWS, false),
         VERBAND(13, "Verband", new ItemBuilder(Material.PAPER).setName("§7Verband").setAmount(5).build(), 50, 0, null, Beruf.Berufe.RETTUNGSDIENST, true),
         GIPS(14, "Gips", Script.setName(new ItemStack(Material.PAPER), "§7Gips"), 50, 0, null, Beruf.Berufe.RETTUNGSDIENST, true),
@@ -59,7 +59,7 @@ public class Equip implements CommandExecutor, Listener {
         SNIPER(21, Weapon.SNIPER.getName(), Weapon.SNIPER.getWeapon(), 2900, 30, new Abteilung.Abteilungen[]{Abteilung.Abteilungen.SEK, Abteilung.Abteilungen.ABTEILUNGSLEITUNG}, Beruf.Berufe.POLICE, true),
         DROHNE_COPS(22, "Drohne [Polizei]", new ItemBuilder(Material.WITHER_SKELETON_SKULL).setName("§7Drohne [Polizei]").build(), 1000, 0, new Abteilung.Abteilungen[]{Abteilung.Abteilungen.SEK, Abteilung.Abteilungen.ABTEILUNGSLEITUNG}, Beruf.Berufe.POLICE, true),
         DROHNE_NEWS(23, "Drohne [News]", new ItemBuilder(Material.WITHER_SKELETON_SKULL).setName("§7Drohne [News]").build(), 1500, 0, new Abteilung.Abteilungen[]{Abteilung.Abteilungen.CHEFREDAKTION}, Beruf.Berufe.NEWS, true),
-        DROHNE_RETTUNGSDIENST(24, "Drohne [Rettungsdienst]", new ItemBuilder(Material.WITHER_SKELETON_SKULL).setName("§7Drohne [Rettungsdienst]").build(), 1000, 0, new Abteilung.Abteilungen[]{Abteilung.Abteilungen.NOTFALLMEDIZIN}, Beruf.Berufe.RETTUNGSDIENST, true),
+        DROHNE_RETTUNGSDIENST(24, "Drohne [Rettungsdienst]", new ItemBuilder(Material.WITHER_SKELETON_SKULL).setName("§7Drohne [Rettungsdienst]").build(), 1000, 0, new Abteilung.Abteilungen[]{Abteilung.Abteilungen.NOTFALLMEDIZIN, Abteilung.Abteilungen.OBERARZT}, Beruf.Berufe.RETTUNGSDIENST, true),
         MUNITION_PISTOLE(25, Weapon.PISTOLE.getAmmoType().getName(), new ItemBuilder(Material.ARROW).setName(Weapon.PISTOLE.getAmmoType().getName()).setAmount(Weapon.PISTOLE.getMagazineSize()).build(), 10, 0, null, Beruf.Berufe.POLICE, true),
         MUNITION_MP7(26, Weapon.MP7.getAmmoType().getName(), new ItemBuilder(Material.ARROW).setName(Weapon.MP7.getAmmoType().getName()).setAmount(Weapon.MP7.getMagazineSize()).build(), 15, 0, new Abteilung.Abteilungen[]{Abteilung.Abteilungen.SEK}, Beruf.Berufe.POLICE, true),
         //BROT_2(27, "Brot", new ItemBuilder(Material.BREAD).setAmount(16).setName("§7Brot").build(), 3, 0, null, Beruf.Berufe.GOVERNMENT, false),
@@ -224,11 +224,11 @@ public class Equip implements CommandExecutor, Listener {
             for (Stuff stuff : Stuff.values()) {
                 if (stuff.getBeruf() == beruf) {
                     if (stuff.getAbteilung() == null || Beruf.isLeader(p, true)) {
-                        inv.addItem(stuff.getItem());
+                        inv.addItem(stuff.getItem().clone());
                     } else {
                         for (Abteilung.Abteilungen abteilung : stuff.getAbteilung()) {
                             if (abteilung == Beruf.getAbteilung(p)) {
-                                inv.addItem(stuff.getItem());
+                                inv.addItem(stuff.getItem().clone());
                             }
                         }
                     }
@@ -267,7 +267,7 @@ public class Equip implements CommandExecutor, Listener {
 
             for (de.newrp.Organisationen.Stuff stuff : de.newrp.Organisationen.Stuff.values()) {
                 if (orga.getLevel() >= stuff.getLevel()) {
-                    inv.addItem(stuff.getItem());
+                    inv.addItem(stuff.getItem().clone());
                 }
             }
 
@@ -436,7 +436,7 @@ public class Equip implements CommandExecutor, Listener {
                     }
                 }
 
-                ItemStack is = stuff.getItem();
+                ItemStack is = stuff.getItem().clone();
                 p.getInventory().addItem(is);
                 p.sendMessage(PREFIX + "Du hast dich mit " + stuff.getName() + " ausgerüstet.");
                 orga.sendLeaderMessage("§8[§e" + orga.getName() + "§8] §e» " + Script.getName(p) + " hat sich mit " + stuff.getName() + " ausgerüstet.");
