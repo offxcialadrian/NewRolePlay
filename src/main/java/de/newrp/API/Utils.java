@@ -13,6 +13,7 @@ import de.newrp.NewRoleplayMain;
 import de.newrp.dependencies.DependencyContainer;
 import de.newrp.discord.IJdaService;
 import de.newrp.discord.impl.JdaService;
+import de.newrp.features.scoreboards.IScoreboardService;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Message;
@@ -412,7 +413,11 @@ public class Utils implements Listener {
                 }
             }.runTaskLaterAsynchronously(NewRoleplayMain.getInstance(), 20L);
         }
-        Script.updateListname(p);
+        //Script.updateListname(p);
+
+        final IScoreboardService scoreboardService = DependencyContainer.getContainer().getDependency(IScoreboardService.class);
+        scoreboardService.createScoreboardOnJoin(p);
+
         Script.checkPlayerName(p);
         Script.resetHealth(p);
         Log.LOW.write(p, "hat den Server betreten.");

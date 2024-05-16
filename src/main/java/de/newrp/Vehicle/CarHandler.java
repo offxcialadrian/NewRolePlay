@@ -186,7 +186,7 @@ public class CarHandler implements Listener {
                             event.getEntered().sendMessage(Component.text(Car.PREFIX + "Du hast deinen " + car.getCarType().getName() + " über Keyless-Go geöffnet!"));
                             car.setLocked(false);
                             Cache.saveScoreboard(player);
-                            player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
+                            //player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
                             car.setCarSidebar();
                             new BukkitRunnable() {
                                 @Override
@@ -195,7 +195,7 @@ public class CarHandler implements Listener {
                                     if (car != null && car.getPassengers().contains(player)) {
                                         car.updateCarSidebar();
                                     } else {
-                                        player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
+                                        //player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
                                         cancel();
                                     }
                                 }
@@ -209,7 +209,7 @@ public class CarHandler implements Listener {
                         }
                     } else {
                         Cache.saveScoreboard(player);
-                        player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
+                        //player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
                         car.setCarSidebar();
                         new BukkitRunnable() {
                             @Override
@@ -218,7 +218,7 @@ public class CarHandler implements Listener {
                                 if (car != null && car.getPassengers().contains(player)) {
                                     car.updateCarSidebar();
                                 } else {
-                                    player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
+                                    //player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
                                     cancel();
                                 }
                             }
@@ -260,7 +260,7 @@ public class CarHandler implements Listener {
                 car.setSpeed(0D);
                 car.setFuel(car.getFuel());
                 car.setMileage(car.getMileage());
-                ((Player) event.getExited()).setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
+                //((Player) event.getExited()).setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
                 Cache.loadScoreboard((Player) event.getExited());
                 car.saveLocation(car.getLocation());
             }

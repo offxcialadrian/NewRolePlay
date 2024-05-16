@@ -16,7 +16,7 @@ import java.util.Set;
 public class ScoreboardConfig {
 
     private Set<ScoreboardTeamData> teams = new HashSet<ScoreboardTeamData>() {{
-        add(new ScoreboardTeamData("0001nrp", "§c§l", false, false));
+        add(new ScoreboardTeamData("0001nrp", "§c§l", "", "", false, false));
     }};
 
 }

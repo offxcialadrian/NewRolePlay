@@ -155,7 +155,7 @@ public class Fahrschule implements CommandExecutor, Listener {
                     }
                     index.remove(player.getUniqueId());
                     guis.remove(player.getUniqueId());
-                    player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
+                    //player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
                     Cache.loadScoreboard(player);
                 }, 100 * 20L);
         }

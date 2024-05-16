@@ -150,7 +150,7 @@ public class Checkpoints implements Listener {
         blank.setScore(2);
         score1.setScore(1);
         score2.setScore(0);
-        p.setScoreboard(board);
+        //p.setScoreboard(board);
     }
 
     public static boolean hasCheckpoints(Player p) {

@@ -114,7 +114,7 @@ public class CarCommand implements CommandExecutor, TabCompleter {
                                         if (args.length >= 2 && Objects.equals(args[1], "confirm")) {
                                             car.destroy(false);
                                             player.sendMessage(Component.text(Car.PREFIX + "Du hast deinen " + car.getCarType().getName() + " verkauft."));
-                                            player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
+                                            //player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
                                             // To-Do: Geld hinzufügen
                                             Cache.loadScoreboard(player);
                                         } else {

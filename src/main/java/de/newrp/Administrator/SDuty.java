@@ -5,6 +5,10 @@ import de.newrp.Government.Stadtkasse;
 import de.newrp.Player.AFK;
 import de.newrp.Ticket.TicketCommand;
 import de.newrp.Ticket.TicketTopic;
+import de.newrp.dependencies.DependencyContainer;
+import de.newrp.features.scoreboards.IScoreboardService;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -20,6 +24,7 @@ import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scoreboard.ScoreboardManager;
 import org.bukkit.scoreboard.*;
+import org.bukkit.scoreboard.Team;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -78,8 +83,6 @@ public class SDuty implements CommandExecutor, Listener {
     }
 
     public static void removeSDuty(Player p) {
-        Bukkit.getScoreboardManager().getMainScoreboard().getTeam("anrps").removeEntry(p.getName());
-        Bukkit.getScoreboardManager().getMainScoreboard().getTeam("player").addEntry(p.getName());
         Log.NORMAL.write(p, "hat den Supporter-Dienst verlassen.");
         if (BuildMode.isInBuildMode(p)) {;
             BuildMode.removeBuildMode(p);
@@ -88,6 +91,8 @@ public class SDuty implements CommandExecutor, Listener {
         }
         Script.sendTeamMessage(p, ChatColor.RED, "hat den Supporter-Dienst verlassen.", false);
         p.sendMessage(Messages.INFO + "Du darfst nun wieder am aktiven Spielgeschehen teilnehmen.");
+        final IScoreboardService scoreboardService = DependencyContainer.getContainer().getDependency(IScoreboardService.class);
+        scoreboardService.hideScoreboard(p);
         sduty.remove(p.getName());
         Cache.loadScoreboard(p);
         p.setCollidable(true);
@@ -112,91 +117,63 @@ public class SDuty implements CommandExecutor, Listener {
         int stadtkasse = Stadtkasse.getStadtkasse();
         DecimalFormat df = new DecimalFormat("#,###");
 
-        ScoreboardManager m = Bukkit.getScoreboardManager();
-        Scoreboard b = m.getNewScoreboard();
-
-        Objective o = b.registerNewObjective("Gold", "");
-        o.setDisplaySlot(DisplaySlot.SIDEBAR);
-        o.setDisplayName(ChatColor.BLUE + "" + ChatColor.BOLD + "§cNRP × Support");
+        final IScoreboardService scoreboardService = DependencyContainer.getContainer().getDependency(IScoreboardService.class);
         HashMap<TicketTopic, Integer> amount = TicketCommand.getTicketAmount();
+        scoreboardService.setScoreboard(p, "§cNRP × Support", (scoreboard, objective) -> {
+            int score = 11;
+            int colorCode = 0;
+            if (Script.hasRank(p, Rank.ADMINISTRATOR, false)) {
+                score += 2;
+            }
 
-        Score platzhalter1 = o.getScore(ChatColor.RED + "");
-        Score platzhalter2 = o.getScore(ChatColor.YELLOW + "");
-        Score score1 = o.getScore(ChatColor.GRAY + "§bOnline§8:");
-        Score score2 = o.getScore(ChatColor.DARK_AQUA + " §8» §a" + (Bukkit.getOnlinePlayers().size()- AFK.afk.size()) + " §8| §c" + AFK.afk.size() + " §8| §e" + Bukkit.getOnlinePlayers().size());
-        Score score3 = o.getScore(ChatColor.GRAY + "§bTickets§8:");
-        Score score4 = o.getScore(ChatColor.DARK_AQUA + " §8» §eBug: " + amount.get(TicketTopic.BUG));
-        Score score5 = o.getScore(ChatColor.DARK_AQUA + " §8» §eFrage: " + amount.get(TicketTopic.FRAGE));
-        Score score6 = o.getScore(ChatColor.DARK_AQUA + " §8» §eSpieler: " + amount.get(TicketTopic.SPIELER));
-        Score score7 = o.getScore(ChatColor.DARK_AQUA + " §8» §eAccount: " + amount.get(TicketTopic.ACCOUNT));
-        Score score8 = o.getScore(ChatColor.DARK_AQUA + " §8» §eSonstiges: " + amount.get(TicketTopic.SONSTIGES));
-        Score score9 = o.getScore(ChatColor.GRAY + "");
-        Score score10 = o.getScore(ChatColor.GRAY + "§bStadtkasse§8:");
-        Score score11 = o.getScore(ChatColor.DARK_AQUA + " §8» §e" + df.format(stadtkasse) + "€");
-        p.setCollidable(false);
-        platzhalter1.setScore(10);
-        score1.setScore(9);
-        score2.setScore(8);
-        platzhalter2.setScore(7);
-        score3.setScore(6);
-        score4.setScore(5);
-        score5.setScore(4);
-        score6.setScore(3);
-        score7.setScore(2);
-        score8.setScore(1);
-        if (Script.hasRank(p, Rank.ADMINISTRATOR, false)) {
-            score9.setScore(0);
-            score10.setScore(-1);
-            score11.setScore(-2);
-        }
-        p.setScoreboard(b);
+            objective.getScore("§8§m-------------------§1").setScore(score--);
+            objective.getScore("§aOnline").setScore(score--);
+
+            final Team onlineCount = scoreboardService.createScoreboardTeam(p, "online");
+            onlineCount.addEntry("§1");
+            onlineCount.prefix(Component.text("§8» §e" + Bukkit.getOnlinePlayers().size() + "§7/§e" + Bukkit.getServer().getMaxPlayers()));
+            objective.getScore("§1").setScore(score--);
+
+            objective.getScore("§2").setScore(score--);
+            objective.getScore("§cTickets").setScore(score--);
+
+            int colorCodeStart = 3;
+            for (TicketTopic value : TicketTopic.values()) {
+                final Team team = scoreboardService.createScoreboardTeam(p, value.name().toLowerCase());
+                int cc = colorCodeStart++;
+                team.addEntry("§" + cc);
+                team.prefix(Component.text("§8» §e" + value.getName() + ": " + amount.get(value)));
+                objective.getScore("§" + cc).setScore(score--);
+            }
+            objective.getScore("§a").setScore(score--);
+
+            if (Script.hasRank(p, Rank.ADMINISTRATOR, false)) {
+                objective.getScore("§bStadtkasse").setScore(score--);
+                final Team stadtkasseTeam = scoreboardService.createScoreboardTeam(p, "stadtkasse");
+                stadtkasseTeam.addEntry("§b");
+                stadtkasseTeam.prefix(Component.text("§8» §e" + df.format(stadtkasse) + "€"));
+                objective.getScore("§b").setScore(score--);
+            }
+            objective.getScore("§8§m-------------------§2").setScore(score--);
+        });
+
         Script.updateListname(p);
     }
 
     public static void updateScoreboard() {
+        int stadtkasse = Stadtkasse.getStadtkasse();
+        HashMap<TicketTopic, Integer> amount = TicketCommand.getTicketAmount();
+        DecimalFormat df = new DecimalFormat("#,###");
+        final IScoreboardService scoreboardService = DependencyContainer.getContainer().getDependency(IScoreboardService.class);
+
         for (Player p : Script.getNRPTeam()) {
             if (isSDuty(p)) {
-                int stadtkasse = Stadtkasse.getStadtkasse();
-                DecimalFormat df = new DecimalFormat("#,###");
-
-                ScoreboardManager m = Bukkit.getScoreboardManager();
-                Scoreboard b = m.getNewScoreboard();
-
-                Objective o = b.registerNewObjective("Gold", "");
-                o.setDisplaySlot(DisplaySlot.SIDEBAR);
-                o.setDisplayName(ChatColor.BLUE + "" + ChatColor.BOLD + "§cNRP × Support");
-                HashMap<TicketTopic, Integer> amount = TicketCommand.getTicketAmount();
-
-                Score platzhalter1 = o.getScore(ChatColor.RED + "");
-                Score platzhalter2 = o.getScore(ChatColor.YELLOW + "");
-                Score score1 = o.getScore(ChatColor.GRAY + "§bOnline§8:");
-                Score score2 = o.getScore(ChatColor.DARK_AQUA + " §8» §a" + (Bukkit.getOnlinePlayers().size()- AFK.afk.size()) + " §8| §c" + AFK.afk.size() + " §8| §e" + Bukkit.getOnlinePlayers().size());
-                Score score3 = o.getScore(ChatColor.GRAY + "§bTickets§8:");
-                Score score4 = o.getScore(ChatColor.DARK_AQUA + " §8» §eBug: " + amount.get(TicketTopic.BUG));
-                Score score5 = o.getScore(ChatColor.DARK_AQUA + " §8» §eFrage: " + amount.get(TicketTopic.FRAGE));
-                Score score6 = o.getScore(ChatColor.DARK_AQUA + " §8» §eSpieler: " + amount.get(TicketTopic.SPIELER));
-                Score score7 = o.getScore(ChatColor.DARK_AQUA + " §8» §eAccount: " + amount.get(TicketTopic.ACCOUNT));
-                Score score8 = o.getScore(ChatColor.DARK_AQUA + " §8» §eSonstiges: " + amount.get(TicketTopic.SONSTIGES));
-                Score score9 = o.getScore(ChatColor.GRAY + "");
-                Score score10 = o.getScore(ChatColor.GRAY + "§bStadtkasse§8:");
-                Score score11 = o.getScore(ChatColor.DARK_AQUA + " §8» §e" + df.format(stadtkasse) + "€");
-                p.setCollidable(false);
-                platzhalter1.setScore(10);
-                score1.setScore(9);
-                score2.setScore(8);
-                platzhalter2.setScore(7);
-                score3.setScore(6);
-                score4.setScore(5);
-                score5.setScore(4);
-                score6.setScore(3);
-                score7.setScore(2);
-                score8.setScore(1);
-                if (Script.hasRank(p, Rank.ADMINISTRATOR, false)) {
-                    score9.setScore(0);
-                    score10.setScore(-1);
-                    score11.setScore(-2);
+                scoreboardService.updateLine(p, "online", "§8» §e" + Bukkit.getOnlinePlayers().size() + "§7/§e" + Bukkit.getServer().getMaxPlayers());
+                for (TicketTopic value : TicketTopic.values()) {
+                    scoreboardService.updateLine(p, value.name().toLowerCase(), "§8» §e" + value.getName() + ": " + amount.get(value));
                 }
-                p.setScoreboard(b);
+                scoreboardService.updateLine(p, "stadtkasse", "§8» §e" + df.format(stadtkasse) + "€");
+
             }
         }
     }

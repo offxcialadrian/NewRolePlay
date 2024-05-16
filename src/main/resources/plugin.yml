@@ -693,6 +693,7 @@ commands:
   deletenotruf:
     description: delete a notruf
   checkactivemembers:
+    aliases: [ cam ]
     description: check the active members
   endfire:
     description: end the fire

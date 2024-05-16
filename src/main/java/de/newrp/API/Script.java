@@ -19,6 +19,8 @@ import de.newrp.Ticket.TicketCommand;
 import de.newrp.Votifier.VoteListener;
 import de.newrp.Waffen.Weapon;
 import de.newrp.NewRoleplayMain;
+import de.newrp.dependencies.DependencyContainer;
+import de.newrp.features.scoreboards.IScoreboardService;
 import me.arcaniax.hdb.api.HeadDatabaseAPI;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -171,20 +173,8 @@ public class Script {
     }
 
     public static void updateListname(Player p) {
-        String color = "";
-        if (Beruf.hasBeruf(p)) {
-            if (Beruf.getBeruf(p) == Beruf.Berufe.POLICE) color = "§9";
-            if (Beruf.getBeruf(p) == Beruf.Berufe.RETTUNGSDIENST) color = "§4";
-            if (Beruf.getBeruf(p) == Beruf.Berufe.GOVERNMENT) color = "§3";
-            if (Beruf.getBeruf(p) == Beruf.Berufe.NEWS) color = "§6";
-            if (Beruf.getAbteilung(p) == Abteilung.Abteilungen.ZIVILPOLIZEI) color = "§r";
-        }
-        if (!SDuty.isSDuty(p)) p.setPlayerListName("§r" + p.getName());
-        if (SDuty.isSDuty(p)) p.setPlayerListName("§5§lNRP §8× §c" + p.getName());
-        if (Duty.isInDuty(p)) p.setPlayerListName(color + p.getPlayerListName());
-        if (BuildMode.isInBuildMode(p)) p.setPlayerListName("§e§lB §8× §r" + p.getPlayerListName());
-        if (TicketCommand.isInTicket(p)) p.setPlayerListName("§d§lT §8× §r" + p.getPlayerListName());
-        if (Friedhof.isDead(p)) p.setPlayerListName(p.getPlayerListName() + " §8✟");
+        final IScoreboardService scoreboardService = DependencyContainer.getContainer().getDependency(IScoreboardService.class);
+        scoreboardService.updateGroup(p);
     }
 
     public static Inventory fillInv(Inventory inv) {
