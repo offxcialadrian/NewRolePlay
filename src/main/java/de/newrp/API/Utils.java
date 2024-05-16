@@ -134,9 +134,9 @@ public class Utils implements Listener {
     @EventHandler
     public void onPing(ServerListPingEvent e) {
         if (Script.isInTestMode()) {
-            e.setMotd("§5§lNew RolePlay §8┃ §5Reallife §8× §5RolePlay §8┃ §c1.16.5\n§8» §a§l" + "§e§lWartungsarbeiten!");
+            e.setMotd("§5§lNew RolePlay §8┃ §5Reallife §8× §5RolePlay §8┃ §c1.16.5 - 1.20.6\n§8» §a§l" + "§e§lWartungsarbeiten!");
         } else {
-            e.setMotd("§5§lNew RolePlay §8┃ §5Reallife §8× §5RolePlay §8┃ §c1.16.5\n§8» §a§l" + NewRoleplayMain.getInstance().getDescription().getVersion() + " §8- §6§lTHE NEXT BIG THING");
+            e.setMotd("§5§lNew RolePlay §8┃ §5Reallife §8× §5RolePlay §8┃ §c1.16.5 - 1.20.6\n§8» §a§l" + NewRoleplayMain.getInstance().getDescription().getVersion());
         }
     }
 

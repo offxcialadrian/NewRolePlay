@@ -2270,7 +2270,7 @@ public class Script {
         new BukkitRunnable() {
             @Override
             public void run() {
-                String header = "\n§5§lNEW ROLEPLAY\n§6§lTHE NEXT BIG THING\n";
+                String header = "\n§5§lNEW ROLEPLAY\n";
                 String footer;
                 int online = Bukkit.getOnlinePlayers().size();
                 footer = "\n§6Version §8» §6" + NewRoleplayMain.getInstance().getDescription().getVersion() + "\n§cOnline §8» §c" + online + " Spieler\n";
