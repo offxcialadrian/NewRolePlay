@@ -51,7 +51,7 @@ public enum ShopItem {
     SCHMERZMITTEL_HIGH(60, "§fSchmerzmittel (High)", new ItemBuilder(Material.PAPER).setName("§fSchmerzmittel (High)").setAmount(Medikamente.SCHMERZMITTEL_HIGH.getNeeded()).build(), 10, 2, 25, 65, 6100, true, true, false, new ShopType[] {ShopType.PHARMACY }),
     ANTIBIOTIKA(61, "§fAntibiotika", new ItemBuilder(Material.PAPER).setName("§fAntibiotika").setAmount(Medikamente.ANTIBIOTIKA.getNeeded()).build(), 10, 2, 25, 75, 4900, true, true, false, new ShopType[] {ShopType.PHARMACY}),
     HUSTENSAFT(62, "§fHustensaft", new ItemBuilder(Material.PAPER).setName("§fHustensaft").setAmount(Medikamente.HUSTENSAFT.getNeeded()).build(), 10, 2, 25, 60, 3400, true, true, false, new ShopType[] {ShopType.PHARMACY}),
-    ENTZUENDUNGSHEMMENDE_SALBE(63, "§fEntzündungshemmende Salbe", new ItemBuilder(Material.PAPER).setName("§fEntzündungshemmende Salbe").setAmount(Medikamente.ENTZUENDUNGSHEMMENDE_SALBE.getNeeded()).build(), 5, 2, 25, 30, 2600, true, true, false, new ShopType[] {ShopType.PHARMACY}),
+    ENTZUENDUNGSHEMMENDE_SALBE(63, "§fEntzündungshemmende Salbe", new ItemBuilder(Material.PAPER).setName("§fEntzündungshemmende Salbe").setAmount(Medikamente.ENTZUENDUNGSHEMMENDE_SALBE.getNeeded()).build(), 10, 2, 25, 30, 2600, true, true, false, new ShopType[] {ShopType.PHARMACY}),
     CD_1(65, "§6Gold", new ItemStack(Material.MUSIC_DISC_11), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.MUSIC}),
     CD_2(66, "§6Green", new ItemStack(Material.MUSIC_DISC_13), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.MUSIC}),
     CD_3(67, "§6Blocks", new ItemStack(Material.MUSIC_DISC_BLOCKS), 1, 1, 1, 1, 1, false, true, false, new ShopType[] {ShopType.MUSIC}),

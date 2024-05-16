@@ -252,8 +252,9 @@ public class PayShop implements Listener {
                         return;
                     }
 
+                    Rezept.removeRezept(p, m);
+
                     if (m.insurancePays()) {
-                        Rezept.removeRezept(p, m);
                         p.sendMessage(Messages.INFO + "Deine Krankenversicherung hat die Kosten für das Medikament übernommen.");
                         Script.addMoney(p, PaymentType.BANK, singlePrice);
                         Stadtkasse.removeStadtkasse(singlePrice, "Kostenübernahme durch Krankenversicherung an " + Script.getName(p));
