@@ -7,9 +7,13 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 
 public class GroupService implements IGroupService {
+
+    private final List<Group> groups = new ArrayList<>();
 
     @Override
     public void createGroup(String groupName, Player player) {
@@ -20,7 +24,11 @@ public class GroupService implements IGroupService {
             preparedStatement.setObject(4, null);
             preparedStatement.setObject(5, null);
             preparedStatement.setObject(6, null);
-            preparedStatement.executeUpdate();
+            try(final ResultSet resultSet = preparedStatement.executeQuery()) {
+                int groupId = resultSet.getInt("group_id");
+                final Group group = new Group(groupId, groupName, null, -1, player.getUniqueId(), new ArrayList<>());
+                this.groups.add(group);
+            }
         } catch(final Exception exception) {
             NewRoleplayMain.handleError(exception);
         }
