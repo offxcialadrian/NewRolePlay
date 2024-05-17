@@ -74,7 +74,7 @@ public class Arrest implements CommandExecutor {
             return true;
         }
 
-
+        Stadtkasse.addStadtkasse(wanteds * 10, "Verhaftung von " + Script.getName(tg) + " durch " + Script.getName(p) + " (" + wanteds + " Wanteds)", null);
         p.sendMessage(Fahndung.PREFIX + "Du hast " + Script.getName(tg) + " verhaftet.");
         Jail.arrest(tg, wanteds * 15, true);
         new FahndungLog(tg, p, wanteds);

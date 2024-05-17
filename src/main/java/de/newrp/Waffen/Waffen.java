@@ -15,6 +15,7 @@ import de.newrp.NewRoleplayMain;
 import de.newrp.dependencies.DependencyContainer;
 import de.newrp.features.deathmatcharena.IDeathmatchArenaService;
 import de.newrp.features.deathmatcharena.data.DeathmatchArenaStats;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -36,6 +37,7 @@ import org.bukkit.util.Vector;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
@@ -161,9 +163,8 @@ public class Waffen implements Listener {
                     return;
                 }
 
-                List<Player> cops = Beruf.Berufe.POLICE.getMembers().stream()
-                        .filter(Beruf::hasBeruf)
-                        .filter(nearbyPlayer -> Beruf.getBeruf(nearbyPlayer).equals(Beruf.Berufe.POLICE))
+                List<Player> cops = Beruf.Berufe.POLICE.getMember().stream()
+                        .map(Bukkit::getPlayer)
                         .filter(Duty::isInDuty)
                         .filter(nearbyPlayer -> !SDuty.isSDuty(nearbyPlayer))
                         .filter(nearbyPlayer -> !AFK.isAFK(nearbyPlayer)).collect(Collectors.toList());
