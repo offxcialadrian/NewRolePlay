@@ -113,7 +113,7 @@ public class Treuebonus implements CommandExecutor, Listener {
 
         if (updateTime) {
             Treuebonus.time.put(p.getUniqueId(), 0);
-            Treuebonus.points.put(p.getUniqueId(), Treuebonus.total.get(p.getUniqueId()) + 1);
+            Treuebonus.points.put(p.getUniqueId(), Treuebonus.points.get(p.getUniqueId()) + 1);
             Treuebonus.total.put(p.getUniqueId(), Treuebonus.total.get(p.getUniqueId()) + 1);
         }
     }
