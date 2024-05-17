@@ -10,6 +10,7 @@ import de.newrp.Berufe.Duty;
 import de.newrp.Organisationen.MaskHandler;
 import de.newrp.Ticket.TicketCommand;
 import de.newrp.dependencies.DependencyContainer;
+import de.newrp.features.scoreboards.BoardConfiguration;
 import de.newrp.features.scoreboards.IScoreboardService;
 import de.newrp.features.scoreboards.config.ScoreboardConfig;
 import de.newrp.features.scoreboards.data.ScoreboardTeamData;
@@ -24,6 +25,7 @@ import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -86,16 +88,43 @@ public class ScoreboardService implements IScoreboardService {
     @Override
     public void setScoreboard(Player player, String displayName, BiConsumer<Scoreboard, Objective> scoreboardConsumer) {
         final Scoreboard scoreboard = player.getScoreboard();
+        this.hideScoreboard(player);
         final Objective objective = scoreboard.registerNewObjective("sidebar", "dummy", Component.text(displayName));
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
         scoreboardConsumer.accept(scoreboard, objective);
     }
 
     @Override
+    public void setScoreboard(BoardConfiguration boardConfiguration, Player player) {
+        final Scoreboard scoreboard = player.getScoreboard();
+        this.hideScoreboard(player);
+
+        final Objective objective = scoreboard.registerNewObjective("sidebar", "dummy", Component.text(boardConfiguration.getScoreboardTitle(player)));
+        objective.setDisplaySlot(DisplaySlot.SIDEBAR);
+
+        final List<String> lines = boardConfiguration.getLines(player);
+        int currentScore = lines.size() - 1;
+        for (final String line : lines) {
+            final boolean isPlaceholderLine = line.startsWith("[") && line.endsWith("]");
+            final int score = currentScore--;
+            if(!isPlaceholderLine) {
+                objective.getScore(line).setScore(score);
+                continue;
+            }
+
+            final Team team = scoreboard.registerNewTeam("sb_" + line.substring(1, line.length() - 1));
+            team.addEntry("§1§" + ChatColor.values()[score].getChar());
+            team.prefix(Component.text(line));
+            objective.getScore("§1§" + ChatColor.values()[score].getChar()).setScore(score);
+        }
+    }
+
+    @Override
     public void hideScoreboard(Player player) {
         final Scoreboard scoreboard = player.getScoreboard();
         final Objective objective = scoreboard.getObjective("sidebar");
-        objective.unregister();
+        if(objective != null)
+            objective.unregister();
 
         for (Team team : scoreboard.getTeams()) {
             if(team.getName().startsWith("sb_")) {
@@ -112,6 +141,12 @@ public class ScoreboardService implements IScoreboardService {
             return;
         }
         team.prefix(Component.text(line));
+    }
+
+    @Override
+    public void updateBoard(BoardConfiguration boardConfiguration, Player player, final Map<String, String> argumentMap) {
+        final Scoreboard scoreboard = player.getScoreboard();
+        boardConfiguration.update(player, argumentMap);
     }
 
     @Override

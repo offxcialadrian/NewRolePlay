@@ -1,7 +1,5 @@
 package de.newrp.Berufe;
 
-import com.comphenix.protocol.PacketType;
-import com.sun.jndi.ldap.Ber;
 import de.newrp.Organisationen.Organisation;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

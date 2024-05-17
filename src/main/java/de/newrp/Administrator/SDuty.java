@@ -7,6 +7,7 @@ import de.newrp.Ticket.TicketCommand;
 import de.newrp.Ticket.TicketTopic;
 import de.newrp.dependencies.DependencyContainer;
 import de.newrp.features.scoreboards.IScoreboardService;
+import de.newrp.features.scoreboards.boards.AdminDutyScoreboardConfiguration;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import org.bukkit.Bukkit;
@@ -114,48 +115,9 @@ public class SDuty implements CommandExecutor, Listener {
         Script.sendTeamMessage(p, ChatColor.RED, "hat den Supporter-Dienst betreten.", false);
         p.sendMessage(Messages.INFO + "Du darfst nun nicht mehr am aktiven Spielgeschehen teilnehmen.");
         Cache.saveScoreboard(p);
-        int stadtkasse = Stadtkasse.getStadtkasse();
-        DecimalFormat df = new DecimalFormat("#,###");
-
         final IScoreboardService scoreboardService = DependencyContainer.getContainer().getDependency(IScoreboardService.class);
-        HashMap<TicketTopic, Integer> amount = TicketCommand.getTicketAmount();
-        scoreboardService.setScoreboard(p, "§cNRP × Support", (scoreboard, objective) -> {
-            int score = 11;
-            int colorCode = 0;
-            if (Script.hasRank(p, Rank.ADMINISTRATOR, false)) {
-                score += 2;
-            }
-
-            objective.getScore("§8§m-------------------§1").setScore(score--);
-            objective.getScore("§aOnline").setScore(score--);
-
-            final Team onlineCount = scoreboardService.createScoreboardTeam(p, "online");
-            onlineCount.addEntry("§1");
-            onlineCount.prefix(Component.text("§8» §e" + Bukkit.getOnlinePlayers().size() + "§7/§e" + Bukkit.getServer().getMaxPlayers()));
-            objective.getScore("§1").setScore(score--);
-
-            objective.getScore("§2").setScore(score--);
-            objective.getScore("§cTickets").setScore(score--);
-
-            int colorCodeStart = 3;
-            for (TicketTopic value : TicketTopic.values()) {
-                final Team team = scoreboardService.createScoreboardTeam(p, value.name().toLowerCase());
-                int cc = colorCodeStart++;
-                team.addEntry("§" + cc);
-                team.prefix(Component.text("§8» §e" + value.getName() + ": " + amount.get(value)));
-                objective.getScore("§" + cc).setScore(score--);
-            }
-            objective.getScore("§a").setScore(score--);
-
-            if (Script.hasRank(p, Rank.ADMINISTRATOR, false)) {
-                objective.getScore("§bStadtkasse").setScore(score--);
-                final Team stadtkasseTeam = scoreboardService.createScoreboardTeam(p, "stadtkasse");
-                stadtkasseTeam.addEntry("§b");
-                stadtkasseTeam.prefix(Component.text("§8» §e" + df.format(stadtkasse) + "€"));
-                objective.getScore("§b").setScore(score--);
-            }
-            objective.getScore("§8§m-------------------§2").setScore(score--);
-        });
+        scoreboardService.setScoreboard(new AdminDutyScoreboardConfiguration(), p);
+        updateScoreboard();
 
         Script.updateListname(p);
     }
@@ -168,12 +130,7 @@ public class SDuty implements CommandExecutor, Listener {
 
         for (Player p : Script.getNRPTeam()) {
             if (isSDuty(p)) {
-                scoreboardService.updateLine(p, "online", "§8» §e" + Bukkit.getOnlinePlayers().size() + "§7/§e" + Bukkit.getServer().getMaxPlayers());
-                for (TicketTopic value : TicketTopic.values()) {
-                    scoreboardService.updateLine(p, value.name().toLowerCase(), "§8» §e" + value.getName() + ": " + amount.get(value));
-                }
-                scoreboardService.updateLine(p, "stadtkasse", "§8» §e" + df.format(stadtkasse) + "€");
-
+                scoreboardService.updateBoard(new AdminDutyScoreboardConfiguration(), p, null);
             }
         }
     }

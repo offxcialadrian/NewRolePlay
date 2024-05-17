@@ -21,7 +21,7 @@ public class CheckShop implements CommandExecutor {
         Player p = (Player) cs;
 
         if(Beruf.getBeruf(p) != Beruf.Berufe.GOVERNMENT || Beruf.getAbteilung(p) != Abteilung.Abteilungen.FINANZAMT) {
-            if(!Script.hasRank(p, Rank.ADMINISTRATOR, false) && SDuty.isSDuty(p)) {
+            if(!Script.hasRank(p, Rank.ADMINISTRATOR, false) && !SDuty.isSDuty(p)) {
                 p.sendMessage(Messages.NO_PERMISSION);
                 return true;
             }

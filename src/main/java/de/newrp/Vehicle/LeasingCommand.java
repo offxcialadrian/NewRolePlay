@@ -17,7 +17,6 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import sun.java2d.ScreenUpdateManager;
 
 import java.sql.ResultSet;
 import java.sql.Statement;
