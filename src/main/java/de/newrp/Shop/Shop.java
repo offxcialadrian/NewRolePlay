@@ -128,7 +128,7 @@ public class Shop implements CommandExecutor, Listener, TabCompleter {
                 Script.executeAsyncUpdate("DELETE FROM shopprice WHERE shopID=" + shop.getID());
                 for(ShopItem si : ShopItem.values()) {
                     if(Arrays.asList(si.getShopTypes()).contains(shop.getType())) {
-                        Script.executeAsyncUpdate("INSERT INTO shopprice (amount, price, itemID, shopID) VALUES (" + si.getSize() + ", " + (si.getBuyPrice()+(int) Script.getPercent(70, si.getBuyPrice())) + ", " + si.getID() + ", " + shop.getID() + ")");
+                        Script.executeAsyncUpdate("INSERT INTO shopprice (amount, price, itemID, shopID) VALUES (" + si.getItemStack().getAmount() + ", " + (si.getBuyPrice()+(int) Script.getPercent(70, si.getBuyPrice())) + ", " + si.getID() + ", " + shop.getID() + ")");
                     }
                 }
                 return true;
@@ -446,7 +446,7 @@ public class Shop implements CommandExecutor, Listener, TabCompleter {
                 Stadtkasse.addStadtkasse((int) Script.getPercent(Steuern.Steuer.MEHRWERTSTEUER.getPercentage(), si.getLicensePrice()), "Mehrwertsteuer aus dem Verkauf von Lizensierung von " + si.getName() + " (Shop: " + s.getPublicName() + ")", Steuern.Steuer.MEHRWERTSTEUER);
                 p.sendMessage(PREFIX + "Du hast " + si.getName() + " §7in dein Shop-Sortiment aufgenommen.");
                 Notifications.sendMessage(Notifications.NotificationType.SHOP, Script.getName(p) + " hat " + si.getName() + " §ain sein Shop-Sortiment aufgenommen. [Shop: " + s.getPublicName() + "]");
-                Script.executeAsyncUpdate("INSERT INTO shopprice (amount, price, itemID, shopID) VALUES (" + si.getSize() + ", " + (si.getBuyPrice()+(int) Script.getPercent(30, si.getBuyPrice())) + ", " + si.getID() + ", " + s.getID() + ")");
+                Script.executeAsyncUpdate("INSERT INTO shopprice (amount, price, itemID, shopID) VALUES (" + si.getItemStack().getAmount() + ", " + (si.getBuyPrice()+(int) Script.getPercent(30, si.getBuyPrice())) + ", " + si.getID() + ", " + s.getID() + ")");
                 p.closeInventory();
                 return;
             }

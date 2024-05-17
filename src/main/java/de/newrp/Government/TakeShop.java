@@ -73,7 +73,7 @@ public class TakeShop implements CommandExecutor {
         for(ShopItem si : ShopItem.values()) {
             ArrayList<ShopType> types = new ArrayList<>(Arrays.asList(si.getShopTypes()));
             if(types.contains(shop.getType())) {
-                Script.executeAsyncUpdate("INSERT INTO shopprice (amount, price, itemID, shopID) VALUES (" + si.getSize() + ", " + Math.max(si.getBuyPrice()+(int) Script.getPercent(70, si.getBuyPrice()), 5) + ", " + si.getID() + ", " + shop.getID() + ")");
+                Script.executeAsyncUpdate("INSERT INTO shopprice (amount, price, itemID, shopID) VALUES (" + si.getItemStack().getAmount() + ", " + Math.max(si.getBuyPrice()+(int) Script.getPercent(70, si.getBuyPrice()), 5) + ", " + si.getID() + ", " + shop.getID() + ")");
             }
         }
 
