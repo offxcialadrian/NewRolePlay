@@ -275,7 +275,8 @@ public enum Shops {
                 Statement stmt = NewRoleplayMain.getConnection().createStatement();
                 ResultSet rs = stmt.executeQuery("SELECT amount, price, itemID FROM shopprice WHERE shopID=" + s.getID())) {
             while (rs.next()) {
-                c.put(rs.getInt("itemID"), new int[]{rs.getInt("amount"), rs.getInt("price")});
+                final ShopItem si = ShopItem.getItem(rs.getInt("itemID"));
+                c.put(si.getID(), new int[]{si.getItemStack().getAmount(), rs.getInt("price")});
             }
         } catch (SQLException e) {
             e.printStackTrace();

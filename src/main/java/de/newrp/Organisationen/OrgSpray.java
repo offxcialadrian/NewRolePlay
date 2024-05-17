@@ -171,7 +171,7 @@ public class OrgSpray implements Listener {
         }
         banner.update();
 
-        Script.executeAsyncUpdate("UPDATE graffiti SET fraktion = " + null + " WHERE x = " + b.getLocation().getBlockX() + " AND y = " + b.getLocation().getBlockY() + " AND z = " + b.getLocation().getBlockZ());
+        Script.executeAsyncUpdate("UPDATE graffiti SET org = " + null + " WHERE x = " + b.getLocation().getBlockX() + " AND y = " + b.getLocation().getBlockY() + " AND z = " + b.getLocation().getBlockZ());
     }
 
     public void addSpray(Player p, Block b) {
@@ -246,7 +246,7 @@ public class OrgSpray implements Listener {
         banner.update();
 
 
-        Script.executeAsyncUpdate("UPDATE graffiti SET fraktion = " + f.getID() + " WHERE x = " + b.getLocation().getBlockX() + " AND y = " + b.getLocation().getBlockY() + " AND z = " + b.getLocation().getBlockZ());
+        Script.executeAsyncUpdate("UPDATE graffiti SET org = " + f.getID() + " WHERE x = " + b.getLocation().getBlockX() + " AND y = " + b.getLocation().getBlockY() + " AND z = " + b.getLocation().getBlockZ());
         C_SPRAY.put(b.getLocation(), f);
     }
 
