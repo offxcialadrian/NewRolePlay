@@ -240,6 +240,7 @@ public class PayShop implements Listener {
                 case ENTZUENDUNGSHEMMENDE_SALBE:
                 case SCHMERZMITTEL_HIGH:
                 case ANTIBIOTIKA:
+                case HUSTENSAFT:
                     Medikamente m = Medikamente.getMedikament(ChatColor.stripColor(si.getName()));
                     if (m == null) {
                         Script.sendBugReport(p, "medikament is null in PayShop.java and si = " + si.getName());

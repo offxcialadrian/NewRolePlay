@@ -7,6 +7,8 @@ import de.newrp.Berufe.Beruf;
 import de.newrp.Berufe.Duty;
 import de.newrp.Organisationen.Bankautomaten;
 import de.newrp.Organisationen.Organisation;
+import de.newrp.dependencies.DependencyContainer;
+import de.newrp.features.takemoney.ITakeMoneyService;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -16,6 +18,7 @@ import org.jetbrains.annotations.NotNull;
 public class TakeMoney implements CommandExecutor {
 
     public static final String PREFIX = "§8[§6Bankautomat§8] §6" + Messages.ARROW + " §7";
+    private final ITakeMoneyService takeMoneyService = DependencyContainer.getContainer().getDependency(ITakeMoneyService.class);
 
     @Override
     public boolean onCommand(@NotNull CommandSender cs, @NotNull Command cmd, @NotNull String s, @NotNull String[] args) {
@@ -47,7 +50,7 @@ public class TakeMoney implements CommandExecutor {
             return true;
         }
 
-        if(!Bankautomaten.win.containsKey(tg)) {
+        if(!this.takeMoneyService.hasActiveMoneyToBeTaken(p)) {
             p.sendMessage(Messages.ERROR + "Dieser Spieler hat kein Geld gewonnen.");
             return true;
         }

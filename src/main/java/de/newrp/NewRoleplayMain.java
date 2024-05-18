@@ -64,6 +64,8 @@ import de.newrp.features.roadblocks.listener.FactionBlockClickListener;
 import de.newrp.features.roadblocks.listener.FactionBlockDropItemListener;
 import de.newrp.features.roadblocks.listener.FactionBlockQuitListener;
 import de.newrp.features.scoreboards.config.ScoreboardConfig;
+import de.newrp.features.takemoney.ITakeMoneyService;
+import de.newrp.features.takemoney.impl.TakeMoneyService;
 import net.citizensnpcs.api.CitizensAPI;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Activity;
@@ -670,6 +672,7 @@ public class NewRoleplayMain extends JavaPlugin {
         DependencyContainer.getContainer().add(IJdaService.class, new JdaService());
         DependencyContainer.getContainer().add(IDeathmatchArenaService.class, new DeathmatchArenaService());
         DependencyContainer.getContainer().add(IFactionBlockService.class, new FactionBlockService());
+        DependencyContainer.getContainer().add(ITakeMoneyService.class, new TakeMoneyService());
     }
 
     /**
