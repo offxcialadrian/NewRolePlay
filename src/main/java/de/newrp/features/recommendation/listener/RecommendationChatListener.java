@@ -17,6 +17,10 @@ public class RecommendationChatListener implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void onAsyncChat(final AsyncPlayerChatEvent event) {
         final Player player = event.getPlayer();
+        if(event.getMessage().startsWith("/")) {
+            return;
+        }
+
         if (recommendationService.hasActiveChatInput(player)) {
             event.setCancelled(true);
             recommendationService.giveRecommendation(player, event.getMessage());
