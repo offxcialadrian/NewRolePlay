@@ -185,7 +185,7 @@ public class Shop implements CommandExecutor, Listener, TabCompleter {
         if(args.length == 1 && args[0].equalsIgnoreCase("info")) {
             p.sendMessage(PREFIX + "=== " + shop.getPublicName() + " ===");
             p.sendMessage("§8» " + "§6Miete (Gebäude): " + shop.getRent() + "€");
-            p.sendMessage("§8» " + "Betriebskosten: " + shop.getRunningCost() + "€");
+            p.sendMessage("§8» " + "§6Betriebskosten: " + shop.getRunningCost() + "€");
             p.sendMessage("§8» " + "§6Lager: " + shop.getLager() + "/" + shop.getLagerSize());
             p.sendMessage("§8» " + "§6Preise:");
             HashMap<Integer, int[]> c = Shops.getShopItemData(shop);

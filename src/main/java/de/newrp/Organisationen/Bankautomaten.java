@@ -7,6 +7,8 @@ import de.newrp.Berufe.Duty;
 import de.newrp.Government.Stadtkasse;
 import de.newrp.Player.AFK;
 import de.newrp.NewRoleplayMain;
+import de.newrp.dependencies.DependencyContainer;
+import de.newrp.features.takemoney.ITakeMoneyService;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -33,8 +35,6 @@ public class Bankautomaten implements Listener {
     public static HashMap<Location, Block> atmBlocks = new HashMap<>();
     public static HashMap<ATM, Long> cooldownATM = new HashMap<>();
     public static HashMap<String, Integer> progress = new HashMap<>();
-
-    public static HashMap<Player, Integer> win = new HashMap<>();
 
     @EventHandler
     public void onInteract(PlayerInteractEvent e) {
@@ -120,13 +120,13 @@ public class Bankautomaten implements Listener {
                     Beruf.Berufe.POLICE.sendMessage(PREFIX + "Der Bankautomat " + atm.getID() + " wurde zerstört. Es wurden " + remove + "€ gestohlen.");
                     Script.addMoney(p, PaymentType.CASH, remove);
                     o.addExp(remove / 100);
-                    win.put(p, remove);
+                    DependencyContainer.getContainer().getDependency(ITakeMoneyService.class).addIllegalObtainedMoneyToPlayer(p, remove);
                     progress.remove(p.getName());
                     cancel();
                     new BukkitRunnable() {
                         @Override
                         public void run() {
-                            win.remove(p);
+                            DependencyContainer.getContainer().getDependency(ITakeMoneyService.class).deleteMoney(p);
                             Stadtkasse.removeStadtkasse(1000, "Wiederherstellung Bankautomat");
                         }
                     }.runTaskLater(NewRoleplayMain.getInstance(), 20L * 60 * 60);

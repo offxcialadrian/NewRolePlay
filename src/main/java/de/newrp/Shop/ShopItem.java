@@ -69,7 +69,7 @@ public enum ShopItem {
     GERBERA(79, "§7Gerbera", new ItemBuilder(Material.ORANGE_TULIP).setName("§7Gerbera").build(), 1, 1, 1, 3, 150, false, true, false, new ShopType[] {ShopType.FLOWER}),
     LILIEN(80, "§7Lilien", new ItemBuilder(Material.WHITE_TULIP).setName("§7Lilien").build(), 1, 1, 1, 3, 150, false, true, false, new ShopType[] {ShopType.FLOWER}),
     MARGARITE_PINK(81, "§7Pink Margarite", new ItemBuilder(Material.PINK_TULIP).setName("§7Pink Margarite").build(), 1, 1, 1, 4, 200, false, true, false, new ShopType[] {ShopType.FLOWER}),
-    WATER_BUCKET(82, "§7Wasser", Script.setNameAndLore(new ItemStack(Material.WATER_BUCKET), "§9Wasser", "§65/5"), 5, 1, 1, 40, 2000, false, false, false, new ShopType[] {ShopType.FLOWER}),
+    WATER_BUCKET(82, "§9Wasser", Script.setNameAndLore(new ItemStack(Material.WATER_BUCKET), "§9Wasser", "§65/5"), 5, 1, 1, 40, 2000, false, false, false, new ShopType[] {ShopType.FLOWER}),
     DUENGER(83, "§7Dünger", new ItemBuilder(Material.INK_SAC).setName("§7Dünger").build(), 1, 1, 1, 50, 2600, false, false, false, new ShopType[] {ShopType.FLOWER}),
     EINZELZIMMER(84, "§7Einzelzimmer", new ItemStack(Material.OAK_DOOR), 1, 1, 1, 1, 1, false, false, false, new ShopType[] {ShopType.HOTEL}),
     DOPPELZIMMER(85, "§7Doppelzimmer", new ItemStack(Material.OAK_DOOR), 1, 1, 1, 1, 1, false, false, false, new ShopType[] {ShopType.HOTEL}),

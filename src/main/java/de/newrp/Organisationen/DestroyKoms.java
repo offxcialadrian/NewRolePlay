@@ -52,6 +52,11 @@ public class DestroyKoms implements CommandExecutor {
             return true;
         }
 
+        if(Mobile.getPhone(tg).isDestroyed(tg)) {
+            p.sendMessage(Messages.ERROR + "Die Koms sind bereits zerstört.");
+            return true;
+        }
+
         if(p.getLocation().distance(tg.getLocation()) > 5) {
             p.sendMessage(Messages.ERROR + "Du bist zu weit entfernt.");
             return true;

@@ -1,10 +1,7 @@
 package de.newrp.Organisationen;
 
+import de.newrp.API.*;
 import de.newrp.NewRoleplayMain;
-import de.newrp.API.Log;
-import de.newrp.API.Messages;
-import de.newrp.API.PaymentType;
-import de.newrp.API.Script;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Berufe.Duty;
 import de.newrp.Government.Stadtkasse;
@@ -21,6 +18,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.material.Directional;
@@ -203,6 +201,7 @@ public class Bankraub implements CommandExecutor, Listener {
                     cooldown = time2;
                     Script.sendActionBar(p, "§aDu hast den richtigen Tresor angeklickt.");
                     calcLoc();
+                    Debug.debug("Clicked the right block.. starting next, " + blocks.size() + " left.");
                     startMiniGame();
                 } else
                     Script.sendActionBar(p, "§cBitte warte noch " + TimeUnit.MILLISECONDS.toSeconds(cooldown + TIMEOUT_2 - time2) + " Sekunden bis du den nächsten Tresor anklickst.");
@@ -273,5 +272,13 @@ public class Bankraub implements CommandExecutor, Listener {
             Script.sendActionBar(p, "§cDer Bankraub ist gescheitert!");
         }
         auslöser = null;
+    }
+
+    public void onPlayerDeath(final PlayerDeathEvent event) {
+        if(auslöser == null) return;
+
+        if (auslöser.getUniqueId() == event.getEntity().getUniqueId()) {
+            stopMiniGame(false);
+        }
     }
 }

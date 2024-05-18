@@ -293,7 +293,7 @@ public class Utils implements Listener {
         for (Player online : Bukkit.getOnlinePlayers()) {
             if (BuildMode.isInBuildMode(online)) {
                 if (Team.getTeam(p) != Team.Teams.BAU && !Script.hasRank(p, Rank.SUPPORTER, false)) {
-                    Debug.debug("hiding " + online.getName() + " from " + p.getName());
+                    //Debug.debug("hiding " + online.getName() + " from " + p.getName());
                     p.hidePlayer(NewRoleplayMain.getInstance(), online);
                 }
             }

@@ -38,6 +38,11 @@ public class Strecken implements CommandExecutor {
             return true;
         }
 
+        if(purity == Drogen.DrugPurity.BAD) {
+            p.sendMessage(Messages.ERROR + "Diese Substanz ist zu schlecht um sie zu verarbeiten.");
+            return true;
+        }
+
         int amountOfMehl = 0;
         int amountOfSubstanz = 0;
 

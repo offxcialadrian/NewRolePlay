@@ -338,7 +338,7 @@ public class InteractMenu implements Listener {
                 addiction_cooldown.add(tg.getName());
                 Drogen.healAddiction(tg);
                 p.sendMessage(PREFIX + "Du hast " + Script.getName(tg) + " wegen " + (Script.getGender(tg) == Gender.MALE ? "seiner" : "ihrer") + " Abhängigkeit behandelt (" + (int) (Drogen.getAddictionHeal(tg) + 1) + "/" + (Premium.hasPremium(tg) ? 1 : 3) + ").");
-                tg.sendMessage(PREFIX + "Du wurdest von " + Script.getName(p) + " wegen deiner Abhängigkeit behandelt (" + (int) (Drogen.getAddictionHeal(tg) + 1) + "/" + (Premium.hasPremium(tg) ? 1 : 3) + ").");
+                tg.sendMessage(PREFIX + "Du wurdest von " + Script.getName(p) + " wegen deiner Abhängigkeit behandelt (" + (int) (Drogen.getAddictionHeal(tg)) + "/" + (Premium.hasPremium(tg) ? 1 : 3) + ").");
                 if (!Krankheit.ABHAENGIGKEIT.isInfected(Script.getNRPID(tg)))
                     tg.sendMessage(Messages.INFO + "Du bist nun nicht mehr abhängig.");
                 break;
