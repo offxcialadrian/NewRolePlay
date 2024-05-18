@@ -13,6 +13,7 @@ import de.newrp.NewRoleplayMain;
 import de.newrp.dependencies.DependencyContainer;
 import de.newrp.discord.IJdaService;
 import de.newrp.discord.impl.JdaService;
+import de.newrp.features.recommendation.IRecommendationService;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Message;
@@ -312,6 +313,14 @@ public class Utils implements Listener {
                         Script.addEXP(p, 500);
                     }
                 }
+
+                final IRecommendationService recommendationService = DependencyContainer.getContainer().getDependency(IRecommendationService.class);
+                if(recommendationService.hasRecommendation(p)) {
+                    Debug.debug("Has already recommended");
+                    return;
+                }
+
+                recommendationService.openInventoryForRecommendation(p);
             }
 
             for (Organisation o : Organisation.values()) {

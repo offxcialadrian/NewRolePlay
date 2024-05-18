@@ -56,6 +56,10 @@ import de.newrp.features.emergencycall.commands.*;
 import de.newrp.features.emergencycall.impl.EmergencyCallService;
 import de.newrp.features.emergencycall.listener.EmergencyCallInventoryListener;
 import de.newrp.features.emergencycall.listener.EmergencyCallQuitListener;
+import de.newrp.features.recommendation.IRecommendationService;
+import de.newrp.features.recommendation.impl.RecommendationService;
+import de.newrp.features.recommendation.listener.RecommendationInventoryClickListener;
+import de.newrp.features.recommendation.listener.RecommendationInventoryCloseListener;
 import de.newrp.features.roadblocks.IFactionBlockService;
 import de.newrp.features.roadblocks.commands.RoadBlockCommand;
 import de.newrp.features.roadblocks.commands.SprungtuchCommand;
@@ -659,6 +663,8 @@ public class NewRoleplayMain extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new StartTransport(), this);
         Bukkit.getPluginManager().registerEvents(new Tabakplantage(), this);
         Bukkit.getPluginManager().registerEvents(new MaskHandler(), this);
+        Bukkit.getPluginManager().registerEvents(new RecommendationInventoryClickListener(), this);
+        Bukkit.getPluginManager().registerEvents(new RecommendationInventoryCloseListener(), this);
     }
 
     /**
@@ -673,6 +679,7 @@ public class NewRoleplayMain extends JavaPlugin {
         DependencyContainer.getContainer().add(IDeathmatchArenaService.class, new DeathmatchArenaService());
         DependencyContainer.getContainer().add(IFactionBlockService.class, new FactionBlockService());
         DependencyContainer.getContainer().add(ITakeMoneyService.class, new TakeMoneyService());
+        DependencyContainer.getContainer().add(IRecommendationService.class, new RecommendationService());
     }
 
     /**
