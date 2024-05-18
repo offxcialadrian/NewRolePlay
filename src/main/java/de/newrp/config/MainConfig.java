@@ -20,6 +20,7 @@ public class MainConfig {
         add("Social Media (bspw. TikTok)");
         add("LabyMod Partners (Serverliste/Website)");
         add("Sonstiges");
+        add("Keine Angabe");
     }};
 
     public MainConfig(JDBCConfig mainConnection, JDBCConfig forumConnection, String jdaBotToken) {

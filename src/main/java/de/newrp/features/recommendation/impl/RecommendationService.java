@@ -5,17 +5,22 @@ import de.newrp.NewRoleplayMain;
 import de.newrp.features.recommendation.IRecommendationService;
 import de.newrp.features.recommendation.inventory.RecommendationInventory;
 import de.newrp.features.recommendation.inventory.RecommendationInventoryHolder;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
 
 public class RecommendationService implements IRecommendationService {
+
+    private final Set<UUID> activeChatInputs = new HashSet<>();
 
     @Override
     public void openInventoryForRecommendation(Player player) {
         final RecommendationInventory recommendationInventory = new RecommendationInventory(player);
-        player.closeInventory();
         player.openInventory(recommendationInventory.getInventory());
     }
 
@@ -33,14 +38,12 @@ public class RecommendationService implements IRecommendationService {
     }
 
     @Override
-    public void closeInventory(Player player) {
-        final RecommendationInventoryHolder holder = (RecommendationInventoryHolder) player.getOpenInventory().getTopInventory().getHolder();
-        if(holder == null) {
-            Debug.debug("Cannot close inventory because the holder is null on player " + player.getName());
-            return;
-        }
+    public void closeInventory(Player player, RecommendationInventoryHolder holder) {
         holder.setClosed(true);
-        player.closeInventory();
+        Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> {
+            player.closeInventory();
+        }, 2L);
+        this.activeChatInputs.remove(player.getUniqueId());
     }
 
     @Override
@@ -53,5 +56,17 @@ public class RecommendationService implements IRecommendationService {
         } catch (Exception e) {
             NewRoleplayMain.handleError(e);
         }
+        this.activeChatInputs.remove(player.getUniqueId());
+    }
+
+    @Override
+    public void activateChatInput(Player player) {
+        this.activeChatInputs.add(player.getUniqueId());
+    }
+
+    @Override
+    public boolean hasActiveChatInput(Player player) {
+        System.out.println("has active chat input: " + this.activeChatInputs.contains(player.getUniqueId()));
+        return this.activeChatInputs.contains(player.getUniqueId());
     }
 }

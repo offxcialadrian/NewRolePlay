@@ -58,6 +58,7 @@ import de.newrp.features.emergencycall.listener.EmergencyCallInventoryListener;
 import de.newrp.features.emergencycall.listener.EmergencyCallQuitListener;
 import de.newrp.features.recommendation.IRecommendationService;
 import de.newrp.features.recommendation.impl.RecommendationService;
+import de.newrp.features.recommendation.listener.RecommendationChatListener;
 import de.newrp.features.recommendation.listener.RecommendationInventoryClickListener;
 import de.newrp.features.recommendation.listener.RecommendationInventoryCloseListener;
 import de.newrp.features.roadblocks.IFactionBlockService;
@@ -664,6 +665,7 @@ public class NewRoleplayMain extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new Tabakplantage(), this);
         Bukkit.getPluginManager().registerEvents(new MaskHandler(), this);
         Bukkit.getPluginManager().registerEvents(new RecommendationInventoryClickListener(), this);
+        Bukkit.getPluginManager().registerEvents(new RecommendationChatListener(), this);
         Bukkit.getPluginManager().registerEvents(new RecommendationInventoryCloseListener(), this);
     }
 

@@ -16,7 +16,7 @@ public class RecommendationInventory {
     private final ItemStack holderItemStack = new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).setName("").build();
 
     public RecommendationInventory(final Player player) {
-        this.inventory = Bukkit.createInventory(new RecommendationInventoryHolder(player, false), 27, "§8» §6Wie hast du von NewRoleplay mitbekommen?");
+        this.inventory = Bukkit.createInventory(new RecommendationInventoryHolder(player, false), 27, "§6Wie hast du von uns gehört?");
         this.fillInventory();
     }
 

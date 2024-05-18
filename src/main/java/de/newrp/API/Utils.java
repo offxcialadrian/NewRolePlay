@@ -315,12 +315,10 @@ public class Utils implements Listener {
                 }
 
                 final IRecommendationService recommendationService = DependencyContainer.getContainer().getDependency(IRecommendationService.class);
-                if(recommendationService.hasRecommendation(p)) {
-                    Debug.debug("Has already recommended");
-                    return;
+                if(!recommendationService.hasRecommendation(p)) {
+                    recommendationService.openInventoryForRecommendation(p);
                 }
 
-                recommendationService.openInventoryForRecommendation(p);
             }
 
             for (Organisation o : Organisation.values()) {

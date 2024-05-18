@@ -33,10 +33,20 @@ public class RecommendationInventoryClickListener implements Listener {
                 return;
             }
 
-            recommendationService.giveRecommendation((Player) event.getWhoClicked(), ChatColor.stripColor(event.getCurrentItem().getItemMeta().getDisplayName()));
-            recommendationService.closeInventory((Player) event.getWhoClicked());
-            event.getWhoClicked().sendMessage("§8[§6§lEmpfehlung§8] §6§l» §7Du hast die Empfehlung erfolgreich abgegeben. Vielen Dank!");
-            ((Player) event.getWhoClicked()).playSound(event.getWhoClicked().getEyeLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1f, 1f);
+            final Player player = (Player) event.getWhoClicked();
+            final String value = ChatColor.stripColor(event.getCurrentItem().getItemMeta().getDisplayName());
+            if(value.equalsIgnoreCase("Sonstiges")) {
+                recommendationService.closeInventory(player, (RecommendationInventoryHolder) event.getInventory().getHolder());
+                recommendationService.activateChatInput(player);
+                event.getWhoClicked().sendMessage("§8[§6§lMarktforschung§8] §6§l» §7Bitte gebe in den Chat ein, woher du von NewRoleplay mitbekommen hast.");
+                player.playSound(player.getEyeLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1f, 1f);
+                return;
+            }
+
+            recommendationService.giveRecommendation(player, value);
+            recommendationService.closeInventory(player, (RecommendationInventoryHolder) event.getInventory().getHolder());
+            event.getWhoClicked().sendMessage("§8[§6§lMarktforschung§8] §6§l» §7Vielen Dank für deine Rückmeldung!");
+            player.playSound(event.getWhoClicked().getEyeLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1f, 1f);
         }
     }
 
