@@ -55,14 +55,14 @@ public class TakeMoney implements CommandExecutor {
             return true;
         }
 
-        int money = Bankautomaten.win.get(tg);
+        int money = DependencyContainer.getContainer().getDependency(ITakeMoneyService.class).getMoney(p);
 
         if(money > Script.getMoney(tg, PaymentType.CASH)) {
             p.sendMessage(Messages.ERROR + "Der Spieler hat nicht genug Geld.");
             return true;
         }
 
-        Bankautomaten.win.remove(tg);
+        DependencyContainer.getContainer().getDependency(ITakeMoneyService.class).deleteMoney(p);
         Script.removeMoney(tg, PaymentType.CASH, money);
         p.sendMessage(PREFIX + "Du hast " + Script.getName(tg) + " §6" + money + "€§7 abgenommen.");
         Beruf.Berufe.POLICE.sendMessage(PREFIX + "§6" + Script.getName(p) + " §7hat §6" + Script.getName(tg) + " §6" + money + "€§7 abgenommen.");

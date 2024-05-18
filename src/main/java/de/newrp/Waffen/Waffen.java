@@ -15,6 +15,7 @@ import de.newrp.NewRoleplayMain;
 import de.newrp.dependencies.DependencyContainer;
 import de.newrp.features.deathmatcharena.IDeathmatchArenaService;
 import de.newrp.features.deathmatcharena.data.DeathmatchArenaStats;
+import de.newrp.features.takemoney.ITakeMoneyService;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -197,13 +198,13 @@ public class Waffen implements Listener {
                             Beruf.Berufe.POLICE.sendMessage(PREFIX + "Der Shop " + shop.getName() + " wurde überfallen. Es wurden " + remove + "€ gestohlen.");
                             Script.addMoney(p, PaymentType.CASH, remove);
                             org.addExp(remove / 50);
-                            Bankautomaten.win.put(p, remove);
+                            DependencyContainer.getContainer().getDependency(ITakeMoneyService.class).addIllegalObtainedMoneyToPlayer(p, remove);
                             progress.remove(p.getName());
                             cancel();
                             new BukkitRunnable() {
                                 @Override
                                 public void run() {
-                                    Bankautomaten.win.remove(p);
+                                    DependencyContainer.getContainer().getDependency(ITakeMoneyService.class).deleteMoney(p);
                                 }
                             }.runTaskLater(NewRoleplayMain.getInstance(), 20L * 60 * 15);
                         } else {

@@ -30,6 +30,16 @@ public class TakeMoneyService implements ITakeMoneyService {
     }
 
     @Override
+    public void deleteMoney(Player player) {
+        this.amountOfMoneyToBeTaken.remove(player.getUniqueId());
+    }
+
+    @Override
+    public int getMoney(Player player) {
+        return this.amountOfMoneyToBeTaken.getOrDefault(player.getUniqueId(), 0);
+    }
+
+    @Override
     public void addIllegalObtainedMoneyToPlayer(Player player, int amount) {
         this.amountOfMoneyToBeTaken.put(player.getUniqueId(), amount);
     }
