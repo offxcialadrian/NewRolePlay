@@ -1,5 +1,6 @@
 package de.newrp.Organisationen;
 
+import de.newrp.API.Debug;
 import de.newrp.API.Script;
 import lombok.Getter;
 import org.bukkit.Location;
@@ -50,8 +51,11 @@ public enum RobLocation {
     }
 
     public static RobLocation getRob(Organisation orga, Location loc) {
+        Debug.debug("Orga is " + orga.getName());
         for (RobLocation rob : RobLocation.getLocations(orga)) {
+            Debug.debug("distance from " + rob.getName() + " to " + loc.toString() + " is " + rob.getLoc().distance(loc));
             if (rob.getLoc().distance(loc) <= 5) {
+                Debug.debug("found rob " + rob.getName() + " at " + loc.toString());
                 return rob;
             }
         }
