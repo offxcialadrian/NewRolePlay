@@ -14,7 +14,7 @@ public class RecommendationChatListener implements Listener {
 
     private final IRecommendationService recommendationService = DependencyContainer.getContainer().getDependency(IRecommendationService.class);
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.MONITOR)
     public void onAsyncChat(final AsyncPlayerChatEvent event) {
         final Player player = event.getPlayer();
         if(event.getMessage().startsWith("/")) {
