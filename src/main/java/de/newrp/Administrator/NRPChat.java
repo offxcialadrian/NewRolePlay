@@ -21,7 +21,7 @@ public class NRPChat implements CommandExecutor {
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
         Player p = (Player) cs;
 
-        if (!Script.hasRank(p, Rank.SUPPORTER, false)) {
+        if (!Script.hasRank(p, Rank.DEVELOPER, false)) {
             p.sendMessage(Messages.NO_PERMISSION);
             return true;
         }
@@ -37,13 +37,13 @@ public class NRPChat implements CommandExecutor {
 
         if (ONLY_RANK) {
             msg = msg.replace("-r ", "");
-            for (Player all : Bukkit.getOnlinePlayers()) {
-                if (isNRPTeam(all) && Script.hasRank(all, Script.getRank(p), false)) {
+            for (Player all : Script.getNRPTeam()) {
+                if (Script.hasRank(all, Script.getRank(p), false)) {
                     all.sendMessage("§c§lR§5§lNRP » §5" + Messages.RANK_PREFIX(p) + ": §3" + msg);
                 }
             }
         } else {
-            for (Player all : Bukkit.getOnlinePlayers()) {
+            for (Player all : Script.getNRPTeam()) {
                 if (isNRPTeam(all)) {
                     all.sendMessage("§5§lNRP » §5" + Messages.RANK_PREFIX(p) + ": §3" + msg);
 

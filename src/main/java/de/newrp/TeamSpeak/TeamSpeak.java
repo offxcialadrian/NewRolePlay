@@ -153,6 +153,9 @@ public class TeamSpeak {
                     addToServerGroup(TeamspeakServerGroup.SUPPORTER, dbID);
                     addToServerGroup(TeamspeakServerGroup.NRP_SERVERTEAM, dbID);
                     break;
+                case DEVELOPER:
+                    addToServerGroup(TeamspeakServerGroup.DEV, dbID);
+                    break;
             }
 
             if (!admin) {

@@ -34,7 +34,7 @@ public class Bankraub implements CommandExecutor, Listener {
 
     public static long lastTime;
     private static long cooldown;
-    private static final long TIMEOUT = TimeUnit.HOURS.toMillis(5);
+    private static final long TIMEOUT = TimeUnit.HOURS.toMillis(9);
     private static final long TIMEOUT_2 = TimeUnit.SECONDS.toMillis(45);
     private static ArrayList<Location> blocks = new ArrayList<>();
     public static String PREFIX = "§8[§9Bankraub§8] §9» §7";

@@ -198,8 +198,8 @@ public class NewRoleplayMain extends JavaPlugin {
         builder.addEventListeners(new SupportListener());
         builder.build();
 
-        Script.executeUpdate("DELETE FROM log WHERE time > DATE_SUB(CURDATE(), INTERVAL 45 DAY);");
-        Script.executeUpdate("DELETE FROM stadtkasse WHERE time > DATE_SUB(CURDATE(), INTERVAL 30 DAY);");
+        Script.executeUpdate("DELETE FROM log WHERE time < NOW() - INTERVAL 45 DAY;");
+        Script.executeUpdate("DELETE FROM stadtkasse WHERE time < NOW() - INTERVAL 45 DAY;");
 
         Bukkit.getConsoleSender().sendMessage("§cNRP §8× §astarting complete..");
         Bukkit.getConsoleSender().sendMessage("§cNRP §8× §aViel Erfolg heute..");

@@ -15,8 +15,8 @@ import java.util.concurrent.TimeUnit;
 
 public class Vote {
 
-    public static final int VOTE_AMOUNT_WEEK = 200;
-    public static final int VOTE_AMOUNT_WEEKEND = 300;
+    public static final int VOTE_AMOUNT_WEEK = 300;
+    public static final int VOTE_AMOUNT_WEEKEND = 400;
 
     public static int getVotesToday(int id) {
         try (Statement stmt = NewRoleplayMain.getConnection().createStatement();

@@ -180,7 +180,7 @@ public class Script {
             if (Beruf.getAbteilung(p) == Abteilung.Abteilungen.ZIVILPOLIZEI) color = "§r";
         }
         if (!SDuty.isSDuty(p)) p.setPlayerListName("§r" + p.getName());
-        if (SDuty.isSDuty(p)) p.setPlayerListName("§5§lNRP §8× §c" + p.getName());
+        if (SDuty.isSDuty(p)) p.setPlayerListName(getRank(p)==DEVELOPER?"§b§lDev §8× §b" + p.getName():"§5§lNRP §8× §c" + p.getName());
         if (Duty.isInDuty(p)) p.setPlayerListName(color + p.getPlayerListName());
         if (BuildMode.isInBuildMode(p)) p.setPlayerListName("§e§lB §8× §r" + p.getPlayerListName());
         if (TicketCommand.isInTicket(p)) p.setPlayerListName("§d§lT §8× §r" + p.getPlayerListName());
@@ -587,11 +587,11 @@ public class Script {
     }
 
     public static Boolean isNRPTeam(Player p) {
-        return getRank(p).getWeight() >= SUPPORTER.getWeight();
+        return getRank(p).getWeight() >= DEVELOPER.getWeight();
     }
 
     public static Boolean isNRPTeam(OfflinePlayer p) {
-        return getRank(p).getWeight() >= SUPPORTER.getWeight();
+        return getRank(p).getWeight() >= DEVELOPER.getWeight();
     }
 
     public static Rank getNextHigherRank(Rank rank) {

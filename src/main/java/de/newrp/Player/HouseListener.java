@@ -2,6 +2,7 @@ package de.newrp.Player;
 
 import de.newrp.API.*;
 import de.newrp.GFB.GFB;
+import de.newrp.Government.Stadtkasse;
 import de.newrp.House.House;
 import de.newrp.House.HouseAddon;
 import de.newrp.Shop.PayShop;
@@ -84,6 +85,7 @@ public class HouseListener implements Listener {
             if(Script.getMoney(p, PaymentType.BANK) >= h.getPrice()) {
                 Achievement.HAUS.grant(p);
                 Script.removeMoney(p, PaymentType.BANK, h.getPrice());
+                Stadtkasse.addStadtkasse(h.getPrice(), "Hauskauf von " + Script.getName(p), null);
                 h.setOwner(Script.getNRPID(p));
                 h.updateSign();
                 Script.executeAsyncUpdate("INSERT INTO house_bewohner (houseID, mieterID, vermieter, miete, nebenkosten, immobilienmarkt) VALUES (" + h.getID() + ", " + Script.getNRPID(p) + ", TRUE, 0, 0, FALSE); ");

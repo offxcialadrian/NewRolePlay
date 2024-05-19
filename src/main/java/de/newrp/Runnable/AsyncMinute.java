@@ -2,6 +2,7 @@ package de.newrp.Runnable;
 
 import de.newrp.API.*;
 import de.newrp.Administrator.SDuty;
+import de.newrp.Administrator.Spectate;
 import de.newrp.Chat.Me;
 import de.newrp.Entertainment.Lotto;
 import de.newrp.Gangwar.GangwarCommand;
@@ -168,10 +169,10 @@ public class AsyncMinute extends BukkitRunnable {
             Script.increasePlayTime(p);
             if (Script.getRandom(1, 10) == 1) {
                 if (Krankheit.HUSTEN.isInfected(Script.getNRPID(p))) {
-                    Me.sendMessage(p, "hustet.");
+                    if(!Spectate.isSpectating(p)) Me.sendMessage(p, "hustet.");
                     for (Player p2 : Bukkit.getOnlinePlayers()) {
                         if (p2.getLocation().distance(p.getLocation()) <= 5) {
-                            if (!Krankheit.HUSTEN.isInfected(Script.getNRPID(p2)) && !Krankheit.HUSTEN.isImpfed(Script.getNRPID(p2)))
+                            if (!Krankheit.HUSTEN.isInfected(Script.getNRPID(p2)) && !Krankheit.HUSTEN.isImpfed(Script.getNRPID(p2)) && !SDuty.isSDuty(p))
                                 Krankheit.HUSTEN.add(Script.getNRPID(p2));
                         }
                     }

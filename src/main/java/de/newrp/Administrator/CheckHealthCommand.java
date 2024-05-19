@@ -1,6 +1,7 @@
 package de.newrp.Administrator;
 
 import de.newrp.API.Health;
+import de.newrp.API.Krankheit;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.Berufe.Beruf;
@@ -55,6 +56,13 @@ public class CheckHealthCommand implements CommandExecutor {
         player.spigot().sendMessage(HealthCommand.thirst(targetPlayer));
         player.spigot().sendMessage(HealthCommand.fat(targetPlayer));
         player.spigot().sendMessage(HealthCommand.muscle(targetPlayer));
+
+        if(SDuty.isSDuty(player)) {
+            for(Krankheit k : Krankheit.values()) {
+                player.sendMessage(PREFIX + k.getName() + ": " + k.isInfected(Script.getNRPID(targetPlayer)));
+            }
+        }
+
         return true;
     }
 }

@@ -23,7 +23,7 @@ public class APIKey implements CommandExecutor {
             if(Script.getAPIKey(p) == null) {
                 String code = generateCode();
                 p.sendMessage(PREFIX + "Du hast nun den API-Key §6" + code + "§7.");
-                p.sendMessage(Messages.INFO + "Bitte bewahre diesen Key sicher auf. Er ist nur einmalig einsehbar und kann nicht zurückgesetzt werden.");
+                p.sendMessage(Messages.INFO + "Bitte bewahre diesen Key sicher auf. Er kann nicht zurückgesetzt werden.");
                 Script.executeAsyncUpdate("INSERT INTO api_key (nrp_id, personal_key) VALUES ('" + Script.getNRPID(p) + "', '" + code + "')");
                 return true;
             }

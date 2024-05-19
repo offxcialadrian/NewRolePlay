@@ -62,6 +62,12 @@ public class CheckGun implements CommandExecutor {
                                 }
                             }
                         }
+                        for (Weapon w : Weapon.values()) {
+                            if (p.getItemOnCursor().getType().equals(w.getWeapon().getType())) {
+                                b = true;
+                                break;
+                            }
+                        }
                         if (b) {
                             p.sendMessage(PREFIX + "§cAchtung, der Spieler ist bewaffnet!");
                         } else {

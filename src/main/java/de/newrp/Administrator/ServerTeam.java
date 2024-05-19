@@ -1,6 +1,7 @@
 package de.newrp.Administrator;
 
 import de.newrp.API.Messages;
+import de.newrp.API.Rank;
 import de.newrp.API.Script;
 import de.newrp.Player.AFK;
 import de.newrp.Ticket.TicketCommand;
@@ -26,6 +27,7 @@ public class ServerTeam implements CommandExecutor {
         List<Player> nrps = Script.getNRPTeam();
         nrps.removeIf(nrp -> !SDuty.isSDuty(nrp));
         nrps.removeIf(TicketCommand::isInTicket);
+        nrps.removeIf(nrp -> Script.getRank(nrp) == Rank.DEVELOPER);
 
         if (nrps.isEmpty()) {
             p.sendMessage(Script.PREFIX + "Es ist derzeit kein Teammitglied im Supporter-Dienst.");

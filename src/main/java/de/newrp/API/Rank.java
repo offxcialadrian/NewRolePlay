@@ -8,7 +8,8 @@ public enum Rank {
     ADMINISTRATOR(1, 200, "Administrator", "Administration"),
     MODERATOR(2, 150, "Moderator", "Moderation"),
     SUPPORTER(3, 100, "Supporter", "Support"),
-    PLAYER(4, 1, "Spieler", "Spieler");
+    DEVELOPER(4, 50, "Developer", "Developer"),
+    PLAYER(5, 1, "Spieler", "Spieler");
 
     private final int id;
     private final int weight;

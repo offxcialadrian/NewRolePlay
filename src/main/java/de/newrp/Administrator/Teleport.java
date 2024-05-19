@@ -26,7 +26,7 @@ public class Teleport implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
         Player p = (Player) cs;
-        if (!Script.hasRank(p, Rank.SUPPORTER, false)) {
+        if (!Script.hasRank(p, Rank.DEVELOPER, false)) {
             p.sendMessage(Messages.NO_PERMISSION);
             return true;
         }

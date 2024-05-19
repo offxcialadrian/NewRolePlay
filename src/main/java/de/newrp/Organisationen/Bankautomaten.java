@@ -62,7 +62,7 @@ public class Bankautomaten implements Listener {
             return;
         }
 
-        cooldown.put(o, System.currentTimeMillis() + 10800000);
+        cooldown.put(o, System.currentTimeMillis() + 12600000);
         cooldownATM.put(atm, System.currentTimeMillis() + 3600000);
         atmBlocks.put(e.getClickedBlock().getLocation(), e.getClickedBlock());
         p.getInventory().remove(Material.TNT);
