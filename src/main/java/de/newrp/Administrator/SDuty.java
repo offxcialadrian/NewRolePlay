@@ -126,10 +126,16 @@ public class SDuty implements CommandExecutor, Listener {
         Score score2 = o.getScore(ChatColor.DARK_AQUA + " §8» §a" + (Bukkit.getOnlinePlayers().size()- AFK.afk.size()) + " §8| §c" + AFK.afk.size() + " §8| §e" + Bukkit.getOnlinePlayers().size());
         Score score3 = o.getScore(ChatColor.GRAY + "§bTickets§8:");
         Score score4 = o.getScore(ChatColor.DARK_AQUA + " §8» §eBug: " + amount.get(TicketTopic.BUG));
-        Score score5 = o.getScore(ChatColor.DARK_AQUA + " §8» §eFrage: " + amount.get(TicketTopic.FRAGE));
-        Score score6 = o.getScore(ChatColor.DARK_AQUA + " §8» §eSpieler: " + amount.get(TicketTopic.SPIELER));
-        Score score7 = o.getScore(ChatColor.DARK_AQUA + " §8» §eAccount: " + amount.get(TicketTopic.ACCOUNT));
-        Score score8 = o.getScore(ChatColor.DARK_AQUA + " §8» §eSonstiges: " + amount.get(TicketTopic.SONSTIGES));
+        Score score5 = null;
+        Score score6 = null;
+        Score score7 = null;
+        Score score8 = null;
+        if(Script.getRank(p) != Rank.DEVELOPER) {
+            score5 = o.getScore(ChatColor.DARK_AQUA + " §8» §eFrage: " + amount.get(TicketTopic.FRAGE));
+            score6 = o.getScore(ChatColor.DARK_AQUA + " §8» §eSpieler: " + amount.get(TicketTopic.SPIELER));
+            score7 = o.getScore(ChatColor.DARK_AQUA + " §8» §eAccount: " + amount.get(TicketTopic.ACCOUNT));
+            score8 = o.getScore(ChatColor.DARK_AQUA + " §8» §eSonstiges: " + amount.get(TicketTopic.SONSTIGES));
+        }
         Score score9 = o.getScore(ChatColor.GRAY + "");
         Score score10 = o.getScore(ChatColor.GRAY + "§bStadtkasse§8:");
         Score score11 = o.getScore(ChatColor.DARK_AQUA + " §8» §e" + df.format(stadtkasse) + "€");
@@ -140,10 +146,12 @@ public class SDuty implements CommandExecutor, Listener {
         platzhalter2.setScore(7);
         score3.setScore(6);
         score4.setScore(5);
-        score5.setScore(4);
-        score6.setScore(3);
-        score7.setScore(2);
-        score8.setScore(1);
+        if(Script.getRank(p) != Rank.DEVELOPER) {
+            score5.setScore(4);
+            score6.setScore(3);
+            score7.setScore(2);
+            score8.setScore(1);
+        }
         if (Script.hasRank(p, Rank.ADMINISTRATOR, false)) {
             score9.setScore(0);
             score10.setScore(-1);
@@ -173,10 +181,16 @@ public class SDuty implements CommandExecutor, Listener {
                 Score score2 = o.getScore(ChatColor.DARK_AQUA + " §8» §a" + (Bukkit.getOnlinePlayers().size()- AFK.afk.size()) + " §8| §c" + AFK.afk.size() + " §8| §e" + Bukkit.getOnlinePlayers().size());
                 Score score3 = o.getScore(ChatColor.GRAY + "§bTickets§8:");
                 Score score4 = o.getScore(ChatColor.DARK_AQUA + " §8» §eBug: " + amount.get(TicketTopic.BUG));
-                Score score5 = o.getScore(ChatColor.DARK_AQUA + " §8» §eFrage: " + amount.get(TicketTopic.FRAGE));
-                Score score6 = o.getScore(ChatColor.DARK_AQUA + " §8» §eSpieler: " + amount.get(TicketTopic.SPIELER));
-                Score score7 = o.getScore(ChatColor.DARK_AQUA + " §8» §eAccount: " + amount.get(TicketTopic.ACCOUNT));
-                Score score8 = o.getScore(ChatColor.DARK_AQUA + " §8» §eSonstiges: " + amount.get(TicketTopic.SONSTIGES));
+                Score score5 = null;
+                Score score6 = null;
+                Score score7 = null;
+                Score score8 = null;
+                if(Script.getRank(p) != Rank.DEVELOPER) {
+                    score5 = o.getScore(ChatColor.DARK_AQUA + " §8» §eFrage: " + amount.get(TicketTopic.FRAGE));
+                    score6 = o.getScore(ChatColor.DARK_AQUA + " §8» §eSpieler: " + amount.get(TicketTopic.SPIELER));
+                    score7 = o.getScore(ChatColor.DARK_AQUA + " §8» §eAccount: " + amount.get(TicketTopic.ACCOUNT));
+                    score8 = o.getScore(ChatColor.DARK_AQUA + " §8» §eSonstiges: " + amount.get(TicketTopic.SONSTIGES));
+                }
                 Score score9 = o.getScore(ChatColor.GRAY + "");
                 Score score10 = o.getScore(ChatColor.GRAY + "§bStadtkasse§8:");
                 Score score11 = o.getScore(ChatColor.DARK_AQUA + " §8» §e" + df.format(stadtkasse) + "€");
@@ -187,10 +201,12 @@ public class SDuty implements CommandExecutor, Listener {
                 platzhalter2.setScore(7);
                 score3.setScore(6);
                 score4.setScore(5);
-                score5.setScore(4);
-                score6.setScore(3);
-                score7.setScore(2);
-                score8.setScore(1);
+                if(Script.getRank(p) != Rank.DEVELOPER) {
+                    score5.setScore(4);
+                    score6.setScore(3);
+                    score7.setScore(2);
+                    score8.setScore(1);
+                }
                 if (Script.hasRank(p, Rank.ADMINISTRATOR, false)) {
                     score9.setScore(0);
                     score10.setScore(-1);

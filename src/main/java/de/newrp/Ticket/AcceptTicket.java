@@ -1,5 +1,6 @@
 package de.newrp.Ticket;
 
+import com.google.common.collect.Lists;
 import de.newrp.API.Messages;
 import de.newrp.API.Rank;
 import de.newrp.API.Script;
@@ -18,6 +19,7 @@ import org.bukkit.potion.PotionEffectType;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class AcceptTicket implements CommandExecutor {
 
@@ -25,7 +27,7 @@ public class AcceptTicket implements CommandExecutor {
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         Player p = (Player) cs;
 
-        if (!Script.hasRank(p, Rank.SUPPORTER, false)) {
+        if (!Script.hasRank(p, Rank.DEVELOPER, false)) {
             p.sendMessage(Messages.NO_PERMISSION);
             return true;
         }
@@ -38,7 +40,7 @@ public class AcceptTicket implements CommandExecutor {
 
 
         int ticket = 0;
-        if (args.length == 1) {
+        if (args.length == 1 && Script.getRank(p) != Rank.DEVELOPER) {
             if (Script.isInt(args[0])) {
                 ticket = Integer.parseInt(args[0]);
             }
@@ -46,6 +48,11 @@ public class AcceptTicket implements CommandExecutor {
 
         Ticket.Queue q = null;
         Iterator<Map.Entry<Integer, Ticket.Queue>> it = TicketCommand.queue.entrySet().iterator();
+        if(Script.getRank(p) == Rank.DEVELOPER) {
+            it = Lists.newArrayList(it).stream()
+                    .filter(e -> e.getValue().getTicketTopic() == TicketTopic.BUG)
+                    .collect(Collectors.toList()).iterator();
+        }
 
         if (ticket < 0) ticket = 0;
 

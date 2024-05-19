@@ -17,7 +17,7 @@ public class TransferTicket implements CommandExecutor {
 
         Player p = (Player) cs;
 
-        if(!Script.hasRank(p, Rank.SUPPORTER, false)) {
+        if(!Script.hasRank(p, Rank.DEVELOPER, false)) {
             p.sendMessage(Messages.NO_PERMISSION);
             return true;
         }

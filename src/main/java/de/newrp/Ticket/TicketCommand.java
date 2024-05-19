@@ -85,6 +85,10 @@ public class TicketCommand implements CommandExecutor {
 
         for (Player team : Script.getNRPTeam()) {
             team.playSound(team.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
+            if(topic != TicketTopic.BUG && Script.getRank(team) == Rank.DEVELOPER) {
+                continue;
+            }
+
             Script.sendClickableMessage(team, PREFIX + "§dNEU! §8× §6#" + i + " §8× §6" + sender.getName() + " §8× §6" + topic.getName(), "/acceptticket " + i, "§6Ticket annehmen.");
         }
     }

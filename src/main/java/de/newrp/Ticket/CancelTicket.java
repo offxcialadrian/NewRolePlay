@@ -33,8 +33,7 @@ public class CancelTicket implements CommandExecutor, Listener {
             }
             SDuty.updateScoreboard();
         } else if (TicketCommand.isInTicket(p)) {
-
-            if (!Script.hasRank(p, Rank.SUPPORTER, false)) {
+            if (!Script.hasRank(p, Rank.DEVELOPER, false)) {
                 p.sendMessage(Messages.ERROR + "Du kannst dein Ticket nicht beenden.");
                 return true;
             }
