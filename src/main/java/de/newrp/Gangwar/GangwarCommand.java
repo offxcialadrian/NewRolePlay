@@ -290,6 +290,7 @@ public class GangwarCommand implements CommandExecutor, Listener {
         p.getInventory().setArmorContents(null);
         for(Weapon w : Weapon.values()) {
             if(w == Weapon.SNIPER) continue;
+            if(w == Weapon.MP7) continue;
 
             p.getInventory().addItem(Waffen.setAmmo(w.getWeapon(), w.getMagazineSize(), 500));
         }
@@ -306,7 +307,7 @@ public class GangwarCommand implements CommandExecutor, Listener {
                 continue;
             }
 
-            p.getInventory().addItem(new ItemBuilder(drug.getMaterial()).setName(drug.getName()).setLore("§7Reinheitsgrad: " + Drogen.DrugPurity.HIGH.getText()).setAmount(20).build());
+            p.getInventory().addItem(new ItemBuilder(drug.getMaterial()).setName(drug.getName()).setLore("§7Reinheitsgrad: " + Drogen.DrugPurity.HIGH.getText()).setAmount(10).build());
         }
         p.getInventory().addItem(new ItemBuilder(Material.BREAD).setAmount(32).build());
     }
