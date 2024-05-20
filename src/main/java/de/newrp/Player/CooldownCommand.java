@@ -31,9 +31,10 @@ public class CooldownCommand implements CommandExecutor {
                     }
                 }
                 if (LabBreakIn.cooldown != 0) {
-                    if ((LabBreakIn.cooldown - System.currentTimeMillis() + 10800000) > 0) {
+                    long nextAvailable = (LabBreakIn.cooldown + TimeUnit.HOURS.toMillis(4)) - System.currentTimeMillis();
+                    if (nextAvailable > 0) {
                         cd = true;
-                        player.sendMessage(PREFIX + "Labor: §5" + TimeUnit.MILLISECONDS.toMinutes(LabBreakIn.cooldown - System.currentTimeMillis() + 10800000) + "min");
+                        player.sendMessage(PREFIX + "Labor: §5" + TimeUnit.MILLISECONDS.toMinutes(nextAvailable) + "min");
                     }
                 }
                 if (BreakinCommand.cooldowns.containsKey(orga)) {
