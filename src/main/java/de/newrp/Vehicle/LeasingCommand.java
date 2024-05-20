@@ -17,7 +17,6 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import sun.java2d.ScreenUpdateManager;
 
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -47,7 +46,7 @@ public class LeasingCommand implements CommandExecutor, TabCompleter {
                                     player.sendMessage(PREFIX + "Autos im Besitz: §2" + beruf.getCarAmount() + "x");
                                     player.sendMessage(PREFIX + "Vergebene Autos: §2" + beruf.getLeasedAmount() + "x");
                                     player.sendMessage(PREFIX + "Preis pro Auto: §2" + beruf.getCarType().getPrice() + "€");
-                                    player.sendMessage(PREFIX + "Gebühren pro Stunde: §2" + beruf.getLeasedAmount() * (beruf.getCarType().getTax() * 2) + "€");
+                                    player.sendMessage(PREFIX + "Gebühren pro Stunde: §2" + beruf.getLeasedAmount() * (beruf.getCarType().getTax() / 2) + "€");
                                     break;
                                 case "add":
                                 case "hinzufügen":

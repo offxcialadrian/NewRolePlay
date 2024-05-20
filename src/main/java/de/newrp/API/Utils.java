@@ -302,6 +302,7 @@ public class Utils implements Listener {
             e.getPlayer().sendMessage(Script.PREFIX + "§7Willkommen zurück auf §eNewRP§7!");
             if (Script.hasRank(p, Rank.MODERATOR, false))
                 e.getPlayer().sendMessage(Messages.INFO + "Aufgrund deines Status als " + Script.getRank(p).getName(p) + " hast du automatisch einen Premium-Account.");
+            Script.executeUpdate("DELETE FROM last_disconnect WHERE nrp_id = " + Script.getNRPID(p));
             Script.sendActionBar(e.getPlayer(), "§7Willkommen zurück auf §eNewRP§7!");
             p.sendMessage(TippOfTheDay.PREFIX + TippOfTheDay.getRandomTipp());
             if(Licenses.PERSONALAUSWEIS.hasLicense(Script.getNRPID(p))) {

@@ -1,6 +1,5 @@
 package de.newrp.Berufe;
 
-import com.sun.jndi.ldap.Ber;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.NewRoleplayMain;

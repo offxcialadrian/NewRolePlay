@@ -180,7 +180,7 @@ public class Script {
             if (Beruf.getAbteilung(p) == Abteilung.Abteilungen.ZIVILPOLIZEI) color = "§r";
         }
         if (!SDuty.isSDuty(p)) p.setPlayerListName("§r" + p.getName());
-        if (SDuty.isSDuty(p)) p.setPlayerListName(getRank(p)==DEVELOPER?"§b§lDev §8× §b" + p.getName():"§5§lNRP §8× §c" + p.getName());
+        if (SDuty.isSDuty(p)) p.setPlayerListName(getRank(p)==DEVELOPER?"§5§lDev §8× §c" + p.getName():"§5§lNRP §8× §c" + p.getName());
         if (Duty.isInDuty(p)) p.setPlayerListName(color + p.getPlayerListName());
         if (BuildMode.isInBuildMode(p)) p.setPlayerListName("§e§lB §8× §r" + p.getPlayerListName());
         if (TicketCommand.isInTicket(p)) p.setPlayerListName("§d§lT §8× §r" + p.getPlayerListName());

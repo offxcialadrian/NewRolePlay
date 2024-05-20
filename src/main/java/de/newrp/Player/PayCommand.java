@@ -5,6 +5,7 @@ import de.newrp.API.Messages;
 import de.newrp.API.PaymentType;
 import de.newrp.API.Script;
 import de.newrp.Administrator.Notifications;
+import de.newrp.Administrator.Spectate;
 import de.newrp.Chat.Me;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -30,6 +31,11 @@ public class PayCommand implements CommandExecutor {
 
         Player tg = Script.getPlayer(args[0]);
         if (tg == null) {
+            p.sendMessage(Messages.PLAYER_NOT_FOUND);
+            return true;
+        }
+
+        if(Spectate.isSpectating(tg)) {
             p.sendMessage(Messages.PLAYER_NOT_FOUND);
             return true;
         }
