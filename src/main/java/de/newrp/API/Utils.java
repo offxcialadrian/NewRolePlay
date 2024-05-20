@@ -534,7 +534,11 @@ public class Utils implements Listener {
     @EventHandler
     public void FrameEntity(EntityDamageByEntityEvent e) {
         if (e.getEntity() instanceof ArmorStand) {
-            if (!BuildMode.isInBuildMode((Player) e.getDamager())) e.setCancelled(true);
+            if(!(e.getDamager() instanceof Player)) {
+                e.setCancelled(true);
+            } else {
+                if (!BuildMode.isInBuildMode((Player) e.getDamager())) e.setCancelled(true);
+            }
         }
         if (e.getEntity() instanceof ItemFrame) {
             if (e.getDamager() instanceof Player) {
