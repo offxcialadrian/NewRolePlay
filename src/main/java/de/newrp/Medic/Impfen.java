@@ -69,7 +69,7 @@ public class Impfen implements Listener {
             }
 
             Me.sendMessage(p, "impft " + Script.getName(rightClicked));
-            Krankheit.HUSTEN.setImpfed(Script.getNRPID(rightClicked), TimeUnit.DAYS.toMillis(14));
+            Krankheit.HUSTEN.setImpfed(Script.getNRPID(rightClicked), System.currentTimeMillis() + TimeUnit.DAYS.toMillis(14));
             p.sendMessage("§8[§aImpfen§8] §a» §7Du hast " + Script.getName(rightClicked) + " erfolgreich geimpft.");
             rightClicked.sendMessage("§8[§aImpfen§8] §a» §7Du wurdest von " + Script.getName(p) + " gegen Husten geimpft.");
 
