@@ -514,6 +514,7 @@ public class NewRoleplayMain extends JavaPlugin {
         getCommand("cooldown").setExecutor(new CooldownCommand());
         getCommand("fraktionschat").setExecutor(new FChatCommand());
         getCommand("showtps").setExecutor(new TpsCommand());
+        getCommand("dev").setExecutor(new DevChat());
     }
 
     /**

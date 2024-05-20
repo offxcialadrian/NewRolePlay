@@ -776,3 +776,5 @@ commands:
     aliases: [ fchat, f ]
   showtps:
     description: Shows tps
+  dev:
+    description: dev chat

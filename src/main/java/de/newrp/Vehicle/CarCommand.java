@@ -133,7 +133,7 @@ public class CarCommand implements CommandExecutor, TabCompleter {
                         break;
                     case "teleport":
                         assert player != null;
-                        if (Script.hasRank(player, Rank.SUPPORTER, false)) {
+                        if (Script.hasRank(player, Rank.DEVELOPER, false)) {
                             if (args.length >= 2) {
                                 if (!args[1].startsWith("N-")) args[1] = "N-" + args[1];
                                 Car car = Car.getCarByLicenseplate(args[1]);

@@ -41,7 +41,7 @@ public class RemoveSupport implements CommandExecutor {
             return true;
         }
 
-        if(!Script.hasRank(tg, Rank.SUPPORTER, false)) {
+        if(!Script.hasRank(tg, Rank.DEVELOPER, false)) {
             p.sendMessage(Messages.ERROR + "Der Spieler ist kein Supporter.");
             return true;
         }

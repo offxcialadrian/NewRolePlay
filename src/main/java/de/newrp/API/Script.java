@@ -487,12 +487,15 @@ public class Script {
     }
 
     public static String getName(Player p) {
+        assert p != null;
+        if (Script.getRank(p) == DEVELOPER && SDuty.isSDuty(p)) return "Dev × " + p.getName();
         if (isNRPTeam(p) && SDuty.isSDuty(p)) return "NRP × " + p.getName();
         return p.getName();
     }
 
     public static String getName(OfflinePlayer p) {
         if (p.getPlayer() != null && p.isOnline()) {
+            if (Script.getRank(p) == DEVELOPER && SDuty.isSDuty(p.getPlayer())) return "Dev × " + p.getName();
             if (isNRPTeam(p) && SDuty.isSDuty(p.getPlayer())) return "NRP × " + p.getName();
         }
         return p.getName();

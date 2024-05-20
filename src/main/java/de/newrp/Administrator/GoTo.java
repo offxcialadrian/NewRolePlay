@@ -97,9 +97,8 @@ public class GoTo implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
         Player p = (Player) cs;
-        Navi gp;
 
-        if (!Script.hasRank(p, Rank.SUPPORTER, false)) {
+        if (!Script.hasRank(p, Rank.DEVELOPER, false)) {
             if(!Script.isInTestMode() || !BuildMode.isInBuildMode(p)) {
                 p.sendMessage(Messages.NO_PERMISSION);
                 return true;
@@ -171,9 +170,9 @@ public class GoTo implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        gp = Navi.getNaviByName(args[0].replace("-", " "));
+        Navi gp = Navi.getNaviByName(args[0].replace("-", " "));
 
-        if (gp == null) {
+        if (gp == Navi.STADTHALLE && !args[0].equalsIgnoreCase("stadthalle")) {
             GoTo.Points point = GoTo.Points.getPointByName(args[0]);
             if (point == null) {
                 p.sendMessage(Messages.ERROR + "Punkt nicht gefunden.");
