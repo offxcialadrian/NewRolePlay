@@ -477,12 +477,15 @@ public class Script {
     }
 
     public static String getName(Player p) {
+        assert p != null;
+        if (Script.getRank(p) == DEVELOPER && SDuty.isSDuty(p)) return "Dev × " + p.getName();
         if (isNRPTeam(p) && SDuty.isSDuty(p)) return "NRP × " + p.getName();
         return p.getName();
     }
 
     public static String getName(OfflinePlayer p) {
         if (p.getPlayer() != null && p.isOnline()) {
+            if (Script.getRank(p) == DEVELOPER && SDuty.isSDuty(p.getPlayer())) return "Dev × " + p.getName();
             if (isNRPTeam(p) && SDuty.isSDuty(p.getPlayer())) return "NRP × " + p.getName();
         }
         return p.getName();
@@ -577,11 +580,11 @@ public class Script {
     }
 
     public static Boolean isNRPTeam(Player p) {
-        return getRank(p).getWeight() >= SUPPORTER.getWeight();
+        return getRank(p).getWeight() >= DEVELOPER.getWeight();
     }
 
     public static Boolean isNRPTeam(OfflinePlayer p) {
-        return getRank(p).getWeight() >= SUPPORTER.getWeight();
+        return getRank(p).getWeight() >= DEVELOPER.getWeight();
     }
 
     public static Rank getNextHigherRank(Rank rank) {
@@ -663,7 +666,6 @@ public class Script {
                 i++;
             }
         }
-        Debug.debug(i + " team members with a higher rank are active.");
         return i;
     }
 
@@ -1783,6 +1785,7 @@ public class Script {
     }
 
     public static void addEXP(Player p, int exp) {
+        /// ???
         if (exp > 200) {
             Script.sendTeamMessage(AntiCheatSystem.PREFIX + "Verdacht auf Exp-Cheat bei " + Script.getName(p) + " (+" + exp + " Exp)");
         }

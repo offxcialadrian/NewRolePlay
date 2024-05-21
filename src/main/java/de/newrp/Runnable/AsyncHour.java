@@ -50,7 +50,7 @@ public class AsyncHour extends BukkitRunnable {
             }
 
             for (Beruf.Berufe berufe : Beruf.Berufe.values()) {
-                Stadtkasse.removeStadtkasse(berufe.getCarAmount() * (berufe.getCarType().getTax() * 2), "Leasinggebühren " + berufe.getCarAmount() + "x " + berufe.getName());
+                Stadtkasse.removeStadtkasse(berufe.getLeasedAmount() * (berufe.getCarType().getTax() / 2), "Leasinggebühren " + berufe.getLeasedAmount() + "x " + berufe.getName());
             }
 
             if (Abteilung.Abteilungen.FEUERWEHR.getOnlineMembers().size() >= 2) {

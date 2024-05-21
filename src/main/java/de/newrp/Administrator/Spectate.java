@@ -89,6 +89,13 @@ public class Spectate implements CommandExecutor, Listener {
             return true;
         }
 
+        if(Script.getRank(tg) == Rank.DEVELOPER) {
+            setSpectate(p, tg, false);
+            p.sendMessage(PREFIX + "Du beobachtest nun " + Script.getName(tg) + ".");
+            p.sendMessage(Messages.INFO + "Es wurde keine Meldung ans Team gesendet, da du einen Developer beobachtest.");
+            return true;
+        }
+
         if(!Script.hasRank(p, Rank.ADMINISTRATOR, false) && Script.hasRank(tg, Rank.SUPPORTER, false)) {
             p.sendMessage(Messages.ERROR + "Du kannst kein Teammitglied beobachten.");
 

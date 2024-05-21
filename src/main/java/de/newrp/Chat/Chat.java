@@ -12,6 +12,8 @@ import de.newrp.Player.Passwort;
 import de.newrp.Player.ToggleWhisper;
 import de.newrp.Ticket.Ticket;
 import de.newrp.Ticket.TicketCommand;
+import de.newrp.dependencies.DependencyContainer;
+import de.newrp.features.recommendation.IRecommendationService;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -134,6 +136,10 @@ public class Chat implements Listener {
 
         if (Punish.isMuted(p)) {
             p.sendMessage(Messages.ERROR + "Du bist gemutet!");
+            return;
+        }
+
+        if(DependencyContainer.getContainer().getDependency(IRecommendationService.class).hasActiveChatInput(p)) {
             return;
         }
 

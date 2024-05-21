@@ -109,7 +109,7 @@ public class GetAmmo implements CommandExecutor, TabCompleter {
         }
 
         p.getInventory().addItem(Waffen.setAmmo(w.getWeapon(), magazine, total));
-        p.sendMessage(PREFIX + "Du hast deine " + w.getName() + " mit " + amount + " Kugeln beladen.");
+        p.sendMessage(PREFIX + "Du hast deine " + w.getName() + " mit " + amount + " Kugeln beladen (" + (left - amount) + " Kugeln verbleibend)");
         w.removeWear(id, 1);
         return true;
     }

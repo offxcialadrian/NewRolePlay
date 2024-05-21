@@ -85,13 +85,13 @@ public class BreakinCommand implements CommandExecutor {
                                     if (LockpickHandler.value.get(player) > 0) {
                                         orga.sendMessage(PREFIX + player.getName() + " hat erfolgreich " + LockpickHandler.value.get(player) + "€ aus der Kasse gestohlen.");
                                         Script.addMoney(player, PaymentType.CASH, LockpickHandler.value.get(player));
-                                        Stadtkasse.removeStadtkasse(LockpickHandler.value.get(player), "Raub bei " + rob.getName() + " von " + player.getName());
+                                        Stadtkasse.removeStadtkasse((LockpickHandler.value.get(player)/2), "Raub bei " + rob.getName() + " von " + player.getName());
                                         Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> {
                                             DependencyContainer.getContainer().getDependency(ITakeMoneyService.class).deleteMoney(player);
                                         }, (20 * 60) * 3);
                                         orga.addExp(LockpickHandler.value.get(player) / 60);
                                         DependencyContainer.getContainer().getDependency(ITakeMoneyService.class).addIllegalObtainedMoneyToPlayer(player, LockpickHandler.value.get(player));
-                                        Beruf.Berufe.GOVERNMENT.sendMessage(PREFIX + "Die Stadtkasse ist für den Raub bei " + rob.getName() + " aufgekommen und hat " + LockpickHandler.value.get(player) + "€ verloren.");
+                                        Beruf.Berufe.GOVERNMENT.sendMessage(PREFIX + "Die Stadtkasse ist für den Raub bei " + rob.getName() + " aufgekommen und hat " + (LockpickHandler.value.get(player)/2) + "€ verloren.");
                                         Beruf.Berufe.POLICE.sendMessage(PREFIX + "Der Raub bei " + rob.getName() + " konnte nicht verhindert werden.");
                                         if(MaskHandler.masks.containsKey(player.getUniqueId())) {
                                             Beruf.Berufe.POLICE.sendMessage(PREFIX + "Eine maskierte Person ist für den Raub verantwortlich.");

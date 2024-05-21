@@ -85,6 +85,10 @@ public class TicketCommand implements CommandExecutor {
 
         for (Player team : Script.getNRPTeam()) {
             team.playSound(team.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
+            if(topic != TicketTopic.BUG && Script.getRank(team) == Rank.DEVELOPER) {
+                continue;
+            }
+
             Script.sendClickableMessage(team, PREFIX + "§dNEU! §8× §6#" + i + " §8× §6" + sender.getName() + " §8× §6" + topic.getName(), "/acceptticket " + i, "§6Ticket annehmen.");
         }
     }
@@ -255,7 +259,7 @@ public class TicketCommand implements CommandExecutor {
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         Player p = (Player) cs;
 
-        if (args.length >= 2 && args[0].equalsIgnoreCase("greeting") && Script.hasRank(p, Rank.SUPPORTER, false)) {
+        if (args.length >= 2 && args[0].equalsIgnoreCase("greeting") && Script.hasRank(p, Rank.DEVELOPER, false)) {
             StringBuilder msg = new StringBuilder();
             for (int i = 1; i < args.length; i++) {
                 msg.append(args[i]).append(" ");
@@ -282,7 +286,7 @@ public class TicketCommand implements CommandExecutor {
             return true;
         }
 
-        if (args.length == 1 && args[0].equalsIgnoreCase("greeting") && Script.hasRank(p, Rank.SUPPORTER, false)) {
+        if (args.length == 1 && args[0].equalsIgnoreCase("greeting") && Script.hasRank(p, Rank.DEVELOPER, false)) {
             if (getGreeting(p) == null) {
                 p.sendMessage(Messages.ERROR + "Du hast noch keine Begrüßungsnachricht gesetzt.");
                 return true;
@@ -301,7 +305,7 @@ public class TicketCommand implements CommandExecutor {
             return true;
         }
 
-        if (args.length >= 2 && args[0].equalsIgnoreCase("farewell") && Script.hasRank(p, Rank.SUPPORTER, false)) {
+        if (args.length >= 2 && args[0].equalsIgnoreCase("farewell") && Script.hasRank(p, Rank.DEVELOPER, false)) {
             String msg = "";
             for (int i = 1; i < args.length; i++) {
                 msg += args[i] + " ";

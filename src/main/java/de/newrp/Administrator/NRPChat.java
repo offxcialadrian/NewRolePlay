@@ -37,17 +37,16 @@ public class NRPChat implements CommandExecutor {
 
         if (ONLY_RANK) {
             msg = msg.replace("-r ", "");
-            for (Player all : Bukkit.getOnlinePlayers()) {
-                if (isNRPTeam(all) && Script.hasRank(all, Script.getRank(p), false)) {
+            for (Player all : Script.getNRPTeam()) {
+                if(Script.getRank(all) == Rank.DEVELOPER) continue;
+                if (Script.hasRank(all, Script.getRank(p), false)) {
                     all.sendMessage("§c§lR§5§lNRP » §5" + Messages.RANK_PREFIX(p) + ": §3" + msg);
                 }
             }
         } else {
-            for (Player all : Bukkit.getOnlinePlayers()) {
-                if (isNRPTeam(all)) {
-                    all.sendMessage("§5§lNRP » §5" + Messages.RANK_PREFIX(p) + ": §3" + msg);
-
-                }
+            for (Player all : Script.getNRPTeam()) {
+                if (Script.getRank(all) == Rank.DEVELOPER) continue;
+                all.sendMessage("§5§lNRP » §5" + Messages.RANK_PREFIX(p) + ": §3" + msg);
             }
         }
 

@@ -26,7 +26,7 @@ public class House {
     public static final HashMap<Integer, List<House>> PLAYER_HOUSES = new HashMap<>();
     public static final int MAX_DRUGS = 100;
     public static final int MAX_SNACKS = 250;
-    public static final int MAX_MONEY = 10000;
+    public static final int MAX_MONEY = 1000000000;
 
     public static HashMap<Integer, ArrayList<ItemStack>> BRIEFKASTEN = new HashMap<>();
 

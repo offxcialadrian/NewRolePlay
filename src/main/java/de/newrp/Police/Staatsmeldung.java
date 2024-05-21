@@ -23,7 +23,7 @@ public class Staatsmeldung implements CommandExecutor {
             return true;
         }
 
-        if (Beruf.getBeruf(p) != Beruf.Berufe.POLICE) {
+        if (Beruf.getBeruf(p) != Beruf.Berufe.POLICE && Beruf.getBeruf(p) == Beruf.Berufe.GOVERNMENT) {
             p.sendMessage(Messages.ERROR + "Du bist kein Polizist!");
             return true;
         }
@@ -38,7 +38,7 @@ public class Staatsmeldung implements CommandExecutor {
             return true;
         }
 
-        if (!Beruf.hasAbteilung(p, Abteilung.Abteilungen.ABTEILUNGSLEITUNG, Abteilung.Abteilungen.PRESSE)) {
+        if (!Beruf.hasAbteilung(p, Abteilung.Abteilungen.ABTEILUNGSLEITUNG, Abteilung.Abteilungen.PRESSE, Abteilung.Abteilungen.INNENMINISTERIUM)) {
             p.sendMessage(Messages.ERROR + "Du bist nicht in der Presseabteilung!");
             return true;
         }

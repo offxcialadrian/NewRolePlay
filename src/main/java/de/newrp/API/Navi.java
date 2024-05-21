@@ -103,6 +103,7 @@ public enum Navi {
     public static Navi getNaviByName(String name) {
         for (Navi n : values()) {
             if (n.getName().equalsIgnoreCase(name)) return n;
+            if(n.getName().equalsIgnoreCase(name.replace(" ", "-"))) return n;
         }
         return null;
     }

@@ -771,9 +771,14 @@ commands:
     description: grants a vehicleslot
   cooldown:
     description: shows the players cooldowns
-    aliases: [ cooldowns, cd ]
+    aliases: [ cooldowns, cd, cds ]
   fraktionschat:
     description: alias for /b & /o
     aliases: [ fchat, f ]
   showtps:
     description: Shows tps
+  dev:
+    description: dev chat
+  resetcooldown:
+    aliases: [ resetcd, resetcooldowns, resetcds ]
+    description: resets the cooldown

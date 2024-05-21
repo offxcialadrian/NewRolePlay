@@ -64,6 +64,10 @@ public class Trash implements Listener {
 
     @EventHandler
     public void onClick(InventoryClickEvent e) {
+        if(e.getClickedInventory() == null) {
+            return;
+        }
+
         if (e.getView().getTitle().equals("§7Mülleimer") && !e.getClickedInventory().getType().equals(InventoryType.PLAYER)) {
             if (e.getCurrentItem() != null && !e.getCurrentItem().getType().equals(Material.AIR)) {
                 if (e.getSlot() > e.getView().getTopInventory().getSize()) return;

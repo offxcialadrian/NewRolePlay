@@ -3,6 +3,8 @@ package de.newrp.Player;
 import de.newrp.API.*;
 import de.newrp.NewRoleplayMain;
 import de.newrp.House.House;
+import de.newrp.dependencies.DependencyContainer;
+import de.newrp.features.recommendation.IRecommendationService;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -117,6 +119,8 @@ public class Personalausweis implements CommandExecutor, Listener {
                     Licenses.PERSONALAUSWEIS.grant(id);
                     Achievement.PERSONALAUSWEIS.grant(p);
                     p.sendMessage(PREFIX + "Dein Personalausweis ist fertig.");
+                    final IRecommendationService recommendationService = DependencyContainer.getContainer().getDependency(IRecommendationService.class);
+                    recommendationService.openInventoryForRecommendation(p);
                 }
             } else {
                 Inventory inv = p.getServer().createInventory(null, 9, "§3Personalausweis");

@@ -56,6 +56,11 @@ import de.newrp.features.emergencycall.commands.*;
 import de.newrp.features.emergencycall.impl.EmergencyCallService;
 import de.newrp.features.emergencycall.listener.EmergencyCallInventoryListener;
 import de.newrp.features.emergencycall.listener.EmergencyCallQuitListener;
+import de.newrp.features.recommendation.IRecommendationService;
+import de.newrp.features.recommendation.impl.RecommendationService;
+import de.newrp.features.recommendation.listener.RecommendationChatListener;
+import de.newrp.features.recommendation.listener.RecommendationInventoryClickListener;
+import de.newrp.features.recommendation.listener.RecommendationInventoryCloseListener;
 import de.newrp.features.roadblocks.IFactionBlockService;
 import de.newrp.features.roadblocks.commands.RoadBlockCommand;
 import de.newrp.features.roadblocks.commands.SprungtuchCommand;
@@ -195,8 +200,8 @@ public class NewRoleplayMain extends JavaPlugin {
         builder.addEventListeners(new SupportListener());
         builder.build();
 
-        Script.executeUpdate("DELETE FROM log WHERE time > DATE_SUB(CURDATE(), INTERVAL 45 DAY);");
-        Script.executeUpdate("DELETE FROM stadtkasse WHERE time > DATE_SUB(CURDATE(), INTERVAL 30 DAY);");
+        Script.executeUpdate("DELETE FROM log WHERE time < NOW() - INTERVAL 45 DAY;");
+        Script.executeUpdate("DELETE FROM stadtkasse WHERE time < NOW() - INTERVAL 45 DAY;");
 
         Bukkit.getConsoleSender().sendMessage("§cNRP §8× §astarting complete..");
         Bukkit.getConsoleSender().sendMessage("§cNRP §8× §aViel Erfolg heute..");
@@ -511,6 +516,8 @@ public class NewRoleplayMain extends JavaPlugin {
         getCommand("cooldown").setExecutor(new CooldownCommand());
         getCommand("fraktionschat").setExecutor(new FChatCommand());
         getCommand("showtps").setExecutor(new TpsCommand());
+        getCommand("dev").setExecutor(new DevChat());
+        getCommand("resetcooldown").setExecutor(new ResetCooldownCommand());
     }
 
     /**
@@ -661,6 +668,9 @@ public class NewRoleplayMain extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new StartTransport(), this);
         Bukkit.getPluginManager().registerEvents(new Tabakplantage(), this);
         Bukkit.getPluginManager().registerEvents(new MaskHandler(), this);
+        Bukkit.getPluginManager().registerEvents(new RecommendationInventoryClickListener(), this);
+        Bukkit.getPluginManager().registerEvents(new RecommendationChatListener(), this);
+        Bukkit.getPluginManager().registerEvents(new RecommendationInventoryCloseListener(), this);
     }
 
     /**
@@ -676,6 +686,7 @@ public class NewRoleplayMain extends JavaPlugin {
         DependencyContainer.getContainer().add(IFactionBlockService.class, new FactionBlockService());
         DependencyContainer.getContainer().add(IScoreboardService.class, new ScoreboardService());
         DependencyContainer.getContainer().add(ITakeMoneyService.class, new TakeMoneyService());
+        DependencyContainer.getContainer().add(IRecommendationService.class, new RecommendationService());
     }
 
     /**

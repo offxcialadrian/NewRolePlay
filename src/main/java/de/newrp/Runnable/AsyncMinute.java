@@ -2,10 +2,12 @@ package de.newrp.Runnable;
 
 import de.newrp.API.*;
 import de.newrp.Administrator.SDuty;
+import de.newrp.Administrator.Spectate;
 import de.newrp.Chat.Me;
 import de.newrp.Entertainment.Lotto;
 import de.newrp.Gangwar.GangwarCommand;
 import de.newrp.Government.Wahlen;
+import de.newrp.NewRoleplayMain;
 import de.newrp.News.BreakingNews;
 import de.newrp.Organisationen.MaskHandler;
 import de.newrp.Player.AFK;
@@ -124,11 +126,14 @@ public class AsyncMinute extends BukkitRunnable {
             }
             if (amount > 0) {
                 for (Player nrp : Script.getNRPTeam()) {
+                    if(Script.getRank(nrp) == Rank.DEVELOPER) continue;
                     Title.sendTitle(nrp, 20, 100, 20, "§8[§6Tickets§8] §6" + Messages.ARROW + " §7Es sind noch " + amount + " Tickets offen.");
                     nrp.sendMessage("§8[§6Tickets§8] §6" + Messages.ARROW + " §7Es sind noch " + amount + " Tickets offen.");
                     nrp.playSound(nrp.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
                     nrp.sendMessage(Messages.INFO + "Bitte beachte, dass die Bearbeitung von Tickets eine hohe Priorität hat.");
-                    if(SDuty.isSDuty(nrp)) nrp.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 12 * 20, 2, false, false));
+                    Bukkit.getScheduler().runTask(NewRoleplayMain.getInstance(), () -> {
+                        if(SDuty.isSDuty(nrp)) nrp.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 12 * 20, 2, false, false));
+                    });
                 }
             }
             /*for(Entity e : Script.WORLD.getEntities()) {
@@ -168,10 +173,10 @@ public class AsyncMinute extends BukkitRunnable {
             Script.increasePlayTime(p);
             if (Script.getRandom(1, 10) == 1) {
                 if (Krankheit.HUSTEN.isInfected(Script.getNRPID(p))) {
-                    Me.sendMessage(p, "hustet.");
+                    if(!Spectate.isSpectating(p)) Me.sendMessage(p, "hustet.");
                     for (Player p2 : Bukkit.getOnlinePlayers()) {
                         if (p2.getLocation().distance(p.getLocation()) <= 5) {
-                            if (!Krankheit.HUSTEN.isInfected(Script.getNRPID(p2)) && !Krankheit.HUSTEN.isImpfed(Script.getNRPID(p2)))
+                            if (!Krankheit.HUSTEN.isInfected(Script.getNRPID(p2)) && !Krankheit.HUSTEN.isImpfed(Script.getNRPID(p2)) && !SDuty.isSDuty(p))
                                 Krankheit.HUSTEN.add(Script.getNRPID(p2));
                         }
                     }

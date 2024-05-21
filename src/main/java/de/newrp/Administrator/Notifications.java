@@ -120,19 +120,9 @@ public class Notifications implements CommandExecutor, Listener {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
         Player p = (Player) cs;
-        if(Team.getTeam(p) == null || Team.getTeam(p) != Team.Teams.ENTWICKLUNG) {
-            Bukkit.getLogger().info(Team.getTeam(p).getName() + "");
-            if (!Script.hasRank(p, Rank.SUPPORTER, false)) {
-                p.sendMessage(Messages.NO_PERMISSION);
-                return true;
-            }
-        }
-
-        if(Team.getTeam(p) != Team.Teams.ENTWICKLUNG) {
-            if (!SDuty.isSDuty(p)) {
-                p.sendMessage(Messages.NO_SDUTY);
-                return true;
-            }
+        if (!Script.hasRank(p, Rank.DEVELOPER, false)) {
+            p.sendMessage(Messages.NO_PERMISSION);
+            return true;
         }
 
         if (args.length != 0) {
@@ -202,6 +192,7 @@ public class Notifications implements CommandExecutor, Listener {
         if (e.getMessage().startsWith("/whisper")) return;
         if (e.getMessage().startsWith("/rnrp")) return;
         if (e.getMessage().startsWith("/nrp")) return;
+        if (e.getMessage().startsWith("/spec")) return;
         if (e.getMessage().startsWith("/tc")) return;
         Log.COMMAND.write(e.getPlayer(), e.getMessage());
         if (e.getMessage().startsWith("/op") || e.getMessage().startsWith("/deop") || e.getMessage().startsWith("/gamemode") || e.getMessage().startsWith("/punish") || e.getMessage().startsWith("/nrp") || e.getMessage().startsWith("/setsupporter") ||

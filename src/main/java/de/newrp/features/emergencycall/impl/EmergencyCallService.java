@@ -6,6 +6,7 @@ import de.newrp.API.Messages;
 import de.newrp.API.Navi;
 import de.newrp.API.Route;
 import de.newrp.API.Script;
+import de.newrp.Administrator.SDuty;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Berufe.Duty;
 import de.newrp.NewRoleplayMain;
@@ -157,6 +158,7 @@ public class EmergencyCallService implements IEmergencyCallService {
         return faction.getBeruf().keySet().stream()
                 .sorted(Comparator.comparingDouble((a) -> Objects.requireNonNull(Bukkit.getPlayer(a)).getLocation().distance(location)))
                 .filter(faction::isDuty)
+                .filter(f -> !SDuty.isSDuty(f))
                 .limit(2)
                 .map(Bukkit::getPlayer)
                 .collect(Collectors.toList());

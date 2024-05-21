@@ -12,12 +12,8 @@ import de.newrp.Police.Fahndung;
 import de.newrp.NewRoleplayMain;
 import de.newrp.dependencies.DependencyContainer;
 import de.newrp.discord.IJdaService;
-import de.newrp.discord.impl.JdaService;
 import de.newrp.features.scoreboards.IScoreboardService;
-import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.JDA;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
+import de.newrp.features.recommendation.IRecommendationService;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -39,6 +35,7 @@ import org.bukkit.event.server.TabCompleteEvent;
 import org.bukkit.help.HelpTopic;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -274,8 +271,16 @@ public class Utils implements Listener {
 
 
         p.getInventory().remove(Material.PLAYER_HEAD);
-        if (Script.hasRank(p, Rank.SUPPORTER, false)) {
+        if (Script.hasRank(p, Rank.DEVELOPER, false)) {
             Script.team.add(p);
+
+            final Rank rank = Script.getRank(p);
+            if(rank == Rank.DEVELOPER || rank == Rank.ADMINISTRATOR || rank == Rank.OWNER) {
+                // Adding permissions to a developer, administrator or owner so they can use /tps and /timings
+                final PermissionAttachment permissionAttachment = p.addAttachment(NewRoleplayMain.getInstance());
+                permissionAttachment.setPermission("bukkit.command.timings", true);
+                permissionAttachment.setPermission("bukkit.command.tps", true);
+            }
         }
 
         Bukkit.getScheduler().runTaskAsynchronously(NewRoleplayMain.getInstance(), () -> {
@@ -302,6 +307,7 @@ public class Utils implements Listener {
             e.getPlayer().sendMessage(Script.PREFIX + "§7Willkommen zurück auf §eNewRP§7!");
             if (Script.hasRank(p, Rank.MODERATOR, false))
                 e.getPlayer().sendMessage(Messages.INFO + "Aufgrund deines Status als " + Script.getRank(p).getName(p) + " hast du automatisch einen Premium-Account.");
+            Script.executeUpdate("DELETE FROM last_disconnect WHERE nrp_id = " + Script.getNRPID(p));
             Script.sendActionBar(e.getPlayer(), "§7Willkommen zurück auf §eNewRP§7!");
             p.sendMessage(TippOfTheDay.PREFIX + TippOfTheDay.getRandomTipp());
             if(Licenses.PERSONALAUSWEIS.hasLicense(Script.getNRPID(p))) {
@@ -313,6 +319,12 @@ public class Utils implements Listener {
                         Script.addEXP(p, 500);
                     }
                 }
+
+                final IRecommendationService recommendationService = DependencyContainer.getContainer().getDependency(IRecommendationService.class);
+                if(!recommendationService.hasRecommendation(p)) {
+                    recommendationService.openInventoryForRecommendation(p);
+                }
+
             }
 
             for (Organisation o : Organisation.values()) {
@@ -532,7 +544,11 @@ public class Utils implements Listener {
     @EventHandler
     public void FrameEntity(EntityDamageByEntityEvent e) {
         if (e.getEntity() instanceof ArmorStand) {
-            if (!BuildMode.isInBuildMode((Player) e.getDamager())) e.setCancelled(true);
+            if(!(e.getDamager() instanceof Player)) {
+                e.setCancelled(true);
+            } else {
+                if (!BuildMode.isInBuildMode((Player) e.getDamager())) e.setCancelled(true);
+            }
         }
         if (e.getEntity() instanceof ItemFrame) {
             if (e.getDamager() instanceof Player) {
@@ -776,7 +792,7 @@ public class Utils implements Listener {
                     Script.sendActionBar(e.getPlayer(), Messages.ERROR + "Der Befehl wurde nicht gefunden.");
                     return;
                 } else {
-                    e.getPlayer().sendMessage(Messages.INFO + "Du konntest diesen Befehl nur ausführen, da du Server-Owner bist.");
+                    e.getPlayer().sendMessage(Messages.INFO + "Du konntest diesen Befehl nur ausführen, da du Serverinhaber bist.");
                     return;
                 }
             }
@@ -790,7 +806,7 @@ public class Utils implements Listener {
                         Script.sendActionBar(e.getPlayer(), Messages.ERROR + "Der Befehl wurde nicht gefunden.");
                         return;
                     } else {
-                        e.getPlayer().sendMessage(Messages.INFO + "Du konntest diesen Befehl nur ausführen, da du Server-Owner bist.");
+                        e.getPlayer().sendMessage(Messages.INFO + "Du konntest diesen Befehl nur ausführen, da du Serverinhaber bist.");
                         return;
                     }
                 }
