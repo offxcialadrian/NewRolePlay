@@ -13,6 +13,7 @@ import org.bukkit.block.data.type.Door;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -24,6 +25,8 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -79,6 +82,28 @@ public class LabBreakIn implements CommandExecutor, Listener {
         removePotion(playerInventory);
         Bukkit.getScheduler().cancelTask(schedulerID);
         if (!brewingStandLocation.equals(putLocation)) {
+            progress = 0;
+            lastPut = 0;
+            schedulerID = 0;
+            putLocation = null;
+            brokeIn = null;
+            Organisation.getOrganisation(p).sendMessage(Messages.ERROR + Script.getName(p) + " hat die Zutat in den falschen Braustand gefüllt.");
+            Beruf.Berufe.POLICE.sendMessage(PREFIX + "Es wurde ein Fehler bei der Herstellung von Exiyty gemacht");
+            for (Entity nearbyEntity : brewingStandLocation.getNearbyEntities(15, 7, 15)) {
+                if (!(nearbyEntity instanceof Player)) {
+                    continue;
+                }
+
+                final Player nearbyPlayer = (Player) nearbyEntity;
+                nearbyPlayer.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 60, 1));
+                nearbyPlayer.playSound(brewingStandLocation, Sound.ENTITY_GENERIC_EXPLODE, 10f, 1f);
+                nearbyPlayer.sendMessage("§8§l§k!!!§r §8§l§oEs wurde ein Fehler gemacht bei der Herstellung §8§l§k!!!§r");
+                nearbyPlayer.damage(10f);
+                if(Script.getRandom(1, 10) == 1) {
+                    Krankheit.HUSTEN.add(Script.getNRPID(p));
+                    nearbyPlayer.sendMessage("§8§l§oDu fühlst dich plötzlich krank");
+                }
+            }
             return;
         }
         long currentTime = System.currentTimeMillis();
@@ -222,7 +247,7 @@ public class LabBreakIn implements CommandExecutor, Listener {
         toggleDoorState(doorTwoLocation.getBlock(), true, false);
 
         new Route(p.getName(), Script.getNRPID(p), p.getLocation(), new Location(Script.WORLD, 364, 69, 1310, -182.26685f, 27.894108f), PREFIX + "Schütte nun die Chemikalien zusammen um Exiyty zu bekommen.", () -> Script.performCommand(p, "mixingredients")).start();
-        p.sendMessage(PREFIX + "Du bist in das Labor eingebrochen.");
+        DOOR_BROKE_TIMES.clear();
         Beruf.Berufe.POLICE.sendMessage(PREFIX + "Es wurde ein Einbruch im Labor gemeldet!");
         Organisation.getOrganisation(p).sendMessage(PREFIX + "§6" + Script.getName(p) + " §7ist in das Labor eingebrochen.");
     }
@@ -261,6 +286,16 @@ public class LabBreakIn implements CommandExecutor, Listener {
         Location blockLocation = block.getLocation();
         Location doorLocation = getDoorLocation(blockLocation);
         if (doorLocation == null) return;
+
+        if(DOOR_BROKE_TIMES.size() == 1) {
+            final long timeAgo = DOOR_BROKE_TIMES.values().stream().findFirst().orElseGet(() -> 0L);
+            if(System.currentTimeMillis() - timeAgo > TimeUnit.MINUTES.toMillis(3)) {
+                Debug.debug("Restoring defaults, because buggy :(");
+                DOOR_BROKE_TIMES.clear();
+            }
+        }
+
+        Debug.debug("Breaking lab door " + (int) doorLocation.getX() + "/" + (int) doorLocation.getY() + "/" + (int) doorLocation.getZ());
         boolean cooldown_check = progress != 0;
         long difference = 0;
         if (!cooldown_check) {
@@ -271,8 +306,10 @@ public class LabBreakIn implements CommandExecutor, Listener {
             p.sendMessage(PREFIX + "Das Labor hat derzeit keine Materialien zur Verfügung. (" + TimeUnit.MILLISECONDS.toMinutes((3 * 60 * 60 * 1000) - difference) + " Minuten verbleibend)");
             return;
         }
+
         long currentTime = System.currentTimeMillis();
         DOOR_BROKE_TIMES.put(doorLocation, currentTime);
+        Debug.debug("Door broke at " + currentTime + " by " + p.getName() + " size is now at " + DOOR_BROKE_TIMES.size());
         if (!checkDoorBreak(p)) {
             if (DOOR_BROKE_TIMES.size() > 1) {
                 p.sendMessage(PREFIX + "Der Einbruch ist fehlgeschlagen.");
@@ -281,6 +318,7 @@ public class LabBreakIn implements CommandExecutor, Listener {
                 return;
             }
         }
+
         e.setCancelled(true);
         inv.getItemInMainHand().setAmount(inv.getItemInMainHand().getAmount()-1);
     }
@@ -296,8 +334,12 @@ public class LabBreakIn implements CommandExecutor, Listener {
                 doorTwoBrokeTime = time;
             }
         }
+        Debug.debug("Door one broke at " + doorOneBrokeTime + " and door two broke at " + doorTwoBrokeTime + ", difference is " + Math.abs(doorOneBrokeTime - doorTwoBrokeTime));
         long timeDifference = Math.abs(doorOneBrokeTime - doorTwoBrokeTime);
-        if (timeDifference > 30000) return false;
+        if (timeDifference > 30000) {
+            Debug.debug("Time difference is too high (" + timeDifference + ")");
+            return false;
+        }
         breakDoors(p);
         return true;
     }

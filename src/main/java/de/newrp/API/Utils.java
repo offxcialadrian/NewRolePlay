@@ -39,6 +39,7 @@ import org.bukkit.event.server.TabCompleteEvent;
 import org.bukkit.help.HelpTopic;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -276,6 +277,14 @@ public class Utils implements Listener {
         p.getInventory().remove(Material.PLAYER_HEAD);
         if (Script.hasRank(p, Rank.DEVELOPER, false)) {
             Script.team.add(p);
+
+            final Rank rank = Script.getRank(p);
+            if(rank == Rank.DEVELOPER || rank == Rank.ADMINISTRATOR || rank == Rank.OWNER) {
+                // Adding permissions to a developer, administrator or owner so they can use /tps and /timings
+                final PermissionAttachment permissionAttachment = p.addAttachment(NewRoleplayMain.getInstance());
+                permissionAttachment.setPermission("bukkit.command.timings", true);
+                permissionAttachment.setPermission("bukkit.command.tps", true);
+            }
         }
 
         Bukkit.getScheduler().runTaskAsynchronously(NewRoleplayMain.getInstance(), () -> {

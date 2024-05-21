@@ -188,6 +188,11 @@ public class GoTo implements CommandExecutor, TabCompleter {
 
         }
 
+        if(gp == null) {
+            p.sendMessage(Messages.ERROR + "Punkt nicht gefunden.");
+            return true;
+        }
+
         p.sendMessage(PREFIX + "Du hast dich zu " + gp.getName() + " teleportiert.");
         Script.sendTeamMessage(p, ChatColor.YELLOW, "hat sich zu " + gp.getName() + " teleportiert.", true);
         Teleport.back.put(p, p.getLocation());

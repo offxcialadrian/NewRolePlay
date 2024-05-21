@@ -676,7 +676,6 @@ public class Script {
                 i++;
             }
         }
-        Debug.debug(i + " team members with a higher rank are active.");
         return i;
     }
 
@@ -1796,6 +1795,7 @@ public class Script {
     }
 
     public static void addEXP(Player p, int exp) {
+        /// ???
         if (exp > 200) {
             Script.sendTeamMessage(AntiCheatSystem.PREFIX + "Verdacht auf Exp-Cheat bei " + Script.getName(p) + " (+" + exp + " Exp)");
         }

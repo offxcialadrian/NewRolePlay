@@ -49,7 +49,7 @@ public class CheckHealthCommand implements CommandExecutor {
             }
         }
 
-        player.sendMessage(PREFIX + Script.getName(targetPlayer) + "' Zustand:");
+        player.sendMessage(PREFIX + Script.getName(targetPlayer) + "'´s Zustand:");
         player.spigot().sendMessage(HealthCommand.health(targetPlayer));
         player.spigot().sendMessage(HealthCommand.blood(targetPlayer));
         player.spigot().sendMessage(HealthCommand.hunger(targetPlayer));
@@ -59,7 +59,7 @@ public class CheckHealthCommand implements CommandExecutor {
 
         if(SDuty.isSDuty(player)) {
             for(Krankheit k : Krankheit.values()) {
-                player.sendMessage(PREFIX + k.getName() + ": " + k.isInfected(Script.getNRPID(targetPlayer)));
+                player.sendMessage(PREFIX + k.getName() + ": " + (k.isInfected(Script.getNRPID(targetPlayer)) ? "§aJa" : "§cNein"));
             }
         }
 
