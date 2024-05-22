@@ -141,6 +141,8 @@ public class TeamSpeak {
             Rank rank = Script.getRank(Script.getOfflinePlayer(id));
             switch (rank) {
                 case OWNER:
+                    addToServerGroup(TeamspeakServerGroup.CEO, dbID);
+                    addToServerGroup(TeamspeakServerGroup.NRP_SERVERTEAM, dbID);
                 case ADMINISTRATOR:
                     addToServerGroup(TeamspeakServerGroup.ADMINISTRATOR, dbID);
                     addToServerGroup(TeamspeakServerGroup.NRP_SERVERTEAM, dbID);
@@ -218,6 +220,8 @@ public class TeamSpeak {
             Rank rank = Script.getRank(Script.getOfflinePlayer(id));
             switch (rank) {
                 case OWNER:
+                    addToServerGroup(TeamspeakServerGroup.CEO, dbID);
+                    addToServerGroup(TeamspeakServerGroup.NRP_SERVERTEAM, dbID);
                 case ADMINISTRATOR:
                     addToServerGroup(TeamspeakServerGroup.ADMINISTRATOR, dbID);
                     addToServerGroup(TeamspeakServerGroup.NRP_SERVERTEAM, dbID);
@@ -229,6 +233,9 @@ public class TeamSpeak {
                 case SUPPORTER:
                     addToServerGroup(TeamspeakServerGroup.SUPPORTER, dbID);
                     addToServerGroup(TeamspeakServerGroup.NRP_SERVERTEAM, dbID);
+                    break;
+                case DEVELOPER:
+                    addToServerGroup(TeamspeakServerGroup.DEV, dbID);
                     break;
             }
 
