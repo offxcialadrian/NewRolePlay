@@ -181,6 +181,11 @@ public class Strassenwartung implements CommandExecutor, Listener {
         SCORE.put(p.getName(), SCORE.get(p.getName()) - 1);
         p.sendMessage(PREFIX + "Du hast noch " + SCORE.get(p.getName()) + " Straßen zu reparieren.");
         Construction construction1 = Construction.getRandomConstruction();
+        while(construction1 == null) {
+            Debug.debug("Construction Zone is null");
+            construction1 = Construction.getRandomConstruction();
+        }
+        Debug.debug("Getting construction: " + construction1.getName());
         construction.put(p.getName(), construction1);
         CONSTRUCTION.put(construction.get(p.getName()), p.getName());
         p.sendMessage(PREFIX + "Nächste Baustelle: " + construction.get(p.getName()).getName());

@@ -84,11 +84,11 @@ public class TicketCommand implements CommandExecutor {
         int i = queue.size();
 
         for (Player team : Script.getNRPTeam()) {
-            team.playSound(team.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
             if(topic != TicketTopic.BUG && Script.getRank(team) == Rank.DEVELOPER) {
                 continue;
             }
 
+            team.playSound(team.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
             Script.sendClickableMessage(team, PREFIX + "§dNEU! §8× §6#" + i + " §8× §6" + sender.getName() + " §8× §6" + topic.getName(), "/acceptticket " + i, "§6Ticket annehmen.");
         }
     }
@@ -332,7 +332,7 @@ public class TicketCommand implements CommandExecutor {
             return true;
         }
 
-        if (args.length == 1 && args[0].equalsIgnoreCase("farewell") && Script.hasRank(p, Rank.SUPPORTER, false)) {
+        if (args.length == 1 && args[0].equalsIgnoreCase("farewell") && Script.hasRank(p, Rank.DEVELOPER, false)) {
             if (getFarewell(p) == null) {
                 p.sendMessage(Messages.ERROR + "Du hast noch keine Verabschiedungsnachricht gesetzt.");
                 return true;

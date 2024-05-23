@@ -59,7 +59,7 @@ public class BreakinCommand implements CommandExecutor {
                             return true;
                         }
 
-                        cooldowns.put(orga, System.currentTimeMillis() + 3 * 60 * 60 * 1000);
+                        cooldowns.put(orga, System.currentTimeMillis() + TimeUnit.HOURS.toMillis(2) + TimeUnit.MINUTES.toMillis(30));
 
                         Beruf.Berufe.POLICE.sendMessage(PREFIX + "Ein Einbruch bei " + rob.getName() + " wurde gemeldet.");
                         orga.sendMessage(PREFIX + player.getName() + " beginnt bei " + rob.getName() + " aufzubrechen.");
@@ -88,7 +88,7 @@ public class BreakinCommand implements CommandExecutor {
                                         Stadtkasse.removeStadtkasse((LockpickHandler.value.get(player)/2), "Raub bei " + rob.getName() + " von " + player.getName());
                                         Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> {
                                             DependencyContainer.getContainer().getDependency(ITakeMoneyService.class).deleteMoney(player);
-                                        }, (20 * 60) * 3);
+                                        }, (20 * 60) * 7);
                                         orga.addExp(LockpickHandler.value.get(player) / 60);
                                         DependencyContainer.getContainer().getDependency(ITakeMoneyService.class).addIllegalObtainedMoneyToPlayer(player, LockpickHandler.value.get(player));
                                         Beruf.Berufe.GOVERNMENT.sendMessage(PREFIX + "Die Stadtkasse ist für den Raub bei " + rob.getName() + " aufgekommen und hat " + (LockpickHandler.value.get(player)/2) + "€ verloren.");
