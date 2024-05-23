@@ -56,6 +56,8 @@ import de.newrp.features.emergencycall.commands.*;
 import de.newrp.features.emergencycall.impl.EmergencyCallService;
 import de.newrp.features.emergencycall.listener.EmergencyCallInventoryListener;
 import de.newrp.features.emergencycall.listener.EmergencyCallQuitListener;
+import de.newrp.features.playertracker.IPlayerTrackerService;
+import de.newrp.features.playertracker.impl.PlayerTrackerService;
 import de.newrp.features.recommendation.IRecommendationService;
 import de.newrp.features.recommendation.impl.RecommendationService;
 import de.newrp.features.recommendation.listener.RecommendationChatListener;
@@ -84,6 +86,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.sql.Connection;
+import java.sql.Statement;
 import java.util.Arrays;
 
 public class NewRoleplayMain extends JavaPlugin {
@@ -203,6 +206,16 @@ public class NewRoleplayMain extends JavaPlugin {
 
         Bukkit.getConsoleSender().sendMessage("§cNRP §8× §astarting complete..");
         Bukkit.getConsoleSender().sendMessage("§cNRP §8× §aViel Erfolg heute..");
+    }
+
+    @Override
+    public void onDisable() {
+        final IPlayerTrackerService playerTrackerService = DependencyContainer.getContainer().getDependency(IPlayerTrackerService.class);
+        try(final Statement statement = NewRoleplayMain.mainConnection.createStatement()) {
+            statement.executeUpdate("INSERT INTO player_tracker(highest_player_count, unique_player_count, timestamp) VALUES(" + playerTrackerService.getHighestPlayerCount() + ", " + playerTrackerService.getUniquePlayerSize() + ", " + playerTrackerService.getTimestamp() + ")");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /***
@@ -684,6 +697,7 @@ public class NewRoleplayMain extends JavaPlugin {
         DependencyContainer.getContainer().add(IFactionBlockService.class, new FactionBlockService());
         DependencyContainer.getContainer().add(ITakeMoneyService.class, new TakeMoneyService());
         DependencyContainer.getContainer().add(IRecommendationService.class, new RecommendationService());
+        DependencyContainer.getContainer().add(IPlayerTrackerService.class, new PlayerTrackerService());
     }
 
     /**

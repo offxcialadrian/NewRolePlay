@@ -13,6 +13,7 @@ import de.newrp.NewRoleplayMain;
 import de.newrp.dependencies.DependencyContainer;
 import de.newrp.discord.IJdaService;
 import de.newrp.discord.impl.JdaService;
+import de.newrp.features.playertracker.IPlayerTrackerService;
 import de.newrp.features.recommendation.IRecommendationService;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
@@ -263,6 +264,7 @@ public class Utils implements Listener {
         Script.disableVoiceChat(p);
         try {
             MaskHandler.clearMasksOutOfEnderchest(p);
+            DependencyContainer.getContainer().getDependency(IPlayerTrackerService.class).increaseUniquePlayerSize(p);
         } catch(final Exception exception) {
             NewRoleplayMain.handleError(exception);
         }
