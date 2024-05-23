@@ -64,6 +64,7 @@ public class Impfen implements Listener {
             ItemStack is = inv.getItemInMainHand();
             if (is.getAmount() > 1) {
                 is.setAmount(is.getAmount() - 1);
+                inv.setItemInMainHand(is);
             } else {
                 inv.setItemInMainHand(new ItemStack(Material.AIR));
             }
