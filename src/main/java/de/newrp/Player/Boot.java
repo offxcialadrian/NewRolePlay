@@ -55,6 +55,8 @@ public class Boot implements CommandExecutor {
                     final double distanceToBoatOnJva = p.getLocation().distance(jvaHologram);
                     if(distanceToBoatOnJva > 6 && distanceToBoatOnJva < 60) {
                         p.sendMessage("§8[§9Boot§8] §9» §7Du hast dich zu weit vom Boot entfernt.");
+                        cancel();
+                        LEVEL.remove(p.getName());
                         return;
                     }
 
