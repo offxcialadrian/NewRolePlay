@@ -68,7 +68,7 @@ public class AsyncHour extends BukkitRunnable {
             }
 
             try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
-                 ResultSet rs = stmt.executeQuery("SELECT * FROM loans WHERE time < " + System.currentTimeMillis())) {
+                 ResultSet rs = stmt.executeQuery("SELECT userID, amount, zins, id FROM loans WHERE time < " + System.currentTimeMillis())) {
                 while (rs.next()) {
                     OfflinePlayer p = Script.getOfflinePlayer(rs.getInt("userID"));
                     int amount = rs.getInt("amount");
@@ -139,6 +139,7 @@ public class AsyncHour extends BukkitRunnable {
                 }
                 if (i == 0) continue;
                 o.addExp(i);
+                o.sendMessage("§8[§eOrganisation§8] §e" + Messages.ARROW + " §7Deine Organisation hat §e" + i + " §7Erfahrungspunkte durch §ed" + i + " aktive Mitglieder §7erhalten.");
             }
 
             for (Player all : Bukkit.getOnlinePlayers()) {
