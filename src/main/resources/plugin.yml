@@ -781,3 +781,5 @@ commands:
   resetcooldown:
     aliases: [ resetcd, resetcooldowns, resetcds ]
     description: resets the cooldown
+  gameboost:
+    description: activates the gameboost system

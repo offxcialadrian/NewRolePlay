@@ -186,7 +186,7 @@ public class Script {
             if (Beruf.getAbteilung(p) == Abteilung.Abteilungen.ZIVILPOLIZEI) color = "§r";
         }
         if (!SDuty.isSDuty(p)) p.setPlayerListName("§r" + p.getName());
-        if (SDuty.isSDuty(p)) p.setPlayerListName(getRank(p)==DEVELOPER?"§5§lDev §8× §c" + p.getName():"§5§lNRP §8× §c" + p.getName());
+        if (SDuty.isSDuty(p)) p.setPlayerListName(getRank(p)==DEVELOPER?"§5§lDEV §8× §c" + p.getName():"§5§lNRP §8× §c" + p.getName());
         if (Duty.isInDuty(p)) p.setPlayerListName(color + p.getPlayerListName());
         if (BuildMode.isInBuildMode(p)) p.setPlayerListName("§e§lB §8× §r" + p.getPlayerListName());
         if (TicketCommand.isInTicket(p)) p.setPlayerListName("§d§lT §8× §r" + p.getPlayerListName());
@@ -1570,7 +1570,7 @@ public class Script {
                 executeAsyncUpdate("UPDATE serversettings SET event='" + e.getName() + "'");
             } else if (e.equals(Event.TRIPPLE_XP)) {
                 if (message)
-                    Bukkit.broadcastMessage("§8[§6Event§8]§6 Es hat ein §lTripple XP-Event §r§6begonnen!");
+                    Bukkit.broadcastMessage("§8[§6Event§8]§6 Es hat ein §lTriple XP-Event §r§6begonnen!");
                 executeAsyncUpdate("UPDATE serversettings SET event='" + e.getName() + "'");
             }
         }

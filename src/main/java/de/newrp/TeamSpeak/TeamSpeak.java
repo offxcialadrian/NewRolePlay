@@ -143,6 +143,7 @@ public class TeamSpeak {
                 case OWNER:
                     addToServerGroup(TeamspeakServerGroup.CEO, dbID);
                     addToServerGroup(TeamspeakServerGroup.NRP_SERVERTEAM, dbID);
+                    break;
                 case ADMINISTRATOR:
                     addToServerGroup(TeamspeakServerGroup.ADMINISTRATOR, dbID);
                     addToServerGroup(TeamspeakServerGroup.NRP_SERVERTEAM, dbID);
@@ -222,6 +223,7 @@ public class TeamSpeak {
                 case OWNER:
                     addToServerGroup(TeamspeakServerGroup.CEO, dbID);
                     addToServerGroup(TeamspeakServerGroup.NRP_SERVERTEAM, dbID);
+                    break;
                 case ADMINISTRATOR:
                     addToServerGroup(TeamspeakServerGroup.ADMINISTRATOR, dbID);
                     addToServerGroup(TeamspeakServerGroup.NRP_SERVERTEAM, dbID);

@@ -50,10 +50,10 @@ public class MSG implements CommandExecutor {
         p.sendMessage(PREFIX + "Du §7» §e" + tg.getName() + "§7: §f" + msg);
         may_reply.put(tg.getName(), p.getName());
         if(tg.isOnline()) {
-            tg.getPlayer().sendMessage(PREFIX + "§e" + Script.getName(p) + " §7» §7Dir: §f" + msg);
+            tg.getPlayer().sendMessage(PREFIX + Messages.RANK_PREFIX(p) + " hat dich angeflüstert: " + msg);
             Script.sendSuggestMessage(tg.getPlayer(), "§9 "+ Messages.ARROW + " Klicke hier zum Antworten", "/reply ", "§7§oKlicke hier zum Antworten.");
         } else {
-            Script.addOfflineMessage(tg, PREFIX + "§e" + Script.getName(p) + " §7» §7Dir: §f" + msg);
+            tg.getPlayer().sendMessage(PREFIX + Messages.RANK_PREFIX(p) + " hat dich angeflüstert: " + msg);
         }
 
         return false;
