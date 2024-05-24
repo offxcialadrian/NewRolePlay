@@ -1,5 +1,6 @@
 package de.newrp.API;
 
+import de.newrp.Administrator.SDuty;
 import de.newrp.NewRoleplayMain;
 import org.bukkit.entity.Player;
 
@@ -88,6 +89,8 @@ public enum Krankheit {
     }
 
     public void add(int id) {
+        assert Script.getPlayer(id) != null;
+        if(SDuty.isSDuty(Script.getPlayer(id))) return;
         Script.executeAsyncUpdate("INSERT INTO krankheit (userID, krankheitID, time) VALUES (" + id + ", " + this.getID() + ", " + System.currentTimeMillis() + ");");
     }
 

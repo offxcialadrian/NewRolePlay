@@ -41,7 +41,7 @@ public class TeamActivity implements CommandExecutor {
                 HashMap<String, Integer> activity = getActitvity(days);
                 p.sendMessage("§8[§c§lTeamActivity§8] §c»");
                 for(String name : activity.keySet()) {
-                    p.sendMessage("§8- §c" + name + " §8» §c" + activity.get(name) + " Tickets (" + (Script.getPercentage(activity.get(name), getTotalTicket(days)) + "%)" + " §8» §c" + getRating(days, Script.getNRPID(Script.getPlayer(name))) + " Sterne"));
+                    p.sendMessage("§8- §c" + name + " §8» §c" + activity.get(name) + " Tickets (" + (Script.getPercentage(activity.get(name), getTotalTicket(days)) + "%)" + " §8» §c" + getRating(days, Script.getNRPID(Script.getOfflinePlayer(name))) + " Sterne"));
                 }
             } catch (NumberFormatException e) {
                 p.sendMessage(Messages.ERROR + "Ungültige Anzahl an Tagen.");
@@ -57,7 +57,7 @@ public class TeamActivity implements CommandExecutor {
         HashMap<String, Integer> activity = getActitvity();
         p.sendMessage("§8[§c§lTeamActivity§8] §c»");
         for(String name : activity.keySet()) {
-            p.sendMessage("§8- §c" + name + " §8» §c" + activity.get(name) + " Tickets (" + (Script.getPercentage(activity.get(name), getTotalTicket()) + "%) " + "§8» §c" + getRating(Script.getNRPID(Script.getPlayer(name))) + " Sterne"));
+            p.sendMessage("§8- §c" + name + " §8» §c" + activity.get(name) + " Tickets (" + (Script.getPercentage(activity.get(name), getTotalTicket()) + "%) " + "§8» §c" + getRating(Script.getNRPID(Script.getOfflinePlayer(name))) + " Sterne"));
         }
 
         return false;

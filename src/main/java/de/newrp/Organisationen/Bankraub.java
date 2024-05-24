@@ -256,7 +256,7 @@ public class Bankraub implements CommandExecutor, Listener {
 
                 berufe.sendMessage(PREFIX + "Der Staatsbankraub konnte nicht verhindert werden!");
                 for (UUID uuid : berufe.getMember()) {
-                    Bukkit.getPlayer(uuid).sendTitle("§c§clBankraub nicht verhindert", "§7Die Räuber wurden nicht gestoppt und die Staatsbank erfolgreich überfallen", 10, 80, 40);
+                    Bukkit.getPlayer(uuid).sendTitle("§c§lBankraub nicht verhindert", "§7Die Räuber wurden nicht gestoppt und die Staatsbank erfolgreich überfallen", 10, 80, 40);
                 }
             }
 

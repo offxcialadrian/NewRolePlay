@@ -28,7 +28,7 @@ public class JoinBeruf implements CommandExecutor, Listener {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
         Player p = (Player) cs;
-        if (!Script.hasRank(p, Rank.ADMINISTRATOR, false)) {
+        if (!Script.hasRank(p, Rank.FRAKTIONSMANAGER, false)) {
             p.sendMessage(Messages.NO_PERMISSION);
             return true;
         }

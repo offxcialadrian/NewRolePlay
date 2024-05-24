@@ -136,7 +136,7 @@ public class AsyncMinute extends BukkitRunnable {
                     nrp.playSound(nrp.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
                     nrp.sendMessage(Messages.INFO + "Bitte beachte, dass die Bearbeitung von Tickets eine hohe Priorität hat.");
                     Bukkit.getScheduler().runTask(NewRoleplayMain.getInstance(), () -> {
-                        if(SDuty.isSDuty(nrp)) nrp.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 12 * 20, 2, false, false));
+                        if(SDuty.isSDuty(nrp) && Script.getRank(nrp) != Rank.OWNER) nrp.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 12 * 20, 2, false, false));
                     });
                 }
             }

@@ -55,6 +55,7 @@ public class KickCommand implements CommandExecutor {
         tg.kickPlayer("§8» §cNRP × New RolePlay §8┃ §cKick §8« \n\n§8§m------------------------------\n\n§7Du wurdest vom Server gekickt§8.\n\n§7Grund §8× §e" + reason);
         Bukkit.broadcastMessage(Script.PREFIX + "§c" + Script.getName(tg) + " wurde von " + Messages.RANK_PREFIX(p) + " für §c§l" + reason + "§r§cgekickt.");
 
+
         return false;
     }
 }

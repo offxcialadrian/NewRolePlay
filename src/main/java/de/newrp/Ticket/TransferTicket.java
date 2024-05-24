@@ -43,20 +43,12 @@ public class TransferTicket implements CommandExecutor {
             return true;
         }
 
-        if(!Script.hasRank(tg, Rank.SUPPORTER, false)) {
-            p.sendMessage(Messages.ERROR + "Der Spieler ist kein Supporter.");
-            return true;
-        }
 
         if(AFK.isAFK(tg)) {
             p.sendMessage(Messages.ERROR + "Der Spieler ist AFK.");
             return true;
         }
 
-        if(!SDuty.isSDuty(tg)) {
-            p.sendMessage(Messages.ERROR + "Der Spieler ist nicht im Supporter-Dienst.");
-            return true;
-        }
 
         if(TicketCommand.isInTicket(tg)) {
             p.sendMessage(Messages.ERROR + "Der Spieler ist bereits in einem Ticket.");
