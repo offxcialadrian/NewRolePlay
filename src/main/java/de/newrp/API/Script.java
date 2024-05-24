@@ -85,7 +85,13 @@ public class Script {
             players.add(p);
         }
         //sort list by rank
-        players.sort((o1, o2) -> {
+
+        return players;
+    }
+
+    public static List<Player> getSortedNRPTeam() {
+        final List<Player> nrpTeam = getNRPTeam();
+        nrpTeam.sort((o1, o2) -> {
             if (getRank(o1).getWeight() > getRank(o2).getWeight()) {
                 return -1;
             } else if (getRank(o1).getWeight() < getRank(o2).getWeight()) {
@@ -93,7 +99,7 @@ public class Script {
             }
             return 0;
         });
-        return players;
+        return nrpTeam;
     }
 
     public static HashMap<String, Integer> sortByValue(HashMap<String, Integer> hm, boolean highestfirst) {
@@ -478,14 +484,14 @@ public class Script {
 
     public static String getName(Player p) {
         assert p != null;
-        if (Script.getRank(p) == DEVELOPER && SDuty.isSDuty(p)) return "Dev × " + p.getName();
+        if (Script.getRank(p) == DEVELOPER && SDuty.isSDuty(p)) return "DEV × " + p.getName();
         if (isNRPTeam(p) && SDuty.isSDuty(p)) return "NRP × " + p.getName();
         return p.getName();
     }
 
     public static String getName(OfflinePlayer p) {
         if (p.getPlayer() != null && p.isOnline()) {
-            if (Script.getRank(p) == DEVELOPER && SDuty.isSDuty(p.getPlayer())) return "Dev × " + p.getName();
+            if (Script.getRank(p) == DEVELOPER && SDuty.isSDuty(p.getPlayer())) return "DEV × " + p.getName();
             if (isNRPTeam(p) && SDuty.isSDuty(p.getPlayer())) return "NRP × " + p.getName();
         }
         return p.getName();

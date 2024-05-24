@@ -300,10 +300,11 @@ public class LabBreakIn implements CommandExecutor, Listener {
         long difference = 0;
         if (!cooldown_check) {
             difference = System.currentTimeMillis() - cooldown;
-            cooldown_check = difference < TimeUnit.HOURS.toMillis(3);
+            cooldown_check = difference < TimeUnit.HOURS.toMillis(4);
         }
         if (cooldown_check) {
-            p.sendMessage(PREFIX + "Das Labor hat derzeit keine Materialien zur Verfügung. (" + TimeUnit.MILLISECONDS.toMinutes((3 * 60 * 60 * 1000) - difference) + " Minuten verbleibend)");
+            long timeLeft = (cooldown + TimeUnit.HOURS.toMillis(4)) - System.currentTimeMillis();
+            p.sendMessage(PREFIX + "Das Labor hat derzeit keine Materialien zur Verfügung. (" + TimeUnit.MILLISECONDS.toMinutes(timeLeft) + " Minuten verbleibend)");
             return;
         }
 

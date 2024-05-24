@@ -25,22 +25,22 @@ import java.util.*;
 public class AFK implements CommandExecutor, Listener {
 
 
-    public static final HashMap<String, String> afk = new HashMap<>();
+    public static final HashMap<UUID, String> afk = new HashMap<>();
     static final HashMap<Player, Location> loc = new HashMap<>();
     static final ArrayList<Player> counter = new ArrayList<>();
 
     public static String PREFIX = "§8[§6AFK§8] §6» ";
 
     public static boolean isAFK(Player p) {
-        return afk.containsKey(p.getName());
+        return afk.containsKey(p.getUniqueId());
     }
 
     public static boolean isAFK(UUID p) {
-        return afk.containsKey(Objects.requireNonNull(Bukkit.getPlayer(p)).getName());
+        return afk.containsKey(Objects.requireNonNull(Bukkit.getPlayer(p)).getUniqueId());
     }
 
     public static String getAFKTime(Player p) {
-        return afk.get(p.getName());
+        return afk.get(p.getUniqueId());
     }
 
     public static final HashMap<String, Long> lastDmg = new HashMap<>();
@@ -49,7 +49,7 @@ public class AFK implements CommandExecutor, Listener {
 
     public static void setAFK(Player p, boolean b) {
         if (b) {
-            afk.put(p.getName(), new SimpleDateFormat("HH:mm").format(Calendar.getInstance().getTime()));
+            afk.put(p.getUniqueId(), new SimpleDateFormat("HH:mm").format(Calendar.getInstance().getTime()));
             p.setCollidable(false);
             p.setCanPickupItems(false);
             if (p.isFlying()) p.setFlying(false);
@@ -61,7 +61,7 @@ public class AFK implements CommandExecutor, Listener {
                 Schule.taskID.get(p).cancel();
             }
         } else {
-            afk.remove(p.getName());
+            afk.remove(p.getUniqueId());
             p.setCollidable(true);
             p.setCanPickupItems(true);
             Bukkit.getScoreboardManager().getMainScoreboard().getTeam("zzznopush").removeEntry(p.getName());

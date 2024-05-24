@@ -1,5 +1,6 @@
 package de.newrp.Player;
 
+import de.newrp.API.HologramList;
 import de.newrp.API.Messages;
 import de.newrp.API.PaymentType;
 import de.newrp.API.Script;
@@ -50,9 +51,18 @@ public class Boot implements CommandExecutor {
                 }
 
                 if(LEVEL.get(p.getName()) >= 15) {
+                    final Location jvaHologram = HologramList.BOOT_JAIL.getLocation();
+                    final double distanceToBoatOnJva = p.getLocation().distance(jvaHologram);
+                    if(distanceToBoatOnJva > 6 && distanceToBoatOnJva < 60) {
+                        p.sendMessage("§8[§9Boot§8] §9» §7Du hast dich zu weit vom Boot entfernt.");
+                        cancel();
+                        LEVEL.remove(p.getName());
+                        return;
+                    }
+
                     Me.sendMessage(p, "ist am Ziel angekommen.");
                     Script.removeMoney(p, PaymentType.BANK, 10);
-                    if(p.getLocation().distance(new Location(Script.WORLD, 997, 62, 568, 89.792786f, 7.7781887f)) < 5) {
+                    if(distanceToBoatOnJva < 5) {
                         p.teleport(new Location(Script.WORLD, 791, 63, 549, 182.14655f, 9.560561f));
                     } else {
                         p.teleport(new Location(Script.WORLD, 997, 63, 568, 89.792786f, 7.7781887f));

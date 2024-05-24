@@ -13,6 +13,8 @@ import de.newrp.NewRoleplayMain;
 import de.newrp.dependencies.DependencyContainer;
 import de.newrp.discord.IJdaService;
 import de.newrp.features.scoreboards.IScoreboardService;
+import de.newrp.discord.impl.JdaService;
+import de.newrp.features.playertracker.IPlayerTrackerService;
 import de.newrp.features.recommendation.IRecommendationService;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -259,6 +261,7 @@ public class Utils implements Listener {
         Script.disableVoiceChat(p);
         try {
             MaskHandler.clearMasksOutOfEnderchest(p);
+            DependencyContainer.getContainer().getDependency(IPlayerTrackerService.class).increaseUniquePlayerSize(p);
         } catch(final Exception exception) {
             NewRoleplayMain.handleError(exception);
         }

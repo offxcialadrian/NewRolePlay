@@ -26,6 +26,7 @@ import org.bukkit.util.Vector;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 public class Bankautomaten implements Listener {
@@ -62,7 +63,7 @@ public class Bankautomaten implements Listener {
             return;
         }
 
-        cooldown.put(o, System.currentTimeMillis() + 12600000);
+                cooldown.put(o, System.currentTimeMillis() + TimeUnit.HOURS.toMillis(2) + TimeUnit.MINUTES.toMillis(30));
         cooldownATM.put(atm, System.currentTimeMillis() + 3600000);
         atmBlocks.put(e.getClickedBlock().getLocation(), e.getClickedBlock());
         p.getInventory().remove(Material.TNT);

@@ -44,11 +44,7 @@ public class CheckSelfstorage implements CommandExecutor {
             return true;
         }
 
-        Inventory inv = Bukkit.createInventory(null, 27, "§cSelfstorage §7[§6" + Script.getName(tg) + "§7]");
-        Inventory ender = tg.getEnderChest();
-        ItemStack[] contents = ender.getContents();
-        inv.setContents(contents);
-        p.openInventory(inv);
+        p.openInventory(tg.getEnderChest());
         p.sendMessage(PREFIX + "Du checkst den Selfstorage-Room von §6" + Script.getName(tg) + "§7.");
         Script.sendTeamMessage(p, ChatColor.RED, "checkt den Selfstorage-Room von " + Script.getName(tg) + ".", true);
 

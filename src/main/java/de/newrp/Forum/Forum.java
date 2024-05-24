@@ -70,7 +70,7 @@ public class Forum {
         int id = Script.getNRPID(p);
         int forumid = getForumID(id);
         if (forumid == 0) return;
-        setName(forumid, Script.isNRPTeam(p) ? ("NRP × " + p.getName()) : p.getName());
+        setName(forumid, Script.isNRPTeam(p) ? (Script.getRank(p) == Rank.DEVELOPER ? "DEV × " : "NRP × " + p.getName()) : p.getName());
         clearUserGroups(forumid);
         Beruf.Berufe f = Beruf.getBeruf(p);
         addUserToGroup(forumid, ForumGroup.ZIVILIST);
@@ -85,6 +85,8 @@ public class Forum {
             addUserToGroup(forumid, ForumGroup.MODERATOR);
         } else if(Script.hasRank(p, Rank.SUPPORTER, false)) {
             addUserToGroup(forumid, ForumGroup.SUPPORTER);
+        } else if(Script.hasRank(p, Rank.DEVELOPER, false)) {
+            //addUserToGroup(forumid, ForumGroup.DEVELOPER);
         }
 
         /*if (Team.BAUTEAM.isInTeam(id)) addUserToGroup(forumid, ForumGroup.BAUTEAM);
@@ -114,6 +116,8 @@ public class Forum {
             addUserToGroup(forumid, ForumGroup.MODERATOR);
         } else if(Script.hasRank(p, Rank.SUPPORTER, false)) {
             addUserToGroup(forumid, ForumGroup.SUPPORTER);
+        } else if(Script.hasRank(p, Rank.DEVELOPER, false)) {
+            //addUserToGroup(forumid, ForumGroup.DEVELOPER);
         }
 
         /*if (Team.BAUTEAM.isInTeam(id)) addUserToGroup(forumid, ForumGroup.BAUTEAM);

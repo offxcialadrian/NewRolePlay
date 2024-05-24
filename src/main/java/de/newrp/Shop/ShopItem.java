@@ -22,7 +22,7 @@ import java.sql.Statement;
 public enum ShopItem {
 
     BROT(0, "§fBrot", new ItemBuilder(Material.BREAD).setName("§fBrot").setAmount(8).build(), 2, 1, 20, 4, 2400, false, true, false, new ShopType[] {ShopType.SUPERMARKET}),
-    KAFFEE(1, "§fKaffee", new ItemBuilder(Material.FLOWER_POT).setName("§rKaffee").build(), 3, 1, 20, 2, 1500, false, true, false, new ShopType[] {ShopType.CAFE}),
+    KAFFEE(1, "§rKaffee", new ItemBuilder(Material.FLOWER_POT).setName("§rKaffee").build(), 3, 1, 20, 2, 1500, false, true, false, new ShopType[] {ShopType.CAFE}),
     LOTTOSCHEIN(2, "§7Lottoschein", new ItemBuilder(Material.PAPER).setName("§7Lottoschein").build(), 1, 1, 20, 25, 7500, false, true, false, new ShopType[] {ShopType.NEWS}),
     HAUSKASSE(3, "§7Hauskasse", new ItemStack(Material.CHEST), 10, 1, 20, HouseAddon.HAUSKASSE.getPrice(), 6000, false, false, false, new ShopType[] {ShopType.HOUSEADDON}),
     MIETERSLOT(4, "§7Mieterslot", new ItemStack(Material.CHEST), 10, 1, 20, HouseAddon.SLOT.getPrice(), 10000, false, false, false, new ShopType[] {ShopType.HOUSEADDON}),
