@@ -131,7 +131,7 @@ public class AsyncHour extends BukkitRunnable {
             }
 
             for (Organisation o : Organisation.values()) {
-                int i = 0
+                int i = 0;
                 for (Player all : o.getMembers()) {
                     if (!AFK.isAFK(all)) {
                         i += 10;
