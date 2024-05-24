@@ -131,7 +131,7 @@ public class AsyncHour extends BukkitRunnable {
             }
 
             for (Organisation o : Organisation.values()) {
-                int i = 0;
+                int i = 0
                 for (Player all : o.getMembers()) {
                     if (!AFK.isAFK(all)) {
                         i += 10;
@@ -139,7 +139,7 @@ public class AsyncHour extends BukkitRunnable {
                 }
                 if (i == 0) continue;
                 o.addExp(i);
-                o.sendMessage("§8[§eOrganisation§8] §e" + Messages.ARROW + " §7Deine Organisation hat §e" + i + " §7Erfahrungspunkte durch §e" + i + " aktive Mitglieder §7erhalten.");
+                o.sendMessage("§8[§eOrganisation§8] §e" + Messages.ARROW + " §7Deine Organisation hat §e" + i + " §7Erfahrungspunkte durch §e" + (i / 10) + " aktive Mitglieder §7erhalten.");
              }
 
             for (Player all : Bukkit.getOnlinePlayers()) {
