@@ -118,7 +118,7 @@ public class InviteCommand implements CommandExecutor {
 
     public static int slots(Organisation o) {
         if (o.getLevel() == 10) return 30;
-        return Math.min(30, 15 + (o.getLevel()) + 2);
+        return Math.min(30, 17 + (o.getLevel()));
     }
 
 }

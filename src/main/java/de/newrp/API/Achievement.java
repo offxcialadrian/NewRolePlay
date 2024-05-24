@@ -46,7 +46,8 @@ public enum Achievement {
     BIENENSTICH(32, "Bienenstich", "§rWerde von einer Biene gestochen", 50, null, false),
     SHISHA(33, "Shisha", "§rRauche eine Shisha", 50, null, false),
     TRASHCAN(34, "Mülltone", "§rDurchwühle eine Mülltonne", 50, null, false),
-    DISCORD(35, "Discord", "§rVerbinde dich mit unserem Discord-Server", 50, null, false);
+    DISCORD(35, "Discord", "§rVerbinde dich mit unserem Discord-Server", 50, null, false),
+    GOENNER(36, "Gönner", "§rSchalte für den kompletten Server ein Exp-Event frei!", 50, null, false);
 
 
 

@@ -57,9 +57,9 @@ public class DemoteSupport implements CommandExecutor {
     }
 
     private static void demote(Player p, OfflinePlayer tg) {
-        Rank rank = Rank.getRankByID(Script.getRank(tg).getID()+1);
+        Rank rank = Rank.getRankByWeight(Script.getRank(tg).getWeight()-50);
         p.sendMessage(PREFIX + "Du hast " + tg.getName() + " zu " + rank.getName() + " degradiert.");
-        if(tg.isOnline())
+        if(tg.isOnline() && tg.getPlayer() != null)
             tg.getPlayer().sendMessage(PREFIX + "Du wurdest zu " + rank.getName() + " degradiert.");
         Log.HIGH.write(p, "hat " + tg.getName() + " zu " + rank.getName() + " degradiert.");
         Log.WARNING.write(tg, "wurde von " + Script.getName(p) + " zu " + rank.getName() + " degradiert.");

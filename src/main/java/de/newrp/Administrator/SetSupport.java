@@ -52,6 +52,9 @@ public class SetSupport implements CommandExecutor {
                 setSupport(p, tg, Rank.MODERATOR);
                 break;
             case MODERATOR:
+                setSupport(p, tg, Rank.FRAKTIONSMANAGER);
+                break;
+            case FRAKTIONSMANAGER:
                 setSupport(p, tg, Rank.ADMINISTRATOR);
                 break;
             case ADMINISTRATOR:

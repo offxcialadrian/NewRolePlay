@@ -9,7 +9,7 @@ public enum Event {
     VOTE("vote_event", null),
     PURGE("purge", null),
     FRIEND_WEEK("friend_week", null),
-    TRIPPLE_XP("tripplexp", null);
+    TRIPPLE_XP("triplexp", null);
 
     private final String name;
     private final Location loc;

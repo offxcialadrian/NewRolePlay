@@ -79,6 +79,7 @@ public class Bankautomaten implements Listener {
             public void run() {
                 if (p.getLocation().distance(bombLocation) > 10) {
                     p.sendMessage(PREFIX + "Du bist zu weit entfernt.");
+                    Beruf.Berufe.POLICE.sendMessage(PREFIX + "Der Bankautomat " + atm.getID() + " wurde nicht zerstört. Der Täter ist geflohen.");
                     cancel();
                     return;
                 }

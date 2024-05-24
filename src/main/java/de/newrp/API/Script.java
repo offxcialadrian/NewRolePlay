@@ -1560,7 +1560,7 @@ public class Script {
                 executeAsyncUpdate("UPDATE serversettings SET event='" + e.getName() + "'");
             } else if (e.equals(Event.TRIPPLE_XP)) {
                 if (message)
-                    Bukkit.broadcastMessage("§8[§6Event§8]§6 Es hat ein §lTripple XP-Event §r§6begonnen!");
+                    Bukkit.broadcastMessage("§8[§6Event§8]§6 Es hat ein §lTriple XP-Event §r§6begonnen!");
                 executeAsyncUpdate("UPDATE serversettings SET event='" + e.getName() + "'");
             }
         }

@@ -795,7 +795,7 @@ public class Utils implements Listener {
                     Script.sendActionBar(e.getPlayer(), Messages.ERROR + "Der Befehl wurde nicht gefunden.");
                     return;
                 } else {
-                    e.getPlayer().sendMessage(Messages.INFO + "Du konntest diesen Befehl nur ausführen, da du Serverinhaber bist.");
+                    e.getPlayer().sendMessage(Messages.INFO + "Du konntest diesen Befehl nur ausführen, da du Geschäftsführer bist.");
                     return;
                 }
             }
@@ -809,7 +809,7 @@ public class Utils implements Listener {
                         Script.sendActionBar(e.getPlayer(), Messages.ERROR + "Der Befehl wurde nicht gefunden.");
                         return;
                     } else {
-                        e.getPlayer().sendMessage(Messages.INFO + "Du konntest diesen Befehl nur ausführen, da du Serverinhaber bist.");
+                        e.getPlayer().sendMessage(Messages.INFO + "Du konntest diesen Befehl nur ausführen, da du Geschäftsführer bist.");
                         return;
                     }
                 }

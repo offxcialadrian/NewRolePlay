@@ -24,7 +24,8 @@ public enum TeamspeakServerGroup {
     BRATERSTWO(45),
     SINOLA_KARTELL(49),
     ENTWICKLUNG(50),
-    DEV(53);
+    DEV(53),
+    CEO(54);
 
     private final int groupID;
 

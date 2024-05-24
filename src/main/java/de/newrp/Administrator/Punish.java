@@ -394,6 +394,7 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
     }
 
     public static void punish(Player p, OfflinePlayer tg, Violation v) {
+        new Straflog(tg, p, v);
         Punishment punishment = v.getPunishment();
         Punishment secondaryPunishment = v.getSecondaryPunishment();
         Date until = new Date(new Date().getTime() + v.getDuration());

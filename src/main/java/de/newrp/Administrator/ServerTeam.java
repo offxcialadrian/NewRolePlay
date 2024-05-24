@@ -21,6 +21,11 @@ public class ServerTeam implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender cs, @NotNull Command cmd, @NotNull String s, @NotNull String[] args) {
         Player p = (Player) cs;
 
+        if(args.length != 0) {
+            p.sendMessage(Messages.ERROR + "/team");
+            return true;
+        }
+
         Bukkit.getScheduler().runTaskAsynchronously(NewRoleplayMain.getInstance(), () -> {
             List<Player> nrps = Script.getSortedNRPTeam();
             nrps.removeIf(nrp -> !SDuty.isSDuty(nrp));
@@ -37,8 +42,13 @@ public class ServerTeam implements CommandExecutor {
                 String color = "§7";
                 switch (Script.getRank(nrp)) {
                     case OWNER:
+                        color = "§4";
+                        break;
                     case ADMINISTRATOR:
                         color = "§c";
+                        break;
+                    case FRAKTIONSMANAGER:
+                        color = "§6";
                         break;
                     case MODERATOR:
                         color = "§9";
@@ -47,7 +57,7 @@ public class ServerTeam implements CommandExecutor {
                         color = "§e";
                         break;
                 }
-                if(Spectate.isSpectating(nrp)) continue;
+                if (Spectate.isSpectating(nrp)) continue;
                 p.sendMessage("§8" + Messages.ARROW + " §6" + Script.getName(nrp) + " §8× " + color + Script.getRank(nrp).getName(nrp) + (AFK.isAFK(nrp) ? " §8× §6AFK" : ""));
             }
         });
