@@ -8,6 +8,7 @@ import de.newrp.Administrator.BuildMode;
 import de.newrp.Administrator.Checkpoints;
 import de.newrp.Administrator.SDuty;
 import de.newrp.Berufe.Drone;
+import de.newrp.Gangwar.GangwarCommand;
 import de.newrp.Player.AFK;
 import de.newrp.Police.Jail;
 import de.newrp.NewRoleplayMain;
@@ -19,7 +20,7 @@ public class AsyncHealth extends BukkitRunnable {
     @Override
     public void run() {
         for (Player p : Bukkit.getOnlinePlayers()) {
-            if (Health.BLEEDING.containsKey(p.getName())) {
+            if (Health.BLEEDING.containsKey(p.getName()) && !GangwarCommand.isInGangwar(p)) {
                 if(Script.getRandom(1, 100) <20) {
                     Krankheit.ENTZUENDUNG.add(Script.getNRPID(p));
                 }
