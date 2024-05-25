@@ -46,6 +46,7 @@ import de.newrp.discord.impl.JdaService;
 import de.newrp.discord.listeners.SupportListener;
 import de.newrp.discord.listeners.VerifyListener;
 import de.newrp.features.bizwar.IBizWarService;
+import de.newrp.features.bizwar.config.BizWarConfig;
 import de.newrp.features.bizwar.impl.BizWarService;
 import de.newrp.features.deathmatcharena.IDeathmatchArenaService;
 import de.newrp.features.deathmatcharena.commands.DeathmatchArenaCommand;
@@ -210,6 +211,8 @@ public class NewRoleplayMain extends JavaPlugin {
 
         Bukkit.getConsoleSender().sendMessage("§cNRP §8× §astarting complete..");
         Bukkit.getConsoleSender().sendMessage("§cNRP §8× §aViel Erfolg heute..");
+
+        DependencyContainer.getContainer().getDependency(IBizWarService.class).loadActiveExtortions();
     }
 
     @Override
@@ -730,6 +733,11 @@ public class NewRoleplayMain extends JavaPlugin {
         this.configService.saveConfig(scoreboardConfigFile, new ScoreboardConfig(), false);
         DependencyContainer.getContainer().add(ScoreboardConfig.class, this.configService.readConfig(scoreboardConfigFile, ScoreboardConfig.class));
         Bukkit.getLogger().info("Successfully read Scoreboard Configuration!");
+
+        final File bizWarConfigFile = new File(pluginFolder, "bizwarlocations.json");
+        this.configService.saveConfig(bizWarConfigFile, new BizWarConfig(), false);
+        DependencyContainer.getContainer().add(BizWarConfig.class, this.configService.readConfig(bizWarConfigFile, BizWarConfig.class));
+        Bukkit.getLogger().info("Successfully read BizWar Configuration!");
     }
 
     public static boolean isTest() {

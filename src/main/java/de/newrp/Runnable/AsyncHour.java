@@ -19,6 +19,9 @@ import de.newrp.Player.Hotel;
 import de.newrp.Shop.Shop;
 import de.newrp.Shop.ShopType;
 import de.newrp.Shop.Shops;
+import de.newrp.dependencies.DependencyContainer;
+import de.newrp.features.bizwar.IBizWarService;
+import de.newrp.features.bizwar.config.BizWarConfig;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -130,7 +133,22 @@ public class AsyncHour extends BukkitRunnable {
                 }
             }
 
+            final IBizWarService bizWarService = DependencyContainer.getContainer().getDependency(IBizWarService.class);
+            final BizWarConfig bizWarConfig = DependencyContainer.getContainer().getDependency(BizWarConfig.class);
             for (Organisation o : Organisation.values()) {
+                int shopExp = 0;
+                for (Shops shops : bizWarService.getShopsOfFaction(o)) {
+                    final int profitPerHour = bizWarConfig.getShopConfigs().stream().filter(e -> e.getShopId() == shops.getID()).findFirst().get().getProfitPerHour();
+                    o.addKasse(profitPerHour);
+                    o.sendMessage("§8[§eOrganisation§8] §e" + Messages.ARROW + " §7Deine Organisation hat §e" + profitPerHour + "€ und 2 Exp §7durch den Shop §e" + shops.getPublicName() + " §7erhalten.");
+                    shopExp += 2;
+                }
+
+                if(shopExp != 0) {
+                    o.addExp(shopExp);
+                    o.sendMessage("§8[§eOrganisation§8] §e" + Messages.ARROW + " §7Deine Organisation hat §e" + shopExp + " Exp §7durch die Shops erhalten.");
+                }
+
                 int i = 0;
                 for (Player all : o.getMembers()) {
                     if (!AFK.isAFK(all)) {

@@ -784,3 +784,7 @@ commands:
     description: resets the cooldown
   gameboost:
     description: activates the gameboost system
+  startbizwar:
+    description: starts a biz war
+  listextortedshops:
+    description: lists the extorted shops
