@@ -13,10 +13,9 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
@@ -78,10 +77,10 @@ public class TV implements CommandExecutor, Listener {
     @EventHandler
     public void onQuit(PlayerQuitEvent e) {
         Player p = e.getPlayer();
-        if(tvs.containsKey(p.getName())) {
+        if(tvs.containsKey(p)) {
             p.sendMessage(PREFIX + "Du hast den Fernseher ausgeschaltet.");
-            p.teleport(tvs.get(p.getName()));
-            tvs.remove(p.getName());
+            p.teleport(tvs.get(p));
+            tvs.remove(p);
             p.setSpectatorTarget(null);
             p.setGameMode(GameMode.SURVIVAL);
         }
@@ -89,20 +88,60 @@ public class TV implements CommandExecutor, Listener {
 
     @EventHandler
     public void onTeleport(PlayerTeleportEvent e) {
-        Player p = e.getPlayer();
-        if(tvs.containsKey(p.getName())) {
-            p.setSpectatorTarget(KameraCommand.camera);
+        if(e.getCause() != PlayerTeleportEvent.TeleportCause.SPECTATE) {
+            return;
+        }
+
+        final Player player = e.getPlayer();
+        if(tvs.containsKey(player)) {
             e.setCancelled(true);
         }
     }
 
     @EventHandler
-    public void onMove(PlayerMoveEvent e) {
-        Player p = e.getPlayer();
-        if(tvs.containsKey(p.getName())) {
-            e.setCancelled(true);
+    public void onSneak(PlayerToggleSneakEvent e) {
+        Player player = e.getPlayer();
+        if(player.getGameMode() != GameMode.SPECTATOR) {
+            return;
+        }
+
+        if(tvs.containsKey(player)) {
+            player.sendMessage(PREFIX + "Du hast den Fernseher ausgeschaltet.");
+            player.teleport(tvs.get(player));
+            tvs.remove(player);
+            player.setSpectatorTarget(null);
+            player.setGameMode(GameMode.SURVIVAL);
         }
     }
+
+    @EventHandler
+    public void onMove(PlayerMoveEvent e) {
+        Player player = e.getPlayer();
+        if(player.getGameMode() != GameMode.SPECTATOR) {
+            return;
+        }
+
+        if(tvs.containsKey(player)) {
+            if(KameraCommand.camera == null) {
+                player.sendMessage(PREFIX + "Du hast den Fernseher ausgeschaltet.");
+                player.teleport(tvs.get(player));
+                tvs.remove(player);
+                player.setSpectatorTarget(null);
+                player.setGameMode(GameMode.SURVIVAL);
+            }
+
+            player.setSpectatorTarget(KameraCommand.camera);
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onPlayerInteract(final PlayerInteractEvent event) {
+        if (event.getPlayer().getGameMode() == GameMode.SPECTATOR) {
+            event.setCancelled(true);
+        }
+    }
+
+
 
 
 }
