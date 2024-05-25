@@ -40,6 +40,11 @@ public class GangwarCommand implements CommandExecutor, Listener {
             return true;
         }
 
+        if(Organisation.getOrganisation(p) == Organisation.HITMEN) {
+            p.sendMessage(Messages.ERROR + "Deine Organisation kann nicht am Gangwar teilnehmen.");
+            return true;
+        }
+
         if(args.length != 0) {
             p.sendMessage(Messages.ERROR + "/gangwar");
             return true;

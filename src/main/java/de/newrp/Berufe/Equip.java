@@ -255,7 +255,7 @@ public class Equip implements CommandExecutor, Listener {
                 return true;
             }
 
-            if (Organisation.getOrganisation(p) == Organisation.BRATERSTWO && p.getLocation().distance(new Location(Script.WORLD, 559, 75, 1279)) > 7) {
+            if (Organisation.getOrganisation(p) == Organisation.HITMEN && p.getLocation().distance(new Location(Script.WORLD, 559, 75, 1279)) > 7) {
                 p.sendMessage(Messages.ERROR + "Du musst dich in der Nähe des Equip-Punktes befinden.");
                 return true;
             }
