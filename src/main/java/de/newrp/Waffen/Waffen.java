@@ -280,7 +280,7 @@ public class Waffen implements Listener {
             return;
         }
 
-        Script.sendActionBar(p, Messages.INFO + "Du hast noch §b" + ammo + "§8/§b" + getAmmoTotal(is) + " §rSchuss.");
+        Script.sendActionBar(p, Messages.INFO + "Du hast noch §b" + (ammo - 1) + "§8/§b" + getAmmoTotal(is) + " §rSchuss.");
 
         cooldown.put(p.getName() + "." + w.getName().toLowerCase(), System.currentTimeMillis());
         p.getInventory().setItemInMainHand(setAmmo(is, ammo - 1, getAmmoTotal(is)));
