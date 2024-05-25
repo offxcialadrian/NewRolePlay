@@ -20,10 +20,6 @@ public enum ATM {
     ATM_13(13, new Location(Script.WORLD, 553, 65, 1307), 0),
     ATM_14(14, new Location(Script.WORLD, 85, 66, 630), 0),
     ATM_15(15, new Location(Script.WORLD, 621, 66, 693), 0);
-<<<<<<< HEAD
-
-=======
->>>>>>> master
 
     private final int id;
     private final Location loc;

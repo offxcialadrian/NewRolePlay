@@ -1,4 +1,9 @@
 package de.newrp.features.bizwar.impl;
 
-public class BizWarService {
+import de.newrp.features.bizwar.IBizWarService;
+
+public class BizWarService implements IBizWarService {
+
+
+
 }

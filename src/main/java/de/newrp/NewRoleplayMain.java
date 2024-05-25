@@ -45,6 +45,8 @@ import de.newrp.discord.events.GuildReadyListener;
 import de.newrp.discord.impl.JdaService;
 import de.newrp.discord.listeners.SupportListener;
 import de.newrp.discord.listeners.VerifyListener;
+import de.newrp.features.bizwar.IBizWarService;
+import de.newrp.features.bizwar.impl.BizWarService;
 import de.newrp.features.deathmatcharena.IDeathmatchArenaService;
 import de.newrp.features.deathmatcharena.commands.DeathmatchArenaCommand;
 import de.newrp.features.deathmatcharena.data.DeathmatchArenaConfig;
@@ -702,6 +704,7 @@ public class NewRoleplayMain extends JavaPlugin {
         DependencyContainer.getContainer().add(ITakeMoneyService.class, new TakeMoneyService());
         DependencyContainer.getContainer().add(IRecommendationService.class, new RecommendationService());
         DependencyContainer.getContainer().add(IPlayerTrackerService.class, new PlayerTrackerService());
+        DependencyContainer.getContainer().add(IBizWarService.class, new BizWarService());
     }
 
     /**
