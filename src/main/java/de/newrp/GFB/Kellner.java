@@ -32,8 +32,8 @@ public class Kellner implements CommandExecutor, Listener {
         TISCH4(4, "Tisch 4",new Location(Script.WORLD, 421, 70, 934)),
         TISCH5(5, "Tisch 5",new Location(Script.WORLD, 421, 70, 929)),
         TISCH6(6, "Tisch 6",new Location(Script.WORLD, 414, 69, 930)),
-        TISCH7(7, "Tisch 7",new Location(Script.WORLD, 414, 69, 930)),
-        TISCH8(8, "Tisch 8",new Location(Script.WORLD, 412, 69, 931)),
+        TISCH7(7, "Tisch 7",new Location(Script.WORLD, 412, 69, 931)),
+        TISCH8(8, "Tisch 8",new Location(Script.WORLD, 413, 69, 934)),
         TISCH9(9, "Tisch 9",new Location(Script.WORLD, 414, 69, 937)),
         TISCH10(10, "Tisch 10",new Location(Script.WORLD, 419, 69, 924)),
         TISCH11(11, "Tisch 11",new Location(Script.WORLD, 422, 69, 925)),
@@ -42,13 +42,12 @@ public class Kellner implements CommandExecutor, Listener {
         TISCH14(14, "Tisch 14",new Location(Script.WORLD, 430, 76, 934)),
         TISCH15(15, "Tisch 15",new Location(Script.WORLD, 429, 76, 934)),
         TISCH16(16, "Tisch 16",new Location(Script.WORLD, 425, 76, 935)),
-        TISCH17(17, "Tisch 17",new Location(Script.WORLD, 425, 76, 935)),
-        TISCH18(18, "Tisch 18",new Location(Script.WORLD, 421, 76, 934)),
-        TISCH19(19, "Tisch 19",new Location(Script.WORLD, 420, 76, 934)),
-        TISCH20(20, "Tisch 20",new Location(Script.WORLD, 419, 76, 934)),
-        TISCH21(21, "Tisch 21",new Location(Script.WORLD, 419, 76, 930)),
-        TISCH22(22, "Tisch 22",new Location(Script.WORLD, 420, 76, 930)),
-        TISCH23(23, "Tisch 23",new Location(Script.WORLD, 421, 76, 930));
+        TISCH17(17, "Tisch 17",new Location(Script.WORLD, 421, 76, 934)),
+        TISCH18(18, "Tisch 18",new Location(Script.WORLD, 420, 76, 934)),
+        TISCH19(19, "Tisch 19",new Location(Script.WORLD, 419, 76, 934)),
+        TISCH20(20, "Tisch 20",new Location(Script.WORLD, 419, 76, 930)),
+        TISCH21(21, "Tisch 21",new Location(Script.WORLD, 420, 76, 930)),
+        TISCH22(22, "Tisch 22",new Location(Script.WORLD, 421, 76, 930));
 
         private final int id;
         private final String name;
