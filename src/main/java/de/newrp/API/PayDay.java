@@ -178,7 +178,8 @@ public class PayDay extends BukkitRunnable {
 
             int lvl = Script.getLevel(p);
             if (lvl > 0) {
-                int b = (int) Math.round((50 * Math.log(lvl)) * (0.75 + (new Random().nextFloat() / 2)));
+                double r = 1.99 * new Random().nextFloat() - 0.995;
+                int b = (int) Math.round((50 * Math.log(lvl) * ((0.25 * ((Math.log(1 + r) - Math.log(1 - r))) / 2) + 1)));
                 p.sendMessage("§8" + Messages.ARROW + " §7Level-Bonus: §a+" + b + "€");
                 extra += b;
             }
