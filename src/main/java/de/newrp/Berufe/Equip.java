@@ -1,9 +1,6 @@
 package de.newrp.Berufe;
 
-import de.newrp.API.ItemBuilder;
-import de.newrp.API.Log;
-import de.newrp.API.Messages;
-import de.newrp.API.Script;
+import de.newrp.API.*;
 import de.newrp.Administrator.BuildMode;
 import de.newrp.Administrator.Notifications;
 import de.newrp.Government.Stadtkasse;
@@ -255,7 +252,7 @@ public class Equip implements CommandExecutor, Listener {
                 return true;
             }
 
-            if (Organisation.getOrganisation(p) == Organisation.HITMEN && p.getLocation().distance(new Location(Script.WORLD, 559, 75, 1279)) > 7) {
+            if (Organisation.getOrganisation(p) == Organisation.HITMEN && p.getLocation().distance(HologramList.EQUIP_HITMAN.getLocation()) > 7) {
                 p.sendMessage(Messages.ERROR + "Du musst dich in der Nähe des Equip-Punktes befinden.");
                 return true;
             }
