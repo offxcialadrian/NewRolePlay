@@ -66,11 +66,7 @@ public class AsyncMinute extends BukkitRunnable {
         Corpse.reloadNPCAll();
 
         if (GangwarCommand.gangwarIsActive()) {
-            if (Calendar.getInstance().get(Calendar.HOUR_OF_DAY) > 22) {
-                GangwarCommand.endGangwar();
-            } else {
                 GangwarCommand.processGangwar();
-            }
         }
 
         if (Calendar.getInstance().get(Calendar.MONTH) == Calendar.JANUARY && Calendar.getInstance().get(Calendar.DAY_OF_MONTH) == 15 && Calendar.getInstance().get(Calendar.HOUR_OF_DAY) == 18 && Calendar.getInstance().get(Calendar.MINUTE) == 0) {

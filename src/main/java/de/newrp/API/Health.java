@@ -191,10 +191,12 @@ public enum Health {
             if (f <= 2.0F) {
                 Player p = Script.getPlayer(id);
                 if (p != null) {
-                    Bukkit.getScheduler().runTask(NewRoleplayMain.getInstance(), () -> {
-                        p.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 300 * 20, 1, false, false));
-                        p.sendMessage(PREFIX + "Dir wird unwohl...");
-                    });
+                    if(!GangwarCommand.isInGangwar(p)) {
+                        Bukkit.getScheduler().runTask(NewRoleplayMain.getInstance(), () -> {
+                            p.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 300 * 20, 1, false, false));
+                            p.sendMessage(PREFIX + "Dir wird unwohl...");
+                        });
+                    }
                 }
             }
             Player p = Script.getPlayer(id);

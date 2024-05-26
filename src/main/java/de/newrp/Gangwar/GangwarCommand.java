@@ -1,6 +1,7 @@
 package de.newrp.Gangwar;
 
 import de.newrp.API.*;
+import de.newrp.Administrator.SDuty;
 import de.newrp.Organisationen.Drogen;
 import de.newrp.Organisationen.Organisation;
 import de.newrp.Waffen.Waffen;
@@ -34,6 +35,19 @@ public class GangwarCommand implements CommandExecutor, Listener {
     @Override
     public boolean onCommand(@NotNull CommandSender cs, @NotNull Command cmd, @NotNull String s, @NotNull String[] args) {
         Player p = (Player) cs;
+
+        if(SDuty.isSDuty(p) && args[0].equalsIgnoreCase("standings")) {
+            for(GangwarZones zone : gangwar.keySet()) {
+                Organisation[] orgs = gangwar.get(zone);
+                Organisation org1 = orgs[0];
+                Organisation org2 = orgs[1];
+
+
+                p.sendMessage(PREFIX + "Zone: " + zone.getName());
+                p.sendMessage(PREFIX + org1.getName() + " §8» §c" + points.get(org1) + " §8| §c" + points.get(org2) + " §8« §7" + org2.getName());
+            }
+            return true;
+        }
 
         if(!Organisation.hasOrganisation(p)) {
             p.sendMessage(Messages.ERROR + "Du bist in keiner Organisation.");

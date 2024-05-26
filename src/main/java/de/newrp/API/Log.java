@@ -29,6 +29,7 @@ public enum Log {
     }
 
     public void write(Player p, String log) {
+        if(NewRoleplayMain.isTest()) return;
         Bukkit.getScheduler().runTaskAsynchronously(NewRoleplayMain.getInstance(), () -> {
             try (PreparedStatement stmt = NewRoleplayMain.getConnection().prepareStatement("INSERT INTO log (id, nrp_id, log, importance, time) VALUES (NULL, ?, ?, ?, NOW());")) {
                 stmt.setInt(1, Script.getNRPID(p));
@@ -43,6 +44,7 @@ public enum Log {
     }
 
     public void write(OfflinePlayer p, String log) {
+        if(NewRoleplayMain.isTest()) return;
         Bukkit.getScheduler().runTaskAsynchronously(NewRoleplayMain.getInstance(), () -> {
             try (PreparedStatement stmt = NewRoleplayMain.getConnection().prepareStatement("INSERT INTO log (id, nrp_id, log, importance, time) VALUES (NULL, ?, ?, ?, NOW());")) {
                 stmt.setInt(1, Script.getNRPID(p));
