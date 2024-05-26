@@ -329,6 +329,7 @@ public class GangwarCommand implements CommandExecutor, Listener {
             p.getInventory().addItem(new ItemBuilder(drug.getMaterial()).setName(drug.getName()).setLore("§7Reinheitsgrad: " + Drogen.DrugPurity.HIGH.getText()).setAmount(10).build());
         }
         p.getInventory().addItem(new ItemBuilder(Material.BREAD).setAmount(32).build());
+        p.getInventory().addItem(new ItemBuilder(Material.POTION).setAmount(1).build());
     }
 
     @EventHandler
