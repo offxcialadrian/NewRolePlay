@@ -21,6 +21,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
+import java.util.Random;
 
 public class PayDay extends BukkitRunnable {
 
@@ -45,6 +46,7 @@ public class PayDay extends BukkitRunnable {
             }
 
             int payday = 0;
+            int extra = 0;
             int interest = (Script.getMoney(p, PaymentType.BANK) > 0 ? (int) (Banken.getBankByPlayer(p).getInterest() * Script.getMoney(p, PaymentType.BANK)) : (int) (0.02 * Script.getMoney(p, PaymentType.BANK)));
             if(interest > 500) {
                 interest = 500;
@@ -165,6 +167,22 @@ public class PayDay extends BukkitRunnable {
                 payday += Stadtkasse.getArbeitslosengeld();
             }
 
+            if (Team.getTeam(p) != null) {
+                Team.Teams team = Team.getTeam(p);
+                if (team != null) {
+                    int s = team.getSalary();
+                    p.sendMessage("§8" + Messages.ARROW + " §7Team-Gehalt: §a+" + s + "€");
+                    extra += s;
+                }
+            }
+
+            int lvl = Script.getLevel(p);
+            if (lvl > 0) {
+                int b = (int) Math.round((50 * Math.log(lvl)) * (0.75 + (new Random().nextFloat() / 2)));
+                p.sendMessage("§8" + Messages.ARROW + " §7Level-Bonus: §a+" + b + "€");
+                extra += b;
+            }
+
             int shops = 0;
             for (Shops shop : Shops.values()) {
                 if (shop.getOwner() == Script.getNRPID(p)) {
@@ -264,6 +282,9 @@ public class PayDay extends BukkitRunnable {
             } else {
                 p.sendMessage("§8" + Messages.ARROW + " §7Einkommenssteuer (" + einkommenssteuer + "%): §c-" + 0 + "€");
             }
+
+            if (extra > 0) payday += extra;
+
             p.sendMessage("§8" + Messages.ARROW + " §7Bilanz: " + (payday >= 0 ? "§a+" : "§c") + payday + "€");
             p.sendMessage("§8" + Messages.ARROW + " §7Neuer Kontostand: " + (Script.getMoney(p, PaymentType.BANK) + payday >= 0 ? "§a" : "§c") + (Script.getMoney(p, PaymentType.BANK) + payday) + "€");
             p.sendMessage("§9================");
@@ -271,10 +292,6 @@ public class PayDay extends BukkitRunnable {
             if (payday >= 0) Script.addMoney(p, PaymentType.BANK, payday);
             else Script.removeMoney(p, PaymentType.BANK, payday);
 
-            if(Team.getTeam(p) != null && Team.getTeam(p) == Team.Teams.ENTWICKLUNG) {
-                p.sendMessage(Messages.INFO + "§7Als Entwickler erhältst du ein Extra-Gehalt von §a100€");
-                Script.addMoney(p, PaymentType.BANK, 100);
-            }
             setPayDayTime(p, 0);
             setPayDayPay(p, 0);
             Script.executeAsyncUpdate("UPDATE payday SET money = 0 WHERE nrp_id = '" + Script.getNRPID(p) + "'");
