@@ -70,7 +70,7 @@ public class PlaytimeService implements IPlaytimeService {
                 preparedStatement.setInt(2, playtimeData.getMinutes());
                 preparedStatement.setInt(3, playtimeData.getA_minutes());
                 preparedStatement.setInt(4, playtimeData.getA_hours());
-                preparedStatement.setString(5, player.getUniqueId().toString());
+                preparedStatement.setInt(5, Script.getNRPID(player));
                 preparedStatement.executeUpdate();
             }
         } catch (Exception exception) {

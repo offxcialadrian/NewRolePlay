@@ -1583,7 +1583,7 @@ public class Script {
                     Bukkit.broadcastMessage("§8[§6Event§8]§6 Es hat das Vote-Event §7(§lDouble XP§7)§6 §r§6begonnen!");
                 executeAsyncUpdate("UPDATE serversettings SET event='" + e.getName() + "'");
                 Vote.startVoteRamble();
-                startEvent(Event.VOTE, false);
+                //startEvent(Event.VOTE, false);
             } else if (e.equals(Event.DOUBLE_XP_WEEKEND)) {
                 if (message) Bukkit.broadcastMessage("§8[§6Event§8]§6 Es hat ein §lDouble XP-Event §r§6begonnen!");
                 executeAsyncUpdate("UPDATE serversettings SET event='" + e.getName() + "'");
