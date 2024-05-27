@@ -63,7 +63,7 @@ public class PlaytimeService implements IPlaytimeService {
 
     @Override
     public void handleQuit(Player player) {
-        try(final PreparedStatement preparedStatement = NewRoleplayMain.getConnection().prepareStatement("UPDATE playtime SET hours = ?, minutes = ?, a_minutes = ?, a_hours = ? WHERE id = ?")) {
+        try(final PreparedStatement preparedStatement = NewRoleplayMain.getConnection().prepareStatement("UPDATE playtime SET hours = ?, minutes = ?, a_minutes = ?, a_hours = ? WHERE nrp_id = ?")) {
             final PlaytimeData playtimeData = this.playtimeData.get(player.getUniqueId());
             if (playtimeData != null) {
                 preparedStatement.setInt(1, playtimeData.getHours());
@@ -80,7 +80,7 @@ public class PlaytimeService implements IPlaytimeService {
 
     @Override
     public void loadPlaytime(Player player) {
-        try(final PreparedStatement preparedStatement = NewRoleplayMain.getConnection().prepareStatement("SELECT * FROM playtime WHERE id = ?")) {
+        try(final PreparedStatement preparedStatement = NewRoleplayMain.getConnection().prepareStatement("SELECT * FROM playtime WHERE nrp_id = ?")) {
             preparedStatement.setInt(1, Script.getNRPID(player));
             final ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
