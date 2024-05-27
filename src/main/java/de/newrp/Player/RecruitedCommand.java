@@ -2,6 +2,7 @@ package de.newrp.Player;
 
 import de.newrp.API.Debug;
 import de.newrp.API.Messages;
+import de.newrp.API.PaymentType;
 import de.newrp.API.Script;
 import de.newrp.NewRoleplayMain;
 import net.kyori.adventure.text.Component;
@@ -40,6 +41,11 @@ public class RecruitedCommand implements @Nullable CommandExecutor {
                     return true;
                 }
 
+                if (Script.getLevel(player) < 3) {
+                    player.sendMessage(Messages.ERROR + "Du musst mindestens Level-3 sein um als angeworben zu gelten!");
+                    return true;
+                }
+
                 if (Script.getLevel(player) > 5) {
                     player.sendMessage(Messages.ERROR + "Das Anwerben ist nur bis Level-5 gültig!");
                     return true;
@@ -48,7 +54,8 @@ public class RecruitedCommand implements @Nullable CommandExecutor {
                 Player recruiter = Script.getPlayer(args[0]);
                 if (recruiter != null) {
                     addRecruited(Script.getNRPID(player), Script.getNRPID(recruiter));
-                    player.sendMessage(PREFIX + "Du hast " + recruiter.getName() + " als Anwerber angegeben.");
+                    player.sendMessage(PREFIX + "Du hast " + recruiter.getName() + " als Anwerber angegeben und 1000€ erhalten.");
+                    Script.addMoney(player, PaymentType.CASH, 1000);
                     player.sendMessage(PREFIX + player.getName() + " hat dich als Anwerber angegeben.");
                 } else {
                     player.sendMessage(Messages.ERROR + "Der Spieler " + args[0] + " wurde nicht gefunden!");
