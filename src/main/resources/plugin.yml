@@ -783,3 +783,7 @@ commands:
     description: resets the cooldown
   gameboost:
     description: activates the gameboost system
+  sound:
+    description: sound
+  particle:
+    description: particle

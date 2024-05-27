@@ -1,5 +1,6 @@
 package de.newrp.Organisationen;
 
+import com.destroystokyo.paper.ParticleBuilder;
 import de.newrp.API.*;
 import de.newrp.Administrator.SDuty;
 import de.newrp.Berufe.Beruf;
@@ -9,11 +10,11 @@ import de.newrp.Player.AFK;
 import de.newrp.NewRoleplayMain;
 import de.newrp.dependencies.DependencyContainer;
 import de.newrp.features.takemoney.ITakeMoneyService;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
+import org.bukkit.Particle;
 import org.bukkit.block.Block;
 import org.bukkit.entity.FallingBlock;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -25,8 +26,10 @@ import org.bukkit.util.Vector;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 public class Bankautomaten implements Listener {
@@ -41,7 +44,6 @@ public class Bankautomaten implements Listener {
     public void onInteract(PlayerInteractEvent e) {
         Player p = e.getPlayer();
         if(e.getClickedBlock() == null) return;
-        if(e.getClickedBlock().getType() == Material.CYAN_BANNER) return;
         if (p.getInventory().getItemInMainHand().getType() != Material.TNT) return;
         Organisation o = Organisation.getOrganisation(p);
         if (o == null) return;
@@ -63,20 +65,27 @@ public class Bankautomaten implements Listener {
             return;
         }
 
-                cooldown.put(o, System.currentTimeMillis() + TimeUnit.HOURS.toMillis(2) + TimeUnit.MINUTES.toMillis(30));
+        cooldown.put(o, System.currentTimeMillis() + TimeUnit.HOURS.toMillis(2) + TimeUnit.MINUTES.toMillis(30));
         cooldownATM.put(atm, System.currentTimeMillis() + 3600000);
-        atmBlocks.put(e.getClickedBlock().getLocation(), e.getClickedBlock());
         p.getInventory().remove(Material.TNT);
         p.sendMessage(PREFIX + "Der Bankautomat wird in 90 Sekunden zerstört.");
         Beruf.Berufe.POLICE.sendMessage(PREFIX + "ACHTUNG! ES WURDE SPRENGSTOFF AN ATM " + atm.getID() + " GEFUNDEN!");
         Beruf.Berufe.POLICE.sendMessage(Messages.INFO + "In der Nähe von " + Navi.getNextNaviLocation(p.getLocation()).getName());
+        e.getClickedBlock().getLocation().getWorld().playSound(e.getClickedBlock().getLocation(), Sound.ENTITY_CREEPER_PRIMED, 1f, 0.5f);
+        for (LivingEntity nearbyLivingEntity : e.getClickedBlock().getLocation().getNearbyLivingEntities(5)) {
+            nearbyLivingEntity.sendMessage(PREFIX + "§r§lEine Bombe wurde an einem Bankautomaten in deiner Nähe platziert, verschwinde!");
+        }
         Location bombLocation = atm.getLocation();
-        e.getClickedBlock().setType(Material.TNT);
         progress.put(p.getName(), 0);
         p.getInventory().getItemInMainHand().setAmount(p.getInventory().getItemInMainHand().getAmount() - 1);
+        final List<Location> particle = Script.getPointsOfCircle(bombLocation, 2);
+        AtomicInteger y = new AtomicInteger(atm.getLocation().getBlockY());
+        final int yMax = atm.getLocation().getBlockY() + 3;
+        AtomicInteger particleIndex = new AtomicInteger(0);
         new BukkitRunnable() {
             @Override
             public void run() {
+                bombLocation.getWorld().playSound(bombLocation, Sound.BLOCK_NOTE_BLOCK_PLING, 0.5f, 0.2f);
                 if (p.getLocation().distance(bombLocation) > 10) {
                     p.sendMessage(PREFIX + "Du bist zu weit entfernt.");
                     Beruf.Berufe.POLICE.sendMessage(PREFIX + "Der Bankautomat " + atm.getID() + " wurde nicht zerstört. Der Täter ist geflohen.");
@@ -84,7 +93,21 @@ public class Bankautomaten implements Listener {
                     return;
                 }
 
-                if (progress.get(p.getName()) >= 90) {
+                if(y.get() > yMax) {
+                    y.set(atm.getLocation().getBlockY());
+                }
+
+                final Location particleLocation = particle.get(particleIndex.getAndIncrement());
+                final Location clonedLocation = particleLocation.clone();
+                clonedLocation.setY(y.getAndIncrement());
+                Script.WORLD.spawnParticle(Particle.REDSTONE, clonedLocation, 3, new Particle.DustOptions(Color.ORANGE, 2));
+
+                if (particleIndex.get() == particle.size()) {
+                    particleIndex.set(0);
+                }
+
+
+                if (progress.get(p.getName()) >= 180) {
                     for (Location l : Script.getBlocksAroundLocation(bombLocation, 5, 5, false, false, -1)) {
                         Block b = l.getBlock();
                         if (b.getType().hasGravity()) continue;
@@ -114,8 +137,6 @@ public class Bankautomaten implements Listener {
                             }
                         }
                     }
-                    e.getClickedBlock().getLocation().getBlock().setType(atmBlocks.get(e.getClickedBlock().getLocation()).getType());
-                    atmBlocks.remove(e.getClickedBlock().getLocation());
                     int remove = (int) Math.min(Script.getRandom(3000, 6000), Script.getPercent(20, atm.getCash()));
                     atm.removeCash(remove);
                     o.sendMessage(PREFIX + Script.getName(p) + " hat einen Bankautomaten zerstört und " + remove + "€ gestohlen.");
@@ -133,11 +154,11 @@ public class Bankautomaten implements Listener {
                         }
                     }.runTaskLater(NewRoleplayMain.getInstance(), 20L * 60 * 60);
                 } else {
-                    progressBar(90, p);
+                    progressBar(180, p);
                     progress.replace(p.getName(), progress.get(p.getName()) + 1);
                 }
             }
-        }.runTaskTimer(NewRoleplayMain.getInstance(), 20L, 20L);
+        }.runTaskTimer(NewRoleplayMain.getInstance(), 0L, 10L);
     }
 
     private static void progressBar(double required_progress, Player p) {

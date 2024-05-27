@@ -638,6 +638,27 @@ public class Script {
         }
     }
 
+    public static boolean hasRankExact(final Player player, final Rank... ranks) {
+        final Rank playerRank = Script.getRank(player);
+        for (Rank rank : ranks) {
+            if(playerRank == rank) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static List<Location> getPointsOfCircle(final Location location, final int size) {
+        final List<Location> list = new ArrayList<>();
+        for (int d = 0; d <= 90; d += 1) {
+            Location particleLoc = new Location(location.getWorld(), location.getX(), location.getY(), location.getZ());
+            particleLoc.setX(location.getX() + Math.cos(d) * size);
+            particleLoc.setZ(location.getZ() + Math.sin(d) * size);
+            list.add(particleLoc);
+        }
+        return list;
+    }
+
     public static boolean isIP(String s) {
         return s.matches("^(?:[0-9]{1,3}\\.){3}[0-9]{1,3}$");
     }
