@@ -175,8 +175,10 @@ public class InteractMenu implements Listener {
             case "Küssen":
                 for (Krankheit krankheit : Krankheit.values()) {
                     if (krankheit.isInfected(Script.getNRPID(p)) || krankheit.isInfected(Script.getNRPID(tg))) {
-                        if (krankheit.isTransmittable() && Script.getRandom(1, 100) >= 30) {
-                            krankheit.add(Script.getNRPID(tg));
+                        if (krankheit.isTransmittable() && Script.getRandom(1, 10) >= 1) {
+                            if (!krankheit.isImpfed(Script.getNRPID(tg))) {
+                                krankheit.add(Script.getNRPID(tg));
+                            }
                         }
                     }
                 }
