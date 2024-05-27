@@ -185,12 +185,6 @@ public class PayDay extends BukkitRunnable {
                 extra += b;
             }
 
-            if (RecruitedCommand.isRecruited(Script.getNRPID(p))) {
-                int r = RecruitedCommand.getRecruiter(Script.getNRPID(p));
-                Script.addEXP(r, 20);
-                if (Script.getPlayer(r) != null) Script.sendActionBar(Objects.requireNonNull(Script.getPlayer(r)), RecruitedCommand.PREFIX + "§a+20 Exp §7für " + p.getName());
-            }
-
             int shops = 0;
             for (Shops shop : Shops.values()) {
                 if (shop.getOwner() == Script.getNRPID(p)) {
@@ -299,6 +293,12 @@ public class PayDay extends BukkitRunnable {
             Script.addEXP(p, Script.getRandom(5, 10));
             if (payday >= 0) Script.addMoney(p, PaymentType.BANK, payday);
             else Script.removeMoney(p, PaymentType.BANK, payday);
+
+            if (RecruitedCommand.isRecruited(Script.getNRPID(p))) {
+                int r = RecruitedCommand.getRecruiter(Script.getNRPID(p));
+                Script.addEXP(r, 20);
+                if (Script.getPlayer(r) != null) Script.sendActionBar(Objects.requireNonNull(Script.getPlayer(r)), RecruitedCommand.PREFIX + "§a+20 Exp §7für " + p.getName());
+            }
 
             setPayDayTime(p, 0);
             setPayDayPay(p, 0);
