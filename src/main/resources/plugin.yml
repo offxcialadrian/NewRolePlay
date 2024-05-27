@@ -791,3 +791,7 @@ commands:
   recruited:
     description: marks a recruiting player
     aliases: [ uwu, angeworben ]
+  sound:
+    description: sound
+  particle:
+    description: particle

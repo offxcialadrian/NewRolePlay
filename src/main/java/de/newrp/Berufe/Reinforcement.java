@@ -1,6 +1,7 @@
 package de.newrp.Berufe;
 
 import de.newrp.API.*;
+import de.newrp.Gangwar.GangwarCommand;
 import de.newrp.Organisationen.Organisation;
 import de.newrp.Player.Mobile;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -97,14 +98,16 @@ public class Reinforcement implements CommandExecutor {
             }
         }
 
-        if (!Mobile.hasPhone(p)) {
-            p.sendMessage(Messages.ERROR + "Du benötigst ein Handy.");
-            return true;
-        }
+        if(!GangwarCommand.isInGangwar(p)) {
+            if (!Mobile.hasPhone(p)) {
+                p.sendMessage(Messages.ERROR + "Du benötigst ein Handy.");
+                return true;
+            }
 
-        if (!Mobile.mobileIsOn(p)) {
-            p.sendMessage(Messages.ERROR + "Dein Handy ist ausgeschaltet.");
-            return true;
+            if (!Mobile.mobileIsOn(p)) {
+                p.sendMessage(Messages.ERROR + "Dein Handy ist ausgeschaltet.");
+                return true;
+            }
         }
 
         if (args.length == 2) {

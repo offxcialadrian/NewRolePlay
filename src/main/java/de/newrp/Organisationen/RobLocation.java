@@ -27,10 +27,10 @@ public enum RobLocation {
     TIERHEIM("Tierheim", new Location(Script.WORLD, 592, 69, 1118), Organisation.SINALOA, "Kasse"),
     WAGEN("HotDog-Wagen", new Location(Script.WORLD, 843, 66, 741), Organisation.SINALOA, "Lager"),
     FLUGZEUG("Flugzeug", new Location(Script.WORLD, 851, 69, 1271), Organisation.SINALOA, "Lager"),
-    ARCADE("Arcade", new Location(Script.WORLD, 401, 67, 750), Organisation.BRATERSTWO, "Kasse"),
-    GELDWAGEN("Geldwagen", new Location(Script.WORLD, 909, 76, 912), Organisation.BRATERSTWO, "Kasse"),
-    BAR("Bar", new Location(Script.WORLD, 699, 69, 865), Organisation.BRATERSTWO, "Lager"),
-    NOODLES("Noodles", new Location(Script.WORLD, 867, 83, 952), Organisation.BRATERSTWO, "Lager");
+    ARCADE("Arcade", new Location(Script.WORLD, 401, 67, 750), Organisation.HITMEN, "Kasse"),
+    GELDWAGEN("Geldwagen", new Location(Script.WORLD, 909, 76, 912), Organisation.HITMEN, "Kasse"),
+    BAR("Bar", new Location(Script.WORLD, 699, 69, 865), Organisation.HITMEN, "Lager"),
+    NOODLES("Noodles", new Location(Script.WORLD, 867, 83, 952), Organisation.HITMEN, "Lager");
 
     private final String name;
     private final Location loc;

@@ -2,6 +2,7 @@ package de.newrp;
 
 import de.newrp.API.*;
 import de.newrp.Administrator.*;
+import de.newrp.Administrator.ParticleCommand;
 import de.newrp.Berufe.*;
 import de.newrp.Call.CallCommand;
 import de.newrp.Call.HangupCommand;
@@ -538,6 +539,8 @@ public class NewRoleplayMain extends JavaPlugin {
         getCommand("resetcooldown").setExecutor(new ResetCooldownCommand());
         getCommand("gameboost").setExecutor(new Gameboost());
         getCommand("recruited").setExecutor(new RecruitedCommand());
+        getCommand("sound").setExecutor(new SoundCommand());
+        getCommand("particle").setExecutor(new ParticleCommand());
     }
 
     /**
@@ -648,7 +651,7 @@ public class NewRoleplayMain extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new UmfragenCommand(), this);
         Bukkit.getPluginManager().registerEvents(new Spawnchange(), this);
         Bukkit.getPluginManager().registerEvents(new JailWork(), this);
-        Bukkit.getPluginManager().registerEvents(new ParticleCommand(), this);
+        Bukkit.getPluginManager().registerEvents(new de.newrp.Player.ParticleCommand(), this);
         Bukkit.getPluginManager().registerEvents(new KameraCommand(), this);
         Bukkit.getPluginManager().registerEvents(new TV(), this);
         Bukkit.getPluginManager().registerEvents(new TestoSpritze(), this);
