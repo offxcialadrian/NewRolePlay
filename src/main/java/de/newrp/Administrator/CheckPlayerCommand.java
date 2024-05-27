@@ -24,9 +24,19 @@ public class CheckPlayerCommand implements CommandExecutor {
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
         Player p = (Player) cs;
 
-        if (Script.getRank(p) == Rank.DEVELOPER && SDuty.isSDuty(p)) {
-            OfflinePlayer offtg = Script.getOfflinePlayer(Integer.parseInt(args[0]));
-            p.sendMessage("§e§l=== §6" + offtg.getName() + " §8(§cOffline§8) §e§l===");
+        if (Script.getRank(p) == Rank.DEVELOPER) {
+            if(args.length == 0) {
+                p.sendMessage(Messages.ERROR + "/checkplayer [Spieler]");
+                return true;
+            }
+
+            OfflinePlayer offtg = Script.getOfflinePlayer(args[0]);
+            if(offtg == null) {
+                p.sendMessage(Messages.PLAYER_NOT_FOUND);
+                return true;
+            }
+
+            p.sendMessage("§e§l=== §6" + offtg.getName() + " §e§l===");
             p.sendMessage("§7ID §8× §e" + Script.getNRPID(offtg));
 
         }
