@@ -50,8 +50,8 @@ public class BizWarPlayerDamageListener implements Listener {
         location.add(0, 0.1f, 0);
         Script.WORLD.playEffect(location, Effect.STEP_SOUND, Material.REDSTONE_BLOCK);
 
-        if(event.getDamager() instanceof Arrow) {
+        /*if(event.getDamager() instanceof Arrow) {
             damager.playSound(damager.getLocation(), Sound.ENTITY_ARROW_HIT, 3f, 2f);
-        }
+        }*/
     }
 }
