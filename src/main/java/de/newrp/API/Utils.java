@@ -527,7 +527,7 @@ public class Utils implements Listener {
                     } else {
                         p.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
                     }
-                    Health.THIRST.add(Script.getNRPID(p), .1F);
+                    Health.THIRST.add(Script.getNRPID(p), Script.getRandomFloat(3F, 5F));
                     Script.playLocalSound(p.getLocation(), Sound.ENTITY_GENERIC_DRINK, 5);
                 }
             }
