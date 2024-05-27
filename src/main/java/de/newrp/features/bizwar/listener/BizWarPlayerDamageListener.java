@@ -4,10 +4,7 @@ import de.newrp.API.Friedhof;
 import de.newrp.API.Script;
 import de.newrp.dependencies.DependencyContainer;
 import de.newrp.features.bizwar.IBizWarService;
-import org.bukkit.Effect;
-import org.bukkit.EntityEffect;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -46,11 +43,15 @@ public class BizWarPlayerDamageListener implements Listener {
             damager.sendMessage(this.bizWarService.getPrefix() + "§cDu darfst keine Spieler angreifen, die sich nicht im BizWar befinden.");
         }
 
-        if(!Friedhof.isDead(player)) {
+        if(Friedhof.isDead(player)) {
             return;
         }
         final Location location = player.getLocation().clone();
         location.add(0, 0.1f, 0);
         Script.WORLD.playEffect(location, Effect.STEP_SOUND, Material.REDSTONE_BLOCK);
+
+        if(event.getDamager() instanceof Arrow) {
+            damager.playSound(damager.getLocation(), Sound.ENTITY_ARROW_HIT, 3f, 2f);
+        }
     }
 }
