@@ -2,6 +2,7 @@ package de.newrp;
 
 import de.newrp.API.*;
 import de.newrp.Administrator.*;
+import de.newrp.Administrator.ParticleCommand;
 import de.newrp.Berufe.*;
 import de.newrp.Call.CallCommand;
 import de.newrp.Call.HangupCommand;
@@ -46,8 +47,14 @@ import de.newrp.discord.impl.JdaService;
 import de.newrp.discord.listeners.SupportListener;
 import de.newrp.discord.listeners.VerifyListener;
 import de.newrp.features.bizwar.IBizWarService;
+import de.newrp.features.bizwar.commands.ActiveExtortedShopsCommand;
+import de.newrp.features.bizwar.commands.FreeBizCommand;
+import de.newrp.features.bizwar.commands.JoinFightCommand;
+import de.newrp.features.bizwar.commands.StartBizWarCommand;
 import de.newrp.features.bizwar.config.BizWarConfig;
 import de.newrp.features.bizwar.impl.BizWarService;
+import de.newrp.features.bizwar.listener.BizWarPlayerDamageListener;
+import de.newrp.features.bizwar.listener.BizWarPlayerDeathListener;
 import de.newrp.features.deathmatcharena.IDeathmatchArenaService;
 import de.newrp.features.deathmatcharena.commands.DeathmatchArenaCommand;
 import de.newrp.features.deathmatcharena.data.DeathmatchArenaConfig;
@@ -538,6 +545,12 @@ public class NewRoleplayMain extends JavaPlugin {
         getCommand("resetcooldown").setExecutor(new ResetCooldownCommand());
         getCommand("gameboost").setExecutor(new Gameboost());
         getCommand("recruited").setExecutor(new RecruitedCommand());
+        getCommand("sound").setExecutor(new SoundCommand());
+        getCommand("particle").setExecutor(new ParticleCommand());
+        getCommand("startbizwar").setExecutor(new StartBizWarCommand());
+        getCommand("joinfight").setExecutor(new JoinFightCommand());
+        getCommand("freebiz").setExecutor(new FreeBizCommand());
+        getCommand("activeextortions").setExecutor(new ActiveExtortedShopsCommand());
     }
 
     /**
@@ -648,7 +661,7 @@ public class NewRoleplayMain extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new UmfragenCommand(), this);
         Bukkit.getPluginManager().registerEvents(new Spawnchange(), this);
         Bukkit.getPluginManager().registerEvents(new JailWork(), this);
-        Bukkit.getPluginManager().registerEvents(new ParticleCommand(), this);
+        Bukkit.getPluginManager().registerEvents(new de.newrp.Player.ParticleCommand(), this);
         Bukkit.getPluginManager().registerEvents(new KameraCommand(), this);
         Bukkit.getPluginManager().registerEvents(new TV(), this);
         Bukkit.getPluginManager().registerEvents(new TestoSpritze(), this);
@@ -691,6 +704,8 @@ public class NewRoleplayMain extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new RecommendationInventoryClickListener(), this);
         Bukkit.getPluginManager().registerEvents(new RecommendationChatListener(), this);
         Bukkit.getPluginManager().registerEvents(new RecommendationInventoryCloseListener(), this);
+        Bukkit.getPluginManager().registerEvents(new BizWarPlayerDamageListener(), this);
+        Bukkit.getPluginManager().registerEvents(new BizWarPlayerDeathListener(), this);
     }
 
     /**

@@ -1,9 +1,6 @@
 package de.newrp.Berufe;
 
-import de.newrp.API.ItemBuilder;
-import de.newrp.API.Log;
-import de.newrp.API.Messages;
-import de.newrp.API.Script;
+import de.newrp.API.*;
 import de.newrp.Administrator.BuildMode;
 import de.newrp.Administrator.Notifications;
 import de.newrp.Government.Stadtkasse;
@@ -58,7 +55,7 @@ public class Equip implements CommandExecutor, Listener {
         KEKSE(20, "Keks", new ItemBuilder(Material.COOKIE).setAmount(16).setName("§7Keks").build(), 1, 0, null, Beruf.Berufe.NEWS, false),
         SNIPER(21, Weapon.SNIPER.getName(), Weapon.SNIPER.getWeapon(), 2900, 30, new Abteilung.Abteilungen[]{Abteilung.Abteilungen.SEK, Abteilung.Abteilungen.ABTEILUNGSLEITUNG}, Beruf.Berufe.POLICE, true),
         DROHNE_COPS(22, "Drohne [Polizei]", new ItemBuilder(Material.WITHER_SKELETON_SKULL).setName("§7Drohne [Polizei]").build(), 1000, 0, new Abteilung.Abteilungen[]{Abteilung.Abteilungen.SEK, Abteilung.Abteilungen.ABTEILUNGSLEITUNG}, Beruf.Berufe.POLICE, true),
-        DROHNE_NEWS(23, "Drohne [News]", new ItemBuilder(Material.WITHER_SKELETON_SKULL).setName("§7Drohne [News]").build(), 1500, 0, new Abteilung.Abteilungen[]{Abteilung.Abteilungen.CHEFREDAKTION}, Beruf.Berufe.NEWS, true),
+        DROHNE_NEWS(23, "Drohne [News]", new ItemBuilder(Material.WITHER_SKELETON_SKULL).setName("§7Drohne [News]").build(), 500, 0, new Abteilung.Abteilungen[]{Abteilung.Abteilungen.CHEFREDAKTION}, Beruf.Berufe.NEWS, true),
         DROHNE_RETTUNGSDIENST(24, "Drohne [Rettungsdienst]", new ItemBuilder(Material.WITHER_SKELETON_SKULL).setName("§7Drohne [Rettungsdienst]").build(), 1000, 0, new Abteilung.Abteilungen[]{Abteilung.Abteilungen.NOTFALLMEDIZIN, Abteilung.Abteilungen.OBERARZT}, Beruf.Berufe.RETTUNGSDIENST, true),
         MUNITION_PISTOLE(25, Weapon.PISTOLE.getAmmoType().getName(), new ItemBuilder(Material.ARROW).setName(Weapon.PISTOLE.getAmmoType().getName()).setAmount(Weapon.PISTOLE.getMagazineSize()).build(), 10, 0, null, Beruf.Berufe.POLICE, true),
         MUNITION_MP7(26, Weapon.MP7.getAmmoType().getName(), new ItemBuilder(Material.ARROW).setName(Weapon.MP7.getAmmoType().getName()).setAmount(Weapon.MP7.getMagazineSize()).build(), 15, 0, new Abteilung.Abteilungen[]{Abteilung.Abteilungen.SEK}, Beruf.Berufe.POLICE, true),
@@ -255,7 +252,7 @@ public class Equip implements CommandExecutor, Listener {
                 return true;
             }
 
-            if (Organisation.getOrganisation(p) == Organisation.BRATERSTWO && p.getLocation().distance(new Location(Script.WORLD, 559, 75, 1279)) > 7) {
+            if (Organisation.getOrganisation(p) == Organisation.HITMEN && p.getLocation().distance(HologramList.EQUIP_HITMAN.getLocation()) > 7) {
                 p.sendMessage(Messages.ERROR + "Du musst dich in der Nähe des Equip-Punktes befinden.");
                 return true;
             }

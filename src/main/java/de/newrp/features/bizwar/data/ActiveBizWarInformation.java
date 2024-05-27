@@ -1,5 +1,7 @@
 package de.newrp.features.bizwar.data;
 
+import de.newrp.API.Friedhof;
+import de.newrp.API.Script;
 import de.newrp.NewRoleplayMain;
 import de.newrp.Organisationen.Organisation;
 import de.newrp.Shop.Shops;
@@ -9,6 +11,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 
 import java.util.Set;
 import java.util.UUID;
@@ -32,15 +35,32 @@ public class ActiveBizWarInformation {
     private int schedulerId;
 
     public void startBizWarScheduler(final IBizWarService service) {
-        this.schedulerId = Bukkit.getScheduler().scheduleSyncRepeatingTask(NewRoleplayMain.getInstance(), () -> tickBizWar(service), 0, 20);
+        this.schedulerId = Bukkit.getScheduler().scheduleSyncRepeatingTask(NewRoleplayMain.getInstance(), () -> tickBizWar(service), 0, 10);
     }
 
     public void tickBizWar(final IBizWarService bizWarService) {
         final long minutesPassedSinceStart = TimeUnit.MILLISECONDS.toMinutes(System.currentTimeMillis() - this.startTimestamp);
-        if(minutesPassedSinceStart >= 5) {
+        System.out.println(minutesPassedSinceStart);
+        if(minutesPassedSinceStart >= 7) {
             bizWarService.finishBizWar(this.attackedShop);
             Bukkit.getScheduler().cancelTask(this.schedulerId);
             return;
+        }
+
+        for (UUID joinedMembersOfAttacker : this.getJoinedMembersOfAttackers()) {
+            final Player player = Bukkit.getPlayer(joinedMembersOfAttacker);
+            if(player == null) continue;
+
+            if(Friedhof.isDead(player)) continue;
+            Script.sendActionBar(player, "§a" + this.currentAttackerPoints + " §7| §c" + this.currentDefenderPoints);
+        }
+
+        for (UUID joinedMembersOfDefender : this.getJoinedMembersOfDefenders()) {
+            final Player player = Bukkit.getPlayer(joinedMembersOfDefender);
+            if(player == null) continue;
+
+            if(Friedhof.isDead(player)) continue;
+            Script.sendActionBar(player, "§a" + this.currentDefenderPoints + " §7| §c" + this.currentAttackerPoints);
         }
     }
 

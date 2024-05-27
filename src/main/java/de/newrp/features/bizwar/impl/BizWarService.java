@@ -13,12 +13,14 @@ import de.newrp.features.bizwar.config.BizWarConfig;
 import de.newrp.features.bizwar.config.BizWarShopConfig;
 import de.newrp.features.bizwar.data.ActiveBizWarInformation;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 public class BizWarService implements IBizWarService {
 
@@ -28,15 +30,22 @@ public class BizWarService implements IBizWarService {
     private final Map<Shops, Long> lastAttackOnShop = new HashMap<>();
     private final Set<ActiveBizWarInformation> activeBizWarInformations = new HashSet<>();
     private final Map<Shops, Organisation> activeExtortions = new HashMap<>();
+    private final Map<Shops, Player> beeingFreed = new HashMap<>();
 
     @Override
     public void loadActiveExtortions() {
+        for (BizWarShopConfig shopConfig : this.bizWarConfig.getShopConfigs()) {
+
+        }
+
         try(final PreparedStatement preparedStatement = NewRoleplayMain.getConnection().prepareStatement("SELECT * FROM extorted_shops")) {
             try(final ResultSet resultSet = preparedStatement.executeQuery()) {
                 while (resultSet.next()) {
+                    System.out.println("Found column");
                     final int shopID = resultSet.getInt("shop_id");
                     final int organisationID = resultSet.getInt("organisation_id");
-                    final long extortedTimestamp = resultSet.getLong("extorted_timestamp");
+                    final long extortedTimestamp = resultSet.getLong("exorted_timestamp");
+                    System.out.println("ShopID: " + shopID + " OrganisationID: " + organisationID + " Timestamp: " + extortedTimestamp);
 
                     final Shops shop = Shops.getShop(shopID);
                     final Organisation organisation = Organisation.getOrganisation(organisationID);
@@ -71,7 +80,8 @@ public class BizWarService implements IBizWarService {
 
         this.activeBizWarInformations.add(bizWarInformation);
         bizWarInformation.startBizWarScheduler(this);
-        bizWarInformation.getJoinedMembersOfAttackers().add(player.getUniqueId());
+        this.addOrgaCooldown(organisation, TimeUnit.HOURS.toMillis(2));
+        this.addShopCooldown(shop, TimeUnit.HOURS.toMillis(24));
 
         for (final UUID defenderPlayerUUID : defenderOrganisation.getMember()) {
             final Player defenderPlayer = Bukkit.getPlayer(defenderPlayerUUID);
@@ -80,6 +90,17 @@ public class BizWarService implements IBizWarService {
             defenderPlayer.sendTitle("§c§lBiz War gestartet", "§7Der Shop §e" + shop.getPublicName() + " §7wird angegriffen! Verteidige ihn!", 10, 60, 10);
             defenderPlayer.sendMessage(this.getPrefix() + "§7Der Shop §e" + shop.getPublicName() + " §7wird von §e" + organisation.getName() + " §7angegriffen!");
             defenderPlayer.sendMessage(Messages.INFO + "Du kannst dem Biz War mit /joinfight beitreten!");
+            defenderPlayer.playSound(defenderPlayer.getLocation(), Sound.ENTITY_WITHER_SPAWN, 1f, 1f);
+        }
+
+        for (UUID uuid : organisation.getMember()) {
+            final Player attackerPlayer = Bukkit.getPlayer(uuid);
+            if(attackerPlayer == null) continue;
+
+            attackerPlayer.sendTitle("§a§lBiz War gestartet", "Viel Erfolg!", 10, 60, 10);
+            attackerPlayer.sendMessage(this.getPrefix() + "§7Deine Organisation §e" + organisation.getName() + " §7greift den Shop §e" + shop.getPublicName() + " §7an!");
+            attackerPlayer.sendMessage(Messages.INFO + "Du kannst dem Biz War mit /joinfight beitreten!");
+            attackerPlayer.playSound(attackerPlayer.getLocation(), Sound.ENTITY_WITHER_SPAWN, 1f, 1f);
         }
 
         this.joinBizWar(bizWarInformation, player, organisation);
@@ -103,7 +124,7 @@ public class BizWarService implements IBizWarService {
             winnerPlayer.sendMessage(getPrefix() + "Deine Organisation hat den Biz War gegen §c" + loser.getName() + " §7gewonnen!");
             winnerPlayer.playSound(winnerPlayer.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, 1f, 1f);
         }
-        winner.addExp(Script.getRandom(40, 50));
+        winner.addExp(Script.getRandom(30, 40));
 
         for (UUID loserUUID : loser.getMember()) {
             final Player loserPlayer = Bukkit.getPlayer(loserUUID);
@@ -112,6 +133,19 @@ public class BizWarService implements IBizWarService {
             loserPlayer.playSound(loserPlayer.getLocation(), Sound.ENTITY_WITHER_DEATH, 1f, 1f);
         }
 
+        for (UUID joinedMembersOfDefender : activeBizWarInformation.getJoinedMembersOfDefenders()) {
+            final Player player = Bukkit.getPlayer(joinedMembersOfDefender);
+            if(player == null) continue;
+
+            Cache.loadInventory(player);
+        }
+
+        for (UUID joinedMembersOfAttacker : activeBizWarInformation.getJoinedMembersOfAttackers()) {
+            final Player player = Bukkit.getPlayer(joinedMembersOfAttacker);
+            if(player == null) continue;
+
+            Cache.loadInventory(player);
+        }
         this.setOwnerOfShop(shop, winner);
     }
 
@@ -121,6 +155,23 @@ public class BizWarService implements IBizWarService {
             player.sendMessage(this.getPrefix() + "Deine Organisation ist nicht am Biz War beteiligt!");
             return;
         }
+
+        final boolean isAttacker = bizWarInformation.getAttackerOrganisation() == organisation;
+        final int sizeOfDefenders = bizWarInformation.getJoinedMembersOfDefenders().size();
+        final int sizeOfAttackers = bizWarInformation.getJoinedMembersOfAttackers().size();
+
+        if(isAttacker) {
+            if(sizeOfAttackers > sizeOfDefenders) {
+                player.sendMessage(this.getPrefix() + "§cDie Angreifer haben bereits mehr Mitglieder als die Verteidiger!");
+                return;
+            }
+        } else {
+            if(sizeOfDefenders > sizeOfAttackers) {
+                player.sendMessage(this.getPrefix() + "§cDie Verteidiger haben bereits mehr Mitglieder als die Angreifer!");
+                return;
+            }
+        }
+
 
         if(bizWarInformation.getJoinedMembersOfAttackers().contains(player.getUniqueId())) {
             player.sendMessage(this.getPrefix() + "§cDu bist bereits im Biz War!");
@@ -151,9 +202,42 @@ public class BizWarService implements IBizWarService {
     }
 
     @Override
+    public boolean isMemberOfBizWar(Player player) {
+        for (ActiveBizWarInformation activeBizWarInformation : this.activeBizWarInformations) {
+            if(activeBizWarInformation.getJoinedMembersOfDefenders().contains(player.getUniqueId()) || activeBizWarInformation.getJoinedMembersOfAttackers().contains(player.getUniqueId())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean isBeeingFreed(Shops shop) {
+        return this.beeingFreed.containsKey(shop);
+    }
+
+    @Override
+    public void setBeeingFreed(Shops shop, Player player) {
+        if(player == null) {
+            this.beeingFreed.remove(shop);
+            return;
+        }
+
+        this.beeingFreed.put(shop, player);
+    }
+
+    @Override
     public ActiveBizWarInformation getBizWarOfOrganisation(Organisation organisation) {
         return this.activeBizWarInformations.stream()
                 .filter(e -> e.getDefenderOrganisation() == organisation || e.getAttackerOrganisation() == organisation)
+                .findFirst()
+                .orElse(null);
+    }
+
+    @Override
+    public ActiveBizWarInformation getBizWarOfPlayer(Player player) {
+        return this.activeBizWarInformations.stream()
+                .filter(e -> e.getJoinedMembersOfAttackers().contains(player.getUniqueId()) || e.getJoinedMembersOfDefenders().contains(player.getUniqueId()))
                 .findFirst()
                 .orElse(null);
     }
@@ -186,10 +270,11 @@ public class BizWarService implements IBizWarService {
 
     @Override
     public void setOwnerOfShop(Shops shop, Organisation organisation) {
-        try(final PreparedStatement preparedStatement = NewRoleplayMain.getConnection().prepareStatement("UPDATE extorted_shops SET organisation_id = ?, exorted_timestamp = ? WHERE shop_id = ?")) {
-            preparedStatement.setInt(1, organisation.getID());
-            preparedStatement.setLong(2, System.currentTimeMillis());
-            preparedStatement.setInt(3, shop.getID());
+        this.activeExtortions.put(shop, organisation);
+        try(final PreparedStatement preparedStatement = NewRoleplayMain.getConnection().prepareStatement("REPLACE INTO extorted_shops(shop_id, organisation_id, exorted_timestamp) VALUES(?, ?, ?)")) {
+            preparedStatement.setInt(1, shop.getID());
+            preparedStatement.setInt(2, organisation.getID());
+            preparedStatement.setLong(3, System.currentTimeMillis());
             preparedStatement.executeUpdate();
         } catch (Exception e) {
             NewRoleplayMain.handleError(e);
@@ -226,7 +311,40 @@ public class BizWarService implements IBizWarService {
     }
 
     @Override
+    public Location getCorrespondingLocationForBizWarPlayer(Player player) {
+        final ActiveBizWarInformation activeBizWarInformation = this.activeBizWarInformations.stream()
+                .filter(e -> e.getJoinedMembersOfAttackers().contains(player.getUniqueId()) || e.getJoinedMembersOfDefenders().contains(player.getUniqueId()))
+                .findFirst()
+                .orElse(null);
+
+        if(activeBizWarInformation == null) {
+            return null;
+        }
+
+        if(activeBizWarInformation.getJoinedMembersOfAttackers().contains(player.getUniqueId())) {
+            return activeBizWarInformation.getAttackerSpawn();
+        }
+
+        if(activeBizWarInformation.getJoinedMembersOfDefenders().contains(player.getUniqueId())) {
+            return activeBizWarInformation.getDefenderSpawn();
+        }
+        return null;
+    }
+
+    @Override
     public String getPrefix() {
         return "§8[§cBIZ-War§8] §c" + Messages.ARROW + " §7";
+    }
+
+    @Override
+    public void addOrgaCooldown(Organisation organisation, long cooldown) {
+        if(Script.isInTestMode()) return;
+        this.lastAttackOfOrganisation.put(organisation, System.currentTimeMillis() + cooldown);
+    }
+
+    @Override
+    public void addShopCooldown(Shops shop, long cooldown) {
+        if(Script.isInTestMode()) return;
+        this.lastAttackOnShop.put(shop, System.currentTimeMillis() + cooldown);
     }
 }

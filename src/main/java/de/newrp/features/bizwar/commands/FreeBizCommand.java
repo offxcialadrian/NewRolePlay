@@ -24,6 +24,7 @@ public class FreeBizCommand implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
         final Player player = (Player) commandSender;
         final Beruf.Berufe berufe = Beruf.getBeruf(player);
+
         if(berufe != Beruf.Berufe.POLICE) {
             player.sendMessage(Messages.NO_PERMISSION);
             return false;
@@ -46,11 +47,20 @@ public class FreeBizCommand implements CommandExecutor {
             return false;
         }
 
-        Beruf.Berufe.POLICE.sendMessage(this.bizWarService.getPrefix() + "Der Spieler §e" + player.getName() + " §7beginnt den Shop §e" + shop.getPublicName() + " §7zu befreien");
+        if(this.bizWarService.isBeeingFreed(shop)) {
+            player.sendMessage(Messages.ERROR + "Dieser Shop wird bereits befreit!");
+            return false;
+        }
 
-        // To-Do
+        Beruf.Berufe.POLICE.sendMessage(this.bizWarService.getPrefix() + "Der Spieler §e" + player.getName() + " §7beginnt den Shop §e" + shop.getPublicName() + " §7zu befreien");
+        organisation.sendMessage(this.bizWarService.getPrefix() + "Der Shop §e" + shop.getPublicName() + " §7wird von der Polizei befreit! §lVerteidigt den Shop!");
+        this.bizWarService.setBeeingFreed(shop, player);
 
         Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> {
+            if(!this.bizWarService.isBeeingFreed(shop)) {
+                return;
+            }
+
             final double distanceOfPlayerToShop = player.getLocation().distance(shop.getLocation());
             if(distanceOfPlayerToShop > 5) {
                 Beruf.Berufe.POLICE.sendMessage(this.bizWarService.getPrefix() + "Der Spieler §e" + player.getName() + " §7hat versucht den Shop §e" + shop.getPublicName() + " §7zu befreien, war aber zu weit entfernt.");
@@ -59,6 +69,7 @@ public class FreeBizCommand implements CommandExecutor {
 
             this.bizWarService.setOwnerOfShop(shop, null);
             Beruf.Berufe.POLICE.sendMessage(this.bizWarService.getPrefix() + "Der Shop " + shop.getPublicName() + " wurde befreit.");
+            this.bizWarService.setBeeingFreed(shop, null);
         }, (20 * 60) * 5);
 
 

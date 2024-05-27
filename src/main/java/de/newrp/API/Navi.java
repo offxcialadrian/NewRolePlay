@@ -55,7 +55,7 @@ public enum Navi {
     ANGELLADEN("Angelladen", new Location(Script.WORLD, 766, 64, 780, 266.49414f, 89.59964f)),
     BAEKEREI("Bäckerei", new Location(Script.WORLD, 450, 66, 644, 90.62988f, 22.937416f)),
     GROVE("Grove",new Location(Script.WORLD, 775, 64, 1242, 90.474365f, 5.4431314f)),
-    BRATERSTWO("Braterstwo", new Location(Script.WORLD, 548, 65, 1262, 0.4248047f, 1.9345249f)),
+    HITMEN("The-Rebels-Mercs", new Location(Script.WORLD, 714, 71, 897, -181.29352f, 49.499653f)),
     CORLEONE("Corleone-Familie", new Location(Script.WORLD, 125, 105, 487, 270.77173f, -1.7501303f)),
     FALCONE("Falcone-Famiglia", new Location(Script.WORLD, 796, 109, 846, 270.17065f, 1.4442922f)),
     KARTELL("Puertoricanisches Kartell", new Location(Script.WORLD, 198, 66, 1120, -90.13266f, 0.2703893f)),

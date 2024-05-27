@@ -47,10 +47,10 @@ public class KameraCommand implements CommandExecutor, Listener {
         if(camera == p) {
 
             for(Player all : Bukkit.getOnlinePlayers()) {
-                if(TV.tvs.containsKey(all.getName())) {
+                if(TV.tvs.containsKey(all)) {
                     all.sendMessage(PREFIX + "Die Sendung wurde abgebrochen.");
-                    all.teleport(TV.tvs.get(all.getName()));
-                    TV.tvs.remove(all.getName());
+                    all.teleport(TV.tvs.get(all));
+                    TV.tvs.remove(all);
                     all.setSpectatorTarget(null);
                     all.setGameMode(GameMode.SURVIVAL);
                 }
@@ -79,10 +79,10 @@ public class KameraCommand implements CommandExecutor, Listener {
             camera = null;
             Beruf.Berufe.NEWS.sendMessage(PREFIX + Script.getName(e.getPlayer()) + " hat die Kamera-Steuerung verlassen.");
             for(Player all : Bukkit.getOnlinePlayers()) {
-                if(TV.tvs.containsKey(all.getName())) {
+                if(TV.tvs.containsKey(all)) {
                     all.sendMessage(PREFIX + "Die Sendung wurde abgebrochen.");
-                    all.teleport(TV.tvs.get(all.getName()));
-                    TV.tvs.remove(all.getName());
+                    all.teleport(TV.tvs.get(all));
+                    TV.tvs.remove(all);
                     all.setSpectatorTarget(null);
                     all.setGameMode(GameMode.SURVIVAL);
                 }

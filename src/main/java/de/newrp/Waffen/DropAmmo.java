@@ -7,6 +7,8 @@ import de.newrp.Administrator.BuildMode;
 import de.newrp.Gangwar.GangwarCommand;
 import de.newrp.House.House;
 import de.newrp.House.HouseAddon;
+import de.newrp.dependencies.DependencyContainer;
+import de.newrp.features.bizwar.IBizWarService;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -29,7 +31,7 @@ public class DropAmmo implements CommandExecutor, TabCompleter {
         Player p = (Player) cs;
         House h = House.getInsideHouse(p);
 
-        if(GangwarCommand.isInGangwar(p)) {
+        if(GangwarCommand.isInGangwar(p) || DependencyContainer.getContainer().getDependency(IBizWarService.class).isMemberOfBizWar(p)) {
             p.sendMessage(Messages.ERROR + "Du kannst im Gangwar keine Munition droppen.");
             return true;
         }

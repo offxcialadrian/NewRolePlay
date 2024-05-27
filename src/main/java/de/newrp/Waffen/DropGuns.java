@@ -6,6 +6,8 @@ import de.newrp.API.Script;
 import de.newrp.Chat.Me;
 import de.newrp.Gangwar.GangwarCommand;
 import de.newrp.Police.Handschellen;
+import de.newrp.dependencies.DependencyContainer;
+import de.newrp.features.bizwar.IBizWarService;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -17,7 +19,7 @@ public class DropGuns implements CommandExecutor {
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
         Player p = (Player) cs;
 
-        if(GangwarCommand.isInGangwar(p)) {
+        if(GangwarCommand.isInGangwar(p) || DependencyContainer.getContainer().getDependency(IBizWarService.class).isMemberOfBizWar(p)) {
             p.sendMessage(Messages.ERROR + "Du kannst im Gangwar keine Waffen droppen.");
             return true;
         }

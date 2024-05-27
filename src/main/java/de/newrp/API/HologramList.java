@@ -76,7 +76,7 @@ public enum HologramList {
     DBANK_KARTELL(74, "§8/§6dbank", new Location(Script.WORLD, 230, 67, 1110, 1.5193672f, 16.320272f)),
     DBANK_CORLEONE(75, "§8/§6dbank",new Location(Script.WORLD, 183, 103, 479, -268.55347f, 14.808363f)),
     DBANK_GROVE(76, "§8/§6dbank", new Location(Script.WORLD, 752, 53, 1266, 193.52417f, 13.093105f)),
-    DBANK_BRATERSTWO(77, "§8/§6dbank", new Location(Script.WORLD, 556, 77, 1268, -263.88275f, 10.649914f)),
+    DBANK_HITMAN(77, "§8/§6dbank", new Location(Script.WORLD, 724, 55, 890)),
     DBANK_FALCONE(78, "§8/§6dbank", new Location(Script.WORLD, 761, 118, 847, 258.50473f, 17.865908f)),
     HACKPOLICE(79, "§8/§6hackpolicecomputer", new Location(Script.WORLD, 448, 31, 855, -88.80542f, 24.899044f)),
     DOENERMANN(80, "§8/§6dönermann", new Location(Script.WORLD, 445, 64, 664, -59.75107f, 7.6497645f)),
@@ -92,7 +92,7 @@ public enum HologramList {
     EQUIP_FALCONE(90, "§8/§6equip", new Location(Script.WORLD, 749, 118, 851)),
     EQUIP_CORLEONE(91, "§8/§6equip", new Location(Script.WORLD, 203, 103, 481)),
     EQUIP_KARTELL(92, "§8/§6equip", new Location(Script.WORLD, 238, 68, 1132)),
-    EQUIP_BRATERSTWO(93, "§8/§6equip", new Location(Script.WORLD, 559, 74, 1280)),
+    EQUIP_HITMAN(93, "§8/§6equip", new Location(Script.WORLD, 717.5, 54, 879.5)),
     EQUIP_SINALOA(94, "§8/§6equip", new Location(Script.WORLD, 669, 69, 1124));
 
     private final int id;
