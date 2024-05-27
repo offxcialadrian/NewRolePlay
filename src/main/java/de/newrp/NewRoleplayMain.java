@@ -59,6 +59,9 @@ import de.newrp.features.emergencycall.listener.EmergencyCallInventoryListener;
 import de.newrp.features.emergencycall.listener.EmergencyCallQuitListener;
 import de.newrp.features.playertracker.IPlayerTrackerService;
 import de.newrp.features.playertracker.impl.PlayerTrackerService;
+import de.newrp.features.playtime.IPlaytimeService;
+import de.newrp.features.playtime.impl.PlaytimeService;
+import de.newrp.features.playtime.listener.PlaytimePlayerListener;
 import de.newrp.features.recommendation.IRecommendationService;
 import de.newrp.features.recommendation.impl.RecommendationService;
 import de.newrp.features.recommendation.listener.RecommendationChatListener;
@@ -686,6 +689,7 @@ public class NewRoleplayMain extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new RecommendationInventoryClickListener(), this);
         Bukkit.getPluginManager().registerEvents(new RecommendationChatListener(), this);
         Bukkit.getPluginManager().registerEvents(new RecommendationInventoryCloseListener(), this);
+        Bukkit.getPluginManager().registerEvents(new PlaytimePlayerListener(), this);
     }
 
     /**
@@ -702,6 +706,7 @@ public class NewRoleplayMain extends JavaPlugin {
         DependencyContainer.getContainer().add(ITakeMoneyService.class, new TakeMoneyService());
         DependencyContainer.getContainer().add(IRecommendationService.class, new RecommendationService());
         DependencyContainer.getContainer().add(IPlayerTrackerService.class, new PlayerTrackerService());
+        DependencyContainer.getContainer().add(IPlaytimeService.class, new PlaytimeService());
     }
 
     /**

@@ -19,6 +19,8 @@ import de.newrp.Ticket.TicketCommand;
 import de.newrp.Votifier.VoteListener;
 import de.newrp.Waffen.Weapon;
 import de.newrp.NewRoleplayMain;
+import de.newrp.dependencies.DependencyContainer;
+import de.newrp.features.playtime.IPlaytimeService;
 import me.arcaniax.hdb.api.HeadDatabaseAPI;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -1682,17 +1684,7 @@ public class Script {
     }
 
     public static void increasePlayTime(Player p) {
-        /*executeAsyncUpdate("UPDATE playtime SET minutes=minutes+1 WHERE nrp_id=" + getNRPID(p));
-        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
-             ResultSet rs = stmt.executeQuery("SELECT * FROM playtime WHERE nrp_id=" + getNRPID(p))) {
-            if (rs.next()) {
-                if (rs.getInt("minutes") == 59) {
-                    executeAsyncUpdate("UPDATE playtime SET hours=hours+1, minutes=0 WHERE nrp_id=" + getNRPID(p));
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }*/
+        DependencyContainer.getContainer().getDependency(IPlaytimeService.class).increasePlaytime(p);
     }
 
     public static void removeWeapons(Player p) {
@@ -1718,30 +1710,6 @@ public class Script {
             }
             if (p.getItemOnCursor().getType().equals(mat)) p.setItemOnCursor(null);
         }
-    }
-
-    public static void increaseActivePlayTime(Player p) {
-        /*executeAsyncUpdate("UPDATE playtime SET a_minutes=a_minutes+1 WHERE nrp_id=" + getNRPID(p));
-        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
-             ResultSet rs = stmt.executeQuery("SELECT * FROM playtime WHERE nrp_id=" + getNRPID(p))) {
-            if (rs.next()) {
-                if (rs.getInt("a_minutes") == 59) {
-                    executeAsyncUpdate("UPDATE playtime SET a_hours=a_hours+1, a_minutes=0 WHERE nrp_id=" + getNRPID(p));
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        if (getActivePlayTime(p, true) % 50 == 0 && getActivePlayTime(p, false) == 0) {
-            p.sendMessage(PREFIX + "Du spielst nun bereits seit " + getActivePlayTime(p, true) + " Stunden aktiv auf NRP × New RolePlay. Vielen Dank dafür!");
-            p.sendMessage(PREFIX + "Du erhältst als Dankeschön für deine Treue " + getActivePlayTime(p, true) + " Exp");
-            addEXP(p, getActivePlayTime(p, true));
-        }
-
-        if (getActivePlayTime(p, true) % 150 == 0 && getActivePlayTime(p, false) == 0) {
-            p.sendMessage(PREFIX + "Du erhältst als Dankeschön für deine Treue 3 Tage Premium");
-            Premium.addPremiumStorage(p, TimeUnit.DAYS.toMillis(3), true);
-        }*/
     }
 
     public static String getLastChar(String s) {
@@ -2172,15 +2140,8 @@ public class Script {
     }
 
     public static int getPlayTime(Player p, boolean hours) {
-        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
-             ResultSet rs = stmt.executeQuery("SELECT * FROM playtime WHERE nrp_id=" + getNRPID(p))) {
-            if (rs.next()) {
-                return rs.getInt(hours ? "hours" : "minutes");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return 0;
+        final IPlaytimeService playtimeService = DependencyContainer.getContainer().getDependency(IPlaytimeService.class);
+        return playtimeService.getPlaytime(p).getA_hours();
     }
 
     public static void addToBauLog(Player p, Material m, Location loc, boolean removed) {
@@ -2225,15 +2186,8 @@ public class Script {
     }
 
     public static int getActivePlayTime(Player p, boolean hours) {
-        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
-             ResultSet rs = stmt.executeQuery("SELECT * FROM playtime WHERE nrp_id=" + getNRPID(p))) {
-            if (rs.next()) {
-                return rs.getInt(hours ? "a_hours" : "a_minutes");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return 0;
+        final IPlaytimeService playtimeService = DependencyContainer.getContainer().getDependency(IPlaytimeService.class);
+        return hours ? playtimeService.getPlaytime(p).getA_hours() : playtimeService.getPlaytime(p).getA_minutes();
     }
 
     public static int getActivePlayTime(OfflinePlayer p, boolean hours) {

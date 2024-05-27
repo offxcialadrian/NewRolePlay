@@ -167,9 +167,6 @@ public class AsyncMinute extends BukkitRunnable {
                     p.sendMessage(Component.text(MaskHandler.PREFIX + "Deine Maske wurde aufgebraucht."));
                 }
             }
-            if (!AFK.isAFK(p) && !Passwort.isLocked(p)) {
-                Script.increaseActivePlayTime(p);
-            }
             Script.increasePlayTime(p);
             if (Script.getRandom(1, 10) == 1) {
                 if (Krankheit.HUSTEN.isInfected(Script.getNRPID(p))) {
