@@ -537,6 +537,7 @@ public class NewRoleplayMain extends JavaPlugin {
         getCommand("dev").setExecutor(new DevChat());
         getCommand("resetcooldown").setExecutor(new ResetCooldownCommand());
         getCommand("gameboost").setExecutor(new Gameboost());
+        getCommand("recruited").setExecutor(new RecruitedCommand());
     }
 
     /**

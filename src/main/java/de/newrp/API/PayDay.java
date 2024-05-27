@@ -21,6 +21,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.Random;
 
 public class PayDay extends BukkitRunnable {
@@ -182,6 +183,12 @@ public class PayDay extends BukkitRunnable {
                 int b = (int) Math.round((50 * Math.log(lvl) * ((0.25 * ((Math.log(1 + r) - Math.log(1 - r))) / 2) + 1)));
                 p.sendMessage("§8" + Messages.ARROW + " §7Level-Bonus: §a+" + b + "€");
                 extra += b;
+            }
+
+            if (RecruitedCommand.isRecruited(Script.getNRPID(p))) {
+                int r = RecruitedCommand.getRecruiter(Script.getNRPID(p));
+                Script.addEXP(r, 20);
+                if (Script.getPlayer(r) != null) Script.sendActionBar(Objects.requireNonNull(Script.getPlayer(r)), RecruitedCommand.PREFIX + "§a+20 Exp §7für " + p.getName());
             }
 
             int shops = 0;

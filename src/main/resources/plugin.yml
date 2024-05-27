@@ -788,3 +788,6 @@ commands:
     description: starts a biz war
   listextortedshops:
     description: lists the extorted shops
+  recruited:
+    description: marks a recruiting player
+    aliases: [ uwu, angeworben ]
