@@ -7,6 +7,7 @@ import de.newrp.Gangwar.GangwarCommand;
 import de.newrp.Player.Fesseln;
 import de.newrp.NewRoleplayMain;
 import de.newrp.dependencies.DependencyContainer;
+import de.newrp.features.bizwar.IBizWarService;
 import de.newrp.features.deathmatcharena.IDeathmatchArenaService;
 import de.newrp.features.deathmatcharena.data.DeathmatchArenaStats;
 import org.bukkit.*;
@@ -64,8 +65,12 @@ public class FriedhofListener implements Listener {
         if (p.isInsideVehicle()) p.leaveVehicle();
         if(Fesseln.isTiedUp(p)) Fesseln.untie(p);
 
-        //Sekunden
-        int deathtime = (GangwarCommand.isInGangwar(p)?120:480);
+        int deathtime = 480;
+        if(GangwarCommand.isInGangwar(p)) {
+            deathtime = 120;
+        } else if(DependencyContainer.getContainer().getDependency(IBizWarService.class).isMemberOfBizWar(p)) {
+            deathtime = 60;
+        }
 
        /*boolean explosion = p.getLastDamageCause().getCause() == EntityDamageEvent.DamageCause.BLOCK_EXPLOSION ||
                 p.getLastDamageCause().getCause() == EntityDamageEvent.DamageCause.ENTITY_EXPLOSION;*/

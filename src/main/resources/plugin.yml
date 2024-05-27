@@ -786,8 +786,12 @@ commands:
     description: activates the gameboost system
   startbizwar:
     description: starts a biz war
-  listextortedshops:
+  activeextortions:
     description: lists the extorted shops
+  joinfight:
+    description: joins a fight
+  freebiz:
+    description: frees a biz
   recruited:
     description: marks a recruiting player
     aliases: [ uwu, angeworben ]

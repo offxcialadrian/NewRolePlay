@@ -13,6 +13,7 @@ import de.newrp.Police.Handschellen;
 import de.newrp.Shop.Shops;
 import de.newrp.NewRoleplayMain;
 import de.newrp.dependencies.DependencyContainer;
+import de.newrp.features.bizwar.IBizWarService;
 import de.newrp.features.deathmatcharena.IDeathmatchArenaService;
 import de.newrp.features.deathmatcharena.data.DeathmatchArenaStats;
 import de.newrp.features.takemoney.ITakeMoneyService;
@@ -156,7 +157,7 @@ public class Waffen implements Listener {
         if(!GangwarCommand.isInGangwar(p)) {
 
             Shops shop = Shops.getShopByLocation(p.getLocation());
-            if (shop != null) {
+            if (shop != null && !DependencyContainer.getContainer().getDependency(IBizWarService.class).isBizWarRunning(shop)) {
                 if (!Organisation.hasOrganisation(p)) return;
                 Organisation org = Organisation.getOrganisation(p);
                 if (robcooldown.containsKey(org) && robcooldown.get(org) > System.currentTimeMillis()) {

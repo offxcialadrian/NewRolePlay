@@ -9,6 +9,8 @@ import de.newrp.Gangwar.GangwarCommand;
 import de.newrp.Player.Spawnchange;
 import de.newrp.Police.StartTransport;
 import de.newrp.NewRoleplayMain;
+import de.newrp.dependencies.DependencyContainer;
+import de.newrp.features.bizwar.IBizWarService;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
@@ -99,6 +101,11 @@ public class Friedhof {
         }
         if(p.getKiller() != null) {
             p.getKiller().sendMessage(Messages.INFO + "§c§lKILL! §fDu hast §6" + Script.getName(p) + " §fgetötet");
+
+            final IBizWarService bizWarService = DependencyContainer.getContainer().getDependency(IBizWarService.class);
+            if(bizWarService.isMemberOfBizWar(p)) {
+
+            }
         }
         p.setPlayerWeather(WeatherType.DOWNFALL);
 
@@ -143,7 +150,14 @@ public class Friedhof {
             public void run() {
                 if (isDead(p)) {
                     progress.replace(p.getName(), progress.get(p.getName()) + 1);
-                    progressBar((GangwarCommand.isInGangwar(p)?4*60:16*60), p, f);
+
+                   int friedhofTime = 16*60;
+                    if(GangwarCommand.isInGangwar(p)) {
+                        friedhofTime = 4*60;
+                    } else if(DependencyContainer.getContainer().getDependency(IBizWarService.class).isMemberOfBizWar(p)) {
+                        friedhofTime = 2 * 60;
+                    }
+                    progressBar(friedhofTime, p, f);
                 } else {
                     progress.remove(p.getName());
                     cancel();
@@ -185,10 +199,21 @@ public class Friedhof {
                 p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 12 * 20, 2, false, false));
                 p.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 15 * 20, 2, false, false));
             } else {
+                final IBizWarService bizWarService = DependencyContainer.getContainer().getDependency(IBizWarService.class);
                 if(GangwarCommand.isInGangwar(p)) {
                     p.teleport(GangwarCommand.getRandomSpawnLocFromGangwar(p));
                     GangwarCommand.giveGangwarEquip(p);
                     p.sendMessage(Messages.INFO + "Du wurdest automatisch zum Gangwar teleportiert.");
+                } else if(bizWarService.isMemberOfBizWar(p))  {
+                    final Location location = bizWarService.getCorrespondingLocationForBizWarPlayer(p);
+                    if(location == null) {
+                        p.sendMessage(Messages.ERROR + "Du wurdest nicht zum BizWar teleportiert, da keine Location gefunden wurde");
+                        p.teleport(new Location(p.getWorld(), 278,75,1232,270.05463f,0.84689033f));
+                    } else {
+                        p.teleport(location);
+                    }
+                    p.sendMessage(Messages.INFO + "Du wurdest automatisch zum Biz War teleportiert.");
+                    bizWarService.equipPlayerForBizWar(p);
                 } else if(Spawnchange.getSpawnLoc(p) != null) {
                     p.teleport(Spawnchange.getSpawnLoc(p));
                 } else {
@@ -198,12 +223,13 @@ public class Friedhof {
                 new BukkitRunnable() {
                     @Override
                     public void run() {
+                        Script.updateListname(p);
                         p.sendMessage(Messages.INFO + "Du lebst nun wieder!");
                     }
                 }.runTaskLater(NewRoleplayMain.getInstance(), 20L * 2);
                 p.setHealth(p.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
 
-                if(!GangwarCommand.isInGangwar(p)) {
+                if(!GangwarCommand.isInGangwar(p) && !DependencyContainer.getContainer().getDependency(IBizWarService.class).isMemberOfBizWar(p)) {
                     p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 100, 2, false, false));
                     p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 80, 2, false, false));
                     p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, 70, 1, false, false));

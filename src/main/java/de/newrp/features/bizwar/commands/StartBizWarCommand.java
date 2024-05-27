@@ -13,6 +13,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.text.SimpleDateFormat;
+import java.util.concurrent.TimeUnit;
 
 public class StartBizWarCommand implements CommandExecutor {
 
@@ -31,6 +32,16 @@ public class StartBizWarCommand implements CommandExecutor {
             player.sendMessage(Messages.ERROR + "§cDu bist in keiner Organisation!");
             return false;
         }
+
+        if(Script.getLevel(player) < 3) {
+            player.sendMessage(Messages.ERROR + "§cDu musst mindestens Level 3 sein um einen Biz War starten zu können");
+            return false;
+        }
+
+        /*if(organisation == Organisation.HITMEN) {
+            player.sendMessage(Messages.ERROR + "§cDeine Fraktion kann keinen Biz War starten!");
+            return false;
+        }*/ // Deactivate with Hitman features
         final int playerRankInOrganisation = Organisation.getRank(player);
 
         if(playerRankInOrganisation <= 2) {
@@ -42,13 +53,18 @@ public class StartBizWarCommand implements CommandExecutor {
         final long timeTillNextAttackOnOrganisation = organisationCooldown - System.currentTimeMillis();
 
         if(timeTillNextAttackOnOrganisation > 0) {
-            player.sendMessage(Messages.ERROR + "§cDeine Organisation kann erst in §c§l" + new SimpleDateFormat("HH:mm") + " Minuten §cerneut angreifen!");
+            player.sendMessage(Messages.ERROR + "§cDeine Organisation kann erst in §c§l" + new SimpleDateFormat("HH:mm").format(timeTillNextAttackOnOrganisation) + " Stunden §cerneut angreifen!");
             return false;
         }
 
         final Shops shop = Shops.getShopByLocation(player.getLocation(), 5f);
         if(shop == null) {
             player.sendMessage(Messages.ERROR + "§cDu bist in keiner Organisation!");
+            return false;
+        }
+
+        if(this.bizWarService.isBeeingFreed(shop)) {
+            player.sendMessage(Messages.ERROR + "§cDer Shop wird derzeit befreit!");
             return false;
         }
 
@@ -62,7 +78,7 @@ public class StartBizWarCommand implements CommandExecutor {
         final long timeTillNextAttack = shopCooldown - System.currentTimeMillis();
 
         if(timeTillNextAttack > 0) {
-            player.sendMessage(Messages.ERROR + "§cDu kannst diesen Shop erst in §c§l" + new SimpleDateFormat("HH:mm") + " Minuten §cerneut angreifen!");
+            player.sendMessage(Messages.ERROR + "§cDu kannst diesen Shop erst in §c§l" + new SimpleDateFormat("HH:mm").format(timeTillNextAttack) + " Stunden §cerneut angreifen!");
             return false;
         }
 
@@ -70,6 +86,8 @@ public class StartBizWarCommand implements CommandExecutor {
         if(activeOwner == null) {
             organisation.sendMessage(this.bizWarService.getPrefix() + "Der Shop §e" + shop.getPublicName() + " §7wurde von §e" + Script.getName(player) + " §7übernommen!");
             this.bizWarService.setOwnerOfShop(shop, organisation);
+            this.bizWarService.addOrgaCooldown(organisation, TimeUnit.HOURS.toMillis(1));
+            organisation.sendMessage(Messages.INFO + "Wegen der kampflosen Übernahme habt ihr nur einen Cooldown von einer Stunde bekommmen");
             return false;
         }
 
