@@ -63,7 +63,7 @@ public class PlaytimeService implements IPlaytimeService {
 
     @Override
     public void handleQuit(Player player) {
-        try(final PreparedStatement preparedStatement = NewRoleplayMain.getConnection().prepareStatement("UPDATE playtime SET hours = ?, minutes = ?, a_minutes = ?, a_hours = ? WHERE id = ?")) {
+        try(final PreparedStatement preparedStatement = NewRoleplayMain.getConnection().prepareStatement("UPDATE playtime SET hours = ?, minutes = ?, a_minutes = ?, a_hours = ? WHERE nrp_id = ?")) {
             final PlaytimeData playtimeData = this.playtimeData.get(player.getUniqueId());
             if (playtimeData != null) {
                 preparedStatement.setInt(1, playtimeData.getHours());

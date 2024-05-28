@@ -1583,7 +1583,6 @@ public class Script {
                     Bukkit.broadcastMessage("§8[§6Event§8]§6 Es hat das Vote-Event §7(§lDouble XP§7)§6 §r§6begonnen!");
                 executeAsyncUpdate("UPDATE serversettings SET event='" + e.getName() + "'");
                 Vote.startVoteRamble();
-                //startEvent(Event.VOTE, false);
             } else if (e.equals(Event.DOUBLE_XP_WEEKEND)) {
                 if (message) Bukkit.broadcastMessage("§8[§6Event§8]§6 Es hat ein §lDouble XP-Event §r§6begonnen!");
                 executeAsyncUpdate("UPDATE serversettings SET event='" + e.getName() + "'");
@@ -1799,7 +1798,7 @@ public class Script {
             if (NewRoleplayMain.event == Event.TRIPPLE_XP) {
                 exp *= 3;
                 p.sendMessage(" §a+" + exp + " Exp! §7(§6§lTRIPPLE EXP§7)");
-            } else if (NewRoleplayMain.event == Event.DOUBLE_XP || NewRoleplayMain.event == Event.DOUBLE_XP_WEEKEND) {
+            } else if (NewRoleplayMain.event == Event.DOUBLE_XP || NewRoleplayMain.event == Event.DOUBLE_XP_WEEKEND || NewRoleplayMain.event == Event.VOTE) {
                 exp *= 2;
                 p.sendMessage(" §a+" + exp + " Exp! §7(§6§lDOUBLE EXP§7)");
             } else {
