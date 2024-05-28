@@ -5,9 +5,11 @@ import de.newrp.Administrator.*;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Berufe.Houseban;
 import de.newrp.Government.Wahlen;
+import de.newrp.House.AkkuCommand;
 import de.newrp.Organisationen.Blacklist;
 import de.newrp.Organisationen.MaskHandler;
 import de.newrp.Organisationen.Organisation;
+import de.newrp.Player.Mobile;
 import de.newrp.Police.Fahndung;
 import de.newrp.NewRoleplayMain;
 import de.newrp.dependencies.DependencyContainer;
@@ -51,6 +53,7 @@ import java.sql.Statement;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
+import static de.newrp.API.Rank.DEVELOPER;
 import static de.newrp.API.Rank.SUPPORTER;
 
 public class Utils implements Listener {
@@ -734,12 +737,18 @@ public class Utils implements Listener {
             SDuty.removeSDuty(p);
         }
 
-        if (Script.hasRank(p, SUPPORTER, false)) {
+        if (Script.hasRank(p, DEVELOPER, false)) {
             Script.team.remove(p);
         }
 
         if (BuildMode.isInBuildMode(p) && !Script.isInTestMode()) {
             BuildMode.removeBuildMode(p);
+        }
+
+        final Mobile.Phones phones = Mobile.getPhone(p);
+        if(Mobile.playerAkku.containsKey(p.getUniqueId()) && phones != null) {
+            phones.saveAkku(p);
+            Mobile.playerAkku.remove(p.getUniqueId());
         }
 
         e.setQuitMessage(null);
