@@ -13,6 +13,7 @@ import de.newrp.features.emergencycall.IEmergencyCallService;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.data.type.Door;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -24,6 +25,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class BreakIn implements Listener {
     private static final String PREFIX = "§8[§cEinbruch§8]§6 ";
@@ -43,7 +45,9 @@ public class BreakIn implements Listener {
         long time = System.currentTimeMillis();
         Long lastUsage = TOTAL_COOLDOWN.get(p.getName());
         if (HOUSES.containsKey(p.getName()) || TOTAL_COOLDOWN.containsKey(p.getName()) && lastUsage + 9000000 > time) {
-            p.sendMessage(Messages.ERROR + "Du kannst nur alle 3 Stunden in ein Haus einbrechen.");
+            if (Objects.requireNonNull(e.getClickedBlock()).getType() == Material.OAK_DOOR) {
+                p.sendMessage(Messages.ERROR + "Du kannst nur alle 3 Stunden in ein Haus einbrechen.");
+            }
             return;
         }
 
@@ -70,7 +74,9 @@ public class BreakIn implements Listener {
 
         House house = House.getNearHouse(p.getLocation(), 3);
         if (house == null) {
-            Script.sendActionBar(p, PREFIX + "Du kannst hier nicht einbrechen.");
+            if (Objects.requireNonNull(e.getClickedBlock()).getType() == Material.OAK_DOOR) {
+                Script.sendActionBar(p, PREFIX + "Du kannst hier nicht einbrechen.");
+            }
             return;
         }
 

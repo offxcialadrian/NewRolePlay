@@ -6,7 +6,6 @@ import de.newrp.Chat.Me;
 import de.newrp.Player.AFK;
 import de.newrp.Police.Handschellen;
 import de.newrp.Waffen.Waffen;
-import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -20,11 +19,11 @@ import org.bukkit.potion.PotionEffectType;
 import java.util.HashMap;
 import java.util.Random;
 
-public class Baseballschlaeger implements Listener {
+public class Messer implements Listener {
     final HashMap<String, Long> cooldown = new HashMap<>();
 
     public static ItemStack getItem() {
-        return Script.setNameAndLore(Material.BONE, "§7Baseballschläger", "§6800/800");
+        return Script.setNameAndLore(Material.FEATHER, "§7Messer", "§6500/500");
     }
 
     @EventHandler
@@ -39,11 +38,11 @@ public class Baseballschlaeger implements Listener {
 
             Player damager = (Player) e.getDamager();
             if(damager.getLevel()==1) return;
-            if (damager.getInventory().getItemInMainHand() != null && damager.getInventory().getItemInMainHand().hasItemMeta() && damager.getInventory().getItemInMainHand().getItemMeta().getDisplayName() != null && damager.getInventory().getItemInMainHand().getItemMeta().getDisplayName().equals("§7Baseballschläger")) {
+            if (damager.getInventory().getItemInMainHand() != null && damager.getInventory().getItemInMainHand().hasItemMeta() && damager.getInventory().getItemInMainHand().getItemMeta().getDisplayName() != null && damager.getInventory().getItemInMainHand().getItemMeta().getDisplayName().equals("§7Messer")) {
                 long time = System.currentTimeMillis();
                 Long lastUsage = cooldown.get(damager.getName());
                 if (cooldown.containsKey(damager.getName())) {
-                    if (lastUsage + 4 * 1000 > time) {
+                    if (lastUsage + 3 * 1000 > time) {
                         e.setDamage(0);
                         e.setCancelled(true);
                         return;
@@ -57,23 +56,15 @@ public class Baseballschlaeger implements Listener {
                 } else {
                     ItemStack is = damager.getInventory().getItemInMainHand();
                     int ammo = Waffen.getAmmo(is);
-                    if(ammo == 0) ammo = 800;
+                    if (ammo == 0) ammo = 500;
                     if (ammo > 0) {
                         cooldown.put(damager.getName(), time);
                         if (Spawnschutz.isInSpawnschutz(victim) || victim.getLevel() < 3) return;
-                        victim.damage(Script.getRandom(6, 10));
-                        if (new Random().nextInt(20) == 0) {
+                        victim.damage(Script.getRandom(8, 13));
+                        if (new Random().nextInt(4) == 0) {
                             Health.setBleeding(victim);
                         }
-                        if(new Random().nextInt(6) == 0) {
-                            if(!Krankheit.GEBROCHENER_ARM.isInfected(Script.getNRPID(victim))) {
-                                Me.sendMessage(victim,"hat sich " + (Script.getGender(victim) == Gender.MALE ? "sein" : "ihr") + "en Arm gebrochen.");
-                                Krankheit.GEBROCHENER_ARM.add(Script.getNRPID(victim));
-                                victim.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 160, 1, false, false));
-                                victim.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 80, 1, false, false));
-                            }
-                        }
-                        damager.getInventory().setItemInMainHand(Waffen.setAmmo(is, ammo - 1, 800));
+                        damager.getInventory().setItemInMainHand(Waffen.setAmmo(is, ammo - 1, 500));
                     } else {
                         damager.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
                         damager.playSound(damager.getLocation(), Sound.ITEM_FLINTANDSTEEL_USE, 1.0F, 1.0F);

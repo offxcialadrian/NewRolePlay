@@ -1,9 +1,6 @@
 package de.newrp.Shop;
 
-import de.newrp.API.Debug;
-import de.newrp.API.ItemBuilder;
-import de.newrp.API.Script;
-import de.newrp.API.ShishaType;
+import de.newrp.API.*;
 import de.newrp.House.HouseAddon;
 import de.newrp.Medic.Medikamente;
 import de.newrp.Vehicle.CarType;
@@ -21,7 +18,7 @@ import java.sql.Statement;
 
 public enum ShopItem {
 
-    BROT(0, "§fBrot", new ItemBuilder(Material.BREAD).setName("§fBrot").setAmount(8).build(), 2, 1, 20, 4, 2400, false, true, false, new ShopType[] {ShopType.SUPERMARKET}),
+    BROT(0, "§fBrot", new ItemBuilder(Material.BREAD).setName("§fBrot").setAmount(8).build(), 2, 1, 20, 4, 2400, false, true, false, new ShopType[] {ShopType.SUPERMARKET, ShopType.CAFE}),
     KAFFEE(1, "§rKaffee", new ItemBuilder(Material.FLOWER_POT).setName("§rKaffee").build(), 3, 1, 20, 2, 1500, false, true, false, new ShopType[] {ShopType.CAFE}),
     LOTTOSCHEIN(2, "§7Lottoschein", new ItemBuilder(Material.PAPER).setName("§7Lottoschein").build(), 1, 1, 20, 25, 7500, false, true, false, new ShopType[] {ShopType.NEWS}),
     HAUSKASSE(3, "§7Hauskasse", new ItemStack(Material.CHEST), 10, 1, 20, HouseAddon.HAUSKASSE.getPrice(), 6000, false, false, false, new ShopType[] {ShopType.HOUSEADDON}),
@@ -39,7 +36,7 @@ public enum ShopItem {
     CRAPPUCHINO(47, "§rCrappuchino", new ItemBuilder(Material.FLOWER_POT).setName("§rCrappuchino").build(), 3, 2, 25, 3, 1800, true, true, false, new ShopType[] {ShopType.CAFE}),
     Zeitung(48, de.newrp.News.Zeitung.zeitung.getItemMeta().getDisplayName(), de.newrp.News.Zeitung.zeitung, 3, 2, 25, de.newrp.News.Zeitung.getBuyPrice(), 1800, true, false, false, new ShopType[] {ShopType.CAFE, ShopType.SUPERMARKET, ShopType.NEWS}),
     SCHMERZMITTEL(49, "§fSchmerzmittel", new ItemBuilder(Material.PAPER).setName("§fSchmerzmittel").setAmount(Medikamente.SCHMERZMITTEL.getNeeded()).build(), 10, 2, 25, 45, 4900, true, true, false, new ShopType[] {ShopType.PHARMACY}),
-    BASEBALLSCHLAEGER(50, "§7Baseballschläger", new ItemBuilder(Material.BONE).setName("§7Baseballschläger").build(), 5, 1, 1, 750, 4500, false, true, false, new ShopType[] {ShopType.GUNSHOP}),
+    BASEBALLSCHLAEGER(50, "§7Baseballschläger", Baseballschlaeger.getItem(), 5, 1, 1, 750, 4500, false, true, false, new ShopType[] {ShopType.GUNSHOP}),
     SAMSUNG_HANDY(52, "§cSamstar", new ItemBuilder(Material.GOLD_INGOT).setName("§cSamstar").build(), 5, 1, 1, 100, 3500, false, false, false, new ShopType[] {ShopType.ELECTRONIC}),
     HUAWEI_HANDY(53, "§cHawaii P55", new ItemBuilder(Material.IRON_INGOT).setName("§cHawaii P55").build(), 5, 1, 1, 50, 600, false, false, false, new ShopType[] {ShopType.ELECTRONIC}),
     APPLE_HANDY(55, "§cyouPhone 15", new ItemBuilder(Material.NETHERITE_INGOT).setName("§cyouPhone 15").build(), 5, 1, 1, 300, 11000, false, false, false, new ShopType[] {ShopType.ELECTRONIC}),
@@ -121,10 +118,11 @@ public enum ShopItem {
     AWDI(131, CarType.AWDI.getName(), Script.setName(new ItemStack(CarType.AWDI.getMaterial(), 1), "§e" + CarType.AWDI.getName()), 1, 1, 1, 25000, 20000, false, false, false, new ShopType[] {ShopType.CARDEALER}),
     MERCADAS(132, CarType.MERCADAS.getName(), Script.setName(new ItemStack(CarType.MERCADAS.getMaterial(), 1), "§e" + CarType.MERCADAS.getName()), 1, 1, 1, 40000, 40000, false, false, false, new ShopType[] {ShopType.CARDEALER}),
     PAWSCHE(133, CarType.PAWSCHE.getName(), Script.setName(new ItemStack(CarType.PAWSCHE.getMaterial(), 1), "§e" + CarType.PAWSCHE.getName()), 1, 1, 1, 60000, 70000, false, false, false, new ShopType[] {ShopType.CARDEALER}),
-    KANISTER(134, "Kanister", Script.setName(new ItemStack(Material.RED_SHULKER_BOX, 1), "§cKanister"), 1, 1, 1, 50, 1200, false, true, false, new ShopType[] {ShopType.GAS_STATION}),
-    INSURANCE(135, "Versicherung", Script.setName(new ItemStack(Material.PAPER, 1), "§aVersicherung"), 1, 1, 1, 1000, 5400, false, true, false, new ShopType[] {ShopType.CARDEALER}),
-    LICENSE(136, "Kennzeichen", Script.setName(new ItemStack(Material.NAME_TAG, 1), "§bKennzeichen"), 1, 1, 1, 1500, 3600, false, true, false, new ShopType[] {ShopType.CARDEALER}),
-    TOOLS(137, "Werkzeug", Script.setName(new ItemStack(Material.SHEARS, 1), "§7Werkzeug"), 1, 1, 1, 100, 500, false, true, false, new ShopType[] {ShopType.GAS_STATION});
+    KANISTER(134, "§cKanister", Script.setName(new ItemStack(Material.RED_SHULKER_BOX, 1), "§cKanister"), 1, 1, 1, 50, 1200, false, true, false, new ShopType[] {ShopType.GAS_STATION}),
+    INSURANCE(135, "§aVersicherung", Script.setName(new ItemStack(Material.PAPER, 1), "§aVersicherung"), 1, 1, 1, 1000, 5400, false, true, false, new ShopType[] {ShopType.CARDEALER}),
+    LICENSE(136, "§bKennzeichen", Script.setName(new ItemStack(Material.NAME_TAG, 1), "§bKennzeichen"), 1, 1, 1, 1500, 3600, false, true, false, new ShopType[] {ShopType.CARDEALER}),
+    TOOLS(137, "§7Werkzeug", Script.setName(new ItemStack(Material.SHEARS, 1), "§7Werkzeug"), 1, 1, 1, 100, 500, false, true, false, new ShopType[] {ShopType.GAS_STATION}),
+    MESSER(138, "§7Messer", Messer.getItem(), 5, 1, 1, 500, 4000, false, true, false, new ShopType[] {ShopType.GUNSHOP});
 
 
     private final int id;

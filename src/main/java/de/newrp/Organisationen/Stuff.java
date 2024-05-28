@@ -1,6 +1,7 @@
 package de.newrp.Organisationen;
 
 import de.newrp.API.Baseballschlaeger;
+import de.newrp.API.Machete;
 import de.newrp.API.Script;
 import de.newrp.Berufe.Equip;
 import de.newrp.Waffen.Weapon;
@@ -16,7 +17,8 @@ public enum Stuff {
     PISTOLE(4, Weapon.PISTOLE.getName(), Weapon.PISTOLE.getWeapon(), 3, 350),
     STRIKER(5, Weapon.MP7.getName(), Weapon.MP7.getWeapon(), 4, 700),
     BRECHI(6, "Brechstange", Script.brechstange(), 5, 250),
-    SCHUTZWESTE(7, "Schutzweste", Equip.Stuff.KEVLAR.getItem(), 6, 700);
+    SCHUTZWESTE(7, "Schutzweste", Equip.Stuff.KEVLAR.getItem(), 6, 700),
+    MACHETE(8, "Machete", Machete.getItem(), 6, 3100);
 
     private final int id;
     private final String name;

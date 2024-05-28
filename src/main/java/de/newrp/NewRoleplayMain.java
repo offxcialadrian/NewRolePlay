@@ -619,6 +619,8 @@ public class NewRoleplayMain extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new UseMedikamente(), this);
         Bukkit.getPluginManager().registerEvents(new Selfstorage(), this);
         Bukkit.getPluginManager().registerEvents(new Baseballschlaeger(), this);
+        Bukkit.getPluginManager().registerEvents(new Messer(), this);
+        Bukkit.getPluginManager().registerEvents(new Machete(), this);
         Bukkit.getPluginManager().registerEvents(new Checkpoints(), this);
         Bukkit.getPluginManager().registerEvents(new Vertraege(), this);
         Bukkit.getPluginManager().registerEvents(new GetShulker(), this);
