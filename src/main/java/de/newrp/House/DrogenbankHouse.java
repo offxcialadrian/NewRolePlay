@@ -75,9 +75,14 @@ public class DrogenbankHouse implements CommandExecutor, Listener {
     }
 
     public static void removeDrogen(House h, Drogen droge, Drogen.DrugPurity purity, int amount) {
-        if (getDrogenAmount(h, droge, purity) == 0) return;
+        final int drugAmount = getDrogenAmount(h, droge, purity);
+        if (drugAmount == 0) return;
         try (Statement stmt = NewRoleplayMain.getConnection().createStatement()) {
-            stmt.executeUpdate("UPDATE drugbank_house SET amount = amount - " + amount + " WHERE house = '" + h.getID() + "' AND drug = '" + droge.getID() + "' AND purity = '" + purity.getID() + "'");
+            if(drugAmount == amount) {
+                stmt.executeUpdate("DELETE FROM drugbank_house WHERE house = '" + h.getID() + "' AND drug = '" + droge.getID() + "' AND purity = '" + purity.getID() + "'");
+            } else {
+                stmt.executeUpdate("UPDATE drugbank_house SET amount = amount - " + amount + " WHERE house = '" + h.getID() + "' AND drug = '" + droge.getID() + "' AND purity = '" + purity.getID() + "'");
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -161,6 +166,7 @@ public class DrogenbankHouse implements CommandExecutor, Listener {
 
         if (args.length == 1 && (args[0].equalsIgnoreCase("put") || args[0].equalsIgnoreCase("add"))) {
             Inventory inv = Bukkit.createInventory(null, 9, "§cDrogenbank");
+            h.put(p.getName(), house);
             p.openInventory(inv);
             return true;
         }
