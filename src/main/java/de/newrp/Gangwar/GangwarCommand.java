@@ -4,6 +4,7 @@ import de.newrp.API.*;
 import de.newrp.Administrator.SDuty;
 import de.newrp.Organisationen.Drogen;
 import de.newrp.Organisationen.Organisation;
+import de.newrp.Player.AFK;
 import de.newrp.Waffen.Waffen;
 import de.newrp.Waffen.Weapon;
 import org.bukkit.Bukkit;
@@ -20,9 +21,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
+import java.util.*;
 
 public class GangwarCommand implements CommandExecutor, Listener {
 
@@ -234,7 +233,11 @@ public class GangwarCommand implements CommandExecutor, Listener {
 
         o.sendMessage(PREFIX + "Deine Organisation hat den Gangwar in der Zone " + zone.getName() + " gewonnen.");
         o.addExp(points.get(o));
+        for (UUID m : o.getMember()) if (Bukkit.getOfflinePlayer(m).isOnline()) if (!AFK.isAFK(m))
+            Activity.grantActivity(Script.getNRPID(Bukkit.getPlayer(m)), Activities.GANGWAR);
         other.sendMessage(PREFIX + "Deine Organisation hat den Gangwar in der Zone " + zone.getName() + " verloren.");
+        for (UUID m : other.getMember()) if (Bukkit.getOfflinePlayer(m).isOnline()) if (!AFK.isAFK(m))
+            Activity.grantActivity(Script.getNRPID(Bukkit.getPlayer(m)), Activities.GANGWAR);
         other.addExp(points.get(other) / 2);
 
         if(zone.getOwner() != o) {

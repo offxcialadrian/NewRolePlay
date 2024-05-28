@@ -554,6 +554,12 @@ public class NewRoleplayMain extends JavaPlugin {
         getCommand("joinfight").setExecutor(new JoinFightCommand());
         getCommand("freebiz").setExecutor(new FreeBizCommand());
         getCommand("activeextortions").setExecutor(new ActiveExtortedShopsCommand());
+        getCommand("abteilungschat").setExecutor(new AbteilungsChat());
+        getCommand("activity").setExecutor(new ActivityCommand());
+        getCommand("checkactivity").setExecutor(new CheckActivityCommand());
+        getCommand("addactivity").setExecutor(new AddActivityCommand());
+        getCommand("removeactivity").setExecutor(new RemoveActivityCommand());
+        getCommand("resetactivity").setExecutor(new ResetActivityCommand());
     }
 
     /**
@@ -622,6 +628,8 @@ public class NewRoleplayMain extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new UseMedikamente(), this);
         Bukkit.getPluginManager().registerEvents(new Selfstorage(), this);
         Bukkit.getPluginManager().registerEvents(new Baseballschlaeger(), this);
+        Bukkit.getPluginManager().registerEvents(new Messer(), this);
+        Bukkit.getPluginManager().registerEvents(new Machete(), this);
         Bukkit.getPluginManager().registerEvents(new Checkpoints(), this);
         Bukkit.getPluginManager().registerEvents(new Vertraege(), this);
         Bukkit.getPluginManager().registerEvents(new GetShulker(), this);

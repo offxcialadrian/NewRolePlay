@@ -80,6 +80,7 @@ public class Gips implements Listener {
             }
 
             Me.sendMessage(p, "legt " + Script.getName(rightClicked) + " einen Gips an.");
+            Activity.grantActivity(Script.getNRPID(p), Activities.GIPS);
 
             new BukkitRunnable() {
                 @Override

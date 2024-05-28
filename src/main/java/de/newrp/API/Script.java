@@ -1690,7 +1690,7 @@ public class Script {
             }
         }
 
-        Material[] blocked = new Material[]{Material.TNT, Material.LEATHER_CHESTPLATE, Material.FEATHER, Material.BONE, Material.FLINT};
+        Material[] blocked = new Material[]{Material.TNT, Material.LEATHER_CHESTPLATE, Material.FEATHER, Material.BONE, Material.FLINT, Material.IRON_SWORD};
         for (Material mat : blocked) {
             p.getInventory().remove(mat);
             if (p.getInventory().getItemInOffHand().getType().equals(mat)) {

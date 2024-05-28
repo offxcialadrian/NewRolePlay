@@ -2,6 +2,7 @@ package de.newrp.API;
 
 import de.newrp.Administrator.Notifications;
 import de.newrp.Administrator.SDuty;
+import de.newrp.Berufe.Beruf;
 import de.newrp.Call.Call;
 import de.newrp.Gangwar.GangwarCommand;
 import de.newrp.Player.Fesseln;

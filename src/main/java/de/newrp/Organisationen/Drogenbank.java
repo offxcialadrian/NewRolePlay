@@ -1,8 +1,6 @@
 package de.newrp.Organisationen;
 
-import de.newrp.API.ItemBuilder;
-import de.newrp.API.Messages;
-import de.newrp.API.Script;
+import de.newrp.API.*;
 import de.newrp.NewRoleplayMain;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -203,6 +201,7 @@ public class Drogenbank implements CommandExecutor, Listener {
             int amount = inv.getItem(i).getAmount();
             Drogenbank.addDrogen(Organisation.getOrganisation(p), droge, purity, amount);
             Organisation.getOrganisation(p).sendMessage(Organisation.PREFIX + "Es wurden " + amount + "g " + droge.getName() + " mit dem Reinheitsgrad " + purity.getText() + " von " + Script.getName(p) + " in die Drogenbank gelegt.");
+            Activity.addActivity(Script.getNRPID(p), 0, Activities.PLANTAGE.getName(), Activities.PLANTAGE.getPoints() * amount);
         }
     }
 

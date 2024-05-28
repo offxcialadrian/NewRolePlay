@@ -6,7 +6,9 @@ import de.newrp.Berufe.Duty;
 import de.newrp.Berufe.Equip;
 import de.newrp.GFB.Schule;
 import de.newrp.Gangwar.GangwarCommand;
+import de.newrp.Organisationen.Organisation;
 import de.newrp.Player.Spawnchange;
+import de.newrp.Police.Fahndung;
 import de.newrp.Police.StartTransport;
 import de.newrp.NewRoleplayMain;
 import de.newrp.dependencies.DependencyContainer;
@@ -101,6 +103,20 @@ public class Friedhof {
         }
         if(p.getKiller() != null) {
             p.getKiller().sendMessage(Messages.INFO + "§c§lKILL! §fDu hast §6" + Script.getName(p) + " §fgetötet");
+
+            if (Beruf.hasBeruf(p.getKiller())) {
+                if (Beruf.getBeruf(p.getKiller()) == Beruf.Berufe.POLICE) {
+                    if (Fahndung.isFahnded(p)) {
+                        Activity.grantActivity(Script.getNRPID(p), Activities.WPKILL);
+                    }
+                }
+            } else if (Organisation.hasOrganisation(p.getKiller())) {
+                if (Beruf.hasBeruf(p)) {
+                    if (Beruf.getBeruf(p) == Beruf.Berufe.POLICE) {
+                        Activity.grantActivity(Script.getNRPID(p), Activities.COPKILL);
+                    }
+                }
+            }
 
             final IBizWarService bizWarService = DependencyContainer.getContainer().getDependency(IBizWarService.class);
             if(bizWarService.isMemberOfBizWar(p)) {

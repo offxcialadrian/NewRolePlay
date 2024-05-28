@@ -1,6 +1,7 @@
 package de.newrp.Medic;
 
 import de.newrp.API.*;
+import de.newrp.Berufe.Beruf;
 import de.newrp.Chat.Me;
 import de.newrp.Player.Fesseln;
 import de.newrp.Police.Handschellen;
@@ -194,6 +195,8 @@ public class Verband implements Listener {
             }
 
             Me.sendMessage(p, "legt " + Script.getName(rightClicked) + " einen Verband an.");
+            if (Beruf.hasBeruf(p)) if (Beruf.getBeruf(p) == Beruf.Berufe.RETTUNGSDIENST)
+                Activity.grantActivity(Script.getNRPID(p), Activities.BANDAGE);
             rightClicked.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 20 * 20, 1));
 
             BANDAGE_COOLDOWN.put(rightClicked.getName(), time);

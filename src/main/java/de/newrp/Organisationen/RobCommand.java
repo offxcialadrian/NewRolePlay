@@ -1,9 +1,6 @@
 package de.newrp.Organisationen;
 
-import de.newrp.API.Log;
-import de.newrp.API.Messages;
-import de.newrp.API.PaymentType;
-import de.newrp.API.Script;
+import de.newrp.API.*;
 import de.newrp.Administrator.Notifications;
 import de.newrp.Administrator.SDuty;
 import de.newrp.Berufe.Beruf;
@@ -116,6 +113,7 @@ public class RobCommand implements CommandExecutor {
                                 Log.LOW.write(finalVictim, "bekommt von " + Script.getName(player) + " " + finalMoney + "€ gestohlen.");
                                 Log.LOW.write(player, "stiehlt von " + Script.getName(finalVictim) + " " + finalMoney + "€.");
                                 Notifications.sendMessage(Notifications.NotificationType.PAYMENT, Script.getName(player) + " hat " + Script.getName(finalVictim) + " " + finalMoney + "€ gestohlen. (CASH)");
+                                Activity.grantActivity(Script.getNRPID(player), Activities.ROB);
                             } else {
                                 player.sendMessage(PREFIX + "Die Person hat sich zu viel bewegt!");
                             }

@@ -1,8 +1,6 @@
 package de.newrp.Police;
 
-import de.newrp.API.Log;
-import de.newrp.API.Messages;
-import de.newrp.API.Script;
+import de.newrp.API.*;
 import de.newrp.Berufe.Abteilung;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Berufe.Duty;
@@ -54,6 +52,7 @@ public class Staatsmeldung implements CommandExecutor {
         Bukkit.broadcastMessage("§8===============");
         Script.sendTeamMessage("§7Diese Meldung wurde von §b" + Script.getName(p) + " §7gesendet.");
         Log.NORMAL.write(p, "hat eine Staatsmeldung gesendet (" + msg + ")");
+        Activity.grantActivity(Script.getNRPID(p), Activities.MELDUNG);
 
         return false;
     }

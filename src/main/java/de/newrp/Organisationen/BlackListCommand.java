@@ -1,8 +1,6 @@
 package de.newrp.Organisationen;
 
-import de.newrp.API.Messages;
-import de.newrp.API.Navi;
-import de.newrp.API.Script;
+import de.newrp.API.*;
 import de.newrp.Administrator.BuildMode;
 import de.newrp.Administrator.GoTo;
 import de.newrp.Administrator.SDuty;
@@ -368,6 +366,7 @@ public class BlackListCommand implements CommandExecutor, Listener, TabCompleter
         } else {
             Organisation f1 = Organisation.getOrganisation(killer);
             killed.sendMessage(Blacklist.PREFIX + "Du wurdest getötet weil du auf der Blacklist der " + f1.getName() + " bist.");
+            Activity.grantActivity(Script.getNRPID(killer), Activities.BLKILL);
             bl.setKills(--kills);
         }
     }

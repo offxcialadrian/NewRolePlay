@@ -33,7 +33,7 @@ public class RecruitedCommand implements @Nullable CommandExecutor {
             if (args.length == 0) {
                 for (Integer id : Objects.requireNonNull(getRecruited(Script.getNRPID(player)))) {
                     String name = Objects.requireNonNull(Script.getOfflinePlayer(id)).getName();
-                    player.sendMessage("§8      - §7" + name);
+                    player.sendMessage("       §8" + Messages.ARROW + " §7" + name);
                 }
             } else {
                 if (isRecruited(Script.getNRPID(player))) {

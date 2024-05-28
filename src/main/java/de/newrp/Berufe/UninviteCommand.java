@@ -1,5 +1,7 @@
 package de.newrp.Berufe;
 
+import de.newrp.API.Activity;
+import de.newrp.API.ActivityCommand;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.Forum.Forum;
@@ -95,43 +97,44 @@ public class UninviteCommand implements CommandExecutor {
             beruf.removeMember(tg, p);
             if (tg.getPlayer() != null) beruf.deleteMember(tg.getPlayer());
             Script.removeEXP(tg.getName(), Script.getRandom(50, 100));
+            Activity.deleteActivities(Script.getNRPID(tg));
             TeamSpeak.sync(Script.getNRPID(tg));
             Forum.syncPermission(tg);
-            return true;
-        }
-
-        Organisation beruf = Organisation.getOrganisation(p);
-
-        if(!Organisation.hasOrganisation(tg)) {
-            p.sendMessage(Messages.ERROR + "Der Spieler ist nicht in deiner Organisation.");
-            return true;
-        }
-
-        if(Organisation.getOrganisation(tg) != beruf) {
-            p.sendMessage(Messages.ERROR + "Der Spieler ist nicht in deiner Organisation.");
-            return true;
-        }
-
-        beruf.removeExp(Script.getRandom(20, 30));
-        if(Organisation.isCoLeader(p) && tg != p && Beruf.isLeader(tg, false)) {
-            p.sendMessage(Messages.ERROR + "Du kannst den Leader nicht entlassen.");
-            return true;
-        }
-        p.sendMessage(PREFIX + "Du hast " + tg.getName() + " aus der " + Organisation.getOrganisation(p).getName() + " entlassen.");
-
-        if(tg.isOnline() && tg.getPlayer() != null) {
-            tg.getPlayer().sendMessage(PREFIX + "Du wurdest aus der " + Organisation.getOrganisation(p).getName() + " entlassen.");
         } else {
-            Script.addOfflineMessage(tg, PREFIX + "Du wurdest aus der " + Organisation.getOrganisation(p).getName() + " entlassen.");
+            Organisation orga = Organisation.getOrganisation(p);
+
+            if (!Organisation.hasOrganisation(tg)) {
+                p.sendMessage(Messages.ERROR + "Der Spieler ist nicht in deiner Organisation.");
+                return true;
+            }
+
+            if (Organisation.getOrganisation(tg) != orga) {
+                p.sendMessage(Messages.ERROR + "Der Spieler ist nicht in deiner Organisation.");
+                return true;
+            }
+
+            orga.removeExp(Script.getRandom(20, 30));
+            if (Organisation.isCoLeader(p) && tg != p && Beruf.isLeader(tg, false)) {
+                p.sendMessage(Messages.ERROR + "Du kannst den Leader nicht entlassen.");
+                return true;
+            }
+            p.sendMessage(PREFIX + "Du hast " + tg.getName() + " aus der " + Organisation.getOrganisation(p).getName() + " entlassen.");
+
+            if (tg.isOnline() && tg.getPlayer() != null) {
+                tg.getPlayer().sendMessage(PREFIX + "Du wurdest aus der " + Organisation.getOrganisation(p).getName() + " entlassen.");
+            } else {
+                Script.addOfflineMessage(tg, PREFIX + "Du wurdest aus der " + Organisation.getOrganisation(p).getName() + " entlassen.");
+            }
+
+            orga.removeMember(tg, p);
+            if (tg.getPlayer() != null) orga.deleteMember(tg.getPlayer());
+            Script.removeEXP(tg.getName(), Script.getRandom(50, 100));
+            Activity.deleteActivities(Script.getNRPID(tg));
+            TeamSpeak.sync(Script.getNRPID(tg));
+            Forum.syncPermission(tg);
         }
 
-        beruf.removeMember(tg, p);
-        if (tg.getPlayer() != null) beruf.deleteMember(tg.getPlayer());
-        Script.removeEXP(tg.getName(), Script.getRandom(50, 100));
-        TeamSpeak.sync(Script.getNRPID(tg));
-        Forum.syncPermission(tg);
-
-        return false;
+        return true;
     }
 }
 

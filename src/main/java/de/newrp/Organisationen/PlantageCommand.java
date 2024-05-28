@@ -1,8 +1,6 @@
 package de.newrp.Organisationen;
 
-import de.newrp.API.Messages;
-import de.newrp.API.Particle;
-import de.newrp.API.Script;
+import de.newrp.API.*;
 import de.newrp.NewRoleplayMain;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -143,6 +141,7 @@ public class PlantageCommand implements CommandExecutor, Listener, TabCompleter 
                             p.sendMessage(Plantage.PREFIX + "Du hast " + plant.getErtrag() + "g " + plant.getType().getItem().getName() + " geerntet.");
                             f.sendMessage(Plantage.PREFIX + "Eine " + plant.getType().getItem().getName() + "-Plantage wurde von " + Script.getName(p) + " geerntet. §8[§6" + plant.getErtrag() + "g§8]");
                             plant.harvest(p);
+                            Activity.grantActivity(Script.getNRPID(p), Activities.PLANTAGE);
                         } else {
                             p.sendMessage(Plantage.PREFIX + "Die Plantage kann noch nicht geerntet werden.");
                         }
@@ -323,6 +322,7 @@ public class PlantageCommand implements CommandExecutor, Listener, TabCompleter 
                                         plant.setFertilize(true);
                                         plant.setLastFertilize(System.currentTimeMillis());
                                         plant.getOrganisation().sendMessage(Plantage.PREFIX + "Eine " + plant.getType().getItem().getName() + "-Plantage wurde von " + Script.getName(p) + " gedüngt.");
+                                        Activity.grantActivity(Script.getNRPID(p), Activities.PLANTAGE);
                                         Script.addEXP(p, Script.getRandom(2, 5));
                                         new Particle(org.bukkit.Particle.CRIT, plant.getLocation().clone().add(0, .5, 0), false, 0.01F, 0.01F, 0.01F, 0.01F, Script.getRandom(4, 9)).sendAll();
                                         new BukkitRunnable() {
@@ -397,6 +397,7 @@ public class PlantageCommand implements CommandExecutor, Listener, TabCompleter 
                                         plant.setWater(true);
                                         plant.setLastWater(System.currentTimeMillis());
                                         plant.getOrganisation().sendMessage(Plantage.PREFIX + "Eine " + plant.getType().getItem().getName() + "-Plantage wurde von " + Script.getName(p) + " gewässert.");
+                                        Activity.grantActivity(Script.getNRPID(p), Activities.PLANTAGE);
                                         Script.addEXP(p, Script.getRandom(2, 5));
                                         new Particle(org.bukkit.Particle.WATER_DROP, plant.getLocation().clone().add(0, .8, 0), false, 0.01F, 0.01F, 0.01F, 0.01F, Script.getRandom(4, 9)).sendAll();
                                         new BukkitRunnable() {

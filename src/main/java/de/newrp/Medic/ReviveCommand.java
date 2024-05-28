@@ -57,6 +57,7 @@ public class ReviveCommand implements CommandExecutor {
             tg.sendMessage(PREFIX + "Du wurdest von " + Messages.RANK_PREFIX(p) + " wiederbelebt.");
             Friedhof.revive(tg, f.getDeathLocation());
             Script.sendTeamMessage(p, ChatColor.RED, "hat " + Script.getName(tg) + " wiederbelebt.", true);
+            if (!SDuty.isSDuty(p)) Activity.grantActivity(Script.getNRPID(p), Activities.REVIVE);
             if(Corpse.npcMap.containsKey(p.getUniqueId())) Corpse.removeNPC(p);
             if (f.getInventoryContent() != null) {
                 tg.getInventory().clear();

@@ -1,11 +1,10 @@
 package de.newrp.Organisationen;
 
-import de.newrp.API.Messages;
-import de.newrp.API.PaymentType;
-import de.newrp.API.Script;
+import de.newrp.API.*;
 import de.newrp.Berufe.Beruf;
 import de.newrp.House.House;
 import de.newrp.House.HouseAddon;
+import de.newrp.Player.AFK;
 import de.newrp.Police.Handschellen;
 import de.newrp.NewRoleplayMain;
 import de.newrp.dependencies.DependencyContainer;
@@ -13,6 +12,7 @@ import de.newrp.features.emergencycall.IEmergencyCallService;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.data.type.Door;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -24,6 +24,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
+import java.util.UUID;
 
 public class BreakIn implements Listener {
     private static final String PREFIX = "§8[§cEinbruch§8]§6 ";
@@ -43,7 +45,9 @@ public class BreakIn implements Listener {
         long time = System.currentTimeMillis();
         Long lastUsage = TOTAL_COOLDOWN.get(p.getName());
         if (HOUSES.containsKey(p.getName()) || TOTAL_COOLDOWN.containsKey(p.getName()) && lastUsage + 9000000 > time) {
-            p.sendMessage(Messages.ERROR + "Du kannst nur alle 3 Stunden in ein Haus einbrechen.");
+            if (Objects.requireNonNull(e.getClickedBlock()).getType() == Material.OAK_DOOR) {
+                p.sendMessage(Messages.ERROR + "Du kannst nur alle 3 Stunden in ein Haus einbrechen.");
+            }
             return;
         }
 
@@ -70,7 +74,9 @@ public class BreakIn implements Listener {
 
         House house = House.getNearHouse(p.getLocation(), 3);
         if (house == null) {
-            Script.sendActionBar(p, PREFIX + "Du kannst hier nicht einbrechen.");
+            if (Objects.requireNonNull(e.getClickedBlock()).getType() == Material.OAK_DOOR) {
+                Script.sendActionBar(p, PREFIX + "Du kannst hier nicht einbrechen.");
+            }
             return;
         }
 
@@ -83,6 +89,10 @@ public class BreakIn implements Listener {
         HOUSES.put(p.getName(), house);
         p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 90 * 20, 2));
         p.sendMessage(PREFIX + "Du hast begonnen in das Haus " + house.getID() + " einzubrechen.");
+        if (Organisation.hasOrganisation(p)) {
+            for (UUID m : Organisation.getOrganisation(p).getMember()) if (Bukkit.getOfflinePlayer(m).isOnline()) if (!AFK.isAFK(m)) if (Objects.requireNonNull(Bukkit.getPlayer(m)).getLocation().distance(p.getLocation()) <= 20)
+                Activity.grantActivity(Script.getNRPID(Bukkit.getPlayer(m)), Activities.EINBRUCH);
+        }
         progress.put(p.getName(), 0.0);
         new BukkitRunnable() {
             @Override
