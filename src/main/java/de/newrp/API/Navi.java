@@ -32,7 +32,7 @@ public enum Navi {
     STATUE("Statue", new Location(Script.WORLD, 584, 66, 555, 179.85078f, 2.4608523E-4f)),
     STRAßENWARTUNG("Straßenwartung", new Location(Script.WORLD, 469, 66, 1309, -12.392588f, 3.4150472f)),
     TANKSTELLE_KH("Tankestelle-KH", new Location(Script.WORLD, 431, 77, 1078, 181.34888f, 7.8000355f)),
-    TANKSTELLE_Gang("Tankstelle-Gang", new Location(Script.WORLD, 819, 67, 1333, 182.58044f, 11.268788f)),
+    TANKSTELLE_GANG("Tankstelle-Gang", new Location(Script.WORLD, 819, 67, 1333, 182.58044f, 11.268788f)),
     TAXI("Taxi", new Location(Script.WORLD, 690, 69, 1061, 269.3996f, -3.749993f)),
     TELLERWÄSCHER("Tellerwäscher", new Location(Script.WORLD, 579, 67, 744, -77.8775f, 5.445472f)),
     TRANSPORT("Transport", new Location(Script.WORLD, 932, 66, 1083, 178.20059f, 4.050012f)),

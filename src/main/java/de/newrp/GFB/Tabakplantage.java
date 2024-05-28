@@ -298,15 +298,5 @@ public class Tabakplantage implements CommandExecutor, Listener {
         driedTobacco.remove(p.getName());
         mixedTobacco.remove(p.getName());
         GFB.CURRENT.remove(p.getName());
-
     }
-
-    @EventHandler
-    public static void onDrop(EntityDropItemEvent event) {
-        ItemStack is = event.getItemDrop().getItemStack();
-        if (is.getType().equals(Material.SHEARS) && is.hasItemMeta() && !is.getItemMeta().getDisplayName().contains("Tabakschere")) {
-            event.setCancelled(true);
-        }
-    }
-
 }
