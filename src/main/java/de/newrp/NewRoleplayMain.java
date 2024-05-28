@@ -691,6 +691,7 @@ public class NewRoleplayMain extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new RecommendationInventoryCloseListener(), this);
         Bukkit.getPluginManager().registerEvents(new PlaytimePlayerListener(), this);
         Bukkit.getPluginManager().registerEvents(new DrogenbankHouse(), this);
+        Bukkit.getPluginManager().registerEvents(new EventListener(), this);
     }
 
     /**

@@ -3,7 +3,7 @@ package de.newrp.API;
 import org.bukkit.Location;
 
 public enum Event {
-    LASERTAG("lasertag", Script.setDirection(new Location(Script.WORLD, 72, 69, -284), Direction.EAST)),
+    NO_DAMAGE("no_damage", null),
     DOUBLE_XP("doublexp", null),
     DOUBLE_XP_WEEKEND("doublexp_weekend", null),
     VOTE("vote_event", null),

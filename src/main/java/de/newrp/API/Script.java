@@ -1569,10 +1569,9 @@ public class Script {
             NewRoleplayMain.event = null;
         } else {
             NewRoleplayMain.event = e;
-            if (e.equals(Event.LASERTAG)) {
+            if (e.equals(Event.NO_DAMAGE)) {
                 if (message) {
-                    Bukkit.broadcastMessage("§8[§6Event§8]§6 Es hat ein §lLasertag §r§6begonnen!");
-                    Bukkit.broadcastMessage("§8[§6Event§8]§6 Teleportiere dich kostenlos per /event dort hin.");
+                    Bukkit.broadcastMessage("§8[§6Event§8]§6 Es hat ein §lNo Damage-Event §r§6begonnen!");
                 }
                 executeAsyncUpdate("UPDATE serversettings SET event='" + e.getName() + "'");
             } else if (e.equals(Event.DOUBLE_XP)) {

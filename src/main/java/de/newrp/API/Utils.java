@@ -798,12 +798,12 @@ public class Utils implements Listener {
     public void onBlocKMinecraftCommands(PlayerCommandPreprocessEvent e) {
         for (String s : BLOCKED_COMMANDS) {
             if (e.getMessage().toLowerCase().startsWith(s)) {
-                if (!Script.hasRank(e.getPlayer(), Rank.OWNER, false)) {
+                if (!Script.hasRank(e.getPlayer(), Rank.ADMINISTRATOR, false)) {
                     e.setCancelled(true);
                     Script.sendActionBar(e.getPlayer(), Messages.ERROR + "Der Befehl wurde nicht gefunden.");
                     return;
                 } else {
-                    e.getPlayer().sendMessage(Messages.INFO + "Du konntest diesen Befehl nur ausführen, da du Geschäftsführer bist.");
+                    e.getPlayer().sendMessage(Messages.INFO + "Du konntest diesen Befehl nur ausführen, da du Administrator bist.");
                     return;
                 }
             }
@@ -812,12 +812,12 @@ public class Utils implements Listener {
             for (String cmd : e.getMessage().split(" ")) {
                 if (cmd.toLowerCase().equalsIgnoreCase(s)) {
                     Debug.debug("blocked due to " + s);
-                    if (!Script.hasRank(e.getPlayer(), Rank.OWNER, false)) {
+                    if (!Script.hasRank(e.getPlayer(), Rank.ADMINISTRATOR, false)) {
                         e.setCancelled(true);
                         Script.sendActionBar(e.getPlayer(), Messages.ERROR + "Der Befehl wurde nicht gefunden.");
                         return;
                     } else {
-                        e.getPlayer().sendMessage(Messages.INFO + "Du konntest diesen Befehl nur ausführen, da du Geschäftsführer bist.");
+                        e.getPlayer().sendMessage(Messages.INFO + "Du konntest diesen Befehl nur ausführen, da du Administrator bist.");
                         return;
                     }
                 }
