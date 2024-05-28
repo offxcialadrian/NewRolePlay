@@ -27,10 +27,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -154,6 +151,8 @@ public class Bankraub implements CommandExecutor, Listener {
 
         p.getInventory().getItemInMainHand().setAmount(p.getInventory().getItemInMainHand().getAmount() - 1);
         p.sendMessage(PREFIX + "Du hast den Bankraub gestartet.");
+        for (UUID m : organisation.getMember()) if (Bukkit.getOfflinePlayer(m).isOnline()) if (!AFK.isAFK(m)) if (Objects.requireNonNull(Bukkit.getPlayer(m)).getLocation().distance(p.getLocation()) <= 250)
+            Activity.grantActivity(Script.getNRPID(Bukkit.getPlayer(m)), Activities.BANKRAUB);
         for (final Beruf.Berufe faction : Beruf.Berufe.values()) {
             if(faction == Beruf.Berufe.NEWS) continue;
 

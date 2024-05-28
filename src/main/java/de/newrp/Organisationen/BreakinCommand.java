@@ -1,13 +1,11 @@
 package de.newrp.Organisationen;
 
-import de.newrp.API.ItemBuilder;
-import de.newrp.API.Messages;
-import de.newrp.API.PaymentType;
-import de.newrp.API.Script;
+import de.newrp.API.*;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Chat.Me;
 import de.newrp.Government.Stadtkasse;
 import de.newrp.NewRoleplayMain;
+import de.newrp.Player.AFK;
 import de.newrp.dependencies.DependencyContainer;
 import de.newrp.features.takemoney.ITakeMoneyService;
 import net.kyori.adventure.text.TextComponent;
@@ -22,6 +20,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Objects;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 public class BreakinCommand implements CommandExecutor {
@@ -64,6 +63,8 @@ public class BreakinCommand implements CommandExecutor {
                         Beruf.Berufe.POLICE.sendMessage(PREFIX + "Ein Einbruch bei " + rob.getName() + " wurde gemeldet.");
                         orga.sendMessage(PREFIX + player.getName() + " beginnt bei " + rob.getName() + " aufzubrechen.");
                         Me.sendMessage(player, "startet einen Einbruch.");
+                        for (UUID m : orga.getMember()) if (Bukkit.getOfflinePlayer(m).isOnline()) if (!AFK.isAFK(m)) if (Objects.requireNonNull(Bukkit.getPlayer(m)).getLocation().distance(player.getLocation()) <= 30)
+                            Activity.grantActivity(Script.getNRPID(Bukkit.getPlayer(m)), Activities.BREAKIN);
 
                         LockpickHandler.c.put(player, 1);
                         LockpickHandler.a.put(player, 1);

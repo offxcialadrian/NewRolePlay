@@ -552,6 +552,11 @@ public class NewRoleplayMain extends JavaPlugin {
         getCommand("freebiz").setExecutor(new FreeBizCommand());
         getCommand("activeextortions").setExecutor(new ActiveExtortedShopsCommand());
         getCommand("abteilungschat").setExecutor(new AbteilungsChat());
+        getCommand("activity").setExecutor(new ActivityCommand());
+        getCommand("checkactivity").setExecutor(new CheckActivityCommand());
+        getCommand("addactivity").setExecutor(new AddActivityCommand());
+        getCommand("removeactivity").setExecutor(new RemoveActivityCommand());
+        getCommand("resetactivity").setExecutor(new ResetActivityCommand());
     }
 
     /**

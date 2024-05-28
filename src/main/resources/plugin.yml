@@ -802,3 +802,18 @@ commands:
   abteilungschat:
     description: write in the subfrak-chat
     aliases: [ a, achat, sf ]
+  activity:
+    description: shows activity
+    aliases: [ akti, aktis, aktivitäten ]
+  checkactivity:
+    description: checks activity
+    aliases: [ checkakti, checkaktis, checkaktivitäten ]
+  addactivity:
+    description: adds activity
+    aliases: [ addakti, giveactivity, giveakti, addaktivität, giveaktivität ]
+  removeactivity:
+    description: removes activity
+    aliases: [ removeakti, deleteactivity, deleteakti, removeaktivität, deleteaktivität ]
+  resetactivity:
+    description: resets activity
+    aliases: [ resetakti, resetaktis, resetaktivitäten ]

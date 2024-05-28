@@ -1,9 +1,6 @@
 package de.newrp.Government;
 
-import de.newrp.API.Messages;
-import de.newrp.API.Particle;
-import de.newrp.API.PaymentType;
-import de.newrp.API.Script;
+import de.newrp.API.*;
 import de.newrp.Berufe.Abteilung;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Player.BeziehungCommand;
@@ -51,6 +48,7 @@ public class Marry implements CommandExecutor {
         Stadtkasse.addStadtkasse(7000, "Hochzeit von " + Script.getName(p1) + " und " + Script.getName(p2) + ".", null);
 
         p.sendMessage(BeziehungCommand.PREFIX + "Du hast " + Script.getName(p1) + " und " + Script.getName(p2) + " verheiratet.");
+        Activity.grantActivity(Script.getNRPID(p), Activities.MARRY);
         p1.sendMessage(BeziehungCommand.PREFIX + "Du bist nun mit " + Script.getName(p2) + " verheiratet!");
         p2.sendMessage(BeziehungCommand.PREFIX + "Du bist nun mit " + Script.getName(p1) + " verheiratet!");
         BeziehungCommand.setMarried(p1, true);

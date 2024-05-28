@@ -1,8 +1,6 @@
 package de.newrp.Organisationen;
 
-import de.newrp.API.ItemBuilder;
-import de.newrp.API.Messages;
-import de.newrp.API.Script;
+import de.newrp.API.*;
 import de.newrp.NewRoleplayMain;
 import org.bukkit.*;
 import org.bukkit.block.Banner;
@@ -239,6 +237,7 @@ public class OrgSpray implements Listener {
             p.sendMessage(PREFIX + "Du hast das Graffiti mit deiner Organisationsflagge übersprayt.");
             f.sendMessage(PREFIX + p.getName() + " hat ein Graffiti mit der Flagge der Organisation übersprayt.");
             f.addExp(Script.getRandom(5, 10));
+            Activity.grantActivity(Script.getNRPID(p), Activities.GRAFFITI);
             Script.addEXP(p, Script.getRandom(3, 5));
         } else {
             m.put(p.getName(), map);

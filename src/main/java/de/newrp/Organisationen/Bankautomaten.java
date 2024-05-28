@@ -1,6 +1,5 @@
 package de.newrp.Organisationen;
 
-import com.destroystokyo.paper.ParticleBuilder;
 import de.newrp.API.*;
 import de.newrp.Administrator.SDuty;
 import de.newrp.Berufe.Beruf;
@@ -26,7 +25,7 @@ import org.bukkit.util.Vector;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -72,9 +71,11 @@ public class Bankautomaten implements Listener {
         Beruf.Berufe.POLICE.sendMessage(PREFIX + "ACHTUNG! ES WURDE SPRENGSTOFF AN ATM " + atm.getID() + " GEFUNDEN!");
         Beruf.Berufe.POLICE.sendMessage(Messages.INFO + "In der Nähe von " + Navi.getNextNaviLocation(p.getLocation()).getName());
         e.getClickedBlock().getLocation().getWorld().playSound(e.getClickedBlock().getLocation(), Sound.ENTITY_CREEPER_PRIMED, 1f, 0.5f);
-        for (LivingEntity nearbyLivingEntity : e.getClickedBlock().getLocation().getNearbyLivingEntities(5)) {
+        for (LivingEntity nearbyLivingEntity : e.getClickedBlock().getLocation().getNearbyLivingEntities(10)) {
             nearbyLivingEntity.sendMessage(PREFIX + "§r§lEine Bombe wurde an einem Bankautomaten in deiner Nähe platziert, verschwinde!");
         }
+        for (UUID m : o.getMember()) if (Bukkit.getOfflinePlayer(m).isOnline()) if (!AFK.isAFK(m)) if (Objects.requireNonNull(Bukkit.getPlayer(m)).getLocation().distance(p.getLocation()) <= 60)
+            Activity.grantActivity(Script.getNRPID(Bukkit.getPlayer(m)), Activities.ATM);
         Location bombLocation = atm.getLocation();
         progress.put(p.getName(), 0);
         p.getInventory().getItemInMainHand().setAmount(p.getInventory().getItemInMainHand().getAmount() - 1);

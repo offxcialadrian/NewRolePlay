@@ -1,5 +1,7 @@
 package de.newrp.News;
 
+import de.newrp.API.Activities;
+import de.newrp.API.Activity;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.Administrator.Checkpoints;
@@ -64,6 +66,7 @@ public class NewsCommand implements CommandExecutor {
         }
         Script.sendTeamMessage(NEWS + "Diese News wurde geschaltet von " + Script.getName(p));
         Beruf.Berufe.NEWS.sendMessage(NEWS + "Diese News wurde geschaltet von " + Script.getName(p));
+        Activity.grantActivity(Script.getNRPID(p), Activities.NEWS);
         Script.addEXP(p, Script.getRandom(4, 8));
 
         return false;

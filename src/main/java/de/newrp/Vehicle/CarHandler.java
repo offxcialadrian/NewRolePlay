@@ -1,9 +1,6 @@
 package de.newrp.Vehicle;
 
-import de.newrp.API.Cache;
-import de.newrp.API.Debug;
-import de.newrp.API.Messages;
-import de.newrp.API.Script;
+import de.newrp.API.*;
 import de.newrp.Administrator.Notifications;
 import de.newrp.Administrator.SDuty;
 import de.newrp.Berufe.Beruf;
@@ -136,6 +133,7 @@ public class CarHandler implements Listener {
                     Beruf.Berufe.POLICE.sendMessage(StrafzettelCommand.PREFIX + Script.getName(player) + " hat ein Strafzettel an einem §e" + car.getCarType().getName() + " §7mit Kennzeichen §e" + car.getLicenseplate() + " §7platziert!" +
                             "\n" + StrafzettelCommand.PREFIX + "Grund: §e" + car.getStrafzettel().getReason() +
                             "\n" + StrafzettelCommand.PREFIX + "Preis: §e" + car.getStrafzettel().getPrice() + "€");
+                    Activity.grantActivity(Script.getNRPID(player), Activities.STRAFZETTEL);
                     Debug.debug("Added strafzettel to " + car.getLicenseplate() + " by " + Script.getName(player));
                     Notifications.sendMessage(Notifications.NotificationType.PAYMENT, "§aStrafzettel an " + car.getLicenseplate() + " von " + player.getName() + " für " + Strafzettel.reasons.get(player) + " [" + Strafzettel.prices.get(player) + "€] gegeben.");
                     Strafzettel.reasons.remove(player);

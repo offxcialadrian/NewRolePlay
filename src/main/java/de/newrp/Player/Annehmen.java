@@ -386,6 +386,7 @@ public class Annehmen implements CommandExecutor {
             Log.NORMAL.write(p, "hat " + amount + "x Rezept für " + m.getName() + " von " + Script.getName(tg) + " erhalten.");
             Log.NORMAL.write(tg, "hat " + amount + "x Rezept für " + m.getName() + " an " + Script.getName(p) + " gegeben.");
             Beruf.Berufe.RETTUNGSDIENST.sendMessage(Rezept.PREFIX + Script.getName(tg) + " hat " + Script.getName(p) + " " + amount + "x Rezept für " + m.getName() + " ausgestellt.");
+            Activity.addActivity(Script.getNRPID(tg), 0, Activities.REZEPT.getName(), Activities.REZEPT.getPoints() * amount);
             offer.remove(p.getName() + ".rezept");
             offer.remove(p.getName() + ".medikament");
             offer.remove(p.getName() + ".rezept.anzahl");

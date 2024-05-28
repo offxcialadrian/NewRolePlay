@@ -124,6 +124,7 @@ public class OrganisationKasse implements CommandExecutor, TabCompleter {
                     Organisation.getOrganisation(p).sendMessage(PREFIX + "§6" + Script.getName(p) + " §7hat §6" + amount + "€ §7in die Kasse eingezahlt.");
                     Notifications.sendMessage(Notifications.NotificationType.PAYMENT, Script.getName(p) + " hat " + amount + "€ in die " + Organisation.getOrganisation(p).getName() + "-Kasse eingezahlt.");
                     Log.NORMAL.write(Script.getName(p) + " hat " + amount + "€ in die " + Organisation.getOrganisation(p).getName() + "-Kasse eingezahlt.");
+                    Activity.addActivity(Script.getNRPID(p), 0, Activities.GELD.getName(), Activities.GELD.getPoints() * ((float) amount / 100));
                     return true;
                 } catch (NumberFormatException e) {
                     p.sendMessage(Messages.ERROR + "Der Betrag muss eine Zahl sein.");
