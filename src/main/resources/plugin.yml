@@ -533,7 +533,7 @@ commands:
     description: add premium to a player
   leaderchat:
     description: send a message to the leaderchat
-    aliases: [ l ]
+    aliases: [ l, lchat ]
   waffenschein:
     description: view the waffenschein
     aliases: [ waffenscheine ]
@@ -799,3 +799,6 @@ commands:
     description: sound
   particle:
     description: particle
+  abteilungschat:
+    description: write in the subfrak-chat
+    aliases: [ a, achat, sf ]
