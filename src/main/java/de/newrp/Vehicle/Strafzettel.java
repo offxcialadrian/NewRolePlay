@@ -39,9 +39,7 @@ public class Strafzettel {
     }
 
     public static Strafzettel loadStrafzettel(int carID) {
-        try (PreparedStatement stmt = NewRoleplayMain.getConnection().prepareStatement("SELECT car_id, betrag, grund, cop_id FROM strafzettel WHERE car_id = ? ")) {
-            stmt.setInt(1, carID);
-
+        try (PreparedStatement stmt = NewRoleplayMain.getConnection().prepareStatement("SELECT * FROM strafzettel WHERE car_id = " + carID)) {
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
                 return new Strafzettel(rs.getInt("car_id"), rs.getString("grund").replaceAll("\"", ""), rs.getInt("betrag"), rs.getInt("cop_id"));
