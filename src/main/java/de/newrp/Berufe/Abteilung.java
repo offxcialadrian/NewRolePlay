@@ -38,7 +38,7 @@ public class Abteilung implements CommandExecutor, TabCompleter {
         PRESSE(5, POLICE, "Presse"),
         ABTEILUNGSLEITUNG(6, POLICE, "Abteilungsleiter"),
         POLIZEIVIZE(7, POLICE, "Polizeivizepräsident"),
-        POLIZEIPRÄSIDENT(8, POLICE, "Polizeipräsidentin"),
+        POLIZEIPRÄSIDENT(8, POLICE, "Polizeipräsident"),
         VOLONTAER(0, NEWS, "Volontäre"),
         JOURNALIST(1, NEWS, "Journalismus"),
         TV(2, NEWS, "TV-Moderation"),

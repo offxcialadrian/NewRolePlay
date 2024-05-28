@@ -21,6 +21,7 @@ import de.newrp.Waffen.Weapon;
 import de.newrp.NewRoleplayMain;
 import de.newrp.dependencies.DependencyContainer;
 import de.newrp.features.scoreboards.IScoreboardService;
+import de.newrp.features.playtime.IPlaytimeService;
 import me.arcaniax.hdb.api.HeadDatabaseAPI;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -1571,7 +1572,6 @@ public class Script {
                     Bukkit.broadcastMessage("§8[§6Event§8]§6 Es hat das Vote-Event §7(§lDouble XP§7)§6 §r§6begonnen!");
                 executeAsyncUpdate("UPDATE serversettings SET event='" + e.getName() + "'");
                 Vote.startVoteRamble();
-                startEvent(Event.VOTE, false);
             } else if (e.equals(Event.DOUBLE_XP_WEEKEND)) {
                 if (message) Bukkit.broadcastMessage("§8[§6Event§8]§6 Es hat ein §lDouble XP-Event §r§6begonnen!");
                 executeAsyncUpdate("UPDATE serversettings SET event='" + e.getName() + "'");
@@ -1672,17 +1672,7 @@ public class Script {
     }
 
     public static void increasePlayTime(Player p) {
-        executeAsyncUpdate("UPDATE playtime SET minutes=minutes+1 WHERE nrp_id=" + getNRPID(p));
-        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
-             ResultSet rs = stmt.executeQuery("SELECT * FROM playtime WHERE nrp_id=" + getNRPID(p))) {
-            if (rs.next()) {
-                if (rs.getInt("minutes") == 59) {
-                    executeAsyncUpdate("UPDATE playtime SET hours=hours+1, minutes=0 WHERE nrp_id=" + getNRPID(p));
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        DependencyContainer.getContainer().getDependency(IPlaytimeService.class).increasePlaytime(p);
     }
 
     public static void removeWeapons(Player p) {
@@ -1707,30 +1697,6 @@ public class Script {
                 p.getInventory().setItemInOffHand(new ItemStack(Material.AIR));
             }
             if (p.getItemOnCursor().getType().equals(mat)) p.setItemOnCursor(null);
-        }
-    }
-
-    public static void increaseActivePlayTime(Player p) {
-        executeAsyncUpdate("UPDATE playtime SET a_minutes=a_minutes+1 WHERE nrp_id=" + getNRPID(p));
-        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
-             ResultSet rs = stmt.executeQuery("SELECT * FROM playtime WHERE nrp_id=" + getNRPID(p))) {
-            if (rs.next()) {
-                if (rs.getInt("a_minutes") == 59) {
-                    executeAsyncUpdate("UPDATE playtime SET a_hours=a_hours+1, a_minutes=0 WHERE nrp_id=" + getNRPID(p));
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        if (getActivePlayTime(p, true) % 50 == 0 && getActivePlayTime(p, false) == 0) {
-            p.sendMessage(PREFIX + "Du spielst nun bereits seit " + getActivePlayTime(p, true) + " Stunden aktiv auf NRP × New RolePlay. Vielen Dank dafür!");
-            p.sendMessage(PREFIX + "Du erhältst als Dankeschön für deine Treue " + getActivePlayTime(p, true) + " Exp");
-            addEXP(p, getActivePlayTime(p, true));
-        }
-
-        if (getActivePlayTime(p, true) % 150 == 0 && getActivePlayTime(p, false) == 0) {
-            p.sendMessage(PREFIX + "Du erhältst als Dankeschön für deine Treue 3 Tage Premium");
-            Premium.addPremiumStorage(p, TimeUnit.DAYS.toMillis(3), true);
         }
     }
 
@@ -1821,7 +1787,7 @@ public class Script {
             if (NewRoleplayMain.event == Event.TRIPPLE_XP) {
                 exp *= 3;
                 p.sendMessage(" §a+" + exp + " Exp! §7(§6§lTRIPPLE EXP§7)");
-            } else if (NewRoleplayMain.event == Event.DOUBLE_XP || NewRoleplayMain.event == Event.DOUBLE_XP_WEEKEND) {
+            } else if (NewRoleplayMain.event == Event.DOUBLE_XP || NewRoleplayMain.event == Event.DOUBLE_XP_WEEKEND || NewRoleplayMain.event == Event.VOTE) {
                 exp *= 2;
                 p.sendMessage(" §a+" + exp + " Exp! §7(§6§lDOUBLE EXP§7)");
             } else {
@@ -2162,15 +2128,8 @@ public class Script {
     }
 
     public static int getPlayTime(Player p, boolean hours) {
-        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
-             ResultSet rs = stmt.executeQuery("SELECT * FROM playtime WHERE nrp_id=" + getNRPID(p))) {
-            if (rs.next()) {
-                return rs.getInt(hours ? "hours" : "minutes");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return 0;
+        final IPlaytimeService playtimeService = DependencyContainer.getContainer().getDependency(IPlaytimeService.class);
+        return hours ? playtimeService.getPlaytime(p).getA_hours() : playtimeService.getPlaytime(p).getA_minutes();
     }
 
     public static void addToBauLog(Player p, Material m, Location loc, boolean removed) {
@@ -2215,15 +2174,8 @@ public class Script {
     }
 
     public static int getActivePlayTime(Player p, boolean hours) {
-        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
-             ResultSet rs = stmt.executeQuery("SELECT * FROM playtime WHERE nrp_id=" + getNRPID(p))) {
-            if (rs.next()) {
-                return rs.getInt(hours ? "a_hours" : "a_minutes");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return 0;
+        final IPlaytimeService playtimeService = DependencyContainer.getContainer().getDependency(IPlaytimeService.class);
+        return hours ? playtimeService.getPlaytime(p).getA_hours() : playtimeService.getPlaytime(p).getA_minutes();
     }
 
     public static int getActivePlayTime(OfflinePlayer p, boolean hours) {

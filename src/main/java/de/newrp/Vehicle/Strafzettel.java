@@ -44,7 +44,7 @@ public class Strafzettel {
 
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
-                return new Strafzettel(rs.getInt("car_id"), rs.getString("betrag").replaceAll("\"", ""), rs.getInt("grund"), rs.getInt("cop_id"));
+                return new Strafzettel(rs.getInt("car_id"), rs.getString("grund").replaceAll("\"", ""), rs.getInt("betrag"), rs.getInt("cop_id"));
             }
         } catch (SQLException e) {
             e.printStackTrace();

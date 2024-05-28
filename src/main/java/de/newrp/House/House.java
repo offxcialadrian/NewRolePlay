@@ -371,7 +371,7 @@ public class House {
     }
 
     public int getFreeSlots() {
-        return this.slots - getMieter().size();
+        return (this.slots + 1) - getMieter().size();
     }
 
     public void removeMieter(int id) {

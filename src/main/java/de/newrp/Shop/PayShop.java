@@ -211,7 +211,7 @@ public class PayShop implements Listener {
                         return;
                     }
 
-                    if(!Mobile.getPhone(p).isDestroyed(p)) {
+                    if (!Mobile.getPhone(p).isDestroyed(p)) {
                         p.sendMessage(Messages.ERROR + "Dein Handy ist nicht kaputt.");
                         return;
                     }
@@ -248,13 +248,19 @@ public class PayShop implements Listener {
                     }
 
                     final int amountOfRecipes = Rezept.getAmountOfRecipes(p, m);
-                    if(amountOfRecipes < buyAmount && m.isRezeptNeeded()) {
+                    if (amountOfRecipes < buyAmount && m.isRezeptNeeded()) {
                         p.sendMessage(Messages.ERROR + "Du hast nicht genügend Rezepte!");
                         return;
                     }
 
                     boolean hasRezept = Rezept.hasRezept(p, m);
                     Rezept.removeRezept(p, m);
+
+                    if (m == Medikamente.SCHMERZMITTEL_HIGH && hasRezept && Beruf.hasBeruf(p, Beruf.Berufe.POLICE)) {
+                        p.sendMessage(Messages.INFO + "Deine Krankenversicherung hat die Kosten für das Medikament übernommen.");
+                        Script.addMoney(p, PaymentType.BANK, singlePrice);
+                        Stadtkasse.removeStadtkasse(singlePrice, "Kostenübernahme durch Krankenversicherung an " + Script.getName(p));
+                    }
 
                     if (m.insurancePays() && hasRezept) {
                         p.sendMessage(Messages.INFO + "Deine Krankenversicherung hat die Kosten für das Medikament übernommen.");
@@ -339,7 +345,7 @@ public class PayShop implements Listener {
         int shopMoney = (price - buyPrice) - (int) Script.getPercent(mwst, price - buyPrice);
 
         Debug.debug("Price after mwst is " + shopMoney);
-        if(type == PaymentType.BANK) {
+        if (type == PaymentType.BANK) {
             shopMoney -= bankTransferFee;
         }
 

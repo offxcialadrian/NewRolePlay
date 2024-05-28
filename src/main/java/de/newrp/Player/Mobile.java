@@ -30,10 +30,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 public class Mobile implements Listener {
 
@@ -43,6 +40,7 @@ public class Mobile implements Listener {
 
     public static String PREFIX = "§8[§6Handy§8] §6" + Messages.ARROW + " §7";
     public static ArrayList<String> checkedBreakingNews = new ArrayList<>();
+    public static final Map<UUID, Integer> playerAkku = new HashMap<>();
 
     public enum Phones {
 
@@ -113,13 +111,20 @@ public class Mobile implements Listener {
         }
 
         public int getAkku(Player p) {
+            if(playerAkku.containsKey(p.getUniqueId())) {
+                return playerAkku.get(p.getUniqueId());
+            }
+
             try(PreparedStatement stmt = NewRoleplayMain.getConnection().prepareStatement("SELECT akku FROM phone WHERE nrp_id = ?")) {
                 stmt.setInt(1, Script.getNRPID(p));
                 ResultSet rs = stmt.executeQuery();
                 if(rs.next()) {
-                    return rs.getInt("akku");
+                    final int akku = rs.getInt("akku");
+                    playerAkku.put(p.getUniqueId(), akku);
+                    return akku;
                 } else {
                     Script.executeAsyncUpdate("INSERT INTO phone (nrp_id, akku, destroyed) VALUES (" + Script.getNRPID(p) + ", " + getMaxAkku() + ", FALSE)");
+                    playerAkku.put(p.getUniqueId(), 100);
                     return 100;
                 }
             } catch (SQLException e) {
@@ -129,19 +134,29 @@ public class Mobile implements Listener {
         }
 
         public void setAkku(Player p, int akku) {
+            playerAkku.replace(p.getUniqueId(), akku);
             //Script.executeAsyncUpdate("UPDATE phone SET akku = " + akku + " WHERE nrp_id = " + Script.getNRPID(p));
         }
 
         public void addAkku(Player p, int akku) {
             akku = getAkku(p) + akku;
+            System.out.println("adding akku to " + p.getName() + " " + akku);
+            playerAkku.replace(p.getUniqueId(), akku);
             //Script.executeAsyncUpdate("UPDATE phone SET akku = " + akku + " WHERE nrp_id = " + Script.getNRPID(p));
         }
 
         public void removeAkku(Player p, int akku) {
             akku = getAkku(p) - akku;
             if(akku <= 0) return;
+            playerAkku.replace(p.getUniqueId(), akku);
             //Script.executeAsyncUpdate("UPDATE phone SET akku = " + akku + " WHERE nrp_id = " + Script.getNRPID(p));
         }
+
+        public void saveAkku(final Player player) {
+            final int akku = playerAkku.getOrDefault(player.getUniqueId(), 100);
+            Script.executeAsyncUpdate("UPDATE phone SET akku = " + akku + " WHERE nrp_id = " + Script.getNRPID(player));
+        }
+
 
         public boolean isDestroyed(Player p) {
             try(PreparedStatement stmt = NewRoleplayMain.getConnection().prepareStatement("SELECT destroyed FROM phone WHERE nrp_id = ?")) {

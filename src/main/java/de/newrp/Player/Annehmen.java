@@ -279,6 +279,7 @@ public class Annehmen implements CommandExecutor {
             int add = price - (int) Script.getPercent(Steuern.Steuer.HAUSVERKAUFSSTEUER.getPercentage(), price);
             Script.addMoney(seller, PaymentType.BANK, add);
             house.setOwner(Script.getNRPID(p));
+            Script.executeAsyncUpdate("INSERT INTO house_bewohner (houseID, mieterID, vermieter, miete, nebenkosten, immobilienmarkt) VALUES (" + house.getID() + ", " + Script.getNRPID(p) + ", TRUE, 0, 0, FALSE);");
             house.updateSign();
             if (!house.getAddons().isEmpty()) {
                 for (HouseAddon addon : house.getAddons()) {

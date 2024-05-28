@@ -20,7 +20,7 @@ public class CheckShop implements CommandExecutor {
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
         Player p = (Player) cs;
 
-        if(!Beruf.hasBeruf(p) && !Script.hasRank(p, Rank.ADMINISTRATOR, false)) {
+        if(!Beruf.hasBeruf(p, Beruf.Berufe.GOVERNMENT) && !Script.hasRank(p, Rank.ADMINISTRATOR, false)) {
             p.sendMessage(Messages.NO_PERMISSION);
             return true;
         }
