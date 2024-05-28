@@ -2141,7 +2141,7 @@ public class Script {
 
     public static int getPlayTime(Player p, boolean hours) {
         final IPlaytimeService playtimeService = DependencyContainer.getContainer().getDependency(IPlaytimeService.class);
-        return playtimeService.getPlaytime(p).getA_hours();
+        return hours ? playtimeService.getPlaytime(p).getA_hours() : playtimeService.getPlaytime(p).getA_minutes();
     }
 
     public static void addToBauLog(Player p, Material m, Location loc, boolean removed) {

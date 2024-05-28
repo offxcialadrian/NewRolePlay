@@ -25,16 +25,16 @@ public class OrganisationKasse implements CommandExecutor, TabCompleter {
             return true;
         }
 
+        if (args.length == 0) {
+            p.sendMessage(Messages.ERROR + "/organisationkasse [Auszahlen/Einzahlen/Info] <Betrag>");
+            return true;
+        }
+
         if (!Organisation.isLeader(p, true) && !args[0].equalsIgnoreCase("einzahlen")) {
             if(Organisation.getRank(p) < 4) {
                 p.sendMessage(Messages.NO_PERMISSION);
                 return true;
             }
-        }
-
-        if (args.length == 0) {
-            p.sendMessage(Messages.ERROR + "/organisationkasse [Auszahlen/Einzahlen/Info] <Betrag>");
-            return true;
         }
 
         ATM atm = ATM.getNearATM(p);

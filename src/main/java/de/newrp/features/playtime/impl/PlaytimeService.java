@@ -80,7 +80,7 @@ public class PlaytimeService implements IPlaytimeService {
 
     @Override
     public void loadPlaytime(Player player) {
-        try(final PreparedStatement preparedStatement = NewRoleplayMain.getConnection().prepareStatement("SELECT * FROM playtime WHERE id = ?")) {
+        try(final PreparedStatement preparedStatement = NewRoleplayMain.getConnection().prepareStatement("SELECT * FROM playtime WHERE nrp_id = ?")) {
             preparedStatement.setInt(1, Script.getNRPID(player));
             final ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
