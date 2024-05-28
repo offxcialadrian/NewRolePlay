@@ -18,6 +18,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.entity.EntityDropItemEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -298,6 +299,14 @@ public class Tabakplantage implements CommandExecutor, Listener {
         mixedTobacco.remove(p.getName());
         GFB.CURRENT.remove(p.getName());
 
+    }
+
+    @EventHandler
+    public static void onDrop(EntityDropItemEvent event) {
+        ItemStack is = event.getItemDrop().getItemStack();
+        if (is.getType().equals(Material.SHEARS) && is.hasItemMeta() && !is.getItemMeta().getDisplayName().contains("Tabakschere")) {
+            event.setCancelled(true);
+        }
     }
 
 }
