@@ -20,6 +20,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 public class DropAmmo implements CommandExecutor, TabCompleter {
@@ -53,6 +54,12 @@ public class DropAmmo implements CommandExecutor, TabCompleter {
                     }
                     if (w != null) {
                         ItemStack item = null;
+                        HashMap<Weapon, WeaponData> weapon_data = WeaponData.getWeaponData(Script.getNRPID(p));
+                        if(!weapon_data.containsKey(w)) {
+                            p.sendMessage(Messages.ERROR + "Du kannst keine Munition für eine Waffe einlagern, welche du nicht im Besitz hast!");
+                            return true;
+                        }
+
                         for (ItemStack is : p.getInventory().getContents()) {
                             if (is != null) {
                                 if (is.getType().equals(w.getWeapon().getType())) {

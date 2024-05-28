@@ -64,7 +64,7 @@ public class Gameboost implements CommandExecutor {
 
         Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> {
             Script.startEvent(null, false);
-            Bukkit.broadcastMessage("§8[§6Gameboost§8] §6" + Messages.ARROW + " §65Das " + (isDouble? "Double": "Triple") + "-EXP Event wurde beendet!");
+            Bukkit.broadcastMessage("§8[§6Gameboost§8] §6" + Messages.ARROW + " §6Das " + (isDouble? "Double": "Triple") + "-EXP Event wurde beendet!");
             if(!await.isEmpty()) {
                 String name = new ArrayList<>(await.keySet()).get(0);
                 startEvent(name, await.get(name));
