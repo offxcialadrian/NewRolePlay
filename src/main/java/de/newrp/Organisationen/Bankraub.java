@@ -36,9 +36,9 @@ import java.util.stream.Collectors;
 
 public class Bankraub implements CommandExecutor, Listener {
 
-    public static long lastTime;
+    public static long lastTime = 0L;
     private static long cooldown;
-    private static final long BANKROB_COOLDOWN = TimeUnit.HOURS.toMillis(9);
+    public static final long BANKROB_COOLDOWN = TimeUnit.HOURS.toMillis(5);
     private static final long BLOCK_CLICK_DELAY = TimeUnit.SECONDS.toMillis(30);
     private static ArrayList<Location> blocks = new ArrayList<>();
     public static String PREFIX = "§8[§9Bankraub§8] §9» §7";
@@ -171,6 +171,7 @@ public class Bankraub implements CommandExecutor, Listener {
         Log.NORMAL.write(p, "hat einen Bankraub gestartet");
         bankRobberPlayer = p;
         cooldown = time;
+        lastTime = time;
         miniGameIsActive = true;
         blocks.addAll(Arrays.asList(locs));
         startMiniGame();

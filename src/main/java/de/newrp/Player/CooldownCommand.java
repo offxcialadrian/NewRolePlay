@@ -43,9 +43,9 @@ public class CooldownCommand implements CommandExecutor {
                     }
                 }
                 if (Bankraub.lastTime != 0) {
-                    if ((Bankraub.lastTime - System.currentTimeMillis() + 18000000) > 0) {
+                    if ((Bankraub.lastTime - System.currentTimeMillis() + Bankraub.BANKROB_COOLDOWN) > 0) {
                         cd = true;
-                        player.sendMessage(PREFIX + "Staatsbank: §5" + TimeUnit.MILLISECONDS.toMinutes(Bankraub.lastTime - System.currentTimeMillis() + 18000000) + "min");
+                        player.sendMessage(PREFIX + "Staatsbank: §5" + TimeUnit.MILLISECONDS.toMinutes(Bankraub.lastTime - System.currentTimeMillis() + Bankraub.BANKROB_COOLDOWN) + "min");
                     }
                 }
                 if (Bankautomaten.cooldown.containsKey(orga)) {
