@@ -53,7 +53,7 @@ public class DestroyKoms implements CommandExecutor {
         }
 
         if(Mobile.getPhone(tg).isDestroyed(tg)) {
-            p.sendMessage(Messages.ERROR + "Die Koms sind bereits zerstört.");
+            p.sendMessage(Messages.ERROR + "Die Kommunikationsmittel sind bereits zerstört.");
             return true;
         }
 
