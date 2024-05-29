@@ -178,7 +178,7 @@ public class Script {
         return item;
     }
 
-    public static void updateListname(Player p) {
+    /*public static void updateListname(Player p) {
         String color = "";
         if (Beruf.hasBeruf(p)) {
             if (Beruf.getBeruf(p) == Beruf.Berufe.POLICE) color = "§9";
@@ -189,6 +189,28 @@ public class Script {
         }
         if (!SDuty.isSDuty(p)) p.setPlayerListName("§r" + p.getName());
         if (SDuty.isSDuty(p)) p.setPlayerListName(getRank(p)==DEVELOPER?"§5§lDEV §8× §c" + p.getName():"§5§lNRP §8× §c" + p.getName());
+        if (Duty.isInDuty(p)) p.setPlayerListName(color + p.getPlayerListName());
+        if (BuildMode.isInBuildMode(p)) p.setPlayerListName("§e§lB §8× §r" + p.getPlayerListName());
+        if (TicketCommand.isInTicket(p)) p.setPlayerListName("§d§lT §8× §r" + p.getPlayerListName());
+        if (Friedhof.isDead(p)) p.setPlayerListName(p.getPlayerListName() + " §8✟");
+    }*/
+
+    public static void updateListname(Player p) {
+        String color = "";
+        if (Beruf.hasBeruf(p)) {
+            if (Beruf.getBeruf(p) == Beruf.Berufe.POLICE) color = "§9";
+            if (Beruf.getBeruf(p) == Beruf.Berufe.RETTUNGSDIENST) color = "§4";
+            if (Beruf.getBeruf(p) == Beruf.Berufe.GOVERNMENT) color = "§3";
+            if (Beruf.getBeruf(p) == Beruf.Berufe.NEWS) color = "§6";
+            if (Beruf.getAbteilung(p) == Abteilung.Abteilungen.ZIVILPOLIZEI) color = "§r";
+        }
+        if (!SDuty.isSDuty(p)) p.setPlayerListName("§r" + p.getName());
+        if (SDuty.isSDuty(p) && getRank(p) == OWNER) p.setPlayerListName("§4§lCEO §8× §4" + p.getName());
+        if (SDuty.isSDuty(p) && getRank(p) == ADMINISTRATOR) p.setPlayerListName("§c§lADMIN §8× §c" + p.getName());
+        if (SDuty.isSDuty(p) && getRank(p) == DEVELOPER) p.setPlayerListName("§b§lDEV §8× §b" + p.getName());
+        if (SDuty.isSDuty(p) && getRank(p) == SUPPORTER) p.setPlayerListName("§e§lSUP §8× §e" + p.getName());
+        if (SDuty.isSDuty(p) && getRank(p) == MODERATOR) p.setPlayerListName("§9§lMOD §8× §9" + p.getName());
+        if (SDuty.isSDuty(p) && getRank(p) == FRAKTIONSMANAGER) p.setPlayerListName("§6§lFM §8× §6" + p.getName());
         if (Duty.isInDuty(p)) p.setPlayerListName(color + p.getPlayerListName());
         if (BuildMode.isInBuildMode(p)) p.setPlayerListName("§e§lB §8× §r" + p.getPlayerListName());
         if (TicketCommand.isInTicket(p)) p.setPlayerListName("§d§lT §8× §r" + p.getPlayerListName());
@@ -496,15 +518,25 @@ public class Script {
 
     public static String getName(Player p) {
         assert p != null;
-        if (Script.getRank(p) == DEVELOPER && SDuty.isSDuty(p)) return "DEV × " + p.getName();
-        if (isNRPTeam(p) && SDuty.isSDuty(p)) return "NRP × " + p.getName();
+        if(!SDuty.isSDuty(p)) return p.getName();
+        if (getRank(p) == DEVELOPER) return "DEV × " + p.getName();
+        if (getRank(p) == SUPPORTER) return "SUP × " + p.getName();
+        if (getRank(p) == MODERATOR) return "MOD × " + p.getName();
+        if (getRank(p) == FRAKTIONSMANAGER) return "FM × " + p.getName();
+        if (getRank(p) == ADMINISTRATOR) return "ADMIN × " + p.getName();
+        if (getRank(p) == OWNER) return "CEO × " + p.getName();
         return p.getName();
     }
 
     public static String getName(OfflinePlayer p) {
         if (p.getPlayer() != null && p.isOnline()) {
-            if (Script.getRank(p) == DEVELOPER && SDuty.isSDuty(p.getPlayer())) return "DEV × " + p.getName();
-            if (isNRPTeam(p) && SDuty.isSDuty(p.getPlayer())) return "NRP × " + p.getName();
+            if(!SDuty.isSDuty(p.getPlayer())) return p.getName();
+            if (getRank(p) == DEVELOPER) return "DEV × " + p.getName();
+            if (getRank(p) == SUPPORTER) return "SUP × " + p.getName();
+            if (getRank(p) == MODERATOR) return "MOD × " + p.getName();
+            if (getRank(p) == FRAKTIONSMANAGER) return "FM × " + p.getName();
+            if (getRank(p) == ADMINISTRATOR) return "ADMIN × " + p.getName();
+            if (getRank(p) == OWNER) return "CEO × " + p.getName();
         }
         return p.getName();
     }
@@ -751,14 +783,21 @@ public class Script {
             executeUpdate("UPDATE nrp_id SET name='" + p.getName() + "' WHERE uuid='" + uuid + "'");
             p.sendMessage(Messages.INFO + "Dein Name wurde aktualisiert.");
             int id = getNRPID(p);
+            String name = p.getName();
+            if (getRank(p) == OWNER) name = "CEO × " + name;
+            if (getRank(p) == ADMINISTRATOR) name = "ADMIN × " + name;
+            if (getRank(p) == DEVELOPER) name = "DEV × " + name;
+            if (getRank(p) == SUPPORTER) name = "SUP × " + name;
+            if (getRank(p) == MODERATOR) name = "MOD × " + name;
+            if (getRank(p) == FRAKTIONSMANAGER) name = "FM × " + name;
             if (Forum.getForumID(id) != 0) {
-                Forum.setForumName(Forum.getForumID(id), (isNRPTeam(p) ? "NRP × " : "") + p.getName());
+                Forum.setForumName(Forum.getForumID(id), name);
             }
             for (House h : House.getHouses(id)) {
                 h.updateSign();
             }
             Client cl = TeamSpeak.getClient(id);
-            if (cl != null) TeamSpeak.setDescription(cl.getId(), (isNRPTeam(p) ? "NRP × " : "") + p.getName());
+            if (cl != null) TeamSpeak.setDescription(cl.getId(), name);
         }
     }
 

@@ -123,9 +123,21 @@ public class TeamSpeak {
                 removeFromChannelGroup(t.getChannelID(), dbID);
             }
             String name = Script.getOfflinePlayer(id).getName();
-            boolean admin = Script.isNRPTeam(Script.getOfflinePlayer(id));
-            setDescription(c.getId(), (admin ? "NRP × " + name : name));
-            if(Script.isNRPTeam(Script.getOfflinePlayer(id))) setName(c.getId(), "NRP × " + Script.getOfflinePlayer(id).getName());
+            String prefix = "";
+            if(Script.getRank(Script.getOfflinePlayer(id)) == Rank.OWNER) {
+                prefix = "CEO × ";
+            } else if(Script.getRank(Script.getOfflinePlayer(id)) == Rank.ADMINISTRATOR) {
+                prefix = "ADMIN × ";
+            } else if(Script.getRank(Script.getOfflinePlayer(id)) == Rank.MODERATOR) {
+                prefix = "Mod × ";
+            } else if(Script.getRank(Script.getOfflinePlayer(id)) == Rank.SUPPORTER) {
+                prefix = "SUP × ";
+            } else if(Script.getRank(Script.getOfflinePlayer(id)) == Rank.DEVELOPER) {
+                prefix = "DEV × ";
+            } else if(Script.getRank(Script.getOfflinePlayer(id)) == Rank.FRAKTIONSMANAGER) {
+                prefix = "FM × ";
+            }
+            setDescription(c.getId(), prefix + name);
             addToServerGroup(TeamspeakServerGroup.VERIFIED, dbID);
             Beruf.Berufe f = Beruf.getBeruf(Script.getOfflinePlayer(id));
             if(f != null) {
@@ -142,31 +154,20 @@ public class TeamSpeak {
             switch (rank) {
                 case OWNER:
                     addToServerGroup(TeamspeakServerGroup.CEO, dbID);
-                    addToServerGroup(TeamspeakServerGroup.NRP_SERVERTEAM, dbID);
                     break;
                 case ADMINISTRATOR:
                     addToServerGroup(TeamspeakServerGroup.ADMINISTRATOR, dbID);
-                    addToServerGroup(TeamspeakServerGroup.NRP_SERVERTEAM, dbID);
                     break;
                 case MODERATOR:
                     addToServerGroup(TeamspeakServerGroup.MODERATOR, dbID);
-                    addToServerGroup(TeamspeakServerGroup.NRP_SERVERTEAM, dbID);
                     break;
                 case SUPPORTER:
                     addToServerGroup(TeamspeakServerGroup.SUPPORTER, dbID);
-                    addToServerGroup(TeamspeakServerGroup.NRP_SERVERTEAM, dbID);
                     break;
                 case DEVELOPER:
                     addToServerGroup(TeamspeakServerGroup.DEV, dbID);
                     break;
             }
-
-            if (!admin) {
-                if(Premium.hasPremium(Script.getOfflinePlayer(id))) {
-                    addToServerGroup(TeamspeakServerGroup.PREMIUM, dbID);
-                }
-            }
-
 
 
             for (Team.Teams t : Team.Teams.values()) {
