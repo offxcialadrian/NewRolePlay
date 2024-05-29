@@ -143,7 +143,7 @@ public class LabBreakIn implements CommandExecutor, Listener {
     }
 
     private static void start() {
-        cooldown = System.currentTimeMillis();
+        cooldown = System.currentTimeMillis() + TimeUnit.HOURS.toMillis(3);
         BrewingStand randomBrewingStand = randomBrewingStand();
         putIntoBrewingStand(randomBrewingStand);
         progress++;
@@ -227,11 +227,11 @@ public class LabBreakIn implements CommandExecutor, Listener {
         boolean cooldown_check = progress != 0;
         long difference = 0;
         if (!cooldown_check) {
-            difference = (System.currentTimeMillis() - cooldown);
-            cooldown_check = difference < TimeUnit.HOURS.toMillis(4);
+            difference = cooldown - System.currentTimeMillis();
+            cooldown_check = difference >= 0;
         }
         if (cooldown_check) {
-            p.sendMessage(Messages.ERROR + "Das Labor hat derzeit keine Materialien zur Verfügung. (" + TimeUnit.MILLISECONDS.toMinutes(difference) + " Minuten verbleibend)");
+            p.sendMessage(Messages.ERROR + "Das Labor hat derzeit keine Materialien zur Verfügung. (" + TimeUnit.MILLISECONDS.toMinutes(cooldown - System.currentTimeMillis()) + " Minuten verbleibend)");
             return true;
         }
         p.sendMessage(PREFIX + "Schütte nun die Tränke in den richtigen Braustand.");
@@ -299,12 +299,11 @@ public class LabBreakIn implements CommandExecutor, Listener {
         boolean cooldown_check = progress != 0;
         long difference = 0;
         if (!cooldown_check) {
-            difference = System.currentTimeMillis() - cooldown;
-            cooldown_check = difference < TimeUnit.HOURS.toMillis(4);
+            difference = cooldown - System.currentTimeMillis();
+            cooldown_check = difference >= 0;
         }
         if (cooldown_check) {
-            long timeLeft = (cooldown + TimeUnit.HOURS.toMillis(4)) - System.currentTimeMillis();
-            p.sendMessage(PREFIX + "Das Labor hat derzeit keine Materialien zur Verfügung. (" + TimeUnit.MILLISECONDS.toMinutes(timeLeft) + " Minuten verbleibend)");
+            p.sendMessage(PREFIX + "Das Labor hat derzeit keine Materialien zur Verfügung. (" + TimeUnit.MILLISECONDS.toMinutes(cooldown - System.currentTimeMillis()) + " Minuten verbleibend)");
             return;
         }
 
@@ -321,7 +320,7 @@ public class LabBreakIn implements CommandExecutor, Listener {
         }
 
         e.setCancelled(true);
-        inv.getItemInMainHand().setAmount(inv.getItemInMainHand().getAmount()-1);
+        inv.getItemInMainHand().setAmount(inv.getItemInMainHand().getAmount() - 1);
     }
 
     private boolean checkDoorBreak(Player p) {
