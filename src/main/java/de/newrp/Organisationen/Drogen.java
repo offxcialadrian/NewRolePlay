@@ -112,7 +112,7 @@ public enum Drogen {
         try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM drug_addiction WHERE nrp_id='" + Script.getNRPID(p) + "' AND heal = false")) {
             while (rs.next()) {
-                if (rs.getLong("time") + TimeUnit.DAYS.toMillis(5) > System.currentTimeMillis()) {
+                if (rs.getLong("time") + TimeUnit.HOURS.toMillis(12) > System.currentTimeMillis()) {
                     i++;
                 }
             }
