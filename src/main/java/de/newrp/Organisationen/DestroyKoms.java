@@ -62,11 +62,17 @@ public class DestroyKoms implements CommandExecutor {
             return true;
         }
 
+        if (tg.isInsideVehicle()) {
+            if (tg.getVehicle() instanceof Player) {
+                p.sendMessage(Messages.ERROR + "Die Person wird gerade gepackt.");
+                return true;
+            }
+        }
         
 
         p.sendMessage(PREFIX + "Du hast die Koms von " + tg.getName() + " zerstört.");
         tg.sendMessage(PREFIX + "Deine Koms wurden von " + p.getName() + " zerstört.");
-        Me.sendMessage(p, "zerstört die Koms von " + Script.getName(tg));
+        Me.sendMessage(p, "zerstört die Koms von " + Script.getName(tg) + ".");
         Mobile.getPhone(tg).setDestroyed(tg, true);
         Mobile.getPhone(tg).setOff(tg);
 
