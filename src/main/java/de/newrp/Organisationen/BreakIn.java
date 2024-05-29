@@ -22,10 +22,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 public class BreakIn implements Listener {
     private static final String PREFIX = "§8[§cEinbruch§8]§6 ";
@@ -39,7 +36,7 @@ public class BreakIn implements Listener {
 
     @EventHandler
     public void onInteract(PlayerInteractEvent e) {
-        Player p = (Player) e.getPlayer();
+        Player p = e.getPlayer();
         if(!p.getInventory().getItemInMainHand().equals(Script.brechstange())) return;
 
         long time = System.currentTimeMillis();
@@ -84,6 +81,16 @@ public class BreakIn implements Listener {
             Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> Beruf.Berufe.POLICE.sendMessage(this.emergencyCallService.getPrefix() + "Es wurde ein Einbruch bei Haus " + house.getID() + " gemeldet."), 10 * 20L);
         }
 
+        // Ja, der Alarm soll trotz Fehlschlag kommen
+        if (house.hasAddon(HouseAddon.SICHERHEITSTUER)) {
+            if (new Random().nextInt(4) > 0) {
+                p.sendMessage(PREFIX + "Der Einbruch ist fehlgeschlagen.");
+                TOTAL_COOLDOWN.put(p.getName(), System.currentTimeMillis());
+                ItemStack item = p.getInventory().getItemInMainHand();
+                if (item.getType() == Material.BLAZE_ROD) item.setAmount(item.getAmount() - 1);
+                return;
+            }
+        }
 
         COOLDOWNS.put(p.getName(), System.currentTimeMillis());
         HOUSES.put(p.getName(), house);
@@ -97,35 +104,39 @@ public class BreakIn implements Listener {
         new BukkitRunnable() {
             @Override
             public void run() {
-                if(p.getLocation().distance(house.getSignLocation()) > 3) {
+                if (p.getLocation().distance(house.getSignLocation()) > 3) {
                     p.sendMessage(PREFIX + "Du hast den Einbruch abgebrochen.");
+                    if (p.hasPotionEffect(PotionEffectType.SLOW)) p.removePotionEffect(PotionEffectType.SLOW);
                     progress.remove(p.getName());
                     this.cancel();
                     return;
                 }
 
-                if(!p.getInventory().getItemInMainHand().equals(brechstange)) {
+                if (!p.getInventory().getItemInMainHand().equals(brechstange)) {
                     p.sendMessage(PREFIX + "Du hast den Einbruch abgebrochen.");
+                    if (p.hasPotionEffect(PotionEffectType.SLOW)) p.removePotionEffect(PotionEffectType.SLOW);
                     progress.remove(p.getName());
                     this.cancel();
                     return;
                 }
 
-                if(Handschellen.isCuffed(p)) {
+                if (Handschellen.isCuffed(p)) {
                     p.sendMessage(PREFIX + "Du hast den Einbruch abgebrochen.");
+                    if (p.hasPotionEffect(PotionEffectType.SLOW)) p.removePotionEffect(PotionEffectType.SLOW);
                     progress.remove(p.getName());
                     this.cancel();
                     return;
                 }
 
-                if(!COOLDOWNS.containsKey(p.getName())) {
+                if (!COOLDOWNS.containsKey(p.getName())) {
                     p.sendMessage(PREFIX + "Du hast den Einbruch abgebrochen.");
+                    if (p.hasPotionEffect(PotionEffectType.SLOW)) p.removePotionEffect(PotionEffectType.SLOW);
                     progress.remove(p.getName());
                     this.cancel();
                     return;
                 }
 
-                if(progress.get(p.getName()) < 60) {
+                if (progress.get(p.getName()) < 60) {
                     progress.put(p.getName(), progress.get(p.getName()) + 1);
                     progressBar(61, p);
                     return;

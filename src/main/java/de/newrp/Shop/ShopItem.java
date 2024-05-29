@@ -18,7 +18,7 @@ import java.sql.Statement;
 
 public enum ShopItem {
 
-    BROT(0, "§fBrot", new ItemBuilder(Material.BREAD).setName("§fBrot").setAmount(8).build(), 2, 1, 20, 4, 2400, false, true, false, new ShopType[] {ShopType.SUPERMARKET, ShopType.CAFE}),
+    BROT(0, "§7Brot", new ItemBuilder(Material.BREAD).setName("§7Brot").setAmount(8).build(), 2, 1, 20, 4, 2400, false, true, false, new ShopType[] {ShopType.SUPERMARKET, ShopType.CAFE}),
     KAFFEE(1, "§rKaffee", new ItemBuilder(Material.FLOWER_POT).setName("§rKaffee").build(), 3, 1, 20, 2, 1500, false, true, false, new ShopType[] {ShopType.CAFE}),
     LOTTOSCHEIN(2, "§7Lottoschein", new ItemBuilder(Material.PAPER).setName("§7Lottoschein").build(), 1, 1, 20, 25, 7500, false, true, false, new ShopType[] {ShopType.NEWS}),
     HAUSKASSE(3, "§7Hauskasse", new ItemStack(Material.CHEST), 10, 1, 20, HouseAddon.HAUSKASSE.getPrice(), 6000, false, false, false, new ShopType[] {ShopType.HOUSEADDON}),
@@ -122,7 +122,8 @@ public enum ShopItem {
     INSURANCE(135, "§aVersicherung", Script.setName(new ItemStack(Material.PAPER, 1), "§aVersicherung"), 1, 1, 1, 1000, 5400, false, true, false, new ShopType[] {ShopType.CARDEALER}),
     LICENSE(136, "§bKennzeichen", Script.setName(new ItemStack(Material.NAME_TAG, 1), "§bKennzeichen"), 1, 1, 1, 1500, 3600, false, true, false, new ShopType[] {ShopType.CARDEALER}),
     TOOLS(137, "§7Werkzeug", Script.setName(new ItemStack(Material.SHEARS, 1), "§7Werkzeug"), 1, 1, 1, 100, 500, false, true, false, new ShopType[] {ShopType.GAS_STATION}),
-    MESSER(138, "§7Messer", Messer.getItem(), 5, 1, 1, 500, 4000, false, true, false, new ShopType[] {ShopType.GUNSHOP});
+    MESSER(138, "§7Messer", Messer.getItem(), 5, 1, 1, 500, 4000, false, true, false, new ShopType[] {ShopType.GUNSHOP}),
+    SICHERHEITSTUER(139, "§7Sicherheitstür", new ItemStack(Material.IRON_DOOR), 10, 1, 20, HouseAddon.SICHERHEITSTUER.getPrice(), 13000, false, false, false, new ShopType[] {ShopType.HOUSEADDON});
 
 
     private final int id;

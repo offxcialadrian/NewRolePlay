@@ -90,7 +90,7 @@ public class PayShop implements Listener {
                         return;
                     }
                     houseaddon.put(p.getName(), HouseAddon.HAUSKASSE);
-                    p.sendMessage(Messages.INFO + "Gehe zu deinem Haus und nutze §8/§6installaddon§r, um das Hauskassen-Addon zu installieren.");
+                    p.sendMessage(Messages.INFO + "Gehe zu deinem Haus und rechtsklicke das Hausschild, um das Hauskassen-Addon zu installieren.");
                     break;
                 case KUEHLSCHRANK:
                     if (houseaddon.containsKey(p.getName())) {
@@ -98,7 +98,7 @@ public class PayShop implements Listener {
                         return;
                     }
                     houseaddon.put(p.getName(), HouseAddon.KUEHLSCHRANK);
-                    p.sendMessage(Messages.INFO + "Gehe zu deinem Haus und nutze §8/§6installaddon§r, um das Waffenschrank-Addon zu installieren.");
+                    p.sendMessage(Messages.INFO + "Gehe zu deinem Haus und rechtsklicke das Hausschild, um das Hauskassen-Addon zu installieren.");
                     break;
                 case MIETERSLOT:
                     if (houseaddon.containsKey(p.getName())) {
@@ -106,7 +106,7 @@ public class PayShop implements Listener {
                         return;
                     }
                     houseaddon.put(p.getName(), HouseAddon.SLOT);
-                    p.sendMessage(Messages.INFO + "Gehe zu deinem Haus und nutze §8/§6installaddon§r, um das Mieterslot-Addon zu installieren.");
+                    p.sendMessage(Messages.INFO + "Gehe zu deinem Haus und rechtsklicke das Hausschild, um das Hauskassen-Addon zu installieren.");
                     break;
                 case WAFFENSCHRANK:
                     if (houseaddon.containsKey(p.getName())) {
@@ -114,7 +114,15 @@ public class PayShop implements Listener {
                         return;
                     }
                     houseaddon.put(p.getName(), HouseAddon.WAFFENSCHRANK);
-                    p.sendMessage(Messages.INFO + "Gehe zu deinem Haus und nutze §8/§6installaddon§r, um das Waffenschrank-Addon zu installieren.");
+                    p.sendMessage(Messages.INFO + "Gehe zu deinem Haus und rechtsklicke das Hausschild, um das Hauskassen-Addon zu installieren.");
+                    break;
+                case SICHERHEITSTUER:
+                    if (houseaddon.containsKey(p.getName())) {
+                        p.sendMessage(Messages.ERROR + "Installiere zuerst das " + houseaddon.get(p.getName()).getName() + "-Addon.");
+                        return;
+                    }
+                    houseaddon.put(p.getName(), HouseAddon.SICHERHEITSTUER);
+                    p.sendMessage(Messages.INFO + "Gehe zu deinem Haus und rechtsklicke das Hausschild, um das Sicherheitstür-Addon zu installieren.");
                     break;
                 case PISTOLE:
                     if (!Licenses.WAFFENSCHEIN.hasLicense(Script.getNRPID(p))) {

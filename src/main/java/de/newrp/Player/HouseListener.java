@@ -37,16 +37,14 @@ public class HouseListener implements Listener {
 
                 HouseAddon addon = PayShop.houseaddon.get(p.getName());
 
-                if (h.hasAddon(addon)) {
-                    p.sendMessage(Messages.ERROR + " Dieses Haus hat bereits dieses Addon.");
-                    return;
-                }
-
                 if(addon == HouseAddon.SLOT) {
                     h.setSlots(h.getSlots() + 1);
                     Log.NORMAL.write(p, "hat das Addon " + addon.getName() + " installiert.");
                     p.sendMessage( "§8[§6Haus§8] §6" + Messages.ARROW + " Du hast das Addon " + addon.getName() + " installiert.");
                     PayShop.houseaddon.remove(p.getName());
+                    return;
+                } else if (h.hasAddon(addon)) {
+                    p.sendMessage(Messages.ERROR + " Dieses Haus hat bereits dieses Addon.");
                     return;
                 }
 
@@ -59,7 +57,7 @@ public class HouseListener implements Listener {
             Inventory inv = Bukkit.createInventory(null, 4*9, "§6Haus " + h.getID());
             inv.setItem(13, new ItemBuilder(Material.PLAYER_HEAD).setName("§6Besitzer").setLore((h.getOwner()==0?"§8§c» §cKein Besitzer": "§8§c» §6" + Script.getOfflinePlayer(h.getOwner()).getName())).build());
             inv.setItem(21, new ItemBuilder(Material.PAPER).setName("§6geringster Marktwert").setLore("§8§c» §6" + h.getPrice() + "€").build());
-            inv.setItem(22, new ItemBuilder(Material.PAPER).setName("§6Hausaddons").setLore("§8§c» §6Hauskasse: " + (h.hasAddon(HouseAddon.HAUSKASSE)?"Ja":"Nein"), "§8§c» §6Mieterslots: " + h.getSlots(), "§8§c» §6Alarmanlage: " + (h.hasAddon(HouseAddon.ALARM)?"Ja":"Nein"), "§8§c» §6Waffenschrank: " + (h.hasAddon(HouseAddon.WAFFENSCHRANK)?"Ja":"Nein"), "§8§c» §6Kühlschrank: " + (h.hasAddon(HouseAddon.KUEHLSCHRANK)?"Ja":"Nein")).build());
+            inv.setItem(22, new ItemBuilder(Material.PAPER).setName("§6Hausaddons").setLore("§8§c» §6Hauskasse: " + (h.hasAddon(HouseAddon.HAUSKASSE)?"Ja":"Nein"), "§8§c» §6Mieterslots: " + h.getSlots(), "§8§c» §6Alarmanlage: " + (h.hasAddon(HouseAddon.ALARM)?"Ja":"Nein"), "§8§c» §6Sicherheitstür: " + (h.hasAddon(HouseAddon.SICHERHEITSTUER)?"Ja":"Nein"), "§8§c» §6Waffenschrank: " + (h.hasAddon(HouseAddon.WAFFENSCHRANK)?"Ja":"Nein"), "§8§c» §6Kühlschrank: " + (h.hasAddon(HouseAddon.KUEHLSCHRANK)?"Ja":"Nein")).build());
             if(h.getOwner() == 0) inv.setItem(23, new ItemBuilder(Material.EMERALD_BLOCK).setName("§aKaufen").setLore("§6Kaufe dieses Haus für " + h.getPrice() + "€").build());
             Script.fillInv(inv);
             p.openInventory(inv);
