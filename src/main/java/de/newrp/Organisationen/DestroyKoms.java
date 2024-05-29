@@ -68,11 +68,10 @@ public class DestroyKoms implements CommandExecutor {
                 return true;
             }
         }
-        
 
-        p.sendMessage(PREFIX + "Du hast die Koms von " + tg.getName() + " zerstört.");
-        tg.sendMessage(PREFIX + "Deine Koms wurden von " + p.getName() + " zerstört.");
-        Me.sendMessage(p, "zerstört die Koms von " + Script.getName(tg) + ".");
+        p.sendMessage(PREFIX + "Du hast die Kommunikationsmittel von " + tg.getName() + " zerstört.");
+        tg.sendMessage(PREFIX + "Deine Kommunikationsmittel wurden von " + p.getName() + " zerstört.");
+        Me.sendMessage(p, "zerstört die Kommunikationsmittel von " + Script.getName(tg) + ".");
         Mobile.getPhone(tg).setDestroyed(tg, true);
         Mobile.getPhone(tg).setOff(tg);
 
