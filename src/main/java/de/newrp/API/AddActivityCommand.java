@@ -46,7 +46,7 @@ public class AddActivityCommand implements CommandExecutor, TabCompleter {
                 float p = 0;
                 if (args.length > 2) {
                     try {
-                        p = Float.parseFloat(args[2]);
+                        p = Float.parseFloat(args[2].replaceAll(",", "."));
                     } catch (Exception e) {
                         player.sendMessage(Messages.ERROR + "Ungültiges Punkteformat.");
                         return true;
@@ -112,7 +112,7 @@ public class AddActivityCommand implements CommandExecutor, TabCompleter {
                     if (p != 0) {
                         Activity.addActivity(Script.getNRPID(target.getName()), Script.getNRPID(player), activity, p);
                     } else {
-                        player.sendMessage(Messages.ERROR + "Gib eine Punktezahl an.");
+                        player.sendMessage(Messages.ERROR + "Gib eine Punktzahl an.");
                     }
                 }
             } else {
