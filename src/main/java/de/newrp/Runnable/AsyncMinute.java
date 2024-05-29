@@ -169,7 +169,7 @@ public class AsyncMinute extends BukkitRunnable {
             }
             Script.increasePlayTime(p);
             if (Script.getRandom(1, 10) == 1) {
-                if (Krankheit.HUSTEN.isInfected(Script.getNRPID(p))) {
+                if (Krankheit.HUSTEN.isInfected(Script.getNRPID(p)) && !Friedhof.isDead(p)) {
                     if(!Spectate.isSpectating(p)) Me.sendMessage(p, "hustet.");
                     for (Player p2 : Bukkit.getOnlinePlayers()) {
                         if (p2.getLocation().distance(p.getLocation()) <= 5) {
