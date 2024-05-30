@@ -38,6 +38,11 @@ public class Buy implements CommandExecutor {
             return true;
         }
 
+        if (shop.isLocked()) {
+            player.sendMessage(Messages.ERROR + "§cDieser Shop ist aktuell gesperrt.");
+            return true;
+        }
+
         if(shop.getType() == ShopType.GUNSHOP && Fahndung.isFahnded(player)) {
             player.sendMessage(Messages.ERROR + "§cDu kannst keine Waffen kaufen, da du gesucht wirst.");
             return true;
@@ -65,7 +70,7 @@ public class Buy implements CommandExecutor {
             inv.setItem(i++, is);
         }
 
-        if(i == 0) {
+        if (i == 0) {
             player.sendMessage(Messages.ERROR + "Dieser Shop bietet derzeit nichts an.");
             return true;
         }

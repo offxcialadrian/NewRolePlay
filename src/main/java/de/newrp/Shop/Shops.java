@@ -161,6 +161,23 @@ public enum Shops {
         return 0;
     }
 
+    public boolean isLocked() {
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT locked FROM shops WHERE shopID=" + this.id)) {
+            if (rs.next()) {
+                return rs.getBoolean("locked");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            Debug.debug("SQLException -> " + e.getMessage());
+        }
+        return false;
+    }
+
+    public void setLocked(boolean locked) {
+        Script.executeAsyncUpdate("UPDATE shops SET locked=" + locked + " WHERE shopID=" + this.id);
+    }
+
     public ShopType getType() {
         return this.type;
     }

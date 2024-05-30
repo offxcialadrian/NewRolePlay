@@ -559,6 +559,7 @@ public class NewRoleplayMain extends JavaPlugin {
         getCommand("addactivity").setExecutor(new AddActivityCommand());
         getCommand("removeactivity").setExecutor(new RemoveActivityCommand());
         getCommand("resetactivity").setExecutor(new ResetActivityCommand());
+        getCommand("sperrshop").setExecutor(new SperrShop());
     }
 
     /**

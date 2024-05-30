@@ -814,3 +814,5 @@ commands:
   resetactivity:
     description: resets activity
     aliases: [ resetakti, resetaktis, resetaktivitäten ]
+  sperrshop:
+    description: locks a shop

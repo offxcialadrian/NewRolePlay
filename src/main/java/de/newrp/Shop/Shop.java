@@ -55,6 +55,10 @@ public class Shop implements CommandExecutor, Listener, TabCompleter {
             return true;
         }
 
+        if (shop.isLocked()) {
+            p.sendMessage(Messages.ERROR + "§cDein Shop ist aktuell gesperrt.");
+            return true;
+        }
 
         if (args.length == 0) {
             p.sendMessage(Messages.ERROR + "Verwendung: /shop [kasse/sell/karte/info/setprice/upgradelager/sortiment]");
