@@ -41,9 +41,9 @@ public class Drogenbank implements CommandExecutor, Listener {
     public static int getDrogenAmount(Organisation o, Drogen droge) {
         try (Statement stmt = NewRoleplayMain.getConnection().createStatement()) {
             ResultSet rs = stmt.executeQuery("SELECT amount FROM drugbank WHERE organisation = '" + o.getID() + "' AND drug = '" + droge.getID() + "'");
-            if (rs.next()) {
-                return rs.getInt("amount");
-            }
+            int a = 0;
+            while (rs.next()) a += rs.getInt("amount");
+            return a;
         } catch (SQLException e) {
             e.printStackTrace();
         }
