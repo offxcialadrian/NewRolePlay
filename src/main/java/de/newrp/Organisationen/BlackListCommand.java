@@ -348,6 +348,7 @@ public class BlackListCommand implements CommandExecutor, Listener, TabCompleter
         p.sendMessage("§8=== §6Blacklist §8===");
         p.sendMessage("§8» §6/blacklist add [Spieler] [Grund]");
         p.sendMessage("§8» §6/blacklist remove [Spieler]");
+        p.sendMessage("§8» §6/blacklist info [Spieler]");
         p.sendMessage("§8» §6/blacklist list");
     }
 
