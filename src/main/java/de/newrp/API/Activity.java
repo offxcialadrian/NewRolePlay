@@ -103,6 +103,6 @@ public class Activity {
 
 
     public static String formatTime(long time) {
-        return new SimpleDateFormat("dd.MM.yyyy HH:mm").format(new Date(time)) + " Uhr";
+        return new SimpleDateFormat("dd.MM.yyyy HH:mm").format(new Date(time));
     }
 }
