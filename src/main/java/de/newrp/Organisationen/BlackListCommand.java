@@ -18,6 +18,8 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.util.StringUtil;
 
 import java.lang.reflect.Array;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class BlackListCommand implements CommandExecutor, Listener, TabCompleter {
@@ -337,18 +339,9 @@ public class BlackListCommand implements CommandExecutor, Listener, TabCompleter
     }
 
     private static String getTime(Blacklist bl) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(bl.getTime());
-
-        int mYear = calendar.get(Calendar.YEAR);
-        int mMonth = calendar.get(Calendar.MONTH) + 1;
-        int mDay = calendar.get(Calendar.DAY_OF_MONTH);
-
-        int mHour = calendar.get(Calendar.HOUR);
-        int mMinute = calendar.get(Calendar.MINUTE);
-
-        String time = mDay + "." + mMonth + "." + mYear + " " + mHour + ":" + mMinute;
-        return time;
+        SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+        Date date = new Date(bl.getTime());
+        return format.format(date);
     }
 
     public static void sendPossabilities(Player p) {
