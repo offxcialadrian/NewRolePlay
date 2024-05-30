@@ -36,7 +36,7 @@ public class Abteilung implements CommandExecutor, TabCompleter {
         SEK(3, POLICE, "SEK", false),
         AUSBILDER(4, POLICE, "Ausbilder", false),
         PRESSE(5, POLICE, "Presse", false),
-        ABTEILUNGSLEITUNG(6, POLICE, "Abteilungsleiter", false),
+        ABTEILUNGSLEITUNG(6, POLICE, "Abteilungsleiter", true),
         POLIZEIVIZE(7, POLICE, "Polizeivizepräsident", true),
         POLIZEIPRÄSIDENT(8, POLICE, "Polizeipräsident", true),
         VOLONTAER(0, NEWS, "Volontäre", false),
@@ -49,7 +49,7 @@ public class Abteilung implements CommandExecutor, TabCompleter {
         CHIRURGIE(3, RETTUNGSDIENST, "Chirurgie", false),
         NOTFALLMEDIZIN(4, RETTUNGSDIENST, "Notfallmedizin", false),
         ALLGEMEINMEDIZIN(5, RETTUNGSDIENST, "Allgemeinmedizin", false),
-        OBERARZT(6, RETTUNGSDIENST, "Oberarzt", false),
+        OBERARZT(6, RETTUNGSDIENST, "Oberarzt", true),
         CHEFARZT(7, RETTUNGSDIENST, "Chefarzt", true),
         DIREKTOR(8, RETTUNGSDIENST, "Ärztliches-Direktorium", true),
         FEUERWEHR(9, RETTUNGSDIENST, "Feuerwehr", false);

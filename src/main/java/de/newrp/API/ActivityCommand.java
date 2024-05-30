@@ -36,7 +36,7 @@ public class ActivityCommand implements CommandExecutor {
                         return true;
                     }
                 } else if (Beruf.hasBeruf(player)) {
-                    if (Beruf.hasAbteilung(player, Abteilung.Abteilungen.ABTEILUNGSLEITUNG)) {
+                    if (Beruf.getAbteilung(player).isLeader()) {
                         try {
                             target = Script.getOfflinePlayer(args[0]);
                         } catch (Exception e) {

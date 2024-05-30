@@ -42,12 +42,11 @@ public class AbteilungsChat implements CommandExecutor {
                     return true;
                 }
 
-                if (abteilung.isLeader()) abteilung = Abteilung.Abteilungen.ABTEILUNGSLEITUNG;
                 for (UUID p : beruf.getMember()) {
                     if (Bukkit.getPlayer(p) != null) {
                         Player target = Bukkit.getPlayer(p);
                         Abteilung.Abteilungen abteilungen = Beruf.getAbteilung(target);
-                        if (abteilungen == abteilung || (abteilung == Abteilung.Abteilungen.ABTEILUNGSLEITUNG && abteilungen.isLeader())) {
+                        if (abteilungen == abteilung || (abteilung.isLeader() && abteilungen.isLeader())) {
                             Objects.requireNonNull(target).sendMessage("§" + FrakChatColor.getNameColor(beruf) + "§o" + Beruf.getAbteilung(player).getName() + " " + Script.getName(player) + "§8: §" + FrakChatColor.getTextColor(beruf) + message);
                         }
                     }
