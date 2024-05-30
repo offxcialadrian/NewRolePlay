@@ -79,6 +79,7 @@ public class Abteilung implements CommandExecutor, TabCompleter {
             return name.replace("_", " ");
         }
 
+        // Abteilungsleiter, nicht zu verwechseln mit Leader
         public boolean isLeader() {
             return leader;
         }
