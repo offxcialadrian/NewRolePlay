@@ -6,6 +6,7 @@ import de.newrp.Berufe.Beruf;
 import de.newrp.Berufe.Houseban;
 import de.newrp.Government.Wahlen;
 import de.newrp.House.AkkuCommand;
+import de.newrp.House.House;
 import de.newrp.Organisationen.Blacklist;
 import de.newrp.Organisationen.MaskHandler;
 import de.newrp.Organisationen.Organisation;
@@ -542,8 +543,11 @@ public class Utils implements Listener {
     public void onHeal(EntityRegainHealthEvent e) {
         if (!(e.getEntity() instanceof Player)) return;
         if (((Player) e.getEntity()).hasPotionEffect(PotionEffectType.REGENERATION)) return;
-        if (e.getRegainReason() == EntityRegainHealthEvent.RegainReason.EATING || e.getRegainReason() == EntityRegainHealthEvent.RegainReason.SATIATED && ((Player) e.getEntity()).getHealth() >= (((Player) e.getEntity()).getMaxHealth() * 0.75)) {
-            e.setCancelled(true);
+        if (e.getRegainReason() == EntityRegainHealthEvent.RegainReason.EATING) e.setCancelled(true);
+        if (!House.isInHouse((Player) e.getEntity())) {
+            if (e.getRegainReason() == EntityRegainHealthEvent.RegainReason.SATIATED && ((Player) e.getEntity()).getHealth() >= (((Player) e.getEntity()).getMaxHealth() * 0.75)) {
+                e.setCancelled(true);
+            }
         }
     }
 
