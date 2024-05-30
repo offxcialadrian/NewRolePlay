@@ -34,7 +34,7 @@ public class BlackListCommand implements CommandExecutor, Listener, TabCompleter
             }
 
             if (args.length == 1) {
-                return null;
+                StringUtil.copyPartialMatches(args[args.length - 1], Arrays.asList("add", "remove", "list", "info"), completions);
             }
 
             if (args.length == 2) {
@@ -120,9 +120,6 @@ public class BlackListCommand implements CommandExecutor, Listener, TabCompleter
             }
             return reasons;
         }
-
-
-
     }
 
     @Override
@@ -165,11 +162,11 @@ public class BlackListCommand implements CommandExecutor, Listener, TabCompleter
         Organisation o = Organisation.getOrganisation(p);
 
         if(!o.hasBlacklist()) {
-            p.sendMessage(Blacklist.PREFIX + "Deine Organisation hat keine Blacklist. Ihr schaltet die Blacklist mit Level 2 frei.");
+            p.sendMessage(Blacklist.PREFIX + "Deine Organisation hat keine Blacklist. Ihr schaltet die Blacklist mit Level-2 frei.");
             return true;
         }
 
-        if(args.length == 1 && args[0].equalsIgnoreCase("list")) {
+        if(args[0].equalsIgnoreCase("list")) {
             p.sendMessage("");
             List<Blacklist> blacklist = Blacklist.getBlacklist(o);
             StringBuilder sb = new StringBuilder("§8==== §eBlacklist ").append(o.getName()).append(" §7(§6").append(blacklist.size()).append("§7)§e §8====\n");
@@ -193,23 +190,46 @@ public class BlackListCommand implements CommandExecutor, Listener, TabCompleter
             return true;
         }
 
-        if(args.length == 1) {
-            sendPossabilities(p);
-            return true;
-        }
-
-        if(args.length == 2 && args[0].equalsIgnoreCase("remove")) {
+        if (args.length > 1 && args[0].equalsIgnoreCase("info")) {
             OfflinePlayer tg = Script.getOfflinePlayer(args[1]);
             if(Script.getNRPID(tg) == 0) {
                 p.sendMessage(Blacklist.PREFIX + "Der Spieler wurde nicht gefunden.");
                 return true;
             }
-            if(!Blacklist.isOnBlacklist(tg, o)) {
+
+            if (!Blacklist.isOnBlacklist(tg, o)) {
                 p.sendMessage(Blacklist.PREFIX + "Der Spieler ist nicht auf der Blacklist.");
                 return true;
             }
 
-            if(Organisation.getRank(p) < 4) {
+            List<Blacklist> blacklist = Blacklist.getBlacklist(o);
+            StringBuilder sb = new StringBuilder("§8==== §eBlacklist ").append(o.getName()).append(" §7(§6").append(blacklist.size()).append("§7)§e §8====\n");
+            for (Blacklist bl : blacklist) {
+                if (Objects.equals(bl.getUserName(), tg.getName())) {
+                    String time = getTime(bl);
+                    sb.append(" §7» §6").append(Script.getName(tg)).append(" §7|§6 ").append(bl.getReason()).append(" §7|§6 ").append(time)
+                            .append(" §7|§a ").append(bl.getKills()).append(" Kills §7|§6 ").append(bl.getPrice()).append("€");
+                    if (tg.isOnline()) {
+                        sb.append((AFK.isAFK(Objects.requireNonNull(tg.getPlayer())) ? " (AFK seit " + AFK.getAFKTime(tg.getPlayer()) + " Uhr)\n" : "\n"));
+                    }
+                }
+            }
+            p.sendMessage(sb.toString());
+            return true;
+        }
+
+        if (args.length > 1 && args[0].equalsIgnoreCase("remove")) {
+            OfflinePlayer tg = Script.getOfflinePlayer(args[1]);
+            if (Script.getNRPID(tg) == 0) {
+                p.sendMessage(Blacklist.PREFIX + "Der Spieler wurde nicht gefunden.");
+                return true;
+            }
+            if (!Blacklist.isOnBlacklist(tg, o)) {
+                p.sendMessage(Blacklist.PREFIX + "Der Spieler ist nicht auf der Blacklist.");
+                return true;
+            }
+
+            if (Organisation.getRank(p) < 4) {
                 p.sendMessage(Messages.NO_PERMISSION);
                 return true;
             }
@@ -222,13 +242,7 @@ public class BlackListCommand implements CommandExecutor, Listener, TabCompleter
             return true;
         }
 
-        if(args.length == 2) {
-            sendPossabilities(p);
-            return true;
-        }
-
-
-        if(args[0].equalsIgnoreCase("add")) {
+        if(args.length > 2 &&args[0].equalsIgnoreCase("add")) {
             Player tg = Script.getPlayer(args[1]);
             if(tg == null) {
                 p.sendMessage(Messages.PLAYER_NOT_FOUND);
@@ -318,9 +332,8 @@ public class BlackListCommand implements CommandExecutor, Listener, TabCompleter
         }
 
         sendPossabilities(p);
+        return true;
 
-
-        return false;
     }
 
     private static String getTime(Blacklist bl) {
@@ -331,7 +344,7 @@ public class BlackListCommand implements CommandExecutor, Listener, TabCompleter
         int mMonth = calendar.get(Calendar.MONTH) + 1;
         int mDay = calendar.get(Calendar.DAY_OF_MONTH);
 
-        int mHour = calendar.get(Calendar.HOUR_OF_DAY);
+        int mHour = calendar.get(Calendar.HOUR);
         int mMinute = calendar.get(Calendar.MINUTE);
 
         String time = mDay + "." + mMonth + "." + mYear + " " + mHour + ":" + mMinute;
