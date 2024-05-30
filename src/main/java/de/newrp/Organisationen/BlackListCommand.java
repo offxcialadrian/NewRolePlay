@@ -339,7 +339,7 @@ public class BlackListCommand implements CommandExecutor, Listener, TabCompleter
     }
 
     private static String getTime(Blacklist bl) {
-        SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+        SimpleDateFormat format = new SimpleDateFormat("dd.MM.yy HH:mm");
         Date date = new Date(bl.getTime());
         return format.format(date);
     }
