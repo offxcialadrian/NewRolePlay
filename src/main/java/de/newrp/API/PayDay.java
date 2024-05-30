@@ -229,12 +229,10 @@ public class PayDay extends BukkitRunnable {
                     payday -= house.getMiete(Script.getNRPID(p));
                     house.addKasse(house.getMiete(Script.getNRPID(p)));
                     int n = mieter.getNebenkosten();
-                    if (house.hasAddon(HouseAddon.SICHERHEITSTUER)) n += 20;
                     if (n > 0) {
                         p.sendMessage("§8" + Messages.ARROW + " §7Nebenkosten für Haus " + house.getID() + ": §c-" + n + "€");
                         payday -= n;
                     }
-                    continue;
                 } else {
                     house.removeMieter(Script.getNRPID(p));
                 }
@@ -243,6 +241,7 @@ public class PayDay extends BukkitRunnable {
             for (House house : House.getHouses(Script.getNRPID(p))) {
                 if (house.getOwner() != Script.getNRPID(p)) continue;
                 int grundsteuer = (int) Steuern.Steuer.GRUNDSTEUER.getPercentage();
+                if (house.hasAddon(HouseAddon.SICHERHEITSTUER)) grundsteuer += 20;
                 p.sendMessage("§8" + Messages.ARROW + " §7Grundsteuer für Haus " + house.getID() + ": §c-" + grundsteuer + "€");
                 payday -= grundsteuer;
                 Stadtkasse.addStadtkasse(grundsteuer, "Grundsteuer von " + Script.getName(p) + " erhalten", Steuern.Steuer.GRUNDSTEUER);
