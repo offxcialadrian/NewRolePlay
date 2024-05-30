@@ -7,6 +7,7 @@ import de.newrp.API.Rank;
 import de.newrp.API.Script;
 import de.newrp.Berufe.Beruf;
 import de.newrp.NewRoleplayMain;
+import de.newrp.Organisationen.Organisation;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
@@ -103,10 +104,16 @@ public class Forum {
         if (forumid == 0) return;
         setName(forumid, Script.getTeamPrefix(p));
         clearUserGroups(forumid);
+
         Beruf.Berufe f = Beruf.getBeruf(p);
         addUserToGroup(forumid, ForumGroup.ZIVILIST);
         addUserToGroup(forumid, ForumGroup.VERIFIED);
         if (f != null) addUserToGroup(forumid, f.getForumGroup(f.isLeader(p, true)));
+
+        final Organisation organisation = Organisation.getOrganisation(p);
+        if(organisation != null) {
+            addUserToGroup(forumid, organisation.getForumGroup(organisation.isLeader(id, true)));
+        }
 
         if(Script.hasRank(p, Rank.OWNER, false)) {
             addUserToGroup(forumid, ForumGroup.OWNER);
