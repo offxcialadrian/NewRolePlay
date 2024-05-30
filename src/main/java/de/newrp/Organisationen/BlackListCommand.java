@@ -208,7 +208,7 @@ public class BlackListCommand implements CommandExecutor, Listener, TabCompleter
                 if (Objects.equals(bl.getUserName(), tg.getName())) {
                     String time = getTime(bl);
                     sb.append(" §7» §6").append(Script.getName(tg)).append(" §7|§6 ").append(bl.getReason()).append(" §7|§6 ").append(time)
-                            .append(" §7|§a ").append(bl.getKills()).append(" Kills §7|§6 ").append(bl.getPrice()).append("€");
+                            .append(" §7|§6 ").append(bl.getKills()).append(" Kills §7|§6 ").append(bl.getPrice()).append("€");
                     if (tg.isOnline()) {
                         sb.append((AFK.isAFK(Objects.requireNonNull(tg.getPlayer())) ? " (AFK seit " + AFK.getAFKTime(tg.getPlayer()) + " Uhr)\n" : "\n"));
                     }
@@ -242,7 +242,7 @@ public class BlackListCommand implements CommandExecutor, Listener, TabCompleter
             return true;
         }
 
-        if(args.length > 2 &&args[0].equalsIgnoreCase("add")) {
+        if(args.length > 2 && args[0].equalsIgnoreCase("add")) {
             Player tg = Script.getPlayer(args[1]);
             if(tg == null) {
                 p.sendMessage(Messages.PLAYER_NOT_FOUND);
