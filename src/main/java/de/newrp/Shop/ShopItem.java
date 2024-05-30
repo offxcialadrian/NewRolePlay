@@ -36,7 +36,7 @@ public enum ShopItem {
     CRAPPUCHINO(47, "§rCrappuchino", new ItemBuilder(Material.FLOWER_POT).setName("§rCrappuchino").build(), 3, 2, 25, 3, 1800, true, true, false, new ShopType[] {ShopType.CAFE}),
     Zeitung(48, de.newrp.News.Zeitung.zeitung.getItemMeta().getDisplayName(), de.newrp.News.Zeitung.zeitung, 3, 2, 25, de.newrp.News.Zeitung.getBuyPrice(), 1800, true, false, false, new ShopType[] {ShopType.CAFE, ShopType.SUPERMARKET, ShopType.NEWS}),
     SCHMERZMITTEL(49, "§fSchmerzmittel", new ItemBuilder(Material.PAPER).setName("§fSchmerzmittel").setAmount(Medikamente.SCHMERZMITTEL.getNeeded()).build(), 10, 2, 25, 45, 4900, true, true, false, new ShopType[] {ShopType.PHARMACY}),
-    BASEBALLSCHLAEGER(50, "§7Baseballschläger", Baseballschlaeger.getItem(), 5, 1, 1, 750, 4500, false, true, false, new ShopType[] {ShopType.GUNSHOP}),
+    BASEBALLSCHLAEGER(50, "§7Baseballschläger", Baseballschlaeger.getItem(), 1, 1, 1, 750, 4500, false, true, false, new ShopType[] {ShopType.GUNSHOP}),
     SAMSUNG_HANDY(52, "§cSamstar", new ItemBuilder(Material.GOLD_INGOT).setName("§cSamstar").build(), 5, 1, 1, 100, 3500, false, false, false, new ShopType[] {ShopType.ELECTRONIC}),
     HUAWEI_HANDY(53, "§cHawaii P55", new ItemBuilder(Material.IRON_INGOT).setName("§cHawaii P55").build(), 5, 1, 1, 50, 600, false, false, false, new ShopType[] {ShopType.ELECTRONIC}),
     APPLE_HANDY(55, "§cyouPhone 15", new ItemBuilder(Material.NETHERITE_INGOT).setName("§cyouPhone 15").build(), 5, 1, 1, 300, 11000, false, false, false, new ShopType[] {ShopType.ELECTRONIC}),
@@ -122,7 +122,7 @@ public enum ShopItem {
     INSURANCE(135, "§aVersicherung", Script.setName(new ItemStack(Material.PAPER, 1), "§aVersicherung"), 1, 1, 1, 1000, 5400, false, true, false, new ShopType[] {ShopType.CARDEALER}),
     LICENSE(136, "§bKennzeichen", Script.setName(new ItemStack(Material.NAME_TAG, 1), "§bKennzeichen"), 1, 1, 1, 1500, 3600, false, true, false, new ShopType[] {ShopType.CARDEALER}),
     TOOLS(137, "§7Werkzeug", Script.setName(new ItemStack(Material.SHEARS, 1), "§7Werkzeug"), 1, 1, 1, 100, 500, false, true, false, new ShopType[] {ShopType.GAS_STATION}),
-    MESSER(138, "§7Messer", Messer.getItem(), 5, 1, 1, 500, 4000, false, true, false, new ShopType[] {ShopType.GUNSHOP}),
+    MESSER(138, "§7Messer", Messer.getItem(), 1, 1, 1, 500, 4000, false, true, false, new ShopType[] {ShopType.GUNSHOP}),
     SICHERHEITSTUER(139, "§7Sicherheitstür", new ItemStack(Material.IRON_DOOR), 10, 1, 20, HouseAddon.SICHERHEITSTUER.getPrice(), 13000, false, false, false, new ShopType[] {ShopType.HOUSEADDON});
 
 

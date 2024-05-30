@@ -326,7 +326,6 @@ public class NewRoleplayMain extends JavaPlugin {
         getCommand("berufskasse").setExecutor(new Berufkasse());
         getCommand("member").setExecutor(new MemberCommand());
         getCommand("addberufsdoor").setExecutor(new AddBerufsDoor());
-        getCommand("installaddon").setExecutor(new InstallAddon());
         getCommand("revive").setExecutor(new ReviveCommand());
         getCommand("friedhof").setExecutor(new FriedhofInfo());
         getCommand("debugstick").setExecutor(new GetDebugStick());

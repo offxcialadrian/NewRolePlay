@@ -200,9 +200,6 @@ commands:
     aliases: [ members, memberinfo ]
   addberufsdoor:
     description: add a door to a beruf
-  installaddon:
-    description: install an addon
-    aliases: [ installhausaddon, installhouseaddon ]
   revive:
     description: revive a player
     aliases: [ rev ]

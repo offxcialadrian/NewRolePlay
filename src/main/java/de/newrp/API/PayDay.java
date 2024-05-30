@@ -8,6 +8,7 @@ import de.newrp.Government.Arbeitslosengeld;
 import de.newrp.Government.Stadtkasse;
 import de.newrp.Government.Steuern;
 import de.newrp.House.House;
+import de.newrp.House.HouseAddon;
 import de.newrp.Organisationen.Organisation;
 import de.newrp.Player.*;
 import de.newrp.Shop.Shops;
@@ -227,9 +228,11 @@ public class PayDay extends BukkitRunnable {
                     p.sendMessage("§8" + Messages.ARROW + " §7Miete für Haus " + house.getID() + ": §c-" + house.getMiete(Script.getNRPID(p)) + "€");
                     payday -= house.getMiete(Script.getNRPID(p));
                     house.addKasse(house.getMiete(Script.getNRPID(p)));
-                    if (mieter.getNebenkosten() > 0) {
-                        p.sendMessage("§8" + Messages.ARROW + " §7Nebenkosten für Haus " + house.getID() + ": §c-" + mieter.getNebenkosten() + "€");
-                        payday -= mieter.getNebenkosten();
+                    int n = mieter.getNebenkosten();
+                    if (house.hasAddon(HouseAddon.SICHERHEITSTUER)) n += 20;
+                    if (n > 0) {
+                        p.sendMessage("§8" + Messages.ARROW + " §7Nebenkosten für Haus " + house.getID() + ": §c-" + n + "€");
+                        payday -= n;
                     }
                     continue;
                 } else {
