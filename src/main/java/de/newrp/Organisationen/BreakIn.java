@@ -81,17 +81,6 @@ public class BreakIn implements Listener {
             Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> Beruf.Berufe.POLICE.sendMessage(this.emergencyCallService.getPrefix() + "Es wurde ein Einbruch bei Haus " + house.getID() + " gemeldet."), 10 * 20L);
         }
 
-        // Ja, der Alarm soll trotz Fehlschlag kommen
-        if (house.hasAddon(HouseAddon.SICHERHEITSTUER)) {
-            if (new Random().nextInt(4) > 0) {
-                p.sendMessage(PREFIX + "Der Einbruch ist fehlgeschlagen.");
-                TOTAL_COOLDOWN.put(p.getName(), System.currentTimeMillis());
-                ItemStack item = p.getInventory().getItemInMainHand();
-                if (item.getType() == Material.BLAZE_ROD) item.setAmount(item.getAmount() - 1);
-                return;
-            }
-        }
-
         COOLDOWNS.put(p.getName(), System.currentTimeMillis());
         HOUSES.put(p.getName(), house);
         p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 90 * 20, 2));
@@ -144,6 +133,16 @@ public class BreakIn implements Listener {
 
 
                 House house = HOUSES.get(p.getName());
+                if (house.hasAddon(HouseAddon.SICHERHEITSTUER)) {
+                    if (new Random().nextInt(4) > 0) {
+                        p.sendMessage(PREFIX + "Der Einbruch ist fehlgeschlagen.");
+                        TOTAL_COOLDOWN.put(p.getName(), System.currentTimeMillis());
+                        ItemStack item = p.getInventory().getItemInMainHand();
+                        if (item.getType() == Material.BLAZE_ROD) item.setAmount(item.getAmount() - 1);
+                        return;
+                    }
+                }
+
                 int geld = (house.getKasse() / 3);
                 p.sendMessage(PREFIX + "Du hast alles. Verschwinde nun bevor die Polizei eintrifft!");
                 p.getInventory().getItemInMainHand().setAmount(p.getInventory().getItemInMainHand().getAmount() - 1);

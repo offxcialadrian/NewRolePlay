@@ -816,3 +816,6 @@ commands:
     aliases: [ resetakti, resetaktis, resetaktivitäten ]
   sperrshop:
     description: locks a shop
+  equipprice:
+    description: changes equipprices
+    aliases: [ equippreis ]
