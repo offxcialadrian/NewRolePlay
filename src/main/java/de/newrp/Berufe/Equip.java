@@ -104,6 +104,28 @@ public class Equip implements CommandExecutor, Listener {
             return cost;
         }
 
+        public int getPrice(int beruf) {
+            try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
+                 ResultSet rs = stmt.executeQuery("SELECT * FROM equip WHERE id=" + beruf + " AND equip=" + this.id)) {
+                if (rs.next()) return rs.getInt("price");
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return 0;
+        }
+
+        public void setPrice(int beruf, int price) {
+            if (getPrice(beruf) == 0) {
+                try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
+                     ResultSet rs = stmt.executeQuery("SELECT * FROM equip WHERE id=" + beruf + " AND equip=" + this.id)) {
+                    if (!rs.next()) Script.executeUpdate("INSERT INTO equip (id, equip, price) VALUES (" + beruf + ", " + this.id + ", 0)");
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            Script.executeUpdate("UPDATE equip SET price=" + price + " WHERE id=" + beruf + " AND equip=" + this.id);
+        }
+
         public Abteilung.Abteilungen[] getAbteilung() {
             return abteilung;
         }
@@ -203,17 +225,17 @@ public class Equip implements CommandExecutor, Listener {
                 return true;
             }
 
-            if (Beruf.getBeruf(p) == Beruf.Berufe.RETTUNGSDIENST && p.getLocation().distance(new Location(Script.WORLD, 267, 75, 1253)) > 5) {
+            if (beruf == Beruf.Berufe.RETTUNGSDIENST && p.getLocation().distance(new Location(Script.WORLD, 267, 75, 1253)) > 5) {
                 p.sendMessage(Messages.ERROR + "Du musst dich in der Nähe des Equip-Punktes befinden.");
                 return true;
             }
 
-            if (Beruf.getBeruf(p) == Beruf.Berufe.NEWS && p.getLocation().distance(new Location(Script.WORLD, 289, 67, 788)) > 5) {
+            if (beruf == Beruf.Berufe.NEWS && p.getLocation().distance(new Location(Script.WORLD, 289, 67, 788)) > 5) {
                 p.sendMessage(Messages.ERROR + "Du musst dich in der Nähe des Equip-Punktes befinden.");
                 return true;
             }
 
-            if (Beruf.getBeruf(p) == Beruf.Berufe.GOVERNMENT && p.getLocation().distance(new Location(Script.WORLD, 540, 88, 981)) > 10) {
+            if (beruf == Beruf.Berufe.GOVERNMENT && p.getLocation().distance(new Location(Script.WORLD, 540, 88, 981)) > 10) {
                 p.sendMessage(Messages.ERROR + "Du musst dich in der Nähe des Equip-Punktes befinden.");
                 return true;
             }
@@ -225,7 +247,7 @@ public class Equip implements CommandExecutor, Listener {
                     } else {
                         for (Abteilung.Abteilungen abteilung : stuff.getAbteilung()) {
                             if (abteilung == Beruf.getAbteilung(p)) {
-                                inv.addItem(stuff.getItem().clone());
+                                inv.addItem(Script.setNameAndLore(stuff.getItem().clone(), stuff.getItem().clone().getItemMeta().getDisplayName(), "§c" + stuff.getPrice(beruf.getID()) + "€"));
                             }
                         }
                     }
@@ -237,34 +259,34 @@ public class Equip implements CommandExecutor, Listener {
             Organisation orga = Organisation.getOrganisation(p);
             Inventory inv = Bukkit.createInventory(p, 9, "§8» §7Equip");
 
-            if (Organisation.getOrganisation(p) == Organisation.FALCONE && p.getLocation().distance(new Location(Script.WORLD, 746, 119, 854)) > 7) {
+            if (orga == Organisation.FALCONE && p.getLocation().distance(new Location(Script.WORLD, 746, 119, 854)) > 7) {
                 p.sendMessage(Messages.ERROR + "Du musst dich in der Nähe des Equip-Punktes befinden.");
                 return true;
             }
 
-            if (Organisation.getOrganisation(p) == Organisation.CORLEONE && p.getLocation().distance(new Location(Script.WORLD, 204, 104, 479)) > 7) {
+            if (orga == Organisation.CORLEONE && p.getLocation().distance(new Location(Script.WORLD, 204, 104, 479)) > 7) {
                 p.sendMessage(Messages.ERROR + "Du musst dich in der Nähe des Equip-Punktes befinden.");
                 return true;
             }
 
-            if (Organisation.getOrganisation(p) == Organisation.KARTELL && p.getLocation().distance(new Location(Script.WORLD, 238, 69, 1133)) > 7) {
+            if (orga == Organisation.KARTELL && p.getLocation().distance(new Location(Script.WORLD, 238, 69, 1133)) > 7) {
                 p.sendMessage(Messages.ERROR + "Du musst dich in der Nähe des Equip-Punktes befinden.");
                 return true;
             }
 
-            if (Organisation.getOrganisation(p) == Organisation.HITMEN && p.getLocation().distance(HologramList.EQUIP_HITMAN.getLocation()) > 7) {
+            if (orga == Organisation.HITMEN && p.getLocation().distance(HologramList.EQUIP_HITMAN.getLocation()) > 7) {
                 p.sendMessage(Messages.ERROR + "Du musst dich in der Nähe des Equip-Punktes befinden.");
                 return true;
             }
 
-            if (Organisation.getOrganisation(p) == Organisation.SINALOA && p.getLocation().distance(new Location(Script.WORLD, 667, 70, 1124)) > 7) {
+            if (orga == Organisation.SINALOA && p.getLocation().distance(new Location(Script.WORLD, 667, 70, 1124)) > 7) {
                 p.sendMessage(Messages.ERROR + "Du musst dich in der Nähe des Equip-Punktes befinden.");
                 return true;
             }
 
             for (de.newrp.Organisationen.Stuff stuff : de.newrp.Organisationen.Stuff.values()) {
                 if (orga.getLevel() >= stuff.getLevel()) {
-                    inv.addItem(stuff.getItem().clone());
+                    inv.addItem(Script.setNameAndLore(stuff.getItem().clone(), stuff.getItem().clone().getItemMeta().getDisplayName(), "§c" + stuff.getPrice(orga.getID()) + "€"));
                 }
             }
 
@@ -289,9 +311,10 @@ public class Equip implements CommandExecutor, Listener {
         if (e.getView().getTitle().equalsIgnoreCase("§8» §7Equip")) {
             e.setCancelled(true);
             if (Beruf.hasBeruf(p)) {
+                Beruf.Berufe beruf = Beruf.getBeruf(p);
                 Stuff stuff = Stuff.getStuff(ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName()));
                 if (stuff == null) return;
-                if (Beruf.getBeruf(p) != stuff.getBeruf()) {
+                if (beruf != stuff.getBeruf()) {
                     p.sendMessage(Messages.ERROR + "Du kannst dir nur Items von deinem Beruf ausrüsten.");
                     return;
                 }
@@ -307,19 +330,21 @@ public class Equip implements CommandExecutor, Listener {
                         return;
                     }
                 }
+
                 if (!stuff.getBeruf().hasKasse()) {
-                    if (Stadtkasse.getStadtkasse() < stuff.getCost()) {
+                    if (Stadtkasse.getStadtkasse() < stuff.getCost() - stuff.getPrice(beruf.getID())) {
                         p.sendMessage(Messages.ERROR + "Die Stadtkasse hat nicht genug Geld.");
                         return;
                     }
                 }
-                if (Beruf.getBeruf(p) == Beruf.Berufe.POLICE && getAvailableEquip() <= 0) {
+
+                if (beruf == Beruf.Berufe.POLICE && getAvailableEquip() <= 0) {
                     p.sendMessage(Messages.ERROR + "Es sind keine weiteren Equip-Gegenstände verfügbar.");
                     return;
                 }
 
                 if (stuff.getBeruf().hasKasse()) {
-                    if (stuff.getBeruf().getKasse() < stuff.getCost()) {
+                    if (stuff.getBeruf().getKasse() < stuff.getCost() - stuff.getPrice(beruf.getID())) {
                         p.sendMessage(Messages.ERROR + "Die Kasse hat nicht genug Geld.");
                         return;
                     }
@@ -340,22 +365,22 @@ public class Equip implements CommandExecutor, Listener {
                     }
                 }
 
-                Equiplog.addToEquipLog(p, stuff.getID());
-                if (Beruf.getBeruf(p) == Beruf.Berufe.POLICE) {
-                    Script.executeUpdate("UPDATE city SET equip = equip - 1");
-                }
-
-                if (!stuff.getBeruf().hasKasse()) {
-                    if (Stadtkasse.getStadtkasse() < stuff.getCost()) {
-                        if (stuff != Stuff.HANDSCHELLEN && stuff != Stuff.PISTOLE) {
-                            p.sendMessage(Messages.ERROR + "Die Stadtkasse hat nicht genug Geld.");
-                            p.closeInventory();
-                            return;
-                        }
-                    }
-                    Stadtkasse.removeStadtkasse(stuff.getCost(), stuff.getName() + " für " + Script.getName(p) + " (" + Beruf.getBeruf(p).getName() + ")");
+                if (Script.getMoney(p, PaymentType.BANK) < stuff.getPrice(beruf.getID())) {
+                    p.sendMessage(Messages.ERROR + "Du hast nicht genug Geld.");
+                    p.closeInventory();
+                    return;
                 } else {
-                    stuff.getBeruf().removeKasse(stuff.getCost());
+                    Script.removeMoney(p, PaymentType.BANK, stuff.getPrice(beruf.getID()));
+                }
+                if (beruf.hasKasse()) {
+                    beruf.removeKasse(stuff.getCost() - stuff.getPrice(beruf.getID()));
+                } else {
+                    Stadtkasse.removeStadtkasse(stuff.getCost() - stuff.getPrice(beruf.getID()), "Equip " + stuff.getName() + " von " + p.getName() + " für " + (stuff.getCost() - stuff.getPrice(beruf.getID())) + "€");
+                }
+                Equiplog.addToEquipLog(p, stuff.getID());
+
+                if (beruf == Beruf.Berufe.POLICE) {
+                    Script.executeUpdate("UPDATE city SET equip = equip - 1");
                 }
 
                 if (stuff == Stuff.MUNITION_MP7 || stuff == Stuff.MUNITION_PISTOLE) {
@@ -382,7 +407,7 @@ public class Equip implements CommandExecutor, Listener {
 
                     p.getInventory().addItem(Waffen.setAmmo(w.getWeapon(), magazine, total));
                     p.sendMessage(PREFIX + "Du hast dich mit " + stuff.getName() + " ausgerüstet.");
-                    Beruf.getBeruf(p).sendLeaderMessage("§8[§e" + Beruf.getBeruf(p).getName() + "§8] §e» " + Script.getName(p) + " hat sich mit " + stuff.getName() + " ausgerüstet.");
+                    beruf.sendLeaderMessage("§8[§e" + beruf.getName() + "§8] §e» " + Script.getName(p) + " hat sich mit " + stuff.getName() + " ausgerüstet.");
                     Log.LOW.write(p, "hat sich mit " + w.getName() + " ausgerüstet.");
                     Notifications.sendMessage(Notifications.NotificationType.DEBUG, "§a" + Script.getName(p) + " hat sich mit " + w.getName() + " ausgerüstet.");
                     return;
@@ -392,7 +417,7 @@ public class Equip implements CommandExecutor, Listener {
                     if (w.getName().equalsIgnoreCase(stuff.getName())) {
                         p.getInventory().addItem(Waffen.setAmmo(w.getWeapon(), w.getMagazineSize(), 400));
                         p.sendMessage(PREFIX + "Du hast dich mit einer " + w.getName() + " ausgerüstet.");
-                        Beruf.getBeruf(p).sendLeaderMessage("§8[§e" + Beruf.getBeruf(p).getName() + "§8] §e» " + Script.getName(p) + " hat sich mit einer " + w.getName() + " ausgerüstet.");
+                        beruf.sendLeaderMessage("§8[§e" + beruf.getName() + "§8] §e» " + Script.getName(p) + " hat sich mit einer " + w.getName() + " ausgerüstet.");
                         Log.LOW.write(p, "hat sich mit einer " + w.getName() + " ausgerüstet.");
                         Notifications.sendMessage(Notifications.NotificationType.DEBUG, "§a" + Script.getName(p) + " hat sich mit einer " + w.getName() + " ausgerüstet.");
                         p.closeInventory();
@@ -403,14 +428,13 @@ public class Equip implements CommandExecutor, Listener {
                 ItemStack is = stuff.getItem().clone();
                 p.getInventory().addItem(is);
                 p.sendMessage(PREFIX + "Du hast dich mit " + stuff.getName() + " ausgerüstet.");
-                Beruf.getBeruf(p).sendLeaderMessage("§8[§e" + Beruf.getBeruf(p).getName() + "§8] §e» " + Script.getName(p) + " hat sich mit " + stuff.getName() + " ausgerüstet.");
+                beruf.sendLeaderMessage("§8[§e" + beruf.getName() + "§8] §e» " + Script.getName(p) + " hat sich mit " + stuff.getName() + " ausgerüstet.");
                 Log.LOW.write(p, "hat sich mit " + stuff.getName() + " ausgerüstet.");
                 Notifications.sendMessage(Notifications.NotificationType.DEBUG, "§a" + Script.getName(p) + " hat sich mit " + stuff.getName() + " ausgerüstet.");
             } else if (Organisation.hasOrganisation(p)) {
+                Organisation orga = Organisation.getOrganisation(p);
                 de.newrp.Organisationen.Stuff stuff = de.newrp.Organisationen.Stuff.getStuff(ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName()));
                 if (stuff == null) return;
-                Organisation orga = Organisation.getOrganisation(p);
-
                 if (stuff == de.newrp.Organisationen.Stuff.SCHUTZWESTE) {
                     if (p.getInventory().contains(Material.LEATHER_CHESTPLATE)) {
                         p.sendMessage(Messages.ERROR + "Du kannst nur eine Schutzweste tragen.");
@@ -418,6 +442,20 @@ public class Equip implements CommandExecutor, Listener {
                     }
                 }
 
+                if (orga.getKasse() < stuff.getCost() - stuff.getPrice(orga.getID())) {
+                    p.sendMessage(Messages.ERROR + "Die Kasse hat nicht genug Geld.");
+                    p.closeInventory();
+                    return;
+                }
+
+                if (Script.getMoney(p, PaymentType.BANK) < stuff.getPrice(orga.getID())) {
+                    p.sendMessage(Messages.ERROR + "Du hast nicht genug Geld.");
+                    p.closeInventory();
+                    return;
+                } else {
+                    Script.removeMoney(p, PaymentType.BANK, stuff.getPrice(orga.getID()));
+                }
+                orga.removeKasse(stuff.getCost() - stuff.getPrice(orga.getID()));
                 Equiplog.addToEquipLog(p, stuff.getId());
 
                 for (Weapon w : Weapon.values()) {
@@ -428,7 +466,6 @@ public class Equip implements CommandExecutor, Listener {
                         Log.LOW.write(p, "hat sich mit einer " + w.getName() + " ausgerüstet.");
                         Notifications.sendMessage(Notifications.NotificationType.DEBUG, "§a" + Script.getName(p) + " hat sich mit einer " + w.getName() + " ausgerüstet.");
                         p.closeInventory();
-                        orga.removeKasse(stuff.getCost());
                         return;
                     }
                 }
@@ -439,7 +476,6 @@ public class Equip implements CommandExecutor, Listener {
                 orga.sendLeaderMessage("§8[§e" + orga.getName() + "§8] §e» " + Script.getName(p) + " hat sich mit " + stuff.getName() + " ausgerüstet.");
                 Log.LOW.write(p, "hat sich mit " + stuff.getName() + " ausgerüstet.");
                 Notifications.sendMessage(Notifications.NotificationType.DEBUG, "§a" + Script.getName(p) + " hat sich mit " + stuff.getName() + " ausgerüstet.");
-                orga.removeKasse(stuff.getCost());
             }
 
             p.closeInventory();
@@ -465,5 +501,4 @@ public class Equip implements CommandExecutor, Listener {
         }
         return 0;
     }
-
 }

@@ -8,6 +8,7 @@ import de.newrp.Government.Arbeitslosengeld;
 import de.newrp.Government.Stadtkasse;
 import de.newrp.Government.Steuern;
 import de.newrp.House.House;
+import de.newrp.House.HouseAddon;
 import de.newrp.Organisationen.Organisation;
 import de.newrp.Player.*;
 import de.newrp.Shop.Shops;
@@ -227,11 +228,11 @@ public class PayDay extends BukkitRunnable {
                     p.sendMessage("§8" + Messages.ARROW + " §7Miete für Haus " + house.getID() + ": §c-" + house.getMiete(Script.getNRPID(p)) + "€");
                     payday -= house.getMiete(Script.getNRPID(p));
                     house.addKasse(house.getMiete(Script.getNRPID(p)));
-                    if (mieter.getNebenkosten() > 0) {
-                        p.sendMessage("§8" + Messages.ARROW + " §7Nebenkosten für Haus " + house.getID() + ": §c-" + mieter.getNebenkosten() + "€");
-                        payday -= mieter.getNebenkosten();
+                    int n = mieter.getNebenkosten();
+                    if (n > 0) {
+                        p.sendMessage("§8" + Messages.ARROW + " §7Nebenkosten für Haus " + house.getID() + ": §c-" + n + "€");
+                        payday -= n;
                     }
-                    continue;
                 } else {
                     house.removeMieter(Script.getNRPID(p));
                 }
@@ -240,6 +241,7 @@ public class PayDay extends BukkitRunnable {
             for (House house : House.getHouses(Script.getNRPID(p))) {
                 if (house.getOwner() != Script.getNRPID(p)) continue;
                 int grundsteuer = (int) Steuern.Steuer.GRUNDSTEUER.getPercentage();
+                if (house.hasAddon(HouseAddon.SICHERHEITSTUER)) grundsteuer += 20;
                 p.sendMessage("§8" + Messages.ARROW + " §7Grundsteuer für Haus " + house.getID() + ": §c-" + grundsteuer + "€");
                 payday -= grundsteuer;
                 Stadtkasse.addStadtkasse(grundsteuer, "Grundsteuer von " + Script.getName(p) + " erhalten", Steuern.Steuer.GRUNDSTEUER);

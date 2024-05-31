@@ -327,7 +327,6 @@ public class NewRoleplayMain extends JavaPlugin {
         getCommand("berufskasse").setExecutor(new Berufkasse());
         getCommand("member").setExecutor(new MemberCommand());
         getCommand("addberufsdoor").setExecutor(new AddBerufsDoor());
-        getCommand("installaddon").setExecutor(new InstallAddon());
         getCommand("revive").setExecutor(new ReviveCommand());
         getCommand("friedhof").setExecutor(new FriedhofInfo());
         getCommand("debugstick").setExecutor(new GetDebugStick());
@@ -561,6 +560,8 @@ public class NewRoleplayMain extends JavaPlugin {
         getCommand("addactivity").setExecutor(new AddActivityCommand());
         getCommand("removeactivity").setExecutor(new RemoveActivityCommand());
         getCommand("resetactivity").setExecutor(new ResetActivityCommand());
+        getCommand("sperrshop").setExecutor(new SperrShop());
+        getCommand("equipprice").setExecutor(new EquipPriceCommand());
     }
 
     /**

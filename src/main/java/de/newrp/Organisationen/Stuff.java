@@ -4,9 +4,14 @@ import de.newrp.API.Baseballschlaeger;
 import de.newrp.API.Machete;
 import de.newrp.API.Script;
 import de.newrp.Berufe.Equip;
+import de.newrp.NewRoleplayMain;
 import de.newrp.Waffen.Weapon;
 import lombok.Getter;
 import org.bukkit.inventory.ItemStack;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 @Getter
 public enum Stuff {
@@ -50,5 +55,27 @@ public enum Stuff {
             }
         }
         return null;
+    }
+
+    public int getPrice(int org) {
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT * FROM equip WHERE id=" + -org + " AND equip=" + this.id)) {
+            if (rs.next()) return rs.getInt("price");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public void setPrice(int org, int price) {
+        if (getPrice(org) == 0) {
+            try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
+                 ResultSet rs = stmt.executeQuery("SELECT * FROM equip WHERE id=" + -org + " AND equip=" + this.id)) {
+                if (!rs.next()) Script.executeUpdate("INSERT INTO equip (id, equip, price) VALUES (" + -org + ", " + this.id + ", 0)");
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        Script.executeUpdate("UPDATE equip SET price=" + price + " WHERE id=" + -org + " AND equip=" + this.id);
     }
 }

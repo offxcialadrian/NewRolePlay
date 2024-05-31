@@ -18,7 +18,7 @@ public enum Activities {
     REVIVE("Belebung", 0.2F, Arrays.asList(4)),
     GIPS("Gips", 0.9F, Arrays.asList(4)),
     BANDAGE( "Bandage", 0.1F, Arrays.asList(4)),
-    NEWS("News", 0.6F, Arrays.asList(2)),
+    NEWS("News", 0.5F, Arrays.asList(2)),
     ROLEPLAY("Roleplay", 1.0F, Arrays.asList(0, 1, 2, 3, 4)),
     GRAFFITI("Graffiti", 0.05F, Arrays.asList(0)),
     ATM("Sprengung", 0.5F, Arrays.asList(0, 3)),
@@ -44,8 +44,10 @@ public enum Activities {
     SHOW("Show", 1.0F, Arrays.asList(2)),
     VERKAUF("Verkauf", 1.0F, Arrays.asList(1)),
     BRAND("Brand", 0.9F, Arrays.asList(4)),
-    MELDUNG("Meldung", 0.4F, Arrays.asList(1, 3)),
-    BEHANDLUNG("Behandlung", 0.7F, Arrays.asList(4));
+    MELDUNG("Meldung", 0.6F, Arrays.asList(1, 3)),
+    BEHANDLUNG("Behandlung", 0.7F, Arrays.asList(4)),
+    FLUGBLATT("Flugblatt", 0.4F, Arrays.asList(2)),
+    ZEITUNG("Zeitung", 1.5F, Arrays.asList(2));
 
     // 0 = Alle Organisationen
     // Negative ID = Orga-ID

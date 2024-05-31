@@ -24,45 +24,47 @@ public class Abteilung implements CommandExecutor, TabCompleter {
     private static final String PREFIX = "§8[§eAbteilung§8] §e» ";
 
     public enum Abteilungen {
-        GOVERNMENT_NONE(0, GOVERNMENT, "Regierungsmitglied"),
-        INNENMINISTERIUM(2, GOVERNMENT, "Innenministerium"),
-        FINANZAMT(3, GOVERNMENT, "Finanzministerium"),
-        JUSTIZMINISTERIUM(4, GOVERNMENT, "Justizministerium"),
-        VIZEKANZLER(5, GOVERNMENT, "Vizekanzler"),
-        STAATSOBERHAUPT(6, GOVERNMENT, "Bundeskanzler"),
-        STREIFENPOLIZEI(0, POLICE, "Streifenpolizist"),
-        ZIVILPOLIZEI(1, POLICE, "Zivilpolizei"),
-        KRIMINALPOLIZEI(2, POLICE, "Kriminalpolizei"),
-        SEK(3, POLICE, "SEK"),
-        AUSBILDER(4, POLICE, "Ausbilder"),
-        PRESSE(5, POLICE, "Presse"),
-        ABTEILUNGSLEITUNG(6, POLICE, "Abteilungsleiter"),
-        POLIZEIVIZE(7, POLICE, "Polizeivizepräsident"),
-        POLIZEIPRÄSIDENT(8, POLICE, "Polizeipräsident"),
-        VOLONTAER(0, NEWS, "Volontäre"),
-        JOURNALIST(1, NEWS, "Journalismus"),
-        TV(2, NEWS, "TV-Moderation"),
-        CHEFREDAKTION(3, NEWS, "Chefredaktion"),
-        MEDIZINSTUDENT(0, RETTUNGSDIENST, "Medizinstudent"),
-        ASSISTENZARZT(1, RETTUNGSDIENST, "Assistenzarzt"),
-        ORTHOPAEDIE(2, RETTUNGSDIENST, "Orthopädie"),
-        CHIRURGIE(3, RETTUNGSDIENST, "Chirurgie"),
-        NOTFALLMEDIZIN(4, RETTUNGSDIENST, "Notfallmedizin"),
-        ALLGEMEINMEDIZIN(5, RETTUNGSDIENST, "Allgemeinmedizin"),
-        OBERARZT(6, RETTUNGSDIENST, "Oberarzt"),
-        CHEFARZT(7, RETTUNGSDIENST, "Chefarzt"),
-        DIREKTOR(8, RETTUNGSDIENST, "Ärztliches-Direktorium"),
-        FEUERWEHR(9, RETTUNGSDIENST, "Feuerwehr");
+        GOVERNMENT_NONE(0, GOVERNMENT, "Regierungsmitglied", false),
+        INNENMINISTERIUM(2, GOVERNMENT, "Innenministerium", false),
+        FINANZAMT(3, GOVERNMENT, "Finanzministerium", false),
+        JUSTIZMINISTERIUM(4, GOVERNMENT, "Justizministerium", false),
+        VIZEKANZLER(5, GOVERNMENT, "Vizekanzler", true),
+        STAATSOBERHAUPT(6, GOVERNMENT, "Bundeskanzler", true),
+        STREIFENPOLIZEI(0, POLICE, "Streifenpolizist", false),
+        ZIVILPOLIZEI(1, POLICE, "Zivilpolizei", false),
+        KRIMINALPOLIZEI(2, POLICE, "Kriminalpolizei", false),
+        SEK(3, POLICE, "SEK", false),
+        AUSBILDER(4, POLICE, "Ausbilder", false),
+        PRESSE(5, POLICE, "Presse", false),
+        ABTEILUNGSLEITUNG(6, POLICE, "Abteilungsleiter", true),
+        POLIZEIVIZE(7, POLICE, "Polizeivizepräsident", true),
+        POLIZEIPRÄSIDENT(8, POLICE, "Polizeipräsident", true),
+        VOLONTAER(0, NEWS, "Volontäre", false),
+        JOURNALIST(1, NEWS, "Journalismus", false),
+        TV(2, NEWS, "TV-Moderation", false),
+        CHEFREDAKTION(3, NEWS, "Chefredaktion", true),
+        MEDIZINSTUDENT(0, RETTUNGSDIENST, "Medizinstudent", false),
+        ASSISTENZARZT(1, RETTUNGSDIENST, "Assistenzarzt", false),
+        ORTHOPAEDIE(2, RETTUNGSDIENST, "Orthopädie", false),
+        CHIRURGIE(3, RETTUNGSDIENST, "Chirurgie", false),
+        NOTFALLMEDIZIN(4, RETTUNGSDIENST, "Notfallmedizin", false),
+        ALLGEMEINMEDIZIN(5, RETTUNGSDIENST, "Allgemeinmedizin", false),
+        OBERARZT(6, RETTUNGSDIENST, "Oberarzt", true),
+        CHEFARZT(7, RETTUNGSDIENST, "Chefarzt", true),
+        DIREKTOR(8, RETTUNGSDIENST, "Ärztliches-Direktorium", true),
+        FEUERWEHR(9, RETTUNGSDIENST, "Feuerwehr", false);
 
 
         private final int id;
         private final Beruf.Berufe beruf;
         private final String name;
+        private final boolean leader;
 
-        Abteilungen(int id, Beruf.Berufe beruf, String name) {
+        Abteilungen(int id, Beruf.Berufe beruf, String name, boolean leader) {
             this.id = id;
             this.beruf = beruf;
             this.name = name;
+            this.leader = leader;
         }
 
         public int getID() {
@@ -75,6 +77,11 @@ public class Abteilung implements CommandExecutor, TabCompleter {
 
         public String getName() {
             return name.replace("_", " ");
+        }
+
+        // Abteilungsleiter, nicht zu verwechseln mit Leader
+        public boolean isLeader() {
+            return leader;
         }
 
         public String getArgName() {
