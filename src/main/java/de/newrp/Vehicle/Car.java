@@ -508,7 +508,6 @@ public class Car {
 
     public void removeStrafzettel() {
         Strafzettel.deleteStrafzettel(this.getCarID());
-        Strafzettel.saveStrafzettel(strafzettel.getCarID(), strafzettel.getReason(), strafzettel.getPrice(), strafzettel.getCopID());
     }
 
     public String getLicenseplate() {

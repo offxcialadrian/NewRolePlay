@@ -99,6 +99,7 @@ public class BreakIn implements Listener {
             public void run() {
                 if(p.getLocation().distance(house.getSignLocation()) > 3) {
                     p.sendMessage(PREFIX + "Du hast den Einbruch abgebrochen.");
+                    if (p.hasPotionEffect(PotionEffectType.SLOW)) p.removePotionEffect(PotionEffectType.SLOW);
                     progress.remove(p.getName());
                     this.cancel();
                     return;
@@ -106,6 +107,7 @@ public class BreakIn implements Listener {
 
                 if(!p.getInventory().getItemInMainHand().equals(brechstange)) {
                     p.sendMessage(PREFIX + "Du hast den Einbruch abgebrochen.");
+                    if (p.hasPotionEffect(PotionEffectType.SLOW)) p.removePotionEffect(PotionEffectType.SLOW);
                     progress.remove(p.getName());
                     this.cancel();
                     return;
@@ -113,6 +115,7 @@ public class BreakIn implements Listener {
 
                 if(Handschellen.isCuffed(p)) {
                     p.sendMessage(PREFIX + "Du hast den Einbruch abgebrochen.");
+                    if (p.hasPotionEffect(PotionEffectType.SLOW)) p.removePotionEffect(PotionEffectType.SLOW);
                     progress.remove(p.getName());
                     this.cancel();
                     return;
@@ -120,6 +123,7 @@ public class BreakIn implements Listener {
 
                 if(!COOLDOWNS.containsKey(p.getName())) {
                     p.sendMessage(PREFIX + "Du hast den Einbruch abgebrochen.");
+                    if (p.hasPotionEffect(PotionEffectType.SLOW)) p.removePotionEffect(PotionEffectType.SLOW);
                     progress.remove(p.getName());
                     this.cancel();
                     return;

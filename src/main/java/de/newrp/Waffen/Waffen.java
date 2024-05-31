@@ -134,6 +134,12 @@ public class Waffen implements Listener {
             return;
         }
 
+        if(NewRoleplayMain.event == Event.NO_DAMAGE) {
+            Script.sendActionBar(p, Messages.ERROR + "Du kannst keine Waffen benutzen, wenn der Event-Modus aktiv ist.");
+            e.setCancelled(true);
+            return;
+        }
+
         Long globalCooldown = REVIVE_COOLDOWN.get(p.getName());
         if (globalCooldown != null && globalCooldown > System.currentTimeMillis()) {
             Script.sendActionBar(p, "§7§cDu fühlst dich noch zu schwach...");

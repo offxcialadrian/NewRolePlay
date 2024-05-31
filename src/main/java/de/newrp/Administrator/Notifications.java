@@ -194,9 +194,8 @@ public class Notifications implements CommandExecutor, Listener {
         if (e.getMessage().startsWith("/nrp")) return;
         if (e.getMessage().startsWith("/spec")) return;
         if (e.getMessage().startsWith("/tc")) return;
-        // Just block sql command spy for sql to prevent leaking internal db info to sups, mods
-        if (e.getMessage().startsWith("/sql")) return;
         Log.COMMAND.write(e.getPlayer(), e.getMessage());
+        if (e.getMessage().startsWith("/sql")) return;
         if (e.getMessage().startsWith("/op") || e.getMessage().startsWith("/deop") || e.getMessage().startsWith("/gamemode") || e.getMessage().startsWith("/punish") || e.getMessage().startsWith("/nrp") || e.getMessage().startsWith("/setsupporter") ||
             e.getMessage().startsWith("/rnrp") || e.getMessage().startsWith("/tp")) {
             if (!Script.isNRPTeam(e.getPlayer()))

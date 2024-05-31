@@ -55,7 +55,7 @@ import static de.newrp.API.Rank.SUPPORTER;
 
 public class Utils implements Listener {
 
-    private static final Material[] DROP_BLACKLIST = new Material[]{Material.WOODEN_HOE, Material.LEAD, Material.ANDESITE_SLAB, Material.SHIELD, Material.LEATHER_CHESTPLATE, Material.WITHER_SKELETON_SKULL, Material.LEVER};
+    private static final Material[] DROP_BLACKLIST = new Material[]{Material.WOODEN_HOE, Material.LEAD, Material.ANDESITE_SLAB, Material.SHIELD, Material.LEATHER_CHESTPLATE, Material.WITHER_SKELETON_SKULL, Material.LEVER, Material.SHEARS};
     private static final String[] BLOCKED_COMMANDS = new String[]{
             "/minecraft", "/spi", "/protocol", "/rl", "/restart", "/bukkit", "/version", "/icanhasbukkit", "/xp",
             "/toggledownfall", "/testfor", "/recipe", "/effect", "/enchant", "/deop", "/defaultgamemode", "/ban-ip",
@@ -799,12 +799,12 @@ public class Utils implements Listener {
     public void onBlocKMinecraftCommands(PlayerCommandPreprocessEvent e) {
         for (String s : BLOCKED_COMMANDS) {
             if (e.getMessage().toLowerCase().startsWith(s)) {
-                if (!Script.hasRank(e.getPlayer(), Rank.OWNER, false)) {
+                if (!Script.hasRank(e.getPlayer(), Rank.ADMINISTRATOR, false)) {
                     e.setCancelled(true);
                     Script.sendActionBar(e.getPlayer(), Messages.ERROR + "Der Befehl wurde nicht gefunden.");
                     return;
                 } else {
-                    e.getPlayer().sendMessage(Messages.INFO + "Du konntest diesen Befehl nur ausführen, da du Geschäftsführer bist.");
+                    e.getPlayer().sendMessage(Messages.INFO + "Du konntest diesen Befehl nur ausführen, da du Administrator bist.");
                     return;
                 }
             }
@@ -813,12 +813,12 @@ public class Utils implements Listener {
             for (String cmd : e.getMessage().split(" ")) {
                 if (cmd.toLowerCase().equalsIgnoreCase(s)) {
                     Debug.debug("blocked due to " + s);
-                    if (!Script.hasRank(e.getPlayer(), Rank.OWNER, false)) {
+                    if (!Script.hasRank(e.getPlayer(), Rank.ADMINISTRATOR, false)) {
                         e.setCancelled(true);
                         Script.sendActionBar(e.getPlayer(), Messages.ERROR + "Der Befehl wurde nicht gefunden.");
                         return;
                     } else {
-                        e.getPlayer().sendMessage(Messages.INFO + "Du konntest diesen Befehl nur ausführen, da du Geschäftsführer bist.");
+                        e.getPlayer().sendMessage(Messages.INFO + "Du konntest diesen Befehl nur ausführen, da du Administrator bist.");
                         return;
                     }
                 }

@@ -201,6 +201,7 @@ public class NewRoleplayMain extends JavaPlugin {
         Bukkit.getScheduler().runTaskLater(this, CitizensAPI.getNPCRegistry()::deregisterAll, 2L);
         Bukkit.getScheduler().runTaskLater(this, Schwarzmarkt::spawnRandom, 4L);
         Zeitung.restoreZeitung();
+        LabBreakIn.repairDoors(false);
         OrgSpray.FraktionSpray.init();
 
         LabyAPI.initialize(LabyAPI.getService());
@@ -719,6 +720,7 @@ public class NewRoleplayMain extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new BizWarPlayerDeathListener(), this);
         Bukkit.getPluginManager().registerEvents(new PlaytimePlayerListener(), this);
         Bukkit.getPluginManager().registerEvents(new DrogenbankHouse(), this);
+        Bukkit.getPluginManager().registerEvents(new EventListener(), this);
     }
 
     /**

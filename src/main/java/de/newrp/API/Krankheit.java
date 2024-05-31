@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 
 public enum Krankheit {
     HUSTEN(0, "Husten", true, true, true),
@@ -90,7 +91,8 @@ public enum Krankheit {
 
     public void add(int id) {
         assert Script.getPlayer(id) != null;
-        if(SDuty.isSDuty(Script.getPlayer(id))) return;
+        if (SDuty.isSDuty(Objects.requireNonNull(Script.getPlayer(id)))) return;
+        if (Script.getLevel(Script.getPlayer(id)) < 2) return;
         Script.executeAsyncUpdate("INSERT INTO krankheit (userID, krankheitID, time) VALUES (" + id + ", " + this.getID() + ", " + System.currentTimeMillis() + ");");
     }
 
