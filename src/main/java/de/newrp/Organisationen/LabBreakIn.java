@@ -21,6 +21,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -43,11 +44,11 @@ public class LabBreakIn implements CommandExecutor, Listener {
                                                 new Location(Script.WORLD, 366, 70, 1305), new Location(Script.WORLD, 366, 70, 1304), new Location(Script.WORLD, 366, 70, 1303),
                                                 new Location(Script.WORLD, 365, 70, 1303), new Location(Script.WORLD, 364, 70, 1303)};
     private static final int NEEDED_PROGRESS = 30;
-    private static final ItemStack POTION;
+    public static final ItemStack POTION;
     public static int progress = 0;
-    static int schedulerID;
-    static Location putLocation;
-    static long lastPut;
+    public static int schedulerID;
+    public static Location putLocation;
+    public static long lastPut;
     public static String PREFIX = "§8[§fLabor§8] §f" + Messages.ARROW + " §7";
     public static final Location doorOneLocation = new Location(Script.WORLD, 375, 76, 1312);
     public static final Location doorTwoLocation = new Location(Script.WORLD, 374, 76, 1312);
@@ -156,7 +157,9 @@ public class LabBreakIn implements CommandExecutor, Listener {
     static void removePotion(Inventory inv) {
         for (ItemStack is : inv.getContents()) {
             if (is == null) continue;
-            if (is.isSimilar(POTION)) {
+            if(is.getItemMeta() == null) continue;
+            if(!is.getItemMeta().hasDisplayName()) continue;
+            if (is.getItemMeta().getDisplayName().equalsIgnoreCase(POTION.getItemMeta().getDisplayName())) {
                 is.setAmount(0);
             }
         }
@@ -374,6 +377,19 @@ public class LabBreakIn implements CommandExecutor, Listener {
             handlePut(p, brewingStand);
         } else {
             handleTake(p, brewingStand);
+        }
+    }
+
+    @EventHandler
+    public void onQuit(final PlayerQuitEvent event) {
+        final Player player = event.getPlayer();
+        if (player.getName().equalsIgnoreCase(brokeIn)) {
+            Bukkit.getScheduler().cancelTask(schedulerID);
+            progress = 0;
+            lastPut = 0;
+            schedulerID = 0;
+            putLocation = null;
+            brokeIn = null;
         }
     }
 
