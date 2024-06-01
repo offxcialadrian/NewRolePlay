@@ -59,7 +59,11 @@ public class Strassenwartung implements CommandExecutor, Listener {
             return true;
         }
 
-        cooldown.put(p.getName(), System.currentTimeMillis() + 10 * 60 * 2000L);
+        if (Premium.hasPremium(p)) {
+            cooldown.put(p.getName(), System.currentTimeMillis() + 15 * 60 * 1000L);
+        } else {
+            cooldown.put(p.getName(), System.currentTimeMillis() + 20 * 60 * 1000L);
+        }
         GFB.CURRENT.put(p.getName(), GFB.STRASSENWARTUNG);
         int count = GFB.STRASSENWARTUNG.getLevel(p) + Script.getRandom(4, 5);
         SCORE.put(p.getName(), count);

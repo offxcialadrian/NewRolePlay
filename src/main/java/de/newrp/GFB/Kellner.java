@@ -1,9 +1,6 @@
 package de.newrp.GFB;
 
-import de.newrp.API.Messages;
-import de.newrp.API.PayDay;
-import de.newrp.API.PaymentType;
-import de.newrp.API.Script;
+import de.newrp.API.*;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -130,7 +127,11 @@ public class Kellner implements CommandExecutor, Listener {
             }
         }
 
-        cooldown.put(p.getName(), System.currentTimeMillis() + 10 * 60 * 2000L);
+        if (Premium.hasPremium(p)) {
+            cooldown.put(p.getName(), System.currentTimeMillis() + 15 * 60 * 1000L);
+        } else {
+            cooldown.put(p.getName(), System.currentTimeMillis() + 20 * 60 * 1000L);
+        }
         GFB.CURRENT.put(p.getName(), GFB.KELLNER);
         int totalscore = GFB.KELLNER.getLevel(p) + Script.getRandom(8, 12);
         SCORE.put(p.getName(), totalscore);

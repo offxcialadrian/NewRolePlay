@@ -172,7 +172,11 @@ public class Kebap implements Listener, CommandExecutor {
             }
         }
 
-        cooldown.put(p.getName(), System.currentTimeMillis() + 10 * 60 * 2000L);
+        if (Premium.hasPremium(p)) {
+            cooldown.put(p.getName(), System.currentTimeMillis() + 15 * 60 * 1000L);
+        } else {
+            cooldown.put(p.getName(), System.currentTimeMillis() + 20 * 60 * 1000L);
+        }
         GFB.CURRENT.put(p.getName(), GFB.DOENERMANN);
         int count = GFB.DOENERMANN.getLevel(p) + Script.getRandom(5, 7);
         SCORE.put(p.getName(), count);

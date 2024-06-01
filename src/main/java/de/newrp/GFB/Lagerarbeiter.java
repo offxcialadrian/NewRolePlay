@@ -197,7 +197,11 @@ public class Lagerarbeiter implements CommandExecutor, Listener {
         p.sendMessage(Messages.INFO + "Du musst insgesamt " + (totalscore + 1) + " Waren verräumen.");
         SCORE.put(p.getName(), totalscore);
         TOTAL_SCORE.put(p.getName(), totalscore);
-        cooldown.put(p.getName(), System.currentTimeMillis() + 10 * 60 * 2000L);
+        if (Premium.hasPremium(p)) {
+            cooldown.put(p.getName(), System.currentTimeMillis() + 15 * 60 * 1000L);
+        } else {
+            cooldown.put(p.getName(), System.currentTimeMillis() + 20 * 60 * 1000L);
+        }
 
         return false;
     }

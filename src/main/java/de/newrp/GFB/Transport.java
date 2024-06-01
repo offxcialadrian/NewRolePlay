@@ -92,7 +92,11 @@ public class Transport implements CommandExecutor, Listener {
             return true;
         }
 
-        cooldown.put(p.getName(), System.currentTimeMillis() + 10 * 60 * 2000L);
+        if (Premium.hasPremium(p)) {
+            cooldown.put(p.getName(), System.currentTimeMillis() + 15 * 60 * 1000L);
+        } else {
+            cooldown.put(p.getName(), System.currentTimeMillis() + 20 * 60 * 1000L);
+        }
         GFB.CURRENT.put(p.getName(), GFB.TRANSPORT);
         p.sendMessage(GFB.PREFIX + "Du hast den Job §6Transport §7angenommen.");
         p.sendMessage(GFB.PREFIX + "Wähle nun ein Ziel aus.");

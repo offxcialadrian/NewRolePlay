@@ -1770,12 +1770,8 @@ public class Script {
 
 
     public static int getLevelCost(Player p) {
-        int level_cost;
-        level_cost = 692 + ((getLevel(p) * 2) * 497);
-        if (getLevel(p) % 2 == 0) {
-            level_cost += 173;
-        }
-        return level_cost;
+        int a = 20; // Hiermit Anstieg bestimmen -> GeoGebra
+        return 1000 * Math.toIntExact(Math.round(a * Math.pow(Math.E, (Math.E / 100) * getLevel(p)) - a));
     }
 
     public static void increaseLevel(Player p) {
