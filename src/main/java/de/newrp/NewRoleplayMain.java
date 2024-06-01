@@ -205,9 +205,12 @@ public class NewRoleplayMain extends JavaPlugin {
         Bukkit.getScheduler().runTaskLater(this, CitizensAPI.getNPCRegistry()::deregisterAll, 2L);
         Bukkit.getScheduler().runTaskLater(this, Schwarzmarkt::spawnRandom, 4L);
         Zeitung.restoreZeitung();
-        LabBreakIn.repairDoors(false);
+        Bukkit.getScheduler().runTaskLater(this, () -> {
+            LabBreakIn.repairDoors(false);
+            HackPoliceComputer.repairDoors();
+        }, 20L);
         OrgSpray.FraktionSpray.init();
-        Bukkit.getScheduler().runTaskLater(this, () -> House.reset(TimeUnit.DAYS.toMillis(90)), 2 * 60 * 20L);
+        Bukkit.getScheduler().runTaskLater(this, () -> House.reset(90 * 24 * 60 * 60 * 1000L), 60 * 20L);
 
         LabyAPI.initialize(LabyAPI.getService());
 

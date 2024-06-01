@@ -5,6 +5,7 @@ import de.newrp.API.Machete;
 import de.newrp.API.Script;
 import de.newrp.Berufe.Equip;
 import de.newrp.NewRoleplayMain;
+import de.newrp.Shop.ShopItem;
 import de.newrp.Waffen.Weapon;
 import lombok.Getter;
 import org.bukkit.inventory.ItemStack;
@@ -23,7 +24,8 @@ public enum Stuff {
     STRIKER(5, Weapon.MP7.getName(), Weapon.MP7.getWeapon(), 4, 700),
     BRECHI(6, "Brechstange", Script.brechstange(), 5, 250),
     SCHUTZWESTE(7, "Schutzweste", Equip.Stuff.KEVLAR.getItem(), 6, 700),
-    MACHETE(8, "Machete", Machete.getItem(), 6, 3100);
+    MACHETE(8, "Machete", Machete.getItem(), 7, 3100),
+    MUNITION_AK47(9, "7.62 x 39mm", Script.setName(ShopItem.AMMO_762MM.getItemStack(), "7.62 x 39mm"), 5, 20);
 
     private final int id;
     private final String name;
@@ -41,7 +43,7 @@ public enum Stuff {
 
     public static Stuff getStuff(String name) {
         for (Stuff stuff : values()) {
-            if (stuff.getName().equalsIgnoreCase(name)) {
+            if (stuff.getName().equalsIgnoreCase(name.replaceAll("§7", ""))) {
                 return stuff;
             }
         }

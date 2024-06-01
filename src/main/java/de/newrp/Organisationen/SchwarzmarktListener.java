@@ -46,9 +46,9 @@ public class SchwarzmarktListener implements Listener {
                 p.sendMessage(Schwarzmarkt.PREFIX + "Alles klar, dir kann ich vertrauen.");
             } else {
                 p.sendMessage(Schwarzmarkt.PREFIX + TEXT_TRUST[Script.getRandom(0, TEXT_TRUST.length - 1)]);
-                String[] text = new String[]{"Besorg mir erst " + item.getAmount() + " " + item.getName() + ". Danach können wir über das Geschäftliche reden.",
-                        "Gib mir " + item.getAmount() + " " + item.getName() + ". Dann reden wir über das Geschäftliche.",
-                        "Hör zu. Besorg mir erstmal " + item.getAmount() + " " + item.getName() + ". Danach reden wir weiter."};
+                String[] text = new String[]{"Besorg mir erst " + item.getAmount() + "x " + item.getName() + ". Danach können wir über das Geschäftliche reden.",
+                        "Gib mir " + item.getAmount() + "x " + item.getName() + ". Dann reden wir über das Geschäftliche.",
+                        "Hör zu. Besorg mir erstmal " + item.getAmount() + "x " + item.getName() + ". Danach reden wir weiter."};
                 p.sendMessage(Schwarzmarkt.PREFIX + text[Script.getRandom(0, text.length - 1)]);
             }
         }

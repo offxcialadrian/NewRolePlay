@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
+import de.newrp.API.Debug;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.Administrator.SDuty;
@@ -13,14 +14,22 @@ import de.newrp.Berufe.Duty;
 import de.newrp.Player.AFK;
 import de.newrp.Police.Fahndung;
 import de.newrp.NewRoleplayMain;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Sound;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
+import org.bukkit.block.BrewingStand;
+import org.bukkit.block.data.type.Door;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -31,11 +40,14 @@ import org.bukkit.scheduler.BukkitTask;
 public class HackPoliceComputer implements CommandExecutor, Listener {
     public static final String prefix = "§8[§9Polizeicomputer§8] §9" + Messages.ARROW + " §7";
     public static final Location LOCATION = new Location(Script.WORLD, 448, 32, 855, -88.80542f, 24.899044f);
-    private static final long TIMEOUT = TimeUnit.HOURS.toMillis(6);
+    public static final long TIMEOUT = TimeUnit.HOURS.toMillis(3);
+    private static final Location doorOne = new Location(Script.WORLD, 412, 67, 818);
+    private static final Location doorTwo = new Location(Script.WORLD, 411, 67, 818);
 
     private static Player hacker;
-    private static long lastTime;
+    public static long lastTime = 0;
     private static int schedulerID = -1;
+    private static int doors = 0;
 
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
@@ -207,5 +219,47 @@ public class HackPoliceComputer implements CommandExecutor, Listener {
 
         Beruf.Berufe.POLICE.sendMessage(prefix + "Der Hacker konnte sich nicht vollständig in das System einloggen!");
         Organisation.getOrganisation(p).sendMessage(prefix + "Der Hacker konnte sich nicht vollständig in das System einloggen!");
+    }
+
+    @EventHandler
+    public void onBreak(BlockBreakEvent event) {
+        if (event.getBlock().getType() == Material.IRON_DOOR) {
+            if (event.getPlayer().getInventory().getItemInMainHand().getType() == Material.BLAZE_ROD) {
+                if (event.getBlock().getLocation().distance(doorOne) < 1 || event.getBlock().getLocation().distance(doorTwo) < 1) {
+                    if (Organisation.hasOrganisation(event.getPlayer())) {
+                        doors += 1;
+                        if (doors >= 2) {
+                            toggleDoorState(doorOne.getBlock(), true, true);
+                            toggleDoorState(doorTwo.getBlock(), true, true);
+                            doors = 0;
+
+                            event.getPlayer().getInventory().getItemInMainHand().setAmount(event.getPlayer().getInventory().getItemInMainHand().getAmount() - 1);
+
+                            Beruf.Berufe.POLICE.sendMessage(prefix + "Es wurde ein Einbruch beim Polizeicomputer gemeldet!");
+                            Organisation.getOrganisation(event.getPlayer()).sendMessage(prefix + "Die Tür beim Polizeicomputer wurde aufgebrochen!");
+
+                            Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), HackPoliceComputer::repairDoors, TIMEOUT / 2);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public static void repairDoors() {
+        toggleDoorState(doorOne.getBlock(), false, false);
+        toggleDoorState(doorTwo.getBlock(), false, false);
+    }
+
+    public static void toggleDoorState(Block block, boolean open, boolean playSound) {
+        BlockState state = block.getState();
+        Door door = (Door) state.getBlockData();
+        door.setOpen(open);
+        state.setBlockData(door);
+        state.update();
+        Debug.debug("Closing policecomputer door");
+        if (playSound) {
+            block.getWorld().playSound(block.getLocation(), Sound.BLOCK_IRON_DOOR_OPEN, 1, 1);
+        }
     }
 }

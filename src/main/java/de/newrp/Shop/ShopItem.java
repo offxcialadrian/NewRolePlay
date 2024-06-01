@@ -36,7 +36,7 @@ public enum ShopItem {
     CRAPPUCHINO(47, "§rCrappuchino", new ItemBuilder(Material.FLOWER_POT).setName("§rCrappuchino").build(), 3, 2, 25, 3, 1800, true, true, false, new ShopType[] {ShopType.CAFE}),
     Zeitung(48, de.newrp.News.Zeitung.zeitung.getItemMeta().getDisplayName(), de.newrp.News.Zeitung.zeitung, 3, 2, 25, de.newrp.News.Zeitung.getBuyPrice(), 1800, true, false, false, new ShopType[] {ShopType.CAFE, ShopType.SUPERMARKET, ShopType.NEWS}),
     SCHMERZMITTEL(49, "§fSchmerzmittel", new ItemBuilder(Material.PAPER).setName("§fSchmerzmittel").setAmount(Medikamente.SCHMERZMITTEL.getNeeded()).build(), 10, 2, 25, 45, 4900, true, true, false, new ShopType[] {ShopType.PHARMACY}),
-    BASEBALLSCHLAEGER(50, "§7Baseballschläger", Baseballschlaeger.getItem(), 1, 1, 1, 750, 4500, false, true, false, new ShopType[] {ShopType.GUNSHOP}),
+    BASEBALLSCHLAEGER(50, "§7Baseballschläger", Baseballschlaeger.getItem(), 1, 1, 1, 220, 4500, false, true, false, new ShopType[] {ShopType.GUNSHOP}),
     SAMSUNG_HANDY(52, "§cSamstar", new ItemBuilder(Material.GOLD_INGOT).setName("§cSamstar").build(), 5, 1, 1, 100, 3500, false, false, false, new ShopType[] {ShopType.ELECTRONIC}),
     HUAWEI_HANDY(53, "§cHawaii P55", new ItemBuilder(Material.IRON_INGOT).setName("§cHawaii P55").build(), 5, 1, 1, 50, 600, false, false, false, new ShopType[] {ShopType.ELECTRONIC}),
     APPLE_HANDY(55, "§cyouPhone 15", new ItemBuilder(Material.NETHERITE_INGOT).setName("§cyouPhone 15").build(), 5, 1, 1, 300, 11000, false, false, false, new ShopType[] {ShopType.ELECTRONIC}),
@@ -75,9 +75,9 @@ public enum ShopItem {
     EXECUTIVE_SUITE(88, "§7Executive Suite", new ItemStack(Material.OAK_DOOR), 1, 1, 1, 1, 1, false, false, false, new ShopType[] {ShopType.HOTEL}),
     DELUXE_ZIMMER(89, "§7Deluxe Zimmer", new ItemStack(Material.OAK_DOOR), 1, 1, 1, 1, 1, false, false, false, new ShopType[] {ShopType.HOTEL}),
     PRAESIDENTEN_SUITE(90, "§7Präsidenten Suite", new ItemStack(Material.OAK_DOOR), 1, 1, 1, 1, 1, false, false, false, new ShopType[] {ShopType.HOTEL}),
-    EINZELFAHRASUSWEIS(91, "§6UBahn-Ticket [Einzelfahrausweis]", new ItemBuilder(Material.PAPER).setName("§6UBahn-Ticket [Einzelfahrausweis]").setLore("Verbleibende Fahrten: 1").build(), 1, 1, 1, 3, 1300, false, false, false, new ShopType[] {ShopType.NEWS}),
-    WOCHENFAHRASUSWEIS(92, "§6UBahn-Ticket [7 Fahrten]", new ItemBuilder(Material.PAPER).setName("§6UBahn-Ticket [7 Fahrten]").setLore("Verbleibende Fahrten: 7").build(), 1, 1, 1, 10, 2400, false, false, false, new ShopType[] {ShopType.NEWS}),
-    MONATSFAHRASUSWEIS(93, "§6UBahn-Ticket [30 Fahrten]", new ItemBuilder(Material.PAPER).setName("§6UBahn-Ticket [30 Fahrten]").setLore("Verbleibende Fahrten: 30").build(), 1, 1, 1, 20, 5100, false, false, false, new ShopType[] {ShopType.NEWS}),
+    EINZELFAHRAUSWEIS(91, "§6UBahn-Ticket [Einzelfahrausweis]", new ItemBuilder(Material.PAPER).setName("§6UBahn-Ticket [Einzelfahrausweis]").setLore("Verbleibende Fahrten: 1").build(), 1, 1, 1, 3, 1300, false, false, false, new ShopType[] {ShopType.NEWS}),
+    WOCHENFAHRAUSWEIS(92, "§6UBahn-Ticket [7 Fahrten]", new ItemBuilder(Material.PAPER).setName("§6UBahn-Ticket [7 Fahrten]").setLore("Verbleibende Fahrten: 7").build(), 1, 1, 1, 10, 2400, false, false, false, new ShopType[] {ShopType.NEWS}),
+    MONATSFAHRAUSWEIS(93, "§6UBahn-Ticket [30 Fahrten]", new ItemBuilder(Material.PAPER).setName("§6UBahn-Ticket [30 Fahrten]").setLore("Verbleibende Fahrten: 30").build(), 1, 1, 1, 20, 5100, false, false, false, new ShopType[] {ShopType.NEWS}),
     FALLSCHIRM(94, "§7Fallschirm", new ItemBuilder(Material.ELYTRA).setName("§7Fallschirm").build(), 5, 1, 1, 600, 4100, false, true, false, new ShopType[] {ShopType.GUNSHOP}),
     KABELBINDER(95, "§7Kabelbinder", new ItemBuilder(Material.STRING).setName("§7Kabelbinder").build(), 3, 1, 1, 100, 1900, false, true, false, new ShopType[] {ShopType.GUNSHOP, ShopType.SUPERMARKET}),
     JAGDFLINTE(96, "§7Guardian", new ItemBuilder(Material.DIAMOND_HOE).setName("§7Guardian").build(), 5, 1, 1, 5500, 10000, false, false, false, new ShopType[] {ShopType.JAGDHUETTE}),
@@ -122,7 +122,7 @@ public enum ShopItem {
     INSURANCE(135, "§aVersicherung", Script.setName(new ItemStack(Material.PAPER, 1), "§aVersicherung"), 1, 1, 1, 1000, 5400, false, true, false, new ShopType[] {ShopType.CARDEALER}),
     LICENSE(136, "§bKennzeichen", Script.setName(new ItemStack(Material.NAME_TAG, 1), "§bKennzeichen"), 1, 1, 1, 1500, 3600, false, true, false, new ShopType[] {ShopType.CARDEALER}),
     TOOLS(137, "§7Werkzeug", Script.setName(new ItemStack(Material.SHEARS, 1), "§7Werkzeug"), 1, 1, 1, 100, 500, false, true, false, new ShopType[] {ShopType.GAS_STATION}),
-    MESSER(138, "§7Messer", Messer.getItem(), 1, 1, 1, 500, 4000, false, true, false, new ShopType[] {ShopType.GUNSHOP}),
+    MESSER(138, "§7Messer", Messer.getItem(), 1, 1, 1, 150, 4000, false, true, false, new ShopType[] {ShopType.GUNSHOP}),
     SICHERHEITSTUER(139, "§7Sicherheitstür", new ItemStack(Material.IRON_DOOR), 10, 1, 20, HouseAddon.SICHERHEITSTUER.getPrice(), 13000, false, false, false, new ShopType[] {ShopType.HOUSEADDON});
 
 

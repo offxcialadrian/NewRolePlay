@@ -2,19 +2,11 @@ package de.newrp.Commands;
 
 import de.newrp.API.*;
 import de.newrp.Administrator.SDuty;
-import de.newrp.GFB.Tabakplantage;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.block.data.type.Slab;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.util.Vector;
 
 import java.util.Random;
 
@@ -40,7 +32,7 @@ public class Test implements CommandExecutor, Listener {
             }
 
             double r = 1.99 * new Random().nextFloat() - 0.995;
-            int b = (int) Math.round((50 * Math.log(Script.getLevel(p)) * ((0.25 * ((Math.log(1 + r) - Math.log(1 - r))) / 2) + 1)));
+            int b = (int) Math.round(((200 * Math.log(0.1 * (Script.getLevel(p) + 10))) * ((0.25 * ((Math.log(1 + r) - Math.log(1 - r))) / 2) + 1)));
             p.sendMessage(String.valueOf(r));
             p.sendMessage(String.valueOf(b));
 
@@ -49,15 +41,19 @@ public class Test implements CommandExecutor, Listener {
             } else {
                 id = Integer.parseInt(args[0]);
             }
+
+            if (Script.getPlayer(id) != null) {
+                PayDay.setPayDayPay(Script.getPlayer(id), 59);
+            }
         } else {
             id = Integer.parseInt(args[0]);
         }
 
         Script.executeAsyncUpdate("UPDATE payday SET time=" + 59 + " WHERE nrp_id=" + id);
+        if (args.length > 1) {
+            Script.executeAsyncUpdate("UPDATE level SET level=" + Integer.parseInt(args[1]) + " WHERE nrp_id=" + id);
+        }
 
         return false;
     }
-
-
-
 }

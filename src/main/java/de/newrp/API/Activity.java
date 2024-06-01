@@ -62,9 +62,11 @@ public class Activity {
             }
         } else {
             // Evt. Folgendes auskommentieren, falls zu nervig:
+            /* Edit: Jap, ist nervig
             if (Objects.requireNonNull(Script.getOfflinePlayer(id)).isOnline()) {
                 Objects.requireNonNull(Script.getPlayer(id)).sendMessage(PREFIX + "§7Aktivität §3§l" + name + " §8(§3" + points + "∅§8) §7erhalten.");
             }
+             */
         }
     }
 
