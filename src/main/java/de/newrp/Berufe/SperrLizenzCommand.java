@@ -1,12 +1,9 @@
 package de.newrp.Berufe;
 
-import com.comphenix.protocol.PacketType;
 import de.newrp.API.Licenses;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.Administrator.SDuty;
-import de.newrp.Organisationen.Drogen;
-import de.newrp.Player.Sperrinfo;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.*;
