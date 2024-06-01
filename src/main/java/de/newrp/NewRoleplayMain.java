@@ -563,6 +563,7 @@ public class NewRoleplayMain extends JavaPlugin {
         getCommand("sperrshop").setExecutor(new SperrShop());
         getCommand("equipprice").setExecutor(new EquipPriceCommand());
         getCommand("spind").setExecutor(new SpindCommand());
+        getCommand("sperrlizenz").setExecutor(new SperrLizenzCommand());
     }
 
     /**

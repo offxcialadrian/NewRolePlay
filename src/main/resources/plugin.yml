@@ -822,3 +822,6 @@ commands:
   spind:
     description: opens fraction locker
     aliases: [ locker ]
+  sperrlizenz:
+    description: locks a license
+    aliases: [ sperrlicense, locklicense ]
