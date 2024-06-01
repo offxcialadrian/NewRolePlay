@@ -36,7 +36,7 @@ public class EquipPriceCommand implements CommandExecutor, TabCompleter {
                     return true;
                 }
 
-                if (args.length == 1 || !Beruf.getAbteilung(player).isLeader()) {
+                if (args.length == 1 || !Beruf.isLeader(player, true)) {
                     player.sendMessage(Equip.PREFIX + "Preis für " + stuff.getName() + ": " + stuff.getPrice(Beruf.getBeruf(player).getID()) + "€");
                     return true;
                 }
@@ -59,7 +59,7 @@ public class EquipPriceCommand implements CommandExecutor, TabCompleter {
                     return true;
                 }
 
-                if (args.length == 1 || Organisation.getRank(player) < 5) {
+                if (args.length == 1 || (Organisation.getRank(player) < 5 && !Organisation.isLeader(player, true))) {
                     player.sendMessage(Equip.PREFIX + "Preis für " + stuff.getName() + ": " + stuff.getPrice(Organisation.getOrganisation(player).getID()) + "€");
                     return true;
                 }

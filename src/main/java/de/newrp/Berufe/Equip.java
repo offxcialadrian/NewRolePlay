@@ -6,6 +6,7 @@ import de.newrp.Administrator.Notifications;
 import de.newrp.Government.Stadtkasse;
 import de.newrp.NewRoleplayMain;
 import de.newrp.Organisationen.Organisation;
+import de.newrp.Organisationen.Stuff;
 import de.newrp.Police.StartTransport;
 import de.newrp.Waffen.Waffen;
 import de.newrp.Waffen.Weapon;
@@ -152,7 +153,7 @@ public class Equip implements CommandExecutor, Listener {
 
         public static Stuff getStuff(String name) {
             for (Stuff stuff : values()) {
-                if (stuff.getName().equalsIgnoreCase(name)) {
+                if (stuff.getName().equalsIgnoreCase(name.replaceAll("§7", ""))) {
                     return stuff;
                 }
             }
@@ -227,11 +228,11 @@ public class Equip implements CommandExecutor, Listener {
             for (Stuff stuff : Stuff.values()) {
                 if (stuff.getBeruf() == beruf) {
                     if (stuff.getAbteilung() == null || Beruf.isLeader(p, true)) {
-                        inv.addItem(stuff.getItem().clone());
+                        inv.addItem(Script.setNameAndLore(stuff.getItem().clone(), stuff.getItem().clone().getItemMeta().getDisplayName(), "§c" + stuff.getPrice(beruf.getID()) + "€"));
                     } else {
                         for (Abteilung.Abteilungen abteilung : stuff.getAbteilung()) {
                             if (abteilung == Beruf.getAbteilung(p)) {
-                                inv.addItem(Script.setNameAndLore(stuff.getItem().clone(), stuff.getItem().clone().getItemMeta().getDisplayName(), "§c" + stuff.getPrice(beruf.getID()) + "€"));
+                                inv.addItem(Script.setNameAndLore(stuff.getItem().clone(), "§7" + stuff.getItem().clone().getItemMeta().getDisplayName(), "§c" + stuff.getPrice(beruf.getID()) + "€"));
                             }
                         }
                     }
@@ -250,7 +251,7 @@ public class Equip implements CommandExecutor, Listener {
 
             for (de.newrp.Organisationen.Stuff stuff : de.newrp.Organisationen.Stuff.values()) {
                 if (orga.getLevel() >= stuff.getLevel()) {
-                    inv.addItem(Script.setNameAndLore(stuff.getItem().clone(), stuff.getItem().clone().getItemMeta().getDisplayName(), "§c" + stuff.getPrice(orga.getID()) + "€"));
+                    inv.addItem(Script.setNameAndLore(stuff.getItem().clone(), "§7" + stuff.getItem().clone().getItemMeta().getDisplayName(), "§c" + stuff.getPrice(orga.getID()) + "€"));
                 }
             }
 
@@ -354,27 +355,20 @@ public class Equip implements CommandExecutor, Listener {
                     } else {
                         w = Weapon.PISTOLE;
                     }
-                    p.getInventory().remove(w.getWeapon().getType());
-                    int ammunitionInWeapon = Waffen.getAmmo(w.getWeapon()) + Waffen.getAmmoTotal(w.getWeapon());
 
-                    int newAmmunitionInWeapon = ammunitionInWeapon + stuff.getItem().getAmount();
-
-                    int magazine;
-                    int total;
-                    if (newAmmunitionInWeapon > w.getMagazineSize()) {
-                        magazine = w.getMagazineSize();
-                        total = newAmmunitionInWeapon - w.getMagazineSize();
-                    } else {
-                        magazine = newAmmunitionInWeapon;
-                        total = 0;
+                    for (ItemStack item : p.getInventory()) {
+                        if (item.getType() == w.getWeapon().getType()) {
+                            int ammo = Waffen.getAmmo(item);
+                            int total = Waffen.getAmmoTotal(item);
+                            p.getInventory().remove(item);
+                            p.getInventory().addItem(Waffen.setAmmo(w.getWeapon(), ammo, total + w.getMagazineSize()));
+                            p.sendMessage(PREFIX + "Du hast dich mit " + stuff.getName() + "-Munition ausgerüstet.");
+                            beruf.sendLeaderMessage("§8[§e" + beruf.getName() + "§8] §e» " + Script.getName(p) + " hat sich mit " + stuff.getName() + "-Munition ausgerüstet.");
+                            Log.LOW.write(p, "hat sich mit " + w.getName() + "-Munition ausgerüstet.");
+                            Notifications.sendMessage(Notifications.NotificationType.DEBUG, "§a" + Script.getName(p) + " hat sich mit " + w.getName() + "-Munition ausgerüstet.");
+                            return;
+                        }
                     }
-
-                    p.getInventory().addItem(Waffen.setAmmo(w.getWeapon(), magazine, total));
-                    p.sendMessage(PREFIX + "Du hast dich mit " + stuff.getName() + "-Munition ausgerüstet.");
-                    beruf.sendLeaderMessage("§8[§e" + beruf.getName() + "§8] §e» " + Script.getName(p) + " hat sich mit " + stuff.getName() + "-Munition ausgerüstet.");
-                    Log.LOW.write(p, "hat sich mit " + w.getName() + "-Munition ausgerüstet.");
-                    Notifications.sendMessage(Notifications.NotificationType.DEBUG, "§a" + Script.getName(p) + " hat sich mit " + w.getName() + "-Munition ausgerüstet.");
-                    return;
                 }
 
                 for (Weapon w : Weapon.values()) {
@@ -421,6 +415,25 @@ public class Equip implements CommandExecutor, Listener {
                 }
                 orga.removeKasse(stuff.getCost() - stuff.getPrice(orga.getID()));
                 Equiplog.addToEquipLog(p, stuff.getId());
+
+
+                if (stuff.getItem().getType() == Material.ARROW) {
+                    Weapon w = Weapon.AK47;
+
+                    for (ItemStack item : p.getInventory()) {
+                        if (item.getType() == w.getWeapon().getType()) {
+                            int ammo = Waffen.getAmmo(item);
+                            int total = Waffen.getAmmoTotal(item);
+                            p.getInventory().remove(item);
+                            p.getInventory().addItem(Waffen.setAmmo(w.getWeapon(), ammo, total + w.getMagazineSize()));
+                            p.sendMessage(PREFIX + "Du hast dich mit " + stuff.getName() + "-Munition ausgerüstet.");
+                            orga.sendLeaderMessage("§8[§e" + orga.getName() + "§8] §e» " + Script.getName(p) + " hat sich mit " + stuff.getName() + "-Munition ausgerüstet.");
+                            Log.LOW.write(p, "hat sich mit " + w.getName() + "-Munition ausgerüstet.");
+                            Notifications.sendMessage(Notifications.NotificationType.DEBUG, "§a" + Script.getName(p) + " hat sich mit " + w.getName() + "-Munition ausgerüstet.");
+                            return;
+                        }
+                    }
+                }
 
                 for (Weapon w : Weapon.values()) {
                     if (w.getName().equalsIgnoreCase(stuff.getName())) {
