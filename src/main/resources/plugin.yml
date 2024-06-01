@@ -825,3 +825,6 @@ commands:
   sperrlizenz:
     description: locks a license
     aliases: [ sperrlicense, locklicense ]
+  umsatz:
+    description: presents biz revenue
+    aliases: [ revenue ]
