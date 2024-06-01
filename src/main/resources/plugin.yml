@@ -737,7 +737,7 @@ commands:
     aliases: [ license ]
   fahrschule:
     description: how to drive
-    aliases: [ drivingschool ]
+    aliases: [ drivingschool, führerschein ]
   leasing:
     description: lease a car
     aliases: [ garage ]

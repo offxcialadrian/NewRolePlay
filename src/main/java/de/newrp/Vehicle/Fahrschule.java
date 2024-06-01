@@ -34,6 +34,11 @@ public class Fahrschule implements CommandExecutor, Listener {
         if (sender instanceof Player) {
             Player player = (Player) sender;
 
+            if (Licenses.FUEHRERSCHEIN.isLocked(Script.getNRPID(player))) {
+                player.sendMessage(Messages.ERROR + "Dein Führerschein wurde gesperrt.");
+                return true;
+            }
+
             if (player.getLocation().distance(HologramList.FAHRSCHULE.getLocation()) > 5) {
                 player.sendMessage(Component.text(PREFIX + "Du bist nicht in der Fahrschule!"));
                 return true;

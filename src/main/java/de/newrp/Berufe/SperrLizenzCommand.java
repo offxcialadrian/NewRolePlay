@@ -68,6 +68,11 @@ public class SperrLizenzCommand implements CommandExecutor, TabCompleter {
             OfflinePlayer target = Script.getOfflinePlayer(args[0]);
             license.updateLocked(Script.getNRPID(target));
             player.sendMessage(PREFIX + "Lizenz " + license.getName() + " von " + target.getName() + (license.isLocked(Script.getNRPID(player)) ? " gesperrt" : " entsperrt") + ".");
+            if (target.isOnline()) {
+                target.getPlayer().sendMessage(PREFIX + "Deine Lizenz " + license.getName() + " wurde " + (license.isLocked(Script.getNRPID(player)) ? " gesperrt" : " entsperrt") + ".");
+            } else {
+                Script.addOfflineMessage(target, PREFIX + "Deine Lizenz " + license.getName() + " wurde " + (license.isLocked(Script.getNRPID(player)) ? " gesperrt" : " entsperrt") + ".");
+            }
         }
 
         return true;
