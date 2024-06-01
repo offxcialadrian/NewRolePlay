@@ -121,6 +121,11 @@ public class Waffenschein implements CommandExecutor {
 
         }
 
+        if (Licenses.WAFFENSCHEIN.isLocked(Script.getNRPID(p))) {
+            p.sendMessage(Messages.ERROR + "Dein Waffenschein wurde gesperrt.");
+            return true;
+        }
+
         if (Licenses.WAFFENSCHEIN.hasLicense(Script.getNRPID(p))) {
             p.sendMessage(Messages.ERROR + "Du hast bereits einen Waffenschein.");
             return true;

@@ -59,7 +59,7 @@ public class Utils implements Listener {
 
     private static final Material[] DROP_BLACKLIST = new Material[]{Material.WOODEN_HOE, Material.LEAD, Material.ANDESITE_SLAB, Material.SHIELD, Material.LEATHER_CHESTPLATE, Material.WITHER_SKELETON_SKULL, Material.LEVER, Material.SHEARS};
     private static final String[] BLOCKED_COMMANDS = new String[]{
-            "/minecraft", "/spi", "/protocol", "/rl", "/restart", "/bukkit", "/version", "/icanhasbukkit", "/xp",
+            "/minecraft", "/spigot", "/protocol", "/rl", "/restart", "/bukkit", "/version", "/icanhasbukkit", "/xp",
             "/toggledownfall", "/testfor", "/recipe", "/effect", "/enchant", "/deop", "/defaultgamemode", "/ban-ip",
             "/banlist", "/advancement", "/?", "/gamemode", "/gamerule", "/kill", "/list", "/about",
             "/ability", "/advancement", "/alwaysday", "/attribute", "/ban-ip", "/banlist", "/bossbar", "/camera", "/camerashake",

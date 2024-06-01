@@ -58,7 +58,11 @@ public class Dishwasher implements CommandExecutor, Listener {
         }
 
         GFB.CURRENT.put(p.getName(), GFB.DISHWASHER);
-        cooldown.put(p.getName(), System.currentTimeMillis() + 10 * 60 * 2000L);
+        if (Premium.hasPremium(p)) {
+            cooldown.put(p.getName(), System.currentTimeMillis() + 15 * 60 * 1000L);
+        } else {
+            cooldown.put(p.getName(), System.currentTimeMillis() + 20 * 60 * 1000L);
+        }
         p.sendMessage(PREFIX + "Du hast den Job angenommen!");
         int dish = GFB.DISHWASHER.getLevel(p) + Script.getRandom(8, 11);
         dishes.put(p.getName(), dish);

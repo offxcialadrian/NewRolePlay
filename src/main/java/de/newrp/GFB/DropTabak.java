@@ -1,9 +1,6 @@
 package de.newrp.GFB;
 
-import de.newrp.API.HologramList;
-import de.newrp.API.Messages;
-import de.newrp.API.PayDay;
-import de.newrp.API.Script;
+import de.newrp.API.*;
 import de.newrp.Shop.Shops;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -45,7 +42,6 @@ public class DropTabak implements CommandExecutor {
         Tabakplantage.driedTobacco.remove(p.getName());
         Tabakplantage.mixedTobacco.remove(p.getName());
         GFB.CURRENT.remove(p.getName());
-        Tabakplantage.cooldown.put(p.getName(), System.currentTimeMillis() + 10 * 60 * 2000L);
         return true;
     }
 }

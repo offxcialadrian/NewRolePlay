@@ -3,6 +3,7 @@ package de.newrp.House;
 import de.newrp.API.Debug;
 import de.newrp.API.Script;
 import de.newrp.NewRoleplayMain;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -524,6 +525,17 @@ public class House {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static void reset(long time) {
+        for (House house : House.HOUSES) {
+            if (house.getOwner() != 0) {
+                long last = Script.getLastDisconnect(Script.getOfflinePlayer(house.getOwner()));
+                if (System.currentTimeMillis() - last > time) {
+                    house.reset();
+                }
+            }
+        }
     }
 
     public static class Mieter {

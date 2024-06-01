@@ -129,8 +129,8 @@ public enum Shops {
     }
 
     public static Shops getShopByLocation(Location loc) {
-        for(Shops shop : Shops.values()) {
-            if(shop.getLocation().distance(loc)<5) {
+        for (Shops shop : Shops.values()) {
+            if (shop.getLocation().distance(loc) < 5) {
                 return shop;
             }
         }

@@ -115,27 +115,23 @@ public class AsyncMinute extends BukkitRunnable {
             }
         }
 
-        if (Calendar.getInstance().get(Calendar.MINUTE) % 2 == 0) {
-            int amount = 0;
-            for (Map.Entry<Integer, Ticket.Queue> ignored : queue.entrySet()) {
-                amount++;
-            }
-            if (amount > 0) {
-                for (Player nrp : Script.getNRPTeam()) {
-                    // Better than querying the player's rank
-                    if(Team.getTeam(nrp) == Team.Teams.ENTWICKLUNG) {
-                        continue;
-                    }
-
-                    Title.sendTitle(nrp, 20, 100, 20, "§8[§6Tickets§8] §6" + Messages.ARROW + " §7Es sind noch " + amount + " Tickets offen.");
-                    nrp.sendMessage("§8[§6Tickets§8] §6" + Messages.ARROW + " §7Es sind noch " + amount + " Tickets offen.");
-                    nrp.playSound(nrp.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
-                    nrp.sendMessage(Messages.INFO + "Bitte beachte, dass die Bearbeitung von Tickets eine hohe Priorität hat.");
-                    Bukkit.getScheduler().runTask(NewRoleplayMain.getInstance(), () -> {
-                        if(SDuty.isSDuty(nrp) && Script.getRank(nrp) != Rank.OWNER) nrp.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 12 * 20, 2, false, false));
-                    });
+        int amount = 0;
+        for (Map.Entry<Integer, Ticket.Queue> ignored : queue.entrySet()) {
+            amount++;
+        }
+        if (amount > 0) {
+            for (Player nrp : Script.getNRPTeam()) {
+                // Better than querying the player's rank
+                if(Team.getTeam(nrp) == Team.Teams.ENTWICKLUNG) {
+                    continue;
                 }
+
+                Title.sendTitle(nrp, 20, 100, 20, "§8[§6Tickets§8] §6" + Messages.ARROW + " §7Es sind noch " + amount + " Tickets offen.");
+                nrp.sendMessage("§8[§6Tickets§8] §6" + Messages.ARROW + " §7Es sind noch " + amount + " Tickets offen.");
+                nrp.playSound(nrp.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
+                nrp.sendMessage(Messages.INFO + "Bitte beachte, dass die Bearbeitung von Tickets eine hohe Priorität hat.");
             }
+        }
             /*for(Entity e : Script.WORLD.getEntities()) {
                 if(e instanceof Player) continue;
                 if(e instanceof Item && ((Item) e).getItemStack().getType() == Material.PLAYER_HEAD) continue;
@@ -146,7 +142,6 @@ public class AsyncMinute extends BukkitRunnable {
                 if(e.getEntityId() == CitizensAPI.getNPCRegistry().getById(Schwarzmarkt.SCHWARZMARKT_ID).getEntity().getEntityId()) continue;
                 e.remove();
             }*/
-        }
 
         if (Calendar.getInstance().get(Calendar.MINUTE) % 15 == 0) {
             for (Player p : Bukkit.getOnlinePlayers()) {

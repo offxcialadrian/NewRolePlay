@@ -368,6 +368,7 @@ public class PayShop implements Listener {
             Stadtkasse.removeStadtkasse(si.getBuyPrice(), "Einkauf von " + si.getName() + " (Shop: " + s.getPublicName() + ")");
             Log.NORMAL.write(p, "hat " + si.getName() + " für " + price + "€ gekauft.");
         }
+        UmsatzCommand.addBuy(s.getID(), Script.getNRPID(p), si.getID(), (Buy.amount.getOrDefault(p.getName(), 1)), price, shopMoney, System.currentTimeMillis());
         BuyClick.sendMessage(p, "Vielen Dank für Ihren Einkauf!");
         Stadtkasse.addStadtkasse((int) Script.getPercent(mwst, price - si.getBuyPrice() * buyAmount), "Mehrwertsteuer aus dem Verkauf von " + si.getName() + " (Shop: " + s.getPublicName() + ")", Steuern.Steuer.MEHRWERTSTEUER);
 

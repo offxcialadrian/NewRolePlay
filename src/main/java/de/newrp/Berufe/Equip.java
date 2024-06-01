@@ -4,14 +4,13 @@ import de.newrp.API.*;
 import de.newrp.Administrator.BuildMode;
 import de.newrp.Administrator.Notifications;
 import de.newrp.Government.Stadtkasse;
+import de.newrp.NewRoleplayMain;
 import de.newrp.Organisationen.Organisation;
 import de.newrp.Police.StartTransport;
 import de.newrp.Waffen.Waffen;
 import de.newrp.Waffen.Weapon;
-import de.newrp.NewRoleplayMain;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -215,27 +214,12 @@ public class Equip implements CommandExecutor, Listener {
                 return true;
             }
 
-            if (!Duty.isInDuty(p) && beruf.hasDuty()) {
+            if (beruf.hasDuty() && !Duty.isInDuty(p)) {
                 p.sendMessage(Messages.ERROR + "Du musst im Dienst sein.");
                 return true;
             }
 
-            if (beruf == Beruf.Berufe.POLICE && p.getLocation().distance(new Location(Script.WORLD, 405, 71, 824)) > 10) {
-                p.sendMessage(Messages.ERROR + "Du musst dich in der Polizeistation befinden.");
-                return true;
-            }
-
-            if (beruf == Beruf.Berufe.RETTUNGSDIENST && p.getLocation().distance(new Location(Script.WORLD, 267, 75, 1253)) > 5) {
-                p.sendMessage(Messages.ERROR + "Du musst dich in der Nähe des Equip-Punktes befinden.");
-                return true;
-            }
-
-            if (beruf == Beruf.Berufe.NEWS && p.getLocation().distance(new Location(Script.WORLD, 289, 67, 788)) > 5) {
-                p.sendMessage(Messages.ERROR + "Du musst dich in der Nähe des Equip-Punktes befinden.");
-                return true;
-            }
-
-            if (beruf == Beruf.Berufe.GOVERNMENT && p.getLocation().distance(new Location(Script.WORLD, 540, 88, 981)) > 10) {
+            if (p.getLocation().distance(beruf.getEquipLoc()) > 7) {
                 p.sendMessage(Messages.ERROR + "Du musst dich in der Nähe des Equip-Punktes befinden.");
                 return true;
             }
@@ -259,27 +243,7 @@ public class Equip implements CommandExecutor, Listener {
             Organisation orga = Organisation.getOrganisation(p);
             Inventory inv = Bukkit.createInventory(p, 9, "§8» §7Equip");
 
-            if (orga == Organisation.FALCONE && p.getLocation().distance(new Location(Script.WORLD, 746, 119, 854)) > 7) {
-                p.sendMessage(Messages.ERROR + "Du musst dich in der Nähe des Equip-Punktes befinden.");
-                return true;
-            }
-
-            if (orga == Organisation.CORLEONE && p.getLocation().distance(new Location(Script.WORLD, 204, 104, 479)) > 7) {
-                p.sendMessage(Messages.ERROR + "Du musst dich in der Nähe des Equip-Punktes befinden.");
-                return true;
-            }
-
-            if (orga == Organisation.KARTELL && p.getLocation().distance(new Location(Script.WORLD, 238, 69, 1133)) > 7) {
-                p.sendMessage(Messages.ERROR + "Du musst dich in der Nähe des Equip-Punktes befinden.");
-                return true;
-            }
-
-            if (orga == Organisation.HITMEN && p.getLocation().distance(HologramList.EQUIP_HITMAN.getLocation()) > 7) {
-                p.sendMessage(Messages.ERROR + "Du musst dich in der Nähe des Equip-Punktes befinden.");
-                return true;
-            }
-
-            if (orga == Organisation.SINALOA && p.getLocation().distance(new Location(Script.WORLD, 667, 70, 1124)) > 7) {
+            if (p.getLocation().distance(orga.getEquipLoc()) > 7) {
                 p.sendMessage(Messages.ERROR + "Du musst dich in der Nähe des Equip-Punktes befinden.");
                 return true;
             }
@@ -406,10 +370,10 @@ public class Equip implements CommandExecutor, Listener {
                     }
 
                     p.getInventory().addItem(Waffen.setAmmo(w.getWeapon(), magazine, total));
-                    p.sendMessage(PREFIX + "Du hast dich mit " + stuff.getName() + " ausgerüstet.");
-                    beruf.sendLeaderMessage("§8[§e" + beruf.getName() + "§8] §e» " + Script.getName(p) + " hat sich mit " + stuff.getName() + " ausgerüstet.");
-                    Log.LOW.write(p, "hat sich mit " + w.getName() + " ausgerüstet.");
-                    Notifications.sendMessage(Notifications.NotificationType.DEBUG, "§a" + Script.getName(p) + " hat sich mit " + w.getName() + " ausgerüstet.");
+                    p.sendMessage(PREFIX + "Du hast dich mit " + stuff.getName() + "-Munition ausgerüstet.");
+                    beruf.sendLeaderMessage("§8[§e" + beruf.getName() + "§8] §e» " + Script.getName(p) + " hat sich mit " + stuff.getName() + "-Munition ausgerüstet.");
+                    Log.LOW.write(p, "hat sich mit " + w.getName() + "-Munition ausgerüstet.");
+                    Notifications.sendMessage(Notifications.NotificationType.DEBUG, "§a" + Script.getName(p) + " hat sich mit " + w.getName() + "-Munition ausgerüstet.");
                     return;
                 }
 

@@ -8,6 +8,9 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.sql.Time;
+import java.util.concurrent.TimeUnit;
+
 public class SetRank implements CommandExecutor {
 
     public static String PREFIX = "§8[§eSetRank§8] §e» §7";
@@ -68,6 +71,11 @@ public class SetRank implements CommandExecutor {
 
         if(Organisation.getRank(tg) == rank) {
             p.sendMessage(PREFIX + "Der Spieler hat bereits den Rang " + rank + ".");
+            return true;
+        }
+
+        if (System.currentTimeMillis() - Organisation.getInvite(tg) < TimeUnit.DAYS.toMillis(7 * rank)) {
+            p.sendMessage(PREFIX + "Der Spieler kann erst in " + TimeUnit.MILLISECONDS.toDays(TimeUnit.DAYS.toMillis(7 * rank) - (System.currentTimeMillis() - Organisation.getInvite(tg))) + " Tagen Rang-" + rank + " werden.");
             return true;
         }
 

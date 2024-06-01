@@ -737,7 +737,7 @@ commands:
     aliases: [ license ]
   fahrschule:
     description: how to drive
-    aliases: [ drivingschool ]
+    aliases: [ drivingschool, führerschein ]
   leasing:
     description: lease a car
     aliases: [ garage ]
@@ -819,3 +819,12 @@ commands:
   equipprice:
     description: changes equipprices
     aliases: [ equippreis ]
+  spind:
+    description: opens fraction locker
+    aliases: [ locker ]
+  sperrlizenz:
+    description: locks a license
+    aliases: [ sperrlicense, locklicense ]
+  umsatz:
+    description: presents biz revenue
+    aliases: [ revenue ]

@@ -7,6 +7,7 @@ import de.newrp.Government.Stadtkasse;
 import de.newrp.NewRoleplayMain;
 import de.newrp.Player.AFK;
 import de.newrp.dependencies.DependencyContainer;
+import de.newrp.features.group.data.OnlineGroupMember;
 import de.newrp.features.takemoney.ITakeMoneyService;
 import net.kyori.adventure.text.TextComponent;
 import org.bukkit.Bukkit;
@@ -36,7 +37,7 @@ public class BreakinCommand implements CommandExecutor {
 
             assert player != null;
             if (Organisation.hasOrganisation(player)) {
-                if (Organisation.getRank(player) >= 2) {
+                if (Organisation.getRank(player) >= 2 || Organisation.isLeader(player, true)) {
                     Organisation orga = Organisation.getOrganisation(player);
                     if (RobLocation.getLocations(orga).isEmpty()) {
                         player.sendMessage(Messages.ERROR + "Du kannst nichts ausrauben!");
@@ -147,7 +148,7 @@ public class BreakinCommand implements CommandExecutor {
                         player.sendMessage(PREFIX + "Du bist nicht in der Nähe einer Kasse oder eines Lagers!");
                     }
                 } else {
-                    player.sendMessage(Messages.ERROR + "Du musst mindestens Rang 2 sein um einzubrechen!");
+                    player.sendMessage(Messages.ERROR + "Du musst mindestens Rang-2 sein um einzubrechen!");
                 }
             } else {
                 player.sendMessage(Messages.ERROR + "Du bist in keiner Organisation!");

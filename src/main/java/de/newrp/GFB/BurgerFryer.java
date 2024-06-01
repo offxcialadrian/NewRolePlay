@@ -167,7 +167,11 @@ public class BurgerFryer implements CommandExecutor, Listener {
             }
         }
 
-        cooldown.put(p.getName(), System.currentTimeMillis() + 10 * 60 * 2000L);
+        if (Premium.hasPremium(p)) {
+            cooldown.put(p.getName(), System.currentTimeMillis() + 15 * 60 * 1000L);
+        } else {
+            cooldown.put(p.getName(), System.currentTimeMillis() + 20 * 60 * 1000L);
+        }
         GFB.CURRENT.put(p.getName(), GFB.BURGERFRYER);
         int count = GFB.BURGERFRYER.getLevel(p) + Script.getRandom(5, 7);
         SCORE.put(p.getName(), count);

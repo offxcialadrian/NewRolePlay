@@ -2,6 +2,8 @@ package de.newrp.Administrator;
 
 import com.google.common.collect.Lists;
 import de.newrp.API.Messages;
+import de.newrp.API.Rank;
+import de.newrp.API.Script;
 import de.newrp.API.Team;
 import de.newrp.NewRoleplayMain;
 import de.newrp.config.MainConfig;
@@ -28,7 +30,7 @@ public class SQLCommand implements CommandExecutor {
         final Player player = (Player) commandSender;
         final Team.Teams playerTeam = Team.getTeam(player);
 
-        if(playerTeam != Team.Teams.ENTWICKLUNG) {
+        if(playerTeam != Team.Teams.ENTWICKLUNG && !Script.hasRank(player, Rank.ADMINISTRATOR, false)) {
             player.sendMessage(Messages.NO_PERMISSION);
             return false;
         }

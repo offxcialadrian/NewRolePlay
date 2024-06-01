@@ -94,6 +94,7 @@ import net.citizensnpcs.api.CitizensAPI;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder;
+import net.dv8tion.jda.api.utils.TimeFormat;
 import net.labymod.serverapi.api.LabyAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandMap;
@@ -105,6 +106,7 @@ import java.io.File;
 import java.sql.Connection;
 import java.sql.Statement;
 import java.util.Arrays;
+import java.util.concurrent.TimeUnit;
 
 public class NewRoleplayMain extends JavaPlugin {
 
@@ -205,6 +207,7 @@ public class NewRoleplayMain extends JavaPlugin {
         Zeitung.restoreZeitung();
         LabBreakIn.repairDoors(false);
         OrgSpray.FraktionSpray.init();
+        Bukkit.getScheduler().runTaskLater(this, () -> House.reset(TimeUnit.DAYS.toMillis(90)), 2 * 60 * 20L);
 
         LabyAPI.initialize(LabyAPI.getService());
 
@@ -564,6 +567,9 @@ public class NewRoleplayMain extends JavaPlugin {
         getCommand("resetactivity").setExecutor(new ResetActivityCommand());
         getCommand("sperrshop").setExecutor(new SperrShop());
         getCommand("equipprice").setExecutor(new EquipPriceCommand());
+        getCommand("spind").setExecutor(new SpindCommand());
+        getCommand("sperrlizenz").setExecutor(new SperrLizenzCommand());
+        getCommand("umsatz").setExecutor(new UmsatzCommand());
     }
 
     /**
@@ -723,7 +729,7 @@ public class NewRoleplayMain extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new BizWarPlayerDeathListener(), this);
         Bukkit.getPluginManager().registerEvents(new PlaytimePlayerListener(), this);
         Bukkit.getPluginManager().registerEvents(new DrogenbankHouse(), this);
-        Bukkit.getPluginManager().registerEvents(new EventListener(), this);
+        Bukkit.getPluginManager().registerEvents(new SpindCommand(), this);
     }
 
     /**
