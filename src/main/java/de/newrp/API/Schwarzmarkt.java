@@ -1,6 +1,7 @@
 package de.newrp.API;
 
 import de.newrp.Organisationen.SchwarzmarktListener;
+import de.newrp.Shop.ShopItem;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.trait.SkinTrait;
@@ -51,7 +52,8 @@ public enum Schwarzmarkt {
         npc.spawn(smarkt.getLocation());
 
         SCHWARZMARKT_ID = npc.getId();
-        CURRENT_LOCATION.setTradeItem(Schwarzmarkt.TradeItem.values()[Script.getRandom(1, Schwarzmarkt.TradeItem.values().length - 1)].setAmount(Script.getRandom(3, 20)));
+        TradeItem item = Schwarzmarkt.TradeItem.values()[Script.getRandom(0, Schwarzmarkt.TradeItem.values().length - 1)];
+        CURRENT_LOCATION.setTradeItem(item.setAmount(Script.getRandom((int) Math.ceil((double) item.getMaxAmount() / 2), item.getMaxAmount())));
 
         CURRENT_LOCATION.amounts = new int[]{Script.getRandom(3, 7), Script.getRandom(3, 5), (Script.getRandom(1, 5) == 2 ? 1 : 0), 1, 1};
 
@@ -106,7 +108,20 @@ public enum Schwarzmarkt {
 
     public enum TradeItem {
         LOTTOSCHEIN(0, new ItemStack(Material.PAPER), "§7Lottoschein", 1),
-        BROT(1, new ItemStack(Material.BREAD), "§7Brot", 64);
+        BROT(1, new ItemStack(Material.BREAD), "§7Brot", 20),
+        LILIE(2, new ItemStack(Material.WHITE_TULIP), "§7Lilie", 4),
+        TULPE(3, new ItemStack(Material.RED_TULIP), "§7Tulpe", 4),
+        MARGARITE(4, new ItemStack(Material.OXEYE_DAISY), "§7Margarite", 4),
+        DISK_MELLOHI(5, new ItemStack(Material.MUSIC_DISC_MELLOHI), "§7Mellohi-Schallplatte", 1),
+        DISK_WAIT(6, new ItemStack(Material.MUSIC_DISC_WAIT), "§7Wait-Schallplatte", 1),
+        ZEITUNG(7, new ItemStack(Material.WRITTEN_BOOK), "§7Zeitung", 1),
+        HANDY(8, new ItemStack(Material.IRON_INGOT), "§7Hawaii P55", 1),
+        SNEAKER(9, new ItemStack(Material.LEATHER_BOOTS), "§7Sneaker", 1),
+        KABELBINDER(10, new ItemStack(Material.STRING), "§7Kabelbinder", 1),
+        KARTE(11, new ItemStack(Material.MAP), "§7Karte", 1),
+        TICKET(12, ShopItem.MONATSFAHRAUSWEIS.getItemStack(), "§7Monatsfahrausweis", 1),
+        KAFFEE(13, new ItemStack(Material.FLOWER_POT), "§7Kaffee", 1),
+        MEHL(14, new ItemStack(Material.WHITE_DYE), "§7Mehl", 1);
 
         private final int id;
         private final ItemStack item;

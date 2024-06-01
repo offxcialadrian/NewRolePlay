@@ -70,7 +70,8 @@ public enum Navi {
     CAFE_X3("Cafe am X3", new Location(Script.WORLD, 750, 72, 926, 0.0f, 0.0f)),
     CAFE_AEKI("Cafe im AEKI", new Location(Script.WORLD, 688, 138, 908, 0.0f, 0.0f)),
     CAFE_SH("Cafe Stadthalle", new Location(Script.WORLD, 620, 68, 1027, 0.0f, 0.0f)),
-    DM_ARENA("Deathmatch Arena", new Location(Script.WORLD, 436, 14, 1117));
+    DM_ARENA("Deathmatch Arena", new Location(Script.WORLD, 436, 14, 1117)),
+    BUCHLADEN("Buchladen", new Location(Script.WORLD, 669, 67, 813));
 
 
     private final String name;
