@@ -458,7 +458,7 @@ public enum Organisation {
 
 
     public void addMember(Player p, Player leader) {
-        Script.executeUpdate("INSERT INTO organisation (nrp_id, organisationID, salary, rank, leader, coleader) VALUES ('" + Script.getNRPID(p) + "', '" + getID() + "', '0', '0', '0', '0')");
+        Script.executeUpdate("INSERT INTO organisation (nrp_id, organisationID, salary, rank, leader, coleader, invite) VALUES ('" + Script.getNRPID(p) + "', '" + getID() + "', '0', '0', '0', '0', " + System.currentTimeMillis() + ")");
         for (Player members : getPlayersFromOrganisation(this)) {
             members.sendMessage(PREFIX + Script.getName(p) + "  ist der Organisation beigetreten.");
         }
@@ -467,7 +467,7 @@ public enum Organisation {
     }
 
     public void addMember(OfflinePlayer p) {
-        Script.executeUpdate("INSERT INTO organisation (nrp_id, OrganisationID, salary, rank, leader, coleader) VALUES ('" + Script.getNRPID(p) + "', '" + getID() + "', '0', '0', '0', '0')");
+        Script.executeUpdate("INSERT INTO organisation (nrp_id, OrganisationID, salary, rank, leader, coleader, invite) VALUES ('" + Script.getNRPID(p) + "', '" + getID() + "', '0', '0', '0', '0', " + System.currentTimeMillis() + ")");
         for (Player members : getPlayersFromOrganisation(this)) {
             members.sendMessage(PREFIX + p.getName() + " ist der Organisation beigetreten.");
         }
@@ -548,5 +548,9 @@ public enum Organisation {
             return;
         }
         Script.executeAsyncUpdate("UPDATE organisation_rankname SET name = '" + arg + "' WHERE organisationID = " + this.id + " AND rank = " + rank + " AND gender = '" + gender.getName().charAt(0) + "'");
+    }
+
+    public static long getInvite(OfflinePlayer player) {
+        return Script.getLong(player, "organisation", "invite");
     }
 }

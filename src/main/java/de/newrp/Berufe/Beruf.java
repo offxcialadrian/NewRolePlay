@@ -306,7 +306,7 @@ public class Beruf {
         }
 
         public void addMember(Player p, Player leader) {
-            Script.executeUpdate("INSERT INTO berufe (nrp_id, berufID, salary, abteilung, leader, coleader) VALUES ('" + Script.getNRPID(p) + "', '" + getID() + "', '0', '0', '0', '0')");
+            Script.executeUpdate("INSERT INTO berufe (nrp_id, berufID, salary, abteilung, leader, coleader, invite) VALUES ('" + Script.getNRPID(p) + "', '" + getID() + "', '0', '0', '0', '0', " + System.currentTimeMillis() + ")");
             for (Player members : getPlayersFromBeruf(this)) {
                 members.sendMessage("§8[§6" + getName() + "§8] §6» §7" + p.getName() + " ist dem Beruf beigetreten.");
             }
@@ -318,7 +318,7 @@ public class Beruf {
         }
 
         public void addMember(OfflinePlayer p) {
-            Script.executeUpdate("INSERT INTO berufe (nrp_id, berufID, salary, abteilung, leader, coleader) VALUES ('" + Script.getNRPID(p) + "', '" + getID() + "', '0', '0', '0', '0')");
+            Script.executeUpdate("INSERT INTO berufe (nrp_id, berufID, salary, abteilung, leader, coleader, invite) VALUES ('" + Script.getNRPID(p) + "', '" + getID() + "', '0', '0', '0', '0', " + System.currentTimeMillis() + ")");
             for (Player members : getPlayersFromBeruf(this)) {
                 members.sendMessage("§8[§6" + getName() + "§8] §6» §7" + p.getName() + " ist dem Beruf beigetreten.");
             }
@@ -486,5 +486,9 @@ public class Beruf {
             }
         }
         return list;
+    }
+
+    public static long getInvite(OfflinePlayer player) {
+        return Script.getLong(player, "berufe", "invite");
     }
 }
