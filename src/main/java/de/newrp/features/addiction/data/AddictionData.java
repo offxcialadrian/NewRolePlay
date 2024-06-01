@@ -11,5 +11,7 @@ public class AddictionData {
     private final int nrpId;
     private final Drogen drug;
     private AddictionLevel addictionLevel;
+    private int usage;
+    private int heal;
 
 }
