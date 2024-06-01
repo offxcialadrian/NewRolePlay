@@ -8,6 +8,7 @@ import de.newrp.Berufe.Equip;
 import de.newrp.Forum.ForumGroup;
 import de.newrp.TeamSpeak.TeamspeakServerGroup;
 import de.newrp.NewRoleplayMain;
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
@@ -21,12 +22,12 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public enum Organisation {
 
-    FALCONE(1, "Falcone-Famiglia",  true, false, false, 158, new Location(Script.WORLD, 761, 119, 847, 258.50473f, 17.865908f), TeamspeakServerGroup.FALCONE,  new ForumGroup[]{ForumGroup.FALCONE, ForumGroup.FALCONE_LEADER}, OrgSpray.FraktionSpray.FALCONE),
-    KARTELL(2, "Puertoricanisches-Kartell",  true, false, false, 119, new Location(Script.WORLD, 230, 68, 1110, 1.5193672f, 16.320272f), TeamspeakServerGroup.KARTELL,  new ForumGroup[]{ForumGroup.KARTELL, ForumGroup.KARTELL_LEADER}, OrgSpray.FraktionSpray.KARTELL),
-    HITMEN(3, "The-Rebels-Mercs",  true, false, false, 143, new Location(Script.WORLD, 724, 55, 890), TeamspeakServerGroup.BRATERSTWO,  new ForumGroup[]{ForumGroup.BRATERSTWO, ForumGroup.BRATERSTWO_LEADER}, OrgSpray.FraktionSpray.BRATERSTWO),
-    CORLEONE(4, "Corleone-Familie",  true, false, false, 131, new Location(Script.WORLD, 183, 104, 479, -268.55347f, 14.808363f), TeamspeakServerGroup.CORLEONE,  new ForumGroup[]{ForumGroup.CORLEONE, ForumGroup.CORLEONE_LEADER}, OrgSpray.FraktionSpray.CORLEONE),
+    FALCONE(1, "Falcone-Famiglia",  true, false, false, 158, new Location(Script.WORLD, 761, 119, 847, 258.50473f, 17.865908f), TeamspeakServerGroup.FALCONE,  new ForumGroup[]{ForumGroup.FALCONE, ForumGroup.FALCONE_LEADER}, OrgSpray.FraktionSpray.FALCONE, new Location(Script.WORLD, 746, 119, 854)),
+    KARTELL(2, "Puertoricanisches-Kartell",  true, false, false, 119, new Location(Script.WORLD, 230, 68, 1110, 1.5193672f, 16.320272f), TeamspeakServerGroup.KARTELL,  new ForumGroup[]{ForumGroup.KARTELL, ForumGroup.KARTELL_LEADER}, OrgSpray.FraktionSpray.KARTELL, new Location(Script.WORLD, 238, 69, 1133)),
+    HITMEN(3, "The-Rebels-Mercs",  true, false, false, 143, new Location(Script.WORLD, 724, 55, 890), TeamspeakServerGroup.BRATERSTWO,  new ForumGroup[]{ForumGroup.BRATERSTWO, ForumGroup.BRATERSTWO_LEADER}, OrgSpray.FraktionSpray.BRATERSTWO, new Location(Script.WORLD, 717.5, 54, 879.5)),
+    CORLEONE(4, "Corleone-Familie",  true, false, false, 131, new Location(Script.WORLD, 183, 104, 479, -268.55347f, 14.808363f), TeamspeakServerGroup.CORLEONE,  new ForumGroup[]{ForumGroup.CORLEONE, ForumGroup.CORLEONE_LEADER}, OrgSpray.FraktionSpray.CORLEONE, new Location(Script.WORLD, 204, 104, 479)),
     //GROVE(5, "Grove-Street",  true, false, false, 170, new Location(Script.WORLD, 752, 54, 1266, 193.52417f, 13.093105f), TeamspeakServerGroup.GROVE,  new ForumGroup[]{ForumGroup.GROVE, ForumGroup.GROVE_LEADER}, OrgSpray.FraktionSpray.GROVE),
-    SINALOA(6, "Sinaloa-Kartell",  true, false, false, 406, new Location(Script.WORLD, 653, 70, 1122, 100.18604f, 22.990175f), TeamspeakServerGroup.SINOLA_KARTELL, new ForumGroup[]{ForumGroup.SINOLA_MEMBER,ForumGroup.SINOLA_LEADER}, null);
+    SINALOA(6, "Sinaloa-Kartell",  true, false, false, 406, new Location(Script.WORLD, 653, 70, 1122, 100.18604f, 22.990175f), TeamspeakServerGroup.SINOLA_KARTELL, new ForumGroup[]{ForumGroup.SINOLA_MEMBER,ForumGroup.SINOLA_LEADER}, null, new Location(Script.WORLD, 667, 70, 1124));
 
     private final String name;
     int id;
@@ -38,8 +39,10 @@ public enum Organisation {
     TeamspeakServerGroup serverGroup;
     ForumGroup[] forumGroup;
     OrgSpray.FraktionSpray fraktionSpray;
+    @Getter
+    final Location equipLoc;
 
-    Organisation(int id, String name, boolean kasse, boolean duty, boolean equip, int channelid, Location dbank, TeamspeakServerGroup serverGroup, ForumGroup[] forumGroup, OrgSpray.FraktionSpray fraktionSpray) {
+    Organisation(int id, String name, boolean kasse, boolean duty, boolean equip, int channelid, Location dbank, TeamspeakServerGroup serverGroup, ForumGroup[] forumGroup, OrgSpray.FraktionSpray fraktionSpray, Location equipLoc) {
         this.id = id;
         this.name = name;
         this.kasse = kasse;
@@ -50,6 +53,7 @@ public enum Organisation {
         this.serverGroup = serverGroup;
         this.forumGroup = forumGroup;
         this.fraktionSpray = fraktionSpray;
+        this.equipLoc = equipLoc;
     }
 
     public static Map<Organisation, List<UUID>> ORGA_MEMBER = new ConcurrentHashMap<>();

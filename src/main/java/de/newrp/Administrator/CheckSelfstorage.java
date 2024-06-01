@@ -32,7 +32,7 @@ public class CheckSelfstorage implements CommandExecutor {
             return true;
         }
 
-        if(args.length != 1) {
+        if (args.length != 1) {
             p.sendMessage(Messages.ERROR + "/checkselfstorage [Spieler]");
             return true;
         }
