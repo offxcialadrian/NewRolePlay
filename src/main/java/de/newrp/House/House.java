@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class House {
 
@@ -531,8 +532,10 @@ public class House {
         for (House house : House.HOUSES) {
             if (house.getOwner() != 0) {
                 long last = Script.getLastDisconnect(Script.getOfflinePlayer(house.getOwner()));
-                if (System.currentTimeMillis() - last > time) {
-                    house.reset();
+                if (time != 0 && last != 0) {
+                    if (System.currentTimeMillis() - last > time) {
+                        house.reset();
+                    }
                 }
             }
         }
