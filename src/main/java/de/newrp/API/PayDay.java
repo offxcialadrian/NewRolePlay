@@ -181,7 +181,7 @@ public class PayDay extends BukkitRunnable {
             int lvl = Script.getLevel(p);
             if (lvl > 0) {
                 double r = 1.99 * new Random().nextFloat() - 0.995;
-                int b = (int) Math.round((50 * Math.log(lvl) * ((0.25 * ((Math.log(1 + r) - Math.log(1 - r))) / 2) + 1)));
+                int b = (int) Math.round(((200 * Math.log(0.1 * (lvl + 10))) * ((0.25 * ((Math.log(1 + r) - Math.log(1 - r))) / 2) + 1)));
                 p.sendMessage("§8" + Messages.ARROW + " §7Level-Bonus: §a+" + b + "€");
                 extra += b;
             }
@@ -292,7 +292,7 @@ public class PayDay extends BukkitRunnable {
             p.sendMessage("§8" + Messages.ARROW + " §7Bilanz: " + (payday >= 0 ? "§a+" : "§c") + payday + "€");
             p.sendMessage("§8" + Messages.ARROW + " §7Neuer Kontostand: " + (Script.getMoney(p, PaymentType.BANK) + payday >= 0 ? "§a" : "§c") + (Script.getMoney(p, PaymentType.BANK) + payday) + "€");
             p.sendMessage("§9================");
-            Script.addEXP(p, Script.getRandom(5, 10));
+            Script.addEXP(p, Script.getRandom(lvl, lvl * 2));
             if (payday >= 0) Script.addMoney(p, PaymentType.BANK, payday);
             else Script.removeMoney(p, PaymentType.BANK, payday);
 
