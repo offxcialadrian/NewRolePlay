@@ -56,8 +56,8 @@ public class SpindCommand implements CommandExecutor, Listener {
                 id = Beruf.getBeruf(player).getID();
             }
             if (Organisation.hasOrganisation(player)) {
-                if (Organisation.getRank(player) < 3 && !Organisation.isLeader(player, true)) {
-                    player.sendMessage(Messages.ERROR + "Du musst Rang-3 sein um auf den Spind zugreifen zu können.");
+                if (Organisation.getRank(player) < 4 && !Organisation.isLeader(player, true)) {
+                    player.sendMessage(Messages.ERROR + "Du musst Rang-4 sein um auf den Spind zugreifen zu können.");
                     return true;
                 }
                 if (player.getLocation().distance(Organisation.getOrganisation(player).getEquipLoc()) > 7) {
