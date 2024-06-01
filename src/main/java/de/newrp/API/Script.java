@@ -182,6 +182,7 @@ public class Script {
     public static void updateListname(Player p) {
         final IScoreboardService scoreboardService = DependencyContainer.getContainer().getDependency(IScoreboardService.class);
         scoreboardService.updateGroup(p);
+
     }
 
     public static Inventory fillInv(Inventory inv) {
@@ -485,15 +486,31 @@ public class Script {
 
     public static String getName(Player p) {
         assert p != null;
-        if (Script.getRank(p) == DEVELOPER && SDuty.isSDuty(p)) return "DEV × " + p.getName();
-        if (isNRPTeam(p) && SDuty.isSDuty(p)) return "NRP × " + p.getName();
-        return p.getName();
+        if(!SDuty.isSDuty(p)) return p.getName();
+
+        return getTeamPrefix(p);
+    }
+
+    public static String getTeamPrefix(final Player player) {
+        final Rank rank = getRank(player);
+        if (rank == DEVELOPER) return "DEV × " + player.getName();
+        if (rank == SUPPORTER) return "SUP × " + player.getName();
+        if (rank == MODERATOR) return "MOD × " + player.getName();
+        if (rank == FRAKTIONSMANAGER) return "FM × " + player.getName();
+        if (rank == ADMINISTRATOR) return "ADMIN × " + player.getName();
+        if (rank == OWNER) return "CEO × " + player.getName();
+        return player.getName();
     }
 
     public static String getName(OfflinePlayer p) {
         if (p.getPlayer() != null && p.isOnline()) {
-            if (Script.getRank(p) == DEVELOPER && SDuty.isSDuty(p.getPlayer())) return "DEV × " + p.getName();
-            if (isNRPTeam(p) && SDuty.isSDuty(p.getPlayer())) return "NRP × " + p.getName();
+            if(!SDuty.isSDuty(p.getPlayer())) return p.getName();
+            if (getRank(p) == DEVELOPER) return "DEV × " + p.getName();
+            if (getRank(p) == SUPPORTER) return "SUP × " + p.getName();
+            if (getRank(p) == MODERATOR) return "MOD × " + p.getName();
+            if (getRank(p) == FRAKTIONSMANAGER) return "FM × " + p.getName();
+            if (getRank(p) == ADMINISTRATOR) return "ADMIN × " + p.getName();
+            if (getRank(p) == OWNER) return "CEO × " + p.getName();
         }
         return p.getName();
     }
@@ -740,14 +757,21 @@ public class Script {
             executeUpdate("UPDATE nrp_id SET name='" + p.getName() + "' WHERE uuid='" + uuid + "'");
             p.sendMessage(Messages.INFO + "Dein Name wurde aktualisiert.");
             int id = getNRPID(p);
+            String name = p.getName();
+            if (getRank(p) == OWNER) name = "CEO × " + name;
+            if (getRank(p) == ADMINISTRATOR) name = "ADMIN × " + name;
+            if (getRank(p) == DEVELOPER) name = "DEV × " + name;
+            if (getRank(p) == SUPPORTER) name = "SUP × " + name;
+            if (getRank(p) == MODERATOR) name = "MOD × " + name;
+            if (getRank(p) == FRAKTIONSMANAGER) name = "FM × " + name;
             if (Forum.getForumID(id) != 0) {
-                Forum.setForumName(Forum.getForumID(id), (isNRPTeam(p) ? "NRP × " : "") + p.getName());
+                Forum.setForumName(Forum.getForumID(id), name);
             }
             for (House h : House.getHouses(id)) {
                 h.updateSign();
             }
             Client cl = TeamSpeak.getClient(id);
-            if (cl != null) TeamSpeak.setDescription(cl.getId(), (isNRPTeam(p) ? "NRP × " : "") + p.getName());
+            if (cl != null) TeamSpeak.setDescription(cl.getId(), name);
         }
     }
 
@@ -1558,10 +1582,9 @@ public class Script {
             NewRoleplayMain.event = null;
         } else {
             NewRoleplayMain.event = e;
-            if (e.equals(Event.LASERTAG)) {
+            if (e.equals(Event.NO_DAMAGE)) {
                 if (message) {
-                    Bukkit.broadcastMessage("§8[§6Event§8]§6 Es hat ein §lLasertag §r§6begonnen!");
-                    Bukkit.broadcastMessage("§8[§6Event§8]§6 Teleportiere dich kostenlos per /event dort hin.");
+                    Bukkit.broadcastMessage("§8[§6Event§8]§6 Es hat ein §lNo Damage-Event §r§6begonnen!");
                 }
                 executeAsyncUpdate("UPDATE serversettings SET event='" + e.getName() + "'");
             } else if (e.equals(Event.DOUBLE_XP)) {

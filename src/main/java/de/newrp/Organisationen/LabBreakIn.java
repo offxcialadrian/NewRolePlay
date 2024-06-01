@@ -22,6 +22,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -41,11 +42,11 @@ public class LabBreakIn implements CommandExecutor, Listener {
                                                 new Location(Script.WORLD, 366, 70, 1305), new Location(Script.WORLD, 366, 70, 1304), new Location(Script.WORLD, 366, 70, 1303),
                                                 new Location(Script.WORLD, 365, 70, 1303), new Location(Script.WORLD, 364, 70, 1303)};
     private static final int NEEDED_PROGRESS = 30;
-    private static final ItemStack POTION;
+    public static final ItemStack POTION;
     public static int progress = 0;
-    static int schedulerID;
-    static Location putLocation;
-    static long lastPut;
+    public static int schedulerID;
+    public static Location putLocation;
+    public static long lastPut;
     public static String PREFIX = "§8[§fLabor§8] §f" + Messages.ARROW + " §7";
     public static final Location doorOneLocation = new Location(Script.WORLD, 375, 76, 1312);
     public static final Location doorTwoLocation = new Location(Script.WORLD, 374, 76, 1312);
@@ -141,7 +142,7 @@ public class LabBreakIn implements CommandExecutor, Listener {
     }
 
     private static void start() {
-        cooldown = System.currentTimeMillis();
+        cooldown = System.currentTimeMillis() + TimeUnit.HOURS.toMillis(3);
         BrewingStand randomBrewingStand = randomBrewingStand();
         putIntoBrewingStand(randomBrewingStand);
         progress++;
@@ -154,7 +155,9 @@ public class LabBreakIn implements CommandExecutor, Listener {
     static void removePotion(Inventory inv) {
         for (ItemStack is : inv.getContents()) {
             if (is == null) continue;
-            if (is.isSimilar(POTION)) {
+            if(is.getItemMeta() == null) continue;
+            if(!is.getItemMeta().hasDisplayName()) continue;
+            if (is.getItemMeta().getDisplayName().equalsIgnoreCase(POTION.getItemMeta().getDisplayName())) {
                 is.setAmount(0);
             }
         }
@@ -225,11 +228,11 @@ public class LabBreakIn implements CommandExecutor, Listener {
         boolean cooldown_check = progress != 0;
         long difference = 0;
         if (!cooldown_check) {
-            difference = (System.currentTimeMillis() - cooldown);
-            cooldown_check = difference < TimeUnit.HOURS.toMillis(4);
+            difference = cooldown - System.currentTimeMillis();
+            cooldown_check = difference >= 0;
         }
         if (cooldown_check) {
-            p.sendMessage(Messages.ERROR + "Das Labor hat derzeit keine Materialien zur Verfügung. (" + TimeUnit.MILLISECONDS.toMinutes(difference) + " Minuten verbleibend)");
+            p.sendMessage(Messages.ERROR + "Das Labor hat derzeit keine Materialien zur Verfügung. (" + TimeUnit.MILLISECONDS.toMinutes(cooldown - System.currentTimeMillis()) + " Minuten verbleibend)");
             return true;
         }
         p.sendMessage(PREFIX + "Schütte nun die Tränke in den richtigen Braustand.");
@@ -299,12 +302,11 @@ public class LabBreakIn implements CommandExecutor, Listener {
         boolean cooldown_check = progress != 0;
         long difference = 0;
         if (!cooldown_check) {
-            difference = System.currentTimeMillis() - cooldown;
-            cooldown_check = difference < TimeUnit.HOURS.toMillis(4);
+            difference = cooldown - System.currentTimeMillis();
+            cooldown_check = difference >= 0;
         }
         if (cooldown_check) {
-            long timeLeft = (cooldown + TimeUnit.HOURS.toMillis(4)) - System.currentTimeMillis();
-            p.sendMessage(PREFIX + "Das Labor hat derzeit keine Materialien zur Verfügung. (" + TimeUnit.MILLISECONDS.toMinutes(timeLeft) + " Minuten verbleibend)");
+            p.sendMessage(PREFIX + "Das Labor hat derzeit keine Materialien zur Verfügung. (" + TimeUnit.MILLISECONDS.toMinutes(cooldown - System.currentTimeMillis()) + " Minuten verbleibend)");
             return;
         }
 
@@ -321,7 +323,7 @@ public class LabBreakIn implements CommandExecutor, Listener {
         }
 
         e.setCancelled(true);
-        inv.getItemInMainHand().setAmount(inv.getItemInMainHand().getAmount()-1);
+        inv.getItemInMainHand().setAmount(inv.getItemInMainHand().getAmount() - 1);
     }
 
     private boolean checkDoorBreak(Player p) {
@@ -375,6 +377,19 @@ public class LabBreakIn implements CommandExecutor, Listener {
             handlePut(p, brewingStand);
         } else {
             handleTake(p, brewingStand);
+        }
+    }
+
+    @EventHandler
+    public void onQuit(final PlayerQuitEvent event) {
+        final Player player = event.getPlayer();
+        if (player.getName().equalsIgnoreCase(brokeIn)) {
+            Bukkit.getScheduler().cancelTask(schedulerID);
+            progress = 0;
+            lastPut = 0;
+            schedulerID = 0;
+            putLocation = null;
+            brokeIn = null;
         }
     }
 

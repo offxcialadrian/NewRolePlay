@@ -31,7 +31,8 @@ public class Reinforcement implements CommandExecutor {
         RAMMEN(7, "Rammen!", "-r", false),
         PLANT(8, "Plant!", "-p", false),
         TRAINING_NORMAL(9, "Training!", "-t", false),
-        TRAINING_BUENDNIS(10, "Training!", "-td", true);
+        TRAINING_BUENDNIS(10, "Training!", "-td", true),
+        RAMMEN_BUENDNIS(11, "Rammen!", "-rd", true);
 
         int id;
         String name;

@@ -4,6 +4,7 @@ import de.newrp.API.Messages;
 import de.newrp.API.Rank;
 import de.newrp.API.Script;
 import de.newrp.Organisationen.*;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -32,8 +33,16 @@ public class ResetCooldownCommand implements CommandExecutor {
 
         switch (args[0].toLowerCase()) {
             case "labor":
-                LabBreakIn.cooldown = 0L;
+                LabBreakIn.cooldown = System.currentTimeMillis();
                 Script.sendTeamMessage(player, ChatColor.LIGHT_PURPLE, "hat den Cooldown für das Labor zurückgesetzt!", false);
+                if(LabBreakIn.schedulerID != 0) {
+                    Bukkit.getScheduler().cancelTask(LabBreakIn.schedulerID);
+                }
+                LabBreakIn.progress = 0;
+                LabBreakIn.lastPut = 0;
+                LabBreakIn.schedulerID = 0;
+                LabBreakIn.putLocation = null;
+                LabBreakIn.brokeIn = null;
                 return true;
             case "staatsbank":
                 Bankraub.lastTime = 0L;

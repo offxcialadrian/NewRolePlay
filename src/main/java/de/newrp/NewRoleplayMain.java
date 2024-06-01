@@ -561,7 +561,6 @@ public class NewRoleplayMain extends JavaPlugin {
         getCommand("resetactivity").setExecutor(new ResetActivityCommand());
         getCommand("sperrshop").setExecutor(new SperrShop());
         getCommand("equipprice").setExecutor(new EquipPriceCommand());
-        getCommand("spind").setExecutor(new SpindCommand());
     }
 
     /**
@@ -721,7 +720,6 @@ public class NewRoleplayMain extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new BizWarPlayerDeathListener(), this);
         Bukkit.getPluginManager().registerEvents(new PlaytimePlayerListener(), this);
         Bukkit.getPluginManager().registerEvents(new DrogenbankHouse(), this);
-        Bukkit.getPluginManager().registerEvents(new SpindCommand(), this);
     }
 
     /**

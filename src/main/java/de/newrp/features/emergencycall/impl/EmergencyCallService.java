@@ -10,6 +10,7 @@ import de.newrp.Administrator.SDuty;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Berufe.Duty;
 import de.newrp.NewRoleplayMain;
+import de.newrp.Player.AFK;
 import de.newrp.features.emergencycall.IEmergencyCallService;
 import de.newrp.features.emergencycall.data.AcceptEmergencyCallMetadata;
 import de.newrp.features.emergencycall.data.BlockPlayerInfo;
@@ -159,6 +160,7 @@ public class EmergencyCallService implements IEmergencyCallService {
                 .sorted(Comparator.comparingDouble((a) -> Objects.requireNonNull(Bukkit.getPlayer(a)).getLocation().distance(location)))
                 .filter(faction::isDuty)
                 .filter(f -> !SDuty.isSDuty(f))
+                .filter(p -> !AFK.isAFK(p))
                 .limit(2)
                 .map(Bukkit::getPlayer)
                 .collect(Collectors.toList());

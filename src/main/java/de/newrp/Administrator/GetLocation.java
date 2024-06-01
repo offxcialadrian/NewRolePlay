@@ -28,7 +28,7 @@ public class GetLocation implements CommandExecutor, Listener {
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
         Player p = (Player) cs;
 
-        if(!Script.hasRank(p, Rank.SUPPORTER, false) && Team.getTeam(p) != Team.Teams.BAU) {
+        if(!Script.hasRank(p, Rank.DEVELOPER, false) && Team.getTeam(p) != Team.Teams.BAU) {
             p.sendMessage(Messages.NO_PERMISSION);
             return true;
         }
@@ -57,7 +57,7 @@ public class GetLocation implements CommandExecutor, Listener {
 
 
         p.sendMessage(PREFIX + "Die Position lautet: " + p.getLocation().getBlockX() + "/" + p.getLocation().getBlockY() + "/" + p.getLocation().getBlockZ());
-        if(Script.hasRank(p, Rank.ADMINISTRATOR, false) || Script.isInTestMode())
+        if(Script.hasRankExact(p, Rank.ADMINISTRATOR, Rank.OWNER, Rank.DEVELOPER) || Script.isInTestMode())
             Script.sendCopyMessage(p, Messages.INFO + "Klicke hier um die Location zu kopieren.", "new Location(Script.WORLD, " + p.getLocation().getBlockX() + ", " + p.getLocation().getBlockY() + ", " + p.getLocation().getBlockZ() + ", " + p.getLocation().getYaw() + "f, " + p.getLocation().getPitch() + "f)", "§aKlicke um die Location zu kopieren.");
 
         return false;
