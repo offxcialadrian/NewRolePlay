@@ -370,10 +370,10 @@ public class Equip implements CommandExecutor, Listener {
                     }
 
                     p.getInventory().addItem(Waffen.setAmmo(w.getWeapon(), magazine, total));
-                    p.sendMessage(PREFIX + "Du hast dich mit " + stuff.getName() + " ausgerüstet.");
-                    beruf.sendLeaderMessage("§8[§e" + beruf.getName() + "§8] §e» " + Script.getName(p) + " hat sich mit " + stuff.getName() + " ausgerüstet.");
-                    Log.LOW.write(p, "hat sich mit " + w.getName() + " ausgerüstet.");
-                    Notifications.sendMessage(Notifications.NotificationType.DEBUG, "§a" + Script.getName(p) + " hat sich mit " + w.getName() + " ausgerüstet.");
+                    p.sendMessage(PREFIX + "Du hast dich mit " + stuff.getName() + "-Munition ausgerüstet.");
+                    beruf.sendLeaderMessage("§8[§e" + beruf.getName() + "§8] §e» " + Script.getName(p) + " hat sich mit " + stuff.getName() + "-Munition ausgerüstet.");
+                    Log.LOW.write(p, "hat sich mit " + w.getName() + "-Munition ausgerüstet.");
+                    Notifications.sendMessage(Notifications.NotificationType.DEBUG, "§a" + Script.getName(p) + " hat sich mit " + w.getName() + "-Munition ausgerüstet.");
                     return;
                 }
 
