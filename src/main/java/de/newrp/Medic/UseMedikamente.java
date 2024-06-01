@@ -33,13 +33,6 @@ public class UseMedikamente implements Listener {
             if (m == null) return;
 
             if (m == Medikamente.SCHMERZMITTEL) {
-                if(Krankheit.ABHAENGIGKEIT.isInfected(Script.getNRPID(p))) {
-                    p.sendMessage(PREFIX + "Das konsumieren von Schmerzmitteln hat bei dir keine Wirkung gezeigt.");
-                    Script.playLocalSound(p.getLocation(), Sound.ENTITY_PLAYER_BURP, 5);
-                    p.getInventory().getItemInMainHand().setAmount(p.getInventory().getItemInMainHand().getAmount() - 1);
-                    p.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 20 * 5, 0));
-                    return;
-                }
                 Me.sendMessage(p, "nimmt ein Schmerzmittel ein.");
                 Script.playLocalSound(p.getLocation(), Sound.ENTITY_PLAYER_BURP, 5);
                 p.getInventory().getItemInMainHand().setAmount(p.getInventory().getItemInMainHand().getAmount() - 1);
@@ -47,13 +40,6 @@ public class UseMedikamente implements Listener {
                 Drogen.addToAdiction(p);
                 return;
             } else if(m == Medikamente.SCHMERZMITTEL_HIGH) {
-                if(Krankheit.ABHAENGIGKEIT.isInfected(Script.getNRPID(p))) {
-                    p.sendMessage(PREFIX + "Das konsumieren von Schmerzmitteln hat bei dir keine Wirkung gezeigt.");
-                    Script.playLocalSound(p.getLocation(), Sound.ENTITY_PLAYER_BURP, 5);
-                    p.getInventory().getItemInMainHand().setAmount(p.getInventory().getItemInMainHand().getAmount() - 1);
-                    p.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 20 * 5, 0));
-                    return;
-                }
                 Me.sendMessage(p, "nimmt ein Schmerzmittel ein.");
                 Script.playLocalSound(p.getLocation(), Sound.ENTITY_PLAYER_BURP, 5);
                 p.getInventory().getItemInMainHand().setAmount(p.getInventory().getItemInMainHand().getAmount() - 1);

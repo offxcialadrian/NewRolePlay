@@ -15,6 +15,7 @@ import de.newrp.Police.Fahndung;
 import de.newrp.NewRoleplayMain;
 import de.newrp.dependencies.DependencyContainer;
 import de.newrp.discord.IJdaService;
+import de.newrp.features.addiction.IAddictionService;
 import de.newrp.features.scoreboards.IScoreboardService;
 import de.newrp.discord.impl.JdaService;
 import de.newrp.features.playertracker.IPlayerTrackerService;
@@ -764,6 +765,7 @@ public class Utils implements Listener {
         channel.sendMessageEmbeds(embed.build()).queue();*/
         Log.LOW.write(p, "hat den Server verlassen.");
         Script.executeAsyncUpdate("INSERT INTO last_disconnect (nrp_id, time) VALUES (" + Script.getNRPID(p) + ", " + System.currentTimeMillis() + ")");
+        DependencyContainer.getContainer().getDependency(IAddictionService.class).flushData(p);
         new BukkitRunnable() {
 
             @Override

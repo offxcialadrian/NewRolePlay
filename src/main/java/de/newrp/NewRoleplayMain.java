@@ -46,6 +46,8 @@ import de.newrp.discord.events.GuildReadyListener;
 import de.newrp.discord.impl.JdaService;
 import de.newrp.discord.listeners.SupportListener;
 import de.newrp.discord.listeners.VerifyListener;
+import de.newrp.features.addiction.IAddictionService;
+import de.newrp.features.addiction.impl.AddictionService;
 import de.newrp.features.bizwar.IBizWarService;
 import de.newrp.features.bizwar.commands.ActiveExtortedShopsCommand;
 import de.newrp.features.bizwar.commands.FreeBizCommand;
@@ -741,6 +743,7 @@ public class NewRoleplayMain extends JavaPlugin {
         DependencyContainer.getContainer().add(IPlayerTrackerService.class, new PlayerTrackerService());
         DependencyContainer.getContainer().add(IBizWarService.class, new BizWarService());
         DependencyContainer.getContainer().add(IPlaytimeService.class, new PlaytimeService());
+        DependencyContainer.getContainer().add(IAddictionService.class, new AddictionService());
     }
 
     /**

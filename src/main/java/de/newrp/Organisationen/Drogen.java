@@ -6,7 +6,10 @@ import de.newrp.Gangwar.GangwarCommand;
 import de.newrp.Police.Handschellen;
 import de.newrp.NewRoleplayMain;
 import de.newrp.dependencies.DependencyContainer;
+import de.newrp.features.addiction.IAddictionService;
+import de.newrp.features.addiction.data.AddictionLevel;
 import de.newrp.features.deathmatcharena.IDeathmatchArenaService;
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -21,11 +24,11 @@ import java.util.concurrent.TimeUnit;
 
 public enum Drogen {
 
-    /*KOKAIN*/PULVER(0, true, "Pulver", new String[]{"Koks", "Kokain", "Pulver"}, null, "g", true, Material.SUGAR),
-    /*MARIHUANA*/KRÄUTER(1, true, "Kräuter", new String[]{"Kräuter", "Kraut", "Marihuana", "Gras", "Weed", "Hanf", "Ott"}, null, "g", true, Material.GREEN_DYE),
-    /*METHAMPHETAMIN*/KRISTALLE(2, true, "Kristalle", new String[]{"Kristalle", "Kristall", "Methamphetamin", "Meth", "Speed", "Chystal"}, null, "g", true, null),
-    /*MDMA*/ECSTASY(3, true, "Exiyty", new String[]{"Ecstasy", "XTC", "Pille", "Tablette"}, null, " Pillen", true, Material.WARPED_BUTTON),
-    ANTIBIOTIKA(6, false, "Antibiotika", null, DrugPurity.HIGH, " Päckchen", true, null);
+    /*KOKAIN*/PULVER(0, true, "Pulver", new String[]{"Koks", "Kokain", "Pulver"}, null, "g", true, Material.SUGAR, 80),
+    /*MARIHUANA*/KRÄUTER(1, true, "Kräuter", new String[]{"Kräuter", "Kraut", "Marihuana", "Gras", "Weed", "Hanf", "Ott"}, null, "g", true, Material.GREEN_DYE, 200),
+    /*METHAMPHETAMIN*/KRISTALLE(2, true, "Kristalle", new String[]{"Kristalle", "Kristall", "Methamphetamin", "Meth", "Speed", "Chystal"}, null, "g", true, null, 100),
+    /*MDMA*/ECSTASY(3, true, "Exiyty", new String[]{"Ecstasy", "XTC", "Pille", "Tablette"}, null, " Pillen", true, Material.WARPED_BUTTON, 10),
+    ANTIBIOTIKA(6, false, "Antibiotika", null, DrugPurity.HIGH, " Päckchen", true, null, 0);
     //SCHWARZPULVER(8, false, "Schwarzpulver", null, DrugPurity.HIGH, " Kisten", false, null),
     //EISEN(9, false, "Eisen", null, DrugPurity.HIGH, " Stück", false, null);
 
@@ -37,12 +40,14 @@ public enum Drogen {
     private final String suffix;
     private final boolean consumable;
     private Material material;
+    @Getter
+    private final int addictionChance;
 
 
 
     public static HashMap<String, Integer> taskID = new HashMap<>();
     public static HashMap<String, Drogen> test  = new HashMap<>();
-    Drogen(int id, boolean drug, String name, String[] alternativeNames, DrugPurity defaultPurity, String suffix, boolean consumable, Material material) {
+    Drogen(int id, boolean drug, String name, String[] alternativeNames, DrugPurity defaultPurity, String suffix, boolean consumable, Material material, int addictionChance) {
         this.id = id;
         this.drug = drug;
         this.name = name;
@@ -51,6 +56,7 @@ public enum Drogen {
         this.suffix = suffix;
         this.consumable = consumable;
         this.material = material;
+        this.addictionChance = addictionChance;
     }
 
     public static Drogen getItemByID(int id) {
@@ -186,15 +192,16 @@ public enum Drogen {
 
         test.put(p.getName(), this);
         taskID.put(p.getName(), task);
+        final IAddictionService addictionService = DependencyContainer.getContainer().getDependency(IAddictionService.class);
 
         if(!GangwarCommand.isInGangwar(p) && !DependencyContainer.getContainer().getDependency(IDeathmatchArenaService.class).isInDeathmatch(p.getPlayer(), false)) {
-            if(Krankheit.ABHAENGIGKEIT.isInfected(id)) {
-                p.sendMessage(Messages.INFO + "Du hast eine Abhängigkeit entwickelt. Das Konsumieren hat keine Wirkung gezeigt.");
+            if(addictionService.getAddictionLevel(p, this).getAddictionLevel() == AddictionLevel.FULLY_ADDICTED) {
+                p.sendMessage(Messages.ERROR + "Du bist abhängig von " + this.getName() + ".");
                 return;
             }
         }
 
-        Drogen.addToAdiction(p);
+        addictionService.evaluteDrugUse(p.getPlayer(), this);
 
         switch (this) {
             case ECSTASY:
