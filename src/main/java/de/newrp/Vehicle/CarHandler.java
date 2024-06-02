@@ -90,7 +90,7 @@ public class CarHandler implements Listener {
                             }
                         } else if (block.getBlock().getType() != Material.AIR && block.getBlock().getType() != Material.IRON_TRAPDOOR) {
                             car.setSpeed(speed - 0.04);
-                            car.crash(speed * 2);
+                            car.crash(speed * 1.5);
                             car.setVelocity(direction.multiply(0));
                         }
 
@@ -243,7 +243,7 @@ public class CarHandler implements Listener {
                     if (car.getSpeed() >= 0.1) {
                         player.setVelocity(player.getLocation().getDirection().multiply(-2));
                         player.damage(Math.floor(car.getSpeed() * 20));
-                        car.crash(Math.floor(car.getSpeed() * 20));
+                        car.crash(Math.floor(car.getSpeed() * 10));
                     }
                 }
             }
