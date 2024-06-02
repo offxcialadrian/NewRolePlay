@@ -31,6 +31,11 @@ public class AlkTestCommand implements CommandExecutor {
                     player.sendMessage(Messages.NO_PERMISSION);
                     return true;
                 }
+
+                if (!Duty.isInDuty(player)) {
+                    player.sendMessage(Messages.ERROR + "Du bist nicht im Dienst.");
+                    return true;
+                }
             }
 
             if (args.length == 0) {
