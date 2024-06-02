@@ -223,7 +223,7 @@ public class Treuebonus implements CommandExecutor, Listener {
                         if (punkte >= price) {
                             Treuebonus.remove(p, price);
                             p.sendMessage(Treuebonus.prefix + "Du hast +1000 Exp eingelöst.");
-                            Script.addEXP(p, 1000);
+                            Script.addEXP(p, 1000, true);
                         } else {
                             p.sendMessage(Treuebonus.prefix + "Das kostet " + price + " Treuepunkte! (Dir fehlen §9" + (price - punkte) + " Punkte§7)");
                         }

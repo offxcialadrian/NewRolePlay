@@ -220,7 +220,7 @@ public class Utils implements Listener {
             e.setCancelled(true);
             fishCooldown.put(e.getPlayer().getName(), System.currentTimeMillis() + 2000);
             e.getPlayer().getInventory().addItem(getRandomFish());
-            Script.addEXP(e.getPlayer(), 1);
+            Script.addEXP(e.getPlayer(), 1, true);
             ItemStack rod = e.getPlayer().getInventory().getItemInMainHand();
             if (rod.getType() == Material.FISHING_ROD) {
                 if (rod.getDurability() == rod.getType().getMaxDurability()) {
@@ -325,7 +325,7 @@ public class Utils implements Listener {
                         p.sendMessage(Messages.INFO + "§lDas Team von New RolePlay wünscht dir alles Gute zum Geburtstag!");
                         p.sendMessage(Messages.INFO + "Als Geschenk erhältst du 500 Exp Premium!");
                         Script.executeAsyncUpdate("UPDATE birthday SET geschenk = 1 WHERE id = " + Script.getNRPID(p));
-                        Script.addEXP(p, 500);
+                        Script.addEXP(p, 500, false);
                     }
                 }
 

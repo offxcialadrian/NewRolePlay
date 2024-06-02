@@ -163,7 +163,7 @@ public class OrgSpray implements Listener {
             m.remove(p.getName());
             p.sendMessage(PREFIX + "Du hast das Graffiti entfernt.");
             p.getInventory().getItemInMainHand().setAmount(p.getInventory().getItemInMainHand().getAmount() - 1);
-            Script.addEXP(p, Script.getRandom(3, 5));
+            Script.addEXP(p, Script.getRandom(3, 5), true);
         } else {
             m.put(p.getName(), map);
         }
@@ -238,7 +238,7 @@ public class OrgSpray implements Listener {
             f.sendMessage(PREFIX + p.getName() + " hat ein Graffiti mit der Flagge der Organisation übersprayt.");
             f.addExp(Script.getRandom(5, 10));
             Activity.grantActivity(Script.getNRPID(p), Activities.GRAFFITI);
-            Script.addEXP(p, Script.getRandom(3, 5));
+            Script.addEXP(p, Script.getRandom(3, 5), true);
         } else {
             m.put(p.getName(), map);
         }

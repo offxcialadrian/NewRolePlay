@@ -62,7 +62,7 @@ public class CancelTicket implements CommandExecutor, Listener {
                         Script.updateListname(p);
                         Script.updateListname(tg);
                         sendRatingGUI(tg, t);
-                        if(Script.isNRPTeam(p)) Script.addEXP(p, 5);
+                        if(Script.isNRPTeam(p)) Script.addEXP(p, 5, true);
                     }
                 }.runTaskLater(NewRoleplayMain.getInstance(), 2 * 20L);
                 return true;
@@ -70,7 +70,7 @@ public class CancelTicket implements CommandExecutor, Listener {
             p.sendMessage(TicketCommand.PREFIX + "Du hast das Ticket mit " + Script.getName(tg) + " beendet! §7(§6#" + id + "§7)");
             tg.sendMessage(TicketCommand.PREFIX + Script.getRank(p).getName(p) + " " + Script.getName(p) + " hat das Ticket beendet! §7(§6#" + id + "§7)");
             Script.sendTeamMessage(p, ChatColor.LIGHT_PURPLE, "hat das Ticket mit " + Script.getName(tg) + " beendet! §7(§6#" + id + "§7)", true);
-            if(Script.isNRPTeam(p)) Script.addEXP(p, 5);
+            if(Script.isNRPTeam(p)) Script.addEXP(p, 5, true);
             sendRatingGUI(tg, t);
             TicketCommand.close(t);
             Script.updateListname(p);

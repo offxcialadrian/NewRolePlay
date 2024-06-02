@@ -106,7 +106,7 @@ public class RobCommand implements CommandExecutor {
                                 player.sendMessage(PREFIX + "Du hast " + finalMoney + "€ von " + finalVictim.getName() + " gestohlen.");
                                 int exp = finalMoney / 5;
                                 if (exp > 50) exp = 50;
-                                Script.addEXP(player, exp);
+                                Script.addEXP(player, exp, true);
                                 Script.removeMoney(finalVictim, PaymentType.CASH, finalMoney);
                                 Script.addMoney(player, PaymentType.CASH, finalMoney);
                                 cooldownsV.put(finalVictim.getUniqueId(), System.currentTimeMillis() + 2 * 60 * 60 * 1000);

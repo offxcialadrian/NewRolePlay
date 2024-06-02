@@ -153,7 +153,7 @@ public class Fahrschule implements CommandExecutor, Listener {
                     if (Script.removeMoney(player, PaymentType.BANK, amount)) {
                         Stadtkasse.addStadtkasse(amount, "Fahrschule " + player.getName(), Steuern.Steuer.MEHRWERTSTEUER);
                         player.sendMessage(Component.text(PREFIX + "Herzlichen Glückwunsch, du hast deine Führerschein-Prüfung bestanden!"));
-                        Script.addEXP(player, 10 + new Random().nextInt(20));
+                        Script.addEXP(player, 10 + new Random().nextInt(20), true);
                         Licenses.FUEHRERSCHEIN.grant(Script.getNRPID(player));
                     } else {
                         player.sendMessage(PREFIX + "Du hast nicht genug Geld, um deinen Führerschein zu bezahlen!");

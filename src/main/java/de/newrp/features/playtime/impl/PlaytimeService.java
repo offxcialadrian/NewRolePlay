@@ -51,7 +51,7 @@ public class PlaytimeService implements IPlaytimeService {
             if (playtimeData.getA_hours() % 50 == 0 && playtimeData.getA_minutes() == 0) {
                 player.sendMessage(Script.PREFIX + "Du spielst nun bereits seit " + playtimeData.getA_hours() + " Stunden aktiv auf NRP × New RolePlay. Vielen Dank dafür!");
                 player.sendMessage(Script.PREFIX + "Du erhältst als Dankeschön für deine Treue " + playtimeData.getA_hours() + " Exp");
-                Script.addEXP(player, playtimeData.getA_hours());
+                Script.addEXP(player, playtimeData.getA_hours(), true);
             }
 
             if (playtimeData.getA_hours() % 150 == 0 && playtimeData.getA_minutes() == 0) {

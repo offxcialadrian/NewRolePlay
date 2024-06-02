@@ -73,7 +73,8 @@ public enum Navi {
     DM_ARENA("Deathmatch Arena", new Location(Script.WORLD, 436, 14, 1117)),
     BUCHLADEN("Buchladen", new Location(Script.WORLD, 669, 67, 813)),
     BAR("Bar", new Location(Script.WORLD, 704.5, 69, 859.5, 0.0f, 0.0f)),
-    CLUB("Club-Bar", new Location(Script.WORLD, 477.5, 67, 1285.5, 0.0f, 0.0f));
+    CLUB("Club-Bar", new Location(Script.WORLD, 477.5, 67, 1285.5, 0.0f, 0.0f)),
+    ZOO("Zoo", new Location(Script.WORLD, 77.5, 66, 681.5, 0.0f, 0.0f));
 
 
     private final String name;

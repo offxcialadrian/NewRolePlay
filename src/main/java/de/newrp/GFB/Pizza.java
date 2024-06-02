@@ -138,7 +138,7 @@ public class Pizza implements CommandExecutor, Listener {
                 p.sendMessage(PREFIX + "Du hast alle Pizzen erfolgreich ausgeliefert.");
                 GFB.PIZZALIEFERANT.addExp(p, GFB.PIZZALIEFERANT.getLevel(p) + (TOTAL_SCORE.get(p.getName()))*2);
                 PayDay.addPayDay(p, (GFB.PIZZALIEFERANT.getLevel(p) + (TOTAL_SCORE.get(p.getName()))*8));
-                Script.addEXP(p, GFB.PIZZALIEFERANT.getLevel(p) + (TOTAL_SCORE.get(p.getName()))*4);
+                Script.addEXP(p, GFB.PIZZALIEFERANT.getLevel(p) + (TOTAL_SCORE.get(p.getName()))*4, true);
                 pizza.remove(p.getName());
                 timer.remove(p.getName());
                 GFB.CURRENT.remove(p.getName());
@@ -170,7 +170,7 @@ public class Pizza implements CommandExecutor, Listener {
             p.sendMessage(PREFIX + "Du hast alle Pizzen erfolgreich ausgeliefert.");
             GFB.PIZZALIEFERANT.addExp(p, GFB.PIZZALIEFERANT.getLevel(p) + (TOTAL_SCORE.get(p.getName()))*2);
             PayDay.addPayDay(p, (GFB.PIZZALIEFERANT.getLevel(p) + (TOTAL_SCORE.get(p.getName()))*12));
-            Script.addEXP(p, GFB.PIZZALIEFERANT.getLevel(p) + (TOTAL_SCORE.get(p.getName()))*8);
+            Script.addEXP(p, GFB.PIZZALIEFERANT.getLevel(p) + (TOTAL_SCORE.get(p.getName()))*8, true);
             pizza.remove(p.getName());
             timer.remove(p.getName());
             GFB.CURRENT.remove(p.getName());

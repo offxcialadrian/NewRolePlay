@@ -28,7 +28,7 @@ public class AddPremiumToPlayer implements CommandExecutor {
             Player p = player.getPlayer();
             assert p != null;
             int days = Integer.parseInt(args[1]);
-            Script.addEXP(p, 50);
+            Script.addEXP(p, 50, true);
 
             if(days>=30) awaitFeedback.put(player.getName(), days);
             p.sendMessage(Premium.PREFIX + "§a§lVielen Dank für deinen Einkauf.");

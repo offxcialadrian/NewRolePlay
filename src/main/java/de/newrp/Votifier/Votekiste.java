@@ -202,31 +202,31 @@ public enum Votekiste {
                         break;
                     case EXP_500:
                         p.sendMessage(VoteShop.PREFIX + "Du hast 500 Exp gewonnen!");
-                        Script.addEXP(p, 500);
+                        Script.addEXP(p, 500, true);
                         break;
                     case EXP_750:
                         p.sendMessage(VoteShop.PREFIX + "Du hast 750 Exp gewonnen!");
-                        Script.addEXP(p, 750);
+                        Script.addEXP(p, 750, true);
                         break;
                     case EXP_1000:
                         p.sendMessage(VoteShop.PREFIX + "Du hast 1000 Exp gewonnen!");
-                        Script.addEXP(p, 1000);
+                        Script.addEXP(p, 1000, true);
                         break;
                     case EXP_1250:
                         p.sendMessage(VoteShop.PREFIX + "Du hast 1250 Exp gewonnen!");
-                        Script.addEXP(p, 1250);
+                        Script.addEXP(p, 1250, true);
                         break;
                     case EXP_1500:
                         p.sendMessage(VoteShop.PREFIX + "Du hast 1500 Exp gewonnen!");
-                        Script.addEXP(p, 1500);
+                        Script.addEXP(p, 1500, true);
                         break;
                     case EXP_2000:
                         p.sendMessage(VoteShop.PREFIX + "Du hast 2000 Exp gewonnen!");
-                        Script.addEXP(p, 2000);
+                        Script.addEXP(p, 2000, true);
                         break;
                     case EXP_2500:
                         p.sendMessage(VoteShop.PREFIX + "Du hast 2500 Exp gewonnen!");
-                        Script.addEXP(p, 2500);
+                        Script.addEXP(p, 2500, true);
                         break;
                     case KEVLAR_LEICHT:
                         p.sendMessage(VoteShop.PREFIX + "Du hast eine leichte Kevlar gewonnen!");

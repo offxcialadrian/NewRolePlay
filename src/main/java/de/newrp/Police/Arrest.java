@@ -109,7 +109,7 @@ public class Arrest implements CommandExecutor {
 
         Log.NORMAL.write(p, "hat " + Script.getName(tg) + " verhaftet (" + wanteds + ")");
         Log.NORMAL.write(tg, "wurde von " + Script.getName(p) + " verhaftet (" + wanteds + ")");
-        Script.addEXP(p, Math.abs(wanteds / 6));
+        Script.addEXP(p, Math.abs(wanteds / 6), true);
         Script.removeWeapons(tg);
         Handschellen.uncuff(tg);
         p.getInventory().addItem(Script.setName(new ItemStack(Material.LEAD), "§7Handschellen"));

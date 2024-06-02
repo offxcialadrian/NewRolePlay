@@ -37,7 +37,7 @@ public class DropTabak implements CommandExecutor {
         int exp = (int) (tabak * 2.5);
         PayDay.addPayDay(p, money);
         GFB.TABAKPLANTAGE.addExp(p, exp);
-        Script.addEXP(p, exp);
+        Script.addEXP(p, exp, true);
         Tabakplantage.freshTobacco.remove(p.getName());
         Tabakplantage.driedTobacco.remove(p.getName());
         Tabakplantage.mixedTobacco.remove(p.getName());

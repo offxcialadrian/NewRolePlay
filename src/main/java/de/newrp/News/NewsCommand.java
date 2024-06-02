@@ -67,7 +67,7 @@ public class NewsCommand implements CommandExecutor {
         Script.sendTeamMessage(NEWS + "Diese News wurde geschaltet von " + Script.getName(p));
         Beruf.Berufe.NEWS.sendMessage(NEWS + "Diese News wurde geschaltet von " + Script.getName(p));
         Activity.grantActivity(Script.getNRPID(p), Activities.NEWS);
-        Script.addEXP(p, Script.getRandom(4, 8));
+        Script.addEXP(p, Script.getRandom(4, 8), true);
 
         return false;
     }

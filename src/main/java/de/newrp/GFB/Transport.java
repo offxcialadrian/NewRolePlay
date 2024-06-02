@@ -211,7 +211,7 @@ public class Transport implements CommandExecutor, Listener {
             int add = GFB.TRANSPORT.getLevel(p) + SAFE_SCORE.get(p.getName());
             GFB.TRANSPORT.addExp(p, add);
             PayDay.addPayDay(p, add*6);
-            Script.addEXP(p, add*4);
+            Script.addEXP(p, add*4, true);
             GFB.CURRENT.remove(p.getName());
             SCORE.remove(p.getName());
             STARTED.remove(p.getName());
