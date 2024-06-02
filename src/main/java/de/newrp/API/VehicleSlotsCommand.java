@@ -23,7 +23,7 @@ public class VehicleSlotsCommand implements CommandExecutor {
             p.sendMessage(Messages.INFO + "Du hast ein Vehicle-Slot-Token erhalten.");
             p.sendMessage(Messages.INFO + "Vielen Dank für deinen Einkauf.");
             Notifications.sendMessage(Notifications.NotificationType.NRPSHOP, Script.getName(p) + " hat einen Vehicle-Slot-Token erworben.");
-            Script.addEXP(p, 50);
+            Script.addEXP(p, 50, true);
             SlotLimit.VEHICLE.add(Script.getNRPID(p));
             return true;
         }

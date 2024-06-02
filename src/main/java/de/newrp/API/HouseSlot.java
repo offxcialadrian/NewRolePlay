@@ -23,7 +23,7 @@ public class HouseSlot implements CommandExecutor {
             p.sendMessage(Messages.INFO + "Du hast ein Haus-Slot-Token erhalten.");
             p.sendMessage(Messages.INFO + "Vielen Dank für deinen Einkauf.");
             Notifications.sendMessage(Notifications.NotificationType.NRPSHOP, Script.getName(p) + " hat einen HausSlot-Token erworben.");
-            Script.addEXP(p, 50);
+            Script.addEXP(p, 50, true);
             SlotLimit.HOUSE.add(Script.getNRPID(p));
             return true;
         }

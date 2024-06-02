@@ -58,7 +58,7 @@ public class VoteListener implements Listener {
             p.playSound(p.getLocation(), Sound.ENTITY_ARROW_HIT_PLAYER, 1F, 1F);
             p.sendMessage("§8[§6Vote§8]§e Vielen Dank, dass du für uns abgestimmt hast!");
             p.sendMessage("§8[§6Vote§8]§e Du hast nun §6" + (points < 0 ? 1 : points + 1) + " §eVotepoints.");
-            Script.addEXP(p, 50);
+            Script.addEXP(p, 50, false);
             Achievement.VOTEN.grant(p);
         } else {
             Script.addEXP(Script.getNRPID(player), 50);

@@ -57,7 +57,7 @@ public class Annehmen implements CommandExecutor {
 
             team.addMember(p);
             p.sendMessage(ACCEPTED + "Du bist dem Team " + team.getName() + " beigetreten.");
-            Script.addEXP(p, 100);
+            Script.addEXP(p, 100, true);
             for (Player all : Bukkit.getOnlinePlayers()) {
                 if (Team.getTeam(all) == team)
                     all.sendMessage("§8[§e" + team.getName() + "§8] §e" + p.getName() + " §8» §7ist dem Team beigetreten.");

@@ -107,7 +107,7 @@ public class ErsteHilfe implements CommandExecutor, Listener {
                         Player reviver = Script.getPlayer(name.split(" ")[2].replace("NRP × ", ""));
                         if (reviver != null) {
                             reviver.sendMessage(ErsteHilfe.PREFIX + "Du hast Erste-Hilfe bei " + Script.getName(p) + " geleistet.");
-                            Script.addEXP(reviver, Script.getRandom(1, 3));
+                            Script.addEXP(reviver, Script.getRandom(1, 3), true);
                             Me.sendMessage(reviver, "leistet Erste-Hilfe bei " + Script.getName(p) + ".");
                         }
                         Friedhof f = Friedhof.getDead(p);

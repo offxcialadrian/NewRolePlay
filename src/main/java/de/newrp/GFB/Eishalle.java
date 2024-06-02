@@ -117,7 +117,7 @@ public class Eishalle implements CommandExecutor, Listener {
         GFB.CURRENT.remove(p.getName());
         GFB.EISHALLE.addExp(p, GFB.EISHALLE.getLevel(p) + Script.getRandom(5, 7)*2);
         PayDay.addPayDay(p, (GFB.EISHALLE.getLevel(p) + Script.getRandom(5, 7)*2)*3);
-        Script.addEXP(p, GFB.EISHALLE.getLevel(p)+ Script.getRandom(5, 7)*2);
+        Script.addEXP(p, GFB.EISHALLE.getLevel(p)+ Script.getRandom(5, 7)*2, true);
     }
 
     @EventHandler

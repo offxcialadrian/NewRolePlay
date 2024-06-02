@@ -363,7 +363,7 @@ public class BlackListCommand implements CommandExecutor, Listener, TabCompleter
 
         Blacklist bl = Blacklist.getBlacklistObject(Script.getNRPID(killed), f);
         int kills = bl.getKills();
-        Script.addEXP(killer, Script.getRandom(3, 7));
+        Script.addEXP(killer, Script.getRandom(3, 7), true);
         f.addExp(Script.getRandom(5, 15));
         f.sendMessage(Blacklist.PREFIX + Script.getName(killer) + " hat " + Script.getName(killed) + " getötet. (" + (bl.getKills()-1) + "/" + bl.getKills() + " Kills)");
         if (kills == 1) {

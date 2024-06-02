@@ -1795,25 +1795,30 @@ public class Script {
         setExpbarPercentage(p, i);
     }
 
-    public static void addEXP(Player p, int exp) {
+    public static void addEXP(Player p, int exp, boolean event) {
         /// ???
         if (exp > 200) {
             Script.sendTeamMessage(AntiCheatSystem.PREFIX + "Verdacht auf Exp-Cheat bei " + Script.getName(p) + " (+" + exp + " Exp)");
         }
         int id = getNRPID(p);
-        if (Script.getLevel(p) > 1) {
-            if (NewRoleplayMain.event == Event.TRIPPLE_XP) {
-                exp *= 3;
-                p.sendMessage(" §a+" + exp + " Exp! §7(§6§lTRIPPLE EXP§7)");
-            } else if (NewRoleplayMain.event == Event.DOUBLE_XP || NewRoleplayMain.event == Event.DOUBLE_XP_WEEKEND || NewRoleplayMain.event == Event.VOTE) {
-                exp *= 2;
-                p.sendMessage(" §a+" + exp + " Exp! §7(§6§lDOUBLE EXP§7)");
+        if (event) {
+            if (Script.getLevel(p) > 1) {
+                if (NewRoleplayMain.event == Event.TRIPPLE_XP) {
+                    exp *= 3;
+                    p.sendMessage(" §a+" + exp + " Exp! §7(§6§lTRIPPLE EXP§7)");
+                } else if (NewRoleplayMain.event == Event.DOUBLE_XP || NewRoleplayMain.event == Event.DOUBLE_XP_WEEKEND || NewRoleplayMain.event == Event.VOTE) {
+                    exp *= 2;
+                    p.sendMessage(" §a+" + exp + " Exp! §7(§6§lDOUBLE EXP§7)");
+                } else {
+                    p.sendMessage(" §a+" + exp + " Exp!");
+                }
             } else {
                 p.sendMessage(" §a+" + exp + " Exp!");
             }
         } else {
             p.sendMessage(" §a+" + exp + " Exp!");
         }
+
         sendActionBar(p, "§a+ " + exp + " Exp!");
         executeUpdate("UPDATE level SET exp=" + (getExp(p) + exp) + " WHERE nrp_id=" + id);
         p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1F, 1F);
