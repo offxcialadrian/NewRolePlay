@@ -14,6 +14,7 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
 
 public class FeuerwehrEinsatz {
     public static final ArrayList<Block> onFire = new ArrayList<>();
@@ -64,7 +65,10 @@ public class FeuerwehrEinsatz {
             if (getHaus() == null) return;
             removeTotalFire();
             Beruf.Berufe.NEWS.sendMessage(Beruf.PREFIX + "Es wurde ein Feuer bei Haus " + getHaus().getID() + " gemeldet!");
-            Abteilung.Abteilungen.FEUERWEHR.sendMessage(FeuerwehrEinsatz.PREFIX + "§4Brand 3, Haus:" + getHaus().getID() + ", Alle verfügbaren Einheiten!");
+            for (Abteilung.Abteilungen abteilungen : Set.of(Abteilung.Abteilungen.FEUERWEHR, Abteilung.Abteilungen.CHEFARZT, Abteilung.Abteilungen.OBERARZT, Abteilung.Abteilungen.DIREKTOR)) {
+                abteilungen.sendMessage(FeuerwehrEinsatz.PREFIX + "§4Brand 3, Haus:" + getHaus().getID() + ", Alle verfügbaren Einheiten!");
+            }
+
             Location loc = house.getSignLocation();
             ArrayList<Block> fire = new ArrayList<>();
             int radius = Script.getRandom(8, 10);
@@ -122,7 +126,9 @@ public class FeuerwehrEinsatz {
     public void start(Shops biz) {
         business = biz;
         Beruf.Berufe.NEWS.sendMessage(Beruf.PREFIX + "Es wurde ein Feuer bei " + biz.getName() + " gemeldet!");
-        Abteilung.Abteilungen.FEUERWEHR.sendMessage(FeuerwehrEinsatz.PREFIX + "§4Brand 4, " + biz.getName() + ", Alle verfügbaren Einheiten!");
+        for (Abteilung.Abteilungen abteilungen : Set.of(Abteilung.Abteilungen.FEUERWEHR, Abteilung.Abteilungen.CHEFARZT, Abteilung.Abteilungen.OBERARZT, Abteilung.Abteilungen.DIREKTOR)) {
+            abteilungen.sendMessage(FeuerwehrEinsatz.PREFIX + "§4Brand 4, " + biz.getName() + ", Alle verfügbaren Einheiten!");
+        }
         Location loc = biz.getBuyLocation();
         //    removeTotalFire();
         biz_cooldown.put(biz, System.currentTimeMillis());

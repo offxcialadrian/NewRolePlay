@@ -30,6 +30,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
+import java.util.Set;
 
 public class MolotovCocktail implements CommandExecutor, Listener {
     final HashMap<String, Long> cooldowns = new HashMap<>();
@@ -96,7 +97,9 @@ public class MolotovCocktail implements CommandExecutor, Listener {
     }
 
     private static void startFire(Location loc) {
-        Abteilung.Abteilungen.FEUERWEHR.sendMessage(FeuerwehrEinsatz.PREFIX + "§4Brand 2, " + Navi.getNextNaviLocation(loc).getName() + ", Alle verfügbaren Einheiten!");
+        for (Abteilung.Abteilungen abteilungen : Set.of(Abteilung.Abteilungen.FEUERWEHR, Abteilung.Abteilungen.CHEFARZT, Abteilung.Abteilungen.OBERARZT, Abteilung.Abteilungen.DIREKTOR)) {
+            abteilungen.sendMessage(FeuerwehrEinsatz.PREFIX + "§4Brand 2, " + Navi.getNextNaviLocation(loc).getName() + ", Alle verfügbaren Einheiten!");
+        }
         Beruf.Berufe.POLICE.sendMessage("§9HQ: Es wurde eine Brandstiftung gemeldet. Begeben Sie sich umgehend zu " + Navi.getNextNaviLocation(loc).getName() + ", over.");
         setHouseOnFire(loc);
         sendRoute(Abteilung.Abteilungen.FEUERWEHR, loc);
@@ -259,7 +262,9 @@ public class MolotovCocktail implements CommandExecutor, Listener {
 
     private static void startFire(Location loc, Organisation o) {
         if (Abteilung.Abteilungen.FEUERWEHR.getOnlineMembers().size() >= 3) {
-            Beruf.Berufe.RETTUNGSDIENST.sendMessage(FeuerwehrEinsatz.PREFIX + "§4Brand 4, " + Navi.getNextNaviLocation(loc).getName() + ", Alle verfügbaren Einheiten!");
+            for (Abteilung.Abteilungen abteilungen : Set.of(Abteilung.Abteilungen.FEUERWEHR, Abteilung.Abteilungen.CHEFARZT, Abteilung.Abteilungen.OBERARZT, Abteilung.Abteilungen.DIREKTOR)) {
+                abteilungen.sendMessage(FeuerwehrEinsatz.PREFIX + "§4Brand 4, " + Navi.getNextNaviLocation(loc).getName() + ", Alle verfügbaren Einheiten!");
+            }
             sendRoute(Abteilung.Abteilungen.FEUERWEHR, loc);
             Beruf.Berufe.NEWS.sendMessage("§6Es wurde ein Großbrand im Irischen Viertel gemeldet!");
             int i = Script.getRandom(1500, 2500);
