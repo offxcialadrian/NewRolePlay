@@ -43,7 +43,7 @@ public class VoteListener implements Listener {
         }
 
         int dayOfTheWeek = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
-        boolean weekend = dayOfTheWeek == Calendar.FRIDAY || dayOfTheWeek == Calendar.SATURDAY || dayOfTheWeek == Calendar.SUNDAY;
+        boolean weekend = dayOfTheWeek == Calendar.SATURDAY || dayOfTheWeek == Calendar.SUNDAY;
         int day = Calendar.getInstance().get(Calendar.DAY_OF_YEAR);
         int year = Calendar.getInstance().get(Calendar.YEAR);
         int votes = getTotalVotesToday();

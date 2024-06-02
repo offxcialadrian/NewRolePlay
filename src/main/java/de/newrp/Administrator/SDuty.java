@@ -90,7 +90,8 @@ public class SDuty implements CommandExecutor, Listener {
             p.sendMessage(BuildMode.PREFIX + "Du hast den BuildMode verlassen.");
             Script.sendTeamMessage(p, ChatColor.YELLOW, "hat den BuildMode verlassen.", true);
         }
-        Script.sendTeamMessage(p, ChatColor.RED, "hat den Supporter-Dienst verlassen.", false);
+        //Script.sendTeamMessage(p, ChatColor.RED, "hat den Supporter-Dienst verlassen.", false);
+        Script.sendTeamMessage("§8[" + ChatColor.RED + "§LT§8] " + p.getName() + " hat den Supporter-Dienst verlassen.");
         p.sendMessage(Messages.INFO + "Du darfst nun wieder am aktiven Spielgeschehen teilnehmen.");
         final IScoreboardService scoreboardService = DependencyContainer.getContainer().getDependency(IScoreboardService.class);
         scoreboardService.hideScoreboard(p);
@@ -112,7 +113,8 @@ public class SDuty implements CommandExecutor, Listener {
             p.setFlying(true);
         }
         sduty.add(p.getName());
-        Script.sendTeamMessage(p, ChatColor.RED, "hat den Supporter-Dienst betreten.", false);
+        // Script.sendTeamMessage(p, ChatColor.RED, "hat den Supporter-Dienst betreten.", false);
+        Script.sendTeamMessage("§8[" + ChatColor.RED + "§LT§8] " + p.getName() + " hat den Supporter-Dienst betreten.");
         p.sendMessage(Messages.INFO + "Du darfst nun nicht mehr am aktiven Spielgeschehen teilnehmen.");
         Cache.saveScoreboard(p);
         final IScoreboardService scoreboardService = DependencyContainer.getContainer().getDependency(IScoreboardService.class);
