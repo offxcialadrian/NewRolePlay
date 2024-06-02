@@ -5,6 +5,7 @@ import de.newrp.API.Rank;
 import de.newrp.API.Script;
 import de.newrp.Berufe.Beruf;
 import de.newrp.House.House;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -30,7 +31,7 @@ public class AddHouseDoor implements CommandExecutor, Listener {
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
         Player p = (Player) cs;
 
-        if(!Script.hasRank(p, Rank.ADMINISTRATOR, false)) {
+        if(!Script.hasRank(p, Rank.MODERATOR, false)) {
             p.sendMessage(Messages.NO_PERMISSION);
             return true;
         }
@@ -90,6 +91,7 @@ public class AddHouseDoor implements CommandExecutor, Listener {
                 Script.executeAsyncUpdate("INSERT INTO house_door (houseID, x, y, z) VALUES (" + house + ", " + loc.getX() + ", " + loc.getY() + ", " + loc.getZ() + ");");
                 Script.executeAsyncUpdate("INSERT INTO house_door (houseID, x, y, z) VALUES (" + house + ", " + loc2.getX() + ", " + loc2.getY() + ", " + loc2.getZ() + ");");
                 p.sendMessage(PREFIX + "Du hast die Tür hinzugefügt.");
+                Script.sendTeamMessage(p, ChatColor.WHITE, "hat eine Haustüre zu Haus " + house + " registriert!", false);
                 changing.remove(p.getName());
             }
         }
