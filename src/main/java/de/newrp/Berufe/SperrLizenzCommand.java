@@ -28,7 +28,7 @@ public class SperrLizenzCommand implements CommandExecutor, TabCompleter {
                 return true;
             }
 
-            if (Beruf.hasBeruf(player)) {
+            if (Beruf.hasBeruf(player) && !SDuty.isSDuty(player)) {
                 if (Beruf.hasBeruf(player, Beruf.Berufe.GOVERNMENT)) {
                     if (!Beruf.hasAbteilung(player, Abteilung.Abteilungen.JUSTIZMINISTERIUM) && !Beruf.isLeader(player, true)) {
                         player.sendMessage(Messages.NO_PERMISSION);

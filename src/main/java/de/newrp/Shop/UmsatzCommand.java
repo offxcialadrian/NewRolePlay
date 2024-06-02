@@ -49,7 +49,7 @@ public class UmsatzCommand implements CommandExecutor {
                     return true;
                 }
 
-                if (Beruf.hasBeruf(player, Beruf.Berufe.GOVERNMENT)) {
+                if (Beruf.hasBeruf(player, Beruf.Berufe.GOVERNMENT) && !SDuty.isSDuty(player)) {
                     if (!Beruf.hasAbteilung(player, Abteilung.Abteilungen.FINANZAMT) && !Beruf.isLeader(player, true)) {
                         player.sendMessage(Messages.NO_PERMISSION);
                         return true;

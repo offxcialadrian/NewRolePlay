@@ -1,7 +1,9 @@
 package de.newrp.Organisationen;
 
 import de.newrp.API.Messages;
+import de.newrp.API.Rank;
 import de.newrp.API.Script;
+import de.newrp.Administrator.SDuty;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -74,9 +76,20 @@ public class SetRank implements CommandExecutor {
             return true;
         }
 
-        if (System.currentTimeMillis() - Organisation.getInvite(tg) < TimeUnit.DAYS.toMillis(7 * rank)) {
-            p.sendMessage(PREFIX + "Der Spieler kann erst in " + TimeUnit.MILLISECONDS.toDays(TimeUnit.DAYS.toMillis(7 * rank) - (System.currentTimeMillis() - Organisation.getInvite(tg))) + " Tagen Rang-" + rank + " werden.");
-            return true;
+        if (rank > 1) {
+            if (!Script.hasRank(p, Rank.FRAKTIONSMANAGER, false)) {
+                if (System.currentTimeMillis() - Organisation.getInvite(tg) < TimeUnit.DAYS.toMillis(7 * (rank - 1))) {
+                    p.sendMessage(PREFIX + "Der Spieler kann erst in " + TimeUnit.MILLISECONDS.toDays(TimeUnit.DAYS.toMillis(7 * rank) - (System.currentTimeMillis() - Organisation.getInvite(tg))) + " Tagen Rang-" + rank + " werden.");
+                    return true;
+                }
+            } else {
+                if (!SDuty.isSDuty(p)) {
+                    if (System.currentTimeMillis() - Organisation.getInvite(tg) < TimeUnit.DAYS.toMillis(7 * (rank - 1))) {
+                        p.sendMessage(PREFIX + "Der Spieler kann erst in " + TimeUnit.MILLISECONDS.toDays(TimeUnit.DAYS.toMillis(7 * rank) - (System.currentTimeMillis() - Organisation.getInvite(tg))) + " Tagen Rang-" + rank + " werden.");
+                        return true;
+                    }
+                }
+            }
         }
 
         o.setRank(tg, rank);

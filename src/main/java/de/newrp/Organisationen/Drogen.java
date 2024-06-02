@@ -20,6 +20,8 @@ import org.bukkit.potion.PotionEffectType;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 public enum Drogen {
@@ -167,6 +169,9 @@ public enum Drogen {
         }
     }
 
+    public static Map<UUID, Drogen> lastDrug = new HashMap<>();
+    public static Map<UUID, Long> lastUse = new HashMap<>();
+
     public void consume(Player p, DrugPurity purity) {
         int id = Script.getNRPID(p);
         if (Handschellen.isCuffed(p)) {
@@ -177,6 +182,9 @@ public enum Drogen {
             Script.playLocalSound(p.getLocation(), Sound.ENTITY_PLAYER_BURP, 5);
             Me.sendMessage(p, "konsumiert " + this.getName() + ".");
         }
+
+        lastDrug.put(p.getUniqueId(), this);
+        lastUse.put(p.getUniqueId(), System.currentTimeMillis());
 
         if(test.containsKey(p.getName())) {
             test.remove(p.getName());

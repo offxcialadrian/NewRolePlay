@@ -570,7 +570,7 @@ public class Utils implements Listener {
                 else if (alkLevel.get(p.getUniqueId()) <= 4) p.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 15 * 20, 0));
                 else if (alkLevel.get(p.getUniqueId()) <= 6) p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20 * 20, 0));
                 else if (alkLevel.get(p.getUniqueId()) <= 8) p.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 90 * 20, 0));
-                else if (alkLevel.get(p.getUniqueId()) <= 10) p.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 6 * 20, 0));
+                else if (alkLevel.get(p.getUniqueId()) <= 10) p.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 5 * 20, 0));
                 else p.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 30 * 20, 2));
             }
         }
