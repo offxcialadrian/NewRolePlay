@@ -3,6 +3,7 @@ package de.newrp.Police;
 import de.newrp.API.Log;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
+import de.newrp.API.WantedInformation;
 import de.newrp.Administrator.SDuty;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Berufe.Duty;
@@ -23,6 +24,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 public class Fahndung implements CommandExecutor, TabCompleter {
 
@@ -51,7 +53,7 @@ public class Fahndung implements CommandExecutor, TabCompleter {
 
         if(args.length == 0) {
             Bukkit.getScheduler().runTaskAsynchronously(NewRoleplayMain.getInstance(), () -> {
-                p.sendMessage(Straftat.PREFIX + "Alle Fahndungen:");
+                List<WantedInformation> wantedInformations = new ArrayList<>();
                 for(Player all : Bukkit.getOnlinePlayers()) {
                     if(SDuty.isSDuty(all)) continue;
                     if(getStraftatIDs(all).isEmpty()) continue;
@@ -60,7 +62,18 @@ public class Fahndung implements CommandExecutor, TabCompleter {
                         wanteds += Straftat.getWanteds(i);
                     }
                     if(wanteds == 0) continue;
-                    p.sendMessage("§8» §6" + Script.getName(all) + " §8× §6" + wanteds + " WantedPunkte" + (AFK.isAFK(all) ? " §8× §6AFK" : ""));
+                    wantedInformations.add(new WantedInformation(all, wanteds));
+                }
+
+                wantedInformations.sort((o1, o2) -> Integer.compare(o2.getWantedPoints(), o1.getWantedPoints()));
+                if(wantedInformations.isEmpty()) {
+                    p.sendMessage(Messages.ERROR + "Es gibt keine Fahndungen.");
+                    return;
+                }
+
+                p.sendMessage(Straftat.PREFIX + "Alle Fahndungen:");
+                for (WantedInformation wantedInformation : wantedInformations) {
+                    p.sendMessage("§8» §6" + Script.getName(wantedInformation.getPlayer()) + " §8× §6" + wantedInformation.getWantedPoints() + " WantedPunkte" + (AFK.isAFK(wantedInformation.getPlayer()) ? " §8× §6AFK" : ""));
                 }
             });
             return true;
