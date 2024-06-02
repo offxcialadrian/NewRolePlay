@@ -14,7 +14,7 @@ public class Messages {
     public static String X = "×";
 
     public static String RANK_PREFIX(Player p) {
-        return Script.getRank(p).getName(p) + " " + Script.getName(p);
+        return Script.getName(p);
     }
 
 }

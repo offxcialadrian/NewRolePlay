@@ -205,12 +205,12 @@ public class Script {
             if (Beruf.getAbteilung(p) == Abteilung.Abteilungen.ZIVILPOLIZEI) color = "§r";
         }
         if (!SDuty.isSDuty(p)) p.setPlayerListName("§r" + p.getName());
-        if (SDuty.isSDuty(p) && getRank(p) == OWNER) p.setPlayerListName("§4§lCEO §8× §4" + p.getName());
-        if (SDuty.isSDuty(p) && getRank(p) == ADMINISTRATOR) p.setPlayerListName("§c§lADMIN §8× §c" + p.getName());
-        if (SDuty.isSDuty(p) && getRank(p) == DEVELOPER) p.setPlayerListName("§b§lDEV §8× §b" + p.getName());
-        if (SDuty.isSDuty(p) && getRank(p) == SUPPORTER) p.setPlayerListName("§e§lSUP §8× §e" + p.getName());
-        if (SDuty.isSDuty(p) && getRank(p) == MODERATOR) p.setPlayerListName("§9§lMOD §8× §9" + p.getName());
-        if (SDuty.isSDuty(p) && getRank(p) == FRAKTIONSMANAGER) p.setPlayerListName("§6§lFM §8× §6" + p.getName());
+        if (SDuty.isSDuty(p) && getRank(p) == OWNER) p.setPlayerListName("§4§lCEO §8× §r" + p.getName());
+        if (SDuty.isSDuty(p) && getRank(p) == ADMINISTRATOR) p.setPlayerListName("§c§lADMIN §8× §r" + p.getName());
+        if (SDuty.isSDuty(p) && getRank(p) == DEVELOPER) p.setPlayerListName("§b§lDEV §8× §r" + p.getName());
+        if (SDuty.isSDuty(p) && getRank(p) == SUPPORTER) p.setPlayerListName("§e§lSUP §8× §r" + p.getName());
+        if (SDuty.isSDuty(p) && getRank(p) == MODERATOR) p.setPlayerListName("§9§lMOD §8× §r" + p.getName());
+        if (SDuty.isSDuty(p) && getRank(p) == FRAKTIONSMANAGER) p.setPlayerListName("§6§lFM §8× §r" + p.getName());
         if (Duty.isInDuty(p)) p.setPlayerListName(color + p.getPlayerListName());
         if (BuildMode.isInBuildMode(p)) p.setPlayerListName("§e§lB §8× §r" + p.getPlayerListName());
         if (TicketCommand.isInTicket(p)) p.setPlayerListName("§d§lT §8× §r" + p.getPlayerListName());
@@ -848,13 +848,13 @@ public class Script {
             for (Player all : Script.getNRPTeam()) {
                 if (isNRPTeam(all)) {
                     if (all != p)
-                        all.sendMessage("§8[" + cc + "§lT§8] " + cc + "» " + cc + getRank(p).getName(p) + " " + getName(p) + " " + msg);
+                        all.sendMessage("§8[" + cc + "§lT§8] " + cc + "» " + cc +  getName(p) + " " + msg);
                 }
             }
         } else {
             for (Player all : Script.getNRPTeam()) {
                 if (isNRPTeam(all)) {
-                    all.sendMessage("§8[" + cc + "§lT§8] " + cc + "» " + cc + getRank(p).getName(p) + " " + getName(p) + " " + msg);
+                    all.sendMessage("§8[" + cc + "§lT§8] " + cc + "» " + cc + getName(p) + " " + msg);
                 }
             }
         }

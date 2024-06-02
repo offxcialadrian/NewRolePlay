@@ -3,6 +3,7 @@ package de.newrp.Administrator;
 import de.newrp.API.Messages;
 import de.newrp.API.Rank;
 import de.newrp.API.Script;
+import de.newrp.NewRoleplayMain;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -23,6 +24,16 @@ public class StopEventCommand implements CommandExecutor {
 
         if (!SDuty.isSDuty(p)) {
             p.sendMessage(Messages.NO_SDUTY);
+            return true;
+        }
+
+        if(args.length != 0) {
+            p.sendMessage(Messages.ERROR + "/stopevent");
+            return true;
+        }
+
+        if(NewRoleplayMain.event == null) {
+            p.sendMessage(Messages.ERROR + "Es läuft kein Event!");
             return true;
         }
 

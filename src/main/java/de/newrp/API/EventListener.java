@@ -12,16 +12,16 @@ public class EventListener implements Listener {
 
     Event e = NewRoleplayMain.event;
 
-    @EventHandler (priority = EventPriority.HIGHEST)
+    @EventHandler
     public void onDamage(EntityDamageEvent event) {
-        if(e == Event.NO_DAMAGE) {
+        if(NewRoleplayMain.event == Event.NO_DAMAGE) {
             event.setCancelled(true);
         }
     }
 
-    @EventHandler (priority = EventPriority.HIGHEST)
+    @EventHandler
     public void onPVE(EntityDamageByEntityEvent event) {
-        if(e == Event.NO_DAMAGE) {
+        if(NewRoleplayMain.event == Event.NO_DAMAGE) {
             if(event.getEntity() instanceof Player) {
                 event.setCancelled(true);
             }
