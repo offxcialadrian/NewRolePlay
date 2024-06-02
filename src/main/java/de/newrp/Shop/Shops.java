@@ -57,7 +57,9 @@ public enum Shops {
     //BLUMENLADEN_GANG(41, "Blumenladen Gang", "Blumenladen Gang", 579000, new Location(Script.WORLD, 512, 65, 1319, -83.85142f, 12.219168f), 15, 600, true, ShopType.FLOWER),
     WHITE_LOUNGE(42, "White Lounge", "White Lounge", 30000, new Location(Script.WORLD, 707, 65, 1213, 0.0f, 0.0f), 0, 600, true, ShopType.SHISHA),
     GAS_STATION_HOSPITAL(43, "Tankstelle am Krankenhaus", "Tankstelle am Krankenhaus", 100000, new Location(Script.WORLD, 434, 76, 1072, 0.0f, 0.0f), 0, 600, false, ShopType.GAS_STATION),
-    GAS_STATION_GANG(44, "Tankstelle Gang", "Tankstelle Gang", 100000, new Location(Script.WORLD, 819, 67, 1326, 0.0f, 0.0f), 0, 600, false, ShopType.GAS_STATION);
+    GAS_STATION_GANG(44, "Tankstelle Gang", "Tankstelle Gang", 100000, new Location(Script.WORLD, 819, 67, 1326, 0.0f, 0.0f), 0, 600, false, ShopType.GAS_STATION),
+    BAR(45, "Bar", "Bar", 50000, new Location(Script.WORLD, 704.5, 69, 859.5, 0.0f, 0.0f), 0, 600, true, ShopType.BAR),
+    CLUB(46, "Club-Bar", "Club-Bar", 35000, new Location(Script.WORLD, 477.5, 67, 1285.5, 0.0f, 0.0f), 0, 600, true, ShopType.BAR);
 
 
     private final int id;
