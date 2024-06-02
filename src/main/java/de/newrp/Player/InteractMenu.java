@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 public class InteractMenu implements Listener {
 
@@ -205,7 +206,7 @@ public class InteractMenu implements Listener {
 
                 if (Tragen.cooldown.containsKey(p)) {
                     if (Tragen.cooldown.get(p) + Tragen.TIMEOUT > System.currentTimeMillis()) {
-                        p.sendMessage(Messages.ERROR + "Du kannst nur alle 5 Minuten einen Spieler tragen.");
+                        p.sendMessage(Messages.ERROR + "Du kannst erst in " + Script.getRemainingTime(Tragen.cooldown.get(p) + Tragen.TIMEOUT) + " wieder einen Spieler tragen.");
                         return;
                     }
                 }
@@ -213,22 +214,30 @@ public class InteractMenu implements Listener {
                 if (Tragen.cooldown.containsKey(tg)) {
                     if (Tragen.cooldown.get(tg) + Tragen.TIMEOUT > System.currentTimeMillis()) {
                         p.sendMessage(Messages.ERROR + "Der Spieler kann erst in " + Script.getRemainingTime(Tragen.cooldown.get(tg) + Tragen.TIMEOUT) + " wieder getragen werden.");
+                        Tragen.cooldown.put(p, System.currentTimeMillis() - (Tragen.TIMEOUT + TimeUnit.SECONDS.toMillis(30)));
+                        p.sendMessage(Messages.INFO + "Aufgrund einem fehlgeschlagenen Tragen-Versuch wurde dein Tragen-Cooldown auf 30 Sekunden gesetzt");
                         return;
                     }
                 }
 
                 if (Sperre.TRAGENSPERRE.isActive(Script.getNRPID(p))) {
                     p.sendMessage(Messages.ERROR + "Du darfst derzeit keine Spieler tragen.");
+                    Tragen.cooldown.put(p, System.currentTimeMillis() - (Tragen.TIMEOUT + TimeUnit.SECONDS.toMillis(30)));
+                    p.sendMessage(Messages.INFO + "Aufgrund einem fehlgeschlagenen Tragen-Versuch wurde dein Tragen-Cooldown auf 30 Sekunden gesetzt");
                     return;
                 }
 
                 if (p.getPassenger() != null) {
                     p.sendMessage(Messages.ERROR + "Du trägst bereits einen Spieler.");
+                    Tragen.cooldown.put(p, System.currentTimeMillis() - (Tragen.TIMEOUT + TimeUnit.SECONDS.toMillis(30)));
+                    p.sendMessage(Messages.INFO + "Aufgrund einem fehlgeschlagenen Tragen-Versuch wurde dein Tragen-Cooldown auf 30 Sekunden gesetzt");
                     return;
                 }
 
                 if (Tragen.tragen.containsKey(tg)) {
                     p.sendMessage(Messages.ERROR + "Der Spieler wird bereits getragen.");
+                    Tragen.cooldown.put(p, System.currentTimeMillis() - (Tragen.TIMEOUT + TimeUnit.SECONDS.toMillis(30)));
+                    p.sendMessage(Messages.INFO + "Aufgrund einem fehlgeschlagenen Tragen-Versuch wurde dein Tragen-Cooldown auf 30 Sekunden gesetzt");
                     return;
                 }
                 tg.closeInventory();

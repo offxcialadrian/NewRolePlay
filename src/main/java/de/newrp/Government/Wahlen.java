@@ -227,7 +227,7 @@ public class Wahlen implements CommandExecutor, Listener {
                         all.sendMessage(PREFIX + "Die Legislaturperiode der aktuellen Regierung ist abgelaufen. Du bist nun nicht mehr in der Regierung.");
                     }
 
-                    Script.executeUpdate("DELETE FROM berufe WHERE berufID = '" + Beruf.Berufe.GOVERNMENT.getID() + "'");
+                    Script.executeUpdate("DELETE FROM berufe WHERE berufID = '" + Beruf.Berufe.GOVERNMENT.getID() + "' AND (leader = 1 OR coleader = 1)");
                 }
 
                 NewsCommand.wahlenNews = false;
