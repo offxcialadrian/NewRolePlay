@@ -76,7 +76,7 @@ public class SetRank implements CommandExecutor {
             return true;
         }
 
-        if (rank > 1) {
+        if (rank > 1 && rank >= Organisation.getRank(tg)) {
             if (!Script.hasRank(p, Rank.FRAKTIONSMANAGER, false)) {
                 if (System.currentTimeMillis() - Organisation.getInvite(tg) < TimeUnit.DAYS.toMillis(7 * (rank - 1))) {
                     p.sendMessage(PREFIX + "Der Spieler kann erst in " + TimeUnit.MILLISECONDS.toDays(TimeUnit.DAYS.toMillis(7 * rank) - (System.currentTimeMillis() - Organisation.getInvite(tg))) + " Tagen Rang-" + rank + " werden.");
