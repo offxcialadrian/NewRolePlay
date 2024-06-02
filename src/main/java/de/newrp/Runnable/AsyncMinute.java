@@ -178,6 +178,12 @@ public class AsyncMinute extends BukkitRunnable {
                     }
                 }
             }
+
+            if (Utils.alkLevel.containsKey(p.getUniqueId())) {
+                if (Utils.alkLevel.get(p.getUniqueId()) > 0) {
+                    Utils.alkLevel.put(p.getUniqueId(), Utils.alkLevel.get(p.getUniqueId()) - 0.5F);
+                }
+            }
         }
 
         for (Player p : Bukkit.getOnlinePlayers()) {
