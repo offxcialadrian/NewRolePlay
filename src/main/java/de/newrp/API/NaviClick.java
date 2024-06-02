@@ -40,7 +40,7 @@ public class NaviClick implements Listener {
 
                     }
                     case "§6Freizeit": {
-                        Inventory inv = Bukkit.createInventory(null, 18, "§e§lNavi");
+                        Inventory inv = Bukkit.createInventory(null, 9*3, "§e§lNavi");
                         inv.setItem(0, Script.setName(Material.REDSTONE_LAMP, "§6" + Navi.ARCADE.getName()));
                         inv.setItem(1, Script.setName(Material.DIAMOND, "§6" + Navi.CASINO.getName()));
                         inv.setItem(2, Script.setName(Material.FIREWORK_ROCKET, "§6" + Navi.FREIZEITPARK.getName()));
@@ -50,7 +50,8 @@ public class NaviClick implements Listener {
                         inv.setItem(6, Script.setName(Material.IRON_BLOCK, "§6" + Navi.GYM.getName()));
                         inv.setItem(7, Script.setName(Material.HONEY_BOTTLE, "§6" + Navi.BAR.getName()));
                         inv.setItem(8, Script.setName(Material.POTION, "§6" + Navi.CLUB.getName()));
-                        inv.setItem(13, Script.setName(Material.REDSTONE, "§cZurück"));
+                        inv.setItem(9, Script.setName(Material.NAUTILUS_SHELL, "§6" + Navi.ZOO.getName()));
+                        inv.setItem(22, Script.setName(Material.REDSTONE, "§cZurück"));
                         Script.fillInv(inv);
                         p.openInventory(inv);
                         break;
