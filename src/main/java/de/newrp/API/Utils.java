@@ -325,7 +325,7 @@ public class Utils implements Listener {
                         p.sendMessage(Messages.INFO + "§lDas Team von New RolePlay wünscht dir alles Gute zum Geburtstag!");
                         p.sendMessage(Messages.INFO + "Als Geschenk erhältst du 500 Exp Premium!");
                         Script.executeAsyncUpdate("UPDATE birthday SET geschenk = 1 WHERE id = " + Script.getNRPID(p));
-                        Script.addEXP(p, 500, true);
+                        Script.addEXP(p, 500, false);
                     }
                 }
 
