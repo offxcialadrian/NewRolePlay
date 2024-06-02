@@ -30,7 +30,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
+import static de.newrp.Ticket.TicketCommand.getSupporterID;
 import static de.newrp.Ticket.TicketCommand.queue;
 
 public class AsyncMinute extends BukkitRunnable {
@@ -176,6 +178,18 @@ public class AsyncMinute extends BukkitRunnable {
                             }
                         }
                     }
+                }
+            }
+
+            if (Utils.alkLevel.containsKey(p.getUniqueId())) {
+                if (Utils.alkLevel.get(p.getUniqueId()) >= 2) {
+                    if (new Random().nextInt(3) == 0) {
+                        if (!Spectate.isSpectating(p)) Me.sendMessage(p, "übergibt sich.");
+                    }
+                }
+
+                if (Utils.alkLevel.get(p.getUniqueId()) > 0) {
+                    Utils.alkLevel.put(p.getUniqueId(), Utils.alkLevel.get(p.getUniqueId()) - 0.5F);
                 }
             }
         }

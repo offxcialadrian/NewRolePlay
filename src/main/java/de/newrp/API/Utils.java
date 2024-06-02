@@ -13,6 +13,7 @@ import de.newrp.Organisationen.Organisation;
 import de.newrp.Player.Mobile;
 import de.newrp.Police.Fahndung;
 import de.newrp.NewRoleplayMain;
+import de.newrp.Shop.ShopItem;
 import de.newrp.dependencies.DependencyContainer;
 import de.newrp.discord.IJdaService;
 import de.newrp.features.addiction.IAddictionService;
@@ -536,6 +537,41 @@ public class Utils implements Listener {
                     Health.THIRST.add(Script.getNRPID(p), Script.getRandomFloat(3F, 5F));
                     Script.playLocalSound(p.getLocation(), Sound.ENTITY_GENERIC_DRINK, 5);
                 }
+            }
+        }
+    }
+
+    public static Map<UUID, Float> alkLevel = new HashMap<>();
+
+    @EventHandler
+    public void onAlk(PlayerItemConsumeEvent event) {
+        Player p = event.getPlayer();
+        ItemStack is = event.getItem().clone();
+        is.setAmount(1);
+        if (is.getType().equals(Material.HONEY_BOTTLE)) {
+            if (!BuildMode.isInBuildMode(p)) {
+                Health.THIRST.add(Script.getNRPID(p), Script.getRandomFloat(0F, 1F));
+                if (is.equals(ShopItem.VODKA.getItemStack())) {
+                    if (alkLevel.containsKey(p.getUniqueId()))
+                        alkLevel.put(p.getUniqueId(), alkLevel.get(p.getUniqueId()) + 1F);
+                    else alkLevel.put(p.getUniqueId(), 1F);
+                } else if (is.equals(ShopItem.BIER.getItemStack())) {
+                    if (alkLevel.containsKey(p.getUniqueId()))
+                        alkLevel.put(p.getUniqueId(), alkLevel.get(p.getUniqueId()) + 0.5F);
+                    else alkLevel.put(p.getUniqueId(), 0.5F);
+                } else if (is.equals(ShopItem.LIKOER.getItemStack())) {
+                    if (alkLevel.containsKey(p.getUniqueId()))
+                        alkLevel.put(p.getUniqueId(), alkLevel.get(p.getUniqueId()) + 1.5F);
+                    else alkLevel.put(p.getUniqueId(), 1.5F);
+                }
+
+                if (alkLevel.get(p.getUniqueId()) <= 1) p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 8 * 20, 0));
+                else if (alkLevel.get(p.getUniqueId()) <= 2) p.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 25 * 20, 1));
+                else if (alkLevel.get(p.getUniqueId()) <= 4) p.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 15 * 20, 0));
+                else if (alkLevel.get(p.getUniqueId()) <= 6) p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20 * 20, 0));
+                else if (alkLevel.get(p.getUniqueId()) <= 8) p.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 90 * 20, 0));
+                else if (alkLevel.get(p.getUniqueId()) <= 10) p.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 5 * 20, 0));
+                else p.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 30 * 20, 2));
             }
         }
     }

@@ -123,7 +123,10 @@ public enum ShopItem {
     LICENSE(136, "§bKennzeichen", Script.setName(new ItemStack(Material.NAME_TAG, 1), "§bKennzeichen"), 1, 1, 1, 1500, 3600, false, true, false, new ShopType[] {ShopType.CARDEALER}),
     TOOLS(137, "§7Werkzeug", Script.setName(new ItemStack(Material.SHEARS, 1), "§7Werkzeug"), 1, 1, 1, 100, 500, false, true, false, new ShopType[] {ShopType.GAS_STATION}),
     MESSER(138, "§7Messer", Messer.getItem(), 1, 1, 1, 150, 4000, false, true, false, new ShopType[] {ShopType.GUNSHOP}),
-    SICHERHEITSTUER(139, "§7Sicherheitstür", new ItemStack(Material.IRON_DOOR), 10, 1, 20, HouseAddon.SICHERHEITSTUER.getPrice(), 13000, false, false, false, new ShopType[] {ShopType.HOUSEADDON});
+    SICHERHEITSTUER(139, "§7Sicherheitstür", new ItemStack(Material.IRON_DOOR), 10, 1, 20, HouseAddon.SICHERHEITSTUER.getPrice(), 13000, false, false, false, new ShopType[] {ShopType.HOUSEADDON}),
+    VODKA(140, "§6Kartoffelwasser", Script.setName(new ItemStack(Material.HONEY_BOTTLE), "§6Kartoffelwasser"), 1, 1, 1, 6, 600, true, true, false, new ShopType[] {ShopType.BAR}),
+    BIER(141, "§6Gerstensaft", Script.setName(new ItemStack(Material.HONEY_BOTTLE), "§6Gerstensaft"), 1, 1, 1, 4, 400, true, true, false, new ShopType[] {ShopType.BAR}),
+    LIKOER(142, "§6Kräutertrunk", Script.setName(new ItemStack(Material.HONEY_BOTTLE), "§6Kräutertrunk"), 1, 1, 1, 8, 800, true, true, false, new ShopType[] {ShopType.BAR});
 
 
     private final int id;

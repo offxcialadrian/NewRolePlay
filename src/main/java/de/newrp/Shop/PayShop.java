@@ -31,9 +31,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Random;
+import java.util.*;
 
 import static de.newrp.News.Zeitung.getLatestZeitungID;
 import static de.newrp.Waffen.GetGun.haveGun;
@@ -314,6 +312,27 @@ public class PayShop implements Listener {
                     car.setActivated(true);
                     p.sendMessage(Component.text(Car.PREFIX + "Du hast dir einen neuen " + si.getName() + " gekauft."));
                     BuyClick.sendMessage(p, "Hier sind die Schlüssel, dann viel Spaß!");
+                    break;
+                case VODKA:
+                case BIER:
+                case LIKOER:
+                    if (Script.getAge(Script.getNRPID(p)) < 18) {
+                        if (new Random().nextInt(5) > 0) {
+                            List<String> list = Arrays.asList("Darfst du hier überhaupt rein?", "Du siehst zu jung aus für den Laden hier, verschwinde!", "Kann ich mal deinen Ausweis sehen?");
+                            BuyClick.sendMessage(p, list.get(Script.getRandom(0, list.size() - 1)));
+                            return;
+                        }
+                    }
+
+                    if (Utils.alkLevel.containsKey(p.getUniqueId())) {
+                        if (Utils.alkLevel.get(p.getUniqueId()) >= 3) {
+                            BuyClick.sendMessage(p, "Du siehst garnicht gut aus, fahr mal einen Gang runter!");
+                            break;
+                        }
+                    }
+
+                    List<String> list = Arrays.asList("Was darfs denn sein?", "Du schon wieder?", "Das Übliche?");
+                    BuyClick.sendMessage(p, list.get(Script.getRandom(0, list.size() - 1)));
                     break;
             }
 

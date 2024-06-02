@@ -43,15 +43,17 @@ public class UmsatzCommand implements CommandExecutor {
                 return true;
             }
 
-            if (!SDuty.isSDuty(player) && !Beruf.hasBeruf(player)) {
-                player.sendMessage(Messages.NO_PERMISSION);
-                return true;
-            }
-
-            if (Beruf.hasBeruf(player, Beruf.Berufe.GOVERNMENT)) {
-                if (!Beruf.hasAbteilung(player, Abteilung.Abteilungen.FINANZAMT) && !Beruf.isLeader(player, true)) {
+            if (shop.getOwner() != Script.getNRPID(player)) {
+                if (!SDuty.isSDuty(player) && !Beruf.hasBeruf(player)) {
                     player.sendMessage(Messages.NO_PERMISSION);
                     return true;
+                }
+
+                if (Beruf.hasBeruf(player, Beruf.Berufe.GOVERNMENT) && !SDuty.isSDuty(player)) {
+                    if (!Beruf.hasAbteilung(player, Abteilung.Abteilungen.FINANZAMT) && !Beruf.isLeader(player, true)) {
+                        player.sendMessage(Messages.NO_PERMISSION);
+                        return true;
+                    }
                 }
             }
 

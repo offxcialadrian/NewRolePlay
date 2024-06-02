@@ -113,6 +113,8 @@ public class FriedhofListener implements Listener {
         Friedhof.setDead(p, friedhof);
         Player killer = p.getKiller();
         Notifications.sendMessage(Notifications.NotificationType.DEAD, Script.getName(p) + " ist gestorben " + (killer!=null ? Messages.ARROW + " " + Script.getName(killer):Messages.ARROW + " " + (p.getLastDamageCause() != null?p.getLastDamageCause().getCause().name():"")));
+
+        Utils.alkLevel.remove(p.getUniqueId());
     }
 
     @EventHandler

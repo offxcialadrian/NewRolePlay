@@ -133,6 +133,11 @@ public class InteractMenu implements Listener {
         switch (e.getCurrentItem().getItemMeta().getDisplayName().replace("§6", "")) {
             case "Personalausweis zeigen":
                 if (!Licenses.PERSONALAUSWEIS.hasLicense(Script.getNRPID(p))) {
+                    if (Licenses.PERSONALAUSWEIS.isLocked(Script.getNRPID(p))) {
+                        p.sendMessage(Messages.ERROR + "Du wurdest ausgebürgert.");
+                        tg.sendMessage(PREFIX + "Dieser Spieler wurde ausgebürgert.");
+                        return;
+                    }
                     p.sendMessage(Messages.ERROR + "Du hast keinen Personalausweis.");
                     return;
                 }

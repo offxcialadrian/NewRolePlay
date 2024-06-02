@@ -828,3 +828,9 @@ commands:
   umsatz:
     description: presents biz revenue
     aliases: [ revenue ]
+  alktest:
+    description: test for alk
+    aliases: [ alkoholtest ]
+  drugtest:
+    description: test for drugs
+    aliases: [ drogentest ]
