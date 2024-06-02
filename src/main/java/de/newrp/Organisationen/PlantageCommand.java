@@ -323,7 +323,7 @@ public class PlantageCommand implements CommandExecutor, Listener, TabCompleter 
                                         plant.setLastFertilize(System.currentTimeMillis());
                                         plant.getOrganisation().sendMessage(Plantage.PREFIX + "Eine " + plant.getType().getItem().getName() + "-Plantage wurde von " + Script.getName(p) + " gedüngt.");
                                         Activity.grantActivity(Script.getNRPID(p), Activities.PLANTAGE);
-                                        Script.addEXP(p, Script.getRandom(2, 5));
+                                        Script.addEXP(p, Script.getRandom(8, 12));
                                         new Particle(org.bukkit.Particle.CRIT, plant.getLocation().clone().add(0, .5, 0), false, 0.01F, 0.01F, 0.01F, 0.01F, Script.getRandom(4, 9)).sendAll();
                                         new BukkitRunnable() {
                                             private int runs;
