@@ -54,6 +54,7 @@ public class HealCommand implements CommandExecutor {
 
             Krankheit.GEBROCHENER_ARM.remove(Script.getNRPID(p));
             Krankheit.GEBROCHENES_BEIN.remove(Script.getNRPID(p));
+            Krankheit.HUSTEN.remove(Script.getNRPID(p));
             Health.THIRST.set(Script.getNRPID(p), Health.THIRST.getMax());
             p.setWalkSpeed(0.2F);
             return true;

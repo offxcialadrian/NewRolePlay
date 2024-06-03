@@ -31,7 +31,7 @@ public class UnwarnCommand implements CommandExecutor {
             return true;
         }
 
-        Player tg = Script.getPlayer(args[0]);
+        OfflinePlayer tg = Script.getOfflinePlayer(args[0]);
         if (tg == null && Script.getNRPID(args[0]) == 0) {
             p.sendMessage(Messages.PLAYER_NOT_FOUND);
             return true;
@@ -44,7 +44,7 @@ public class UnwarnCommand implements CommandExecutor {
                 return true;
             }
 
-            tg.sendMessage(Punish.PREFIX + "Du hast einen Warn von " + p.getName() + " entfernt bekommen.");
+            if(tg.getPlayer() != null) tg.getPlayer().sendMessage(Punish.PREFIX + "Du hast einen Warn von " + p.getName() + " entfernt bekommen.");
         }
 
 

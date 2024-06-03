@@ -182,7 +182,6 @@ public class Script {
     public static void updateListname(Player p) {
         final IScoreboardService scoreboardService = DependencyContainer.getContainer().getDependency(IScoreboardService.class);
         scoreboardService.updateGroup(p);
-
     }
 
     public static Inventory fillInv(Inventory inv) {
@@ -816,13 +815,13 @@ public class Script {
             for (Player all : Script.getNRPTeam()) {
                 if (isNRPTeam(all)) {
                     if (all != p)
-                        all.sendMessage("§8[" + cc + "§lT§8] " + cc + "» " + cc + getRank(p).getName(p) + " " + getName(p) + " " + msg);
+                        all.sendMessage("§8[" + cc + "§lT§8] " + cc + "» " + cc +  getName(p) + " " + msg);
                 }
             }
         } else {
             for (Player all : Script.getNRPTeam()) {
                 if (isNRPTeam(all)) {
-                    all.sendMessage("§8[" + cc + "§lT§8] " + cc + "» " + cc + getRank(p).getName(p) + " " + getName(p) + " " + msg);
+                    all.sendMessage("§8[" + cc + "§lT§8] " + cc + "» " + cc + getName(p) + " " + msg);
                 }
             }
         }
