@@ -640,8 +640,8 @@ commands:
     aliases: [ drogenkasse, drogenkassen, dbank, dkasse ]
   addorgdoor:
     description: add a door to an organisation
-  destroykoms:
-    description: destroy all koms
+#  destroykoms:
+#    description: destroy all koms
   restorezeitung:
     description: restore the zeitung
   teamactivity:
