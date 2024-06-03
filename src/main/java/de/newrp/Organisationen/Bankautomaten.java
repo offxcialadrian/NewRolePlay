@@ -35,6 +35,7 @@ public class Bankautomaten implements Listener {
 
     public static String PREFIX = "§8[§6Bankautomat§8] §6" + Messages.ARROW + " §7";
     public static HashMap<Organisation, Long> cooldown = new HashMap<>();
+    public static long cooldowns = 0L;
     public static HashMap<Location, Block> atmBlocks = new HashMap<>();
     public static HashMap<ATM, Long> cooldownATM = new HashMap<>();
     public static HashMap<String, Integer> progress = new HashMap<>();
@@ -54,6 +55,11 @@ public class Bankautomaten implements Listener {
             return;
         }
 
+        if (cooldowns > System.currentTimeMillis()) {
+            p.sendMessage(Messages.ERROR + "Du kannst erst in " + Script.getRemainingTime(cooldowns) + " wieder einen Bankautomaten zerstören.");
+            return;
+        }
+
         List<UUID> cops = Beruf.Berufe.POLICE.getMember().stream()
                 .filter(Duty::isInDuty)
                 .filter((nearbyPlayer) -> !SDuty.isSDuty(nearbyPlayer))
@@ -65,6 +71,7 @@ public class Bankautomaten implements Listener {
         }
 
         cooldown.put(o, System.currentTimeMillis() + TimeUnit.HOURS.toMillis(2) + TimeUnit.MINUTES.toMillis(30));
+        cooldowns = System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(10);
         cooldownATM.put(atm, System.currentTimeMillis() + 3600000);
         p.getInventory().remove(Material.TNT);
         p.sendMessage(PREFIX + "Der Bankautomat wird in 90 Sekunden zerstört.");

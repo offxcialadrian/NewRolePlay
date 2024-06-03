@@ -150,6 +150,15 @@ public class CarHandler implements Listener {
                     }
                     Strafzettel.removes.remove(player);
                     event.setCancelled(true);
+                } else if (Strafzettel.isChecking(player)) {
+                    if (car.getStrafzettel() != null) {
+                        Strafzettel strafzettel = car.getStrafzettel();
+                        player.sendMessage(StrafzettelCommand.PREFIX + "Auto: " + car.getLicenseplate() + " §8|§7 Preis: " + strafzettel.getPrice() + " §8|§7 Grund: " + strafzettel.getReason() + " §8|§7 Polizist: " + Objects.requireNonNull(Script.getOfflinePlayer(strafzettel.getCopID())).getName());
+                    } else {
+                        player.sendMessage(StrafzettelCommand.PREFIX + "Dieses Auto hat keinen Strafzettel!");
+                    }
+                    Strafzettel.info.remove(player);
+                    event.setCancelled(true);
                 } else {
                     if (SDuty.isSDuty(player)) {
                         event.setCancelled(true);
