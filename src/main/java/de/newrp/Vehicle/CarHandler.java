@@ -153,7 +153,7 @@ public class CarHandler implements Listener {
                 } else if (Strafzettel.isChecking(player)) {
                     if (car.getStrafzettel() != null) {
                         Strafzettel strafzettel = car.getStrafzettel();
-                        player.sendMessage(StrafzettelCommand.PREFIX + "Auto: " + car.getLicenseplate() + " §8|§7 Preis: " + strafzettel.getPrice() + " §8|§7 Grund: " + strafzettel.getReason() + " §8|§7 Polizist: " + Objects.requireNonNull(Script.getOfflinePlayer(strafzettel.getCopID())).getName());
+                        player.sendMessage(StrafzettelCommand.PREFIX + "Auto: " + car.getLicenseplate() + " §8|§7 Preis: " + strafzettel.getPrice() + "€ §8|§7 Grund: " + strafzettel.getReason() + " §8|§7 Polizist: " + Objects.requireNonNull(Script.getOfflinePlayer(strafzettel.getCopID())).getName());
                     } else {
                         player.sendMessage(StrafzettelCommand.PREFIX + "Dieses Auto hat keinen Strafzettel!");
                     }
