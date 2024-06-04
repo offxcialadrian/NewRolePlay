@@ -241,6 +241,7 @@ public class PayDay extends BukkitRunnable {
             for (House house : House.getHouses(Script.getNRPID(p))) {
                 if (house.getOwner() != Script.getNRPID(p)) continue;
                 int grundsteuer = (int) Steuern.Steuer.GRUNDSTEUER.getPercentage();
+                grundsteuer = grundsteuer * ((House.getHouses(Script.getNRPID(p)).size() + 1) / 2);
                 if (house.hasAddon(HouseAddon.SICHERHEITSTUER)) grundsteuer += 20;
                 p.sendMessage("§8" + Messages.ARROW + " §7Grundsteuer für Haus " + house.getID() + ": §c-" + grundsteuer + "€");
                 payday -= grundsteuer;

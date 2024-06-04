@@ -45,7 +45,7 @@ public class DeathmatchArenaService implements IDeathmatchArenaService {
         }
 
         if(player.getLocation().distance(this.joinLocation) > 3) {
-            player.sendMessage(Messages.ERROR + "Du bist zu weit vom Eingang der Deathmatch Arena!");
+            player.sendMessage(Messages.ERROR + "Du bist zu weit vom Eingang der Deathmatch Arena entfernt!");
             return;
         }
 

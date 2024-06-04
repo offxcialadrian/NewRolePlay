@@ -501,7 +501,7 @@ public class NewRoleplayMain extends JavaPlugin {
         getCommand("trennen").setExecutor(new Trennen());
         getCommand("drogenbank").setExecutor(new Drogenbank());
         getCommand("addorgdoor").setExecutor(new AddOrgDoor());
-        getCommand("destroykoms").setExecutor(new DestroyKoms());
+        // getCommand("destroykoms").setExecutor(new DestroyKoms());
         getCommand("teamactivity").setExecutor(new TeamActivity());
         getCommand("bussgeld").setExecutor(new Bussgeld());
         getCommand("bankraub").setExecutor(new Bankraub());

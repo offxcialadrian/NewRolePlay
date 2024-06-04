@@ -95,11 +95,16 @@ public class AsyncMinute extends BukkitRunnable {
 
         if (Calendar.getInstance().get(Calendar.MINUTE) == 0 || Calendar.getInstance().get(Calendar.MINUTE) == 15 || Calendar.getInstance().get(Calendar.MINUTE) == 30 || Calendar.getInstance().get(Calendar.MINUTE) == 45) {
             for (Player p : Bukkit.getOnlinePlayers()) {
+                if (Script.getLevel(p) <= 3) {
+                    p.sendMessage("§8[§bNeuling§8] §b" + Messages.ARROW + " §7Bei Fragen benutze den Neulingschat §6/nc §7um Hilfe zu erhalten!");
+                }
                 if (Premium.hasPremium(p)) continue;
                 String advert = advertises[Script.getRandom(0, advertises.length - 1)];
                 p.sendMessage(advert);
-                Title.sendTitle(p, 20, 100, 20, advert.split(Messages.ARROW)[0], advert.split(Messages.ARROW)[1]);
                 Script.sendActionBar(p, "§8[§cWerbung§8] §c" + Messages.ARROW + " §7Mit Premium erhältst du keine Werbung.");
+                if (Script.getLevel(p) > 3) {
+                    Title.sendTitle(p, 20, 100, 20, advert.split(Messages.ARROW)[0], advert.split(Messages.ARROW)[1]);
+                }
             }
         }
 

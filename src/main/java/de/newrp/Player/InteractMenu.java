@@ -11,6 +11,7 @@ import de.newrp.GFB.GFB;
 import de.newrp.House.House;
 import de.newrp.NewRoleplayMain;
 import de.newrp.Organisationen.Drogen;
+import de.newrp.Organisationen.Organisation;
 import de.newrp.Police.Handschellen;
 import de.newrp.Ticket.TicketCommand;
 import org.bukkit.Bukkit;
@@ -88,6 +89,9 @@ public class InteractMenu implements Listener {
         inv.setItem(22, new ItemBuilder(Material.CHEST).setName("§6Tasche zeigen").setLore("§8× §7Zeige §6" + Script.getName(tg) + " §7deine Tasche.").build());
         inv.setItem(23, new ItemBuilder(Material.BOOK).setName("§6Finanzen zeigen").setLore("§8× §7Zeige §6" + Script.getName(tg) + " §7deine Finanzen.").build());
         inv.setItem(24, new ItemBuilder(Material.PLAYER_HEAD).setName("§6Gesundheit zeigen").setLore("§8× §7Zeige §6" + Script.getName(tg) + " §7deine Gesundheit.").build());
+        if (Organisation.hasOrganisation(p) || Beruf.hasBeruf(p)) {
+            inv.setItem(29, new ItemBuilder(Material.GOLD_INGOT).setName("§6Kommunikationsmittel zerstören").setLore("§8× §7Zerstöre die Kommunikationsmittel von §6" + Script.getName(tg) + "§7.").build());
+        }
         inv.setItem(30, new ItemBuilder(Material.RED_TULIP).setName("§6Küssen").setLore("§8× §7Küsse §6" + Script.getName(tg) + "§7.").build());
         inv.setItem(31, new ItemBuilder(Material.LEAD).setName("§6Tragen").setLore("§8× §7Trage §6" + Script.getName(tg) + "§7.").build());
         inv.setItem(32, new ItemBuilder(Material.BARRIER).setName("§6Zeige Ticket").setLore("§8× §7Zeige §6" + Script.getName(tg) + "§7, dass du im Ticket bist.").build());
@@ -410,35 +414,49 @@ public class InteractMenu implements Listener {
                 }.runTaskTimer(NewRoleplayMain.getInstance(), 0L, 20L);
                 break;
             case "Drogentest":
-                if (!Duty.isInDuty(p)) {
-                    p.sendMessage(Messages.ERROR + "Du bist nicht im Dienst.");
-                    return;
-                }
-
-                Beruf.getBeruf(p).sendMessage(PREFIX + Script.getName(p) + " führt einen Drogentest bei " + Script.getName(tg) + " durch.");
-                Me.sendMessage(p, "führt einen Drogentest bei " + Script.getName(tg) + " durch.");
-                if (Drogen.test.containsKey(tg.getName())) {
-                    p.sendMessage(PREFIX + "Du hast einen Drogentest bei " + Script.getName(tg) + " durchgeführt.");
-                    tg.sendMessage(PREFIX + "Du wurdest von " + Script.getName(p) + " auf Drogen getestet.");
-                    p.sendMessage(Messages.INFO + "Ergebnis: §cPositiv §8(§7" + Drogen.test.get(tg.getName()).getName() + "§8)");
-                } else {
-                    p.sendMessage(PREFIX + "Du hast einen Drogentest bei " + Script.getName(tg) + " durchgeführt.");
-                    tg.sendMessage(PREFIX + "Du wurdest von " + Script.getName(p) + " auf Drogen getestet.");
-                    p.sendMessage(Messages.INFO + "Ergebnis: §aNegativ");
-                }
-
+                p.performCommand("drugtest " + tg.getName());
                 break;
             case "Alkoholtest":
-                if (!Duty.isInDuty(p)) {
-                    p.sendMessage(Messages.ERROR + "Du bist nicht im Dienst.");
-                    return;
+                p.performCommand("alktest " + tg.getName());
+                break;
+            case "Kommunikationsmittel zerstören":
+                if(AFK.isAFK(tg)) {
+                    p.sendMessage(Messages.ERROR + "Der Spieler ist AFK.");
+                    break;
                 }
 
-                Beruf.getBeruf(p).sendMessage(PREFIX + Script.getName(p) + " führt einen Alkoholtest bei " + Script.getName(tg) + " durch.");
-                Me.sendMessage(p, "führt einen Alkoholtest bei " + Script.getName(tg) + " durch.");
-                p.sendMessage(PREFIX + "Du hast einen Alkoholtest bei " + Script.getName(tg) + " durchgeführt.");
-                tg.sendMessage(PREFIX + "Du wurdest von " + Script.getName(p) + " auf Alkohol getestet.");
-                p.sendMessage(Messages.INFO + "Ergebnis: §aNegativ");
+                if(SDuty.isSDuty(tg)) {
+                    p.sendMessage(Messages.ERROR + "Der Spieler ist im Support-Dienst.");
+                    break;
+                }
+
+                if(!Mobile.hasPhone(tg)) {
+                    p.sendMessage(Messages.ERROR + "Der Spieler hat kein Handy.");
+                    break;
+                }
+
+                if(Mobile.getPhone(tg).isDestroyed(tg)) {
+                    p.sendMessage(Messages.ERROR + "Die Kommunikationsmittel sind bereits zerstört.");
+                    break;
+                }
+
+                if(p.getLocation().distance(tg.getLocation()) > 5) {
+                    p.sendMessage(Messages.ERROR + "Du bist zu weit entfernt.");
+                    break;
+                }
+
+                if (tg.isInsideVehicle()) {
+                    if (tg.getVehicle() instanceof Player) {
+                        p.sendMessage(Messages.ERROR + "Die Person wird gerade gepackt.");
+                        break;
+                    }
+                }
+
+                p.sendMessage(PREFIX + "Du hast die Kommunikationsmittel von " + tg.getName() + " zerstört.");
+                tg.sendMessage(PREFIX + "Deine Kommunikationsmittel wurden von " + p.getName() + " zerstört.");
+                Me.sendMessage(p, "zerstört die Kommunikationsmittel von " + Script.getName(tg) + ".");
+                Mobile.getPhone(tg).setDestroyed(tg, true);
+                Mobile.getPhone(tg).setOff(tg);
                 break;
         }
     }

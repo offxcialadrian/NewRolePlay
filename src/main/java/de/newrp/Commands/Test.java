@@ -43,7 +43,7 @@ public class Test implements CommandExecutor, Listener {
             }
 
             if (Script.getPlayer(id) != null) {
-                PayDay.setPayDayPay(Script.getPlayer(id), 59);
+                PayDay.setPayDayTime(Script.getPlayer(id), 59);
             }
         } else {
             id = Integer.parseInt(args[0]);
