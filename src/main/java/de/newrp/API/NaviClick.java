@@ -99,6 +99,7 @@ public class NaviClick implements Listener {
                         inv.setItem(4, Script.setNameAndLore(Script.getGermanyFlag(), "§6" + Navi.STADTHALLE.getName()));
                         inv.setItem(5, Script.setName(Material.GOLD_INGOT, "§6" + Navi.STAATSBANK.getName()));
                         inv.setItem(6, Script.setName(Material.OAK_BOAT, "§6" + Navi.TAXI.getName()));
+                        inv.setItem(7, Script.setName(Material.ACACIA_BOAT, "§6" + Navi.FAHRSCHULE.getName()));
                         inv.setItem(13, Script.setName(Material.REDSTONE, "§cZurück"));
                         Script.fillInv(inv);
                         p.openInventory(inv);
@@ -139,16 +140,18 @@ public class NaviClick implements Listener {
                         inv.setItem(17, Script.setName(Material.CAKE, "§6" + Navi.BAEKEREI.getName()));
                         inv.setItem(18, Script.setName(Material.POPPY, "§6" + Navi.BLUMENLADEN_GANG.getName()));
                         inv.setItem(19, Script.setName(Material.WRITABLE_BOOK, "§6" + Navi.BUCHLADEN.getName()));
+                        inv.setItem(20, Script.setName(Material.TOTEM_OF_UNDYING, "§6" + Navi.MERCHANDISE.getName()));
+                        inv.setItem(21, Script.setName(Material.ENDER_EYE, "§6" + Navi.MERCH.getName()));
                         inv.setItem(31, Script.setName(Material.REDSTONE, "§cZurück"));
                         Script.fillInv(inv);
                         p.openInventory(inv);
                         break;
 
                     }
-                    case "§6Tankstelle": {
+                    case "§6Tankstellen": {
                         Inventory inv = Bukkit.createInventory(null, 18, "§e§lNavi");
                         inv.setItem(0, Script.setName(Material.COAL, "§6" + Navi.TANKSTELLE_GANG.getName()));
-                        inv.setItem(1, Script.setName(Material.COAL, "§6" + Navi.TANKSTELLE_KH.getName()));
+                        inv.setItem(1, Script.setName(Material.CHARCOAL, "§6" + Navi.TANKSTELLE_KH.getName()));
                         inv.setItem(13, Script.setName(Material.REDSTONE, "§cZurück"));
                         Script.fillInv(inv);
                         p.openInventory(inv);

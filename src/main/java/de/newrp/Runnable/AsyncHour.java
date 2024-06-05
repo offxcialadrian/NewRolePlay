@@ -98,6 +98,7 @@ public class AsyncHour extends BukkitRunnable {
 
             for (Shops shop : Shops.values()) {
                 if (shop.getOwner() == 0) continue;
+                if (shop.isLocked()) continue;
                 int runningcost = 0;
                 HashMap<Integer, ItemStack> c = shop.getItems();
                 if (shop.getType() != ShopType.HOTEL) {

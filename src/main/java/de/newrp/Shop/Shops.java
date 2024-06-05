@@ -59,7 +59,9 @@ public enum Shops {
     GAS_STATION_HOSPITAL(43, "Tankstelle am Krankenhaus", "Tankstelle am Krankenhaus", 100000, new Location(Script.WORLD, 434, 76, 1072, 0.0f, 0.0f), 0, 600, false, ShopType.GAS_STATION),
     GAS_STATION_GANG(44, "Tankstelle Gang", "Tankstelle Gang", 100000, new Location(Script.WORLD, 819, 67, 1326, 0.0f, 0.0f), 0, 600, false, ShopType.GAS_STATION),
     BAR(45, "Bar", "Bar", 50000, new Location(Script.WORLD, 704.5, 69, 859.5, 0.0f, 0.0f), 0, 600, true, ShopType.BAR),
-    CLUB(46, "Club-Bar", "Club-Bar", 35000, new Location(Script.WORLD, 477.5, 67, 1285.5, 0.0f, 0.0f), 0, 600, true, ShopType.BAR);
+    CLUB(46, "Club-Bar", "Club-Bar", 35000, new Location(Script.WORLD, 477.5, 67, 1285.5, 0.0f, 0.0f), 0, 600, true, ShopType.BAR),
+    MERCH(47, "Merchandise", "Merchandise", 45000, new Location(Script.WORLD, 66.5, 76, 694.5, 0.0f, 0.0f), 0, 600, true, ShopType.MERCH),
+    MERCH_PIER(48, "Merch-Stand", "Merch-Stand", 40000, new Location(Script.WORLD, 806, 66, 727, 0.0f, 0.0f), 0, 600, true, ShopType.MERCH);
 
 
     private final int id;

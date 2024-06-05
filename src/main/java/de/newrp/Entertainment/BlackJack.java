@@ -4,6 +4,8 @@ import de.newrp.API.Messages;
 import de.newrp.API.PaymentType;
 import de.newrp.API.Script;
 import de.newrp.NewRoleplayMain;
+import de.newrp.Organisationen.Organisation;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -32,24 +34,30 @@ public class BlackJack implements CommandExecutor, Listener {
     private static final HashMap<String, Integer> player = new HashMap<>();
     private static final ArrayList<String> game = new ArrayList<>();
     private static final HashMap<String, Integer> win = new HashMap<>();
+    private static Integer all = 0;
     private static final String PREFIX = "§8[§6BlackJack§8] §6" + Messages.ARROW + " §7";
 
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
         Player p = (Player) cs;
-        if(Script.getAge(Script.getNRPID(p)) < 18) {
+        if (Script.getAge(Script.getNRPID(p)) < 18) {
             p.sendMessage(Messages.ERROR + "Diese Funktion ist für dich aktuell nicht verfügbar.");
             return true;
         }
 
-        if(win.containsKey(p.getName()) && win.get(p.getName()) >= 5000) {
+        if(win.containsKey(p.getName()) && win.get(p.getName()) >= Casino.getLimit()) {
             p.sendMessage(Messages.ERROR + "Du hast heute schon zu viel gewonnen. Versuche es morgen erneut.");
+            return true;
+        }
+
+        if (Casino.getMoney() <= 0 || all >= Casino.getMax()) {
+            p.sendMessage(Messages.ERROR + "Das Casino hat heute keine Ressourcen mehr übrig. Komm morgen wieder zurück.");
             return true;
         }
 
         if (p.getLocation().distance(new Location(Script.WORLD, 790, 109, 858)) < 5) {
             if (!bet.containsKey(p.getName())) {
-                if (args.length == 1) {
+                if (args.length > 0) {
                     try {
                         int i = Integer.parseInt(args[0]);
                         if (Script.getMoney(p, PaymentType.CASH) >= i) {
@@ -57,10 +65,17 @@ public class BlackJack implements CommandExecutor, Listener {
                                 p.sendMessage(Messages.ERROR + "Du kannst nicht unter 1€ setzen.");
                                 return true;
                             }
-                            if (i > 1000) {
-                                p.sendMessage(Messages.ERROR + "Du kannst nicht mehr als 1000€ setzen.");
+
+                            if (i > Casino.getBet()) {
+                                p.sendMessage(Messages.ERROR + "Du kannst nicht mehr als " + Casino.getBet() + "€ setzen.");
                                 return true;
                             }
+
+                            if (Casino.getMoney() < i || i + all > Casino.getMax()) {
+                                p.sendMessage(Messages.ERROR + "Das Casino hat nicht mehr so viele Ressourcen übrig.");
+                                return true;
+                            }
+
                             p.sendMessage(Messages.INFO + "Glücksspiel kann süchtig machen. Spiele verantwortungsbewusst.");
                             p.sendMessage(Messages.INFO + "Solltest du Hilfe benötigen, wende dich an: §6https://www.bzga.de/");
                             bet.put(p.getName(), i);
@@ -119,8 +134,8 @@ public class BlackJack implements CommandExecutor, Listener {
                 npc = (pc + 1);
 
             if (npc == 21) {
-                int random = Script.getRandom(1, 100);
-                if (random < 80) {
+                int random = Script.getRandom(1, 10);
+                if (random <= 7) {
                     hit(p);
                     return;
                 }
@@ -128,7 +143,7 @@ public class BlackJack implements CommandExecutor, Listener {
         }
 
 
-        p.sendMessage(PREFIX + "Du hast folgendes gezogen: §6" + card.getName());
+        p.sendMessage(PREFIX + "Du hast Folgendes gezogen: §6" + card.getName());
 
         if (npc < 22) {
             if (npc == 21) {
@@ -162,7 +177,7 @@ public class BlackJack implements CommandExecutor, Listener {
 
         if (nc > 21) {
             int random = Script.getRandom(1, 100);
-            if (random <= 95) {
+            if (random <= Casino.getP()) {
                 stand(p);
                 return;
             }
@@ -170,7 +185,7 @@ public class BlackJack implements CommandExecutor, Listener {
 
         if (nc >= 17 && nc <= pc) {
             int random = Script.getRandom(1, 100);
-            if (random <= 80) {
+            if (random <= Casino.getP()) {
                 stand(p);
                 return;
             }
@@ -251,12 +266,15 @@ public class BlackJack implements CommandExecutor, Listener {
         p.sendMessage(PREFIX + "  §8» §6Du§7: §6" + player.get(p.getName()));
         p.sendMessage(PREFIX + "  §8» §6Croupier§7: §6" + cashier.get(p.getName()));
         Script.addMoney(p, PaymentType.CASH, bet.get(p.getName()) * 2);
-        win.put(p.getName(), bet.get(p.getName()) * 2);
+        win.putIfAbsent(p.getName(), 0);
+        win.put(p.getName(), win.get(p.getName()) + bet.get(p.getName()));
+        all += (int) Math.round(bet.get(p.getName()) * 0.75);
+        Casino.removeMoney((int) Math.round(bet.get(p.getName()) * 0.75));
         bet.remove(p.getName());
         player.remove(p.getName());
         cashier.remove(p.getName());
         game.remove(p.getName());
-
+        Organisation.FALCONE.sendMessage(Casino.PREFIX + p.getName() + " hat beim BlackJack §c" + bet.get(p.getName()) + "€ §7gewonnen.");
     }
 
     private static void tie(Player p) {
@@ -268,6 +286,7 @@ public class BlackJack implements CommandExecutor, Listener {
         player.remove(p.getName());
         cashier.remove(p.getName());
         game.remove(p.getName());
+        Organisation.FALCONE.sendMessage(Casino.PREFIX + p.getName() + " hat beim BlackJack 0€ gewonnen.");
     }
 
     private static void lose(Player p, Boolean bust) {
@@ -278,9 +297,12 @@ public class BlackJack implements CommandExecutor, Listener {
             p.sendMessage(PREFIX + "  §8» §6Du§7: §6" + player.get(p.getName()));
             p.sendMessage(PREFIX + "  §8» §6Croupier§7: §6" + cashier.get(p.getName()));
         }
+        all -= bet.get(p.getName());
+        Casino.addMoney(bet.get(p.getName()));
         bet.remove(p.getName());
         player.remove(p.getName());
         cashier.remove(p.getName());
         game.remove(p.getName());
+        Organisation.FALCONE.sendMessage(Casino.PREFIX + p.getName() + " hat beim BlackJack §a" + bet.get(p.getName()) + "€ §7verloren.");
     }
 }

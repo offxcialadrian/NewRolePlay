@@ -126,7 +126,24 @@ public enum ShopItem {
     SICHERHEITSTUER(139, "§7Sicherheitstür", new ItemStack(Material.IRON_DOOR), 10, 1, 20, HouseAddon.SICHERHEITSTUER.getPrice(), 13000, false, false, false, new ShopType[] {ShopType.HOUSEADDON}),
     VODKA(140, "§6Kartoffelwasser", Script.setName(new ItemStack(Material.HONEY_BOTTLE), "§6Kartoffelwasser"), 1, 1, 1, 6, 600, true, true, false, new ShopType[] {ShopType.BAR}),
     BIER(141, "§6Gerstensaft", Script.setName(new ItemStack(Material.HONEY_BOTTLE), "§6Gerstensaft"), 1, 1, 1, 4, 400, true, true, false, new ShopType[] {ShopType.BAR}),
-    LIKOER(142, "§6Kräutertrunk", Script.setName(new ItemStack(Material.HONEY_BOTTLE), "§6Kräutertrunk"), 1, 1, 1, 8, 800, true, true, false, new ShopType[] {ShopType.BAR});
+    LIKOER(142, "§6Kräutertrunk", Script.setName(new ItemStack(Material.HONEY_BOTTLE), "§6Kräutertrunk"), 1, 1, 1, 8, 800, true, true, false, new ShopType[] {ShopType.BAR}),
+    TEDDY(143, "§dTeddy-Bär", createItem(3006, "§dTeddy"), 1, 1, 1, 50, 1000, false, true, false, new ShopType[] {ShopType.MERCH}),
+    PANDA(144, "§dPanda", createItem(352, "§dPanda"), 1, 1, 1, 50, 1000, false, true, false, new ShopType[] {ShopType.MERCH}),
+    DEER(145, "§dReh", createItem(54707, "§dReh"), 1, 1, 1, 50, 1000, false, true, false, new ShopType[] {ShopType.MERCH}),
+    UNICORN(146, "§dEinhorn", createItem(25401, "§dEinhorn"), 1, 1, 1, 50, 1000, false, true, false, new ShopType[] {ShopType.MERCH}),
+    WHALE(147, "§dWal", createItem(1755, "§dWal"), 1, 1, 1, 50, 1000, false, true, false, new ShopType[] {ShopType.MERCH}),
+    SHARK(148, "§dHai", createItem(51444, "§dHai"), 1, 1, 1, 50, 1000, false, true, false, new ShopType[] {ShopType.MERCH}),
+    SHEEP(149, "§dSchaf", createItem(62925, "§dSchaf"), 1, 1, 1, 50, 1000, false, true, false, new ShopType[] {ShopType.MERCH}),
+    BEE(150, "§dBiene", createItem(31264, "§dBiene"), 1, 1, 1, 50, 1000, false, true, false, new ShopType[] {ShopType.MERCH}),
+    FROG(151, "§dFrosch", createItem(51343, "§dFrosch"), 1, 1, 1, 50, 1000, false, true, false, new ShopType[] {ShopType.MERCH}),
+    DINO(152, "§dDino", createItem(57302, "§dDino"), 1, 1, 1, 50, 1000, false, true, false, new ShopType[] {ShopType.MERCH}),
+    ELEPHANT(153, "§dElefant", createItem(31297, "§dElefant"), 1, 1, 1, 50, 1000, false, true, false, new ShopType[] {ShopType.MERCH}),
+    FISH(154, "§dFisch", createItem(22794, "§dFisch"), 1, 1, 1, 50, 1000, false, true, false, new ShopType[] {ShopType.MERCH}),
+    PARROT(155, "§dPapagei", createItem(349, "§dPapagei"), 1, 1, 1, 50, 1000, false, true, false, new ShopType[] {ShopType.MERCH}),
+    PIG(156, "§dSchwein", createItem(14201, "§dSchwein"), 1, 1, 1, 50, 1000, false, true, false, new ShopType[] {ShopType.MERCH}),
+    COW(157, "§dKuh", createItem(51250, "§dKuh"), 1, 1, 1, 50, 1000, false, true, false, new ShopType[] {ShopType.MERCH}),
+    TURTLE(158, "§dSchildkröte", createItem(65736, "§dSchildkröte"), 1, 1, 1, 50, 1000, false, true, false, new ShopType[] {ShopType.MERCH}),
+    LION(159, "§dLöwe", createItem(4662, "§dLöwe"), 1, 1, 1, 50, 1000, false, true, false, new ShopType[] {ShopType.MERCH});
 
 
     private final int id;
@@ -282,4 +299,12 @@ public enum ShopItem {
         return shoe;
     }
 
+
+    public static ItemStack createItem(int headid, String name) {
+        ItemStack item = Script.getHead(headid);
+        ItemMeta meta = item.getItemMeta();
+        meta.setDisplayName(name);
+        item.setItemMeta(meta);
+        return item;
+    }
 }

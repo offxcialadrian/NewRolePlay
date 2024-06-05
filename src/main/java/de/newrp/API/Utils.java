@@ -278,8 +278,6 @@ public class Utils implements Listener {
         TextChannel channel = this.jdaService.getJda().getTextChannelById("1236441113057824881");
         channel.sendMessageEmbeds(embed.build()).queue();*/
 
-
-        p.getInventory().remove(Material.PLAYER_HEAD);
         if (Script.hasRank(p, Rank.DEVELOPER, false)) {
             Script.team.add(p);
 
