@@ -43,6 +43,14 @@ public class BlackJack implements CommandExecutor, Listener {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
         Player p = (Player) cs;
+
+        if (Organisation.hasOrganisation(p)) {
+            if (Organisation.getOrganisation(p) == Organisation.FALCONE) {
+                p.sendMessage(Messages.ERROR + "Mitarbeiter des Casinos können kein Glücksspiel betreiben.");
+                return true;
+            }
+        }
+
         if (Script.getAge(Script.getNRPID(p)) < 18) {
             p.sendMessage(Messages.ERROR + "Diese Funktion ist für dich aktuell nicht verfügbar.");
             return true;
