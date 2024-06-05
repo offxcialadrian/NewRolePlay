@@ -579,6 +579,7 @@ public class NewRoleplayMain extends JavaPlugin {
         getCommand("drugtest").setExecutor(new DrugTestCommand());
         getCommand("dsgvo").setExecutor(new DsgvoCommand());
         getCommand("imprint").setExecutor(new ImprintCommand());
+        getCommand("casino").setExecutor(new Casino());
     }
 
     /**
