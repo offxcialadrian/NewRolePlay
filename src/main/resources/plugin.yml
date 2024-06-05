@@ -834,5 +834,9 @@ commands:
   drugtest:
     description: test for drugs
     aliases: [ drogentest ]
-  casino:
-    description: toggle casino settings
+  imprint:
+    description: shows the imprint link to the sender
+    aliases: [ impressum ]
+  dsgvo:
+    description: shows the dsgvo link to the sender
+    aliases: [ datenschutz, datenschutzerklaerung ]

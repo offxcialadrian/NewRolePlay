@@ -63,6 +63,8 @@ import de.newrp.features.deathmatcharena.data.DeathmatchArenaConfig;
 import de.newrp.features.deathmatcharena.impl.DeathmatchArenaService;
 import de.newrp.features.deathmatcharena.listener.DeathmatchQuitListener;
 import de.newrp.features.deathmatcharena.listener.DeathmatchRespawnListener;
+import de.newrp.features.dsgvo.commands.DsgvoCommand;
+import de.newrp.features.dsgvo.commands.ImprintCommand;
 import de.newrp.features.emergencycall.IEmergencyCallService;
 import de.newrp.features.emergencycall.commands.*;
 import de.newrp.features.emergencycall.impl.EmergencyCallService;
@@ -575,7 +577,8 @@ public class NewRoleplayMain extends JavaPlugin {
         getCommand("umsatz").setExecutor(new UmsatzCommand());
         getCommand("alktest").setExecutor(new AlkTestCommand());
         getCommand("drugtest").setExecutor(new DrugTestCommand());
-        getCommand("casino").setExecutor(new Casino());
+        getCommand("dsgvo").setExecutor(new DsgvoCommand());
+        getCommand("imprint").setExecutor(new ImprintCommand());
     }
 
     /**
