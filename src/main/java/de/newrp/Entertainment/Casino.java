@@ -42,9 +42,11 @@ public class Casino implements CommandExecutor, TabCompleter {
                 return true;
             }
 
-            if (player.getLocation().distance(new Location(Script.WORLD, 756, 109, 864)) > 5) {
-                player.sendMessage(Messages.ERROR + "Du bist nicht am Casino-Schalter!");
-                return true;
+            if (args.length > 0) {
+                if (player.getLocation().distance(new Location(Script.WORLD, 756, 109, 864)) > 5) {
+                    player.sendMessage(Messages.ERROR + "Du bist nicht am Casino-Schalter!");
+                    return true;
+                }
             }
 
             if (args.length == 1) {
