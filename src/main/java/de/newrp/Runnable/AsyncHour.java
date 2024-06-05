@@ -17,6 +17,7 @@ import de.newrp.Organisationen.Organisation;
 import de.newrp.Player.AFK;
 import de.newrp.Player.Hotel;
 import de.newrp.Shop.Shop;
+import de.newrp.Shop.ShopItem;
 import de.newrp.Shop.ShopType;
 import de.newrp.Shop.Shops;
 import de.newrp.dependencies.DependencyContainer;
@@ -53,7 +54,7 @@ public class AsyncHour extends BukkitRunnable {
             }
 
             for (Beruf.Berufe berufe : Beruf.Berufe.values()) {
-                Stadtkasse.removeStadtkasse(berufe.getLeasedAmount() * (berufe.getCarType().getTax() / 2), "Leasinggebühren " + berufe.getLeasedAmount() + "x " + berufe.getName());
+                Stadtkasse.removeStadtkasse(berufe.getLeasedAmount() * (berufe.getCarType().getTax()), "Leasinggebühren " + berufe.getLeasedAmount() + "x " + berufe.getName());
             }
 
             if (Abteilung.Abteilungen.FEUERWEHR.getOnlineMembers().size() >= 2) {
@@ -104,12 +105,11 @@ public class AsyncHour extends BukkitRunnable {
                 if (shop.getType() != ShopType.HOTEL) {
                     for (Map.Entry<Integer, ItemStack> n : c.entrySet()) {
                         ItemStack is = n.getValue();
-                        if (is == null) {
-                            continue;
-                        }
-                        runningcost += 5;
+                        if (is == null) continue;
+                        if (ShopItem.getShopItem(is) != null)
+                            runningcost += ShopItem.getShopItem(is).getTax();
                     }
-                    if (shop.acceptCard()) runningcost += 5;
+                    if (shop.acceptCard()) runningcost += Math.round((float) shop.getRent() / 2);
                 } else {
                     Hotel.Hotels hotel = Hotel.Hotels.getHotelByShop(shop);
                     assert hotel != null;

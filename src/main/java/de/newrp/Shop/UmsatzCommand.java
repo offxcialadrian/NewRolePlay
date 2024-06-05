@@ -7,11 +7,13 @@ import de.newrp.Administrator.SDuty;
 import de.newrp.Berufe.Abteilung;
 import de.newrp.Berufe.Beruf;
 import de.newrp.NewRoleplayMain;
+import de.newrp.Player.Hotel;
 import net.kyori.adventure.text.Component;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.sql.ResultSet;
@@ -57,6 +59,27 @@ public class UmsatzCommand implements CommandExecutor {
                 }
             }
 
+
+            int runningcost = 0;
+            HashMap<Integer, ItemStack> c = shop.getItems();
+            if (shop.getType() != ShopType.HOTEL) {
+                for (Map.Entry<Integer, ItemStack> n : c.entrySet()) {
+                    ItemStack is = n.getValue();
+                    if (is == null) continue;
+                    if (ShopItem.getShopItem(is) != null)
+                        runningcost += ShopItem.getShopItem(is).getTax();
+                }
+                if (shop.acceptCard()) runningcost += Math.round((float) shop.getRent() / 2);
+            } else {
+                Hotel.Hotels hotel = Hotel.Hotels.getHotelByShop(shop);
+                assert hotel != null;
+                for (Hotel.Rooms room : hotel.getRentedRooms()) {
+                    runningcost += room.getPrice() / 2;
+                }
+            }
+            int totalcost = runningcost + shop.getRent();
+            totalcost = Math.round((TimeUnit.MILLISECONDS.toHours(time) - TimeUnit.MILLISECONDS.toDays(time)) * totalcost);
+
             Map<Integer, Integer> buyer = new HashMap<>();
             Map<Integer, Integer> items = new HashMap<>();
             int a = 0;
@@ -77,6 +100,7 @@ public class UmsatzCommand implements CommandExecutor {
             player.sendMessage("     §8" + Messages.ARROW + " §6Netto: §7" + n + "€ §8(§7" + ((double) Math.round(((float) n / b) * 1000) / 10) + "%§8)");
             player.sendMessage("     §8" + Messages.ARROW + " §6Brutto: §7" + b + "€");
             player.sendMessage("     §8" + Messages.ARROW + " §6Menge: §7" + a + "x");
+            player.sendMessage("     §8" + Messages.ARROW + " §6Nebenkosten: §7" + totalcost + "€");
             player.sendMessage("     §8" + Messages.ARROW + " §6Top-Artikel: §7" + (items.keySet().isEmpty() ? "Keiner" : Objects.requireNonNull(ShopItem.getItem(Collections.max(items.entrySet(), Map.Entry.comparingByValue()).getKey())).getName()));
             player.sendMessage("     §8" + Messages.ARROW + " §6Top-Käufer: §7" + (buyer.keySet().isEmpty() ? "Keiner" : Objects.requireNonNull(Script.getOfflinePlayer(Collections.max(buyer.entrySet(), Map.Entry.comparingByValue()).getKey())).getName()));
         }
