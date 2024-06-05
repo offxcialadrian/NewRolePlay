@@ -1,5 +1,6 @@
 package de.newrp.Entertainment;
 
+import com.comphenix.protocol.PacketType;
 import de.newrp.API.Messages;
 import de.newrp.API.PaymentType;
 import de.newrp.API.Script;
@@ -32,6 +33,7 @@ public class BlackJack implements CommandExecutor, Listener {
 
     private static final HashMap<String, Integer> bet = new HashMap<>();
     private static final HashMap<String, Integer> cashier = new HashMap<>();
+    private static final HashMap<String, String> member = new HashMap<>();
     private static final HashMap<String, Integer> player = new HashMap<>();
     private static final ArrayList<String> game = new ArrayList<>();
     private static final HashMap<String, Integer> win = new HashMap<>();
@@ -83,6 +85,12 @@ public class BlackJack implements CommandExecutor, Listener {
                             Script.removeMoney(p, PaymentType.CASH, i);
                             cashier.put(p.getName(), Cards.getRandomCard().getValue());
                             player.put(p.getName(), Cards.getRandomCard().getValue());
+                            Player m = Casino.closestMember(p.getLocation(), 7);
+                            if (m == null) {
+                                member.put(p.getName(), "Croupier");
+                            } else {
+                                member.put(p.getName(), m.getName());
+                            }
                             openGUI(p);
                         } else
                             p.sendMessage(Messages.ERROR + "Du hast nicht genug Geld für diesen Einsatz.");
@@ -135,8 +143,8 @@ public class BlackJack implements CommandExecutor, Listener {
                 npc = (pc + 1);
 
             if (npc == 21) {
-                int random = Script.getRandom(1, 10);
-                if (random <= 7) {
+                int random = Script.getRandom(1, 100);
+                if (random <= Casino.getP()) {
                     hit(p);
                     return;
                 }
@@ -149,11 +157,11 @@ public class BlackJack implements CommandExecutor, Listener {
         if (npc < 22) {
             if (npc == 21) {
                 player.replace(p.getName(), 21);
-                p.sendMessage(PREFIX + "Du: §6" + player.get(p.getName()));
+                p.sendMessage("                             §7Du: §6" + player.get(p.getName()));
                 win(p);
             } else {
                 player.replace(p.getName(), npc);
-                p.sendMessage(PREFIX + "Du: §6" + player.get(p.getName()));
+                p.sendMessage("                             §7Du: §6" + player.get(p.getName()));
                 openGUI(p);
             }
         } else {
@@ -192,20 +200,20 @@ public class BlackJack implements CommandExecutor, Listener {
             }
         }
 
-        p.sendMessage(PREFIX + "Der Croupier zieht jetzt...");
+        p.sendMessage(PREFIX + (member.get(p.getName()).equals("Croupier") ? "Der " : "") + member.get(p.getName()) + " zieht jetzt...");
         cashier.replace(p.getName(), nc);
 
         new BukkitRunnable() {
             @Override
             public void run() {
                 int nc = cashier.get(p.getName());
-                p.sendMessage(PREFIX + "Der Croupier hat folgendes gezogen: §6" + card.getName());
+                p.sendMessage(PREFIX + (member.get(p.getName()).equals("Croupier") ? "Der " : "") + member.get(p.getName()) + " hat Folgendes gezogen: §6" + card.getName());
                 if (nc < 22) {
                     if (nc > pc) {
-                        p.sendMessage(PREFIX + "Croupier: §6" + cashier.get(p.getName()));
+                        p.sendMessage("                             §7" + member.get(p.getName()) + ": §6" + cashier.get(p.getName()));
                         lose(p, false);
                     } else {
-                        p.sendMessage(PREFIX + "Croupier: §6" + cashier.get(p.getName()));
+                        p.sendMessage("                             §7" + member.get(p.getName()) + ": §6" + cashier.get(p.getName()));
                         if (nc < 17) {
                             new BukkitRunnable() {
                                 @Override
@@ -231,7 +239,7 @@ public class BlackJack implements CommandExecutor, Listener {
         Inventory inv = Bukkit.createInventory(null, 9 * 4, "§6Casino §8» §7BlackJack");
         ItemStack bankIS = new ItemStack(Material.PAPER);
         ItemMeta bankMETA = bankIS.getItemMeta();
-        bankMETA.setDisplayName("§6Croupier");
+        bankMETA.setDisplayName("§6" + member.get(p.getName()));
         List<String> clore = new ArrayList<>();
         clore.add("§8» §6" + cashier.get(p.getName()));
         bankMETA.setLore(clore);
@@ -264,15 +272,15 @@ public class BlackJack implements CommandExecutor, Listener {
 
     private static void win(Player p) {
         p.sendMessage(PREFIX + "Du hast §agewonnen§7 und §6" + (bet.get(p.getName()) * 2) + "€§7 erhalten!");
-        p.sendMessage(PREFIX + "  §8» §6Du§7: §6" + player.get(p.getName()));
-        p.sendMessage(PREFIX + "  §8» §6Croupier§7: §6" + cashier.get(p.getName()));
+        p.sendMessage("                         " + "  §8» §6Du§7: §6" + player.get(p.getName()));
+        p.sendMessage("                         " + "  §8» §6" + member.get(p.getName()) + "§7: §6" + cashier.get(p.getName()));
         Script.addMoney(p, PaymentType.CASH, bet.get(p.getName()) * 2);
         win.putIfAbsent(p.getName(), 0);
         win.put(p.getName(), win.get(p.getName()) + bet.get(p.getName()));
         all += (int) Math.round(bet.get(p.getName()) * 0.75);
         Casino.removeMoney((int) Math.round(bet.get(p.getName()) * 0.75));
         for (UUID id : Organisation.FALCONE.getMember()) if (Bukkit.getOfflinePlayer(id).isOnline()) if (Organisation.getRank(Bukkit.getPlayer(id)) >= 3)
-            Bukkit.getPlayer(id).sendMessage(Casino.PREFIX + p.getName() + " hat beim BlackJack §c" + bet.get(p.getName()) + "€ §7gewonnen.");
+            Bukkit.getPlayer(id).sendMessage(Casino.PREFIX + p.getName() + " hat beim BlackJack" + (member.get(p.getName()).equals("Croupier") ? "" : " mit " + member.get(p.getName())) + " §c" + bet.get(p.getName()) + "€ §7gewonnen.");
         bet.remove(p.getName());
         player.remove(p.getName());
         cashier.remove(p.getName());
@@ -281,11 +289,11 @@ public class BlackJack implements CommandExecutor, Listener {
 
     private static void tie(Player p) {
         p.sendMessage(PREFIX + "Das Spiel ist unentschieden geendet und du hast deinen Wetteinsatz zurückerhalten (Tie).");
-        p.sendMessage(PREFIX + "  §8» §6Du§7: §6" + player.get(p.getName()));
-        p.sendMessage(PREFIX + "  §8» §6Croupier§7: §6" + cashier.get(p.getName()));
+        p.sendMessage("                         " + "  §8» §6Du§7: §6" + player.get(p.getName()));
+        p.sendMessage("                         " + "  §8» §6" + member.get(p.getName()) + "§7: §6" + cashier.get(p.getName()));
         Script.addMoney(p, PaymentType.CASH, bet.get(p.getName()));
         for (UUID id : Organisation.FALCONE.getMember()) if (Bukkit.getOfflinePlayer(id).isOnline()) if (Organisation.getRank(Bukkit.getPlayer(id)) >= 3)
-            Bukkit.getPlayer(id).sendMessage(Casino.PREFIX + p.getName() + " hat beim BlackJack 0€ gewonnen.");
+            Bukkit.getPlayer(id).sendMessage(Casino.PREFIX + p.getName() + " hat beim BlackJack" + (member.get(p.getName()).equals("Croupier") ? "" : " mit " + member.get(p.getName())) + " 0€ gewonnen.");
         bet.remove(p.getName());
         player.remove(p.getName());
         cashier.remove(p.getName());
@@ -295,15 +303,15 @@ public class BlackJack implements CommandExecutor, Listener {
     private static void lose(Player p, Boolean bust) {
         p.sendMessage(PREFIX + "Du hast §cverloren§7!");
         if (bust) {
-            p.sendMessage(PREFIX + "BUST!");
+            p.sendMessage("                             §7" + "BUST!");
         } else {
-            p.sendMessage(PREFIX + "  §8» §6Du§7: §6" + player.get(p.getName()));
-            p.sendMessage(PREFIX + "  §8» §6Croupier§7: §6" + cashier.get(p.getName()));
+            p.sendMessage("                         " + "  §8» §6Du§7: §6" + player.get(p.getName()));
+            p.sendMessage("                         " + "  §8» §6" + member.get(p.getName()) + "§7: §6" + cashier.get(p.getName()));
         }
         all -= bet.get(p.getName());
         Casino.addMoney(bet.get(p.getName()));
         for (UUID id : Organisation.FALCONE.getMember()) if (Bukkit.getOfflinePlayer(id).isOnline()) if (Organisation.getRank(Bukkit.getPlayer(id)) >= 3)
-            Bukkit.getPlayer(id).sendMessage(Casino.PREFIX + p.getName() + " hat beim BlackJack §a" + bet.get(p.getName()) + "€ §7verloren.");
+            Bukkit.getPlayer(id).sendMessage(Casino.PREFIX + p.getName() + " hat beim BlackJack" + (member.get(p.getName()).equals("Croupier") ? "" : " mit " + member.get(p.getName())) + " §a" + bet.get(p.getName()) + "€ §7verloren.");
         bet.remove(p.getName());
         player.remove(p.getName());
         cashier.remove(p.getName());

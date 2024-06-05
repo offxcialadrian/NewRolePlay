@@ -3,8 +3,12 @@ package de.newrp.Entertainment;
 import de.newrp.API.Messages;
 import de.newrp.API.PaymentType;
 import de.newrp.API.Script;
+import de.newrp.API.Utils;
+import de.newrp.Administrator.SDuty;
 import de.newrp.NewRoleplayMain;
 import de.newrp.Organisationen.Organisation;
+import de.newrp.Player.AFK;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -125,7 +129,7 @@ public class Casino implements CommandExecutor, TabCompleter {
             }
 
             player.sendMessage(PREFIX + "Guthaben des Casinos:");
-            player.sendMessage("            §8" + Messages.ARROW + " §7" + getMoney() + "€");
+            player.sendMessage("                   §8" + Messages.ARROW + " §7" + getMoney() + "€");
             return true;
         }
 
@@ -204,6 +208,22 @@ public class Casino implements CommandExecutor, TabCompleter {
             e.printStackTrace();
         }
         return 0;
+    }
+
+    public static Player closestMember(Location loc, int distance) {
+        Player victim = null;
+        for (Player v : Bukkit.getServer().getOnlinePlayers()) {
+            if (!AFK.isAFK(v)) {
+                if (Organisation.FALCONE.getMember().contains(v.getUniqueId())) {
+                    double d = v.getLocation().distance(loc);
+                    if (d <= distance) {
+                        if (victim == null) victim = v;
+                        else if (d < victim.getLocation().distance(loc)) victim = v;
+                    }
+                }
+            }
+        }
+        return victim;
     }
 
     @Override
