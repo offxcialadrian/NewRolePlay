@@ -209,11 +209,10 @@ public class BlackJack implements CommandExecutor, Listener {
                 int nc = cashier.get(p.getName());
                 p.sendMessage(PREFIX + (member.get(p.getName()).equals("Croupier") ? "Der " : "") + member.get(p.getName()) + " hat Folgendes gezogen: §6" + card.getName());
                 if (nc < 22) {
+                    p.sendMessage("                             §7" + member.get(p.getName()) + ": §6" + cashier.get(p.getName()));
                     if (nc > pc) {
-                        p.sendMessage("                             §7" + member.get(p.getName()) + ": §6" + cashier.get(p.getName()));
                         lose(p, false);
                     } else {
-                        p.sendMessage("                             §7" + member.get(p.getName()) + ": §6" + cashier.get(p.getName()));
                         if (nc < 17) {
                             new BukkitRunnable() {
                                 @Override
