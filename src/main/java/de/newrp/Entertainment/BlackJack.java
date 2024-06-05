@@ -85,7 +85,7 @@ public class BlackJack implements CommandExecutor, Listener {
                             Script.removeMoney(p, PaymentType.CASH, i);
                             cashier.put(p.getName(), Cards.getRandomCard().getValue());
                             player.put(p.getName(), Cards.getRandomCard().getValue());
-                            Player m = Casino.closestMember(p.getLocation(), 7);
+                            Player m = Casino.closestMember(p.getLocation(), 6);
                             if (m == null) {
                                 member.put(p.getName(), "Croupier");
                             } else {
@@ -164,6 +164,8 @@ public class BlackJack implements CommandExecutor, Listener {
                 p.sendMessage("                             §7Du: §6" + player.get(p.getName()));
                 openGUI(p);
             }
+            if (Script.getPlayer(member.get(p.getName())) != null)
+                Script.getPlayer(member.get(p.getName())).sendMessage(PREFIX + "§6" + p.getName() + " §7hat §6" + card.getName() + " §7gezogen. §8(§7" + player.get(p.getName()) + "§8)");
         } else {
             lose(p, true);
         }
@@ -202,6 +204,9 @@ public class BlackJack implements CommandExecutor, Listener {
 
         p.sendMessage(PREFIX + (member.get(p.getName()).equals("Croupier") ? "Der " : "") + member.get(p.getName()) + " zieht jetzt...");
         cashier.replace(p.getName(), nc);
+
+        if (Script.getPlayer(member.get(p.getName())) != null)
+            Script.getPlayer(member.get(p.getName())).sendMessage(PREFIX + "Du hast §6" + card.getName() + " §7gezogen. §8(§7" + cashier.get(p.getName()) + "§8)");
 
         new BukkitRunnable() {
             @Override
@@ -274,6 +279,8 @@ public class BlackJack implements CommandExecutor, Listener {
         p.sendMessage("                         " + "  §8» §6Du§7: §6" + player.get(p.getName()));
         p.sendMessage("                         " + "  §8» §6" + member.get(p.getName()) + "§7: §6" + cashier.get(p.getName()));
         Script.addMoney(p, PaymentType.CASH, bet.get(p.getName()) * 2);
+        if (Script.getPlayer(member.get(p.getName())) != null)
+            Script.getPlayer(member.get(p.getName())).sendMessage(PREFIX + "§6" + p.getName() + " §7hat gegen dich §cgewonnen§7. §8(§6" + player.get(p.getName()) + "§8:§6" + cashier.get(p.getName()) + "§8)");
         win.putIfAbsent(p.getName(), 0);
         win.put(p.getName(), win.get(p.getName()) + bet.get(p.getName()));
         all += (int) Math.round(bet.get(p.getName()) * 0.75);
@@ -291,6 +298,8 @@ public class BlackJack implements CommandExecutor, Listener {
         p.sendMessage("                         " + "  §8» §6Du§7: §6" + player.get(p.getName()));
         p.sendMessage("                         " + "  §8» §6" + member.get(p.getName()) + "§7: §6" + cashier.get(p.getName()));
         Script.addMoney(p, PaymentType.CASH, bet.get(p.getName()));
+        if (Script.getPlayer(member.get(p.getName())) != null)
+            Script.getPlayer(member.get(p.getName())).sendMessage(PREFIX + "§6" + p.getName() + " §7hat gegen dich unentschieden. §8(§6" + player.get(p.getName()) + "§8:§6" + cashier.get(p.getName()) + "§8)");
         for (UUID id : Organisation.FALCONE.getMember()) if (Bukkit.getOfflinePlayer(id).isOnline()) if (Organisation.getRank(Bukkit.getPlayer(id)) >= 3)
             Bukkit.getPlayer(id).sendMessage(Casino.PREFIX + p.getName() + " hat beim BlackJack" + (member.get(p.getName()).equals("Croupier") ? "" : " mit " + member.get(p.getName())) + " 0€ gewonnen.");
         bet.remove(p.getName());
@@ -307,6 +316,8 @@ public class BlackJack implements CommandExecutor, Listener {
             p.sendMessage("                         " + "  §8» §6Du§7: §6" + player.get(p.getName()));
             p.sendMessage("                         " + "  §8» §6" + member.get(p.getName()) + "§7: §6" + cashier.get(p.getName()));
         }
+        if (Script.getPlayer(member.get(p.getName())) != null)
+            Script.getPlayer(member.get(p.getName())).sendMessage(PREFIX + "§6" + p.getName() + " §7hat gegen dich §averloren§7. §8(§6" + player.get(p.getName()) + "§8:§6" + cashier.get(p.getName()) + "§8)");
         all -= bet.get(p.getName());
         Casino.addMoney(bet.get(p.getName()));
         for (UUID id : Organisation.FALCONE.getMember()) if (Bukkit.getOfflinePlayer(id).isOnline()) if (Organisation.getRank(Bukkit.getPlayer(id)) >= 3)
