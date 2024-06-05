@@ -30,12 +30,24 @@ public class Equiplog implements CommandExecutor {
         }
 
         if(!Beruf.isLeader(p, true) && !Organisation.isLeader(p, true)) {
-            p.sendMessage(Messages.NO_PERMISSION);
+            if(args.length == 1) {
+                if (Script.isInt(args[0])) {
+                    int hours = Integer.parseInt(args[0]);
+                    p.sendMessage(Equip.PREFIX + "EquipLog von " + Script.getName(p) + " für die letzten " + hours + " Stunden §8[§7" + getTotalOfPlayer(p, hours) + "€§8]:");
+                    sendEquiplog(p, p, hours);
+                } else {
+                    p.sendMessage(Messages.NO_PERMISSION);
+                }
+            } else {
+                int hours = Math.toIntExact(TimeUnit.MILLISECONDS.toHours(System.currentTimeMillis() - Activity.getResetDate(Beruf.hasBeruf(p) ? Beruf.getBeruf(p).getID() : -Organisation.getOrganisation(p).getID())));
+                p.sendMessage(Equip.PREFIX + "EquipLog von " + Script.getName(p) + " für die letzten " + hours + " Stunden §8[§7" + getTotalOfPlayer(p, hours) + "€§8]:");
+                sendEquiplog(p, p, hours);
+            }
             return true;
         }
 
         if(args.length == 0) {
-            int hours = Math.toIntExact(TimeUnit.MICROSECONDS.toHours(System.currentTimeMillis() - Activity.getResetDate(Beruf.hasBeruf(p) ? Beruf.getBeruf(p).getID() : -Organisation.getOrganisation(p).getID())));
+            int hours = Math.toIntExact(TimeUnit.MILLISECONDS.toHours(System.currentTimeMillis() - Activity.getResetDate(Beruf.hasBeruf(p) ? Beruf.getBeruf(p).getID() : -Organisation.getOrganisation(p).getID())));
             if (Beruf.hasBeruf(p)) {
                 p.sendMessage(Equip.PREFIX + "EquipLog des Berufs " + Beruf.getBeruf(p).getName() + " für die letzten " + hours + " Stunden:");
             } else if (Organisation.hasOrganisation(p)) {
@@ -58,7 +70,7 @@ public class Equiplog implements CommandExecutor {
                     p.sendMessage(Equip.PREFIX + "EquipLog wurde zurückgesetzt.");
                     return true;
                 } else if (Script.getNRPID(args[0]) > 0) {
-                    int hours = Math.toIntExact(TimeUnit.MICROSECONDS.toHours(System.currentTimeMillis() - Activity.getResetDate(Beruf.hasBeruf(p) ? Beruf.getBeruf(p).getID() : -Organisation.getOrganisation(p).getID())));
+                    int hours = Math.toIntExact(TimeUnit.MILLISECONDS.toHours(System.currentTimeMillis() - Activity.getResetDate(Beruf.hasBeruf(p) ? Beruf.getBeruf(p).getID() : -Organisation.getOrganisation(p).getID())));
                     OfflinePlayer tg = Script.getOfflinePlayer(args[0]);
                     if (Script.getNRPID(tg) == 0) {
                         p.sendMessage(Messages.PLAYER_NOT_FOUND);
