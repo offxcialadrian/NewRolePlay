@@ -740,6 +740,7 @@ public class NewRoleplayMain extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new PlaytimePlayerListener(), this);
         Bukkit.getPluginManager().registerEvents(new DrogenbankHouse(), this);
         Bukkit.getPluginManager().registerEvents(new SpindCommand(), this);
+        Bukkit.getPluginManager().registerEvents(new MuscleDamage(), this);
     }
 
     /**
