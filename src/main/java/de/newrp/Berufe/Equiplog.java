@@ -1,5 +1,6 @@
 package de.newrp.Berufe;
 
+import de.newrp.API.Activity;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.NewRoleplayMain;
@@ -29,18 +30,35 @@ public class Equiplog implements CommandExecutor {
         }
 
         if(!Beruf.isLeader(p, true) && !Organisation.isLeader(p, true)) {
-            p.sendMessage(Messages.NO_PERMISSION);
+            if(args.length == 1) {
+                if (Script.isInt(args[0])) {
+                    int hours = Integer.parseInt(args[0]);
+                    p.sendMessage(Equip.PREFIX + "EquipLog von " + Script.getName(p) + " für die letzten " + hours + " Stunden §8[§7" + getTotalOfPlayer(p, hours) + "€§8]:");
+                    sendEquiplog(p, p, hours);
+                } else {
+                    p.sendMessage(Messages.NO_PERMISSION);
+                }
+            } else {
+                int hours = Math.toIntExact(TimeUnit.MILLISECONDS.toHours(System.currentTimeMillis() - Activity.getResetDate(Beruf.hasBeruf(p) ? Beruf.getBeruf(p).getID() : -Organisation.getOrganisation(p).getID())));
+                p.sendMessage(Equip.PREFIX + "EquipLog von " + Script.getName(p) + " für die letzten " + hours + " Stunden §8[§7" + getTotalOfPlayer(p, hours) + "€§8]:");
+                sendEquiplog(p, p, hours);
+            }
             return true;
         }
 
-        if(args.length == 0 || args.length > 2) {
-            p.sendMessage(Messages.ERROR + "/equiplog [Stunden]");
+        if(args.length == 0) {
+            int hours = Math.toIntExact(TimeUnit.MILLISECONDS.toHours(System.currentTimeMillis() - Activity.getResetDate(Beruf.hasBeruf(p) ? Beruf.getBeruf(p).getID() : -Organisation.getOrganisation(p).getID())));
+            if (Beruf.hasBeruf(p)) {
+                p.sendMessage(Equip.PREFIX + "EquipLog des Berufs " + Beruf.getBeruf(p).getName() + " für die letzten " + hours + " Stunden:");
+            } else if (Organisation.hasOrganisation(p)) {
+                p.sendMessage(Equip.PREFIX + "EquipLog der Organisation " + Organisation.getOrganisation(p).getName() + " für die letzten " + hours + " Stunden:");
+            }
+            sendEquiplog(p, hours);
             return true;
         }
 
         if(args.length == 1) {
             if(!Script.isInt(args[0])) {
-
                 if (args[0].equalsIgnoreCase("reset")) {
                     if (Beruf.hasBeruf(p)) {
                         Script.executeUpdate("DELETE FROM equiplog WHERE beruf=" + Beruf.getBeruf(p).getID());
@@ -50,6 +68,39 @@ public class Equiplog implements CommandExecutor {
                         Organisation.getOrganisation(p).sendMessage(Equip.PREFIX + "EquipLog wurde von " + Script.getName(p) + " zurückgesetzt.");
                     }
                     p.sendMessage(Equip.PREFIX + "EquipLog wurde zurückgesetzt.");
+                    return true;
+                } else if (Script.getNRPID(args[0]) > 0) {
+                    int hours = Math.toIntExact(TimeUnit.MILLISECONDS.toHours(System.currentTimeMillis() - Activity.getResetDate(Beruf.hasBeruf(p) ? Beruf.getBeruf(p).getID() : -Organisation.getOrganisation(p).getID())));
+                    OfflinePlayer tg = Script.getOfflinePlayer(args[0]);
+                    if (Script.getNRPID(tg) == 0) {
+                        p.sendMessage(Messages.PLAYER_NOT_FOUND);
+                        return true;
+                    }
+
+                    if (Beruf.hasBeruf(p)) {
+                        if (!Beruf.hasBeruf(tg)) {
+                            p.sendMessage(Messages.ERROR + "Dieser Spieler hat keinen Beruf.");
+                            return true;
+                        }
+
+                        if (Beruf.getBeruf(tg).getID() != Beruf.getBeruf(p).getID()) {
+                            p.sendMessage(Messages.ERROR + "Dieser Spieler hat nicht den gleichen Beruf wie du<.");
+                            return true;
+                        }
+                    } else if (Organisation.hasOrganisation(p)) {
+                        if (!Organisation.hasOrganisation(tg)) {
+                            p.sendMessage(Messages.ERROR + "Dieser Spieler ist in keiner Organisation.");
+                            return true;
+                        }
+
+                        if (Organisation.getOrganisation(tg).getID() != Organisation.getOrganisation(p).getID()) {
+                            p.sendMessage(Messages.ERROR + "Dieser Spieler ist nicht in der gleichen Organisation wie du.");
+                            return true;
+                        }
+                    }
+
+                    p.sendMessage(Equip.PREFIX + "EquipLog von " + Script.getName(tg) + " für die letzten " + hours + " Stunden §8[§7" + getTotalOfPlayer(tg, hours) + "€§8]:");
+                    sendEquiplog(p, tg, hours);
                     return true;
                 }
 

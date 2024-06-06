@@ -29,36 +29,41 @@ public class RecruitedCommand implements @Nullable CommandExecutor {
         if (sender instanceof Player) {
             Player player = (Player) sender;
 
-            player.sendMessage(PREFIX + "Angeworbene Spieler:");
             if (args.length == 0) {
+                player.sendMessage(PREFIX + "Angeworbene Spieler:");
                 for (Integer id : Objects.requireNonNull(getRecruited(Script.getNRPID(player)))) {
                     String name = Objects.requireNonNull(Script.getOfflinePlayer(id)).getName();
                     player.sendMessage("       §8" + Messages.ARROW + " §7" + name);
                 }
             } else {
                 if (isRecruited(Script.getNRPID(player))) {
-                    player.sendMessage(Messages.ERROR + "Du wurdest bereits angeworben!");
+                    player.sendMessage(Messages.ERROR + "Du wurdest bereits angeworben.");
                     return true;
                 }
 
-                if (Script.getLevel(player) < 3) {
-                    player.sendMessage(Messages.ERROR + "Du musst mindestens Level-3 sein um als angeworben zu gelten!");
+                if (Script.getLevel(player) < 2) {
+                    player.sendMessage(Messages.ERROR + "Du musst mindestens Level-2 sein um als angeworben zu gelten.");
                     return true;
                 }
 
                 if (Script.getLevel(player) > 5) {
-                    player.sendMessage(Messages.ERROR + "Das Anwerben ist nur bis Level-5 gültig!");
+                    player.sendMessage(Messages.ERROR + "Das Anwerben ist nur bis Level-5 gültig.");
                     return true;
                 }
 
                 Player recruiter = Script.getPlayer(args[0]);
                 if (recruiter != null) {
+                    if (recruiter.getName().equals(player.getName())) {
+                        player.sendMessage(Messages.ERROR + "Mach dir nichts vor, du kannst dich nicht selbst anwerben, guter Versuch.");
+                        return true;
+                    }
+
                     addRecruited(Script.getNRPID(player), Script.getNRPID(recruiter));
                     player.sendMessage(PREFIX + "Du hast " + recruiter.getName() + " als Anwerber angegeben und 1000€ erhalten.");
                     Script.addMoney(player, PaymentType.CASH, 1000);
-                    player.sendMessage(PREFIX + player.getName() + " hat dich als Anwerber angegeben.");
+                    recruiter.sendMessage(PREFIX + player.getName() + " hat dich als Anwerber angegeben.");
                 } else {
-                    player.sendMessage(Messages.ERROR + "Der Spieler " + args[0] + " wurde nicht gefunden!");
+                    player.sendMessage(Messages.ERROR + "Der Spieler " + args[0] + " wurde nicht gefunden.");
                 }
             }
         }

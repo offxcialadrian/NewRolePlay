@@ -21,10 +21,7 @@ import org.bukkit.util.StringUtil;
 
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Fahndung implements CommandExecutor, TabCompleter {
 
@@ -33,6 +30,26 @@ public class Fahndung implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
         Player p = (Player) cs;
+
+        if (args.length == 0) {
+            if (Fahndung.isFahnded(p)) {
+                if(!getStraftatIDs(p).isEmpty()) {
+                    p.sendMessage(Straftat.PREFIX + "Fahndungen von " + Script.getName(p) + ":");
+                    for(int i : getStraftatIDs(p)) {
+                        p.sendMessage("§8» §6" + Script.getName(p) + " §8× §6" + Straftat.getWanteds(i) + " WantedPunkte " + " §8× §6" + Straftat.getReason(i).replace("-"," ") + (getCop(Script.getNRPID(p), i) > 0 ? " §8(§7" + Objects.requireNonNull(Script.getOfflinePlayer(getCop(Script.getNRPID(p), i))).getName() + "§8)" : ""));
+                    }
+                } else {
+                    p.sendMessage(Messages.ERROR + "Du wirst nicht gesucht.");
+                }
+            } else {
+                if (Beruf.hasBeruf(p) && Beruf.getBeruf(p) == Beruf.Berufe.POLICE) {
+                    p.sendMessage(Messages.ERROR + "/wanted [player] [reasons]");
+                } else {
+                    p.sendMessage(Messages.ERROR + "Du wirst nicht gesucht.");
+                }
+            }
+            return true;
+        }
 
         if(!Beruf.hasBeruf(p)) {
             p.sendMessage(Messages.ERROR + "Du bist kein Polizist.");
@@ -89,7 +106,7 @@ public class Fahndung implements CommandExecutor, TabCompleter {
             if(!getStraftatIDs(tg).isEmpty()) {
                 p.sendMessage(Straftat.PREFIX + "Fahndungen von " + Script.getName(tg) + ":");
                 for(int i : getStraftatIDs(tg)) {
-                    p.sendMessage("§8» §6" + Script.getName(tg) + " §8× §6" + Straftat.getWanteds(i) + " WantedPunkte " + " §8× §6" + Straftat.getReason(i).replace("-"," "));
+                    p.sendMessage("§8» §6" + Script.getName(tg) + " §8× §6" + Straftat.getWanteds(i) + " WantedPunkte " + " §8× §6" + Straftat.getReason(i).replace("-"," ") + (getCop(Script.getNRPID(p), i) > 0 ? " §8(§7" + Objects.requireNonNull(Script.getOfflinePlayer(getCop(Script.getNRPID(p), i))).getName() + "§8)" : ""));
                 }
             } else {
                 p.sendMessage(Messages.ERROR + "Dieser Spieler wird nicht gefahndet.");
@@ -274,5 +291,15 @@ public class Fahndung implements CommandExecutor, TabCompleter {
         return 0;
     }
 
-
+    public static int getCop(int nrp_id, int id) {
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT * FROM wanted WHERE wantedreason=" + id + " AND nrp_id=" + nrp_id)) {
+            if (rs.next()) {
+                return rs.getInt("copID");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
 }

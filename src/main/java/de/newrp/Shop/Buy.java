@@ -2,6 +2,7 @@ package de.newrp.Shop;
 
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
+import de.newrp.API.Utils;
 import de.newrp.Berufe.Drone;
 import de.newrp.Police.Fahndung;
 import de.newrp.Shop.gasstations.GasStationBuyHandler;
@@ -15,8 +16,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class Buy implements CommandExecutor {
 
@@ -73,6 +73,28 @@ public class Buy implements CommandExecutor {
         if (i == 0) {
             player.sendMessage(Messages.ERROR + "Dieser Shop bietet derzeit nichts an.");
             return true;
+        }
+
+        switch (shop.getType()) {
+            case BAR:
+                if (Script.getAge(Script.getNRPID(player)) < 18) {
+                    if (new Random().nextInt(5) > 0) {
+                        List<String> list = Arrays.asList("Darfst du hier überhaupt rein?", "Du siehst zu jung aus für den Laden hier, verschwinde!", "Kann ich mal deinen Ausweis sehen?");
+                        BuyClick.sendMessage(player, list.get(Script.getRandom(0, list.size() - 1)));
+                        return true;
+                    }
+                }
+
+                if (Utils.alkLevel.containsKey(player.getUniqueId())) {
+                    if (Utils.alkLevel.get(player.getUniqueId()) >= 3) {
+                        BuyClick.sendMessage(player, "Du siehst garnicht gut aus, fahr mal einen Gang runter!");
+                        break;
+                    }
+                }
+
+                List<String> list = Arrays.asList("Was darfs denn sein?", "Du schon wieder?", "Das Übliche?");
+                BuyClick.sendMessage(player, list.get(Script.getRandom(0, list.size() - 1)));
+                break;
         }
 
         amount.remove(player.getName());

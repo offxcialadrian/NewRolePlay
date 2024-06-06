@@ -840,3 +840,5 @@ commands:
   dsgvo:
     description: shows the dsgvo link to the sender
     aliases: [ datenschutz, datenschutzerklaerung ]
+  casino:
+    description: toggle casino settings

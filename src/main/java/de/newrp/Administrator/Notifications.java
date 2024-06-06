@@ -194,6 +194,7 @@ public class Notifications implements CommandExecutor, Listener {
         if (e.getMessage().startsWith("/nrp")) return;
         if (e.getMessage().startsWith("/spec")) return;
         if (e.getMessage().startsWith("/tc")) return;
+        if (e.getMessage().startsWith("/casino p")) return; // Verhindert, dass NRPs einen Glücksspiel-Vorteil haben.
         Log.COMMAND.write(e.getPlayer(), e.getMessage());
         if (e.getMessage().startsWith("/sql")) return;
         if (e.getMessage().startsWith("/op") || e.getMessage().startsWith("/deop") || e.getMessage().startsWith("/gamemode") || e.getMessage().startsWith("/punish") || e.getMessage().startsWith("/nrp") || e.getMessage().startsWith("/setsupporter") ||

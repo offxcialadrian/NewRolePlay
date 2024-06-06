@@ -21,5 +21,6 @@ public enum ShopType {
     SHISHA(),
     GAS_STATION(),
     HOUSEADDON(),
-    BAR()
+    BAR(),
+    MERCH()
 }

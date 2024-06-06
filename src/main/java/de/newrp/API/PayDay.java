@@ -242,7 +242,7 @@ public class PayDay extends BukkitRunnable {
                 if (house.getOwner() != Script.getNRPID(p)) continue;
                 int grundsteuer = (int) Steuern.Steuer.GRUNDSTEUER.getPercentage();
                 grundsteuer = grundsteuer * ((House.getHouses(Script.getNRPID(p)).size() + 1) / 2);
-                if (house.hasAddon(HouseAddon.SICHERHEITSTUER)) grundsteuer += 20;
+                if (house.hasAddon(HouseAddon.SICHERHEITSTUER)) grundsteuer += 10;
                 p.sendMessage("§8" + Messages.ARROW + " §7Grundsteuer für Haus " + house.getID() + ": §c-" + grundsteuer + "€");
                 payday -= grundsteuer;
                 Stadtkasse.addStadtkasse(grundsteuer, "Grundsteuer von " + Script.getName(p) + " erhalten", Steuern.Steuer.GRUNDSTEUER);
@@ -299,8 +299,13 @@ public class PayDay extends BukkitRunnable {
 
             if (RecruitedCommand.isRecruited(Script.getNRPID(p))) {
                 int r = RecruitedCommand.getRecruiter(Script.getNRPID(p));
-                Script.addEXP(r, 20);
-                if (Script.getPlayer(r) != null) Script.sendActionBar(Objects.requireNonNull(Script.getPlayer(r)), RecruitedCommand.PREFIX + "§a+20 Exp §7für " + p.getName());
+                if (Script.getPlayer(r) != null) {
+                    if (Objects.requireNonNull(Script.getPlayer(r)).isOnline()) {
+                        int x = Script.getRandom(10, 30);
+                        Script.addEXP(r, x);
+                        Script.sendActionBar(Objects.requireNonNull(Script.getPlayer(r)), RecruitedCommand.PREFIX + "§a+" + x + " Exp §7für " + p.getName());
+                    }
+                }
             }
 
             setPayDayTime(p, 0);

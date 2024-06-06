@@ -87,7 +87,7 @@ public enum HologramList {
     GAS_STATION_GANG(85, "§8/§6buy", new Location(Script.WORLD, 819, 66, 1326, 90.0f, 0.0f)),
     FAHRSCHULE(86, "§8/§6fahrschule", new Location(Script.WORLD, 396, 76, 1124, 90.0f, 0.0f)),
     KFZSTELLE(87, "§8/§6kennzeichen", new Location(Script.WORLD, 394, 76, 1085, 90.0f, 0.0f)),
-    DM_JOIN(88, "§8/§6dm join", new Location(Script.WORLD, 429.5, 77, 1115.5)),
+    DM_JOIN(88, "§8/§6dm join", new Location(Script.WORLD, 429.5, 76, 1115.5)),
     DROPTABAK(89, "§8/§6droptabak", new Location(Script.WORLD, 97, 65, 641)),
     EQUIP_FALCONE(90, "§8/§6equip", new Location(Script.WORLD, 749, 118, 851)),
     EQUIP_CORLEONE(91, "§8/§6equip", new Location(Script.WORLD, 203, 103, 481)),
@@ -95,7 +95,9 @@ public enum HologramList {
     EQUIP_HITMAN(93, "§8/§6equip", new Location(Script.WORLD, 717.5, 54, 879.5)),
     EQUIP_SINALOA(94, "§8/§6equip", new Location(Script.WORLD, 669, 69, 1124)),
     BUY_BAR(95, "§8/§6buy", new Location(Script.WORLD, 704.5, 68, 859.5, 0.0f, 0.0f)),
-    BUY_CLUB(96, "§8/§6buy", new Location(Script.WORLD, 477.5, 66, 1285.5, 0.0f, 0.0f));
+    BUY_CLUB(96, "§8/§6buy", new Location(Script.WORLD, 477.5, 66, 1285.5, 0.0f, 0.0f)),
+    BUY_MERCH(97, "§8/§6buy", new Location(Script.WORLD, 66.5, 75, 694.5, 0.0f, 0.0f));
+    // BUY_MERCH_PIER(98, "§8/§6buy", new Location(Script.WORLD, 806, 65, 727, 0.0f, 0.0f));
 
     private final int id;
     private final String name;

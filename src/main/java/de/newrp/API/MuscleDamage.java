@@ -17,8 +17,7 @@ public class MuscleDamage implements Listener {
                 e.setDamage(0D);
                 e.setCancelled(true);
             } else {
-                double[] damage = {0, .5, 1};
-                e.setDamage(damage[lvl]);
+                e.setDamage(((double) lvl / 20) + 0.5);
             }
         }
     }

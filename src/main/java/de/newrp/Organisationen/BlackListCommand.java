@@ -5,6 +5,8 @@ import de.newrp.Administrator.BuildMode;
 import de.newrp.Administrator.GoTo;
 import de.newrp.Administrator.SDuty;
 import de.newrp.Player.AFK;
+import de.newrp.dependencies.DependencyContainer;
+import de.newrp.features.deathmatcharena.IDeathmatchArenaService;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -352,6 +354,8 @@ public class BlackListCommand implements CommandExecutor, Listener, TabCompleter
         p.sendMessage("§8» §6/blacklist list");
     }
 
+    private final IDeathmatchArenaService deathmatchArenaService = DependencyContainer.getContainer().getDependency(IDeathmatchArenaService.class);
+
     @EventHandler
     public void onDeath(PlayerDeathEvent e) {
         Player killed = e.getEntity();
@@ -360,6 +364,7 @@ public class BlackListCommand implements CommandExecutor, Listener, TabCompleter
 
         Organisation f = Organisation.getOrganisation(killer);
         if (!Blacklist.isOnBlacklist(killed, f)) return;
+        if(this.deathmatchArenaService.isInDeathmatch(killed, false)) return;
 
         Blacklist bl = Blacklist.getBlacklistObject(Script.getNRPID(killed), f);
         int kills = bl.getKills();

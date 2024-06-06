@@ -121,7 +121,8 @@ public enum Schwarzmarkt {
         KARTE(11, new ItemStack(Material.MAP), "§7Karte", 1),
         TICKET(12, ShopItem.MONATSFAHRAUSWEIS.getItemStack(), "§7Monatsfahrausweis", 1),
         KAFFEE(13, new ItemStack(Material.FLOWER_POT), "§7Kaffee", 1),
-        MEHL(14, new ItemStack(Material.WHITE_DYE), "§7Mehl", 1);
+        MEHL(14, new ItemStack(Material.WHITE_DYE), "§7Mehl", 1),
+        PLUSH(15, new ItemStack(Material.PLAYER_HEAD), "§7Plüschtier", 1);
 
         private final int id;
         private final ItemStack item;
