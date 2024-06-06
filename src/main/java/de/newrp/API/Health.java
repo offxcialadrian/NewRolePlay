@@ -95,10 +95,7 @@ public enum Health {
 
     public static int getMuscleLevel(int id) {
         float f = Health.MUSCLES.get(id);
-        if (f < 1) return 0;
-        if (f < 5) return 1;
-        if (f >= 5) return 2;
-        return 0;
+        return (int) Math.floor(f);
     }
 
     public static void setBleeding(Player p) {

@@ -209,17 +209,17 @@ public class Gips implements Listener {
 
         if (hits.get(d) < 5) return;
 
-        if (Script.getRandom(1, 100) <= Health.getMuscleLevel(Script.getNRPID(d)) / 2) {
+        if (Script.getRandom(1, 100) <= Health.getMuscleLevel(Script.getNRPID(d)) / 5) {
             if (!Krankheit.GEBROCHENER_ARM.isInfected(Script.getNRPID(d))) {
-                Me.sendMessage(p,"hat sich " + (Script.getGender(p) == Gender.MALE ? "sein" : "ihr") + "en Arm gebrochen.");
+                Me.sendMessage(d,"hat sich " + (Script.getGender(d) == Gender.MALE ? "sein" : "ihr") + "en Arm gebrochen.");
                 Krankheit.GEBROCHENER_ARM.add(Script.getNRPID(d));
                 d.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 160, 1, false, false));
                 d.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 80, 1, false, false));
             }
         }
 
-        if (Script.getRandom(1, 100) <= Health.getMuscleLevel(Script.getNRPID(d))) {
-            if (!Krankheit.GEBROCHENER_ARM.isInfected(Script.getNRPID(d))) {
+        if (Script.getRandom(1, 100) <= Health.getMuscleLevel(Script.getNRPID(p)) / 2) {
+            if (!Krankheit.GEBROCHENER_ARM.isInfected(Script.getNRPID(p))) {
                 Me.sendMessage(p,"hat sich " + (Script.getGender(p) == Gender.MALE ? "sein" : "ihr") + "en Arm gebrochen.");
                 Krankheit.GEBROCHENER_ARM.add(Script.getNRPID(p));
                 p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 160, 1, false, false));
