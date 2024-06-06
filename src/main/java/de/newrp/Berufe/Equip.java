@@ -33,39 +33,39 @@ public class Equip implements CommandExecutor, Listener {
     public static final String PREFIX = "§8[§eEquip§8] §e» §7";
 
     public enum Stuff {
-        PISTOLE(1, "Glory", new ItemBuilder(Material.IRON_HORSE_ARMOR).setName("§7Glory").build(), 300, 0, null, Beruf.Berufe.POLICE, false),
-        SCHUTZWESTE(2, "Schutzweste", Script.kevlar(1), 500, 0, null, Beruf.Berufe.POLICE, false),
-        HANDSCHELLEN(3, "Handschellen", Script.setName(new ItemStack(Material.LEAD, 2), "§7Handschellen"), 10, 0, null, Beruf.Berufe.POLICE, true),
-        TAZER(4, "Tazer", Script.tazer(), 100, 0, null, Beruf.Berufe.POLICE, true),
-        DONUT(5, "Donut", new ItemBuilder(Material.COOKIE).setAmount(16).setName("§7Donut").build(), 1, 0, null, Beruf.Berufe.POLICE, false),
-        MP7(6, "Striker", new ItemBuilder(Material.GOLDEN_HORSE_ARMOR).setName("§7Striker").build(), 600, 0, new Abteilung.Abteilungen[]{Abteilung.Abteilungen.SEK, Abteilung.Abteilungen.ABTEILUNGSLEITUNG}, Beruf.Berufe.POLICE, true),
-        EINSATZSCHILD(7, "Einsatzschild", Script.einsatzschild(1), 1000, 0, new Abteilung.Abteilungen[]{Abteilung.Abteilungen.SEK, Abteilung.Abteilungen.ABTEILUNGSLEITUNG}, Beruf.Berufe.POLICE, true),
-        EINSATZSCHILD_2(8, "Schweres Einsatzschild", Script.einsatzschild(2), 1300, 0, new Abteilung.Abteilungen[]{Abteilung.Abteilungen.SEK, Abteilung.Abteilungen.ABTEILUNGSLEITUNG}, Beruf.Berufe.POLICE, true),
-        RAUCHGRANATE(9, "Rauchgranate", Script.rauchgranate(), 200, 0, new Abteilung.Abteilungen[]{Abteilung.Abteilungen.SEK, Abteilung.Abteilungen.ABTEILUNGSLEITUNG}, Beruf.Berufe.POLICE, true),
-        FLASHBANG(10, "Flashbang", Script.flashbang(), 150, 0, new Abteilung.Abteilungen[]{Abteilung.Abteilungen.SEK, Abteilung.Abteilungen.ABTEILUNGSLEITUNG}, Beruf.Berufe.POLICE, true),
-        FALLSCHIRM(11, "Fallschirm", Script.fallschirm(), 300, 0, new Abteilung.Abteilungen[]{Abteilung.Abteilungen.SEK, Abteilung.Abteilungen.ABTEILUNGSLEITUNG}, Beruf.Berufe.POLICE, false),
-        ZEITUNG(12, "Buch und Stift", Script.setName(new ItemStack(Material.WRITABLE_BOOK), "§7Buch und Stift"), 20, 0, new Abteilung.Abteilungen[]{Abteilung.Abteilungen.JOURNALIST}, Beruf.Berufe.NEWS, false),
-        VERBAND(13, "Verband", new ItemBuilder(Material.PAPER).setName("§7Verband").setAmount(5).build(), 50, 0, null, Beruf.Berufe.RETTUNGSDIENST, true),
-        GIPS(14, "Gips", Script.setName(new ItemStack(Material.PAPER), "§7Gips"), 50, 0, null, Beruf.Berufe.RETTUNGSDIENST, true),
-        SCHWERE_SCHUTZWESTE(15, "Schwere Schutzweste", Script.kevlar(2), 1200, 0, new Abteilung.Abteilungen[]{Abteilung.Abteilungen.SEK, Abteilung.Abteilungen.ABTEILUNGSLEITUNG}, Beruf.Berufe.POLICE, true),
-        SPRITZE(16, "Spritze", Script.setName(new ItemStack(Material.END_ROD), "§7Spritze"), 10, 0, null, Beruf.Berufe.RETTUNGSDIENST, true),
-        HUSTEN_IMPFUNG(17, "Husten Impfung", Script.setName(new ItemStack(Material.END_ROD), "§7Husten Impfung"), 50, 0, null, Beruf.Berufe.RETTUNGSDIENST, true),
-        KAFFEE(18, "Kaffee", Script.setName(new ItemStack(Material.POTION), "§7Kaffee"), 2, 0, null, Beruf.Berufe.NEWS, false),
-        BROT(19, "Brot", new ItemBuilder(Material.BREAD).setAmount(16).setName("§7Brot").build(), 3, 0, null, Beruf.Berufe.RETTUNGSDIENST, false),
-        KEKSE(20, "Keks", new ItemBuilder(Material.COOKIE).setAmount(16).setName("§7Keks").build(), 1, 0, null, Beruf.Berufe.NEWS, false),
-        SNIPER(21, Weapon.SNIPER.getName(), Weapon.SNIPER.getWeapon(), 2900, 30, new Abteilung.Abteilungen[]{Abteilung.Abteilungen.SEK, Abteilung.Abteilungen.ABTEILUNGSLEITUNG}, Beruf.Berufe.POLICE, true),
-        DROHNE_COPS(22, "Drohne [Polizei]", new ItemBuilder(Material.WITHER_SKELETON_SKULL).setName("§7Drohne [Polizei]").build(), 1000, 0, new Abteilung.Abteilungen[]{Abteilung.Abteilungen.SEK, Abteilung.Abteilungen.ABTEILUNGSLEITUNG}, Beruf.Berufe.POLICE, true),
-        DROHNE_NEWS(23, "Drohne [News]", new ItemBuilder(Material.WITHER_SKELETON_SKULL).setName("§7Drohne [News]").build(), 500, 0, new Abteilung.Abteilungen[]{Abteilung.Abteilungen.CHEFREDAKTION}, Beruf.Berufe.NEWS, true),
-        DROHNE_RETTUNGSDIENST(24, "Drohne [Rettungsdienst]", new ItemBuilder(Material.WITHER_SKELETON_SKULL).setName("§7Drohne [Rettungsdienst]").build(), 1000, 0, new Abteilung.Abteilungen[]{Abteilung.Abteilungen.NOTFALLMEDIZIN, Abteilung.Abteilungen.OBERARZT}, Beruf.Berufe.RETTUNGSDIENST, true),
-        MUNITION_PISTOLE(25, Weapon.PISTOLE.getAmmoType().getName(), new ItemBuilder(Material.ARROW).setName(Weapon.PISTOLE.getAmmoType().getName()).setAmount(Weapon.PISTOLE.getMagazineSize()).build(), 10, 0, null, Beruf.Berufe.POLICE, true),
-        MUNITION_MP7(26, Weapon.MP7.getAmmoType().getName(), new ItemBuilder(Material.ARROW).setName(Weapon.MP7.getAmmoType().getName()).setAmount(Weapon.MP7.getMagazineSize()).build(), 15, 0, new Abteilung.Abteilungen[]{Abteilung.Abteilungen.SEK}, Beruf.Berufe.POLICE, true),
+        PISTOLE(1, "Glory", new ItemBuilder(Material.IRON_HORSE_ARMOR).setName("§7Glory").build(), 300, 0, null, new Beruf.Berufe[]{Beruf.Berufe.POLICE, Beruf.Berufe.BUNDESNACHRICHTENDIENST}, false),
+        SCHUTZWESTE(2, "Schutzweste", Script.kevlar(1), 500, 0, null, new Beruf.Berufe[]{Beruf.Berufe.POLICE, Beruf.Berufe.BUNDESNACHRICHTENDIENST}, false),
+        HANDSCHELLEN(3, "Handschellen", Script.setName(new ItemStack(Material.LEAD, 2), "§7Handschellen"), 10, 0, null, new Beruf.Berufe[]{Beruf.Berufe.POLICE, Beruf.Berufe.BUNDESNACHRICHTENDIENST}, true),
+        TAZER(4, "Tazer", Script.tazer(), 100, 0, null, new Beruf.Berufe[]{Beruf.Berufe.POLICE, Beruf.Berufe.BUNDESNACHRICHTENDIENST}, true),
+        DONUT(5, "Donut", new ItemBuilder(Material.COOKIE).setAmount(16).setName("§7Donut").build(), 1, 0, null, new Beruf.Berufe[]{Beruf.Berufe.POLICE, Beruf.Berufe.BUNDESNACHRICHTENDIENST}, false),
+        MP7(6, "Striker", new ItemBuilder(Material.GOLDEN_HORSE_ARMOR).setName("§7Striker").build(), 600, 0, new Abteilung.Abteilungen[]{Abteilung.Abteilungen.SEK, Abteilung.Abteilungen.ABTEILUNGSLEITUNG}, new Beruf.Berufe[]{Beruf.Berufe.POLICE, Beruf.Berufe.BUNDESNACHRICHTENDIENST}, true),
+        EINSATZSCHILD(7, "Einsatzschild", Script.einsatzschild(1), 1000, 0, new Abteilung.Abteilungen[]{Abteilung.Abteilungen.SEK, Abteilung.Abteilungen.ABTEILUNGSLEITUNG}, new Beruf.Berufe[]{Beruf.Berufe.POLICE}, true),
+        EINSATZSCHILD_2(8, "Schweres Einsatzschild", Script.einsatzschild(2), 1300, 0, new Abteilung.Abteilungen[]{Abteilung.Abteilungen.SEK, Abteilung.Abteilungen.ABTEILUNGSLEITUNG}, new Beruf.Berufe[]{Beruf.Berufe.POLICE}, true),
+        RAUCHGRANATE(9, "Rauchgranate", Script.rauchgranate(), 200, 0, new Abteilung.Abteilungen[]{Abteilung.Abteilungen.SEK, Abteilung.Abteilungen.ABTEILUNGSLEITUNG}, new Beruf.Berufe[]{Beruf.Berufe.POLICE}, true),
+        FLASHBANG(10, "Flashbang", Script.flashbang(), 150, 0, new Abteilung.Abteilungen[]{Abteilung.Abteilungen.SEK, Abteilung.Abteilungen.ABTEILUNGSLEITUNG}, new Beruf.Berufe[]{Beruf.Berufe.POLICE}, true),
+        FALLSCHIRM(11, "Fallschirm", Script.fallschirm(), 300, 0, new Abteilung.Abteilungen[]{Abteilung.Abteilungen.SEK, Abteilung.Abteilungen.ABTEILUNGSLEITUNG}, new Beruf.Berufe[]{Beruf.Berufe.POLICE}, false),
+        ZEITUNG(12, "Buch und Stift", Script.setName(new ItemStack(Material.WRITABLE_BOOK), "§7Buch und Stift"), 20, 0, new Abteilung.Abteilungen[]{Abteilung.Abteilungen.JOURNALIST}, new Beruf.Berufe[]{Beruf.Berufe.NEWS}, false),
+        VERBAND(13, "Verband", new ItemBuilder(Material.PAPER).setName("§7Verband").setAmount(5).build(), 50, 0, null, new Beruf.Berufe[]{Beruf.Berufe.RETTUNGSDIENST}, true),
+        GIPS(14, "Gips", Script.setName(new ItemStack(Material.PAPER), "§7Gips"), 50, 0, null, new Beruf.Berufe[]{Beruf.Berufe.RETTUNGSDIENST}, true),
+        SCHWERE_SCHUTZWESTE(15, "Schwere Schutzweste", Script.kevlar(2), 1200, 0, new Abteilung.Abteilungen[]{Abteilung.Abteilungen.SEK, Abteilung.Abteilungen.ABTEILUNGSLEITUNG}, new Beruf.Berufe[]{Beruf.Berufe.POLICE}, true),
+        SPRITZE(16, "Spritze", Script.setName(new ItemStack(Material.END_ROD), "§7Spritze"), 10, 0, null, new Beruf.Berufe[]{Beruf.Berufe.RETTUNGSDIENST}, true),
+        HUSTEN_IMPFUNG(17, "Husten Impfung", Script.setName(new ItemStack(Material.END_ROD), "§7Husten Impfung"), 50, 0, null, new Beruf.Berufe[]{Beruf.Berufe.RETTUNGSDIENST}, true),
+        KAFFEE(18, "Kaffee", Script.setName(new ItemStack(Material.POTION), "§7Kaffee"), 2, 0, null, new Beruf.Berufe[]{Beruf.Berufe.NEWS}, false),
+        BROT(19, "Brot", new ItemBuilder(Material.BREAD).setAmount(16).setName("§7Brot").build(), 3, 0, null, new Beruf.Berufe[]{Beruf.Berufe.RETTUNGSDIENST}, false),
+        KEKSE(20, "Keks", new ItemBuilder(Material.COOKIE).setAmount(16).setName("§7Keks").build(), 1, 0, null, new Beruf.Berufe[]{Beruf.Berufe.NEWS}, false),
+        SNIPER(21, Weapon.SNIPER.getName(), Weapon.SNIPER.getWeapon(), 2900, 30, new Abteilung.Abteilungen[]{Abteilung.Abteilungen.SEK, Abteilung.Abteilungen.ABTEILUNGSLEITUNG}, new Beruf.Berufe[]{Beruf.Berufe.POLICE}, true),
+        DROHNE_COPS(22, "Drohne [Polizei]", new ItemBuilder(Material.WITHER_SKELETON_SKULL).setName("§7Drohne [Polizei]").build(), 1000, 0, new Abteilung.Abteilungen[]{Abteilung.Abteilungen.SEK, Abteilung.Abteilungen.ABTEILUNGSLEITUNG}, new Beruf.Berufe[]{Beruf.Berufe.POLICE, Beruf.Berufe.BUNDESNACHRICHTENDIENST}, true),
+        DROHNE_NEWS(23, "Drohne [News]", new ItemBuilder(Material.WITHER_SKELETON_SKULL).setName("§7Drohne [News]").build(), 500, 0, new Abteilung.Abteilungen[]{Abteilung.Abteilungen.CHEFREDAKTION}, new Beruf.Berufe[]{Beruf.Berufe.NEWS}, true),
+        DROHNE_RETTUNGSDIENST(24, "Drohne [Rettungsdienst]", new ItemBuilder(Material.WITHER_SKELETON_SKULL).setName("§7Drohne [Rettungsdienst]").build(), 1000, 0, new Abteilung.Abteilungen[]{Abteilung.Abteilungen.NOTFALLMEDIZIN, Abteilung.Abteilungen.OBERARZT}, new Beruf.Berufe[]{Beruf.Berufe.RETTUNGSDIENST}, true),
+        MUNITION_PISTOLE(25, Weapon.PISTOLE.getAmmoType().getName(), new ItemBuilder(Material.ARROW).setName(Weapon.PISTOLE.getAmmoType().getName()).setAmount(Weapon.PISTOLE.getMagazineSize()).build(), 10, 0, null, new Beruf.Berufe[]{Beruf.Berufe.POLICE}, true),
+        MUNITION_MP7(26, Weapon.MP7.getAmmoType().getName(), new ItemBuilder(Material.ARROW).setName(Weapon.MP7.getAmmoType().getName()).setAmount(Weapon.MP7.getMagazineSize()).build(), 15, 0, new Abteilung.Abteilungen[]{Abteilung.Abteilungen.SEK}, new Beruf.Berufe[]{Beruf.Berufe.POLICE}, true),
         //BROT_2(27, "Brot", new ItemBuilder(Material.BREAD).setAmount(16).setName("§7Brot").build(), 3, 0, null, Beruf.Berufe.GOVERNMENT, false),
-        TRINKWASSER(28, "Trinkwasser", new ItemBuilder(Material.POTION).setName("§7Trinkwasser").build(), 2, 0, null, Beruf.Berufe.RETTUNGSDIENST, false),
+        TRINKWASSER(28, "Trinkwasser", new ItemBuilder(Material.POTION).setName("§7Trinkwasser").build(), 2, 0, null, new Beruf.Berufe[]{Beruf.Berufe.RETTUNGSDIENST}, false),
         //TRINKWASSER_MEDIC(29, "Trinkwasser", new ItemBuilder(Material.POTION).setName("§7Trinkwasser").build(), 2, 0, null, Beruf.Berufe.RETTUNGSDIENST, false),
-        KEVLAR(29, "Kevlar", Script.kevlar(1), 2900, 0, null, Beruf.Berufe.GOVERNMENT, false),
-        APPLE(30, "Apfel", new ItemBuilder(Material.APPLE).setAmount(16).setName("§7Apfel").build(), 1, 0, null, Beruf.Berufe.GOVERNMENT, false),
-        LATTE_MACCHIATO(31, "Latte Macchiato", new ItemBuilder(Material.FLOWER_POT).setName("§rLatte Macchiato").build(), 2, 0, null, Beruf.Berufe.GOVERNMENT, false),
-        FEUERLOESCHER(32, "Feuerlöscher", Script.feuerloescher(Script.feuerloescher(), 800), 300, 0, new Abteilung.Abteilungen[]{Abteilung.Abteilungen.FEUERWEHR, Abteilung.Abteilungen.OBERARZT}, Beruf.Berufe.RETTUNGSDIENST, false);
+        KEVLAR(29, "Kevlar", Script.kevlar(1), 2900, 0, null, new Beruf.Berufe[]{Beruf.Berufe.GOVERNMENT}, false),
+        APPLE(30, "Apfel", new ItemBuilder(Material.APPLE).setAmount(16).setName("§7Apfel").build(), 1, 0, null, new Beruf.Berufe[]{Beruf.Berufe.GOVERNMENT}, false),
+        LATTE_MACCHIATO(31, "Latte Macchiato", new ItemBuilder(Material.FLOWER_POT).setName("§rLatte Macchiato").build(), 2, 0, null, new Beruf.Berufe[]{Beruf.Berufe.GOVERNMENT}, false),
+        FEUERLOESCHER(32, "Feuerlöscher", Script.feuerloescher(Script.feuerloescher(), 800), 300, 0, new Abteilung.Abteilungen[]{Abteilung.Abteilungen.FEUERWEHR, Abteilung.Abteilungen.OBERARZT}, new Beruf.Berufe[]{Beruf.Berufe.RETTUNGSDIENST}, false);
 
         private String name;
         private int id;
@@ -73,11 +73,11 @@ public class Equip implements CommandExecutor, Listener {
         private int cost;
         private int ammo;
         private Abteilung.Abteilungen[] abteilung;
-        private Beruf.Berufe beruf;
+        private Beruf.Berufe[] beruf;
         private boolean remove;
 
 
-        Stuff(int id, String name, ItemStack item, int cost, int ammo, Abteilung.Abteilungen[] abteilung, Beruf.Berufe beruf, boolean remove) {
+        Stuff(int id, String name, ItemStack item, int cost, int ammo, Abteilung.Abteilungen[] abteilung, Beruf.Berufe[] beruf, boolean remove) {
             this.id = id;
             this.name = name;
             this.item = item;
@@ -108,7 +108,7 @@ public class Equip implements CommandExecutor, Listener {
             return abteilung;
         }
 
-        public Beruf.Berufe getBeruf() {
+        public Beruf.Berufe[] getBeruf() {
             return beruf;
         }
 
@@ -219,14 +219,21 @@ public class Equip implements CommandExecutor, Listener {
             }
 
             for (Stuff stuff : Stuff.values()) {
-                if (stuff.getBeruf() == beruf) {
-                    if (stuff.getAbteilung() == null || Beruf.isLeader(p, true)) {
-                        inv.addItem(stuff.getItem().clone());
-                    } else {
-                        for (Abteilung.Abteilungen abteilung : stuff.getAbteilung()) {
-                            if (abteilung == Beruf.getAbteilung(p)) {
-                                inv.addItem(stuff.getItem().clone());
+                if (stuff.getBeruf() != null) {
+                    for (Beruf.Berufe b : stuff.getBeruf()) {
+                        if (b == beruf) {
+                            if (stuff.getAbteilung() != null && !Beruf.isLeader(p, true)) {
+                                boolean hasAbteilung = false;
+                                for (Abteilung.Abteilungen abteilung : stuff.getAbteilung()) {
+                                    if (abteilung == Beruf.getAbteilung(p)) {
+                                        hasAbteilung = true;
+                                    }
+                                }
+                                if (!hasAbteilung) {
+                                    continue;
+                                }
                             }
+                            inv.addItem(stuff.getItem().clone());
                         }
                     }
                 }
@@ -291,9 +298,17 @@ public class Equip implements CommandExecutor, Listener {
             if (Beruf.hasBeruf(p)) {
                 Stuff stuff = Stuff.getStuff(ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName()));
                 if (stuff == null) return;
-                if (Beruf.getBeruf(p) != stuff.getBeruf()) {
-                    p.sendMessage(Messages.ERROR + "Du kannst dir nur Items von deinem Beruf ausrüsten.");
-                    return;
+                if (stuff.getBeruf() != null) {
+                    boolean hasBeruf = false;
+                    for (Beruf.Berufe b : stuff.getBeruf()) {
+                        if (b == Beruf.getBeruf(p)) {
+                            hasBeruf = true;
+                        }
+                    }
+                    if (!hasBeruf) {
+                        p.sendMessage(Messages.ERROR + "Du kannst dir nur Items von deinem Beruf ausrüsten.");
+                        return;
+                    }
                 }
                 if (stuff.getAbteilung() != null && !Beruf.isLeader(p, true)) {
                     boolean hasAbteilung = false;
@@ -307,19 +322,19 @@ public class Equip implements CommandExecutor, Listener {
                         return;
                     }
                 }
-                if (!stuff.getBeruf().hasKasse()) {
+                if (Beruf.getBeruf(p) != Beruf.Berufe.NEWS) {
                     if (Stadtkasse.getStadtkasse() < stuff.getCost()) {
                         p.sendMessage(Messages.ERROR + "Die Stadtkasse hat nicht genug Geld.");
                         return;
                     }
                 }
-                if (Beruf.getBeruf(p) == Beruf.Berufe.POLICE && getAvailableEquip() <= 0) {
+                if ((Beruf.getBeruf(p) == Beruf.Berufe.POLICE || Beruf.getBeruf(p) == Beruf.Berufe.BUNDESNACHRICHTENDIENST) && getAvailableEquip() <= 0) {
                     p.sendMessage(Messages.ERROR + "Es sind keine weiteren Equip-Gegenstände verfügbar.");
                     return;
                 }
 
-                if (stuff.getBeruf().hasKasse()) {
-                    if (stuff.getBeruf().getKasse() < stuff.getCost()) {
+                if (Beruf.getBeruf(p) == Beruf.Berufe.NEWS) {
+                    if (Beruf.getBeruf(p).getKasse() < stuff.getCost()) {
                         p.sendMessage(Messages.ERROR + "Die Kasse hat nicht genug Geld.");
                         return;
                     }
@@ -345,7 +360,7 @@ public class Equip implements CommandExecutor, Listener {
                     Script.executeUpdate("UPDATE city SET equip = equip - 1");
                 }
 
-                if (!stuff.getBeruf().hasKasse()) {
+                if (Beruf.getBeruf(p) != Beruf.Berufe.NEWS) {
                     if (Stadtkasse.getStadtkasse() < stuff.getCost()) {
                         if (stuff != Stuff.HANDSCHELLEN && stuff != Stuff.PISTOLE) {
                             p.sendMessage(Messages.ERROR + "Die Stadtkasse hat nicht genug Geld.");
@@ -355,7 +370,7 @@ public class Equip implements CommandExecutor, Listener {
                     }
                     Stadtkasse.removeStadtkasse(stuff.getCost(), stuff.getName() + " für " + Script.getName(p) + " (" + Beruf.getBeruf(p).getName() + ")");
                 } else {
-                    stuff.getBeruf().removeKasse(stuff.getCost());
+                    Beruf.getBeruf(p).removeKasse(stuff.getCost());
                 }
 
                 if (stuff == Stuff.MUNITION_MP7 || stuff == Stuff.MUNITION_PISTOLE) {
@@ -448,10 +463,8 @@ public class Equip implements CommandExecutor, Listener {
 
     public static void removeEquip(Player p) {
         for (Stuff stuff : Stuff.values()) {
-            if (stuff.getBeruf() == Beruf.getBeruf(p)) {
-                if (stuff.removeOnUninvite()) {
-                    p.getInventory().remove(stuff.getItem());
-                }
+            if (stuff.removeOnUninvite()) {
+                p.getInventory().remove(stuff.getItem());
             }
         }
     }

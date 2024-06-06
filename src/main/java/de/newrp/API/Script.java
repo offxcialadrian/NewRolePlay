@@ -202,6 +202,7 @@ public class Script {
             if (Beruf.getBeruf(p) == Beruf.Berufe.RETTUNGSDIENST) color = "§4";
             if (Beruf.getBeruf(p) == Beruf.Berufe.GOVERNMENT) color = "§3";
             if (Beruf.getBeruf(p) == Beruf.Berufe.NEWS) color = "§6";
+            if (Beruf.getBeruf(p) == Beruf.Berufe.BUNDESNACHRICHTENDIENST) color = "§1";
             if (Beruf.getAbteilung(p) == Abteilung.Abteilungen.ZIVILPOLIZEI) color = "§r";
         }
         if (!SDuty.isSDuty(p)) p.setPlayerListName("§r" + p.getName());

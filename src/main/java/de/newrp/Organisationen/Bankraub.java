@@ -131,11 +131,11 @@ public class Bankraub implements CommandExecutor, Listener {
             return true;
         }
 
-        List<Player> cops = Beruf.Berufe.POLICE.getMembers().stream()
-                .filter(Beruf::hasBeruf)
-                .filter(nearbyPlayer -> Beruf.getBeruf(nearbyPlayer).equals(Beruf.Berufe.POLICE))
-                .filter(Duty::isInDuty)
-                .filter(nearbyPlayer -> !AFK.isAFK(nearbyPlayer)).collect(Collectors.toList());
+        List<Player> cops = new ArrayList<>();
+        cops.addAll(Beruf.Berufe.POLICE.getMembers());
+        cops.addAll(Beruf.Berufe.BUNDESNACHRICHTENDIENST.getMembers());
+        cops.removeIf(player -> !Duty.isInDuty(player));
+        cops.removeIf(AFK::isAFK);
 
         if (cops.size() < 5 && !Script.isInTestMode()) {
             p.sendMessage(Messages.ERROR + "Es sind zu wenig Polizisten online um einen Bankraub zu starten.");

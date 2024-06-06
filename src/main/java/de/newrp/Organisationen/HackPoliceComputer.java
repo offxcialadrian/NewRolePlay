@@ -70,12 +70,12 @@ public class HackPoliceComputer implements CommandExecutor, Listener {
             return true;
         }
 
-        List<Player> cops = Beruf.Berufe.POLICE.getMembers().stream()
-                .filter(Beruf::hasBeruf)
-                .filter(nearbyPlayer -> Beruf.getBeruf(nearbyPlayer).equals(Beruf.Berufe.POLICE))
-                .filter(Duty::isInDuty)
-                .filter(nearbyPlayer -> !SDuty.isSDuty(nearbyPlayer))
-                .filter(nearbyPlayer -> !AFK.isAFK(nearbyPlayer)).collect(Collectors.toList());
+        List<Player> cops = new ArrayList<>();
+        cops.addAll(Beruf.Berufe.POLICE.getMembers());
+        cops.addAll(Beruf.Berufe.BUNDESNACHRICHTENDIENST.getMembers());
+        cops.removeIf(player -> !Duty.isInDuty(player));
+        cops.removeIf(AFK::isAFK);
+
 
         if (cops.size() < 4) {
             p.sendMessage(Messages.ERROR + "§cEs sind nicht 4 Personen der Staatsexekutive anwesend.");

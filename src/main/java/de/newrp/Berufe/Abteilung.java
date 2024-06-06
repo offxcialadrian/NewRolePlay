@@ -52,7 +52,13 @@ public class Abteilung implements CommandExecutor, TabCompleter {
         OBERARZT(6, RETTUNGSDIENST, "Oberarzt"),
         CHEFARZT(7, RETTUNGSDIENST, "Chefarzt"),
         DIREKTOR(8, RETTUNGSDIENST, "Ärztliches-Direktorium"),
-        FEUERWEHR(9, RETTUNGSDIENST, "Feuerwehr");
+        FEUERWEHR(9, RETTUNGSDIENST, "Feuerwehr"),
+        Agent(0, BUNDESNACHRICHTENDIENST, "Agent"),
+        ANALYST(1, BUNDESNACHRICHTENDIENST, "Analyst"),
+        OPERATOR(2, BUNDESNACHRICHTENDIENST, "Operator"),
+        LEITER(3, BUNDESNACHRICHTENDIENST, "Leiter"),
+        VIZEPRÄSIDENT(4, BUNDESNACHRICHTENDIENST, "Vizepräsident"),
+        PRÄSIDENT(5, BUNDESNACHRICHTENDIENST, "Präsident");
 
 
         private final int id;
