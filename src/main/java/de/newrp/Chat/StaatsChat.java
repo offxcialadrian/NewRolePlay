@@ -20,7 +20,7 @@ public class StaatsChat implements CommandExecutor {
             return true;
         }
 
-        if(!Beruf.getBeruf(p).equals(Beruf.Berufe.POLICE) && !Beruf.getBeruf(p).equals(Beruf.Berufe.RETTUNGSDIENST) && !Beruf.getBeruf(p).equals(Beruf.Berufe.GOVERNMENT)) {
+        if(!Beruf.getBeruf(p).equals(Beruf.Berufe.POLICE) && !Beruf.getBeruf(p).equals(Beruf.Berufe.RETTUNGSDIENST) && !Beruf.getBeruf(p).equals(Beruf.Berufe.GOVERNMENT) && !Beruf.getBeruf(p).equals(Beruf.Berufe.BUNDESNACHRICHTENDIENST)) {
             p.sendMessage(Messages.NO_PERMISSION);
             return true;
         }
@@ -51,6 +51,10 @@ public class StaatsChat implements CommandExecutor {
         }
 
         for(Player all : Beruf.getPlayersFromBeruf(Beruf.Berufe.GOVERNMENT)) {
+            all.sendMessage("§c" + Beruf.getBeruf(p).getName() + " " + Script.getName(p) + "§8: §c" + msg);
+        }
+
+        for(Player all : Beruf.getPlayersFromBeruf(Beruf.Berufe.BUNDESNACHRICHTENDIENST)) {
             all.sendMessage("§c" + Beruf.getBeruf(p).getName() + " " + Script.getName(p) + "§8: §c" + msg);
         }
 

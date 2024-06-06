@@ -36,7 +36,7 @@ public static HashMap<String, Long> cooldown = new HashMap<>();
             return true;
         }
 
-        if(!Beruf.getBeruf(p).equals(Beruf.Berufe.POLICE)) {
+        if(!Beruf.getBeruf(p).equals(Beruf.Berufe.POLICE) && !Beruf.getBeruf(p).equals(Beruf.Berufe.BUNDESNACHRICHTENDIENST)) {
             p.sendMessage(Messages.NO_PERMISSION);
             return true;
         }
@@ -66,6 +66,7 @@ public static HashMap<String, Long> cooldown = new HashMap<>();
         p.openInventory(inv);
 
         Beruf.Berufe.POLICE.sendMessage(PREFIX + Script.getName(p) + " fragt die Daten von " + Script.getName(tg) + " ab.");
+        Beruf.Berufe.BUNDESNACHRICHTENDIENST.sendMessage(PREFIX + Script.getName(p) + " fragt die Daten von " + Script.getName(tg) + " ab.");
 
         return false;
     }
