@@ -1026,7 +1026,7 @@ public class ElevatorDoor implements Listener {
                 new Location[]{
                         new Location(Script.WORLD, 725, 73, 908),
                         new Location(Script.WORLD, 726, 73, 908),
-                        new Location(Script.WORLD, 725, 73, 908),
+                        new Location(Script.WORLD, 725, 72, 908),
                         new Location(Script.WORLD, 726, 72, 908),
                         new Location(Script.WORLD, 725, 71, 908),
                         new Location(Script.WORLD, 726, 71, 908),
