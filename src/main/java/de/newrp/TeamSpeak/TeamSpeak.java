@@ -12,6 +12,8 @@ import de.newrp.API.*;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Organisationen.Organisation;
 import de.newrp.NewRoleplayMain;
+import de.newrp.config.MainConfig;
+import de.newrp.dependencies.DependencyContainer;
 import org.bukkit.Bukkit;
 
 import java.sql.ResultSet;
@@ -42,7 +44,8 @@ public class TeamSpeak {
         tsApiAsync = tsQuery.getAsyncApi();
 
         tsApi.selectVirtualServerByPort(9987);
-        tsApi.login("serveradmin", "gMtBt03d");
+        final MainConfig mainConfig = DependencyContainer.getContainer().getDependency(MainConfig.class);
+        tsApi.login(mainConfig.getTeamspeakQueryUser(), mainConfig.getTeamspeakQueryPassword());
         tsApi.setNickname("New RolePlay Bot");
         tsApi.registerEvent(TS3EventType.SERVER);
 

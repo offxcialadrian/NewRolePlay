@@ -2,6 +2,8 @@ package de.newrp.features.scoreboards.impl;
 
 import de.newrp.API.Debug;
 import de.newrp.API.Friedhof;
+import de.newrp.API.Rank;
+import de.newrp.API.Script;
 import de.newrp.Administrator.BuildMode;
 import de.newrp.Administrator.SDuty;
 import de.newrp.Berufe.Abteilung;
@@ -177,12 +179,12 @@ public class ScoreboardService implements IScoreboardService {
 
     @Override
     public String getAFKTeamName() {
-        return "1002afk";
+        return "1003afk";
     }
 
     @Override
     public String getDeadTeamName() {
-        return "1003dead";
+        return "1002dead";
     }
 
     @Override
@@ -191,16 +193,18 @@ public class ScoreboardService implements IScoreboardService {
         final Abteilung.Abteilungen abteilungen = Beruf.getAbteilung(player);
         String factionTeamName = getDefaultTeamName();
 
-        if (faction == Beruf.Berufe.POLICE) factionTeamName = "0002cop";
-        if (faction == Beruf.Berufe.RETTUNGSDIENST) factionTeamName = "0003medics";
-        if (faction == Beruf.Berufe.GOVERNMENT) factionTeamName = "0004government";
-        if (faction == Beruf.Berufe.NEWS) factionTeamName = "0005news";
+        if (faction == Beruf.Berufe.POLICE) factionTeamName = "0008cop";
+        if (faction == Beruf.Berufe.RETTUNGSDIENST) factionTeamName = "0009medic";
+        if (faction == Beruf.Berufe.GOVERNMENT) factionTeamName = "0006government";
+        if (faction == Beruf.Berufe.NEWS) factionTeamName = "0010news";
+        if (faction == Beruf.Berufe.BUNDESNACHRICHTENDIENST) factionTeamName = "0007bnd";
         if (abteilungen == Abteilung.Abteilungen.ZIVILPOLIZEI) factionTeamName = "1000default";
 
 
         String finalTeamName = getDefaultTeamName();
         if (SDuty.isSDuty(player)) {
-            finalTeamName = "0001nrp";
+            final Rank rank = Script.getRank(player);
+            finalTeamName = rank.getScoreboardName();
         } else {
             if(Friedhof.isDead(player)) {
                 finalTeamName = getDeadTeamName();

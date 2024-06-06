@@ -26,7 +26,7 @@ public class AdminDutyScoreboardConfiguration implements BoardConfiguration {
 
     @Override
     public String getScoreboardTitle(Player player) {
-        return "§cNRP × " + Script.getRank(player).getName();
+        return Script.getRank(player).getName() + " Dienst";
     }
 
     @Override
