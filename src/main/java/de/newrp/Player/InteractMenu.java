@@ -14,6 +14,8 @@ import de.newrp.Organisationen.Drogen;
 import de.newrp.Organisationen.Organisation;
 import de.newrp.Police.Handschellen;
 import de.newrp.Ticket.TicketCommand;
+import de.newrp.dependencies.DependencyContainer;
+import de.newrp.features.addiction.IAddictionService;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.data.type.Bed;
@@ -345,7 +347,8 @@ public class InteractMenu implements Listener {
                 tg.spigot().sendMessage(HealthCommand.muscle(p));
                 break;
             case "Abhängigkeit behandeln":
-                if (!Krankheit.ABHAENGIGKEIT.isInfected(Script.getNRPID(tg))) {
+                final IAddictionService addictionService = DependencyContainer.getContainer().getDependency(IAddictionService.class);
+                if (addictionService.isAddictedToAnything(tg)) {
                     p.sendMessage(Messages.ERROR + "Der Spieler ist nicht abhängig.");
                     return;
                 }
@@ -356,11 +359,21 @@ public class InteractMenu implements Listener {
                 }
 
                 addiction_cooldown.add(tg.getName());
-                Drogen.healAddiction(tg);
-                p.sendMessage(PREFIX + "Du hast " + Script.getName(tg) + " wegen " + (Script.getGender(tg) == Gender.MALE ? "seiner" : "ihrer") + " Abhängigkeit behandelt (" + (int) (Drogen.getAddictionHeal(tg) + 1) + "/" + (Premium.hasPremium(tg) ? 1 : 3) + ").");
-                tg.sendMessage(PREFIX + "Du wurdest von " + Script.getName(p) + " wegen deiner Abhängigkeit behandelt (" + (int) (Drogen.getAddictionHeal(tg)) + "/" + (Premium.hasPremium(tg) ? 1 : 3) + ").");
-                if (!Krankheit.ABHAENGIGKEIT.isInfected(Script.getNRPID(tg)))
-                    tg.sendMessage(Messages.INFO + "Du bist nun nicht mehr abhängig.");
+                final int neededHealAmount = Premium.hasPremium(tg) ? 1 : 3;
+                final int healAfterSession = addictionService.healPlayer(tg);
+                final boolean healed = healAfterSession >= neededHealAmount;
+
+                final String prefix = "§8[§4Abhängigkeit§8] §4» §7";
+                if (healed) {
+                    p.sendMessage(prefix + "Du hast §4" + Script.getName(tg) + " §7erfolgreich behandelt.");
+                    tg.sendMessage(prefix + "Du wurdest von §4" + Script.getName(p) + " §7erfolgreich behandelt.");
+                    tg.sendMessage(Messages.INFO + "Du bist nun nicht mehr abhängig");
+                    addictionService.clearAddiction(tg);
+                } else {
+                    p.sendMessage(prefix + "Du hast §4" + Script.getName(tg) + " §7behandelt (Heilung: §4" + healAfterSession + " §7von §4" + neededHealAmount + "§7)");
+                    tg.sendMessage(prefix + "Du wurdest von §4" + Script.getName(p) + " §7behandelt (Heilung: §4" + healAfterSession + " §7von §4" + neededHealAmount + "§7)");
+                }
+                Beruf.Berufe.RETTUNGSDIENST.sendMessage(prefix + "Der Spieler §4" + Script.getName(tg) + " §7wurde von §4" + Script.getName(p) + " §7behandelt (Heilung: §4" + healAfterSession + " §7von §4" + neededHealAmount + "§7)");
                 break;
             case "Zeige Ticket":
                 if (TicketCommand.getTicket(p) == null) {

@@ -40,6 +40,7 @@ public class ScoreboardService implements IScoreboardService {
     public void createScoreboardOnJoin(Player player) {
         final Scoreboard scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
         for (ScoreboardTeamData scoreboardTeamDatum : this.getScoreboardTeamData()) {
+            if(scoreboardTeamDatum == null) continue;
             final Team team = scoreboard.registerNewTeam(scoreboardTeamDatum.teamName());
             team.prefix(Component.text(scoreboardTeamDatum.displayPrefix()));
             team.color(NamedTextColor.NAMES.value(scoreboardTeamDatum.displayColor()));

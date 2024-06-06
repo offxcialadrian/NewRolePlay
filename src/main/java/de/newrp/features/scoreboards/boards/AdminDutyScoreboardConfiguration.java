@@ -11,6 +11,7 @@ import de.newrp.features.scoreboards.BoardConfiguration;
 import de.newrp.features.scoreboards.IScoreboardService;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Team;
 
@@ -26,7 +27,7 @@ public class AdminDutyScoreboardConfiguration implements BoardConfiguration {
 
     @Override
     public String getScoreboardTitle(Player player) {
-        return Script.getRank(player).getName() + " Dienst";
+        return "§c" + Script.getRank(player).getPrefix() + "Dienst";
     }
 
     @Override
@@ -37,7 +38,9 @@ public class AdminDutyScoreboardConfiguration implements BoardConfiguration {
         list.add("[online]");
         list.add("§1");
         list.add("§bTickets§8:");
+        final Rank rank = Script.getRank(player);
         for (TicketTopic value : TicketTopic.values()) {
+            if(value != TicketTopic.BUG && rank == Rank.DEVELOPER) continue;
             list.add("[" + value.name().toLowerCase() + "]");
         }
         list.add("§2");

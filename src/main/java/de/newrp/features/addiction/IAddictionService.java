@@ -21,4 +21,10 @@ public interface IAddictionService {
 
     Optional<AddictionData> getDataOfDrug(final Player player, final Drogen drug);
 
+    boolean isAddictedToAnything(final Player player);
+
+    int healPlayer(final Player player);
+
+    void clearAddiction(final Player player);
+
 }

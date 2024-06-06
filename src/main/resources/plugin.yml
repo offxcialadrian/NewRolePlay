@@ -842,3 +842,5 @@ commands:
     aliases: [ datenschutz, datenschutzerklaerung ]
   casino:
     description: toggle casino settings
+  getjsonlocation:
+    description: json location

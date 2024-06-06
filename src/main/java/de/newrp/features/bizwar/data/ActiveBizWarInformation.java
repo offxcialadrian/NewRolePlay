@@ -39,6 +39,7 @@ public class ActiveBizWarInformation {
     }
 
     public void tickBizWar(final IBizWarService bizWarService) {
+        final long endTime = this.startTimestamp + TimeUnit.MINUTES.toMillis(7);
         final long minutesPassedSinceStart = TimeUnit.MILLISECONDS.toMinutes(System.currentTimeMillis() - this.startTimestamp);
         System.out.println(minutesPassedSinceStart);
         if(minutesPassedSinceStart >= 7) {
@@ -47,12 +48,21 @@ public class ActiveBizWarInformation {
             return;
         }
 
+        final long minutesReamining = 7 - minutesPassedSinceStart;
+        final long secondsRemaining = TimeUnit.MILLISECONDS.toSeconds(endTime - System.currentTimeMillis());
+        String time = " §7§o(" + minutesReamining + " " + (minutesReamining == 1 ? "Minute" : "Minuten") + " verbleibend)";
+
+        if(minutesReamining == 6) {
+            time = " §7§o(" + secondsRemaining + " " + (secondsRemaining == 1 ? "Sekunde" : "Sekunden") + " verbleibend)";
+        }
+
+
         for (UUID joinedMembersOfAttacker : this.getJoinedMembersOfAttackers()) {
             final Player player = Bukkit.getPlayer(joinedMembersOfAttacker);
             if(player == null) continue;
 
             if(Friedhof.isDead(player)) continue;
-            Script.sendActionBar(player, "§a" + this.currentAttackerPoints + " §7| §c" + this.currentDefenderPoints);
+            Script.sendActionBar(player, "§a" + this.currentAttackerPoints + " §7| §c" + this.currentDefenderPoints + time);
         }
 
         for (UUID joinedMembersOfDefender : this.getJoinedMembersOfDefenders()) {
@@ -60,7 +70,7 @@ public class ActiveBizWarInformation {
             if(player == null) continue;
 
             if(Friedhof.isDead(player)) continue;
-            Script.sendActionBar(player, "§a" + this.currentDefenderPoints + " §7| §c" + this.currentAttackerPoints);
+            Script.sendActionBar(player, "§a" + this.currentDefenderPoints + " §7| §c" + this.currentAttackerPoints + time);
         }
     }
 
