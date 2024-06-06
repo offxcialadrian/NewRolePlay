@@ -60,8 +60,8 @@ public enum Shops {
     GAS_STATION_GANG(44, "Tankstelle Gang", "Tankstelle Gang", 100000, new Location(Script.WORLD, 819, 67, 1326, 0.0f, 0.0f), 20, 600, false, ShopType.GAS_STATION),
     BAR(45, "Bar", "Bar", 30000, new Location(Script.WORLD, 704.5, 69, 859.5, 0.0f, 0.0f), 2, 600, true, ShopType.BAR),
     CLUB(46, "Club-Bar", "Club-Bar", 25000, new Location(Script.WORLD, 477.5, 67, 1285.5, 0.0f, 0.0f), 2, 600, true, ShopType.BAR),
-    ZOO(47, "Zoo", "Zoo", 35000, new Location(Script.WORLD, 66.5, 76, 694.5, 0.0f, 0.0f), 2, 600, true, ShopType.MERCH),
-    MERCHANDISE(48, "Merchandise", "Merchandise", 30000, new Location(Script.WORLD, 806, 66, 727, 0.0f, 0.0f), 2, 600, true, ShopType.MERCH);
+    ZOO(47, "Zoo", "Zoo", 35000, new Location(Script.WORLD, 66.5, 76, 694.5, 0.0f, 0.0f), 2, 600, true, ShopType.MERCH);
+    // später erst MERCHANDISE(48, "Merchandise", "Merchandise", 30000, new Location(Script.WORLD, 806, 66, 727, 0.0f, 0.0f), 2, 600, true, ShopType.MERCH);
 
 
     private final int id;

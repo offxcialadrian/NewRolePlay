@@ -122,9 +122,9 @@ public class BuyClick implements Listener {
                 PayShop.shops.put(p, s);
             }
 
-            sendMessage(p, "Möchten Sie Bar oder mit Karte bezahlen?");
             int price = (Buy.amount.containsKey(p.getName()) ? si.getPrice(s) * Buy.amount.get(p.getName()) : si.getPrice(s));
             if (s.acceptCard()) {
+                sendMessage(p, "Möchten Sie Bar oder mit Karte bezahlen?");
                 Inventory gui = p.getServer().createInventory(null, InventoryType.HOPPER, "§8[§aZahlungsmethode§8]");
                 ItemStack cash = Script.setNameAndLore(Script.getHead(60078), "§aBar","§8» §c" + (Buy.amount.containsKey(p.getName())?Buy.amount.get(p.getName()) + "x" + si.getPrice(s) + " (" + price + ")":si.getPrice(s)) + "€");
                 ItemStack bank = Script.setNameAndLore(Script.getHead(58268), "§aKarte","§8» §c" + (Buy.amount.containsKey(p.getName())?Buy.amount.get(p.getName()) + "x" + si.getPrice(s) + " (" + price + ")":si.getPrice(s)) + "€");
