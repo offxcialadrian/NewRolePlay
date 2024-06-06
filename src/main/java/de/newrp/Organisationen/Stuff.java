@@ -24,8 +24,8 @@ public enum Stuff {
     STRIKER(5, Weapon.MP7.getName(), Weapon.MP7.getWeapon(), 4, 700),
     BRECHI(6, "Brechstange", Script.brechstange(), 5, 250),
     SCHUTZWESTE(7, "Schutzweste", Equip.Stuff.KEVLAR.getItem(), 6, 700),
-    MACHETE(8, "Machete", Machete.getItem(), 7, 3100);
-    // MUNITION_AK47(9, "7.62 x 39mm", Script.setName(ShopItem.AMMO_762MM.getItemStack(), "7.62 x 39mm"), 5, 50);
+    MACHETE(8, "Machete", Machete.getItem(), 7, 3100),
+    MUNITION_MP7(9, Weapon.MP7.getAmmoType().getName(), Script.setName(Equip.Stuff.MUNITION_MP7.getItem(), Weapon.MP7.getAmmoType().getName()), 5, 55);
 
     private final int id;
     private final String name;
