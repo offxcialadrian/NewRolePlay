@@ -302,7 +302,7 @@ public class Bank implements CommandExecutor, TabCompleter {
             if(reason.length() == 0) reason = new StringBuilder("Kein Verwendungszweck angegeben.");
 
             if(reason.toString().contains("drogen")) {
-                Beruf.Berufe.POLICE.sendMessage(PREFIX + "§c" + Script.getName(p) + " hat eine Überweisung mit dem Verwendungszweck 'Drogen' an " + Script.getName(tg) + " getätigt.");
+                Beruf.Berufe.BUNDESNACHRICHTENDIENST.sendMessage(PREFIX + "§c" + Script.getName(p) + " hat eine Überweisung mit dem Verwendungszweck 'Drogen' an " + Script.getName(tg) + " getätigt.");
             }
 
             if(betrag > Banken.getBankByPlayer(p).getTransactionLimit()) {

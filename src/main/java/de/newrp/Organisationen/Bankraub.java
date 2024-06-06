@@ -158,7 +158,7 @@ public class Bankraub implements CommandExecutor, Listener {
             if(faction == Beruf.Berufe.NEWS) continue;
 
             faction.sendMessage(PREFIX + "Die Staatsbank wird ausgeraubt!");
-            if(faction != Beruf.Berufe.POLICE) continue;
+            if(faction != Beruf.Berufe.POLICE && faction != Beruf.Berufe.BUNDESNACHRICHTENDIENST) continue;
             for (UUID uuid : faction.getMember()) {
                 final Player player = Bukkit.getPlayer(uuid);
                 player.playSound(player.getLocation(), Sound.ENTITY_WITHER_SPAWN, 1f, 1f);
@@ -274,6 +274,7 @@ public class Bankraub implements CommandExecutor, Listener {
             faction.sendMessage(PREFIX + "Der Bankraub ist gescheitert!");
             Beruf.Berufe.POLICE.sendMessage(PREFIX + "Der Staatsbankraub wurde verhindert!");
             Beruf.Berufe.RETTUNGSDIENST.sendMessage(PREFIX + "Der Staatsbankraub wurde verhindert!");
+            Beruf.Berufe.BUNDESNACHRICHTENDIENST.sendMessage(PREFIX + "Der Staatsbankraub wurde verhindert!");
             Script.sendActionBar(p, "§cDer Bankraub ist gescheitert!");
             bankraub.getWorld().playSound(bankraub, Sound.ENTITY_WITHER_DEATH, 5f, 1f);
         }

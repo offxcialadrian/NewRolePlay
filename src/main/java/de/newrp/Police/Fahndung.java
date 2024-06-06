@@ -37,7 +37,7 @@ public class Fahndung implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        if(!Beruf.getBeruf(p).equals(Beruf.Berufe.POLICE)) {
+        if(!Beruf.getBeruf(p).equals(Beruf.Berufe.POLICE) && !Beruf.getBeruf(p).equals(Beruf.Berufe.BUNDESNACHRICHTENDIENST)) {
             p.sendMessage(Messages.ERROR + "Du bist kein Polizist.");
             return true;
         }
@@ -139,6 +139,8 @@ public class Fahndung implements CommandExecutor, TabCompleter {
         Log.NORMAL.write(tg, "hat von " + Script.getName(p) + " eine Fahndung ausgeschrieben bekommen (" + substring + ")");
         Beruf.Berufe.POLICE.sendMessage(PREFIX + "Der Spieler §e" + Script.getName(tg) + " §7wird nun wegen §e" + substring + " §7gefahndet.");
         Beruf.Berufe.POLICE.sendMessage(PREFIX + "Beamter: §e" + Script.getName(p) + " §8(§7WantedPunkte: " + Fahndung.getWanteds(tg) + "§8)");
+        if(Fahndung.getWanteds(tg) >= 80) Beruf.Berufe.BUNDESNACHRICHTENDIENST.sendMessage(PREFIX + "Der Spieler §e" + Script.getName(tg) + " §7wird nun wegen §e" + substring + " §7gefahndet.");
+        if(Fahndung.getWanteds(tg) >= 80) Beruf.Berufe.BUNDESNACHRICHTENDIENST.sendMessage(PREFIX + "Beamter: §e" + Script.getName(p) + " §8(§7WantedPunkte: " + Fahndung.getWanteds(tg) + "§8)");
         tg.sendMessage(PREFIX + "Du wirst nun wegen §e" + substring + " §7gefahndet.");
         Script.updateFahndungSubtitle(tg);
 
