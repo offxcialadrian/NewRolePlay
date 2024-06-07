@@ -12,7 +12,6 @@ import de.newrp.Government.Stadtkasse;
 import de.newrp.House.House;
 import de.newrp.Medic.FeuerwehrEinsatz;
 import de.newrp.NewRoleplayMain;
-import de.newrp.Organisationen.LabBreakIn;
 import de.newrp.Organisationen.Organisation;
 import de.newrp.Player.AFK;
 import de.newrp.Player.Hotel;

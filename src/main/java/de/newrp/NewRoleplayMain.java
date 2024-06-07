@@ -1,14 +1,13 @@
 package de.newrp;
 
 import de.newrp.API.*;
-import de.newrp.Administrator.*;
 import de.newrp.Administrator.ParticleCommand;
+import de.newrp.Administrator.*;
 import de.newrp.Berufe.*;
 import de.newrp.Call.CallCommand;
 import de.newrp.Call.HangupCommand;
 import de.newrp.Call.PickupCommand;
 import de.newrp.Chat.*;
-import de.newrp.Player.CooldownCommand;
 import de.newrp.Commands.DiscordCommand;
 import de.newrp.Commands.Test;
 import de.newrp.Entertainment.*;
@@ -96,7 +95,6 @@ import net.citizensnpcs.api.CitizensAPI;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder;
-import net.dv8tion.jda.api.utils.TimeFormat;
 import net.labymod.serverapi.api.LabyAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandMap;
@@ -108,7 +106,6 @@ import java.io.File;
 import java.sql.Connection;
 import java.sql.Statement;
 import java.util.Arrays;
-import java.util.concurrent.TimeUnit;
 
 public class NewRoleplayMain extends JavaPlugin {
 
@@ -204,6 +201,7 @@ public class NewRoleplayMain extends JavaPlugin {
         House.loadHouses();
         Blacklist.load();
         Plantage.loadAll();
+        Dart.clear();
         Bukkit.getScheduler().runTaskLater(this, CitizensAPI.getNPCRegistry()::deregisterAll, 2L);
         Bukkit.getScheduler().runTaskLater(this, Schwarzmarkt::spawnRandom, 4L);
         Zeitung.restoreZeitung();
@@ -581,6 +579,7 @@ public class NewRoleplayMain extends JavaPlugin {
         getCommand("imprint").setExecutor(new ImprintCommand());
         getCommand("casino").setExecutor(new Casino());
         getCommand("getjsonlocation").setExecutor(new GetJsonLocation());
+        getCommand("dart").setExecutor(new Dart());
     }
 
     /**
@@ -742,6 +741,7 @@ public class NewRoleplayMain extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new DrogenbankHouse(), this);
         Bukkit.getPluginManager().registerEvents(new SpindCommand(), this);
         Bukkit.getPluginManager().registerEvents(new MuscleDamage(), this);
+        Bukkit.getPluginManager().registerEvents(new Dart(), this);
     }
 
     /**

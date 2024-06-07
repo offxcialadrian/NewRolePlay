@@ -844,3 +844,5 @@ commands:
     description: toggle casino settings
   getjsonlocation:
     description: json location
+  dart:
+    description: get dart arrows
