@@ -20,7 +20,7 @@ public class Team {
     public enum Teams {
         SOCIALMEDIA(1, "Marketing-Team", TeamspeakServerGroup.SOCIALMEDIA, 16, "§b", 0),
         EVENT(2, "Event-Team", TeamspeakServerGroup.EVENTTEAM, 18, "§e", 0),
-        BAU(3, "Bau-Team", TeamspeakServerGroup.BAUTEAM, 17, "§e", 0),
+        BAU(3, "Bau-Team", TeamspeakServerGroup.BAUTEAM, 17, "§e", 75),
         ENTWICKLUNG(4, "Entwicklungs-Team", TeamspeakServerGroup.ENTWICKLUNG, 19, "§b", 100);
 
         int id;
