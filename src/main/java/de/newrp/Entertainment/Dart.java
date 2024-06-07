@@ -132,7 +132,7 @@ public class Dart implements Listener, CommandExecutor {
             Player player = (Player) sender;
 
             Shops shop = Shops.getShopByLocation(player.getLocation(), 8.0F);
-            if (shop == null ||shop.getType() != ShopType.BAR) {
+            if (shop == null || shop.getType() != ShopType.BAR) {
                 player.sendMessage(Messages.ERROR + "Du befindest dich nicht in einer Bar.");
                 return true;
             }
