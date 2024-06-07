@@ -16,6 +16,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
+import java.util.Objects;
 
 public enum Health {
     THIRST(1, "thirst", "Durst", 20, 20),
@@ -144,11 +145,20 @@ public enum Health {
     public void add(int id, float amount) {
         float get = get(id);
         float f = get + amount;
+        if(id == 260) {
+            Objects.requireNonNull(Script.getPlayer(id)).sendMessage("health type " + this.name + " new value = " + f);
+        }
         if (f > this.max) f = max;
+        if(id == 260) {
+            Objects.requireNonNull(Script.getPlayer(id)).sendMessage("check health type " + this.name + " is maxed out = " + f);
+        }
         HashMap<Health, Float> health = getFull(id);
         health.put(this, f);
         if(this.get(id) >= this.max) return;
         Script.executeAsyncUpdate("UPDATE health SET " + this.name + "=" + f + " WHERE id=" + id);
+        if(id == 260) {
+            Objects.requireNonNull(Script.getPlayer(id)).sendMessage("Set health type " + this.name + " to = " + f);
+        }
     }
 
     public void set(int id, float amount) {

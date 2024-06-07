@@ -3,6 +3,7 @@ package de.newrp.API;
 import com.google.gson.JsonObject;
 import de.newrp.Administrator.*;
 import de.newrp.Berufe.Beruf;
+import de.newrp.Berufe.Equip;
 import de.newrp.Berufe.Houseban;
 import de.newrp.Government.Wahlen;
 import de.newrp.House.AkkuCommand;
@@ -381,6 +382,8 @@ public class Utils implements Listener {
                     if (blacklisted == null) continue;
                     Script.setSubtitle(p, blacklisted.getUniqueId(), "§c" + bl.getReason());
                 }
+            } else {
+                Equip.removeEquip(p);
             }
 
 
