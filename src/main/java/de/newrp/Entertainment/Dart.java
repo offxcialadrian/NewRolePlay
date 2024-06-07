@@ -41,6 +41,7 @@ public class Dart implements Listener, CommandExecutor {
     public void onHit(ProjectileHitEvent event) {
         if (event.getEntity() instanceof SpectralArrow) {
             SpectralArrow arrow = (SpectralArrow) event.getEntity();
+            Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), arrow::remove, 30 * 20L);
             if (event.getHitBlock().getBlockData().getMaterial().equals(Material.TARGET)) {
                 ProjectileSource shooter = event.getEntity().getShooter();
                 if (shooter instanceof Player) {
@@ -51,19 +52,19 @@ public class Dart implements Listener, CommandExecutor {
                     loc.add(direction);
 
                     double x = loc.getX();
-                    if (Math.floor(x) != event.getHitBlock().getX()) return;
                     double y = loc.getY();
-                    if (Math.floor(y) != event.getHitBlock().getY()) return;
                     double z = loc.getZ();
-                    if (Math.floor(z) != event.getHitBlock().getZ()) return;
 
                     double p;
+                    if (Math.floor(y) != event.getHitBlock().getY()) return;
                     y = Math.pow((-Math.abs(2 * (y % 1 - 0.5))) + 1, 2);
                     if (event.getHitBlockFace() == BlockFace.SOUTH || event.getHitBlockFace() == BlockFace.NORTH) {
+                        if (Math.floor(x) != event.getHitBlock().getX()) return;
                         x = Math.pow((-Math.abs(2 * (x % 1 - 0.5))) + 1, 2);
                         p = (x + y) / 2;
                     }
                     else if (event.getHitBlockFace() == BlockFace.EAST || event.getHitBlockFace() == BlockFace.WEST) {
+                        if (Math.floor(z) != event.getHitBlock().getZ()) return;
                         z = Math.pow((-Math.abs(2 * (z % 1 - 0.5))) + 1, 2);
                         p = (y + z) / 2;
                     }
@@ -71,8 +72,6 @@ public class Dart implements Listener, CommandExecutor {
 
                     int points = (int) Math.ceil(p * 10);
                     Script.sendLocalMessage(10, player, PREFIX + Script.getName(player) + " hat " + points + " Punkt" + (points > 1 ? "e" : "") + " geworfen.");
-
-                    Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), arrow::remove, 30 * 20L);
                 }
             }
         }
@@ -140,6 +139,7 @@ public class Dart implements Listener, CommandExecutor {
             if (Script.removeMoney(player, PaymentType.CASH, 20)) {
                 player.getInventory().addItem(Script.setName(new ItemStack(Material.SPECTRAL_ARROW, 10), "§eDart-Pfeile"));
                 player.sendMessage(PREFIX + "Du hast dir 10 Dart-Pfeile gekauft.");
+                player.sendMessage(Messages.INFO + "Der Spieler, der am nächsten an 69 Punkten ist, hat gewonnen.");
 
                 shop.addKasse(25);
                 if (shop.getOwner() > 0)
