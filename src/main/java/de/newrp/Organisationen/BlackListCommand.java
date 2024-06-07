@@ -1,13 +1,13 @@
 package de.newrp.Organisationen;
 
-import de.newrp.API.*;
-import de.newrp.Administrator.BuildMode;
-import de.newrp.Administrator.GoTo;
+import de.newrp.API.Activities;
+import de.newrp.API.Activity;
+import de.newrp.API.Messages;
+import de.newrp.API.Script;
 import de.newrp.Administrator.SDuty;
 import de.newrp.Player.AFK;
 import de.newrp.dependencies.DependencyContainer;
 import de.newrp.features.deathmatcharena.IDeathmatchArenaService;
-import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -19,8 +19,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.util.StringUtil;
 
-import java.lang.reflect.Array;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -140,7 +138,7 @@ public class BlackListCommand implements CommandExecutor, Listener, TabCompleter
                     while (it.hasNext()) {
                         Blacklist bl = it.next();
                         if (bl.getUserName().equals(p.getName())) {
-                            sb.append("  §8×§6 ").append(f.getName()).append("§8: §cJa §7(§c").append(bl.getPrice()).append("$§8, ").append(bl.getKills()).append(" §cKills§8, Grund§8: §c").append(bl.getReason()).append("§7)\n");
+                            sb.append("  §8×§6 ").append(f.getName()).append("§8: §cJa §7(§c").append(bl.getPrice()).append("€§8, ").append(bl.getKills()).append(" §cKills§8, Grund§8: §c").append(bl.getReason()).append("§7)\n");
                             b = false;
                             break;
                         }

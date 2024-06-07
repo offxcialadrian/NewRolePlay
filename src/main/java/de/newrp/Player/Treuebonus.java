@@ -3,10 +3,9 @@ package de.newrp.Player;
 import de.newrp.API.*;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Berufe.Duty;
+import de.newrp.NewRoleplayMain;
 import de.newrp.Organisationen.MaskHandler;
 import de.newrp.Organisationen.Organisation;
-import de.newrp.NewRoleplayMain;
-import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -23,7 +22,6 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -234,7 +232,7 @@ public class Treuebonus implements CommandExecutor, Listener {
                         int punkte = Treuebonus.points.get(p.getUniqueId());
                         if (punkte >= price) {
                             Treuebonus.remove(p, price);
-                            p.sendMessage(Treuebonus.prefix + "Du hast 2500$ eingelöst.");
+                            p.sendMessage(Treuebonus.prefix + "Du hast 2500€ eingelöst.");
                             Script.addMoney(p, PaymentType.BANK, 2500);
                         } else {
                             p.sendMessage(Treuebonus.prefix + "Das kostet " + price + " Treuepunkte! (Dir fehlen §9" + (price - punkte) + " Punkte§7)");

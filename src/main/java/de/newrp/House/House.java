@@ -3,7 +3,6 @@ package de.newrp.House;
 import de.newrp.API.Debug;
 import de.newrp.API.Script;
 import de.newrp.NewRoleplayMain;
-import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -19,7 +18,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 public class House {
 
@@ -476,7 +474,7 @@ public class House {
             s.setLine(0, "");
             s.setLine(1, "== " + this.houseID + " ==");
             s.setLine(2, "Frei");
-            s.setLine(3, this.price + "$");
+            s.setLine(3, this.price + "€");
             s.update(true);
         }
     }
