@@ -53,13 +53,13 @@ public class StartBizWarCommand implements CommandExecutor {
         final long timeTillNextAttackOnOrganisation = organisationCooldown - System.currentTimeMillis();
 
         if(timeTillNextAttackOnOrganisation > 0) {
-            player.sendMessage(Messages.ERROR + "§cDeine Organisation kann erst in §c§l" + new SimpleDateFormat("HH:mm").format(timeTillNextAttackOnOrganisation) + " Stunden §cerneut angreifen!");
+            player.sendMessage(Messages.ERROR + "§cDeine Organisation kann erst in §c§l" + new SimpleDateFormat("HH 'Stunden und' mm 'Minuten'").format(timeTillNextAttackOnOrganisation) + " §cerneut angreifen!");
             return false;
         }
 
         final Shops shop = Shops.getShopByLocation(player.getLocation(), 5f);
         if(shop == null) {
-            player.sendMessage(Messages.ERROR + "§cDu bist in keiner Organisation!");
+            player.sendMessage(Messages.ERROR + "§cDu bist bei keinem Shop!");
             return false;
         }
 
@@ -78,7 +78,7 @@ public class StartBizWarCommand implements CommandExecutor {
         final long timeTillNextAttack = shopCooldown - System.currentTimeMillis();
 
         if(timeTillNextAttack > 0) {
-            player.sendMessage(Messages.ERROR + "§cDu kannst diesen Shop erst in §c§l" + new SimpleDateFormat("HH:mm").format(timeTillNextAttack) + " Stunden §cerneut angreifen!");
+            player.sendMessage(Messages.ERROR + "§cDu kannst diesen Shop erst in §c§l" + new SimpleDateFormat("HH 'Stunden und' mm 'Minuten'").format(timeTillNextAttack) + " §cerneut angreifen!");
             return false;
         }
 

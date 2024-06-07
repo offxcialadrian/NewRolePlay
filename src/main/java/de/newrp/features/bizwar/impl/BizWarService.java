@@ -34,10 +34,6 @@ public class BizWarService implements IBizWarService {
 
     @Override
     public void loadActiveExtortions() {
-        for (BizWarShopConfig shopConfig : this.bizWarConfig.getShopConfigs()) {
-
-        }
-
         try(final PreparedStatement preparedStatement = NewRoleplayMain.getConnection().prepareStatement("SELECT * FROM extorted_shops")) {
             try(final ResultSet resultSet = preparedStatement.executeQuery()) {
                 while (resultSet.next()) {
@@ -50,7 +46,7 @@ public class BizWarService implements IBizWarService {
                     final Shops shop = Shops.getShop(shopID);
                     final Organisation organisation = Organisation.getOrganisation(organisationID);
                     if(organisation == null) {
-                        return;
+                        continue;
                     }
 
                     // Watch in test server

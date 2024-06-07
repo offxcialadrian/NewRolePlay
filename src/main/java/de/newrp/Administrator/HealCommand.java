@@ -2,6 +2,8 @@ package de.newrp.Administrator;
 
 import de.newrp.API.*;
 import de.newrp.Police.Handschellen;
+import de.newrp.dependencies.DependencyContainer;
+import de.newrp.features.addiction.IAddictionService;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -57,6 +59,9 @@ public class HealCommand implements CommandExecutor {
             Krankheit.HUSTEN.remove(Script.getNRPID(p));
             Health.THIRST.set(Script.getNRPID(p), Health.THIRST.getMax());
             p.setWalkSpeed(0.2F);
+            if(Script.hasRank(p, Rank.ADMINISTRATOR, false)) {
+                DependencyContainer.getContainer().getDependency(IAddictionService.class).clearAddiction(p);
+            }
             return true;
         }
 

@@ -23,7 +23,7 @@ public class RemoveFahndung implements CommandExecutor {
         }
 
         if (!SDuty.isSDuty(p)) {
-            if (!Beruf.getBeruf(p).equals(Beruf.Berufe.POLICE) && !SDuty.isSDuty(p)) {
+            if (!(Beruf.getBeruf(p).equals(Beruf.Berufe.POLICE) || Beruf.getBeruf(p).equals(Beruf.Berufe.BUNDESNACHRICHTENDIENST)) && !SDuty.isSDuty(p)) {
                 p.sendMessage(Messages.NO_PERMISSION);
                 return true;
             }
@@ -50,11 +50,12 @@ public class RemoveFahndung implements CommandExecutor {
             return true;
         }
 
-        Fahndung.removeFahndung(tg);
         p.sendMessage(Fahndung.PREFIX + "Du hast die Fahndung von §6" + Script.getName(tg) + " §7entfernt.");
         Beruf.Berufe.POLICE.sendMessage(Fahndung.PREFIX + "Die Fahndung von §6" + Script.getName(tg) + " §7wurde von §6" + Script.getName(p) + " §7entfernt.");
         Beruf.Berufe.GOVERNMENT.sendMessage(Fahndung.PREFIX + "Die Fahndung von §6" + Script.getName(tg) + " §7wurde von §6" + Script.getName(p) + " §7entfernt.");
+        if(Fahndung.getWanteds(tg) > 80) Beruf.Berufe.BUNDESNACHRICHTENDIENST.sendMessage(Fahndung.PREFIX + "Die Fahndung von §6" + Script.getName(tg) + " §7wurde von §6" + Script.getName(p) + " §7entfernt.");
         tg.sendMessage(Fahndung.PREFIX + "Deine Fahndung wurde von §6" + Script.getName(p) + " §7entfernt.");
+        Fahndung.removeFahndung(tg);
         Script.updateFahndungSubtitle(tg);
 
         return false;

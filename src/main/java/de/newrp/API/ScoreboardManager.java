@@ -50,6 +50,7 @@ public class ScoreboardManager {
         POLICE("cpolice", null, null),
         MEDIC("dmedic", null, null),
         NEWS("enews", null, null),
+        BND("fbnd", null, null),
         PLAYER("player", null, null);
 
 

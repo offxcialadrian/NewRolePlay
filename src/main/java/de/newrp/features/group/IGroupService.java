@@ -2,6 +2,7 @@ package de.newrp.features.group;
 
 import de.newrp.features.group.data.Group;
 import org.bukkit.Location;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import java.util.List;
@@ -12,28 +13,26 @@ public interface IGroupService {
 
     void deleteGroup(int groupId, Player player);
 
-    void invitePlayer(int groupId, Player player, Player targetPlayer);
+    void invitePlayer(Group group, Player player, Player targetPlayer, final int rank);
 
-    void kickPlayer(int groupId, Player player, Player targetPlayer);
+    void kickPlayer(Player player, OfflinePlayer targetPlayer);
 
-    void leaveGroup(int groupId, Player player);
+    void leaveGroup(Player player);
 
     void transferOwnership(int groupId, Player player, Player targetPlayer);
 
-    void setGroupSpawnLocation(int groupId, Player player, Location location);
-
-    void setGroupHouseNumber(int groupId, Player player, int houseNumber);
-
-    void setGroupName(int groupId, Player player, String groupName);
-
     List<Group> getGroups();
+
+    void initGroupForPlayer(final Player player);
 
     Group getGroup(int groupId);
 
     Group getGroup(Player player);
 
-    Group getGroup(String groupName);
+    int getGroup(final OfflinePlayer player);
 
     boolean hasGroup(Player player);
+
+    String getPrefix();
 
 }

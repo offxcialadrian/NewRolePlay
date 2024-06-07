@@ -14,6 +14,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class EquipPriceCommand implements CommandExecutor, TabCompleter {
@@ -84,9 +85,10 @@ public class EquipPriceCommand implements CommandExecutor, TabCompleter {
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         Player player = (Player) sender;
         List<String> arg = new ArrayList<>();
-        if (Beruf.hasBeruf(player)) {
+        final Beruf.Berufe berufe = Beruf.getBeruf(player);
+        if (berufe != null) {
             for (Equip.Stuff equip : Equip.Stuff.values()) {
-                if (equip.getBeruf() == Beruf.getBeruf(player)) {
+                if (Arrays.stream(equip.getBeruf()).anyMatch(e -> e == berufe)) {
                     arg.add(equip.getName().replaceAll(" ", "-"));
                 }
             }

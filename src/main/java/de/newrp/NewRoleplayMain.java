@@ -580,6 +580,7 @@ public class NewRoleplayMain extends JavaPlugin {
         getCommand("dsgvo").setExecutor(new DsgvoCommand());
         getCommand("imprint").setExecutor(new ImprintCommand());
         getCommand("casino").setExecutor(new Casino());
+        getCommand("getjsonlocation").setExecutor(new GetJsonLocation());
     }
 
     /**

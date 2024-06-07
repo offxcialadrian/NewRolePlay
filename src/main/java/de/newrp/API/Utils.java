@@ -348,6 +348,10 @@ public class Utils implements Listener {
                 }
             }
 
+            if(Fahndung.isFahnded(p) && Fahndung.getWanteds(p)>=80) {
+
+            }
+
             if(Houseban.isHousebanned(p, Beruf.Berufe.RETTUNGSDIENST)) {
                 for(Player medics : Beruf.Berufe.RETTUNGSDIENST.getMembers()) {
                     Script.setSubtitle(medics, p.getUniqueId(), "§cHausverbot: " + Houseban.getReason(p, Beruf.Berufe.RETTUNGSDIENST));

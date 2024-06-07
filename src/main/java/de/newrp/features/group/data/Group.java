@@ -20,5 +20,10 @@ public class Group {
     private int groupHouseNumber;
     private UUID groupOwner;
     private List<OnlineGroupMember> members;
+    private int maxMembers;
+
+    public void sendMessage(final String message) {
+        this.members.forEach(onlineGroupMember -> onlineGroupMember.getPlayer().sendMessage(message));
+    }
 
 }

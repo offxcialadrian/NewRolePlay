@@ -35,7 +35,7 @@ public class CheckGun implements CommandExecutor {
                 }
             }
         } else if (args.length == 1) {
-            if (Beruf.getBeruf(p) == Beruf.Berufe.POLICE) {
+            if (Beruf.getBeruf(p) == Beruf.Berufe.POLICE || Beruf.getBeruf(p) == Beruf.Berufe.BUNDESNACHRICHTENDIENST) {
                 if(!Duty.isInDuty(p)) {
                     p.sendMessage(Messages.ERROR + "Du musst im Dienst sein um diese Funktion zu nutzen.");
                     return true;

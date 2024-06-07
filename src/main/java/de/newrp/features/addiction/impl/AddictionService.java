@@ -14,6 +14,7 @@ import javax.swing.text.html.Option;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class AddictionService implements IAddictionService {
 
@@ -137,6 +138,52 @@ public class AddictionService implements IAddictionService {
                 .stream()
                 .filter(data -> data.getDrug() == drug)
                 .findFirst();
+    }
 
+    @Override
+    public boolean isAddictedToAnything(Player player) {
+        try(final PreparedStatement preparedStatement = NewRoleplayMain.getConnection().prepareStatement("SELECT nrp_id FROM addiction WHERE nrp_id = ? AND addiction_level = 'FULLY_ADDICTED'")) {
+            preparedStatement.setInt(1, Script.getNRPID(player));
+            try(final ResultSet resultSet = preparedStatement.executeQuery()) {
+                return resultSet.next();
+            }
+        } catch (final Exception exception) {
+            NewRoleplayMain.handleError(exception);
+        }
+        return false;
+    }
+
+    @Override
+    public int healPlayer(Player player) {
+        final AtomicInteger highestHeal = new AtomicInteger(0);
+
+        try(final PreparedStatement preparedStatement = NewRoleplayMain.getConnection().prepareStatement("SELECT heal FROM addiction WHERE nrp_id = ? AND addiction_level = 'FULLY_ADDICTED'")) {
+            preparedStatement.setInt(1, Script.getNRPID(player));
+            try(final ResultSet resultSet = preparedStatement.executeQuery()) {
+                while(resultSet.next()) {
+                    final int heal = resultSet.getInt("heal");
+                    if(heal > highestHeal.get()) {
+                        highestHeal.set(heal);
+                    }
+                }
+            }
+        } catch (final Exception exception) {
+            NewRoleplayMain.handleError(exception);
+        }
+
+        try(final PreparedStatement preparedStatement = NewRoleplayMain.getConnection().prepareStatement("UPDATE addiction SET heal = ? WHERE nrp_id = ? AND addiction_level = 'FULLY_ADDICTED'")) {
+            preparedStatement.setInt(1, highestHeal.get());
+            preparedStatement.setInt(2, Script.getNRPID(player));
+        } catch (final Exception exception) {
+            NewRoleplayMain.handleError(exception);
+        }
+        return highestHeal.get() + 1;
+    }
+
+    @Override
+    public void clearAddiction(Player player) {
+        for (Drogen drug : Drogen.values()) {
+            this.setAddictionLevel(player, drug, AddictionLevel.NOT_ADDICTED);
+        }
     }
 }
