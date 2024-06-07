@@ -131,7 +131,7 @@ public class GroupService implements IGroupService {
                         preparedStatement1.setInt(1, groupId);
                         try(final ResultSet resultSet1 = preparedStatement1.executeQuery()) {
                             if(resultSet1.next()) {
-                                final Group group = new Group(groupId, resultSet1.getString("group_name"), null, -1, player.getUniqueId(), new ArrayList<>());
+                                final Group group = new Group(groupId, resultSet1.getString("group_name"), null, -1, player.getUniqueId(), new ArrayList<>(), 10);
                                 this.groups.add(group);
                                 group.members().add(new OnlineGroupMember(player, rank));
                             }
@@ -151,7 +151,7 @@ public class GroupService implements IGroupService {
                 preparedStatement.setInt(1, groupId);
                 try(final ResultSet resultSet = preparedStatement.executeQuery()) {
                     if(resultSet.next()) {
-                        final Group group = new Group(groupId, resultSet.getString("group_name"), null, -1, Script.getOfflinePlayer(resultSet.getInt("group_owner")).getUniqueId(), new ArrayList<>());
+                        final Group group = new Group(groupId, resultSet.getString("group_name"), null, -1, Script.getOfflinePlayer(resultSet.getInt("group_owner")).getUniqueId(), new ArrayList<>(), 10);
                         this.groups.add(group);
                     }
                 }

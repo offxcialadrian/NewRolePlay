@@ -74,7 +74,7 @@ public class OrgSpray implements Listener {
                         progressBar(8, p);
                         addSpray(p, b);
                         small_cooldown.put(p.getName(), System.currentTimeMillis() + 1500);
-                        if (level >= 7) {
+                        if (level >= 6) {
                             LAST_CLICK.remove(p.getName());
                             LEVEL.remove(p.getName());
                         }
