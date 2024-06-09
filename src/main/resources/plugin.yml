@@ -846,3 +846,5 @@ commands:
     description: json location
   dart:
     description: get dart arrows
+  ausraub:
+    description: marks a player as robbed

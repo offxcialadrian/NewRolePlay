@@ -580,6 +580,7 @@ public class NewRoleplayMain extends JavaPlugin {
         getCommand("casino").setExecutor(new Casino());
         getCommand("getjsonlocation").setExecutor(new GetJsonLocation());
         getCommand("dart").setExecutor(new Dart());
+        getCommand("ausraub").setExecutor(new AusraubCommand());
     }
 
     /**

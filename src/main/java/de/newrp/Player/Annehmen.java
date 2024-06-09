@@ -11,6 +11,7 @@ import de.newrp.House.HouseAddon;
 import de.newrp.Medic.Medikamente;
 import de.newrp.Medic.Rezept;
 import de.newrp.NewRoleplayMain;
+import de.newrp.Organisationen.AusraubCommand;
 import de.newrp.Organisationen.Organisation;
 import de.newrp.Shop.Shops;
 import de.newrp.TeamSpeak.TeamSpeak;
@@ -28,6 +29,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 public class Annehmen implements CommandExecutor {
@@ -448,6 +450,16 @@ public class Annehmen implements CommandExecutor {
             offer.remove(p.getName() + ".house.rent.price");
             Achievement.HAUS.grant(p);
             Achievement.HOUSE_RENT.grant(p);
+        } else if (offer.containsKey(p.getName() + ".rob")) {
+            p.sendMessage(AusraubCommand.PREFIX + "Der Ausraub wurde erfolgreich eingetragen.");
+            if (Organisation.hasOrganisation(p)) {
+                for (UUID m : Organisation.getOrganisation(p).getMember()) {
+                    if (Bukkit.getPlayer(m).getLocation().distance(p.getLocation()) < 20) {
+                        Activity.grantActivity(Script.getNRPID(Bukkit.getPlayer(m)), Activities.AUSRAUB);
+                    }
+                }
+            }
+            offer.remove(p.getName() + ".rob");
         } else {
             p.sendMessage(Messages.ERROR + "Dir wird nichts angeboten.");
         }
