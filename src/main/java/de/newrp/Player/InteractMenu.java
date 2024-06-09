@@ -10,6 +10,7 @@ import de.newrp.Chat.Me;
 import de.newrp.GFB.GFB;
 import de.newrp.House.House;
 import de.newrp.NewRoleplayMain;
+import de.newrp.Organisationen.AusraubCommand;
 import de.newrp.Organisationen.Drogen;
 import de.newrp.Organisationen.Organisation;
 import de.newrp.Police.Handschellen;
@@ -99,6 +100,10 @@ public class InteractMenu implements Listener {
             inv.setItem(31, new ItemBuilder(Material.LEAD).setName("§6Tragen").setLore("§8× §7Trage §6" + Script.getName(tg) + "§7.").build());
         }
         inv.setItem(32, new ItemBuilder(Material.BARRIER).setName("§6Zeige Ticket").setLore("§8× §7Zeige §6" + Script.getName(tg) + "§7, dass du im Ticket bist.").build());
+
+        if (AusraubCommand.robs.containsKey(p.getUniqueId())) {
+            inv.setItem(40, new ItemBuilder(Material.STRING).setName("§6Zeige letzten Ausraub").setLore("§8× §7Zeige §6" + Script.getName(tg) + " §7wann du zuletzt ausgeraubt wurdest.").build());
+        }
 
         if ((Handschellen.isCuffed(tg) && Beruf.getBeruf(p) == Beruf.Berufe.POLICE && Duty.isInDuty(p)) || p.getInventory().contains(Script.brechstange())) {
             inv.setItem(40, new ItemBuilder(Material.IRON_DOOR).setName("§6Handschellen öffnen").setLore("§8× §7Öffne die Handschellen von §6" + Script.getName(tg) + "§7.").build());
@@ -433,6 +438,10 @@ public class InteractMenu implements Listener {
                 break;
             case "Alkoholtest":
                 p.performCommand("alktest " + tg.getName());
+                break;
+            case "Zeige letzten Ausraub":
+                tg.sendMessage(AusraubCommand.PREFIX + p.getName() + " wurde zuletzt vor " + TimeUnit.MILLISECONDS.toMinutes(System.currentTimeMillis() - AusraubCommand.robs.get(p.getUniqueId())) + " Minuten ausgeraubt.");
+                p.sendMessage(AusraubCommand.PREFIX + "Du hast " + tg.getName() + " gezeigt, wann du zuletzt ausgeraubt wurdest.");
                 break;
             case "Kommunikationsmittel zerstören":
                 if(AFK.isAFK(tg)) {

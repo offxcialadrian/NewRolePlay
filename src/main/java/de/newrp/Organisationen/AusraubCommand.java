@@ -19,6 +19,7 @@ public class AusraubCommand implements CommandExecutor {
     public static String PREFIX = "§8[§2Ausraub§8] §2" + Messages.ARROW + " §7";
 
     public static Map<UUID, Long> robs = new HashMap<>();
+    public static Map<UUID, UUID> offer = new HashMap<>();
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
@@ -42,6 +43,7 @@ public class AusraubCommand implements CommandExecutor {
             }
 
             Annehmen.offer.put(target.getName() + ".rob", player.getName());
+            offer.put(target.getUniqueId(), player.getUniqueId());
             player.sendMessage(PREFIX + "Du hast " + target.getName() + " eine Anfrage zum Eintragen des Ausraubs gemacht.");
             target.sendMessage(PREFIX + player.getName() + " hat dir eine Anfrage zum Eintragen des Ausraubs gemacht.");
             Script.sendAcceptMessage(target);

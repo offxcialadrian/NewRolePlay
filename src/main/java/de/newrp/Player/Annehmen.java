@@ -27,6 +27,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.io.BukkitObjectInputStream;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -452,13 +453,19 @@ public class Annehmen implements CommandExecutor {
             Achievement.HOUSE_RENT.grant(p);
         } else if (offer.containsKey(p.getName() + ".rob")) {
             p.sendMessage(AusraubCommand.PREFIX + "Der Ausraub wurde erfolgreich eingetragen.");
-            if (Organisation.hasOrganisation(p)) {
-                for (UUID m : Organisation.getOrganisation(p).getMember()) {
-                    if (Bukkit.getPlayer(m).getLocation().distance(p.getLocation()) < 20) {
-                        Activity.grantActivity(Script.getNRPID(Bukkit.getPlayer(m)), Activities.AUSRAUB);
+            Player target = Bukkit.getPlayer(AusraubCommand.offer.remove(p.getUniqueId()));
+            if (target != null) {
+                target.sendMessage(AusraubCommand.PREFIX + "Der Ausraub wurde erfolgreich eingetragen.");
+                AusraubCommand.robs.put(target.getUniqueId(), System.currentTimeMillis());
+                if (Organisation.hasOrganisation(p)) {
+                    for (UUID m : Organisation.getOrganisation(p).getMember()) {
+                        if (Bukkit.getPlayer(m).getLocation().distance(p.getLocation()) < 20) {
+                            Activity.grantActivity(Script.getNRPID(Bukkit.getPlayer(m)), Activities.AUSRAUB);
+                        }
                     }
                 }
             }
+            AusraubCommand.offer.remove(p.getUniqueId());
             offer.remove(p.getName() + ".rob");
         } else {
             p.sendMessage(Messages.ERROR + "Dir wird nichts angeboten.");
