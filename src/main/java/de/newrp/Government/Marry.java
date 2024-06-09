@@ -4,6 +4,7 @@ import de.newrp.API.*;
 import de.newrp.Berufe.Abteilung;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Player.BeziehungCommand;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -51,6 +52,7 @@ public class Marry implements CommandExecutor {
         Activity.grantActivity(Script.getNRPID(p), Activities.MARRY);
         p1.sendMessage(BeziehungCommand.PREFIX + "Du bist nun mit " + Script.getName(p2) + " verheiratet!");
         p2.sendMessage(BeziehungCommand.PREFIX + "Du bist nun mit " + Script.getName(p1) + " verheiratet!");
+        Bukkit.broadcastMessage(BeziehungCommand.PREFIX + Script.getName(p1) + " und " + Script.getName(p2) + " sind nun verheiratet!");
         BeziehungCommand.setMarried(p1, true);
         BeziehungCommand.setMarried(p2, true);
 
