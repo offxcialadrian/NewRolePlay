@@ -348,6 +348,17 @@ public class Friedhof {
         return null;
     }
 
+    public static Friedhof getDeathByLocation(String name, Location loc) {
+        for (Friedhof f : FRIEDHOF.values()) {
+            if (f.getUsername().equalsIgnoreCase(name)) {
+                if (Script.isInRange(loc, f.getDeathLocation(), 3.0)) {
+                    return f;
+                }
+            }
+        }
+        return null;
+    }
+
     @Override
     public String toString() {
         return "Friedhof{" +

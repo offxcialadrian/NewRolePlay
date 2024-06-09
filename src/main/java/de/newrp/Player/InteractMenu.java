@@ -95,7 +95,9 @@ public class InteractMenu implements Listener {
             inv.setItem(29, new ItemBuilder(Material.GOLD_INGOT).setName("§6Kommunikationsmittel zerstören").setLore("§8× §7Zerstöre die Kommunikationsmittel von §6" + Script.getName(tg) + "§7.").build());
         }
         inv.setItem(30, new ItemBuilder(Material.RED_TULIP).setName("§6Küssen").setLore("§8× §7Küsse §6" + Script.getName(tg) + "§7.").build());
-        inv.setItem(31, new ItemBuilder(Material.LEAD).setName("§6Tragen").setLore("§8× §7Trage §6" + Script.getName(tg) + "§7.").build());
+        if (Script.getLevel(p) > 1) {
+            inv.setItem(31, new ItemBuilder(Material.LEAD).setName("§6Tragen").setLore("§8× §7Trage §6" + Script.getName(tg) + "§7.").build());
+        }
         inv.setItem(32, new ItemBuilder(Material.BARRIER).setName("§6Zeige Ticket").setLore("§8× §7Zeige §6" + Script.getName(tg) + "§7, dass du im Ticket bist.").build());
 
         if ((Handschellen.isCuffed(tg) && Beruf.getBeruf(p) == Beruf.Berufe.POLICE && Duty.isInDuty(p)) || p.getInventory().contains(Script.brechstange())) {

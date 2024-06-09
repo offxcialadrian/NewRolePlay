@@ -31,7 +31,7 @@ public class ReviveCommand implements CommandExecutor {
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
         Player p = (Player) cs;
 
-        if (args.length == 1 && Script.hasRank(p, Rank.SUPPORTER, false) && SDuty.isSDuty(p)) {
+        if (args.length > 0 && Script.hasRank(p, Rank.SUPPORTER, false) && SDuty.isSDuty(p)) {
 
             Player tg = Script.getPlayer(args[0]);
             if (tg == null) {
@@ -82,12 +82,23 @@ public class ReviveCommand implements CommandExecutor {
 
 
         Friedhof f_c;
-        f_c = Friedhof.getDeathByLocation(p.getLocation());
-        if (f_c == null) {
-            f_c = Friedhof.getDeathByLocation(p.getLocation());
+        if (args.length > 0) {
+            f_c = Friedhof.getDeathByLocation(args[0], p.getLocation());
+            if (f_c == null) {
+                f_c = Friedhof.getDeathByLocation(args[0], p.getLocation());
 
-            if (f_c != null && System.currentTimeMillis() > f_c.getDeathTime() + TimeUnit.SECONDS.toMillis(f_c.getHelpCounter() * 60L)) {
-                f_c = null;
+                if (f_c != null && System.currentTimeMillis() > f_c.getDeathTime() + TimeUnit.SECONDS.toMillis(f_c.getHelpCounter() * 60L)) {
+                    f_c = null;
+                }
+            }
+        } else {
+            f_c = Friedhof.getDeathByLocation(p.getLocation());
+            if (f_c == null) {
+                f_c = Friedhof.getDeathByLocation(p.getLocation());
+
+                if (f_c != null && System.currentTimeMillis() > f_c.getDeathTime() + TimeUnit.SECONDS.toMillis(f_c.getHelpCounter() * 60L)) {
+                    f_c = null;
+                }
             }
         }
         if (f_c == null) {
