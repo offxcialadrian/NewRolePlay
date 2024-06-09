@@ -1254,7 +1254,7 @@ public class Script {
                 do {
                     if (rs.getString("msg").equalsIgnoreCase("§8[§eBeruf§8] §e" + Messages.ARROW + " Du wurdest aus deinem Beruf geworfen."))
                         Equip.removeEquip(p);
-                    if(java.util.regex.Pattern.compile("§8[§eUninvite§8] §e " + Messages.ARROW + " Du wurdest aus .* entlassen.").matcher(rs.getString("msg")).find()) {
+                    if(java.util.regex.Pattern.compile("§8\\[§eUninvite§8] §e» Du wurdest aus .* entlassen.").matcher(rs.getString("msg")).find()) {
                         Equip.removeEquip(p);
                     }
                     p.sendMessage(rs.getString("msg"));
