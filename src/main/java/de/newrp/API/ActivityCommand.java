@@ -85,7 +85,7 @@ public class ActivityCommand implements CommandExecutor {
                     float p = 0;
                     for (String akti : activitymap.keySet()) {
                         p += points.get(akti);
-                        player.sendMessage("     §8| §7" + activitymap.get(akti) + "x §l" + akti + "  §8(§3" + points.get(akti) + "∅§8)");
+                        player.sendMessage("     §8| §7" + activitymap.get(akti) + "x §l" + akti + "  §8(§3" + (Math.round(points.get(akti) * 100.0) / 100.0) + "∅§8)");
                     }
                     player.sendMessage(" §8------------------------------ ");
                     player.sendMessage("     §8|  §7§lGesamt:  §3§n" + (Math.round(p * 10.0) / 10.0) + "∅");
