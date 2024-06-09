@@ -330,6 +330,7 @@ public class BlackJack implements CommandExecutor, Listener {
         Casino.addMoney(bet.get(p.getName()));
         for (UUID id : Organisation.FALCONE.getMember()) if (Bukkit.getOfflinePlayer(id).isOnline()) if (Organisation.getRank(Bukkit.getPlayer(id)) >= 3)
             Bukkit.getPlayer(id).sendMessage(Casino.PREFIX + p.getName() + " hat beim BlackJack" + (member.get(p.getName()).equals("Croupier") ? "" : " mit " + member.get(p.getName())) + " §a" + bet.get(p.getName()) + "€ §7verloren.");
+        if (!member.get(p.getName()).equals("Croupier")) Organisation.FALCONE.addExp(Script.getRandom(4, 8));
         bet.remove(p.getName());
         player.remove(p.getName());
         cashier.remove(p.getName());

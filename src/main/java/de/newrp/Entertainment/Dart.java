@@ -52,7 +52,7 @@ public class Dart implements Listener, CommandExecutor {
                     loc.add(direction);
 
                     double x = loc.getX();
-                    double y = loc.getY();
+                    double y = loc.getY() - (double) 1/16;
                     double z = loc.getZ();
 
                     double p;

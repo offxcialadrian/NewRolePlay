@@ -128,6 +128,7 @@ public class HackPoliceComputer implements CommandExecutor, Listener {
             public void run() {
                 if (schedulerID == -1) return;
 
+                int i = 0;
                 for (Player player : players) {
                     if (!player.isOnline()) continue;
                     if (player.getLocation().distance(LOCATION) > 20) continue;
@@ -136,9 +137,11 @@ public class HackPoliceComputer implements CommandExecutor, Listener {
                     Organisation.getOrganisation(player).sendMessage(prefix + "Der Polizeicomputer hat die Fahndung von " + Script.getName(player) + " gelöscht.");
                     Fahndung.removeFahndung(player);
                     player.sendMessage(prefix + "Der Polizeicomputer hat deine Akten gelöscht.");
+                    i += 1;
                 }
 
                 p.sendMessage(prefix + "Du hast die Akten der Personen erfolgreich gelöscht.");
+                if (Organisation.hasOrganisation(p)) Organisation.getOrganisation(p).addExp(i * 8);
 
                 schedulerID = -1;
                 lastTime = now;

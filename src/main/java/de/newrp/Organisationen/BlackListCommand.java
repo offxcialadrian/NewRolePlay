@@ -61,17 +61,17 @@ public class BlackListCommand implements CommandExecutor, Listener, TabCompleter
         LEICHENBEWACHUNG("Leichenbewachung", 600, 20, new Organisation[] {Organisation.CORLEONE, Organisation.KARTELL}),
         LEADERMORD_KARTELL("Leadermord", 1000, 50, new Organisation[] {Organisation.CORLEONE, Organisation.KARTELL}),
         PROVOKATION_KARTELL("Provokation", 250, 10, new Organisation[] {Organisation.KARTELL}),
-        Vendetta_FALCONE("Vendetta", 600, 50, new Organisation[] {Organisation.FALCONE}),
-        Tradimento_FALCONE("Tradimento", 500, 50, new Organisation[] {Organisation.FALCONE}),
-        Diffamazione_FALCONE("Diffamazione", 200, 20, new Organisation[] {Organisation.FALCONE}),
-        Invasione_FALCONE("Invasione", 300, 30, new Organisation[] {Organisation.FALCONE}),
+        Vendetta_FALCONE("Vendetta", 1000, 50, new Organisation[] {Organisation.FALCONE}),
+        Tradimento_FALCONE("Tradimento", 1000, 50, new Organisation[] {Organisation.FALCONE}),
+        Diffamazione_FALCONE("Diffamazione", 350, 20, new Organisation[] {Organisation.FALCONE}),
+        Invasione_FALCONE("Invasione", 750, 30, new Organisation[] {Organisation.FALCONE}),
         Vergogna_FALCONE("Vergogna", 1, 1, new Organisation[] {Organisation.FALCONE}),
-        Inganno_FALCONE("Inganno", 200, 20, new Organisation[] {Organisation.FALCONE}),
-        ADM("Asesinato de Miembros", 1000, 3, new Organisation[] {Organisation.SINALOA}),
-        FDR("Falta de Respeto", 1000, 1, new Organisation[] {Organisation.SINALOA}),
-        FDRG("Falta de Respeto Grave", 1000, 5, new Organisation[] {Organisation.SINALOA}),
-        TRAICION("Traición", 2000, 15, new Organisation[] {Organisation.SINALOA}),
-        ESPIONAJE("Espionaje", 3000, 15, new Organisation[] {Organisation.SINALOA});
+        Inganno_FALCONE("Inganno", 250, 20, new Organisation[] {Organisation.FALCONE}),
+        ADM("Asesinato de Miembros", 200, 3, new Organisation[] {Organisation.SINALOA}),
+        FDR("Falta de Respeto", 300, 1, new Organisation[] {Organisation.SINALOA}),
+        FDRG("Falta de Respeto Grave", 500, 5, new Organisation[] {Organisation.SINALOA}),
+        TRAICION("Traición", 800, 15, new Organisation[] {Organisation.SINALOA}),
+        ESPIONAJE("Espionaje", 1000, 15, new Organisation[] {Organisation.SINALOA});
 
         private final String name;
         private final int price;
