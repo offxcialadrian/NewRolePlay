@@ -460,7 +460,9 @@ public class Annehmen implements CommandExecutor {
                 if (Organisation.hasOrganisation(p)) {
                     for (UUID m : Organisation.getOrganisation(p).getMember()) {
                         if (Bukkit.getPlayer(m).getLocation().distance(p.getLocation()) < 20) {
-                            Activity.grantActivity(Script.getNRPID(Bukkit.getPlayer(m)), Activities.AUSRAUB);
+                            if (!AFK.isAFK(m)) {
+                                Activity.grantActivity(Script.getNRPID(Bukkit.getPlayer(m)), Activities.AUSRAUB);
+                            }
                         }
                     }
                 }
