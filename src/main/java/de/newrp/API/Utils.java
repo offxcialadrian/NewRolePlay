@@ -382,8 +382,6 @@ public class Utils implements Listener {
                     if (blacklisted == null) continue;
                     Script.setSubtitle(p, blacklisted.getUniqueId(), "§c" + bl.getReason());
                 }
-            } else {
-                Equip.removeEquip(p);
             }
 
 

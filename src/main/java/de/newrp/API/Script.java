@@ -65,6 +65,7 @@ import java.time.Period;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
 
 import static de.newrp.API.Rank.*;
 
@@ -1253,6 +1254,9 @@ public class Script {
                 do {
                     if (rs.getString("msg").equalsIgnoreCase("§8[§eBeruf§8] §e" + Messages.ARROW + " Du wurdest aus deinem Beruf geworfen."))
                         Equip.removeEquip(p);
+                    if(java.util.regex.Pattern.compile("§8[§eUninvite§8] §e " + Messages.ARROW + " Du wurdest aus .* entlassen.").matcher(rs.getString("msg")).find()) {
+                        Equip.removeEquip(p);
+                    }
                     p.sendMessage(rs.getString("msg"));
                 } while (rs.next());
                 executeAsyncUpdate("DELETE FROM offline_msg WHERE nrp_id='" + getNRPID(p) + "'");
