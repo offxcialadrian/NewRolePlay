@@ -41,7 +41,7 @@ public class PayDay extends BukkitRunnable {
                 continue;
             }
 
-            if (!Banken.hasBank(p)) {
+            if (!Banken.hasBank(p) || Banken.getBankByPlayer(p) == null) {
                 p.sendMessage(Messages.INFO + "Du hast kein Geld am PayDay erhalten, da du kein Konto hast.");
                 setPayDayTime(p, 0);
                 continue;
@@ -51,9 +51,7 @@ public class PayDay extends BukkitRunnable {
             int extra = 0;
             int interest = (Script.getMoney(p, PaymentType.BANK) > 0 ? (int) (Banken.getBankByPlayer(p).getInterest() * Script.getMoney(p, PaymentType.BANK)) : (int) (0.02 * Script.getMoney(p, PaymentType.BANK)));
             interest = (int) Math.round(20 * Math.sqrt(interest));
-            if (Banken.getBankByPlayer(p) != null) {
-                if (interest > Banken.getBankByPlayer(p).getLimit()) interest = Banken.getBankByPlayer(p).getLimit();
-            }
+            if (interest > Banken.getBankByPlayer(p).getLimit()) interest = Banken.getBankByPlayer(p).getLimit();
             /*if (Script.getMoney(p, PaymentType.BANK) > 50000) interest = interest / 2;
             if (Script.getMoney(p, PaymentType.BANK) > 100000) interest = interest / 3;*/
             double einkommenssteuer = Steuern.Steuer.EINKOMMENSSTEUER.getPercentage();
