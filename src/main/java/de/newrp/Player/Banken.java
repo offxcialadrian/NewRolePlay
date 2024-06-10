@@ -23,9 +23,9 @@ public class Banken implements CommandExecutor, Listener {
     private static final Location LOCATION = new Location(Script.WORLD, 949, 77, 934);
 
     public enum Bank {
-        BANK1(1, "Spaßkasse", 1250, 6, 3000, 25, 0.010),
-        BANK2(2, "Deutsche Zentralbank", 750, 3, 10000, 50, 0.008),
-        BANK3(3, "DNB", 1000, 2, 10000, 30, 0.006);
+        BANK1(1, "Spaßkasse", 1250, 6, 3000, 25, 0.010, 400),
+        BANK2(2, "Deutsche Zentralbank", 750, 4, 20000, 50, 0.008, 600),
+        BANK3(3, "DNB", 1000, 2, 10000, 30, 0.006, 800);
 
         private final int id;
         private final String name;
@@ -34,8 +34,9 @@ public class Banken implements CommandExecutor, Listener {
         private final int transactionLimit;
         private final int kontoKosten;
         private final double interest;
+        private final int limit;
 
-        Bank(int id, String name, int einrichtigungsKosten, int transactionKosten, int transactionLimit, int kontoKosten, double interest) {
+        Bank(int id, String name, int einrichtigungsKosten, int transactionKosten, int transactionLimit, int kontoKosten, double interest, int limit) {
             this.id = id;
             this.name = name;
             this.einrichtigungsKosten = einrichtigungsKosten;
@@ -43,6 +44,7 @@ public class Banken implements CommandExecutor, Listener {
             this.transactionLimit = transactionLimit;
             this.kontoKosten = kontoKosten;
             this.interest = interest;
+            this.limit = limit;
         }
 
         public int getID() {
@@ -71,6 +73,10 @@ public class Banken implements CommandExecutor, Listener {
 
         public double getInterest() {
             return interest;
+        }
+
+        public int getLimit() {
+            return limit;
         }
 
         public String getInterestString() {
@@ -168,6 +174,7 @@ public class Banken implements CommandExecutor, Listener {
                     " §7 " + Messages.ARROW + " Transaktionsgebühr: §e" + bank.getTransactionKosten() + "€",
                     " §7 " + Messages.ARROW + " Transaktionslimit: §e" + bank.getTransactionLimit() + "€",
                     " §7 " + Messages.ARROW + " Zinsen: §e" + bank.interestToPercent() + "%",
+                    " §7 " + Messages.ARROW + " Zinsgrenze: §e" + bank.getLimit() + "€",
                     " §7 " + Messages.ARROW + " Kontoführungsgebühr: §e" + bank.getKontoKosten() + "€").build());
             i++;
         }
