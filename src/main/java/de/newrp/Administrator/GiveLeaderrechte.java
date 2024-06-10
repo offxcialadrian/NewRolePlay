@@ -42,20 +42,14 @@ public class GiveLeaderrechte implements CommandExecutor {
             p.sendMessage(Messages.PLAYER_NOT_FOUND);
             return true;
         }
-
+        boolean main = args[1].equalsIgnoreCase("main");
         if(Beruf.hasBeruf(tg)) {
-            boolean main = args[1].equalsIgnoreCase("main");
-
-            Beruf.setLeader(tg, main);
-            p.sendMessage(PREFIX + "Du hast " + tg.getName() + " " + (main?"Main-":"Co-") + "Leaderrechte gegeben.");
-            Script.sendTeamMessage(p, ChatColor.RED, "hat " + tg.getName() + " " + (main?"Main-":"Co-") + "Leaderrechte gegeben.", true);
-            if(tg.isOnline()) {
-                tg.getPlayer().sendMessage(PREFIX + "Du hast " + (main?"Main-":"Co-") + "Leaderrechte bekommen.");
+            if(Beruf.isLeader(tg, true)) {
+                p.sendMessage(Messages.ERROR + " Dieser Spieler ist bereits Leader.");
+                return true;
             }
-            Script.addEXP(Script.getNRPID(tg), Script.getRandom(10, 20));
-            Log.HIGH.write(p, "hat " + tg.getName() + " " + (main?"Main-":"Co-") + "Leaderrechte gegeben.");
-            Log.HIGH.write(tg, "hat " + (main?"Main-":"Co-") + "Leaderrechte bekommen.");
-            TeamSpeak.sync(Script.getNRPID(tg));
+            Beruf.setLeader(tg, main);
+            addLeaderAction(p, tg, main);
             return true;
         }
 
@@ -64,19 +58,8 @@ public class GiveLeaderrechte implements CommandExecutor {
                 p.sendMessage(Messages.ERROR + " Dieser Spieler ist bereits Leader.");
                 return true;
             }
-
-            boolean main = args[1].equalsIgnoreCase("main");
-
             Organisation.setLeader(tg, main);
-            p.sendMessage(PREFIX + "Du hast " + tg.getName() + " " + (main?"Main-":"Co-") + "Leaderrechte gegeben.");
-            Script.sendTeamMessage(p, ChatColor.RED, "hat " + tg.getName() + " " + (main?"Main-":"Co-") + "Leaderrechte gegeben.", true);
-            if(tg.isOnline()) {
-                tg.getPlayer().sendMessage(PREFIX + "Du hast " + (main?"Main-":"Co-") + "Leaderrechte bekommen.");
-            }
-            Script.addEXP(Script.getNRPID(tg), Script.getRandom(10, 20));
-            Log.HIGH.write(p, "hat " + tg.getName() + " " + (main?"Main-":"Co-") + "Leaderrechte gegeben.");
-            Log.HIGH.write(tg, "hat " + (main?"Main-":"Co-") + "Leaderrechte bekommen.");
-            TeamSpeak.sync(Script.getNRPID(tg));
+            addLeaderAction(p, tg, main);
             return true;
         }
 
@@ -85,5 +68,17 @@ public class GiveLeaderrechte implements CommandExecutor {
 
 
         return false;
+    }
+
+    public void addLeaderAction(Player p, OfflinePlayer tg, boolean main) {
+        p.sendMessage(PREFIX + "Du hast " + tg.getName() + " " + (main?"Main-":"Co-") + "Leaderrechte gegeben.");
+        Script.sendTeamMessage(p, ChatColor.RED, "hat " + tg.getName() + " " + (main?"Main-":"Co-") + "Leaderrechte gegeben.", true);
+        if (tg.isOnline()) {
+            tg.getPlayer().sendMessage(PREFIX + "Du hast " + (main?"Main-":"Co-") + "Leaderrechte bekommen.");
+        }
+        Script.addEXP(Script.getNRPID(tg), Script.getRandom(10, 20));
+        Log.HIGH.write(p, "hat " + tg.getName() + " " + (main?"Main-":"Co-") + "Leaderrechte gegeben.");
+        Log.HIGH.write(tg, "hat " + (main?"Main-":"Co-") + "Leaderrechte bekommen.");
+        TeamSpeak.sync(Script.getNRPID(tg));
     }
 }
