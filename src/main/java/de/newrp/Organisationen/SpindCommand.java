@@ -64,6 +64,10 @@ public class SpindCommand implements CommandExecutor, Listener {
                     player.sendMessage(Messages.ERROR + "Du musst dich in der Nähe des Equip-Punktes befinden.");
                     return true;
                 }
+                if (Organisation.getOrganisation(player).getLevel() < 3) {
+                    player.sendMessage(Messages.ERROR + "Deine Organisation benötigt mindestens Level-3 um auf den Spind zugreifen zu können.");
+                    return true;
+                }
                 id = -Organisation.getOrganisation(player).getID();
                 Organisation.getOrganisation(player).sendLeaderMessage(PREFIX + player.getName() + " greift auf den Spind zu.");
             }
