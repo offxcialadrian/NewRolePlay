@@ -50,6 +50,7 @@ public class PayDay extends BukkitRunnable {
             int payday = 0;
             int extra = 0;
             int interest = (Script.getMoney(p, PaymentType.BANK) > 0 ? (int) (Banken.getBankByPlayer(p).getInterest() * Script.getMoney(p, PaymentType.BANK)) : (int) (0.02 * Script.getMoney(p, PaymentType.BANK)));
+            interest = (int) Math.round(20 * Math.sqrt(interest));
             if (Banken.getBankByPlayer(p) != null) {
                 if (interest > Banken.getBankByPlayer(p).getLimit()) interest = Banken.getBankByPlayer(p).getLimit();
             }
