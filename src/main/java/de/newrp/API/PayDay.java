@@ -41,7 +41,7 @@ public class PayDay extends BukkitRunnable {
                 continue;
             }
 
-            if (!Banken.hasBank(p)) {
+            if (!Banken.hasBank(p) || Banken.getBankByPlayer(p) == null) {
                 p.sendMessage(Messages.INFO + "Du hast kein Geld am PayDay erhalten, da du kein Konto hast.");
                 setPayDayTime(p, 0);
                 continue;
@@ -50,9 +50,8 @@ public class PayDay extends BukkitRunnable {
             int payday = 0;
             int extra = 0;
             int interest = (Script.getMoney(p, PaymentType.BANK) > 0 ? (int) (Banken.getBankByPlayer(p).getInterest() * Script.getMoney(p, PaymentType.BANK)) : (int) (0.02 * Script.getMoney(p, PaymentType.BANK)));
-            if(interest > 500) {
-                interest = 500;
-            }
+            interest = (int) Math.round(20 * Math.sqrt(interest));
+            if (interest > Banken.getBankByPlayer(p).getLimit()) interest = Banken.getBankByPlayer(p).getLimit();
             /*if (Script.getMoney(p, PaymentType.BANK) > 50000) interest = interest / 2;
             if (Script.getMoney(p, PaymentType.BANK) > 100000) interest = interest / 3;*/
             double einkommenssteuer = Steuern.Steuer.EINKOMMENSSTEUER.getPercentage();
@@ -60,8 +59,8 @@ public class PayDay extends BukkitRunnable {
             double lohnsteuer = Steuern.Steuer.LOHNSTEUER.getPercentage();
             double gfb_lohnsteuer = Steuern.Steuer.GFB_LOHNSTEUER.getPercentage();
             double krankenversicherung = Steuern.Steuer.KRANKENVERSICHERUNG.getPercentage();
-            if (BeziehungCommand.isMarried(p)) lohnsteuer = lohnsteuer - 2.0;
-            if (BeziehungCommand.isMarried(p)) gfb_lohnsteuer = gfb_lohnsteuer - 2.0;
+            if (BeziehungCommand.isMarried(p)) lohnsteuer = lohnsteuer - 5.0;
+            if (BeziehungCommand.isMarried(p)) gfb_lohnsteuer = gfb_lohnsteuer - 5.0;
             p.sendMessage("§9=== §l§ePayDay §9===");
             p.sendMessage("§8" + Messages.ARROW + " §7Kontostand: " + (Script.getMoney(p, PaymentType.BANK) >= 0 ? "§a" : "§c") + Script.getMoney(p, PaymentType.BANK) + "€");
             p.sendMessage("§8" + Messages.ARROW + " §7Kontoführungsgebühr: §c-" + Banken.getBankByPlayer(p).getKontoKosten() + "€");

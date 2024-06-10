@@ -76,8 +76,9 @@ public enum Navi {
     CLUB("Club-Bar", new Location(Script.WORLD, 477.5, 67, 1285.5, 0.0f, 0.0f)),
     ZOO("Zoo", new Location(Script.WORLD, 77.5, 66, 681.5, 0.0f, 0.0f)),
     FAHRSCHULE("Fahrschule", new Location(Script.WORLD, 396, 76, 1124, 90.0f, 0.0f)),
-    MERCHANDISE("Zoo-Merch", new Location(Script.WORLD, 66.5, 76, 694.5, 0.0f, 0.0f));
+    MERCHANDISE("Zoo-Merch", new Location(Script.WORLD, 66.5, 76, 694.5, 0.0f, 0.0f)),
     // MERCH("Merch-Stand", new Location(Script.WORLD, 806, 66, 727, 0.0f, 0.0f));
+    LABOR("Labor", new Location(Script.WORLD, 373, 74, 1296, 0.0f, 0.0f));
 
 
     private final String name;

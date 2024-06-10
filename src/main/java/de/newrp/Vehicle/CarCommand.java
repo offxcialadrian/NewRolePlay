@@ -169,7 +169,7 @@ public class CarCommand implements CommandExecutor, TabCompleter {
         if (args.length == 1) for (String string : args1) if (string.toLowerCase().startsWith(args[0].toLowerCase())) completions.add(string);
         if (args.length == 2) {
             if (args[0].equalsIgnoreCase("teleport")) {
-                if (Script.hasRank((Player) sender, Rank.SUPPORTER, false)) {
+                if (Script.hasRank((Player) sender, Rank.DEVELOPER, false)) {
                     for (Car car : Car.CARS) {
                         if (args[1].startsWith("N-") || args[1].isEmpty()) args2.add(car.getLicenseplate());
                         else if (args[1].startsWith("N") && args[1].length() == 1) args2.add(car.getLicenseplate());

@@ -148,11 +148,11 @@ public class Fahndung implements CommandExecutor, TabCompleter {
         for(String arg : args) {
             if(arg.equalsIgnoreCase(args[0])) continue;
             if(!Straftat.straftatExists(arg.replace("-"," "))) {
-                p.sendMessage(Messages.ERROR + "Die Straftat §e" + arg.replace("-"," ") + " §7existiert nicht.");
+                p.sendMessage(Messages.ERROR + "Die Straftat §e" + arg.replace("-"," ") + " §cexistiert nicht.");
                 continue;
             }
             if(getStraftatIDs(tg).contains(Straftat.getReasonID(arg))) {
-                p.sendMessage(Messages.ERROR + "Der Spieler ist bereits wegen §e" + arg.replace("-"," ") + " §7gefahndet.");
+                p.sendMessage(Messages.ERROR + "Der Spieler wird bereits wegen §e" + arg.replace("-"," ") + " §cgefahndet.");
                 continue;
             }
             sb.append(arg).append(" & ");
