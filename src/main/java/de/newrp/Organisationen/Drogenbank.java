@@ -172,6 +172,10 @@ public class Drogenbank implements CommandExecutor, Listener {
             }
 
             int amount = Integer.parseInt(args[1]);
+            if(amount < 1) {
+                p.sendMessage(Messages.ERROR + "Gebe eine Zahl über 0 an");
+                return true;
+            }
             drug_amount.put(p.getName(), amount);
 
             Inventory inv = Bukkit.createInventory(null, 9, "§eDrogenbank (Inhalt)");
