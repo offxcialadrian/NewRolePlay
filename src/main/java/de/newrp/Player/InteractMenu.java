@@ -11,12 +11,12 @@ import de.newrp.GFB.GFB;
 import de.newrp.House.House;
 import de.newrp.NewRoleplayMain;
 import de.newrp.Organisationen.AusraubCommand;
-import de.newrp.Organisationen.Drogen;
 import de.newrp.Organisationen.Organisation;
 import de.newrp.Police.Handschellen;
 import de.newrp.Ticket.TicketCommand;
 import de.newrp.dependencies.DependencyContainer;
 import de.newrp.features.addiction.IAddictionService;
+import net.citizensnpcs.api.CitizensAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.data.type.Bed;
@@ -34,7 +34,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 public class InteractMenu implements Listener {
@@ -53,6 +52,9 @@ public class InteractMenu implements Listener {
         Player tg = (Player) e.getRightClicked();
         if (!p.isSneaking()) return;
         if (Friedhof.isDead(p)) return;
+
+        if (CitizensAPI.getNPCRegistry().isNPC(tg)) return;
+
         if (Drone.isDrone(p)) {
             p.sendMessage(Messages.ERROR + "Du kannst als Drohne nicht interagieren.");
             return;

@@ -61,7 +61,7 @@ public class AsyncHour extends BukkitRunnable {
                 if (new Random().nextInt(4) == 0) {
                     if (new Random().nextInt(3) == 0) {
                         Shops[] b = new Shops[]{Shops.GUNSHOP, Shops.ANGELLADEN, Shops.DOENER, Shops.SUPERMARKT, Shops.APOTHEKE, Shops.APOTHEKE_AEKI,
-                                Shops.BLUMENLADEN, Shops.SHOE_MALL, Shops.JAGDHUETTE, Shops.HANKYS, Shops.CAFE, Shops.FLOWER,
+                                Shops.BLUMENLADEN, Shops.SHOE_MALL, Shops.JAGDHUETTE, Shops.ELEKTRO_GANG, Shops.CAFE, Shops.FLOWER,
                                 Shops.GEMUESE, Shops.BAECKEREI, Shops.IKEA};
                         new FeuerwehrEinsatz(null).start(b[Script.getRandom(0, (b.length - 1))]);
                     } else {
