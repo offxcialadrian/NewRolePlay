@@ -84,105 +84,103 @@ public static HashMap<String, Long> cooldown = new HashMap<>();
         if(e.getView().getTitle().startsWith("§8[§9Polizeicomputer§8] §9")) {
             e.setCancelled(true);
             Player p = (Player) e.getWhoClicked();
-            if(e.getCurrentItem() == null || e.getCurrentItem().getType() == Material.AIR) return;
-            if(e.getCurrentItem().getType() == Material.OAK_SIGN) {
-                Player tg = Script.getPlayer(e.getView().getTitle().replace("§8[§9Polizeicomputer§8] §9", ""));
-                String title = e.getCurrentItem().getItemMeta().getDisplayName();
-                if(title.equals("Personendaten")) {
-                    p.sendMessage(PREFIX + "Personendaten von " + Script.getName(tg));
-                    p.sendMessage(PREFIX + "Name: " + Script.getName(tg));
-                    p.sendMessage(PREFIX + " §8- §6Geburtsdatum: §c" + Script.getBirthday(Script.getNRPID(tg)) + " (" + Script.getAge(Script.getNRPID(tg)) + ")");
-                    if (Script.getGender(tg).equals(Gender.MALE)) {
-                        p.sendMessage(PREFIX + " §8- §6Geschlecht: §cMännlich");
-                    } else if (Script.getGender(tg).equals(Gender.FEMALE)) {
-                        p.sendMessage(PREFIX +" §8- §6Geschlecht: §cWeiblich");
-                    }if(BeziehungCommand.isMarried(tg)) {
-                        p.sendMessage(PREFIX + " §8- §6Verheiratet mit: §c" + BeziehungCommand.getPartner(tg).getName());
+            if (e.getCurrentItem() == null || e.getCurrentItem().getType() == Material.AIR) return;
+            Player tg = Script.getPlayer(e.getView().getTitle().replace("§8[§9Polizeicomputer§8] §9", ""));
+            String title = e.getCurrentItem().getItemMeta().getDisplayName();
+            if (title.equals("Personendaten")) {
+                p.sendMessage(PREFIX + "Personendaten von " + Script.getName(tg));
+                p.sendMessage(PREFIX + "Name: " + Script.getName(tg));
+                p.sendMessage(PREFIX + " §8- §6Geburtsdatum: §c" + Script.getBirthday(Script.getNRPID(tg)) + " (" + Script.getAge(Script.getNRPID(tg)) + ")");
+                if (Script.getGender(tg).equals(Gender.MALE)) {
+                    p.sendMessage(PREFIX + " §8- §6Geschlecht: §cMännlich");
+                } else if (Script.getGender(tg).equals(Gender.FEMALE)) {
+                    p.sendMessage(PREFIX + " §8- §6Geschlecht: §cWeiblich");
+                }
+                if (BeziehungCommand.isMarried(tg)) {
+                    p.sendMessage(PREFIX + " §8- §6Verheiratet mit: §c" + BeziehungCommand.getPartner(tg).getName());
+                }
+                if (House.hasHouse(Script.getNRPID(tg))) {
+                    StringBuilder houses = new StringBuilder();
+                    for (House h : House.getHouses(Script.getNRPID(tg))) {
+                        houses.append(", ").append(h.getID());
                     }
-                    if (House.hasHouse(Script.getNRPID(tg))) {
-                        StringBuilder houses = new StringBuilder();
-                        for (House h : House.getHouses(Script.getNRPID(tg))) {
-                            houses.append(", ").append(h.getID());
-                        }
-                        p.sendMessage(PREFIX + " §8- §6Wohnhaft:§6" + houses.substring(1));
-                    } else {
-                        p.sendMessage(PREFIX + " §8- §6Wohnhaft: §6Obdachlos");
-                    }
-                    p.closeInventory();
+                    p.sendMessage(PREFIX + " §8- §6Wohnhaft:§6" + houses.substring(1));
+                } else {
+                    p.sendMessage(PREFIX + " §8- §6Wohnhaft: §6Obdachlos");
+                }
+                p.closeInventory();
+                return;
+            }
+
+            if (title.equals("Lizenzen")) {
+                StringBuilder sb = new StringBuilder(PREFIX + "Lizenzen von " + Script.getName(tg) + "§7:\n");
+                Map<Licenses, Boolean> licenses = Licenses.getLicenses(Script.getNRPID(tg));
+
+                if (licenses.get(Licenses.PERSONALAUSWEIS)) {
+                    sb.append(PREFIX + "  §7- §9Personalausweis§8: §bVorhanden\n");
+                } else {
+                    sb.append(PREFIX + "  §7- §9Personalausweis§8: §bNicht vorhanden\n");
+                }
+
+                if (licenses.get(Licenses.FUEHRERSCHEIN)) {
+                    sb.append(PREFIX + "  §7- §9Führerschein§8: §bVorhanden\n");
+                } else {
+                    sb.append(PREFIX + "  §7- §9Führerschein§8: §bNicht vorhanden\n");
+                }
+
+                if (licenses.get(Licenses.WAFFENSCHEIN)) {
+                    sb.append(PREFIX + "  §7- §9Waffenschein§8: §bVorhanden\n");
+                } else {
+                    sb.append(PREFIX + "  §7- §9Waffenschein§8: §bNicht vorhanden\n");
+                }
+
+                if (licenses.get(Licenses.ANGELSCHEIN)) {
+                    sb.append(PREFIX + "  §7- §9Angelschein§8: §bVorhanden\n");
+                } else {
+                    sb.append(PREFIX + "  §7- §9Angelschein§8: §bNicht vorhanden\n");
+                }
+
+                if (licenses.get(Licenses.ERSTE_HILFE)) {
+                    sb.append(PREFIX + "  §7- §9Erste Hilfe§8: §bVorhanden\n");
+                } else {
+                    sb.append(PREFIX + "  §7- §9Erste Hilfe§8: §bNicht vorhanden\n");
+                }
+
+                p.sendMessage(sb.toString());
+                p.closeInventory();
+                return;
+            }
+
+            if (title.equals("Gefährlichkeitsstufe")) {
+                p.sendMessage(PREFIX + "Gefährlichkeitsstufe von " + Script.getName(tg) + "§8: §7" + getDangerLevel(tg));
+                p.sendMessage(Messages.INFO + "Du kannst die Gefährlichkeitsstufe mit §8/§6dangerlevel [Name] [Stufe] §rsetzen.");
+                p.closeInventory();
+                return;
+            }
+
+            if (title.equals("Orten")) {
+                if (!Mobile.hasPhone(tg) || !Mobile.mobileIsOn(tg)) {
+                    p.sendMessage(Messages.ERROR + "Das Handy von " + Script.getName(tg) + " ist nicht eingeschaltet.");
                     return;
                 }
 
-                if(title.equals("Lizenzen")) {
-                    StringBuilder sb = new StringBuilder(PREFIX + "Lizenzen von " + Script.getName(tg) + "§7:\n");
-                    Map<Licenses, Boolean> licenses = Licenses.getLicenses(Script.getNRPID(tg));
-
-                    if (licenses.get(Licenses.PERSONALAUSWEIS)) {
-                        sb.append(PREFIX + "  §7- §9Personalausweis§8: §bVorhanden\n");
-                    } else {
-                        sb.append(PREFIX + "  §7- §9Personalausweis§8: §bNicht vorhanden\n");
-                    }
-
-                    if (licenses.get(Licenses.FUEHRERSCHEIN)) {
-                        sb.append(PREFIX + "  §7- §9Führerschein§8: §bVorhanden\n");
-                    } else {
-                        sb.append(PREFIX + "  §7- §9Führerschein§8: §bNicht vorhanden\n");
-                    }
-
-                    if (licenses.get(Licenses.WAFFENSCHEIN)) {
-                        sb.append(PREFIX + "  §7- §9Waffenschein§8: §bVorhanden\n");
-                    } else {
-                        sb.append(PREFIX + "  §7- §9Waffenschein§8: §bNicht vorhanden\n");
-                    }
-
-                    if (licenses.get(Licenses.ANGELSCHEIN)) {
-                        sb.append(PREFIX + "  §7- §9Angelschein§8: §bVorhanden\n");
-                    } else {
-                        sb.append(PREFIX + "  §7- §9Angelschein§8: §bNicht vorhanden\n");
-                    }
-
-                    if (licenses.get(Licenses.ERSTE_HILFE)) {
-                        sb.append(PREFIX + "  §7- §9Erste Hilfe§8: §bVorhanden\n");
-                    } else {
-                        sb.append(PREFIX + "  §7- §9Erste Hilfe§8: §bNicht vorhanden\n");
-                    }
-
-                    p.sendMessage(sb.toString());
-                    p.closeInventory();
+                if (cooldown.containsKey(tg.getName()) && cooldown.get(tg.getName()) > System.currentTimeMillis()) {
+                    p.sendMessage(Messages.ERROR + "Du kannst " + Script.getName(tg) + " erst in " + Script.getRemainingTime(cooldown.get(tg.getName())) + " orten.");
                     return;
                 }
 
-                if(title.equals("Gefährlichkeitsstufe")) {
-                    p.sendMessage(PREFIX + "Gefährlichkeitsstufe von " + Script.getName(tg) + "§8: §7" + getDangerLevel(tg));
-                    p.sendMessage(Messages.INFO + "Du kannst die Gefährlichkeitsstufe mit §8/§6dangerlevel [Name] [Stufe] §rsetzen.");
-                    p.closeInventory();
-                    return;
-                }
+                cooldown.put(tg.getName(), (System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(10)));
+                p.sendMessage(PREFIX + "Du hast " + Script.getName(tg) + " geortet.");
+                Navi navi = Navi.getNextNaviLocation(tg.getLocation());
+                Script.sendClickableMessage(p, PREFIX + Script.getName(tg) + " befindet sich bei " + navi.getName(), "/navi " + navi.getName(), "Klicke um dich zum nächsten Punkt zu navigieren.");
+                p.closeInventory();
+                return;
+            }
 
-                if(title.equals("Orten")) {
-                    if(!Mobile.hasPhone(tg) || !Mobile.mobileIsOn(tg)) {
-                        p.sendMessage(Messages.ERROR + "Das Handy von " + Script.getName(tg) + " ist nicht eingeschaltet.");
-                        return;
-                    }
-
-                    if(cooldown.containsKey(tg.getName()) && cooldown.get(tg.getName())>System.currentTimeMillis()) {
-                        p.sendMessage(Messages.ERROR + "Du kannst " + Script.getName(tg) + " erst in " + Script.getRemainingTime(cooldown.get(tg.getName())) + " orten.");
-                        return;
-                    }
-
-                    cooldown.put(tg.getName(), (System.currentTimeMillis()+ TimeUnit.MINUTES.toMillis(10)));
-                    p.sendMessage(PREFIX + "Du hast " + Script.getName(tg) + " geortet.");
-                    Navi navi = Navi.getNextNaviLocation(tg.getLocation());
-                    Script.sendClickableMessage(p, PREFIX  + Script.getName(tg) + " befindet sich bei " + navi.getName(), "/navi " + navi.getName(), "Klicke um dich zum nächsten Punkt zu navigieren.");
-                    p.closeInventory();
-                    return;
-                }
-
-                if(title.equals("Gesucht?")) {
-                    p.sendMessage(PREFIX + Script.getName(tg) + " ist " + (Fahndung.isFahnded(tg) ? "§cGesucht!" : "§anicht gesucht"));
-                    p.closeInventory();
-                    return;
-                }
-
+            if (title.equals("Gesucht?")) {
+                p.sendMessage(PREFIX + Script.getName(tg) + " ist " + (Fahndung.isFahnded(tg) ? "§cGesucht!" : "§anicht gesucht"));
+                p.closeInventory();
+                return;
             }
         }
     }
