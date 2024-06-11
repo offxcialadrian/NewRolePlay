@@ -62,14 +62,14 @@ public class BreakOutHandler implements Listener {
                     BlockState state = event.getClickedBlock().getState();
                     Door door = (Door) state.getBlockData();
                     if (!door.isOpen()) {
-                        if (System.currentTimeMillis() - lastTime < TimeUnit.HOURS.toMillis(1)) {
-                            if (event.getItem() != null) {
-                                if (event.getItem().getType() == Material.BLAZE_ROD) {
+                        if (event.getItem().getType() == Material.BLAZE_ROD) {
+                            if (System.currentTimeMillis() - lastTime < TimeUnit.HOURS.toMillis(1)) {
+                                if (event.getItem() != null) {
                                     event.getPlayer().sendMessage(PREFIX + "Du kannst die Tür gerade nicht aufbrechen.");
                                 }
+                            } else {
+                                event.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, 50 * 20, 1));
                             }
-                        } else {
-                            event.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, 50 * 20, 1));
                         }
                     }
                 }
