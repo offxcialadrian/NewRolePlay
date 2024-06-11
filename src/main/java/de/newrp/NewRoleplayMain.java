@@ -208,6 +208,7 @@ public class NewRoleplayMain extends JavaPlugin {
         Bukkit.getScheduler().runTaskLater(this, () -> {
             LabBreakIn.repairDoors(false);
             HackPoliceComputer.repairDoors();
+            BreakOutHandler.repairDoor();
         }, 20L);
         OrgSpray.FraktionSpray.init();
         Bukkit.getScheduler().runTaskLater(this, () -> House.reset(90 * 24 * 60 * 60 * 1000L), 60 * 20L);
@@ -743,6 +744,7 @@ public class NewRoleplayMain extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new SpindCommand(), this);
         Bukkit.getPluginManager().registerEvents(new MuscleDamage(), this);
         Bukkit.getPluginManager().registerEvents(new Dart(), this);
+        Bukkit.getPluginManager().registerEvents(new BreakOutHandler(), this);
     }
 
     /**
