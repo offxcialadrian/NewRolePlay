@@ -36,8 +36,8 @@ public class Staatsmeldung implements CommandExecutor {
             return true;
         }
 
-        if (!Beruf.hasAbteilung(p, Abteilung.Abteilungen.ABTEILUNGSLEITUNG, Abteilung.Abteilungen.PRESSE, Abteilung.Abteilungen.INNENMINISTERIUM)) {
-            p.sendMessage(Messages.ERROR + "Du bist nicht in der Presseabteilung!");
+        if (!Beruf.hasAbteilung(p, Abteilung.Abteilungen.ABTEILUNGSLEITUNG, Abteilung.Abteilungen.PRESSE, Abteilung.Abteilungen.INNENMINISTERIUM, Abteilung.Abteilungen.KRIMINALPOLIZEI)) {
+            p.sendMessage(Messages.ERROR + "Du bist nicht befähigten Abteilung!");
             return true;
         }
 
