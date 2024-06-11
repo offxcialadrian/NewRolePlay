@@ -60,8 +60,8 @@ public static HashMap<String, Long> cooldown = new HashMap<>();
         inv.setItem(0, new ItemBuilder(Material.PLAYER_HEAD).setName("Personendaten").setLore("§8» §7Klicke um die Personendaten von " + Script.getName(tg) + " zu sehen.").build());
         inv.setItem(1, new ItemBuilder(Material.PAPER).setName("Lizenzen").setLore("§8» §7Klicke um die Lizenzen von " + Script.getName(tg) + " zu sehen.").build());
         inv.setItem(2, new ItemBuilder(Material.NETHER_STAR).setName("Gefährlichkeitsstufe").setLore("§8» §7Gefährlichkeitsstufe von " + Script.getName(tg) + "§8: §7" + getDangerLevel(tg)).build());
-        if (Beruf.getBeruf(p) == Beruf.Berufe.BUNDESNACHRICHTENDIENST) inv.setItem(3, new ItemBuilder(Material.COMPASS).setName("Orten").setLore("§8» §7Klicke um " + Script.getName(tg) + " zu orten.").build());
-        inv.setItem(Beruf.getBeruf(p) == Beruf.Berufe.BUNDESNACHRICHTENDIENST ? 4 : 3, new ItemBuilder(Material.OAK_SIGN).setName("Gesucht?").setLore("§8» " + (Fahndung.isFahnded(tg) ? "§cGesucht" : "§aNicht gesucht")).build());
+        if (Beruf.getBeruf(p) == Beruf.Berufe.BUNDESNACHRICHTENDIENST || true) inv.setItem(3, new ItemBuilder(Material.COMPASS).setName("Orten").setLore("§8» §7Klicke um " + Script.getName(tg) + " zu orten.").build());
+        inv.setItem(Beruf.getBeruf(p) == Beruf.Berufe.BUNDESNACHRICHTENDIENST || true ? 4 : 3, new ItemBuilder(Material.OAK_SIGN).setName("Gesucht?").setLore("§8» " + (Fahndung.isFahnded(tg) ? "§cGesucht" : "§aNicht gesucht")).build());
         p.openInventory(inv);
 
         Beruf.Berufe.POLICE.sendMessage(PREFIX + Script.getName(p) + " fragt die Daten von " + Script.getName(tg) + " ab.");
