@@ -32,4 +32,5 @@ public class MainConfig {
     }};
     private String teamspeakQueryUser = "";
     private String teamspeakQueryPassword = "";
+    private int groupPrice = 10000;
 }

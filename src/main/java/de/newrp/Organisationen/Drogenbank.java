@@ -170,6 +170,10 @@ public class Drogenbank implements CommandExecutor, Listener {
             }
 
             int amount = Integer.parseInt(args[1]);
+            if(amount < 1) {
+                p.sendMessage(Messages.ERROR + "Es kannst keine negative Drogen-Anzahl aus der Drogenbank nehmen");
+                return true;
+            }
             drug_amount.put(p.getName(), amount);
 
             Inventory inv = Bukkit.createInventory(null, 9, "§eDrogenbank (Inhalt)");

@@ -1,6 +1,8 @@
 package de.newrp.features.group.commands;
 
+import de.newrp.API.PaymentType;
 import de.newrp.API.Script;
+import de.newrp.config.MainConfig;
 import de.newrp.dependencies.DependencyContainer;
 import de.newrp.features.group.IGroupService;
 import de.newrp.features.group.data.Group;
@@ -50,6 +52,13 @@ public class GruppierungCommand implements CommandExecutor {
 
     private void create(final Player player, final String[] args) {
         final IGroupService groupService = DependencyContainer.getContainer().getDependency(IGroupService.class);
+        final int groupPrice = DependencyContainer.getContainer().getDependency(MainConfig.class).getGroupPrice();
+        final int moneyOnBank = Script.getMoney(player, PaymentType.BANK);
+
+        if(moneyOnBank < groupPrice) {
+            player.sendMessage(groupService.getPrefix() + "Du hast nicht genügend Geld auf der Bank.");
+            return;
+        }
 
         final String groupName = args[0];
         groupService.createGroup(args[1], player);

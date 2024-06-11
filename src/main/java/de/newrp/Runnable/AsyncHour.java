@@ -123,7 +123,7 @@ public class AsyncHour extends BukkitRunnable {
                     shop.removeKasse(shop.getRent());
                     Stadtkasse.addStadtkasse(shop.getRent(), "Miete von " + shop.getPublicName(), null);
                     if (Script.getPlayer(shop.getOwner()) != null) {
-                        Script.getPlayer(shop.getOwner()).sendMessage(Shop.PREFIX + "Dein Shop §e" + shop.getPublicName() + " §7hat §e" + shop.getRent() + "€ §7Miete und §e" + runningcost + "€ §7Betriebskosten verloren.");
+                        Script.getPlayer(shop.getOwner()).sendMessage(Shop.PREFIX + "Dein Shop §e" + shop.getPublicName() + " §7hat §e" + shop.getRent() + "€ §7Miete und §e" + runningcost + "€ §7Betriebskosten bezahlt.");
                     }
                 } else {
                     Abteilung.Abteilungen.FINANZAMT.sendMessage(Shop.PREFIX + "Der Shop §e" + shop.getPublicName() + " §7hat nicht genug Geld für die Betriebskosten und Miete (Verdacht auf Steuerhinterziehung).");

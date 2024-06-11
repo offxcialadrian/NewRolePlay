@@ -36,6 +36,7 @@ public class FriedhofListener implements Listener {
     public static final HashMap<String, EntityDamageEvent.DamageCause> DEATH_REASON = new HashMap<>();
     private final IDeathmatchArenaService deathmatchArenaService = DependencyContainer.getContainer().getDependency(IDeathmatchArenaService.class);
 
+    // 1Minify
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void onDeath(PlayerDeathEvent e) {
         if (!e.getEntity().getType().equals(EntityType.PLAYER)) return;

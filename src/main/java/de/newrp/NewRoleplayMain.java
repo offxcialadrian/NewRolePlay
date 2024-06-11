@@ -259,6 +259,7 @@ public class NewRoleplayMain extends JavaPlugin {
         getCommand("punish").setTabCompleter(new Punish());
         getCommand("tp").setTabCompleter(new Teleport());
         getCommand("fahndung").setTabCompleter(new Fahndung());
+        getCommand("addorgdoor").setTabCompleter(new AddOrgDoor());
         getCommand("sduty").setExecutor(new SDuty());
         getCommand("debug").setExecutor(new DebugCommand());
         getCommand("nrp").setExecutor(new NRPChat());
