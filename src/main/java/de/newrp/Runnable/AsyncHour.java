@@ -57,7 +57,7 @@ public class AsyncHour extends BukkitRunnable {
                 Stadtkasse.removeStadtkasse(berufe.getLeasedAmount() * (berufe.getCarType().getTax()), "Leasinggebühren " + berufe.getLeasedAmount() + "x " + berufe.getName());
             }
 
-            if (Abteilung.Abteilungen.FEUERWEHR.getOnlineMembers().size() + Abteilung.Abteilungen.ABTEILUNGSLEITUNG.getOnlineMembers().size() + Abteilung.Abteilungen.CHEFARZT.getOnlineMembers().size() + Abteilung.Abteilungen.DIREKTOR.getOnlineMembers().size() > 2) {
+            if (Abteilung.Abteilungen.FEUERWEHR.getOnlineMembers().size() + Abteilung.Abteilungen.OBERARZT.getOnlineMembers().size() + Abteilung.Abteilungen.CHEFARZT.getOnlineMembers().size() + Abteilung.Abteilungen.DIREKTOR.getOnlineMembers().size() > 2) {
                 if (new Random().nextInt(4) == 0) {
                     if (new Random().nextInt(3) == 0) {
                         Shops[] b = new Shops[]{Shops.GUNSHOP, Shops.ANGELLADEN, Shops.DOENER, Shops.SUPERMARKT, Shops.APOTHEKE, Shops.APOTHEKE_AEKI,
