@@ -1,13 +1,11 @@
 package de.newrp.features.roadblocks.impl;
 
 import de.newrp.API.ItemBuilder;
-import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.Berufe.Beruf;
 import de.newrp.config.MainConfig;
 import de.newrp.dependencies.DependencyContainer;
 import de.newrp.features.roadblocks.IFactionBlockService;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -57,10 +55,10 @@ public class FactionBlockService implements IFactionBlockService {
             return;
         }
 
-        targetBlock.setType(faction == Beruf.Berufe.POLICE ? Material.STONE_BRICK_WALL : Material.SLIME_BLOCK, true);
+        targetBlock.setType(faction == Beruf.Berufe.POLICE ? Material.RED_NETHER_BRICK_WALL : Material.SLIME_BLOCK, true);
         this.roadBlocks.get(faction).add(targetBlock);
         player.getWorld().playSound(targetBlock.getLocation(), Sound.BLOCK_STONE_PLACE, 1f, 1f);
-        faction.sendMessage(getPrefix(faction) + Script.getName(player) + " hat ein " + getType(faction) + " platziert (" + getFactionBlockAmount(faction) + "/" + getMaxFactionBlockAmount(faction) + ")");
+        // faction.sendMessage(getPrefix(faction) + Script.getName(player) + " hat ein " + getType(faction) + " platziert (" + getFactionBlockAmount(faction) + "/" + getMaxFactionBlockAmount(faction) + ")");
     }
 
     @Override
@@ -72,7 +70,7 @@ public class FactionBlockService implements IFactionBlockService {
         block.setType(Material.AIR);
         this.roadBlocks.get(faction).remove(block);
         player.getWorld().playSound(block.getLocation(), Sound.BLOCK_STONE_BREAK, 1f, 1f);
-        faction.sendMessage(getPrefix(faction) + Script.getName(player) + " hat ein " + getType(faction) + " entfernt (" + getFactionBlockAmount(faction) + "/" + getMaxFactionBlockAmount(faction) + ")");
+        // faction.sendMessage(getPrefix(faction) + Script.getName(player) + " hat ein " + getType(faction) + " entfernt (" + getFactionBlockAmount(faction) + "/" + getMaxFactionBlockAmount(faction) + ")");
     }
 
     @Override
