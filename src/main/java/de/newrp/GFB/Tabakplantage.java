@@ -119,7 +119,7 @@ public class Tabakplantage implements CommandExecutor, Listener {
                     items.add(item);
                 }
                 ITEMS.put(loc, items);
-                DRYING.put(p.getName(), System.currentTimeMillis() + TimeUnit.SECONDS.toMillis(210));
+                DRYING.put(p.getName(), System.currentTimeMillis() + TimeUnit.SECONDS.toMillis(120));
                 LOCATION.put(p.getName(), loc);
                 Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> {
                     if (p.isOnline()) {
