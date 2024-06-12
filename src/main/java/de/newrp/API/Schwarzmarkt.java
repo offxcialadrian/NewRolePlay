@@ -1,5 +1,6 @@
 package de.newrp.API;
 
+import de.newrp.NewRoleplayMain;
 import de.newrp.Organisationen.SchwarzmarktListener;
 import de.newrp.Shop.ShopItem;
 import de.newrp.Shop.ShopNPC;
@@ -7,6 +8,7 @@ import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.trait.SkinLayers;
 import net.citizensnpcs.trait.SkinTrait;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
@@ -53,7 +55,7 @@ public enum Schwarzmarkt {
         npc.getOrAddTrait(SkinTrait.class).setSkinName("hivewind");
         npc.getOrAddTrait(SkinLayers.class).hideCape();
         npc.spawn(smarkt.getLocation());
-        ShopNPC.addNpc(null, npc);
+        Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> ShopNPC.addNpc(null, npc), 10 * 20L);
 
         SCHWARZMARKT_ID = npc.getId();
         TradeItem item = Schwarzmarkt.TradeItem.values()[Script.getRandom(0, Schwarzmarkt.TradeItem.values().length - 1)];
