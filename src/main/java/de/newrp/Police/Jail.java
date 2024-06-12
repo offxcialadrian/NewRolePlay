@@ -109,6 +109,7 @@ public class Jail {
     public static void unarrest(Player p) {
         Jail j = getJail(p);
         if (j == null) return;
+        Fahndung.removeFahndung(p);
         Script.executeAsyncUpdate("DELETE FROM jail WHERE nrp_id=" + Script.getNRPID(p));
         p.sendMessage(PREFIX + "Du bist wieder frei!");
         p.getInventory().remove(Material.COBBLESTONE);

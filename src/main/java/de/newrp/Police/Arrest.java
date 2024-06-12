@@ -102,7 +102,6 @@ public class Arrest implements CommandExecutor {
                 if(Fahndung.getWanteds(tg) >= 80) Beruf.Berufe.BUNDESNACHRICHTENDIENST.sendMessage(Fahndung.PREFIX + "Fahndungsgrund: " + Straftat.getReason(i) + " | WantedPunkte: " + Straftat.getWanteds(i));
             }
         }
-        Fahndung.removeFahndung(tg);
 
 
         if (Mobile.hasPhone(tg)) {
