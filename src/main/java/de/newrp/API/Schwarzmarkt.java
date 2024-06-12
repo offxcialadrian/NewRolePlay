@@ -4,6 +4,7 @@ import de.newrp.Organisationen.SchwarzmarktListener;
 import de.newrp.Shop.ShopItem;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
+import net.citizensnpcs.trait.SkinLayers;
 import net.citizensnpcs.trait.SkinTrait;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -48,7 +49,8 @@ public enum Schwarzmarkt {
         }
 
         net.citizensnpcs.api.npc.NPC npc = net.citizensnpcs.api.CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, "§eSchwarzmarkt");
-        npc.getOrAddTrait(SkinTrait.class).setSkinName("JesusIsMyLife");
+        npc.getOrAddTrait(SkinTrait.class).setSkinName("hivewind");
+        npc.getOrAddTrait(SkinLayers.class).hideCape();
         npc.spawn(smarkt.getLocation());
 
         SCHWARZMARKT_ID = npc.getId();

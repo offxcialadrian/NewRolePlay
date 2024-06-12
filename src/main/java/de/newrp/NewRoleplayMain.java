@@ -204,6 +204,7 @@ public class NewRoleplayMain extends JavaPlugin {
         Dart.clear();
         Bukkit.getScheduler().runTaskLater(this, CitizensAPI.getNPCRegistry()::deregisterAll, 2L);
         Bukkit.getScheduler().runTaskLater(this, Schwarzmarkt::spawnRandom, 4L);
+        Bukkit.getScheduler().runTaskLater(this, Dealer::spawn, 4L);
         Zeitung.restoreZeitung();
         Bukkit.getScheduler().runTaskLater(this, () -> {
             LabBreakIn.repairDoors(false);
@@ -748,6 +749,7 @@ public class NewRoleplayMain extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new Dart(), this);
         Bukkit.getPluginManager().registerEvents(new BreakOutHandler(), this);
         Bukkit.getPluginManager().registerEvents(new ShopNPC(), this);
+        Bukkit.getPluginManager().registerEvents(new Dealer(), this);
     }
 
     /**

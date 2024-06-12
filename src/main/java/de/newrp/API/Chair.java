@@ -77,19 +77,18 @@ public class Chair implements Listener {
         Block b = e.getClickedBlock();
         if (!canSit(p, b) || !Script.isInRange(p.getLocation(), b.getLocation(), 1.9D)) return;
         if(b instanceof Stairs) {
-
-        }
-        Stairs u = (Stairs) b.getState().getData();
-        BlockFace F = u.getFacing().getOppositeFace();
-        if (chairIsUsed(b.getLocation())) return;
-        if (F == BlockFace.EAST) {
-            spawnChair(b.getLocation(), p, 90F, true);
-        } else if (F == BlockFace.SOUTH) {
-            spawnChair(b.getLocation(), p, 180F, true);
-        } else if (F == BlockFace.WEST) {
-            spawnChair(b.getLocation(), p, -90F, true);
-        } else if (F == BlockFace.NORTH) {
-            spawnChair(b.getLocation(), p, 0F, true);
+            Stairs u = (Stairs) b.getState().getData();
+            BlockFace F = u.getFacing().getOppositeFace();
+            if (chairIsUsed(b.getLocation())) return;
+            if (F == BlockFace.EAST) {
+                spawnChair(b.getLocation(), p, 90F, true);
+            } else if (F == BlockFace.SOUTH) {
+                spawnChair(b.getLocation(), p, 180F, true);
+            } else if (F == BlockFace.WEST) {
+                spawnChair(b.getLocation(), p, -90F, true);
+            } else if (F == BlockFace.NORTH) {
+                spawnChair(b.getLocation(), p, 0F, true);
+            }
         }
     }
 

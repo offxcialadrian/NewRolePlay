@@ -48,9 +48,11 @@ public class NaviClick implements Listener {
                         inv.setItem(4, Script.setName(Material.BLUE_BED, "§6" + Navi.HOTEL.getName()));
                         inv.setItem(5, Script.setName(Material.SAND, "§6" + Navi.STRAND.getName()));
                         inv.setItem(6, Script.setName(Material.IRON_BLOCK, "§6" + Navi.GYM.getName()));
-                        inv.setItem(7, Script.setName(Material.HONEY_BOTTLE, "§6" + Navi.BAR.getName()));
-                        inv.setItem(8, Script.setName(Material.POTION, "§6" + Navi.CLUB.getName()));
-                        inv.setItem(9, Script.setName(Material.NAUTILUS_SHELL, "§6" + Navi.ZOO.getName()));
+                        inv.setItem(7, Script.setName(Material.STICK, "§6" + Navi.SHISHABAR.getName()));
+                        inv.setItem(8, Script.setName(Material.OAK_LEAVES, "§6" + Navi.PARK.getName()));
+                        inv.setItem(9, Script.setName(Material.HONEY_BOTTLE, "§6" + Navi.BAR.getName()));
+                        inv.setItem(10, Script.setName(Material.POTION, "§6" + Navi.CLUB.getName()));
+                        inv.setItem(11, Script.setName(Material.NAUTILUS_SHELL, "§6" + Navi.ZOO.getName()));
                         inv.setItem(22, Script.setName(Material.REDSTONE, "§cZurück"));
                         Script.fillInv(inv);
                         p.openInventory(inv);
@@ -111,6 +113,7 @@ public class NaviClick implements Listener {
                         Inventory inv = Bukkit.createInventory(null, 18, "§e§lNavi");
                         inv.setItem(0, Script.setName(Material.PAINTING, "§6" + Navi.MUSEUM.getName()));
                         inv.setItem(1, Script.setName(Material.PRISMARINE, "§6" + Navi.STATUE.getName()));
+                        inv.setItem(2, Script.setName(Material.NAUTILUS_SHELL, "§6" + Navi.ZOO.getName()));
                         inv.setItem(13, Script.setName(Material.REDSTONE, "§cZurück"));
                         Script.fillInv(inv);
                         p.openInventory(inv);
