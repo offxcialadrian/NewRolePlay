@@ -1,6 +1,7 @@
 package de.newrp.API;
 
 import de.newrp.Berufe.Beruf;
+import de.newrp.NewRoleplayMain;
 import de.newrp.Organisationen.Drogen;
 import de.newrp.Shop.ShopNPC;
 import lombok.Getter;
@@ -9,6 +10,7 @@ import net.citizensnpcs.api.event.NPCRightClickEvent;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.trait.SkinLayers;
 import net.citizensnpcs.trait.SkinTrait;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -35,7 +37,7 @@ public class Dealer implements Listener {
         npc.getOrAddTrait(SkinTrait.class).setSkinName("AbuBerke");
         npc.getOrAddTrait(SkinLayers.class).hideCape();
         npc.spawn(getRandomLoc());
-        ShopNPC.addNpc(null, npc);
+        Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> ShopNPC.addNpc(null, npc), 10 * 20L);
     }
 
     public static void respawn() {
