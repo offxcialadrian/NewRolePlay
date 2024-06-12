@@ -1,6 +1,7 @@
 package de.newrp.API;
 
 import de.newrp.Berufe.Beruf;
+import de.newrp.Chat.Me;
 import de.newrp.NewRoleplayMain;
 import de.newrp.Organisationen.Drogen;
 import de.newrp.Shop.ShopNPC;
@@ -102,6 +103,7 @@ public class Dealer implements Listener {
             int amount = player.getInventory().getItemInMainHand().getAmount();
             price *= amount;
             price -= (int) Math.round(price * 0.2 * purity.getID());
+            Me.sendMessage(player, "tauscht etwas mit dem Dealer aus.");
             if (new Random().nextInt(10) == 0) {
                 player.sendMessage(PREFIX + TEXT_SCAM_TRADE[new Random().nextInt(TEXT_SCAM_TRADE.length)]);
             } else {
