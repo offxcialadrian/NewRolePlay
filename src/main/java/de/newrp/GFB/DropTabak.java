@@ -35,7 +35,7 @@ public class DropTabak implements CommandExecutor {
         }
         p.sendMessage(Tabakplantage.PREFIX + "Du hast " + tabak + "g Tabak abgegeben.");
         Shops.WHITE_LOUNGE.addLager(tabak / 2);
-        int money = tabak * 4;
+        int money = tabak * 3;
         int exp = tabak * 4;
         PayDay.addPayDay(p, money);
         GFB.TABAKPLANTAGE.addExp(p, exp);
