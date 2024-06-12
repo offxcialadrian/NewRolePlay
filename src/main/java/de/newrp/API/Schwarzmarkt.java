@@ -2,6 +2,7 @@ package de.newrp.API;
 
 import de.newrp.Organisationen.SchwarzmarktListener;
 import de.newrp.Shop.ShopItem;
+import de.newrp.Shop.ShopNPC;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.trait.SkinLayers;
@@ -52,6 +53,7 @@ public enum Schwarzmarkt {
         npc.getOrAddTrait(SkinTrait.class).setSkinName("hivewind");
         npc.getOrAddTrait(SkinLayers.class).hideCape();
         npc.spawn(smarkt.getLocation());
+        ShopNPC.addNpc(null, npc);
 
         SCHWARZMARKT_ID = npc.getId();
         TradeItem item = Schwarzmarkt.TradeItem.values()[Script.getRandom(0, Schwarzmarkt.TradeItem.values().length - 1)];

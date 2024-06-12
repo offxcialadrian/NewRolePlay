@@ -2,6 +2,7 @@ package de.newrp.API;
 
 import de.newrp.Berufe.Beruf;
 import de.newrp.Organisationen.Drogen;
+import de.newrp.Shop.ShopNPC;
 import lombok.Getter;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
@@ -34,6 +35,7 @@ public class Dealer implements Listener {
         npc.getOrAddTrait(SkinTrait.class).setSkinName("AbuBerke");
         npc.getOrAddTrait(SkinLayers.class).hideCape();
         npc.spawn(getRandomLoc());
+        ShopNPC.addNpc(null, npc);
     }
 
     public static void respawn() {
@@ -43,11 +45,15 @@ public class Dealer implements Listener {
     }
 
     private static Location getRandomLoc() {
-        switch (new Random().nextInt(2)) {
+        switch (new Random().nextInt(4)) {
             case 1:
-                return new Location(Script.WORLD, 650.5, 65, 1260.8, -272.2f, 15f);
+                return new Location(Script.WORLD, 570.2, 66, 1337.7, -336f, 0.7f);
+            case 2:
+                return new Location(Script.WORLD, 758.7, 65, 1209.8, -45.2f, 2.8f);
+            case 3:
+                return new Location(Script.WORLD, 752.1, 66, 1325.5, -232.1f, 0.2f);
             default:
-                return new Location(Script.WORLD, 647.2, 65, 1260.5, -88.6f, 16.9f);
+                return new Location(Script.WORLD, 656.4, 65, 1252.4, -310.1f, 2.6f);
         }
     }
 

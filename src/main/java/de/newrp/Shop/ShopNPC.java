@@ -48,7 +48,7 @@ public class ShopNPC implements Listener {
             }
             npc.getOrAddTrait(SkinLayers.class).hideCape();
             npc.spawn(shop.getNpcLoc().clone());
-            npcs.put(shop, npc);
+            addNpc(shop, npc);
         }
     }
 
@@ -75,6 +75,10 @@ public class ShopNPC implements Listener {
     public static NPC getNpc(Shops shop) {
         if (npcs.containsKey(shop)) return npcs.get(shop);
         return null;
+    }
+
+    public static void addNpc(Shops shop, NPC npc) {
+        npcs.put(shop, npc);
     }
 
     public static String getNpcName(Shops shop) {
