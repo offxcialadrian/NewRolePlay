@@ -36,6 +36,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 public class AsyncHour extends BukkitRunnable {
 
@@ -56,11 +57,11 @@ public class AsyncHour extends BukkitRunnable {
                 Stadtkasse.removeStadtkasse(berufe.getLeasedAmount() * (berufe.getCarType().getTax()), "Leasinggebühren " + berufe.getLeasedAmount() + "x " + berufe.getName());
             }
 
-            if (Abteilung.Abteilungen.FEUERWEHR.getOnlineMembers().size() >= 2) {
-                if (Script.getRandom(1, 7) == Script.getRandom(1, 7)) {
-                    if (Script.getRandom(1, 3) == Script.getRandom(1, 3)) {
+            if (Abteilung.Abteilungen.FEUERWEHR.getOnlineMembers().size() + Abteilung.Abteilungen.OBERARZT.getOnlineMembers().size() + Abteilung.Abteilungen.CHEFARZT.getOnlineMembers().size() + Abteilung.Abteilungen.DIREKTOR.getOnlineMembers().size() > 2) {
+                if (new Random().nextInt(4) == 0) {
+                    if (new Random().nextInt(3) == 0) {
                         Shops[] b = new Shops[]{Shops.GUNSHOP, Shops.ANGELLADEN, Shops.DOENER, Shops.SUPERMARKT, Shops.APOTHEKE, Shops.APOTHEKE_AEKI,
-                                Shops.BLUMENLADEN, Shops.SHOE_MALL, Shops.JAGDHUETTE, Shops.HANKYS, Shops.CAFE, Shops.FLOWER,
+                                Shops.BLUMENLADEN, Shops.SHOE_MALL, Shops.JAGDHUETTE, Shops.ELEKTRO_GANG, Shops.CAFE, Shops.FLOWER,
                                 Shops.GEMUESE, Shops.BAECKEREI, Shops.IKEA};
                         new FeuerwehrEinsatz(null).start(b[Script.getRandom(0, (b.length - 1))]);
                     } else {

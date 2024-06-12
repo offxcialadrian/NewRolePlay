@@ -80,20 +80,20 @@ public class Buy implements CommandExecutor {
                 if (Script.getAge(Script.getNRPID(player)) < 18) {
                     if (new Random().nextInt(5) > 0) {
                         List<String> list = Arrays.asList("Darfst du hier überhaupt rein?", "Du siehst zu jung aus für den Laden hier, verschwinde!", "Kann ich mal deinen Ausweis sehen?");
-                        BuyClick.sendMessage(player, list.get(Script.getRandom(0, list.size() - 1)));
+                        BuyClick.sendMessage(player, list.get(Script.getRandom(0, list.size() - 1)), shop);
                         return true;
                     }
                 }
 
                 if (Utils.alkLevel.containsKey(player.getUniqueId())) {
                     if (Utils.alkLevel.get(player.getUniqueId()) >= 3) {
-                        BuyClick.sendMessage(player, "Du siehst garnicht gut aus, fahr mal einen Gang runter!");
+                        BuyClick.sendMessage(player, "Du siehst garnicht gut aus, fahr mal einen Gang runter!", shop);
                         break;
                     }
                 }
 
                 List<String> list = Arrays.asList("Was darfs denn sein?", "Du schon wieder?", "Das Übliche?");
-                BuyClick.sendMessage(player, list.get(Script.getRandom(0, list.size() - 1)));
+                BuyClick.sendMessage(player, list.get(Script.getRandom(0, list.size() - 1)), shop);
                 break;
         }
 

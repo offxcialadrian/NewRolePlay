@@ -73,6 +73,7 @@ public class RemoveLeaderrechte implements CommandExecutor {
         Script.removeEXP(tg, Script.getRandom(10, 20));
         Log.HIGH.write(p, "hat " + tg.getName() + " die Leaderrechte entzogen.");
         Log.HIGH.write(tg, "hat die Leaderrechte entzogen bekommen.");
+        Script.sendTeamMessage("§8[§2Leader§8] §a" + p.getName() + " hat " + tg.getName() + " die Leader-Rechte entzogen.");
         TeamSpeak.sync(Script.getNRPID(tg));
     }
 }

@@ -79,6 +79,7 @@ public class GiveLeaderrechte implements CommandExecutor {
         Script.addEXP(Script.getNRPID(tg), Script.getRandom(10, 20));
         Log.HIGH.write(p, "hat " + tg.getName() + " " + (main?"Main-":"Co-") + "Leaderrechte gegeben.");
         Log.HIGH.write(tg, "hat " + (main?"Main-":"Co-") + "Leaderrechte bekommen.");
+        Script.sendTeamMessage("§8[§2Leader§8] §a" + p.getName() + " hat " + tg.getName() + " " + (main?"Main-":"Co-") + "Leader-Rechte gegeben.");
         TeamSpeak.sync(Script.getNRPID(tg));
     }
 }

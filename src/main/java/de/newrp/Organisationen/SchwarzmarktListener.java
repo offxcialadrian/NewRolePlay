@@ -8,11 +8,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import javax.crypto.Mac;
 import java.util.ArrayList;
 
 public class SchwarzmarktListener implements Listener {
@@ -56,18 +54,23 @@ public class SchwarzmarktListener implements Listener {
 
     public void openGUI(Player p) {
         int[] amount = Schwarzmarkt.getSchwarzmarkt().getItemAmounts();
+        int bribery = getBribery(p);
         Inventory inv = Bukkit.getServer().createInventory(null, 9, "§cSchwarzmarkt");
         int i = 0;
-        inv.setItem(i++, Script.setNameAndLore(new ItemStack(Material.BEETROOT_SEEDS, amount[0]), "§aKräuter Samen", "§c125€"));
-        inv.setItem(i++, Script.setNameAndLore(new ItemStack(Material.BEETROOT_SEEDS, amount[1]), "§7Pulver Samen", "§c100€"));
-        inv.setItem(i++, Script.setNameAndLore(new ItemStack(Material.INK_SAC, 1), "§bSpezial-Dünger", "§c55€"));
-        inv.setItem(i++, Script.setNameAndLore(new ItemStack(Material.BLAZE_ROD, 1), "§7Brechstange", "§c200€"));
-        inv.setItem(i++, Script.setNameAndLore(new ItemStack(Material.END_ROD, 1), "§7Testosteron-Spritze", "§c500€"));
-        inv.setItem(i++, Script.setNameAndLore(new ItemStack(Material.LEVER, 1), "§eGraffiti", "§c25€"));
-        inv.setItem(i++, Script.setNameAndLore(new ItemStack(Material.TNT, 1), "§cSprengstoff", "§c1000€"));
-        inv.setItem(i, Script.setNameAndLore(new ItemStack(Material.IRON_SWORD, 1), "§7Machete", "§c2300€"));
+        inv.setItem(i++, Script.setNameAndLore(new ItemStack(Material.BEETROOT_SEEDS, amount[0]), "§aKräuter Samen", "§c" + getMax(125, bribery) + "€"));
+        inv.setItem(i++, Script.setNameAndLore(new ItemStack(Material.BEETROOT_SEEDS, amount[1]), "§7Pulver Samen", "§c" + getMax(100, bribery) + "€"));
+        inv.setItem(i++, Script.setNameAndLore(new ItemStack(Material.INK_SAC, 1), "§bSpezial-Dünger", "§c" + getMax(55, bribery) + "€"));
+        inv.setItem(i++, Script.setNameAndLore(new ItemStack(Material.BLAZE_ROD, 1), "§7Brechstange", "§c" + getMax(200, bribery) + "€"));
+        inv.setItem(i++, Script.setNameAndLore(new ItemStack(Material.END_ROD, 1), "§7Testosteron-Spritze", "§c" + getMax(500, bribery) + "€"));
+        inv.setItem(i++, Script.setNameAndLore(new ItemStack(Material.LEVER, 1), "§eGraffiti", "§c" + getMax(25, bribery) + "€"));
+        inv.setItem(i++, Script.setNameAndLore(new ItemStack(Material.TNT, 1), "§cSprengstoff", "§c" + getMax(1000, bribery) + "€"));
+        inv.setItem(i, Script.setNameAndLore(new ItemStack(Material.IRON_SWORD, 1), "§7Machete", "§c" + getMax(2300, bribery) + "€"));
         Script.fillInv(inv);
         p.openInventory(inv);
+    }
+
+    private int getMax(int price, int bribery) {
+        return Math.max(0, price - bribery);
     }
 
     public boolean hasItem(Player p, Schwarzmarkt.TradeItem item, boolean remove) {
@@ -106,6 +109,14 @@ public class SchwarzmarktListener implements Listener {
         return b;
     }
 
+    private int getBribery(Player player) {
+        if (player.getInventory().getItemInMainHand().getType() == Material.SUGAR || player.getInventory().getItemInMainHand().getType() == Material.GREEN_DYE) {
+            Drogen.DrugPurity purity = Drogen.DrugPurity.getPurityByName(player.getInventory().getItemInMainHand().getItemMeta().getLore().get(0).replace("§7Reinheitsgrad: ", ""));
+            if (purity != null) if (purity.getID() == 0) return 15 * player.getInventory().getItemInMainHand().getAmount();
+        }
+        return 0;
+    }
+
     @EventHandler
     public void onClick(InventoryClickEvent e) {
         if (e.getView().getTitle().equals("§cSchwarzmarkt")) {
@@ -118,14 +129,17 @@ public class SchwarzmarktListener implements Listener {
                     String name = is.getItemMeta().getDisplayName();
                     Organisation o = Organisation.getOrganisation(p);
                     boolean badFrak = o != null;
+                    int bribery = getBribery(p);
                     switch (name) {
                         case "§aKräuter Samen":
                             if (badFrak) {
-                                int price = 125;
+                                int original = 125;
+                                int price = getMax(original, bribery);
                                 if (Script.getMoney(p, PaymentType.CASH) >= price) {
                                     p.getInventory().addItem(Script.setName(new ItemStack(Material.BEETROOT_SEEDS, is.getAmount()), "§aKräuter Samen"));
                                     p.sendMessage(Schwarzmarkt.PREFIX + TEXT_POST_TRADE[Script.getRandom(0, TEXT_POST_TRADE.length - 1)]);
                                     Script.removeMoney(p, PaymentType.CASH, price);
+                                    removeBribery(p, original, price, bribery);
                                 } else {
                                     p.sendMessage(Schwarzmarkt.PREFIX + TEXT_NO_MONEY[Script.getRandom(0, TEXT_NO_MONEY.length - 1)]);
                                 }
@@ -135,11 +149,13 @@ public class SchwarzmarktListener implements Listener {
                             break;
                         case "§7Pulver Samen":
                             if (badFrak) {
-                                int price = 100;
+                                int original = 100;
+                                int price = getMax(original, bribery);
                                 if (Script.getMoney(p, PaymentType.CASH) >= price) {
                                     p.getInventory().addItem(Script.setName(new ItemStack(Material.BEETROOT_SEEDS, is.getAmount()), "§7Pulver Samen"));
                                     p.sendMessage(Schwarzmarkt.PREFIX + TEXT_POST_TRADE[Script.getRandom(0, TEXT_POST_TRADE.length - 1)]);
                                     Script.removeMoney(p, PaymentType.CASH, price);
+                                    removeBribery(p, original, price, bribery);
                                 } else {
                                     p.sendMessage(Schwarzmarkt.PREFIX + TEXT_NO_MONEY[Script.getRandom(0, TEXT_NO_MONEY.length - 1)]);
                                 }
@@ -149,11 +165,13 @@ public class SchwarzmarktListener implements Listener {
                             break;
                         case "§bSpezial-Dünger":
                             if (badFrak) {
-                                int price = 55;
+                                int original = 55;
+                                int price = getMax(original, bribery);
                                 if (Script.getMoney(p, PaymentType.CASH) >= price) {
                                     p.getInventory().addItem(Script.setName(new ItemStack(Material.INK_SAC, is.getAmount(), (byte) 15), "§bSpezial-Dünger"));
                                     p.sendMessage(Schwarzmarkt.PREFIX + TEXT_POST_TRADE[Script.getRandom(0, TEXT_POST_TRADE.length - 1)]);
                                     Script.removeMoney(p, PaymentType.CASH, price);
+                                    removeBribery(p, original, price, bribery);
                                 } else {
                                     p.sendMessage(Schwarzmarkt.PREFIX + TEXT_NO_MONEY[Script.getRandom(0, TEXT_NO_MONEY.length - 1)]);
                                 }
@@ -162,55 +180,65 @@ public class SchwarzmarktListener implements Listener {
                             }
                             break;
                         case "§7Brechstange": {
-                            int price = 200;
+                            int original = 200;
+                            int price = getMax(original, bribery);
                             if (Script.getMoney(p, PaymentType.CASH) >= price) {
                                 p.getInventory().addItem(Script.brechstange());
                                 p.sendMessage(Schwarzmarkt.PREFIX + TEXT_POST_TRADE[Script.getRandom(0, TEXT_POST_TRADE.length - 1)]);
                                 Script.removeMoney(p, PaymentType.CASH, price);
+                                removeBribery(p, original, price, bribery);
                             } else {
                                 p.sendMessage(Schwarzmarkt.PREFIX + TEXT_NO_MONEY[Script.getRandom(0, TEXT_NO_MONEY.length - 1)]);
                             }
                             break;
                         }
                         case "§7Testosteron-Spritze" : {
-                            int price = 500;
+                            int original = 500;
+                            int price = getMax(original, bribery);
                             if (Script.getMoney(p, PaymentType.CASH) >= price) {
                                 p.getInventory().addItem(Script.setName(new ItemStack(Material.END_ROD, is.getAmount()), "§7Testosteron-Spritze"));
                                 p.sendMessage(Schwarzmarkt.PREFIX + TEXT_POST_TRADE[Script.getRandom(0, TEXT_POST_TRADE.length - 1)]);
                                 Script.removeMoney(p, PaymentType.CASH, price);
+                                removeBribery(p, original, price, bribery);
                             } else {
                                 p.sendMessage(Schwarzmarkt.PREFIX + TEXT_NO_MONEY[Script.getRandom(0, TEXT_NO_MONEY.length - 1)]);
                             }
                             break;
                         }
                         case "§eGraffiti" : {
-                            int price = 25;
+                            int original = 25;
+                            int price = getMax(original, bribery);
                             if (Script.getMoney(p, PaymentType.CASH) >= price) {
                                 p.getInventory().addItem(new ItemBuilder(Material.LEVER).setName("§eGraffiti").build());
                                 p.sendMessage(Schwarzmarkt.PREFIX + TEXT_POST_TRADE[Script.getRandom(0, TEXT_POST_TRADE.length - 1)]);
                                 Script.removeMoney(p, PaymentType.CASH, price);
+                                removeBribery(p, original, price, bribery);
                             } else {
                                 p.sendMessage(Schwarzmarkt.PREFIX + TEXT_NO_MONEY[Script.getRandom(0, TEXT_NO_MONEY.length - 1)]);
                             }
                             break;
                         }
                         case "§cSprengstoff" : {
-                            int price = 1000;
+                            int original = 1000;
+                            int price = getMax(original, bribery);
                             if (Script.getMoney(p, PaymentType.CASH) >= price) {
                                 p.getInventory().addItem(new ItemBuilder(Material.TNT).setName("§cSprengstoff").build());
                                 p.sendMessage(Schwarzmarkt.PREFIX + TEXT_POST_TRADE[Script.getRandom(0, TEXT_POST_TRADE.length - 1)]);
                                 Script.removeMoney(p, PaymentType.CASH, price);
+                                removeBribery(p, original, price, bribery);
                             } else {
                                 p.sendMessage(Schwarzmarkt.PREFIX + TEXT_NO_MONEY[Script.getRandom(0, TEXT_NO_MONEY.length - 1)]);
                             }
                             break;
                         }
                         case "§7Machete" : {
-                            int price = 2300;
+                            int original = 2300;
+                            int price = getMax(original, bribery);
                             if (Script.getMoney(p, PaymentType.CASH) >= price) {
                                 p.getInventory().addItem(Machete.getItem());
                                 p.sendMessage(Schwarzmarkt.PREFIX + TEXT_POST_TRADE[Script.getRandom(0, TEXT_POST_TRADE.length - 1)]);
                                 Script.removeMoney(p, PaymentType.CASH, price);
+                                removeBribery(p, original, price, bribery);
                             } else {
                                 p.sendMessage(Schwarzmarkt.PREFIX + TEXT_NO_MONEY[Script.getRandom(0, TEXT_NO_MONEY.length - 1)]);
                             }
@@ -219,6 +247,18 @@ public class SchwarzmarktListener implements Listener {
                     }
                 }
             }
+        }
+    }
+
+    private void removeBribery(Player player, int original, int price, int bribery) {
+        if (bribery > 0) {
+            int a;
+            if (price == 0) {
+                a = (int) Math.ceil((double) original / 15);
+            } else {
+                a = bribery / 15;
+            }
+            player.getInventory().getItemInMainHand().setAmount(player.getInventory().getItemInMainHand().getAmount() - a);
         }
     }
 }

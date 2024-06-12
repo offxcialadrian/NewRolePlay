@@ -4,7 +4,6 @@ import de.newrp.API.Messages;
 import de.newrp.API.Rank;
 import de.newrp.API.Script;
 import de.newrp.API.Team;
-import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -14,8 +13,11 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 
 public class GetLocation implements CommandExecutor, Listener {
 
@@ -56,9 +58,10 @@ public class GetLocation implements CommandExecutor, Listener {
         }
 
 
-        p.sendMessage(PREFIX + "Die Position lautet: " + p.getLocation().getBlockX() + "/" + p.getLocation().getBlockY() + "/" + p.getLocation().getBlockZ());
+        DecimalFormat df = new DecimalFormat("#.#", new DecimalFormatSymbols(Locale.ENGLISH));
+        p.sendMessage(PREFIX + "Die Position lautet: " + df.format(p.getLocation().getX()) + "/" + df.format(p.getLocation().getY()) + "/" + df.format(p.getLocation().getZ()));
         if(Script.hasRankExact(p, Rank.ADMINISTRATOR, Rank.OWNER, Rank.DEVELOPER) || Script.isInTestMode())
-            Script.sendCopyMessage(p, Messages.INFO + "Klicke hier um die Location zu kopieren.", "new Location(Script.WORLD, " + p.getLocation().getBlockX() + ", " + p.getLocation().getBlockY() + ", " + p.getLocation().getBlockZ() + ", " + p.getLocation().getYaw() + "f, " + p.getLocation().getPitch() + "f)", "§aKlicke um die Location zu kopieren.");
+            Script.sendCopyMessage(p, Messages.INFO + "Klicke hier um die Location zu kopieren.", "new Location(Script.WORLD, " + df.format(p.getLocation().getX()) + ", " + df.format(p.getLocation().getY()) + ", " + df.format(p.getLocation().getZ()) + ", " + df.format(p.getLocation().getYaw()) + "f, " + df.format(p.getLocation().getPitch()) + "f)", "§aKlicke um die Location zu kopieren.");
 
         return false;
     }

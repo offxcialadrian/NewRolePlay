@@ -99,7 +99,8 @@ public enum HologramList {
     BUY_MERCH(97, "§8/§6buy", new Location(Script.WORLD, 66.5, 75, 694.5, 0.0f, 0.0f)),
     // BUY_MERCH_PIER(98, "§8/§6buy", new Location(Script.WORLD, 806, 65, 727, 0.0f, 0.0f));
     DART_BAR(98, "§8/§6dart", new Location(Script.WORLD, 707, 68, 863, 0.0f, 0.0f)),
-    DART_CLUB(99, "§8/§6dart", new Location(Script.WORLD, 482.5, 66, 1284.5, 0.0f, 0.0f));
+    DART_CLUB(99, "§8/§6dart", new Location(Script.WORLD, 482.5, 66, 1284.5, 0.0f, 0.0f)),
+    SHISHA(100, "§8/§6buy", new Location(Script.WORLD, 708.4, 64, 1214.6, -190.6f, 80.4f));
 
     private final int id;
     private final String name;

@@ -203,12 +203,15 @@ public class NewRoleplayMain extends JavaPlugin {
         Plantage.loadAll();
         Dart.clear();
         Bukkit.getScheduler().runTaskLater(this, CitizensAPI.getNPCRegistry()::deregisterAll, 2L);
-        Bukkit.getScheduler().runTaskLater(this, Schwarzmarkt::spawnRandom, 4L);
+        Bukkit.getScheduler().runTaskLater(this, Schwarzmarkt::spawnRandom, 80L);
+        Bukkit.getScheduler().runTaskLater(this, Dealer::spawn, 100L);
         Zeitung.restoreZeitung();
         Bukkit.getScheduler().runTaskLater(this, () -> {
             LabBreakIn.repairDoors(false);
             HackPoliceComputer.repairDoors();
+            BreakOutHandler.repairDoor();
         }, 20L);
+        Bukkit.getScheduler().runTaskLater(this, ShopNPC::spawn, 60L);
         OrgSpray.FraktionSpray.init();
         Bukkit.getScheduler().runTaskLater(this, () -> House.reset(90 * 24 * 60 * 60 * 1000L), 60 * 20L);
 
@@ -744,6 +747,9 @@ public class NewRoleplayMain extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new SpindCommand(), this);
         Bukkit.getPluginManager().registerEvents(new MuscleDamage(), this);
         Bukkit.getPluginManager().registerEvents(new Dart(), this);
+        Bukkit.getPluginManager().registerEvents(new BreakOutHandler(), this);
+        Bukkit.getPluginManager().registerEvents(new ShopNPC(), this);
+        Bukkit.getPluginManager().registerEvents(new Dealer(), this);
     }
 
     /**

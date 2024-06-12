@@ -213,11 +213,11 @@ public enum Drogen {
 
         switch (this) {
             case ECSTASY:
-                if(!p.hasPotionEffect(PotionEffectType.ABSORPTION)) p.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 300 * 20, 6 - purity.getID(), false, false));
+                if(!p.hasPotionEffect(PotionEffectType.ABSORPTION)) p.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 300 * 20, 7 - purity.getID(), false, false));
                 if (purity.getID() >= 2) {
                     p.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 20 * (5 + purity.getID()), 0, false, false));
                 }
-                p.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 2 * 20 * (8 - 2 * purity.getID()), 1, false, false));
+                p.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 2 * 20 * (8 - 2 * purity.getID()), 2, false, false));
                 p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 20 * (10 - purity.getID()), 1, false, false));
                 break;
 

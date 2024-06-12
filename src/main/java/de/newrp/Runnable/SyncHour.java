@@ -1,9 +1,6 @@
 package de.newrp.Runnable;
 
-import de.newrp.API.Hologram;
-import de.newrp.API.Schwarzmarkt;
-import de.newrp.API.Script;
-import de.newrp.API.Weather;
+import de.newrp.API.*;
 import de.newrp.GFB.Tabakplantage;
 import de.newrp.NewRoleplayMain;
 import de.newrp.Organisationen.LabBreakIn;
@@ -17,6 +14,7 @@ public class SyncHour extends BukkitRunnable {
             if(LabBreakIn.brokeIn == null) LabBreakIn.repairDoors(false);
             Weather.updateWeather();
             Schwarzmarkt.spawnRandom();
+            Dealer.respawn();
             Hologram.reload();
             Tabakplantage.respawnPlantage(new Location(Script.WORLD, 105, 65.0, 625), new Location(Script.WORLD, 118, 67, 656));
         } catch (Exception e) {
