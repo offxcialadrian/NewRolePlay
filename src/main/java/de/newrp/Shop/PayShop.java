@@ -434,7 +434,7 @@ public class PayShop implements Listener {
             "Vielen Dank für Ihren Einkauf!",
             "Brauchen Sie noch eine Quittung?",
             "Wünschen Sie einen schönen Tag!",
-            "Hier sind Ihre Wechselgeld und Ihr Bon.",
+            "Hier ist Ihr Wechselgeld und Ihr Bon.",
             "Bitte stecken Sie Ihre Karte jetzt ein.",
             "Hier ist Ihr Wechselgeld.",
             "Ich brauche Ihren Ausweis für den Altersnachweis.",

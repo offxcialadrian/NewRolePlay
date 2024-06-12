@@ -13,7 +13,7 @@ public enum Activities {
     REMOVE("Abzug", -1.0F, Arrays.asList(0, 1, 2, 3, 4)),
     ARREST("Verhaftung", 0.4F, Arrays.asList(3)),
     WPKILL("Tötung", 0.1F, Arrays.asList(3)),
-    STRAFZETTEL("Strafzettel", 0.8F, Arrays.asList(3)),
+    STRAFZETTEL("Strafzettel", 0.6F, Arrays.asList(3)),
     REZEPT("Rezept", 0.7F, Arrays.asList(4)),
     REVIVE("Belebung", 0.2F, Arrays.asList(4)),
     GIPS("Gips", 0.9F, Arrays.asList(4)),

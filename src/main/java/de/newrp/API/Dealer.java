@@ -59,8 +59,9 @@ public class Dealer implements Listener {
         }
     }
 
-    public static final String[] TEXT_PRE_TRADE = new String[]{"Hast du ein bisschen Stoff?", "Das sind keine Drogen.", "Ich brauche ein bisschen Zeug, hast du was?", "Ey, wenn du was zum Verkaufen hast, komm zu mir.", "Yo, gib die Tütchen schnell her bevor uns jemand sieht!"};
-    public static final String[] TEXT_POST_TRADE = new String[]{"Danke fürs Geschäft.", "Hier hast du das Geld, verschwinde nun!", "Gute Ware, geh nun lieber.", "Schnell, geh bevor die Polizei kommt!", "Nächstes mal gibts Stammkundenrabatt!", "Ich hoffe mal das ist guter Stoff..."};
+    public static final String[] TEXT_PRE_TRADE = new String[]{"Hast du ein bisschen Stoff?", "Das sind keine Drogen.", "Ich brauche ein bisschen Zeug, hast du was?", "Ey, wenn du was zum Verkaufen hast, komm zu mir.", "Yo, gib die Tütchen schnell her bevor uns jemand sieht!", "Wenn du Zeug hast gib her, bleibt unter uns."};
+    public static final String[] TEXT_SCAM_TRADE = new String[]{"Der Stoff sieht nicht rein aus, das zahl ich nicht!", "Willst du mich verarschen? Hau ab!", "Tut mir leid, hab heute leider nicht viel Geld.", "Grad sind schwere Zeiten, das kann ich dir erst später zahlen.", "Das ist nicht wonach ich gefragt habe, für so einen Schrott bezahle ich nicht!", "Ich habe keine Kohle dabei, aber ich nehms auf Kombi.", "Für so etwas bekommst du von mir kein Geld, für wen hältst du mich?"};
+    public static final String[] TEXT_POST_TRADE = new String[]{"Danke fürs Geschäft.", "Hier hast du das Geld, verschwinde nun!", "Gute Ware, geh nun lieber.", "Schnell, geh bevor die Polizei kommt!", "Nächstes mal gibts Stammkundenrabatt!", "Ich hoffe mal das ist guter Stoff...", "Das ist genau das was ich brauche, danke dir Homie!", "Ich hoffe das bleibt unter uns.", "Dein Zeug ist das Beste.", "Wenn hiervon jemand mitkriegt hast du ein Problem, verstanden?", "Melde dich wieder, wenn du mehr hast."};
 
     @EventHandler
     public static void onClick(NPCRightClickEvent event) {
@@ -101,8 +102,12 @@ public class Dealer implements Listener {
             int amount = player.getInventory().getItemInMainHand().getAmount();
             price *= amount;
             price -= (int) Math.round(price * 0.2 * purity.getID());
-            Script.addMoney(player, PaymentType.CASH, price);
-            player.sendMessage(PREFIX + TEXT_POST_TRADE[new Random().nextInt(TEXT_POST_TRADE.length)]);
+            if (new Random().nextInt(10) == 0) {
+                player.sendMessage(PREFIX + TEXT_SCAM_TRADE[new Random().nextInt(TEXT_SCAM_TRADE.length)]);
+            } else {
+                Script.addMoney(player, PaymentType.CASH, price);
+                player.sendMessage(PREFIX + TEXT_POST_TRADE[new Random().nextInt(TEXT_POST_TRADE.length)]);
+            }
             if (isUndercover()) Beruf.Berufe.BUNDESNACHRICHTENDIENST.sendMessage(PREFIX + "Der Undercover-Dealer meldet einen Verkauf von " + amount + "g " + drug.getName() + " von " + player.getName() + ".");
             player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
         }
