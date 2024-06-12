@@ -23,7 +23,6 @@ public class Abteilung implements CommandExecutor, TabCompleter {
 
     private static final String PREFIX = "§8[§eAbteilung§8] §e» ";
 
-    // 1Minify
     public enum Abteilungen {
         GOVERNMENT_NONE(0, GOVERNMENT, "Regierungsmitglied", false),
         INNENMINISTERIUM(2, GOVERNMENT, "Innenministerium", false),
@@ -35,8 +34,6 @@ public class Abteilung implements CommandExecutor, TabCompleter {
         ZIVILPOLIZEI(1, POLICE, "Zivilpolizei", false),
         KRIMINALPOLIZEI(2, POLICE, "Kriminalpolizei", false),
         SEK(3, POLICE, "SEK", false),
-        AUSBILDER(4, POLICE, "Ausbilder", false),
-        PRESSE(5, POLICE, "Presse", false),
         ABTEILUNGSLEITUNG(6, POLICE, "Abteilungsleiter", true),
         POLIZEIVIZE(7, POLICE, "Polizeivizepräsident", true),
         POLIZEIPRÄSIDENT(8, POLICE, "Polizeipräsident", true),

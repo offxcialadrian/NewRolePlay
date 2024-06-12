@@ -43,6 +43,10 @@ public class FriedhofListener implements Listener {
 
         Player p = e.getEntity();
 
+        if (Friedhof.getDead(p) == null) {
+            return;
+        }
+
         if(this.deathmatchArenaService.isInDeathmatch(p.getPlayer(), false)) {
             p.sendMessage(Messages.INFO + "Weil du in der Deathmatch Arena bist, bist du direkt respawned");
             final DeathmatchArenaStats stats = this.deathmatchArenaService.getStats(p);
