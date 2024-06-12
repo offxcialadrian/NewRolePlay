@@ -21,7 +21,7 @@ public class ShopNPC implements Listener {
     private static final List<String> FEMALE_SKINS = Arrays.asList("Flolady");
     private static final List<String> MALE_SKINS = Arrays.asList("CraftBad");
 
-    private static List<NPC> npcs = new ArrayList<>();
+    private static final HashMap<Shops, NPC> npcs = new HashMap<>();
 
     public static void spawn() {
         for (Shops shop : Shops.values()) {
@@ -48,13 +48,13 @@ public class ShopNPC implements Listener {
             }
             npc.getOrAddTrait(SkinLayers.class).hideCape();
             npc.spawn(shop.getNpcLoc().clone());
-            npcs.add(npc);
+            npcs.put(shop, npc);
         }
     }
 
     @EventHandler
     public static void onTick(ServerTickEndEvent event) {
-        for (NPC npc : npcs) {
+        for (NPC npc : npcs.values()) {
             if (npc == null) continue;
             Player closest = null;
             double last = Double.MAX_VALUE;
@@ -70,5 +70,16 @@ public class ShopNPC implements Listener {
 
             if (closest != null) npc.faceLocation(closest.getLocation().clone());
         }
+    }
+
+    public static NPC getNpc(Shops shop) {
+        if (npcs.containsKey(shop)) return npcs.get(shop);
+        return null;
+    }
+
+    public static String getNpcName(Shops shop) {
+        NPC npc = getNpc(shop);
+        if (npc != null) return npc.getName().replace("§b", "");
+        else return "Verkäufer";
     }
 }

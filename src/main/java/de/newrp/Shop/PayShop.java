@@ -48,7 +48,7 @@ public class PayShop implements Listener {
         final int singlePrice = si.getPrice(s);
 
         if (type == PaymentType.BANK && !s.acceptCard()) {
-            BuyClick.sendMessage(p, "Wir akzeptieren leider keine Kartenzahlung.");
+            BuyClick.sendMessage(p, "Wir akzeptieren leider keine Kartenzahlung.", s);
             return;
         }
 
@@ -59,7 +59,7 @@ public class PayShop implements Listener {
         }
 
         if (Script.getMoney(p, type) < price) {
-            BuyClick.sendMessage(p, "Die Zahlung ist fehlgeschlagen, haben Sie überhaupt genug Geld!?");
+            BuyClick.sendMessage(p, "Die Zahlung ist fehlgeschlagen, haben Sie überhaupt genug Geld!?", s);
             return;
         }
 
@@ -80,7 +80,7 @@ public class PayShop implements Listener {
         for (int j = 0; j < buyAmount; j++) {
             switch (si) {
                 case LOTTOSCHEIN:
-                    BuyClick.sendMessage(p, "Die Lottoziehung findet jeden Mittwoch und Sonntag um 18 Uhr statt.");
+                    BuyClick.sendMessage(p, "Die Lottoziehung findet jeden Mittwoch und Sonntag um 18 Uhr statt.", s);
                     break;
                 case HAUSKASSE:
                     if (houseaddon.containsKey(p.getName())) {
@@ -124,7 +124,7 @@ public class PayShop implements Listener {
                     break;
                 case PISTOLE:
                     if (!Licenses.WAFFENSCHEIN.hasLicense(Script.getNRPID(p))) {
-                        BuyClick.sendMessage(p, "Du hast keinen Waffenschein.");
+                        BuyClick.sendMessage(p, "Du hast keinen Waffenschein.", s);
                         return;
                     }
                     if (!haveGun(p, Weapon.PISTOLE)) {
@@ -138,7 +138,7 @@ public class PayShop implements Listener {
                     break;
                 case AK47:
                     if (!Licenses.WAFFENSCHEIN.hasLicense(Script.getNRPID(p))) {
-                        BuyClick.sendMessage(p, "Du hast keinen Waffenschein.");
+                        BuyClick.sendMessage(p, "Du hast keinen Waffenschein.", s);
                         return;
                     }
                     if (!haveGun(p, Weapon.AK47)) {
@@ -152,7 +152,7 @@ public class PayShop implements Listener {
                     break;
                 case DEAGLE:
                     if (!Licenses.WAFFENSCHEIN.hasLicense(Script.getNRPID(p))) {
-                        BuyClick.sendMessage(p, "Du hast keinen Waffenschein.");
+                        BuyClick.sendMessage(p, "Du hast keinen Waffenschein.", s);
                         return;
                     }
                     if (!haveGun(p, Weapon.DESERT_EAGLE)) {
@@ -173,7 +173,7 @@ public class PayShop implements Listener {
                     break;
                 case JAGDFLINTE:
                     if (!Licenses.WAFFENSCHEIN.hasLicense(Script.getNRPID(p))) {
-                        BuyClick.sendMessage(p, "Du hast keinen Waffenschein.");
+                        BuyClick.sendMessage(p, "Du hast keinen Waffenschein.", s);
                         return;
                     }
                     if (!haveGun(p, Weapon.JAGDFLINTE)) {
@@ -311,7 +311,7 @@ public class PayShop implements Listener {
                     assert car != null;
                     car.setActivated(true);
                     p.sendMessage(Component.text(Car.PREFIX + "Du hast dir einen neuen " + si.getName() + " gekauft."));
-                    BuyClick.sendMessage(p, "Hier sind die Schlüssel, dann viel Spaß!");
+                    BuyClick.sendMessage(p, "Hier sind die Schlüssel, dann viel Spaß!", s);
                     break;
             }
 
@@ -367,7 +367,7 @@ public class PayShop implements Listener {
             Log.NORMAL.write(p, "hat " + si.getName() + " für " + price + "€ gekauft.");
         }
         UmsatzCommand.addBuy(s.getID(), Script.getNRPID(p), si.getID(), (Buy.amount.getOrDefault(p.getName(), 1)), price, shopMoney, System.currentTimeMillis());
-        BuyClick.sendMessage(p, "Vielen Dank für Ihren Einkauf!");
+        BuyClick.sendMessage(p, "Vielen Dank für Ihren Einkauf!", s);
         Stadtkasse.addStadtkasse((int) Script.getPercent(mwst, price - si.getBuyPrice() * buyAmount), "Mehrwertsteuer aus dem Verkauf von " + si.getName() + " (Shop: " + s.getPublicName() + ")", Steuern.Steuer.MEHRWERTSTEUER);
 
         Achievement.EINKAUFEN.grant(p);
