@@ -13,16 +13,16 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 
 public enum Schwarzmarkt {
-    PFAND(0, "Pfandleihhaus", new Location(Script.WORLD, 556, 65, 1280, 270.3405f, 1.5001209f)),
-    GARAGE(1, "Garage", new Location(Script.WORLD, 708, 65, 1188, 138.8761f, 5.286323f)),
-    HAFEN(2, "Hafen", new Location(Script.WORLD, 940, 67, 1066, 358.9071f, 3.0365276f)),
-    FUNPARK(3, "Funpark", new Location(Script.WORLD, 843, 67, 739, 359.80933f, 1.5366807f)),
-    ARCADE(4, "Arcade", new Location(Script.WORLD, 424, 76, 735, 92.05975f, 2.5869339f)),
-    ALTSTADT(5, "Altstadt", new Location(Script.WORLD, 291, 67, 1005, -262.5547f, 6.029933f)),
-    WALD(6, "Wald", new Location(Script.WORLD, 477, 64, 1182, -0.783306f, 2.5498862f)),
-    UBAHN(7, "U-Bahn", new Location(Script.WORLD, 603, 57, 950, -60.532288f, 7.363153f)),
-    CASINO(8, "Casino", new Location(Script.WORLD, 802, 110, 849, -180.53113f, 3.600285f)),
-    MOTEL(9, "Motel", new Location(Script.WORLD, 808, 64, 1228, -61.73477f, 7.3633313f));
+    PFAND(0, "Pfandleihhaus", new Location(Script.WORLD, 559.9, 65, 1287.2, 120.3f, 0.4f)),
+    GARAGE(1, "Garage", new Location(Script.WORLD, 708, 65, 1187.6, -180.6f, -0.2f)),
+    HAFEN(2, "Hafen", new Location(Script.WORLD, 939.5, 67, 1066.5, 0.3f, 1.3f)),
+    FUNPARK(3, "Funpark", new Location(Script.WORLD, 843.4, 67, 739.4, -0.7f, 4.1f)),
+    ARCADE(4, "Arcade", new Location(Script.WORLD, 424.6, 76, 735.5, -269.6f, 0.6f)),
+    ALTSTADT(5, "Altstadt", new Location(Script.WORLD, 291.4, 67, 1005.2, 102.1f, 3f)),
+    WALD(6, "Wald", new Location(Script.WORLD, 477.3, 64, 1182.6, -9f, 1.4f)),
+    UBAHN(7, "U-Bahn", new Location(Script.WORLD, 603.2, 57, 950.6, -0.1f, 2.4f)),
+    CASINO(8, "Casino", new Location(Script.WORLD, 802.5, 110, 849.4, -180f, 2f)),
+    MOTEL(9, "Motel", new Location(Script.WORLD, 807.4, 64, 1228.6, -75.6f, 1.3f));
 
     public static final String PREFIX = "§8[§cSchwarzmarkt§8]§c " + Messages.ARROW + " §7";
     public static Schwarzmarkt CURRENT_LOCATION = null;
