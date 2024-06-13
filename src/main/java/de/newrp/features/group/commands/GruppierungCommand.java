@@ -31,6 +31,7 @@ public class GruppierungCommand implements CommandExecutor {
                 this.infoCommand(player, group);
                 break;
             case "create":
+                this.create(player, args);
                 break;
             case "invite":
                 break;
