@@ -22,5 +22,6 @@ public enum ShopType {
     GAS_STATION(),
     HOUSEADDON(),
     BAR(),
-    MERCH()
+    MERCH(),
+    PETS()
 }

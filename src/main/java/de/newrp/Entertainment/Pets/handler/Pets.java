@@ -1,0 +1,387 @@
+package de.newrp.Entertainment.Pets.handler;
+
+import com.comphenix.protocol.PacketType;
+import de.newrp.API.Messages;
+import de.newrp.API.PaymentType;
+import de.newrp.API.Rank;
+import de.newrp.API.Script;
+import de.newrp.Entertainment.Pets.model.Pet;
+import de.newrp.Entertainment.Pets.types.PetType;
+import de.newrp.NewRoleplayMain;
+import de.newrp.Vehicle.Car;
+import net.citizensnpcs.api.CitizensAPI;
+import net.citizensnpcs.api.event.NPCRightClickEvent;
+import net.citizensnpcs.api.npc.NPC;
+import net.kyori.adventure.text.TextComponent;
+import org.apache.commons.lang.StringUtils;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
+import org.bukkit.craftbukkit.libs.org.apache.maven.model.InputLocation;
+import org.bukkit.entity.*;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
+import org.bukkit.util.StringUtil;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.*;
+
+public class Pets implements Listener, CommandExecutor, TabCompleter {
+
+    public static final String PREFIX = "§8[§2Pet§8] §2" + Messages.ARROW + " §7";
+
+    private static final HashMap<Pet, UUID> pets = new HashMap<>();
+
+    @EventHandler
+    public static void onJoin(PlayerJoinEvent event) {
+        spawn(event.getPlayer());
+    }
+
+    @EventHandler
+    public static void onQuit(PlayerQuitEvent event) {
+        despawn(event.getPlayer());
+    }
+
+    @EventHandler
+    public static void onInteract(NPCRightClickEvent event) {
+        if (isPet(event.getClicker().getUniqueId(), event.getNPC())) {
+            Pet pet = getPet(event.getNPC());
+            if (pet != null) {
+                if (event.getClicker().isSneaking()) {
+                    Inventory inv = Bukkit.createInventory(event.getClicker(), 18, "§8» §7Haustier");
+                    inv.setItem(2, Script.setNameAndLore(new ItemStack(Material.APPLE), "§cGesundheit:", "§6" + pet.getHealth() + "%"));
+                    inv.setItem(4, Script.setNameAndLore(new ItemStack(Material.NAME_TAG), "§aName:", "§6" + pet.getName()));
+                    inv.setItem(6, Script.setNameAndLore(new ItemStack(Material.CAT_SPAWN_EGG), "§bVariante:", "§6" + StringUtils.capitalize(pet.getVariant().replace("_", " ").toLowerCase()).replace("Default", "Standard")));
+                    inv.setItem(13, Script.setName(new ItemStack(Material.BARRIER), "§7Schließen"));
+                    event.getClicker().openInventory(inv);
+                } else {
+                    pet.setSitting(!pet.isSitting());
+                    pet.getNpc().getNavigator().cancelNavigation();
+                    if (pet.getNpc().getEntity() instanceof Tameable) {
+                        ((Tameable) pet.getNpc().getEntity()).setTamed(!pet.isSitting());
+                        if (!pet.isSitting())
+                            ((Tameable) pet.getNpc().getEntity()).setOwner(event.getClicker());
+                    }
+                    if (pet.getNpc().getEntity() instanceof Sittable)
+                        ((Sittable) pet.getNpc().getEntity()).setSitting(pet.isSitting());
+                    if (pet.getNpc().getEntity() instanceof Fox)
+                        pet.getNpc().setUseMinecraftAI(!pet.isSitting());
+                }
+            }
+        }
+    }
+
+    public static HashMap<UUID, Pet> renaming = new HashMap<>();
+    public static HashMap<UUID, Pet> revarianting = new HashMap<>();
+
+    @EventHandler
+    public static void onClick(InventoryClickEvent event) {
+        if (event.getWhoClicked().getOpenInventory().title() instanceof TextComponent) {
+            if (event.getView().getTitle().contains("Haustier")) {
+                event.setCancelled(true);
+                event.getWhoClicked().closeInventory();
+                if (event.getCurrentItem().getType() == Material.NAME_TAG) {
+                    String old = event.getView().getItem(4).getLore().get(0).replace("§6", "");
+                    renaming.put(event.getWhoClicked().getUniqueId(), getPet(event.getWhoClicked().getUniqueId(), old));
+                    event.getWhoClicked().sendMessage(Messages.INFO + "Verwende nun §6/pet [Name] §rum dein Haustier umzubenennen, dies kostet 2000€.");
+                }
+                if (event.getCurrentItem().getType() == Material.CAT_SPAWN_EGG) {
+                    String old = event.getView().getItem(4).getLore().get(0).replace("§6", "");
+                    if (getPet(event.getWhoClicked().getUniqueId(), old).getVariant().equalsIgnoreCase("DEFAULT")) {
+                        event.getWhoClicked().sendMessage(Messages.ERROR + "Dieses Haustier hat nur eine Variante.");
+                        return;
+                    }
+                    revarianting.put(event.getWhoClicked().getUniqueId(), getPet(event.getWhoClicked().getUniqueId(), old));
+                    event.getWhoClicked().sendMessage(Messages.INFO + "Verwende nun §6/pet [Variante] §rum dein Haustier anzupassen, dies kostet 5000€.");
+                }
+            }
+        }
+    }
+
+    public static void reset() {
+        for (LivingEntity entity : Script.WORLD.getLivingEntities()) {
+            entity.remove();
+        }
+    }
+
+    public static void spawn(Player player) {
+        enabled.put(player.getUniqueId(), false);
+        for (Pet pet : getPets(Script.getNRPID(player))) {
+            pet.getNpc().spawn(player.getLocation());
+            pet.getNpc().setUseMinecraftAI(true);
+            pet.getNpc().getNavigator().getDefaultParameters().baseSpeed(1.2F);
+            pet.getNpc().data().set(NPC.Metadata.DAMAGE_OTHERS, false);
+            pet.getNpc().data().set(NPC.Metadata.AGGRESSIVE, false);
+            Entity entity = pet.getNpc().getEntity();
+            entity.setInvulnerable(true);
+            if (pet.getType().isBaby()) {
+                if (pet instanceof Ageable)
+                    ((Ageable) entity).setBaby();
+            }
+            ((LivingEntity) entity).setCollidable(true);
+            if (!pet.getVariant().equalsIgnoreCase("DEFAULT")) setVariant(pet, entity);
+            if (entity instanceof Tameable) {
+                ((Tameable) entity).setTamed(true);
+                ((Tameable) entity).setOwner(player);
+            }
+            if (entity instanceof Fox)
+                ((Fox) entity).setFirstTrustedPlayer(player);
+            if (entity instanceof Sittable)
+                ((Sittable) entity).setSitting(false);
+            pet.setSitting(false);
+            pets.put(pet, player.getUniqueId());
+            enabled.put(player.getUniqueId(), true);
+        }
+    }
+
+    private static void setVariant(Pet pet, Entity entity) {
+        if (entity instanceof Cat)
+            ((Cat) entity).setCatType(Cat.Type.valueOf(pet.getVariant()));
+        if (entity instanceof Parrot)
+            ((Parrot) entity).setVariant(Parrot.Variant.valueOf(pet.getVariant()));
+        if (entity instanceof Fox)
+            ((Fox) entity).setFoxType(Fox.Type.valueOf(pet.getVariant()));
+    }
+
+    private static List<String> getVariants(EntityType entity) {
+        List<String> variants = new ArrayList<>();
+        if (entity == EntityType.CAT)
+            for (Cat.Type type : Cat.Type.values()) variants.add(type.name());
+        if (entity == EntityType.PARROT)
+            for (Parrot.Variant type : Parrot.Variant.values()) variants.add(type.name());
+        if (entity == EntityType.FOX)
+            for (Fox.Type type : Fox.Type.values()) variants.add(type.name());
+        return variants;
+    }
+
+    public static void despawn(Player player) {
+        for (Pet pet : getPets(player.getUniqueId())) {
+            pets.remove(pet);
+            pet.getTask().cancel();
+            pet.getNpc().destroy();
+        }
+        for (Pet pet : pets.keySet()) {
+            if (pets.get(pet) == player.getUniqueId()) {
+                pets.remove(pet);
+            }
+        }
+    }
+
+    private static List<Pet> getPets(UUID uuid) {
+        List<Pet> petList = new ArrayList<>();
+        for (Pet pet : pets.keySet()) {
+            if (pets.get(pet) == uuid) petList.add(pet);
+        }
+        return petList;
+    }
+
+    private static Pet getPet(UUID uuid, String name) {
+        for (Pet pet : getPets(uuid)) {
+            if (Objects.equals(pet.getName(), name)) return pet;
+        }
+        return null;
+    }
+
+    private static boolean isPet(UUID uuid, NPC npc) {
+        for (Pet pet : getPets(uuid)) {
+            if (pet.getNpc() == npc) return true;
+        }
+        return false;
+    }
+
+    private static boolean isPet(NPC npc) {
+        for (Pet pet : getPets()) {
+            if (pet.getNpc() == npc) return true;
+        }
+        return false;
+    }
+
+    private static Set<Pet> getPets() {
+        return pets.keySet();
+    }
+
+    private static Pet getPet(NPC npc) {
+        for (Pet pet : getPets()) {
+            if (pet.getNpc().getId() == npc.getId()) return pet;
+        }
+        return null;
+    }
+
+    private static List<Pet> getPets(int id) {
+        List<Pet> pets = new ArrayList<>();
+        UUID uuid = Script.getOfflinePlayer(id).getUniqueId();
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT * FROM pets WHERE id=" + id)) {
+            while (rs.next()) {
+                PetType type = PetType.getType(rs.getInt("type"));
+                if (type != null) {
+                    String name = rs.getString("name");
+                    String variant = rs.getString("variant");
+                    int health = rs.getInt("health");
+                    NPC npc = createNPC(type, "§o" + name);
+                    BukkitTask task = runnable(uuid, npc, name).runTaskTimer(NewRoleplayMain.getInstance(), 2 * 20L, 10L);
+                    pets.add(new Pet(uuid, type, variant, name, npc, task, health, false));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return pets;
+    }
+
+    private static BukkitRunnable runnable(UUID uuid, NPC npc, String name) {
+        return new BukkitRunnable() {
+            @Override
+            public void run() {
+                if (npc.isSpawned()) {
+                    Pet pet = getPet(uuid, name);
+                    if (pet == null) {
+                        cancel();
+                        return;
+                    }
+
+                    if (!pet.isSitting()) {
+                        Player owner = Bukkit.getPlayer(pet.getOwner());
+                        if (owner == null || !owner.isOnline()) {
+                            cancel();
+                            return;
+                        }
+
+                        if (owner.isOnline()) {
+                            double distance = pet.getNpc().getEntity().getLocation().clone().distance(owner.getLocation().clone());
+                            if (distance > 3) {
+                                if (distance > 20) {
+                                    pet.getNpc().teleport((pet.getNpc().getEntity() instanceof Parrot ? owner.getLocation().clone().add(0, 1, 0) : owner.getLocation().clone()), PlayerTeleportEvent.TeleportCause.PLUGIN);
+                                } else {
+                                    pet.getNpc().getNavigator().setTarget(owner, false);
+                                }
+                            } else {
+                                pet.getNpc().getNavigator().cancelNavigation();
+                            }
+                        }
+                    } else {
+                        pet.getNpc().getNavigator().cancelNavigation();
+                    }
+                }
+            }
+        };
+    }
+
+    private static NPC createNPC(PetType type, String name) {
+        NPC npc = CitizensAPI.getNPCRegistry().createNPC(type.getType(), name);
+        npc.setName(name);
+        return npc;
+    }
+
+    public static void addPet(int id, PetType type, String variant, String name) {
+        Script.executeAsyncUpdate("INSERT INTO pets VALUES (" + id + ", " + type.getId() + ", '" + variant + "', '" + name + "', 100)");
+    }
+
+    public static void setHealth(int id, String name, int health) {
+        Script.executeAsyncUpdate("UPDATE pets SET health=" + health + " WHERE name='" + name + "' AND id=" + id);
+    }
+
+    public static void setName(int id, String old, String name) {
+        Script.executeAsyncUpdate("UPDATE pets SET name='" + name + "' WHERE name='" + old + "' AND id=" + id);
+    }
+
+    public static void setVariant(int id, String old, String variant) {
+        Script.executeAsyncUpdate("UPDATE pets SET variant='" + variant + "' WHERE name='" + old + "' AND id=" + id);
+    }
+
+    public static void removePet(int id, String name) {
+        Script.executeAsyncUpdate("DELETE FROM pets WHERE id=" + id + " AND name='" + name + "'");
+    }
+
+    public static boolean hasNamed(int id, String name) {
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT * FROM pets WHERE id=" + id + " AND name='" + name + "'")) {
+            if (rs.next()) return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static HashMap<UUID, Boolean> enabled = new HashMap<>();
+
+    @Override
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
+        if (sender instanceof Player) {
+            Player player = (Player) sender;
+            if (args.length > 0) {
+                if (renaming.containsKey(player.getUniqueId())) {
+                    if (Script.removeMoney(player, PaymentType.BANK, 2000)) {
+                        if (args[0].length() > 10) {
+                            player.sendMessage(Messages.ERROR + "Der Name ist zu lang für dein Haustier.");
+                            return true;
+                        }
+                        if (Pets.hasNamed(Script.getNRPID(player), args[0])) {
+                            player.sendMessage(Messages.ERROR + "Du hast bereits ein Haustier mit diesem Namen!");
+                            return true;
+                        }
+                        setName(Script.getNRPID(player), renaming.get(player.getUniqueId()).getName(), args[0]);
+                        player.sendMessage(PREFIX + "Du hast dein Haustier zu " + args[0] + " umbenannt.");
+                        player.sendMessage(Messages.INFO + "Verwende §6/pets §rum deine Haustiere neu zu laden.");
+                        renaming.remove(player.getUniqueId());
+                    } else {
+                        player.sendMessage(Messages.ERROR + "Du benötigst 2000€ um dein Haustier umzubenennen.");
+                    }
+                    return true;
+                }
+                if (revarianting.containsKey(player.getUniqueId())) {
+                    if (!getVariants(revarianting.get(player.getUniqueId()).getType().getType()).contains(args[0])) {
+                        player.sendMessage(Messages.ERROR + args[0] + " ist keine verfügbare Variante.");
+                        return true;
+                    }
+                    if (Script.removeMoney(player, PaymentType.BANK, 5000)) {
+                        setVariant(Script.getNRPID(player), revarianting.get(player.getUniqueId()).getName(), args[0]);
+                        player.sendMessage(PREFIX + "Du hast dein Haustier zu " + args[0] + " umgeändert.");
+                        player.sendMessage(Messages.INFO + "Verwende §6/pets §rum deine Haustiere neu zu laden.");
+                        revarianting.remove(player.getUniqueId());
+                    } else {
+                        player.sendMessage(Messages.ERROR + "Du benötigst 5000€ um dein Haustier anzupassen.");
+                    }
+                    return true;
+                }
+            }
+
+
+            if (enabled.get(player.getUniqueId())) {
+                despawn(player);
+                enabled.put(player.getUniqueId(), false);
+            }
+            else {
+                spawn(player);
+                enabled.put(player.getUniqueId(), true);
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        List<String> arg = new ArrayList<>();
+        List<String> completions = new ArrayList<>();
+        if (args.length == 1) {
+            if (revarianting.containsKey(((Player) sender).getUniqueId()))
+                arg.addAll(getVariants(revarianting.get(((Player) sender).getUniqueId()).getType().getType()));
+            for (String string : arg) if (string.toLowerCase().startsWith(args[0].toLowerCase())) completions.add(string);
+        }
+        return completions;
+    }
+}

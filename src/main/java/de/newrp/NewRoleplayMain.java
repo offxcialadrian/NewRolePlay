@@ -11,6 +11,7 @@ import de.newrp.Chat.*;
 import de.newrp.Commands.DiscordCommand;
 import de.newrp.Commands.Test;
 import de.newrp.Entertainment.*;
+import de.newrp.Entertainment.Pets.handler.Pets;
 import de.newrp.Forum.ForumCommand;
 import de.newrp.GFB.*;
 import de.newrp.Gangwar.Capture;
@@ -210,6 +211,7 @@ public class NewRoleplayMain extends JavaPlugin {
             LabBreakIn.repairDoors(false);
             HackPoliceComputer.repairDoors();
             BreakOutHandler.repairDoor();
+            Pets.reset();
         }, 20L);
         Bukkit.getScheduler().runTaskLater(this, ShopNPC::spawn, 60L);
         OrgSpray.FraktionSpray.init();
@@ -585,6 +587,7 @@ public class NewRoleplayMain extends JavaPlugin {
         getCommand("getjsonlocation").setExecutor(new GetJsonLocation());
         getCommand("dart").setExecutor(new Dart());
         getCommand("ausraub").setExecutor(new AusraubCommand());
+        getCommand("pets").setExecutor(new Pets());
     }
 
     /**
@@ -750,6 +753,7 @@ public class NewRoleplayMain extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new BreakOutHandler(), this);
         Bukkit.getPluginManager().registerEvents(new ShopNPC(), this);
         Bukkit.getPluginManager().registerEvents(new Dealer(), this);
+        Bukkit.getPluginManager().registerEvents(new Pets(), this);
     }
 
     /**

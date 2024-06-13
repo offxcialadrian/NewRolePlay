@@ -112,7 +112,7 @@ public class SchwarzmarktListener implements Listener {
     private int getBribery(Player player) {
         if (player.getInventory().getItemInMainHand().getType() == Material.SUGAR || player.getInventory().getItemInMainHand().getType() == Material.GREEN_DYE) {
             Drogen.DrugPurity purity = Drogen.DrugPurity.getPurityByName(player.getInventory().getItemInMainHand().getItemMeta().getLore().get(0).replace("§7Reinheitsgrad: ", ""));
-            if (purity != null) if (purity.getID() == 0) return 15 * player.getInventory().getItemInMainHand().getAmount();
+            if (purity != null) if (purity.getID() == 0) return 20 * player.getInventory().getItemInMainHand().getAmount();
         }
         return 0;
     }
@@ -254,9 +254,9 @@ public class SchwarzmarktListener implements Listener {
         if (bribery > 0) {
             int a;
             if (price == 0) {
-                a = (int) Math.ceil((double) original / 15);
+                a = (int) Math.ceil((double) original / 20);
             } else {
-                a = bribery / 15;
+                a = bribery / 20;
             }
             player.getInventory().getItemInMainHand().setAmount(player.getInventory().getItemInMainHand().getAmount() - a);
         }
