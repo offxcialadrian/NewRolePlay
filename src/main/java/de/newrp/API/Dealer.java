@@ -104,8 +104,8 @@ public class Dealer implements Listener {
             }
             int amount = player.getInventory().getItemInMainHand().getAmount();
             price -= (int) Math.round(price * 0.2 * purity.getID());
-            price *= amount;
             if (!Organisation.hasOrganisation(player) && !Beruf.hasBeruf(player)) price += 10;
+            price *= amount;
             Me.sendMessage(player, "tauscht etwas mit dem Dealer aus.");
             if (new Random().nextInt(10) == 0) {
                 player.sendMessage(PREFIX + TEXT_SCAM_TRADE[new Random().nextInt(TEXT_SCAM_TRADE.length)]);
