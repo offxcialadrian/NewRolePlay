@@ -1,26 +1,24 @@
 package de.newrp.Entertainment.Pets.handler;
 
-import com.comphenix.protocol.PacketType;
 import de.newrp.API.Messages;
 import de.newrp.API.PaymentType;
-import de.newrp.API.Rank;
 import de.newrp.API.Script;
+import de.newrp.Berufe.Beruf;
 import de.newrp.Entertainment.Pets.model.Pet;
 import de.newrp.Entertainment.Pets.types.PetType;
 import de.newrp.NewRoleplayMain;
-import de.newrp.Vehicle.Car;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
 import net.citizensnpcs.api.npc.NPC;
 import net.kyori.adventure.text.TextComponent;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
-import org.bukkit.craftbukkit.libs.org.apache.maven.model.InputLocation;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -32,9 +30,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
-import org.bukkit.util.StringUtil;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -58,28 +54,52 @@ public class Pets implements Listener, CommandExecutor, TabCompleter {
 
     @EventHandler
     public static void onInteract(NPCRightClickEvent event) {
-        if (isPet(event.getClicker().getUniqueId(), event.getNPC())) {
+        if (isPet(event.getNPC())) {
             Pet pet = getPet(event.getNPC());
             if (pet != null) {
                 if (event.getClicker().isSneaking()) {
-                    Inventory inv = Bukkit.createInventory(event.getClicker(), 18, "§8» §7Haustier");
-                    inv.setItem(2, Script.setNameAndLore(new ItemStack(Material.APPLE), "§cGesundheit:", "§6" + pet.getHealth() + "%"));
-                    inv.setItem(4, Script.setNameAndLore(new ItemStack(Material.NAME_TAG), "§aName:", "§6" + pet.getName()));
-                    inv.setItem(6, Script.setNameAndLore(new ItemStack(Material.CAT_SPAWN_EGG), "§bVariante:", "§6" + StringUtils.capitalize(pet.getVariant().replace("_", " ").toLowerCase()).replace("Default", "Standard")));
-                    inv.setItem(13, Script.setName(new ItemStack(Material.BARRIER), "§7Schließen"));
-                    event.getClicker().openInventory(inv);
-                } else {
-                    pet.setSitting(!pet.isSitting());
-                    pet.getNpc().getNavigator().cancelNavigation();
-                    if (pet.getNpc().getEntity() instanceof Tameable) {
-                        ((Tameable) pet.getNpc().getEntity()).setTamed(!pet.isSitting());
-                        if (!pet.isSitting())
-                            ((Tameable) pet.getNpc().getEntity()).setOwner(event.getClicker());
+                    if (Beruf.hasBeruf(event.getClicker())) {
+                        if (Beruf.getBeruf(event.getClicker()) == Beruf.Berufe.RETTUNGSDIENST) {
+                            if (event.getClicker().getInventory().getItemInMainHand().getType() == Material.END_ROD) {
+                                if (event.getClicker().getInventory().getItemInMainHand().hasItemMeta()) {
+                                    if (event.getClicker().getInventory().getItemInMainHand().getItemMeta().getDisplayName().contains("§7Spritze")) {
+                                        event.getClicker().sendMessage(PREFIX + "Du hast das Haustier von " + Bukkit.getOfflinePlayer(pet.getOwner()).getName() + " eingeschläfert.");
+                                        if (Bukkit.getPlayer(pet.getOwner()) != null)
+                                            Bukkit.getPlayer(pet.getOwner()).sendMessage(PREFIX + "Dein Haustier wurde von " + event.getClicker().getName() + " eingeschläfert.");
+                                        event.getClicker().getInventory().getItemInMainHand().setAmount(event.getClicker().getInventory().getItemInMainHand().getAmount() - 1);
+                                        removePet(Script.getNRPID(Bukkit.getOfflinePlayer(pet.getOwner())), pet.getName());
+                                        pets.remove(pet);
+                                        pet.getNpc().despawn();
+                                        pet.getNpc().destroy();
+                                    }
+                                }
+                            }
+                        }
                     }
-                    if (pet.getNpc().getEntity() instanceof Sittable)
-                        ((Sittable) pet.getNpc().getEntity()).setSitting(pet.isSitting());
-                    if (pet.getNpc().getEntity() instanceof Fox)
-                        pet.getNpc().setUseMinecraftAI(!pet.isSitting());
+                }
+                if (isPet(event.getClicker().getUniqueId(), event.getNPC())) {
+                    if (event.getClicker().isSneaking()) {
+                        Inventory inv = Bukkit.createInventory(event.getClicker(), 18, "§8» §7Haustier");
+                        inv.setItem(2, Script.setNameAndLore(new ItemStack(Material.APPLE), "§cGesundheit:", "§6" + pet.getHealth() + "%"));
+                        inv.setItem(4, Script.setNameAndLore(new ItemStack(Material.NAME_TAG), "§aName:", "§6" + pet.getName()));
+                        inv.setItem(6, Script.setNameAndLore(new ItemStack(Material.CAT_SPAWN_EGG), "§bVariante:", "§6" + StringUtils.capitalize(pet.getVariant().replace("_", " ").toLowerCase()).replace("Default", "Standard")));
+                        inv.setItem(13, Script.setName(new ItemStack(Material.BARRIER), "§7Schließen"));
+                        event.getClicker().openInventory(inv);
+                    } else {
+                        pet.setSitting(!pet.isSitting());
+                        pet.getNpc().getNavigator().cancelNavigation();
+                        if (pet.getNpc().getEntity() instanceof Tameable) {
+                            ((Tameable) pet.getNpc().getEntity()).setTamed(!pet.isSitting());
+                            if (!pet.isSitting())
+                                ((Tameable) pet.getNpc().getEntity()).setOwner(event.getClicker());
+                        }
+                        if (pet.getNpc().getEntity() instanceof Sittable)
+                            ((Sittable) pet.getNpc().getEntity()).setSitting(pet.isSitting());
+                        if (pet.getNpc().getEntity() instanceof Fox)
+                            pet.getNpc().setUseMinecraftAI(!pet.isSitting());
+                        if (pet.isSitting())
+                            event.getClicker().sendMessage(PREFIX + "Du hast dein Haustier hingesetzt.");
+                    }
                 }
             }
         }
@@ -113,17 +133,22 @@ public class Pets implements Listener, CommandExecutor, TabCompleter {
     }
 
     public static void reset() {
+        for (LivingEntity entity : Script.WORLD.getLivingEntities()) entity.remove();
+        Bukkit.getScheduler().runTaskTimer(NewRoleplayMain.getInstance(), Pets::refresh, 10 * 20L, 10 * 20L);
+    }
+
+    public static void refresh() {
         for (LivingEntity entity : Script.WORLD.getLivingEntities()) {
-            entity.remove();
+            if (!(entity instanceof Player)) if (!(entity instanceof ArmorStand)) if (!CitizensAPI.getNPCRegistry().isNPC(entity)) entity.remove();
         }
     }
 
     public static void spawn(Player player) {
         enabled.put(player.getUniqueId(), false);
         for (Pet pet : getPets(Script.getNRPID(player))) {
-            pet.getNpc().spawn(player.getLocation());
+            pet.getNpc().spawn(player.getLocation().clone().add(Script.getRandom(-2, 2), 0, Script.getRandom(-2, 2)));
             pet.getNpc().setUseMinecraftAI(true);
-            pet.getNpc().getNavigator().getDefaultParameters().baseSpeed(1.2F);
+            pet.getNpc().getNavigator().getDefaultParameters().baseSpeed(1.4F);
             pet.getNpc().data().set(NPC.Metadata.DAMAGE_OTHERS, false);
             pet.getNpc().data().set(NPC.Metadata.AGGRESSIVE, false);
             Entity entity = pet.getNpc().getEntity();
@@ -172,41 +197,37 @@ public class Pets implements Listener, CommandExecutor, TabCompleter {
         for (Pet pet : getPets(player.getUniqueId())) {
             pets.remove(pet);
             pet.getTask().cancel();
+            pet.getNpc().despawn();
             pet.getNpc().destroy();
         }
         for (Pet pet : pets.keySet()) {
-            if (pets.get(pet) == player.getUniqueId()) {
+            if (pets.get(pet) == player.getUniqueId())
                 pets.remove(pet);
-            }
         }
     }
 
     private static List<Pet> getPets(UUID uuid) {
         List<Pet> petList = new ArrayList<>();
-        for (Pet pet : pets.keySet()) {
+        for (Pet pet : pets.keySet())
             if (pets.get(pet) == uuid) petList.add(pet);
-        }
         return petList;
     }
 
     private static Pet getPet(UUID uuid, String name) {
-        for (Pet pet : getPets(uuid)) {
+        for (Pet pet : getPets(uuid))
             if (Objects.equals(pet.getName(), name)) return pet;
-        }
         return null;
     }
 
     private static boolean isPet(UUID uuid, NPC npc) {
-        for (Pet pet : getPets(uuid)) {
+        for (Pet pet : getPets(uuid))
             if (pet.getNpc() == npc) return true;
-        }
         return false;
     }
 
     private static boolean isPet(NPC npc) {
-        for (Pet pet : getPets()) {
-            if (pet.getNpc() == npc) return true;
-        }
+        for (Pet pet : getPets())
+            if (pet.getNpc().getEntity() == npc.getEntity()) return true;
         return false;
     }
 
@@ -215,9 +236,8 @@ public class Pets implements Listener, CommandExecutor, TabCompleter {
     }
 
     private static Pet getPet(NPC npc) {
-        for (Pet pet : getPets()) {
+        for (Pet pet : getPets())
             if (pet.getNpc().getId() == npc.getId()) return pet;
-        }
         return null;
     }
 
@@ -262,15 +282,17 @@ public class Pets implements Listener, CommandExecutor, TabCompleter {
                         }
 
                         if (owner.isOnline()) {
-                            double distance = pet.getNpc().getEntity().getLocation().clone().distance(owner.getLocation().clone());
-                            if (distance > 3) {
-                                if (distance > 20) {
-                                    pet.getNpc().teleport((pet.getNpc().getEntity() instanceof Parrot ? owner.getLocation().clone().add(0, 1, 0) : owner.getLocation().clone()), PlayerTeleportEvent.TeleportCause.PLUGIN);
+                            if (owner.getGameMode() == GameMode.SURVIVAL) {
+                                double distance = pet.getNpc().getEntity().getLocation().clone().distance(owner.getLocation().clone());
+                                if (distance > 4) {
+                                    if (distance > 20) {
+                                        pet.getNpc().teleport((pet.getNpc().getEntity() instanceof Parrot ? owner.getLocation().clone().add(0, 1, 0) : owner.getLocation().clone()), PlayerTeleportEvent.TeleportCause.PLUGIN);
+                                    } else {
+                                        pet.getNpc().getNavigator().setTarget(owner, false);
+                                    }
                                 } else {
-                                    pet.getNpc().getNavigator().setTarget(owner, false);
+                                    pet.getNpc().getNavigator().cancelNavigation();
                                 }
-                            } else {
-                                pet.getNpc().getNavigator().cancelNavigation();
                             }
                         }
                     } else {
