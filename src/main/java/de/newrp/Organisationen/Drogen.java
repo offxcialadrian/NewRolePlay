@@ -218,7 +218,7 @@ public enum Drogen {
                     p.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 20 * (5 + purity.getID()), 0, false, false));
                 }
                 p.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 2 * 20 * (8 - 2 * purity.getID()), 2, false, false));
-                p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 20 * (10 - purity.getID()), 1, false, false));
+                p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 30 * (10 - purity.getID()), 1, false, false));
                 break;
 
             case PULVER:

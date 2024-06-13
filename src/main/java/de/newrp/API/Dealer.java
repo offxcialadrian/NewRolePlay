@@ -104,7 +104,7 @@ public class Dealer implements Listener {
             }
             int amount = player.getInventory().getItemInMainHand().getAmount();
             price -= (int) Math.round(price * 0.2 * purity.getID());
-            if (!Organisation.hasOrganisation(player) && !Beruf.hasBeruf(player)) price += 10;
+            if (!Organisation.hasOrganisation(player) && !Beruf.hasBeruf(player)) price = (int) Math.round(price * 1.5);
             price *= amount;
             Me.sendMessage(player, "tauscht etwas mit dem Dealer aus.");
             if (new Random().nextInt(10) == 0) {

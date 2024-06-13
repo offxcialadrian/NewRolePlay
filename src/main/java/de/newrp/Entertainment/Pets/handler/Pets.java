@@ -6,7 +6,10 @@ import de.newrp.API.Script;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Entertainment.Pets.model.Pet;
 import de.newrp.Entertainment.Pets.types.PetType;
+import de.newrp.Government.Stadtkasse;
 import de.newrp.NewRoleplayMain;
+import de.newrp.Shop.Shop;
+import de.newrp.Shop.Shops;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
 import net.citizensnpcs.api.npc.NPC;
@@ -360,6 +363,12 @@ public class Pets implements Listener, CommandExecutor, TabCompleter {
                         player.sendMessage(PREFIX + "Du hast dein Haustier zu " + args[0] + " umbenannt.");
                         player.sendMessage(Messages.INFO + "Verwende §6/pets §rum deine Haustiere neu zu laden.");
                         renaming.remove(player.getUniqueId());
+
+                        Shops shop = Shops.PET;
+                        shop.addKasse(1000);
+                        Stadtkasse.addStadtkasse(1000, "Tier-Namensänderung", null);
+                        if (shop.getOwner() > 0)
+                            Script.sendActionBar(Objects.requireNonNull(Script.getPlayer(shop.getOwner())), Shop.PREFIX + "Dein Shop §6" + shop.getPublicName() + " §7hat §61000€ §7Gewinn gemacht aus dem Verkauf von §6Namensänderung §7(§62000€§7)");
                     } else {
                         player.sendMessage(Messages.ERROR + "Du benötigst 2000€ um dein Haustier umzubenennen.");
                     }
@@ -375,6 +384,12 @@ public class Pets implements Listener, CommandExecutor, TabCompleter {
                         player.sendMessage(PREFIX + "Du hast dein Haustier zu " + args[0] + " umgeändert.");
                         player.sendMessage(Messages.INFO + "Verwende §6/pets §rum deine Haustiere neu zu laden.");
                         revarianting.remove(player.getUniqueId());
+
+                        Shops shop = Shops.PET;
+                        shop.addKasse(3000);
+                        Stadtkasse.addStadtkasse(2000, "Tier-Variantenänderung", null);
+                        if (shop.getOwner() > 0)
+                            Script.sendActionBar(Objects.requireNonNull(Script.getPlayer(shop.getOwner())), Shop.PREFIX + "Dein Shop §6" + shop.getPublicName() + " §7hat §63000€ §7Gewinn gemacht aus dem Verkauf von §6Variantenänderung §7(§65000€§7)");
                     } else {
                         player.sendMessage(Messages.ERROR + "Du benötigst 5000€ um dein Haustier anzupassen.");
                     }
