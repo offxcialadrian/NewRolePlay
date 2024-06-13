@@ -42,7 +42,7 @@ import java.util.*;
 public class Pets implements Listener, CommandExecutor, TabCompleter {
 
     public static final String PREFIX = "§8[§2Pet§8] §2" + Messages.ARROW + " §7";
-
+    public static final HashMap<UUID, Integer> amount = new HashMap<>();
     private static final HashMap<Pet, UUID> pets = new HashMap<>();
 
     @EventHandler
@@ -148,6 +148,7 @@ public class Pets implements Listener, CommandExecutor, TabCompleter {
 
     public static void spawn(Player player) {
         enabled.put(player.getUniqueId(), false);
+        amount.put(player.getUniqueId(), 0);
         for (Pet pet : getPets(Script.getNRPID(player))) {
             pet.getNpc().spawn(player.getLocation().clone().add(Script.getRandom(-2, 2), 0, Script.getRandom(-2, 2)));
             pet.getNpc().setUseMinecraftAI(true);
@@ -173,6 +174,7 @@ public class Pets implements Listener, CommandExecutor, TabCompleter {
             pet.setSitting(false);
             pets.put(pet, player.getUniqueId());
             enabled.put(player.getUniqueId(), true);
+            amount.put(player.getUniqueId(), amount.get(player.getUniqueId()) + 1);
         }
     }
 
