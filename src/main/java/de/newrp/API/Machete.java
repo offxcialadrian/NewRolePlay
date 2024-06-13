@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.player.PlayerItemDamageEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -79,6 +80,14 @@ public class Machete implements Listener {
                     }
                 }
             }
+        }
+    }
+
+    @EventHandler
+    public void onItemDamage(PlayerItemDamageEvent event) {
+        if (event.getItem().getType() == Material.IRON_SWORD) {
+            event.setDamage(0);
+            event.setCancelled(true);
         }
     }
 }

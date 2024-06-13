@@ -45,6 +45,7 @@ public class Dealer implements Listener {
         undercover = new Random().nextInt(5) == 0;
         npc.despawn();
         npc.spawn(getRandomLoc());
+        Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> ShopNPC.addNpc(null, npc), 10 * 20L);
     }
 
     private static Location getRandomLoc() {
@@ -110,7 +111,10 @@ public class Dealer implements Listener {
                 Script.addMoney(player, PaymentType.CASH, price);
                 player.sendMessage(PREFIX + TEXT_POST_TRADE[new Random().nextInt(TEXT_POST_TRADE.length)]);
             }
-            if (isUndercover()) Beruf.Berufe.BUNDESNACHRICHTENDIENST.sendMessage(PREFIX + "Der Undercover-Dealer meldet einen Verkauf von " + amount + "g " + drug.getName() + " von " + player.getName() + ".");
+            if (isUndercover()) {
+                int finalPrice = price;
+                Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> Beruf.Berufe.BUNDESNACHRICHTENDIENST.sendMessage(PREFIX + "Der Undercover-Dealer meldet einen Verkauf von " + amount + "g " + drug.getName() + " von " + player.getName() + " für " + finalPrice + "€."), 10 * 20L);
+            }
             player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
         }
     }
