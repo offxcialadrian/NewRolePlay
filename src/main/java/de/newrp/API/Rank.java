@@ -5,13 +5,13 @@ import org.bukkit.entity.Player;
 
 public enum Rank {
 
-    OWNER(0, 300, "Geschäftsführer", "Geschäftsführer", "ADMIN", "0001ceo"),
-    ADMINISTRATOR(1, 250, "Administrator", "Administration", "ADMIN", "0002admin"),
-    FRAKTIONSMANAGER(6, 200, "Fraktionsmanager", "Fraktionsmanager", "FM", "0002fm"),
-    MODERATOR(2, 150, "Moderator", "Moderation", "MOD", "0003mod"),
-    SUPPORTER(3, 100, "Supporter", "Support", "SUP", "0002sup"),
-    DEVELOPER(4, 50, "Developer", "Developer", "DEV", "0005dev"),
-    PLAYER(5, 1, "Spieler", "Spieler", "", "");
+    OWNER(0, 300, "Geschäftsführer", "Geschäftsführer", "ADMIN", "0001ceo", 0),
+    ADMINISTRATOR(1, 250, "Administrator", "Administration", "ADMIN", "0002admin", 50),
+    FRAKTIONSMANAGER(6, 200, "Fraktionsmanager", "Fraktionsmanager", "FM", "0002fm", 50),
+    MODERATOR(2, 150, "Moderator", "Moderation", "MOD", "0003mod", 50),
+    SUPPORTER(3, 100, "Supporter", "Support", "SUP", "0002sup", 100),
+    DEVELOPER(4, 50, "Developer", "Developer", "DEV", "0005dev", 100),
+    PLAYER(5, 1, "Spieler", "Spieler", "", "", 0);
 
     private final int id;
     @Getter
@@ -20,14 +20,16 @@ public enum Rank {
     private final String o_name;
     private final String prefix;
     private final String scoreboardName;
+    private final int salary;
 
-    Rank(int id, int weight, String name, String o_name, String prefix, final String scoreboardName) {
+    Rank(int id, int weight, String name, String o_name, String prefix, final String scoreboardName, int salary) {
         this.id = id;
         this.weight = weight;
         this.name = name;
         this.o_name = o_name;
         this.prefix = prefix;
         this.scoreboardName = scoreboardName;
+        this.salary = salary;
     }
 
     public String getName(Player p) {
@@ -66,5 +68,9 @@ public enum Rank {
 
     public String getScoreboardName() {
         return scoreboardName;
+    }
+
+    public int getSalary() {
+        return salary;
     }
 }

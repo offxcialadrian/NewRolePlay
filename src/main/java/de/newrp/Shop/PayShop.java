@@ -297,12 +297,12 @@ public class PayShop implements Listener {
                 case MERCADAS:
                 case PAWSCHE:
                     if (!Licenses.FUEHRERSCHEIN.hasLicense(Script.getNRPID(p))) {
-                        p.sendMessage(Component.text(Car.PREFIX + "Du hast keinen Führerschein!"));
+                        p.sendMessage(Component.text(Car.PREFIX + "Du hast keinen Führerschein."));
                         return;
                     }
 
                     if (Car.getCars(p).size() >= SlotLimit.VEHICLE.get(Script.getNRPID(p))) {
-                        p.sendMessage(Component.text(Messages.ERROR + "Du hast keine Fahrzeug-Slots übrig!"));
+                        p.sendMessage(Component.text(Messages.ERROR + "Du hast keine Fahrzeug-Slots übrig."));
                         return;
                     }
 
@@ -320,8 +320,13 @@ public class PayShop implements Listener {
                 case PET_PARROT:
                     PetType petType = PetType.getType(si.getName());
                     if (petType == null) return;
+                    if (Pets.amount.get(p.getUniqueId()) >= SlotLimit.PET.get(Script.getNRPID(p))) {
+                        p.sendMessage(Component.text(Messages.ERROR + "Du hast keine Haustier-Slots übrig."));
+                        return;
+                    }
+
                     if (Pets.hasNamed(Script.getNRPID(p), si.getName())) {
-                        p.sendMessage(Messages.ERROR + "Du hast bereits ein Haustier mit diesem Namen!");
+                        p.sendMessage(Messages.ERROR + "Du hast bereits ein Haustier mit diesem Namen.");
                         return;
                     }
                     Pets.addPet(Script.getNRPID(p), petType, petType.getVariant(), si.getName());

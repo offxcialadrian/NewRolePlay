@@ -31,6 +31,7 @@ public class Chat implements Listener {
             "huan",
             "endsieg",
             "hitler",
+            "adolf",
             "jude",
             "ritzen",
             "akbar",
@@ -39,7 +40,14 @@ public class Chat implements Listener {
             "nazi",
             "transe",
             "schwuchtel",
+            "sieg heil",
+            "nazi",
+            "untermensch",
+            "auschwitz",
+            "siegheil",
             "nigga",
+            "niggi",
+            "neger",
             "nigger",
             "niggah"
     };

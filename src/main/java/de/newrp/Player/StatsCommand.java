@@ -33,7 +33,7 @@ public class StatsCommand implements CommandExecutor {
         p.sendMessage("§7Geschlecht §8× §e" + Script.getGender(p).getName());
         p.sendMessage("§7Team §8× §e" + (Team.getTeam(p) != null ? Objects.requireNonNull(Team.getTeam(p)).getName() : "Kein Team"));
         p.sendMessage("§7PlayTime §8× §e" + (Premium.hasPremium(p)?Script.getPlayTime(p, true) + ":§e" + String.format("%02d", Script.getPlayTime(p, false)) + " Stunden §8(§e" + Script.getActivePlayTime(p, true) + ":§e" + String.format("%02d", Script.getActivePlayTime(p, false)) + " Stunden§8)":"Premium benötigt"));
-        p.sendMessage("§7PayDay §8× §e" + PayDay.getPayDayTime(p) + "/60 Minuten" + (Premium.hasPremium(p) ? " §8(§e" +  PayDay.getPayDayPay(p) + "€ GFB Gehalt§8)" : " §8(§ePremium für Gehaltsvorschau benötigt§8)"));
+        p.sendMessage("§7PayDay §8× §e" + PayDay.getPayDayTime(p) + "/60 Minuten" + (Premium.hasPremium(p) ? " §8(§e" +  PayDay.getPayDayPay(p) + "€ GFB Gehalt§8)" : " §8(§ePremium für Vorschau benötigt§8)"));
         p.sendMessage("§7Level §8× §e" + Script.getLevel(p));
         p.sendMessage("§7VotePoints §8× §e" + (VoteListener.getVotepoints(Script.getNRPID(p))>0?VoteListener.getVotepoints(Script.getNRPID(p)):"keine"));
         p.sendMessage("§7Exp §8× §e" + Script.getExp(p) + "/" + Script.getLevelCost(p) + " Exp §8(§e" + Script.getPercentage(Script.getExp(p), Script.getLevelCost(p)) + "%§8)");

@@ -85,7 +85,6 @@ public class PayDay extends BukkitRunnable {
             }
 
             if (Beruf.hasBeruf(p)) {
-
                 int salary = Beruf.getSalary(p);
                 p.sendMessage("§8" + Messages.ARROW + " §7Lohn/Gehalt: §a+" + salary + "€");
                 payday += salary;
@@ -166,6 +165,13 @@ public class PayDay extends BukkitRunnable {
                 p.sendMessage("§8" + Messages.ARROW + " §7Arbeitslosengeld: §a+" + Stadtkasse.getArbeitslosengeld() + "€");
                 Stadtkasse.removeStadtkasse(Stadtkasse.getArbeitslosengeld(), "Arbeitslosengeldzahlung an " + Script.getName(p));
                 payday += Stadtkasse.getArbeitslosengeld();
+            }
+
+            if (Script.getRank(p).getSalary() > 0) {
+                Rank  rank = Script.getRank(p);
+                int s = rank.getSalary();
+                p.sendMessage("§8" + Messages.ARROW + " §7Rang-Gehalt: §a+" + s + "€");
+                extra += s;
             }
 
             if (Team.getTeam(p) != null) {

@@ -2,8 +2,10 @@ package de.newrp.Entertainment.Pets.handler;
 
 import de.newrp.API.Messages;
 import de.newrp.API.PaymentType;
+import de.newrp.API.Premium;
 import de.newrp.API.Script;
 import de.newrp.Berufe.Beruf;
+import de.newrp.Chat.Chat;
 import de.newrp.Chat.Me;
 import de.newrp.Entertainment.Pets.model.Pet;
 import de.newrp.Entertainment.Pets.types.PetType;
@@ -365,18 +367,41 @@ public class Pets implements Listener, CommandExecutor, TabCompleter {
 
     public static HashMap<UUID, Boolean> enabled = new HashMap<>();
 
+    private static final List<String> banned = Arrays.asList("dinnerbone", "grumm", "jeb_");
+
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
             if (args.length > 0) {
                 if (renaming.containsKey(player.getUniqueId())) {
-                    if (args[0].contains("&")) {
-                        player.sendMessage(Messages.ERROR + "Der Name ist nicht verfügbar.");
+                    int l = args[0].length();
+                    for (String b : banned) {
+                        if (args[0].toLowerCase().contains(b)) {
+                            player.sendMessage(Messages.ERROR + "Der Name ist nicht verfügbar.");
+                            return true;
+                        }
+                    }
+                    for (String b : Chat.Filter) {
+                        if (args[0].toLowerCase().contains(b)) {
+                            player.sendMessage(Messages.ERROR + "Der Name ist nicht verfügbar.");
+                            return true;
+                        }
+                    }
+                    if (!Premium.hasPremium(player)) {
+                        if (args[0].contains("&")) {
+                            player.sendMessage(Messages.ERROR + "Der Name ist nicht verfügbar.");
+                            return true;
+                        }
+                    } else {
+                        l -= (int) args[0].chars().filter(ch -> ch == '&').count() * 2;
+                    }
+                    if (l > 10) {
+                        player.sendMessage(Messages.ERROR + "Dieser Name ist zu lang.");
                         return true;
                     }
                     if (Pets.hasNamed(Script.getNRPID(player), args[0])) {
-                        player.sendMessage(Messages.ERROR + "Du hast bereits ein Haustier mit diesem Namen!");
+                        player.sendMessage(Messages.ERROR + "Du hast bereits ein Haustier mit diesem Namen.");
                         return true;
                     }
                     if (Script.removeMoney(player, PaymentType.BANK, 2000)) {
@@ -410,7 +435,8 @@ public class Pets implements Listener, CommandExecutor, TabCompleter {
                         shop.addKasse(3000);
                         Stadtkasse.addStadtkasse(2000, "Tier-Variantenänderung", null);
                         if (shop.getOwner() > 0)
-                            Script.sendActionBar(Objects.requireNonNull(Script.getPlayer(shop.getOwner())), Shop.PREFIX + "Dein Shop §6" + shop.getPublicName() + " §7hat §63000€ §7Gewinn gemacht aus dem Verkauf von §6Variantenänderung §7(§65000€§7)");
+                            if (Objects.requireNonNull(Script.getOfflinePlayer(shop.getOwner())).isOnline())
+                                Script.sendActionBar(Objects.requireNonNull(Script.getPlayer(shop.getOwner())), Shop.PREFIX + "Dein Shop §6" + shop.getPublicName() + " §7hat §63000€ §7Gewinn gemacht aus dem Verkauf von §6Variantenänderung §7(§65000€§7)");
                     } else {
                         player.sendMessage(Messages.ERROR + "Du benötigst 5000€ um dein Haustier anzupassen.");
                     }
