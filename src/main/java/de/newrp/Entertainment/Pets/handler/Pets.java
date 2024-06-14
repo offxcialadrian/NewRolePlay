@@ -376,6 +376,10 @@ public class Pets implements Listener, CommandExecutor, TabCompleter {
             if (args.length > 0) {
                 if (renaming.containsKey(player.getUniqueId())) {
                     int l = args[0].length();
+                    if (l > 20) {
+                        player.sendMessage(Messages.ERROR + "Dieser Name ist zu lang.");
+                        return true;
+                    }
                     for (String b : banned) {
                         if (args[0].toLowerCase().contains(b)) {
                             player.sendMessage(Messages.ERROR + "Der Name ist nicht verfügbar.");
@@ -394,7 +398,12 @@ public class Pets implements Listener, CommandExecutor, TabCompleter {
                             return true;
                         }
                     } else {
-                        l -= (int) args[0].chars().filter(ch -> ch == '&').count() * 2;
+                        int a = (int) args[0].chars().filter(ch -> ch == '&').count() * 2;
+                        if (a > 15) {
+                            player.sendMessage(Messages.ERROR + "Dieser Name ist zu lang.");
+                            return true;
+                        }
+                        l -= a;
                     }
                     if (l > 10) {
                         player.sendMessage(Messages.ERROR + "Dieser Name ist zu lang.");
