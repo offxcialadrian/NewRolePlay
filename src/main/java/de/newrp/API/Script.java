@@ -498,7 +498,7 @@ public class Script {
         if (rank == MODERATOR) return "MOD × " + player.getName();
         if (rank == FRAKTIONSMANAGER) return "FM × " + player.getName();
         if (rank == ADMINISTRATOR) return "ADMIN × " + player.getName();
-        if (rank == OWNER) return "CEO × " + player.getName();
+        if (rank == OWNER) return "ADMIN × " + player.getName();
         return player.getName();
     }
 
@@ -510,7 +510,7 @@ public class Script {
             if (getRank(p) == MODERATOR) return "MOD × " + p.getName();
             if (getRank(p) == FRAKTIONSMANAGER) return "FM × " + p.getName();
             if (getRank(p) == ADMINISTRATOR) return "ADMIN × " + p.getName();
-            if (getRank(p) == OWNER) return "CEO × " + p.getName();
+            if (getRank(p) == OWNER) return "ADMIN × " + p.getName();
         }
         return p.getName();
     }
@@ -758,7 +758,7 @@ public class Script {
             p.sendMessage(Messages.INFO + "Dein Name wurde aktualisiert.");
             int id = getNRPID(p);
             String name = p.getName();
-            if (getRank(p) == OWNER) name = "CEO × " + name;
+            if (getRank(p) == OWNER) name = "ADMIN × " + name;
             if (getRank(p) == ADMINISTRATOR) name = "ADMIN × " + name;
             if (getRank(p) == DEVELOPER) name = "DEV × " + name;
             if (getRank(p) == SUPPORTER) name = "SUP × " + name;

@@ -99,6 +99,7 @@ public class AddictionService implements IAddictionService {
                 if(Script.getRandom(0, (drug.getAddictionChance() + premiumChance) - usage) == 0) {
                     addictionData.setAddictionLevel(AddictionLevel.PARTIALLY_ADDICTED);
                     player.sendMessage("§8[§6Drogen§8] §7Du fängst an dich an §6" + drug.getName() + " §7zu gewöhnen...");
+                    addictionData.setUsage(0);
                 }
             } else if(addictionData.getAddictionLevel() == AddictionLevel.PARTIALLY_ADDICTED) {
                 if(Script.getRandom(0, (drug.getAddictionChance() + premiumChance) - usage - 30) <= 0) {

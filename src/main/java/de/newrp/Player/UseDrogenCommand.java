@@ -64,7 +64,6 @@ public class UseDrogenCommand implements CommandExecutor, TabCompleter {
                     Me.sendMessage(p, "nimmt ein Schmerzmittel ein.");
                     Script.playLocalSound(p.getLocation(), Sound.ENTITY_PLAYER_BURP, 5);
                     p.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 20 * 15, 1));
-                    Drogen.addToAdiction(p);
                     return true;
                 } else if (m == Medikamente.SCHMERZMITTEL_HIGH) {
                     Me.sendMessage(p, "nimmt ein Schmerzmittel ein.");
@@ -72,7 +71,6 @@ public class UseDrogenCommand implements CommandExecutor, TabCompleter {
                     if (!p.hasPotionEffect(PotionEffectType.ABSORPTION))
                         p.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 220 * 20, 2, false, false));
                     p.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 20 * 15, 2));
-                    Drogen.addToAdiction(p);
                     return true;
                 }
             }
