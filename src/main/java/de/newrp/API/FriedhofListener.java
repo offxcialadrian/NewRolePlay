@@ -44,6 +44,7 @@ public class FriedhofListener implements Listener {
         Player p = e.getEntity();
 
         if (Friedhof.getDead(p) != null) {
+            e.setCancelled(true);
             return;
         }
 
