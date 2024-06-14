@@ -2,6 +2,7 @@ package de.newrp.Entertainment.Pets.handler;
 
 import de.newrp.API.Messages;
 import de.newrp.API.PaymentType;
+import de.newrp.API.Premium;
 import de.newrp.API.Script;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Chat.Me;
@@ -106,13 +107,22 @@ public class Pets implements Listener, CommandExecutor, TabCompleter {
                     }
                 } else {
                     if (event.getClicker().isSneaking()) {
-                        Me.sendMessage(event.getClicker(), "streichelt " + pet.getName() + ".");
+                        UUID uuid = event.getClicker().getUniqueId();
+                        Long millis = System.currentTimeMillis();
+                        long waitTime = 10000;
+                        if(Premium.hasPremium(event.getClicker())) {
+                            waitTime = 7000;
+                        }
+                        if(!cuddleCooldown.containsKey(uuid) || cuddleCooldown.get(uuid)+waitTime > System.currentTimeMillis()) {
+                            Me.sendMessage(event.getClicker(), "streichelt " + pet.getUncoloredName() + ".");
+                        }
                     }
                 }
             }
         }
     }
 
+    public static HashMap<UUID, Long> cuddleCooldown = new HashMap<>();
     public static HashMap<UUID, Pet> renaming = new HashMap<>();
     public static HashMap<UUID, Pet> revarianting = new HashMap<>();
 

@@ -31,4 +31,9 @@ public class Pet{
         this.health = health;
         this.sitting = sitting;
     }
+
+    public String getUncoloredName() {
+        return name.replaceAll("§[0-9a-zA-Z]","");
+    }
+
 }
