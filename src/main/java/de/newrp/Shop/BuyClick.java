@@ -1,13 +1,11 @@
 package de.newrp.Shop;
 
-import de.newrp.API.*;
+import de.newrp.API.Achievement;
+import de.newrp.API.Messages;
+import de.newrp.API.PaymentType;
+import de.newrp.API.Script;
 import de.newrp.Chat.Chat;
-import de.newrp.Entertainment.Lotto;
 import de.newrp.Player.Hotel;
-import de.newrp.Vehicle.Car;
-import de.newrp.Vehicle.CarType;
-import net.kyori.adventure.text.Component;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -18,9 +16,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -123,7 +119,7 @@ public class BuyClick implements Listener {
             }
 
             int price = (Buy.amount.containsKey(p.getName()) ? si.getPrice(s) * Buy.amount.get(p.getName()) : si.getPrice(s));
-            if (s.acceptCard()) {
+            if (s.acceptCard() || (Buy.amount.containsKey(p.getName()) && Buy.amount.get(p.getName()) > 1)) {
                 sendMessage(p, "Möchten Sie Bar oder mit Karte bezahlen?", s);
                 Inventory gui = p.getServer().createInventory(null, InventoryType.HOPPER, "§8[§aZahlungsmethode§8]");
                 ItemStack cash = Script.setNameAndLore(Script.getHead(60078), "§aBar","§8» §c" + (Buy.amount.containsKey(p.getName())?Buy.amount.get(p.getName()) + "x" + si.getPrice(s) + " (" + price + ")":si.getPrice(s)) + "€");
