@@ -11,6 +11,7 @@ import de.newrp.Chat.*;
 import de.newrp.Commands.DiscordCommand;
 import de.newrp.Commands.Test;
 import de.newrp.Entertainment.*;
+import de.newrp.Entertainment.Pets.handler.Pets;
 import de.newrp.Forum.ForumCommand;
 import de.newrp.GFB.*;
 import de.newrp.Gangwar.Capture;
@@ -21,6 +22,9 @@ import de.newrp.House.*;
 import de.newrp.Medic.*;
 import de.newrp.News.*;
 import de.newrp.Organisationen.*;
+import de.newrp.Organisationen.Contract.command.ContractCommand;
+import de.newrp.Organisationen.Contract.handler.ContractHandler;
+import de.newrp.Organisationen.Contract.model.Contract;
 import de.newrp.Player.*;
 import de.newrp.Police.*;
 import de.newrp.Runnable.*;
@@ -200,6 +204,7 @@ public class NewRoleplayMain extends JavaPlugin {
         ATM.restore();
         House.loadHouses();
         Blacklist.load();
+        Contract.load();
         Plantage.loadAll();
         Dart.clear();
         Bukkit.getScheduler().runTaskLater(this, CitizensAPI.getNPCRegistry()::deregisterAll, 2L);
@@ -210,6 +215,7 @@ public class NewRoleplayMain extends JavaPlugin {
             LabBreakIn.repairDoors(false);
             HackPoliceComputer.repairDoors();
             BreakOutHandler.repairDoor();
+            Pets.reset();
         }, 20L);
         Bukkit.getScheduler().runTaskLater(this, ShopNPC::spawn, 60L);
         OrgSpray.FraktionSpray.init();
@@ -585,6 +591,8 @@ public class NewRoleplayMain extends JavaPlugin {
         getCommand("getjsonlocation").setExecutor(new GetJsonLocation());
         getCommand("dart").setExecutor(new Dart());
         getCommand("ausraub").setExecutor(new AusraubCommand());
+        getCommand("pets").setExecutor(new Pets());
+        getCommand("contract").setExecutor(new ContractCommand());
     }
 
     /**
@@ -750,6 +758,8 @@ public class NewRoleplayMain extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new BreakOutHandler(), this);
         Bukkit.getPluginManager().registerEvents(new ShopNPC(), this);
         Bukkit.getPluginManager().registerEvents(new Dealer(), this);
+        Bukkit.getPluginManager().registerEvents(new Pets(), this);
+        Bukkit.getPluginManager().registerEvents(new ContractHandler(), this);
     }
 
     /**

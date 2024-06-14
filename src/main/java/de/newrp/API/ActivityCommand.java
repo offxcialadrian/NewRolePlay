@@ -1,7 +1,6 @@
 package de.newrp.API;
 
 import de.newrp.Administrator.SDuty;
-import de.newrp.Berufe.Abteilung;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Organisationen.Organisation;
 import org.bukkit.OfflinePlayer;
@@ -66,7 +65,7 @@ public class ActivityCommand implements CommandExecutor {
                 }
             }
 
-            List<Activity> activities = Activity.getActivities(Script.getNRPID(target), Activity.getResetDate(Beruf.hasBeruf(player) ? Beruf.getBeruf(player).getID() : -Organisation.getOrganisation(player).getID()));
+            List<Activity> activities = Activity.getActivities(Script.getNRPID(target), Activity.getResetDate(Beruf.hasBeruf(target) ? Beruf.getBeruf(target).getID() : -Organisation.getOrganisation(target).getID()));
             if (activities != null) {
                 if (!activities.isEmpty()) {
                     player.sendMessage(" §8======= §3§lAktivitäten §8======= ");

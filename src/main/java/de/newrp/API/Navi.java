@@ -80,7 +80,8 @@ public enum Navi {
     // MERCH("Merch-Stand", new Location(Script.WORLD, 806, 66, 727, 0.0f, 0.0f));
     LABOR("Labor", new Location(Script.WORLD, 373, 74, 1296, 0.0f, 0.0f)),
     KNAST("Gefängnis", new Location(Script.WORLD, 1018, 68, 549, 180.84424f, -9.02183f)),
-    PARK("Park", new Location(Script.WORLD, 527.3, 68.9, 1121.4, -357.9f, 8.6f));
+    PARK("Park", new Location(Script.WORLD, 527.3, 68.9, 1121.4, -357.9f, 8.6f)),
+    PET("Tierheim", new Location(Script.WORLD, 593.5, 69, 1114.5, 16.8f, 90f));
 
 
     private final String name;

@@ -12,6 +12,7 @@ import de.newrp.Medic.Medikamente;
 import de.newrp.Medic.Rezept;
 import de.newrp.NewRoleplayMain;
 import de.newrp.Organisationen.AusraubCommand;
+import de.newrp.Organisationen.Contract.model.Contract;
 import de.newrp.Organisationen.Organisation;
 import de.newrp.Shop.Shops;
 import de.newrp.TeamSpeak.TeamSpeak;
@@ -27,9 +28,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.util.io.BukkitObjectInputStream;
 
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -453,7 +454,7 @@ public class Annehmen implements CommandExecutor {
             Achievement.HOUSE_RENT.grant(p);
         } else if (offer.containsKey(p.getName() + ".rob")) {
             p.sendMessage(AusraubCommand.PREFIX + "Der Ausraub wurde erfolgreich eingetragen.");
-            Player target = Bukkit.getPlayer(AusraubCommand.offer.remove(p.getUniqueId()));
+            Player target = Bukkit.getPlayer(offer.get(p.getName()));
             if (target != null) {
                 target.sendMessage(AusraubCommand.PREFIX + "Der Ausraub wurde erfolgreich eingetragen.");
                 AusraubCommand.robs.put(target.getUniqueId(), System.currentTimeMillis());
@@ -467,8 +468,23 @@ public class Annehmen implements CommandExecutor {
                     }
                 }
             }
-            AusraubCommand.offer.remove(p.getUniqueId());
             offer.remove(p.getName() + ".rob");
+        } else if (offer.containsKey(p.getName() + ".contract")) {
+            Player target = Bukkit.getPlayer(offer.get(p.getName() + ".contract"));
+            if (target != null) {
+                Contract ct = Contract.getOffer(p);
+                if (Script.removeMoney(p, PaymentType.CASH, ct.getPrice())) {
+                    Contract.add(ct);
+                    Organisation.HITMEN.sendMessage(Contract.PREFIX + target.getName() + " hat §6" + Objects.requireNonNull(Script.getOfflinePlayer(ct.getUserID())).getName() + " §7ein Kopfgeld in Höhe von §6" + ct.getPrice() + "€ §7ausgesetzt.");
+                    p.sendMessage(Contract.PREFIX + "Das Kopfgeld wurde erfolgreich eingetragen.");
+                    Contract.addCustomer(p);
+                    Activity.grantActivity(Script.getNRPID(target), Activities.CONTRACT);
+                } else {
+                    p.sendMessage(Messages.ERROR + "Du benötigst " + ct.getPrice() + "€.");
+                }
+            }
+            Contract.removeOffer(p);
+            offer.remove(p.getName() + ".contract");
         } else {
             p.sendMessage(Messages.ERROR + "Dir wird nichts angeboten.");
         }

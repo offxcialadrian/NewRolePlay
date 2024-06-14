@@ -1,10 +1,8 @@
 package de.newrp.API;
 
 import de.newrp.Administrator.SDuty;
-import de.newrp.Berufe.Abteilung;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Organisationen.Organisation;
-import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -12,11 +10,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 
 public class CheckActivityCommand implements CommandExecutor {
 
@@ -70,7 +65,7 @@ public class CheckActivityCommand implements CommandExecutor {
                 }
             }
 
-            List<Activity> activities = Activity.getActivities(Script.getNRPID(target), Activity.getResetDate(Beruf.hasBeruf(player) ? Beruf.getBeruf(player).getID() : -Organisation.getOrganisation(player).getID()));
+            List<Activity> activities = Activity.getActivities(Script.getNRPID(target), Activity.getResetDate(Beruf.hasBeruf(target) ? Beruf.getBeruf(target).getID() : -Organisation.getOrganisation(target).getID()));
             if (activities != null) {
                 if (!activities.isEmpty()) {
                     player.sendMessage(Activity.PREFIX + "Aktivitäten von " + target.getName() + ":");

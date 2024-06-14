@@ -1,8 +1,10 @@
 package de.newrp.API;
 
 import de.newrp.Berufe.Beruf;
+import de.newrp.Chat.Me;
 import de.newrp.NewRoleplayMain;
 import de.newrp.Organisationen.Drogen;
+import de.newrp.Organisationen.Organisation;
 import de.newrp.Shop.ShopNPC;
 import lombok.Getter;
 import net.citizensnpcs.api.CitizensAPI;
@@ -44,6 +46,7 @@ public class Dealer implements Listener {
         undercover = new Random().nextInt(5) == 0;
         npc.despawn();
         npc.spawn(getRandomLoc());
+        Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> ShopNPC.addNpc(null, npc), 10 * 20L);
     }
 
     private static Location getRandomLoc() {
@@ -100,15 +103,20 @@ public class Dealer implements Listener {
                     return;
             }
             int amount = player.getInventory().getItemInMainHand().getAmount();
-            price *= amount;
             price -= (int) Math.round(price * 0.2 * purity.getID());
+            if (!Organisation.hasOrganisation(player) && !Beruf.hasBeruf(player)) price = (int) Math.round(price * 1.5);
+            price *= amount;
+            Me.sendMessage(player, "tauscht etwas mit dem Dealer aus.");
             if (new Random().nextInt(10) == 0) {
                 player.sendMessage(PREFIX + TEXT_SCAM_TRADE[new Random().nextInt(TEXT_SCAM_TRADE.length)]);
             } else {
                 Script.addMoney(player, PaymentType.CASH, price);
                 player.sendMessage(PREFIX + TEXT_POST_TRADE[new Random().nextInt(TEXT_POST_TRADE.length)]);
             }
-            if (isUndercover()) Beruf.Berufe.BUNDESNACHRICHTENDIENST.sendMessage(PREFIX + "Der Undercover-Dealer meldet einen Verkauf von " + amount + "g " + drug.getName() + " von " + player.getName() + ".");
+            if (isUndercover()) {
+                int finalPrice = price;
+                Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> Beruf.Berufe.BUNDESNACHRICHTENDIENST.sendMessage(PREFIX + "Der Undercover-Dealer meldet einen Verkauf von " + amount + "g " + drug.getName() + " von " + player.getName() + " für " + finalPrice + "€."), 10 * 20L);
+            }
             player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
         }
     }

@@ -3,6 +3,8 @@ package de.newrp.Shop;
 import de.newrp.API.*;
 import de.newrp.Administrator.SDuty;
 import de.newrp.Berufe.Beruf;
+import de.newrp.Entertainment.Pets.handler.Pets;
+import de.newrp.Entertainment.Pets.types.PetType;
 import de.newrp.Government.Stadtkasse;
 import de.newrp.Government.Steuern;
 import de.newrp.House.House;
@@ -309,8 +311,23 @@ public class PayShop implements Listener {
                     Car car = Car.createCar(carType, new Location(p.getWorld(), 393 + new Random().nextInt(3), 76.5, 1090), p);
                     assert car != null;
                     car.setActivated(true);
-                    p.sendMessage(Component.text(Car.PREFIX + "Du hast dir einen neuen " + si.getName() + " gekauft."));
                     BuyClick.sendMessage(p, "Hier sind die Schlüssel, dann viel Spaß!", s);
+                    p.sendMessage(Component.text(Car.PREFIX + "Du hast dir einen neuen " + si.getName() + " gekauft."));
+                    break;
+                case PET_DOG:
+                case PET_CAT:
+                case PET_FOX:
+                case PET_PARROT:
+                    PetType petType = PetType.getType(si.getName());
+                    if (petType == null) return;
+                    if (Pets.hasNamed(Script.getNRPID(p), si.getName())) {
+                        p.sendMessage(Messages.ERROR + "Du hast bereits ein Haustier mit diesem Namen!");
+                        return;
+                    }
+                    Pets.addPet(Script.getNRPID(p), petType, petType.getVariant(), si.getName());
+                    BuyClick.sendMessage(p, "Viel Spaß mit Ihrem neuen Haustier!", s);
+                    p.sendMessage(Component.text(Pets.PREFIX + "Du hast dir ein neues Haustier gekauft."));
+                    p.sendMessage(Messages.INFO + "Gib §6/pets §rein um dein Haustier zu beschwören.");
                     break;
             }
 

@@ -71,7 +71,7 @@ public class Dart implements Listener, CommandExecutor {
                     else return;
 
                     int points = (int) Math.ceil(p * 10);
-                    Script.sendLocalMessage(10, player, PREFIX + Script.getName(player) + " hat " + points + " Punkt" + (points > 1 ? "e" : "") + " geworfen.");
+                    Script.sendLocalMessage(6, player, PREFIX + Script.getName(player) + " hat " + points + " Punkt" + (points > 1 ? "e" : "") + " geworfen.");
                 }
             }
         }

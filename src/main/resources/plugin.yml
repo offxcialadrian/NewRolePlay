@@ -848,3 +848,9 @@ commands:
     description: get dart arrows
   ausraub:
     description: marks a player as robbed
+  pets:
+    description: toggles pet options
+    aliases: [ pet, haustier, haustiere ]
+  contract:
+    description: hitmens contract-system
+    aliases: [ contracts, cts, kopfgeld ]
