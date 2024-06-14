@@ -485,6 +485,8 @@ public class Annehmen implements CommandExecutor {
             }
             Contract.removeOffer(p);
             offer.remove(p.getName() + ".contract");
+        } else if (offer.containsKey(p.getName() + ".petkill")) {
+            offer.remove(p.getName() + ".petkill");
         } else {
             p.sendMessage(Messages.ERROR + "Dir wird nichts angeboten.");
         }

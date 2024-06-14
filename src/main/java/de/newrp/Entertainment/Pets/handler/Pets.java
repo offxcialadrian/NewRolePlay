@@ -2,7 +2,6 @@ package de.newrp.Entertainment.Pets.handler;
 
 import de.newrp.API.Messages;
 import de.newrp.API.PaymentType;
-import de.newrp.API.Premium;
 import de.newrp.API.Script;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Chat.Me;
@@ -68,14 +67,20 @@ public class Pets implements Listener, CommandExecutor, TabCompleter {
                             if (event.getClicker().getInventory().getItemInMainHand().getType() == Material.END_ROD) {
                                 if (event.getClicker().getInventory().getItemInMainHand().hasItemMeta()) {
                                     if (event.getClicker().getInventory().getItemInMainHand().getItemMeta().getDisplayName().contains("§7Spritze")) {
-                                        event.getClicker().sendMessage(PREFIX + "Du hast das Haustier von " + Bukkit.getOfflinePlayer(pet.getOwner()).getName() + " eingeschläfert.");
-                                        if (Bukkit.getPlayer(pet.getOwner()) != null)
+                                        if (Bukkit.getPlayer(pet.getOwner()) != null) {
+                                            /*
+                                            Annehmen.offer.put(Bukkit.getPlayer(pet.getOwner()).getName() + ".petkill", event.getClicker().getName());
+
                                             Bukkit.getPlayer(pet.getOwner()).sendMessage(PREFIX + "Dein Haustier wurde von " + event.getClicker().getName() + " eingeschläfert.");
-                                        event.getClicker().getInventory().getItemInMainHand().setAmount(event.getClicker().getInventory().getItemInMainHand().getAmount() - 1);
-                                        removePet(Script.getNRPID(Bukkit.getOfflinePlayer(pet.getOwner())), pet.getName());
-                                        pets.remove(pet);
-                                        pet.getNpc().despawn();
-                                        pet.getNpc().destroy();
+                                            event.getClicker().sendMessage(PREFIX + "Du hast das Haustier von " + Bukkit.getOfflinePlayer(pet.getOwner()).getName() + " eingeschläfert.");
+                                            event.getClicker().getInventory().getItemInMainHand().setAmount(event.getClicker().getInventory().getItemInMainHand().getAmount() - 1);
+                                            removePet(Script.getNRPID(Bukkit.getOfflinePlayer(pet.getOwner())), pet.getName());
+                                            pets.remove(pet);
+                                            pet.getNpc().despawn();
+                                            pet.getNpc().destroy();
+                                            return
+                                             */
+                                        }
                                     }
                                 }
                             }
@@ -109,7 +114,7 @@ public class Pets implements Listener, CommandExecutor, TabCompleter {
                     if (event.getClicker().isSneaking()) {
                         UUID uuid = event.getClicker().getUniqueId();
                         long millis = System.currentTimeMillis();
-                        if(!cuddleCooldown.containsKey(uuid) || cuddleCooldown.get(uuid)+10000 > millis) {
+                        if(!cuddleCooldown.containsKey(uuid) || cuddleCooldown.get(uuid)+3000 < millis) {
                             Me.sendMessage(event.getClicker(), "streichelt " + pet.getUncoloredName() + ".");
                             cuddleCooldown.put(event.getClicker().getUniqueId(), millis);
                         } else {
@@ -366,15 +371,15 @@ public class Pets implements Listener, CommandExecutor, TabCompleter {
             Player player = (Player) sender;
             if (args.length > 0) {
                 if (renaming.containsKey(player.getUniqueId())) {
+                    if (args[0].contains("&")) {
+                        player.sendMessage(Messages.ERROR + "Der Name ist nicht verfügbar.");
+                        return true;
+                    }
+                    if (Pets.hasNamed(Script.getNRPID(player), args[0])) {
+                        player.sendMessage(Messages.ERROR + "Du hast bereits ein Haustier mit diesem Namen!");
+                        return true;
+                    }
                     if (Script.removeMoney(player, PaymentType.BANK, 2000)) {
-                        if (args[0].length() > 10) {
-                            player.sendMessage(Messages.ERROR + "Der Name ist zu lang für dein Haustier.");
-                            return true;
-                        }
-                        if (Pets.hasNamed(Script.getNRPID(player), args[0])) {
-                            player.sendMessage(Messages.ERROR + "Du hast bereits ein Haustier mit diesem Namen!");
-                            return true;
-                        }
                         setName(Script.getNRPID(player), renaming.get(player.getUniqueId()).getName(), args[0]);
                         player.sendMessage(PREFIX + "Du hast dein Haustier zu " + args[0] + " umbenannt.");
                         player.sendMessage(Messages.INFO + "Verwende §6/pets §rum deine Haustiere neu zu laden.");

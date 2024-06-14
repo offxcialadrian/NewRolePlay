@@ -33,6 +33,7 @@ public class NaviClick implements Listener {
                         inv.setItem(1, Script.setName(Material.WRITABLE_BOOK, "§6" + Navi.NEWS.getName()));
                         inv.setItem(2, Script.setName(Material.LEAD, "§6" + Navi.POLIZEIREVIER.getName()));
                         inv.setItem(3, Script.setNameAndLore(Script.getGermanyFlag(), "§6" + Navi.STADTHALLE.getName()));
+                        inv.setItem(4, Script.setNameAndLore(Material.HEART_OF_THE_SEA, "§6" + Navi.BND.getName()));
                         inv.setItem(13, Script.setName(Material.REDSTONE, "§cZurück"));
                         Script.fillInv(inv);
                         p.openInventory(inv);
