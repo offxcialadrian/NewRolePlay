@@ -109,12 +109,11 @@ public class Pets implements Listener, CommandExecutor, TabCompleter {
                     if (event.getClicker().isSneaking()) {
                         UUID uuid = event.getClicker().getUniqueId();
                         Long millis = System.currentTimeMillis();
-                        long waitTime = 10000;
-                        if(Premium.hasPremium(event.getClicker())) {
-                            waitTime = 7000;
-                        }
-                        if(!cuddleCooldown.containsKey(uuid) || cuddleCooldown.get(uuid)+waitTime > System.currentTimeMillis()) {
+                        if(!cuddleCooldown.containsKey(uuid) || cuddleCooldown.get(uuid)+10000 > millis) {
                             Me.sendMessage(event.getClicker(), "streichelt " + pet.getUncoloredName() + ".");
+                            cuddleCooldown.put(event.getClicker().getUniqueId(), millis);
+                        } else {
+                            Script.sendActionBar(event.getClicker(), PREFIX + "§cDu kannst das Haustier gerade nicht streicheln.");
                         }
                     }
                 }
