@@ -22,6 +22,9 @@ import de.newrp.House.*;
 import de.newrp.Medic.*;
 import de.newrp.News.*;
 import de.newrp.Organisationen.*;
+import de.newrp.Organisationen.Contract.command.ContractCommand;
+import de.newrp.Organisationen.Contract.handler.ContractHandler;
+import de.newrp.Organisationen.Contract.model.Contract;
 import de.newrp.Player.*;
 import de.newrp.Police.*;
 import de.newrp.Runnable.*;
@@ -201,6 +204,7 @@ public class NewRoleplayMain extends JavaPlugin {
         ATM.restore();
         House.loadHouses();
         Blacklist.load();
+        Contract.load();
         Plantage.loadAll();
         Dart.clear();
         Bukkit.getScheduler().runTaskLater(this, CitizensAPI.getNPCRegistry()::deregisterAll, 2L);
@@ -588,6 +592,7 @@ public class NewRoleplayMain extends JavaPlugin {
         getCommand("dart").setExecutor(new Dart());
         getCommand("ausraub").setExecutor(new AusraubCommand());
         getCommand("pets").setExecutor(new Pets());
+        getCommand("contract").setExecutor(new ContractCommand());
     }
 
     /**
@@ -754,6 +759,7 @@ public class NewRoleplayMain extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new ShopNPC(), this);
         Bukkit.getPluginManager().registerEvents(new Dealer(), this);
         Bukkit.getPluginManager().registerEvents(new Pets(), this);
+        Bukkit.getPluginManager().registerEvents(new ContractHandler(), this);
     }
 
     /**

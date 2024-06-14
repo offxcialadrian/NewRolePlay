@@ -4,6 +4,7 @@ import de.newrp.API.Messages;
 import de.newrp.API.PaymentType;
 import de.newrp.API.Script;
 import de.newrp.Berufe.Beruf;
+import de.newrp.Chat.Me;
 import de.newrp.Entertainment.Pets.model.Pet;
 import de.newrp.Entertainment.Pets.types.PetType;
 import de.newrp.Government.Stadtkasse;
@@ -102,6 +103,10 @@ public class Pets implements Listener, CommandExecutor, TabCompleter {
                             pet.getNpc().setUseMinecraftAI(!pet.isSitting());
                         if (pet.isSitting())
                             event.getClicker().sendMessage(PREFIX + "Du hast dein Haustier hingesetzt.");
+                    }
+                } else {
+                    if (event.getClicker().isSneaking()) {
+                        Me.sendMessage(event.getClicker(), "streichelt " + pet.getName() + ".");
                     }
                 }
             }

@@ -851,3 +851,6 @@ commands:
   pets:
     description: toggles pet options
     aliases: [ pet, haustier, haustiere ]
+  contract:
+    description: hitmens contract-system
+    aliases: [ contracts, cts, kopfgeld ]

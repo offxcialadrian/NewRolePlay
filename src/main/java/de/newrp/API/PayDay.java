@@ -185,13 +185,6 @@ public class PayDay extends BukkitRunnable {
                 extra += b;
             }
 
-            int shops = 0;
-            for (Shops shop : Shops.values()) {
-                if (shop.getOwner() == Script.getNRPID(p)) {
-                    shops++;
-                }
-            }
-
             if (!Car.getCars(p).isEmpty()) {
                 int kfz = 0;
                 for (Car car : Car.getCars(p)) {
@@ -201,6 +194,14 @@ public class PayDay extends BukkitRunnable {
                 Stadtkasse.addStadtkasse(kfz, "KFZ-Steuer von " + Script.getName(p) + " erhalten", Steuern.Steuer.KFZSTEUER);
                 payday -= kfz;
             }
+
+            if (Pets.amount.containsKey(p.getUniqueId()))
+                if (Pets.amount.get(p.getUniqueId()) > 0) {
+                    int tax = Pets.amount.get(p.getUniqueId()) * 20;
+                    p.sendMessage("§8" + Messages.ARROW + " §7Tierversicherung: §c-" + tax + "€");
+                    payday -= tax;
+                    Stadtkasse.addStadtkasse(tax, "Tierversicherung von " + Script.getName(p) + " erhalten", null);
+                }
 
             if(!Beruf.hasBeruf(p) || Beruf.getBeruf(p) != Beruf.Berufe.NEWS) {
                 int rundfunk = (int) (Steuern.Steuer.RUNDFUNKBEITRAG.getPercentage());
@@ -212,6 +213,12 @@ public class PayDay extends BukkitRunnable {
                 payday -= rundfunk;
             }
 
+            int shops = 0;
+            for (Shops shop : Shops.values()) {
+                if (shop.getOwner() == Script.getNRPID(p)) {
+                    shops++;
+                }
+            }
 
             if (shops > 0) {
                 int tax = (int) (Steuern.Steuer.GEWERBESTEUER.getPercentage()) * shops;
@@ -246,14 +253,6 @@ public class PayDay extends BukkitRunnable {
                 payday -= grundsteuer;
                 Stadtkasse.addStadtkasse(grundsteuer, "Grundsteuer von " + Script.getName(p) + " erhalten", Steuern.Steuer.GRUNDSTEUER);
             }
-
-            if (Pets.amount.containsKey(p.getUniqueId()))
-                if (Pets.amount.get(p.getUniqueId()) > 0) {
-                    int tax = Pets.amount.get(p.getUniqueId()) * 20;
-                    p.sendMessage("§8" + Messages.ARROW + " §7Tierversicherung: §c-" + tax + "€");
-                    payday -= tax;
-                    Stadtkasse.addStadtkasse(tax, "Tierversicherung von " + Script.getName(p) + " erhalten", null);
-                }
 
             if (Selfstorage.hasSelfstorage(p)) {
                 int price = 10;

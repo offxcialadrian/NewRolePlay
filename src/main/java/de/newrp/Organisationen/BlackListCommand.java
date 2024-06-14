@@ -29,6 +29,7 @@ public class BlackListCommand implements CommandExecutor, Listener, TabCompleter
         Player p = (Player) cs;
         if (cmd.getName().equalsIgnoreCase("bl") || cmd.getName().equalsIgnoreCase("blacklist")) {
             if (!Organisation.hasOrganisation(p)) return Collections.EMPTY_LIST;
+            if (Organisation.getOrganisation(p) == Organisation.HITMEN) return Collections.EMPTY_LIST;
             final List<String> oneArgList = new ArrayList<>();
             final List<String> completions = new ArrayList<>();
             for (Reasons reason : Reasons.getReasons(Organisation.getOrganisation(p))) {
@@ -164,7 +165,12 @@ public class BlackListCommand implements CommandExecutor, Listener, TabCompleter
         Organisation o = Organisation.getOrganisation(p);
 
         if(!o.hasBlacklist()) {
-            p.sendMessage(Blacklist.PREFIX + "Deine Organisation hat keine Blacklist. Ihr schaltet die Blacklist mit Level-2 frei.");
+            p.sendMessage(Blacklist.PREFIX + "Deine Organisation hat noch keine Blacklist.");
+            return true;
+        }
+
+        if (Organisation.getOrganisation(p) == Organisation.HITMEN) {
+            p.sendMessage(Blacklist.PREFIX + "Deine Organisation hat keine Blacklist.");
             return true;
         }
 
@@ -183,10 +189,12 @@ public class BlackListCommand implements CommandExecutor, Listener, TabCompleter
                             .append(" §7|§a ").append(bl.getKills()).append(" Kills §7|§a ").append(bl.getPrice()).append("€").append((AFK.isAFK(p1) ? " (AFK seit " + AFK.getAFKTime(p1) +  " Uhr)\n" : "\n"));
                 }
             }
-            for (Blacklist bl : offline) {
-                String time = getTime(bl);
-                sb.append(" §7» §c").append(bl.getUserName()).append(" §7|§c ").append(bl.getReason()).append(" §7|§c ").append(time)
-                        .append(" §7|§c ").append(bl.getKills()).append(" Kills §7|§c ").append(bl.getPrice()).append("€\n");
+            if (args.length > 1) {
+                for (Blacklist bl : offline) {
+                    String time = getTime(bl);
+                    sb.append(" §7» §c").append(bl.getUserName()).append(" §7|§c ").append(bl.getReason()).append(" §7|§c ").append(time)
+                            .append(" §7|§c ").append(bl.getKills()).append(" Kills §7|§c ").append(bl.getPrice()).append("€\n");
+                }
             }
             p.sendMessage(sb.toString());
             return true;
@@ -352,27 +360,26 @@ public class BlackListCommand implements CommandExecutor, Listener, TabCompleter
         p.sendMessage("§8» §6/blacklist list");
     }
 
-    private final IDeathmatchArenaService deathmatchArenaService = DependencyContainer.getContainer().getDependency(IDeathmatchArenaService.class);
-
     @EventHandler
     public void onDeath(PlayerDeathEvent e) {
         Player killed = e.getEntity();
         Player killer = killed.getKiller();
         if (killer == null) return;
 
-        Organisation f = Organisation.getOrganisation(killer);
-        if (!Blacklist.isOnBlacklist(killed, f)) return;
-        if(this.deathmatchArenaService.isInDeathmatch(killed, false)) return;
+        if (!Organisation.hasOrganisation(killer)) return;
+        Organisation orga = Organisation.getOrganisation(killer);
+        if (!Blacklist.isOnBlacklist(killed, orga)) return;
+        if (DependencyContainer.getContainer().getDependency(IDeathmatchArenaService.class).isInDeathmatch(killed, false)) return;
 
-        Blacklist bl = Blacklist.getBlacklistObject(Script.getNRPID(killed), f);
+        Blacklist bl = Blacklist.getBlacklistObject(Script.getNRPID(killed), orga);
         int kills = bl.getKills();
         Script.addEXP(killer, Script.getRandom(3, 7), true);
-        f.addExp(Script.getRandom(5, 15));
-        f.sendMessage(Blacklist.PREFIX + Script.getName(killer) + " hat " + Script.getName(killed) + " getötet. (" + (bl.getKills()-1) + "/" + bl.getKills() + " Kills)");
+        orga.addExp(Script.getRandom(5, 15));
+        orga.sendMessage(Blacklist.PREFIX + Script.getName(killer) + " hat " + Script.getName(killed) + " getötet. (" + (bl.getKills()-1) + "/" + bl.getKills() + " Kills)");
         if (kills == 1) {
-            f.sendMessage(Blacklist.PREFIX + Script.getName(killed) + " wurde automatisch von der Blacklist entfernt.");
-            killed.sendMessage(Blacklist.PREFIX + "Du wurdest automatisch von der Blacklist der " + f.getName() + " entfernt.");
-            Blacklist.remove(killed, f);
+            orga.sendMessage(Blacklist.PREFIX + Script.getName(killed) + " wurde automatisch von der Blacklist entfernt.");
+            killed.sendMessage(Blacklist.PREFIX + "Du wurdest automatisch von der Blacklist der " + orga.getName() + " entfernt.");
+            Blacklist.remove(killed, orga);
         } else {
             Organisation f1 = Organisation.getOrganisation(killer);
             killed.sendMessage(Blacklist.PREFIX + "Du wurdest getötet weil du auf der Blacklist der " + f1.getName() + " bist.");
