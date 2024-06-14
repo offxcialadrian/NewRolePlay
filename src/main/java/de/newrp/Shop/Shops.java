@@ -48,7 +48,7 @@ public enum Shops {
     AUTODEALER(29, "Autohaus", "Autohaus", 130000, new Location(Script.WORLD, 411, 77, 1081, -180.1416f, 90.0f), 30, 600, false, ShopType.CARDEALER, new Location(Script.WORLD, 412.1, 77, 1079.4, -0.4f, 0.8f)),
     BLUMENLADEN_GYM(30, "Blumenladen Fitnessstudio", "Blumenladen Fitnessstudio", 55000, new Location(Script.WORLD, 517, 66, 774, -1.5904541f, 90.0f), 12, 600, true, ShopType.FLOWER, new Location(Script.WORLD, 518.1, 66, 776.8, 181f, 1.9f)),
     // HANKYS(34, "Hankys", "Hankys", 60000, new Location(Script.WORLD, 557, 64, 1270, -359.05908f, 12.675349f), 15, 600, true, ShopType.ELECTRONIC, new Location(Script.WORLD, 558.5, 64, 1272.4, 179.9f, 3.3f)),
-    JAGDHUETTE(35, "Jagdhütte", "Jagdhütte", 30000, new Location(Script.WORLD, 476, 70, 1186, 89.78363f, 89.33273f), 4, 600, true, ShopType.JAGDHUETTE, new Location(Script.WORLD, 475.2, 70.1, 1187, 238.3f, 1.9f)),
+    JAGDHUETTE(35, "Jagdhütte", "Jagdhütte", 30000, new Location(Script.WORLD, 476, 70, 1186, 89.78363f, 89.33273f), 0, 600, true, ShopType.JAGDHUETTE, new Location(Script.WORLD, 475.2, 70.1, 1187, 238.3f, 1.9f)),
     BUCHHANDLUNG_INNENSTADT(36, "Buchladen Innenstadt", "Buchladen Innenstadt", 29000, new Location(Script.WORLD, 663, 67, 824, -270.25092f, 24.689606f), 0, 600, true, ShopType.NEWS, new Location(Script.WORLD, 659.5, 67, 824.5, 269.9f, 1.9f)),
     ANGELLADEN(37, "Angelladen", "Angelladen", 7500, new Location(Script.WORLD, 766, 64, 780, 266.49414f, 89.59964f), 2, 600, true, ShopType.ANGELSHOP, new Location(Script.WORLD, 769.4, 64, 780.6, 89.5f, 1.3f)),
     BAECKEREI(38, "Bäckerei", "Bäckerei", 5000, new Location(Script.WORLD, 450, 66, 644, 90.62988f, 22.937416f), 3, 600, true, ShopType.CAFE, new Location(Script.WORLD, 446.5, 66, 644.1, -91.1f, 1.3f)),
