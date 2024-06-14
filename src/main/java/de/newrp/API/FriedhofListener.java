@@ -43,7 +43,7 @@ public class FriedhofListener implements Listener {
 
         Player p = e.getEntity();
 
-        if (Friedhof.getDead(p) == null) {
+        if (Friedhof.getDead(p) != null) {
             return;
         }
 
