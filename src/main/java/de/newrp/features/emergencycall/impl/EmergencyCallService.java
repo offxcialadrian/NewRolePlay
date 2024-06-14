@@ -2,13 +2,9 @@ package de.newrp.features.emergencycall.impl;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import de.newrp.API.Messages;
-import de.newrp.API.Navi;
-import de.newrp.API.Route;
-import de.newrp.API.Script;
+import de.newrp.API.*;
 import de.newrp.Administrator.SDuty;
 import de.newrp.Berufe.Beruf;
-import de.newrp.Berufe.Duty;
 import de.newrp.NewRoleplayMain;
 import de.newrp.Player.AFK;
 import de.newrp.features.emergencycall.IEmergencyCallService;
@@ -69,6 +65,7 @@ public class EmergencyCallService implements IEmergencyCallService {
 
     @Override
     public void doneEmergencyCall(Player player, EmergencyCall emergencyCall) {
+        Activity.grantActivity(Script.getNRPID(player), Activities.NOTRUF);
         for (UUID member : emergencyCall.faction().getBeruf().keySet()) {
             Objects.requireNonNull(Bukkit.getPlayer(member)).sendMessage(this.getPrefix() + Script.getName(player) + " hat den Notruf von " + Script.getName(emergencyCall.sender()) + " abgeschlossen");
         }
