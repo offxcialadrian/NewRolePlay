@@ -484,7 +484,7 @@ public class Annehmen implements CommandExecutor {
                 }
             }
             Contract.removeOffer(p);
-            offer.remove(p.getName() + ".rob");
+            offer.remove(p.getName() + ".contract");
         } else {
             p.sendMessage(Messages.ERROR + "Dir wird nichts angeboten.");
         }

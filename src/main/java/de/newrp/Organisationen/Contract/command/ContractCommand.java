@@ -86,8 +86,8 @@ public class ContractCommand implements CommandExecutor, TabCompleter {
                             player.sendMessage(Messages.NO_PERMISSION);
                             return true;
                         }
-                        Player target = Script.getPlayer(args[1]);
-                        if (target == null) {
+                        OfflinePlayer target = Script.getOfflinePlayer(args[1]);
+                        if (Script.getNRPID(target) == 0) {
                             player.sendMessage(Messages.PLAYER_NOT_FOUND);
                             return true;
                         }
