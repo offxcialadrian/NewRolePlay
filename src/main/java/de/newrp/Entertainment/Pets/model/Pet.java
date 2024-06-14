@@ -33,7 +33,7 @@ public class Pet{
     }
 
     public String getUncoloredName() {
-        return name.replaceAll("§[0-9a-zA-Z]","");
+        return name.replaceAll("&[0-9a-zA-Z]","");
     }
 
 }

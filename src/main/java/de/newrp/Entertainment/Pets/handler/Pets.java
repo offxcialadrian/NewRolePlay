@@ -108,7 +108,7 @@ public class Pets implements Listener, CommandExecutor, TabCompleter {
                 } else {
                     if (event.getClicker().isSneaking()) {
                         UUID uuid = event.getClicker().getUniqueId();
-                        Long millis = System.currentTimeMillis();
+                        long millis = System.currentTimeMillis();
                         if(!cuddleCooldown.containsKey(uuid) || cuddleCooldown.get(uuid)+10000 > millis) {
                             Me.sendMessage(event.getClicker(), "streichelt " + pet.getUncoloredName() + ".");
                             cuddleCooldown.put(event.getClicker().getUniqueId(), millis);
