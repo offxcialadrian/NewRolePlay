@@ -56,6 +56,9 @@ public class UmsatzCommand implements CommandExecutor {
                         player.sendMessage(Messages.NO_PERMISSION);
                         return true;
                     }
+                } else if (!SDuty.isSDuty(player)) {
+                    player.sendMessage(Messages.NO_PERMISSION);
+                    return true;
                 }
             }
 

@@ -57,7 +57,7 @@ public class Activity {
             if (Objects.requireNonNull(Script.getOfflinePlayer(giver)).isOnline()) {
                 Objects.requireNonNull(Script.getPlayer(giver)).sendMessage(PREFIX + "§7Aktivität §3§l" + name + " §8(§3" + points + "∅§8) §7an §3" + Objects.requireNonNull(Script.getOfflinePlayer(id)).getName() + " §7gegeben.");
                 if (Objects.requireNonNull(Script.getOfflinePlayer(id)).isOnline()) {
-                    Objects.requireNonNull(Script.getPlayer(id)).sendMessage(PREFIX + "§7Aktivität §3§l" + name + " §8(§3" + points + "∅§8) §7von §3" + Objects.requireNonNull(Script.getOfflinePlayer(id)).getName() + " §7erhalten.");
+                    Objects.requireNonNull(Script.getPlayer(id)).sendMessage(PREFIX + "§7Aktivität §3§l" + name + " §8(§3" + points + "∅§8) §7von §3" + Objects.requireNonNull(Script.getOfflinePlayer(giver)).getName() + " §7erhalten.");
                 }
             }
         } else {
