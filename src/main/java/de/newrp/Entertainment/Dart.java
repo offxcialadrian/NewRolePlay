@@ -42,6 +42,7 @@ public class Dart implements Listener, CommandExecutor {
         if (event.getEntity() instanceof SpectralArrow) {
             SpectralArrow arrow = (SpectralArrow) event.getEntity();
             Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), arrow::remove, 30 * 20L);
+            if (event.getHitBlock() == null) return;
             if (event.getHitBlock().getBlockData().getMaterial().equals(Material.TARGET)) {
                 ProjectileSource shooter = event.getEntity().getShooter();
                 if (shooter instanceof Player) {
