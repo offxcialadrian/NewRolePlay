@@ -96,6 +96,11 @@ public class StartBizWarCommand implements CommandExecutor {
             return false;
         }
 
+        if(bizWarService.getBizWarOfOrganisation(activeOwner) != null) {
+            player.sendMessage(Messages.ERROR + "§cDie Organisation §e" + activeOwner.getName() + " §cist bereits in einem Biz War!");
+            return false;
+        }
+
         this.bizWarService.startBizWar(shop, player, organisation, activeOwner);
         return false;
     }
