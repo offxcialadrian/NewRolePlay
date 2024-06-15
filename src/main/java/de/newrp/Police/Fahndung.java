@@ -43,7 +43,30 @@ public class Fahndung implements CommandExecutor, TabCompleter {
                 }
             } else {
                 if (Beruf.hasBeruf(p) && Beruf.getBeruf(p) == Beruf.Berufe.POLICE) {
-                    p.sendMessage(Messages.ERROR + "/wanted [player] [reasons]");
+                    Bukkit.getScheduler().runTaskAsynchronously(NewRoleplayMain.getInstance(), () -> {
+                        List<WantedInformation> wantedInformations = new ArrayList<>();
+                        for(Player all : Bukkit.getOnlinePlayers()) {
+                            if(SDuty.isSDuty(all)) continue;
+                            if(getStraftatIDs(all).isEmpty()) continue;
+                            int wanteds = 0;
+                            for(int i : getStraftatIDs(all)) {
+                                wanteds += Straftat.getWanteds(i);
+                            }
+                            if(wanteds == 0) continue;
+                            wantedInformations.add(new WantedInformation(all, wanteds));
+                        }
+
+                        wantedInformations.sort((o1, o2) -> Integer.compare(o2.getWantedPoints(), o1.getWantedPoints()));
+                        if(wantedInformations.isEmpty()) {
+                            p.sendMessage(Messages.ERROR + "Es gibt keine Fahndungen.");
+                            return;
+                        }
+
+                        p.sendMessage(Straftat.PREFIX + "Alle Fahndungen:");
+                        for (WantedInformation wantedInformation : wantedInformations) {
+                            p.sendMessage("§8» §6" + Script.getName(wantedInformation.getPlayer()) + " §8× §6" + wantedInformation.getWantedPoints() + " WantedPunkte" + (AFK.isAFK(wantedInformation.getPlayer()) ? " §8× §6AFK" : ""));
+                        }
+                    });
                 } else {
                     p.sendMessage(Messages.ERROR + "Du wirst nicht gesucht.");
                 }
@@ -64,35 +87,6 @@ public class Fahndung implements CommandExecutor, TabCompleter {
 
         if(!Duty.isInDuty(p)) {
             p.sendMessage(Messages.ERROR + "Du musst im Dienst sein, um jemanden zu fahnden.");
-            return true;
-        }
-
-
-        if(args.length == 0) {
-            Bukkit.getScheduler().runTaskAsynchronously(NewRoleplayMain.getInstance(), () -> {
-                List<WantedInformation> wantedInformations = new ArrayList<>();
-                for(Player all : Bukkit.getOnlinePlayers()) {
-                    if(SDuty.isSDuty(all)) continue;
-                    if(getStraftatIDs(all).isEmpty()) continue;
-                    int wanteds = 0;
-                    for(int i : getStraftatIDs(all)) {
-                        wanteds += Straftat.getWanteds(i);
-                    }
-                    if(wanteds == 0) continue;
-                    wantedInformations.add(new WantedInformation(all, wanteds));
-                }
-
-                wantedInformations.sort((o1, o2) -> Integer.compare(o2.getWantedPoints(), o1.getWantedPoints()));
-                if(wantedInformations.isEmpty()) {
-                    p.sendMessage(Messages.ERROR + "Es gibt keine Fahndungen.");
-                    return;
-                }
-
-                p.sendMessage(Straftat.PREFIX + "Alle Fahndungen:");
-                for (WantedInformation wantedInformation : wantedInformations) {
-                    p.sendMessage("§8» §6" + Script.getName(wantedInformation.getPlayer()) + " §8× §6" + wantedInformation.getWantedPoints() + " WantedPunkte" + (AFK.isAFK(wantedInformation.getPlayer()) ? " §8× §6AFK" : ""));
-                }
-            });
             return true;
         }
 
