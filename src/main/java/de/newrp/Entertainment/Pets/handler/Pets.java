@@ -16,6 +16,7 @@ import de.newrp.Shop.Shops;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
 import net.citizensnpcs.api.npc.NPC;
+import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
@@ -158,7 +159,6 @@ public class Pets implements Listener, CommandExecutor, TabCompleter {
 
     public static void reset() {
         for (LivingEntity entity : Script.WORLD.getLivingEntities()) entity.remove();
-        Bukkit.getScheduler().runTaskTimer(NewRoleplayMain.getInstance(), Pets::refresh, 10 * 20L, 10 * 20L);
     }
 
     public static void refresh() {
@@ -168,6 +168,7 @@ public class Pets implements Listener, CommandExecutor, TabCompleter {
     }
 
     public static void spawn(Player player) {
+        refresh();
         enabled.put(player.getUniqueId(), false);
         amount.put(player.getUniqueId(), 0);
         for (Pet pet : getPets(Script.getNRPID(player))) {
