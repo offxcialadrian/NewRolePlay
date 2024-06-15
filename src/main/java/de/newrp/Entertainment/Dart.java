@@ -144,7 +144,7 @@ public class Dart implements Listener, CommandExecutor {
 
                 shop.addKasse(25);
                 if (shop.getOwner() > 0)
-                    Script.sendActionBar(Objects.requireNonNull(Script.getPlayer(shop.getOwner())), Shop.PREFIX + "Dein Shop §6" + shop.getPublicName() + " §7hat §620€ §7Gewinn gemacht aus dem Verkauf von §610x Dart-Pfeile §7(§620€§7)");
+                    Script.sendActionBar(Objects.requireNonNull(Script.getPlayer(shop.getOwner())), Shop.PREFIX + "Dein Shop §6" + shop.getPublicName() + " §7hat §625€ §7Gewinn gemacht aus dem Verkauf von §610x Dart-Pfeile §7(§625€§7)");
             } else {
                 player.sendMessage(PREFIX + "Du benötigst 25€ um dir Pfeile zu kaufen.");
             }

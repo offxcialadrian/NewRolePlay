@@ -62,7 +62,7 @@ public enum Shops {
     CLUB(46, "Club-Bar", "Club-Bar", 25000, new Location(Script.WORLD, 477.5, 67, 1285.5, 0.0f, 0.0f), 2, 600, true, ShopType.BAR, new Location(Script.WORLD, 478.4, 67.1, 1280.3, 285.3f, 1.4f)),
     ZOO(47, "Zoo", "Zoo", 35000, new Location(Script.WORLD, 66.5, 76, 694.5, 0.0f, 0.0f), 2, 600, true, ShopType.MERCH, new Location(Script.WORLD, 73.4, 66, 681.5, -90.0f, 1.4f)),
     // später erst MERCHANDISE(48, "Merchandise", "Merchandise", 30000, new Location(Script.WORLD, 806, 66, 727, 0.0f, 0.0f), 2, 600, true, ShopType.MERCH);
-    PET(49, "Tierhandlung", "Tierhandlung", 60000, new Location(Script.WORLD, 593.5, 69, 1114.5, 16.8f, 90f), 30, 600, true, ShopType.PETS, new Location(Script.WORLD, 593.5, 69, 1118.5, 179.6f, 4.1f));
+    PET(49, "Tierhandlung", "Tierhandlung", 60000, new Location(Script.WORLD, 593.5, 69, 1114.5, 16.8f, 90f), 50, 600, true, ShopType.PETS, new Location(Script.WORLD, 593.5, 69, 1118.5, 179.6f, 4.1f));
 
 
     private final int id;
