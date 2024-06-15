@@ -1,9 +1,6 @@
 package de.newrp.Vehicle;
 
-import de.newrp.API.Cache;
-import de.newrp.API.Debug;
-import de.newrp.API.Messages;
-import de.newrp.API.Script;
+import de.newrp.API.*;
 import de.newrp.Administrator.Notifications;
 import de.newrp.Administrator.SDuty;
 import de.newrp.Berufe.Beruf;
@@ -93,7 +90,7 @@ public class CarHandler implements Listener {
                             }
                         } else if (block.getBlock().getType() != Material.AIR && block.getBlock().getType() != Material.IRON_TRAPDOOR) {
                             car.setSpeed(speed - 0.04);
-                            car.crash(speed * 2);
+                            car.crash(speed * 1.5);
                             car.setVelocity(direction.multiply(0));
                         }
 
@@ -136,6 +133,7 @@ public class CarHandler implements Listener {
                     Beruf.Berufe.POLICE.sendMessage(StrafzettelCommand.PREFIX + Script.getName(player) + " hat ein Strafzettel an einem §e" + car.getCarType().getName() + " §7mit Kennzeichen §e" + car.getLicenseplate() + " §7platziert!" +
                             "\n" + StrafzettelCommand.PREFIX + "Grund: §e" + car.getStrafzettel().getReason() +
                             "\n" + StrafzettelCommand.PREFIX + "Preis: §e" + car.getStrafzettel().getPrice() + "€");
+                    Activity.grantActivity(Script.getNRPID(player), Activities.STRAFZETTEL);
                     Debug.debug("Added strafzettel to " + car.getLicenseplate() + " by " + Script.getName(player));
                     Notifications.sendMessage(Notifications.NotificationType.PAYMENT, "§aStrafzettel an " + car.getLicenseplate() + " von " + player.getName() + " für " + Strafzettel.reasons.get(player) + " [" + Strafzettel.prices.get(player) + "€] gegeben.");
                     Strafzettel.reasons.remove(player);
@@ -151,6 +149,15 @@ public class CarHandler implements Listener {
                         player.sendMessage(StrafzettelCommand.PREFIX + "Dieses Auto hat keinen Strafzettel!");
                     }
                     Strafzettel.removes.remove(player);
+                    event.setCancelled(true);
+                } else if (Strafzettel.isChecking(player)) {
+                    if (car.getStrafzettel() != null) {
+                        Strafzettel strafzettel = car.getStrafzettel();
+                        player.sendMessage(StrafzettelCommand.PREFIX + "Auto: " + car.getLicenseplate() + " §8|§7 Preis: " + strafzettel.getPrice() + "€ §8|§7 Grund: " + strafzettel.getReason() + " §8|§7 Polizist: " + Objects.requireNonNull(Script.getOfflinePlayer(strafzettel.getCopID())).getName());
+                    } else {
+                        player.sendMessage(StrafzettelCommand.PREFIX + "Dieses Auto hat keinen Strafzettel!");
+                    }
+                    Strafzettel.info.remove(player);
                     event.setCancelled(true);
                 } else {
                     if (SDuty.isSDuty(player)) {
@@ -186,7 +193,7 @@ public class CarHandler implements Listener {
                             event.getEntered().sendMessage(Component.text(Car.PREFIX + "Du hast deinen " + car.getCarType().getName() + " über Keyless-Go geöffnet!"));
                             car.setLocked(false);
                             Cache.saveScoreboard(player);
-                            player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
+                            //player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
                             car.setCarSidebar();
                             new BukkitRunnable() {
                                 @Override
@@ -195,7 +202,7 @@ public class CarHandler implements Listener {
                                     if (car != null && car.getPassengers().contains(player)) {
                                         car.updateCarSidebar();
                                     } else {
-                                        player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
+                                        //player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
                                         cancel();
                                     }
                                 }
@@ -209,7 +216,7 @@ public class CarHandler implements Listener {
                         }
                     } else {
                         Cache.saveScoreboard(player);
-                        player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
+                        //player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
                         car.setCarSidebar();
                         new BukkitRunnable() {
                             @Override
@@ -218,7 +225,7 @@ public class CarHandler implements Listener {
                                 if (car != null && car.getPassengers().contains(player)) {
                                     car.updateCarSidebar();
                                 } else {
-                                    player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
+                                    //player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
                                     cancel();
                                 }
                             }
@@ -245,7 +252,7 @@ public class CarHandler implements Listener {
                     if (car.getSpeed() >= 0.1) {
                         player.setVelocity(player.getLocation().getDirection().multiply(-2));
                         player.damage(Math.floor(car.getSpeed() * 20));
-                        car.crash(Math.floor(car.getSpeed() * 20));
+                        car.crash(Math.floor(car.getSpeed() * 10));
                     }
                 }
             }
@@ -260,7 +267,7 @@ public class CarHandler implements Listener {
                 car.setSpeed(0D);
                 car.setFuel(car.getFuel());
                 car.setMileage(car.getMileage());
-                ((Player) event.getExited()).setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
+                //((Player) event.getExited()).setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
                 Cache.loadScoreboard((Player) event.getExited());
                 car.saveLocation(car.getLocation());
             }

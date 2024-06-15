@@ -31,7 +31,7 @@ public class ReviveCommand implements CommandExecutor {
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
         Player p = (Player) cs;
 
-        if (args.length == 1 && Script.hasRank(p, Rank.SUPPORTER, false) && SDuty.isSDuty(p)) {
+        if (args.length > 0 && Script.hasRank(p, Rank.SUPPORTER, false) && SDuty.isSDuty(p)) {
 
             Player tg = Script.getPlayer(args[0]);
             if (tg == null) {
@@ -57,6 +57,7 @@ public class ReviveCommand implements CommandExecutor {
             tg.sendMessage(PREFIX + "Du wurdest von " + Messages.RANK_PREFIX(p) + " wiederbelebt.");
             Friedhof.revive(tg, f.getDeathLocation());
             Script.sendTeamMessage(p, ChatColor.RED, "hat " + Script.getName(tg) + " wiederbelebt.", true);
+            if (!SDuty.isSDuty(p)) Activity.grantActivity(Script.getNRPID(p), Activities.REVIVE);
             if(Corpse.npcMap.containsKey(p.getUniqueId())) Corpse.removeNPC(p);
             if (f.getInventoryContent() != null) {
                 tg.getInventory().clear();
@@ -81,12 +82,23 @@ public class ReviveCommand implements CommandExecutor {
 
 
         Friedhof f_c;
-        f_c = Friedhof.getDeathByLocation(p.getLocation());
-        if (f_c == null) {
-            f_c = Friedhof.getDeathByLocation(p.getLocation());
+        if (args.length > 0) {
+            f_c = Friedhof.getDeathByLocation(args[0], p.getLocation());
+            if (f_c == null) {
+                f_c = Friedhof.getDeathByLocation(args[0], p.getLocation());
 
-            if (f_c != null && System.currentTimeMillis() > f_c.getDeathTime() + TimeUnit.SECONDS.toMillis(f_c.getHelpCounter() * 60L)) {
-                f_c = null;
+                if (f_c != null && System.currentTimeMillis() > f_c.getDeathTime() + TimeUnit.SECONDS.toMillis(f_c.getHelpCounter() * 60L)) {
+                    f_c = null;
+                }
+            }
+        } else {
+            f_c = Friedhof.getDeathByLocation(p.getLocation());
+            if (f_c == null) {
+                f_c = Friedhof.getDeathByLocation(p.getLocation());
+
+                if (f_c != null && System.currentTimeMillis() > f_c.getDeathTime() + TimeUnit.SECONDS.toMillis(f_c.getHelpCounter() * 60L)) {
+                    f_c = null;
+                }
             }
         }
         if (f_c == null) {
@@ -160,7 +172,7 @@ public class ReviveCommand implements CommandExecutor {
                     return;
                 }
             }
-            Script.addEXP(p, Script.getRandom(4, 8));
+            Script.addEXP(p, Script.getRandom(4, 8), true);
             exp_cooldowns.put(p.getName(), time1);
             Waffen.REVIVE_COOLDOWN.put(p.getName(), System.currentTimeMillis());
         }, 5 * 20L);

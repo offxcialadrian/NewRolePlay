@@ -1,8 +1,6 @@
 package de.newrp.Organisationen;
 
-import de.newrp.API.ItemBuilder;
-import de.newrp.API.Messages;
-import de.newrp.API.Script;
+import de.newrp.API.*;
 import de.newrp.NewRoleplayMain;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -43,9 +41,9 @@ public class Drogenbank implements CommandExecutor, Listener {
     public static int getDrogenAmount(Organisation o, Drogen droge) {
         try (Statement stmt = NewRoleplayMain.getConnection().createStatement()) {
             ResultSet rs = stmt.executeQuery("SELECT amount FROM drugbank WHERE organisation = '" + o.getID() + "' AND drug = '" + droge.getID() + "'");
-            if (rs.next()) {
-                return rs.getInt("amount");
-            }
+            int a = 0;
+            while (rs.next()) a += rs.getInt("amount");
+            return a;
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -173,7 +171,7 @@ public class Drogenbank implements CommandExecutor, Listener {
 
             int amount = Integer.parseInt(args[1]);
             if(amount < 1) {
-                p.sendMessage(Messages.ERROR + "Gebe eine Zahl über 0 an");
+                p.sendMessage(Messages.ERROR + "Du kannst keine negative Drogen-Anzahl aus der Drogenbank nehmen.");
                 return true;
             }
             drug_amount.put(p.getName(), amount);
@@ -207,6 +205,7 @@ public class Drogenbank implements CommandExecutor, Listener {
             int amount = inv.getItem(i).getAmount();
             Drogenbank.addDrogen(Organisation.getOrganisation(p), droge, purity, amount);
             Organisation.getOrganisation(p).sendMessage(Organisation.PREFIX + "Es wurden " + amount + "g " + droge.getName() + " mit dem Reinheitsgrad " + purity.getText() + " von " + Script.getName(p) + " in die Drogenbank gelegt.");
+            Activity.addActivity(Script.getNRPID(p), 0, Activities.PLANTAGE.getName(), Activities.PLANTAGE.getPoints() * amount);
         }
     }
 

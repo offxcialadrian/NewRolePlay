@@ -1,9 +1,6 @@
 package de.newrp.Chat;
 
-import de.newrp.API.Friedhof;
-import de.newrp.API.Log;
-import de.newrp.API.Messages;
-import de.newrp.API.Script;
+import de.newrp.API.*;
 import de.newrp.Administrator.AntiCheatSystem;
 import de.newrp.Administrator.Notifications;
 import de.newrp.Administrator.Punish;
@@ -34,6 +31,7 @@ public class Chat implements Listener {
             "huan",
             "endsieg",
             "hitler",
+            "adolf",
             "jude",
             "ritzen",
             "akbar",
@@ -42,7 +40,14 @@ public class Chat implements Listener {
             "nazi",
             "transe",
             "schwuchtel",
+            "sieg heil",
+            "nazi",
+            "untermensch",
+            "auschwitz",
+            "siegheil",
             "nigga",
+            "niggi",
+            "neger",
             "nigger",
             "niggah"
     };
@@ -211,6 +216,11 @@ public class Chat implements Listener {
         }
 
         String message = e.getMessage();
+        if (Utils.alkLevel.containsKey(p.getUniqueId())) {
+            if (Utils.alkLevel.get(p.getUniqueId()) > 0.5F) {
+                message = Drink.convertToDrunkText(message, Utils.alkLevel.get(p.getUniqueId()));
+            }
+        }
         Set<String> foundNames = getMentionedNames(message);
         String speakWord = "sagt";
         if(message.endsWith("?")) speakWord = "fragt";

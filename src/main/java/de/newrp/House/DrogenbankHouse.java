@@ -179,7 +179,7 @@ public class DrogenbankHouse implements CommandExecutor, Listener {
 
             int amount = Integer.parseInt(args[1]);
             if(amount < 1) {
-                p.sendMessage(Messages.ERROR + "Gebe eine Zahl über 0 an");
+                p.sendMessage(Messages.ERROR + "Du kannst keine negative Drogen-Anzahl aus der Drogenbank nehmen.");
                 return true;
             }
             drug_amount.put(p.getName(), amount);

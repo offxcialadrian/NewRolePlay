@@ -20,6 +20,7 @@ import de.newrp.Votifier.VoteListener;
 import de.newrp.Waffen.Weapon;
 import de.newrp.NewRoleplayMain;
 import de.newrp.dependencies.DependencyContainer;
+import de.newrp.features.scoreboards.IScoreboardService;
 import de.newrp.features.playtime.IPlaytimeService;
 import me.arcaniax.hdb.api.HeadDatabaseAPI;
 import net.md_5.bungee.api.ChatMessageType;
@@ -64,6 +65,7 @@ import java.time.Period;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
 
 import static de.newrp.API.Rank.*;
 
@@ -178,44 +180,9 @@ public class Script {
         return item;
     }
 
-    /*public static void updateListname(Player p) {
-        String color = "";
-        if (Beruf.hasBeruf(p)) {
-            if (Beruf.getBeruf(p) == Beruf.Berufe.POLICE) color = "§9";
-            if (Beruf.getBeruf(p) == Beruf.Berufe.RETTUNGSDIENST) color = "§4";
-            if (Beruf.getBeruf(p) == Beruf.Berufe.GOVERNMENT) color = "§3";
-            if (Beruf.getBeruf(p) == Beruf.Berufe.NEWS) color = "§6";
-            if (Beruf.getAbteilung(p) == Abteilung.Abteilungen.ZIVILPOLIZEI) color = "§r";
-        }
-        if (!SDuty.isSDuty(p)) p.setPlayerListName("§r" + p.getName());
-        if (SDuty.isSDuty(p)) p.setPlayerListName(getRank(p)==DEVELOPER?"§5§lDEV §8× §c" + p.getName():"§5§lNRP §8× §c" + p.getName());
-        if (Duty.isInDuty(p)) p.setPlayerListName(color + p.getPlayerListName());
-        if (BuildMode.isInBuildMode(p)) p.setPlayerListName("§e§lB §8× §r" + p.getPlayerListName());
-        if (TicketCommand.isInTicket(p)) p.setPlayerListName("§d§lT §8× §r" + p.getPlayerListName());
-        if (Friedhof.isDead(p)) p.setPlayerListName(p.getPlayerListName() + " §8✟");
-    }*/
-
     public static void updateListname(Player p) {
-        String color = "";
-        if (Beruf.hasBeruf(p)) {
-            if (Beruf.getBeruf(p) == Beruf.Berufe.POLICE) color = "§9";
-            if (Beruf.getBeruf(p) == Beruf.Berufe.RETTUNGSDIENST) color = "§4";
-            if (Beruf.getBeruf(p) == Beruf.Berufe.GOVERNMENT) color = "§3";
-            if (Beruf.getBeruf(p) == Beruf.Berufe.NEWS) color = "§6";
-            if (Beruf.getBeruf(p) == Beruf.Berufe.BUNDESNACHRICHTENDIENST) color = "§1";
-            if (Beruf.getAbteilung(p) == Abteilung.Abteilungen.ZIVILPOLIZEI) color = "§r";
-        }
-        if (!SDuty.isSDuty(p)) p.setPlayerListName("§r" + p.getName());
-        if (SDuty.isSDuty(p) && getRank(p) == OWNER) p.setPlayerListName("§4§lCEO §8× §r" + p.getName());
-        if (SDuty.isSDuty(p) && getRank(p) == ADMINISTRATOR) p.setPlayerListName("§c§lADMIN §8× §r" + p.getName());
-        if (SDuty.isSDuty(p) && getRank(p) == DEVELOPER) p.setPlayerListName("§b§lDEV §8× §r" + p.getName());
-        if (SDuty.isSDuty(p) && getRank(p) == SUPPORTER) p.setPlayerListName("§e§lSUP §8× §r" + p.getName());
-        if (SDuty.isSDuty(p) && getRank(p) == MODERATOR) p.setPlayerListName("§9§lMOD §8× §r" + p.getName());
-        if (SDuty.isSDuty(p) && getRank(p) == FRAKTIONSMANAGER) p.setPlayerListName("§6§lFM §8× §r" + p.getName());
-        if (Duty.isInDuty(p)) p.setPlayerListName(color + p.getPlayerListName());
-        if (BuildMode.isInBuildMode(p)) p.setPlayerListName("§e§lB §8× §r" + p.getPlayerListName());
-        if (TicketCommand.isInTicket(p)) p.setPlayerListName("§d§lT §8× §r" + p.getPlayerListName());
-        if (Friedhof.isDead(p)) p.setPlayerListName(p.getPlayerListName() + " §8✟");
+        final IScoreboardService scoreboardService = DependencyContainer.getContainer().getDependency(IScoreboardService.class);
+        scoreboardService.updateGroup(p);
     }
 
     public static Inventory fillInv(Inventory inv) {
@@ -531,7 +498,7 @@ public class Script {
         if (rank == MODERATOR) return "MOD × " + player.getName();
         if (rank == FRAKTIONSMANAGER) return "FM × " + player.getName();
         if (rank == ADMINISTRATOR) return "ADMIN × " + player.getName();
-        if (rank == OWNER) return "CEO × " + player.getName();
+        if (rank == OWNER) return "ADMIN × " + player.getName();
         return player.getName();
     }
 
@@ -543,7 +510,7 @@ public class Script {
             if (getRank(p) == MODERATOR) return "MOD × " + p.getName();
             if (getRank(p) == FRAKTIONSMANAGER) return "FM × " + p.getName();
             if (getRank(p) == ADMINISTRATOR) return "ADMIN × " + p.getName();
-            if (getRank(p) == OWNER) return "CEO × " + p.getName();
+            if (getRank(p) == OWNER) return "ADMIN × " + p.getName();
         }
         return p.getName();
     }
@@ -791,7 +758,7 @@ public class Script {
             p.sendMessage(Messages.INFO + "Dein Name wurde aktualisiert.");
             int id = getNRPID(p);
             String name = p.getName();
-            if (getRank(p) == OWNER) name = "CEO × " + name;
+            if (getRank(p) == OWNER) name = "ADMIN × " + name;
             if (getRank(p) == ADMINISTRATOR) name = "ADMIN × " + name;
             if (getRank(p) == DEVELOPER) name = "DEV × " + name;
             if (getRank(p) == SUPPORTER) name = "SUP × " + name;
@@ -1287,6 +1254,9 @@ public class Script {
                 do {
                     if (rs.getString("msg").equalsIgnoreCase("§8[§eBeruf§8] §e" + Messages.ARROW + " Du wurdest aus deinem Beruf geworfen."))
                         Equip.removeEquip(p);
+                    if(java.util.regex.Pattern.compile("§8\\[§eUninvite§8] §e» Du wurdest aus .* entlassen.").matcher(rs.getString("msg")).find()) {
+                        Equip.removeEquip(p);
+                    }
                     p.sendMessage(rs.getString("msg"));
                 } while (rs.next());
                 executeAsyncUpdate("DELETE FROM offline_msg WHERE nrp_id='" + getNRPID(p) + "'");
@@ -1746,7 +1716,7 @@ public class Script {
             }
         }
 
-        Material[] blocked = new Material[]{Material.TNT, Material.LEATHER_CHESTPLATE, Material.FEATHER, Material.BONE, Material.FLINT};
+        Material[] blocked = new Material[]{Material.TNT, Material.LEATHER_CHESTPLATE, Material.FEATHER, Material.BONE, Material.FLINT, Material.IRON_SWORD};
         for (Material mat : blocked) {
             p.getInventory().remove(mat);
             if (p.getInventory().getItemInOffHand().getType().equals(mat)) {
@@ -1803,12 +1773,7 @@ public class Script {
 
 
     public static int getLevelCost(Player p) {
-        int level_cost;
-        level_cost = 692 + ((getLevel(p) * 2) * 497);
-        if (getLevel(p) % 2 == 0) {
-            level_cost += 173;
-        }
-        return level_cost;
+        return Math.toIntExact(Math.round(10 * Math.E * (Math.pow(getLevel(p) + 5, 2))));
     }
 
     public static void increaseLevel(Player p) {
@@ -1833,25 +1798,30 @@ public class Script {
         setExpbarPercentage(p, i);
     }
 
-    public static void addEXP(Player p, int exp) {
+    public static void addEXP(Player p, int exp, boolean event) {
         /// ???
         if (exp > 200) {
             Script.sendTeamMessage(AntiCheatSystem.PREFIX + "Verdacht auf Exp-Cheat bei " + Script.getName(p) + " (+" + exp + " Exp)");
         }
         int id = getNRPID(p);
-        if (Script.getLevel(p) > 1) {
-            if (NewRoleplayMain.event == Event.TRIPPLE_XP) {
-                exp *= 3;
-                p.sendMessage(" §a+" + exp + " Exp! §7(§6§lTRIPPLE EXP§7)");
-            } else if (NewRoleplayMain.event == Event.DOUBLE_XP || NewRoleplayMain.event == Event.DOUBLE_XP_WEEKEND || NewRoleplayMain.event == Event.VOTE) {
-                exp *= 2;
-                p.sendMessage(" §a+" + exp + " Exp! §7(§6§lDOUBLE EXP§7)");
+        if (event) {
+            if (Script.getLevel(p) > 1) {
+                if (NewRoleplayMain.event == Event.TRIPPLE_XP) {
+                    exp *= 3;
+                    p.sendMessage(" §a+" + exp + " Exp! §7(§6§lTRIPPLE EXP§7)");
+                } else if (NewRoleplayMain.event == Event.DOUBLE_XP || NewRoleplayMain.event == Event.DOUBLE_XP_WEEKEND || NewRoleplayMain.event == Event.VOTE) {
+                    exp *= 2;
+                    p.sendMessage(" §a+" + exp + " Exp! §7(§6§lDOUBLE EXP§7)");
+                } else {
+                    p.sendMessage(" §a+" + exp + " Exp!");
+                }
             } else {
                 p.sendMessage(" §a+" + exp + " Exp!");
             }
         } else {
             p.sendMessage(" §a+" + exp + " Exp!");
         }
+
         sendActionBar(p, "§a+ " + exp + " Exp!");
         executeUpdate("UPDATE level SET exp=" + (getExp(p) + exp) + " WHERE nrp_id=" + id);
         p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1F, 1F);
@@ -2298,7 +2268,7 @@ public class Script {
         new BukkitRunnable() {
             @Override
             public void run() {
-                String header = "\n§5§lNEW ROLEPLAY\n§6§lTHE NEXT BIG THING\n";
+                String header = "\n§5§lNEW ROLEPLAY\n";
                 String footer;
                 int online = Bukkit.getOnlinePlayers().size();
                 footer = "\n§6Version §8» §6" + NewRoleplayMain.getInstance().getDescription().getVersion() + "\n§cOnline §8» §c" + online + " Spieler\n";

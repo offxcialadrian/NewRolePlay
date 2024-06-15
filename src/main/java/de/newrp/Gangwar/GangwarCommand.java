@@ -4,6 +4,7 @@ import de.newrp.API.*;
 import de.newrp.Administrator.SDuty;
 import de.newrp.Organisationen.Drogen;
 import de.newrp.Organisationen.Organisation;
+import de.newrp.Player.AFK;
 import de.newrp.Waffen.Waffen;
 import de.newrp.Waffen.Weapon;
 import org.bukkit.Bukkit;
@@ -20,9 +21,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
+import java.util.*;
 
 public class GangwarCommand implements CommandExecutor, Listener {
 
@@ -32,21 +31,25 @@ public class GangwarCommand implements CommandExecutor, Listener {
     public static HashMap<Organisation, ArrayList<Location>> captures = new HashMap<>();
     public static HashMap<Location, Long> cooldown = new HashMap<>();
 
+    private static final int MAX = 3;
+
     @Override
     public boolean onCommand(@NotNull CommandSender cs, @NotNull Command cmd, @NotNull String s, @NotNull String[] args) {
         Player p = (Player) cs;
 
-        if(SDuty.isSDuty(p) && args[0].equalsIgnoreCase("standings")) {
-            for(GangwarZones zone : gangwar.keySet()) {
-                Organisation[] orgs = gangwar.get(zone);
-                Organisation org1 = orgs[0];
-                Organisation org2 = orgs[1];
+        if (args.length > 0) {
+            if (SDuty.isSDuty(p) && args[0].equalsIgnoreCase("standings")) {
+                for (GangwarZones zone : gangwar.keySet()) {
+                    Organisation[] orgs = gangwar.get(zone);
+                    Organisation org1 = orgs[0];
+                    Organisation org2 = orgs[1];
 
 
-                p.sendMessage(PREFIX + "Zone: " + zone.getName());
-                p.sendMessage(PREFIX + org1.getName() + " §8» §c" + points.get(org1) + " §8| §c" + points.get(org2) + " §8« §7" + org2.getName());
+                    p.sendMessage(PREFIX + "Zone: " + zone.getName());
+                    p.sendMessage(PREFIX + org1.getName() + " §8» §c" + points.get(org1) + " §8| §c" + points.get(org2) + " §8« §7" + org2.getName());
+                }
+                return true;
             }
-            return true;
         }
 
         if(!Organisation.hasOrganisation(p)) {
@@ -77,6 +80,11 @@ public class GangwarCommand implements CommandExecutor, Listener {
 
         if(zone.getOwner() == Organisation.getOrganisation(p)) {
             p.sendMessage(Messages.ERROR + "Diese Zone gehört bereits deiner Organisation.");
+            return true;
+        }
+
+        if (GangwarZones.getGangwarZoneAmount(Organisation.getOrganisation(p)) >= MAX) {
+            p.sendMessage(Messages.ERROR + "Deine Organisation hat das Maximum an Gangzones erreicht.");
             return true;
         }
 
@@ -234,7 +242,11 @@ public class GangwarCommand implements CommandExecutor, Listener {
 
         o.sendMessage(PREFIX + "Deine Organisation hat den Gangwar in der Zone " + zone.getName() + " gewonnen.");
         o.addExp(points.get(o));
+        for (UUID m : o.getMember()) if (Bukkit.getOfflinePlayer(m).isOnline()) if (!AFK.isAFK(m))
+            Activity.grantActivity(Script.getNRPID(Bukkit.getPlayer(m)), Activities.GANGWAR);
         other.sendMessage(PREFIX + "Deine Organisation hat den Gangwar in der Zone " + zone.getName() + " verloren.");
+        for (UUID m : other.getMember()) if (Bukkit.getOfflinePlayer(m).isOnline()) if (!AFK.isAFK(m))
+            Activity.grantActivity(Script.getNRPID(Bukkit.getPlayer(m)), Activities.GANGWAR);
         other.addExp(points.get(other) / 2);
 
         if(zone.getOwner() != o) {

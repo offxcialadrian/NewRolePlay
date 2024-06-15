@@ -1,10 +1,18 @@
 package de.newrp.config;
 
 import de.newrp.config.data.JDBCConfig;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 public class MainConfig {
 
     private JDBCConfig mainConnection = new JDBCConfig();
@@ -22,34 +30,7 @@ public class MainConfig {
         add("Sonstiges");
         add("Keine Angabe");
     }};
-
-    public MainConfig(JDBCConfig mainConnection, JDBCConfig forumConnection, String jdaBotToken) {
-        this.mainConnection = mainConnection;
-        this.forumConnection = forumConnection;
-        this.jdaBotToken = jdaBotToken;
-    }
-
-    public MainConfig() {
-
-    }
-
-    public JDBCConfig getMainConnection() {
-        return mainConnection;
-    }
-
-    public JDBCConfig getForumConnection() {
-        return forumConnection;
-    }
-
-    public String getJdaBotToken() {
-        return jdaBotToken;
-    }
-
-    public int getMaxRoadBlockAmount() {
-        return maxRoadBlockAmount;
-    }
-
-    public List<String> getRecommendationItems() {
-        return recommendationItems;
-    }
+    private String teamspeakQueryUser = "";
+    private String teamspeakQueryPassword = "";
+    private int groupPrice = 10000;
 }

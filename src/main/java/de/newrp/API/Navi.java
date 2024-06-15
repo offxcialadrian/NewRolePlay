@@ -57,7 +57,7 @@ public enum Navi {
     GROVE("Grove",new Location(Script.WORLD, 775, 64, 1242, 90.474365f, 5.4431314f)),
     HITMEN("The-Rebels-Mercs", new Location(Script.WORLD, 714, 71, 897, -181.29352f, 49.499653f)),
     CORLEONE("Corleone-Familie", new Location(Script.WORLD, 125, 105, 487, 270.77173f, -1.7501303f)),
-    FALCONE("Falcone-Famiglia", new Location(Script.WORLD, 796, 109, 846, 270.17065f, 1.4442922f)),
+    FALCONE("Falcone-Famiglia", new Location(Script.WORLD, 792, 119, 842, -359.60718f, 2.5677238f)),
     KARTELL("Puertoricanisches Kartell", new Location(Script.WORLD, 198, 66, 1120, -90.13266f, 0.2703893f)),
     JVA("Justizvollzugsanstalt", new Location(Script.WORLD, 999, 63, 573, -90.138885f, 2.3394775f)),
     BLUMENHANDLUNG("Blumenhandlung", new Location(Script.WORLD, 316, 76, 932, -181.94073f, 90.0f)),
@@ -70,7 +70,19 @@ public enum Navi {
     CAFE_X3("Cafe am X3", new Location(Script.WORLD, 750, 72, 926, 0.0f, 0.0f)),
     CAFE_AEKI("Cafe im AEKI", new Location(Script.WORLD, 688, 138, 908, 0.0f, 0.0f)),
     CAFE_SH("Cafe Stadthalle", new Location(Script.WORLD, 620, 68, 1027, 0.0f, 0.0f)),
-    DM_ARENA("Deathmatch Arena", new Location(Script.WORLD, 436, 14, 1117));
+    DM_ARENA("Deathmatch Arena", new Location(Script.WORLD, 429.4, 77, 1114.6, -7.2f, 86.1f)),
+    BUCHLADEN("Buchladen", new Location(Script.WORLD, 669, 67, 813)),
+    BAR("Bar", new Location(Script.WORLD, 704.5, 69, 859.5, 0.0f, 0.0f)),
+    CLUB("Club-Bar", new Location(Script.WORLD, 477.5, 67, 1285.5, 0.0f, 0.0f)),
+    ZOO("Zoo", new Location(Script.WORLD, 77.5, 66, 681.5, 0.0f, 0.0f)),
+    FAHRSCHULE("Fahrschule", new Location(Script.WORLD, 396, 76, 1124, 90.0f, 0.0f)),
+    MERCHANDISE("Zoo-Merch", new Location(Script.WORLD, 66.5, 76, 694.5, 0.0f, 0.0f)),
+    // MERCH("Merch-Stand", new Location(Script.WORLD, 806, 66, 727, 0.0f, 0.0f));
+    LABOR("Labor", new Location(Script.WORLD, 373, 74, 1296, 0.0f, 0.0f)),
+    KNAST("Gefängnis", new Location(Script.WORLD, 1018, 68, 549, 180.84424f, -9.02183f)),
+    PARK("Park", new Location(Script.WORLD, 527.3, 68.9, 1121.4, -357.9f, 8.6f)),
+    PET("Tierheim", new Location(Script.WORLD, 593.5, 69, 1114.5, 16.8f, 90f)),
+    BND("BND", new Location(Script.WORLD, 822, 71, 1005, 16.8f, 90f));
 
 
     private final String name;

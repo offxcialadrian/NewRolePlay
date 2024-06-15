@@ -58,7 +58,11 @@ public class Imker implements CommandExecutor, Listener {
         }
 
         GFB.CURRENT.put(p.getName(), GFB.IMKER);
-        cooldown.put(p.getName(), System.currentTimeMillis() + 10 * 60 * 2000L);
+        if (Premium.hasPremium(p)) {
+            cooldown.put(p.getName(), System.currentTimeMillis() + 15 * 60 * 1000L);
+        } else {
+            cooldown.put(p.getName(), System.currentTimeMillis() + 20 * 60 * 1000L);
+        }
         p.sendMessage(PREFIX + "Du hast den Job angenommen!");
         int honey = GFB.IMKER.getLevel(p) + Script.getRandom(7, 9);
         honeys.put(p.getName(), honey);
@@ -141,7 +145,7 @@ public class Imker implements CommandExecutor, Listener {
             GFB.CURRENT.remove(p.getName());
             honeys.remove(p.getName());
             GFB.IMKER.addExp(p, TOTAL_SCORE.get(p.getName())*Script.getRandom(2,3));
-            Script.addEXP(p, GFB.IMKER.getLevel(p) + TOTAL_SCORE.get(p.getName())*Script.getRandom(1, 2)*2);
+            Script.addEXP(p, GFB.IMKER.getLevel(p) + TOTAL_SCORE.get(p.getName())*Script.getRandom(1, 2)*2, true);
             PayDay.addPayDay(p, (GFB.IMKER.getLevel(p) + TOTAL_SCORE.get(p.getName())*2));
             TOTAL_SCORE.remove(p.getName());
             return;

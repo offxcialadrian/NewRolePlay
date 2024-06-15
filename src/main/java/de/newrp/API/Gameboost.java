@@ -42,7 +42,7 @@ public class Gameboost implements CommandExecutor {
         if (player.isOnline()) {
             Player p = player.getPlayer();
             assert p != null;
-            Script.addEXP(p, 50);
+            Script.addEXP(p, 50, true);
 
             p.sendMessage(PREFIX + "§a§lVielen Dank für deinen Einkauf.");
             Achievement.GOENNER.grant(player);

@@ -5,7 +5,6 @@ import de.newrp.API.Messages;
 import de.newrp.API.PayDay;
 import de.newrp.API.Script;
 import de.newrp.Shop.Shops;
-import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -36,16 +35,15 @@ public class DropTabak implements CommandExecutor {
         }
         p.sendMessage(Tabakplantage.PREFIX + "Du hast " + tabak + "g Tabak abgegeben.");
         Shops.WHITE_LOUNGE.addLager(tabak / 2);
-        int money = (int) (tabak * 2.5);
-        int exp = (int) (tabak * 2.5);
+        int money = tabak * 3;
+        int exp = tabak * 4;
         PayDay.addPayDay(p, money);
         GFB.TABAKPLANTAGE.addExp(p, exp);
-        Script.addEXP(p, exp);
+        Script.addEXP(p, exp, true);
         Tabakplantage.freshTobacco.remove(p.getName());
         Tabakplantage.driedTobacco.remove(p.getName());
         Tabakplantage.mixedTobacco.remove(p.getName());
         GFB.CURRENT.remove(p.getName());
-        Tabakplantage.cooldown.put(p.getName(), System.currentTimeMillis() + 10 * 60 * 2000L);
         return true;
     }
 }

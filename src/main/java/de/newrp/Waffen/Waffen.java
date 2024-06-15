@@ -13,12 +13,14 @@ import de.newrp.Police.Handschellen;
 import de.newrp.Shop.Shops;
 import de.newrp.NewRoleplayMain;
 import de.newrp.dependencies.DependencyContainer;
+import de.newrp.features.bizwar.IBizWarService;
 import de.newrp.features.deathmatcharena.IDeathmatchArenaService;
 import de.newrp.features.deathmatcharena.data.DeathmatchArenaStats;
 import de.newrp.features.takemoney.ITakeMoneyService;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.Sound;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
@@ -35,6 +37,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -51,6 +54,7 @@ public class Waffen implements Listener {
     public static final HashMap<Organisation, Long> robcooldown = new HashMap<>();
     public static String PREFIX = "§8[§6Waffe§8] §6" + Messages.ARROW + " §7";
     public static HashMap<String, Integer> progress = new HashMap<>();
+    public static ArrayList<String> robShopPlayers = new ArrayList<>();
 
     public static int getAmmo(ItemStack is) {
         if (!is.hasItemMeta() || is.getItemMeta().getLore() == null) return 0;
@@ -162,7 +166,7 @@ public class Waffen implements Listener {
         if(!GangwarCommand.isInGangwar(p)) {
 
             Shops shop = Shops.getShopByLocation(p.getLocation());
-            if (shop != null) {
+            if (shop != null && !DependencyContainer.getContainer().getDependency(IBizWarService.class).isBizWarRunning(shop)) {
                 if (!Organisation.hasOrganisation(p)) return;
                 Organisation org = Organisation.getOrganisation(p);
                 if (robcooldown.containsKey(org) && robcooldown.get(org) > System.currentTimeMillis()) {
@@ -182,17 +186,20 @@ public class Waffen implements Listener {
                 }
 
                 robcooldown.put(org, System.currentTimeMillis() + 10800000);
+                // 1Minify
                 p.sendMessage(PREFIX + "Der Shop ist in 360 Sekunden überfallen.");
                 Beruf.Berufe.POLICE.sendMessage(PREFIX + "ACHTUNG! ES WURDE EIN STILLER ALARM IM SHOP " + shop.getPublicName() + " AUSGELÖST!");
                 Beruf.Berufe.POLICE.sendMessage(Messages.INFO + "In der Nähe von " + Navi.getNextNaviLocation(p.getLocation()).getName());
                 progress.put(p.getName(), 0);
+                robShopPlayers.add(p.getName());
                 Location loc = shop.getBuyLocation();
                 new BukkitRunnable() {
                     @Override
                     public void run() {
-                        if (p.getLocation().distance(loc) > 10) {
+                        if (p.getLocation().distance(loc) > 10 || !robShopPlayers.contains(p.getName())) {
                             p.sendMessage(PREFIX + "Du bist zu weit entfernt.");
                             Beruf.Berufe.POLICE.sendMessage(PREFIX + "Der Shop " + shop.getName() + " wurde nicht überfallen, da der Täter zu weit entfernt war.");
+                            progress.remove(p.getName());
                             cancel();
                             return;
                         }
@@ -206,6 +213,7 @@ public class Waffen implements Listener {
                             org.addExp(remove / 50);
                             DependencyContainer.getContainer().getDependency(ITakeMoneyService.class).addIllegalObtainedMoneyToPlayer(p, remove);
                             progress.remove(p.getName());
+                            robShopPlayers.remove(p.getName());
                             cancel();
                             new BukkitRunnable() {
                                 @Override
@@ -286,10 +294,9 @@ public class Waffen implements Listener {
             return;
         }
 
-        Script.sendActionBar(p, Messages.INFO + "Du hast noch §b" + (ammo - 1) + "§8/§b" + getAmmoTotal(is) + " §rSchuss.");
-
         cooldown.put(p.getName() + "." + w.getName().toLowerCase(), System.currentTimeMillis());
         p.getInventory().setItemInMainHand(setAmmo(is, ammo - 1, getAmmoTotal(is)));
+        Script.sendActionBar(p, Messages.INFO + "Du hast noch §b" + (ammo - 1) + "§8/§b" + getAmmoTotal(is) + " §rSchuss.");
 
         float v = 0;
         float v1 = 0;
@@ -416,6 +423,11 @@ public class Waffen implements Listener {
                     cooldown.remove(p.getName() + "." + w.getName().toLowerCase());
                 }
             }
+        }
+        if (robShopPlayers.contains(p.getName())) {
+            robShopPlayers.remove(p.getName());
+            OfflinePlayer offlinePlayer = Script.getOfflinePlayer(p.getName());
+            Script.addOfflineMessage(offlinePlayer, PREFIX + "§cDer Überfall wurde abgebrochen!");
         }
     }
 }

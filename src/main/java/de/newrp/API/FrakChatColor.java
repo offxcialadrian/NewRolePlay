@@ -69,7 +69,7 @@ public class FrakChatColor implements CommandExecutor, Listener {
         if(player.isOnline()) {
             Player p = player.getPlayer();
             assert p != null;
-            Script.addEXP(p, 50);
+            Script.addEXP(p, 50, true);
             p.sendMessage(Messages.INFO + "Dein Fraktions-Chat Farb-Token: §c" + token);
             Notifications.sendMessage(Notifications.NotificationType.NRPSHOP, Script.getName(p) + " hat ein Fraktions-Chat Farb-Token erworben.");
             Script.executeUpdate("INSERT INTO frakcolor_token (nrp_id, token) VALUES (" + Script.getNRPID(player) + ", '" + token + "')");

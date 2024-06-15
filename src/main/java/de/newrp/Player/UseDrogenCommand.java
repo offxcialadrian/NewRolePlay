@@ -39,11 +39,13 @@ public class UseDrogenCommand implements CommandExecutor, TabCompleter {
         if(args[0].toLowerCase().startsWith("schmerzmittel")) {
             Medikamente m = Medikamente.getMedikament(args[0].replace("-", " "));
             if (m != null) {
-                Long lastUsage = UseDrogen.DRUG_COOLDOWN.get(p.getName());
-                if (lastUsage != null && lastUsage + TimeUnit.SECONDS.toMillis(15) > System.currentTimeMillis()) {
-                    long cooldown = TimeUnit.MILLISECONDS.toSeconds(lastUsage + TimeUnit.SECONDS.toMillis(15) - System.currentTimeMillis());
-                    Script.sendActionBar(p, Messages.ERROR + "Du bist gerade noch im Rausch. (" + cooldown + " Sekunden verbleibend)");
-                    return true;
+                if(!Script.isInTestMode()) {
+                    Long lastUsage = UseDrogen.DRUG_COOLDOWN.get(p.getName());
+                    if (lastUsage != null && lastUsage + TimeUnit.SECONDS.toMillis(15) > System.currentTimeMillis()) {
+                        long cooldown = TimeUnit.MILLISECONDS.toSeconds(lastUsage + TimeUnit.SECONDS.toMillis(15) - System.currentTimeMillis());
+                        Script.sendActionBar(p, Messages.ERROR + "Du bist gerade noch im Rausch. (" + cooldown + " Sekunden verbleibend)");
+                        return true;
+                    }
                 }
 
                 if (Handschellen.isCuffed(p) || Fesseln.isTiedUp(p)) {
@@ -59,31 +61,16 @@ public class UseDrogenCommand implements CommandExecutor, TabCompleter {
                 Medikamente.removeMedication(p, m);
 
                 if (m == Medikamente.SCHMERZMITTEL) {
-                    if (Krankheit.ABHAENGIGKEIT.isInfected(Script.getNRPID(p))) {
-                        p.sendMessage(UseMedikamente.PREFIX + "Das konsumieren von Schmerzmitteln hat bei dir keine Wirkung gezeigt.");
-                        Script.playLocalSound(p.getLocation(), Sound.ENTITY_PLAYER_BURP, 5);
-                        p.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 20 * 5, 0));
-                        return true;
-                    }
                     Me.sendMessage(p, "nimmt ein Schmerzmittel ein.");
                     Script.playLocalSound(p.getLocation(), Sound.ENTITY_PLAYER_BURP, 5);
                     p.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 20 * 15, 1));
-                    Drogen.addToAdiction(p);
                     return true;
                 } else if (m == Medikamente.SCHMERZMITTEL_HIGH) {
-                    if (Krankheit.ABHAENGIGKEIT.isInfected(Script.getNRPID(p))) {
-                        p.sendMessage(UseMedikamente.PREFIX + "Das konsumieren von Schmerzmitteln hat bei dir keine Wirkung gezeigt.");
-                        Script.playLocalSound(p.getLocation(), Sound.ENTITY_PLAYER_BURP, 5);
-                        p.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 20 * 5, 0));
-                        return true;
-                    }
-
                     Me.sendMessage(p, "nimmt ein Schmerzmittel ein.");
                     Script.playLocalSound(p.getLocation(), Sound.ENTITY_PLAYER_BURP, 5);
                     if (!p.hasPotionEffect(PotionEffectType.ABSORPTION))
                         p.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 220 * 20, 2, false, false));
                     p.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 20 * 15, 2));
-                    Drogen.addToAdiction(p);
                     return true;
                 }
             }
@@ -112,10 +99,12 @@ public class UseDrogenCommand implements CommandExecutor, TabCompleter {
         }
 
         Long lastUsage = UseDrogen.DRUG_COOLDOWN.get(p.getName());
-        if (lastUsage != null && lastUsage + TimeUnit.SECONDS.toMillis(15) > System.currentTimeMillis()) {
-            long cooldown = TimeUnit.MILLISECONDS.toSeconds(lastUsage + TimeUnit.SECONDS.toMillis(15) - System.currentTimeMillis());
-            Script.sendActionBar(p, Messages.ERROR + "Du bist gerade noch im Rausch. (" + cooldown + " Sekunden verbleibend)");
-            return true;
+        if(!Script.isInTestMode()) {
+            if (lastUsage != null && lastUsage + TimeUnit.SECONDS.toMillis(15) > System.currentTimeMillis()) {
+                long cooldown = TimeUnit.MILLISECONDS.toSeconds(lastUsage + TimeUnit.SECONDS.toMillis(15) - System.currentTimeMillis());
+                Script.sendActionBar(p, Messages.ERROR + "Du bist gerade noch im Rausch. (" + cooldown + " Sekunden verbleibend)");
+                return true;
+            }
         }
 
         if(Handschellen.isCuffed(p) || Fesseln.isTiedUp(p)) {

@@ -61,7 +61,11 @@ public class Pizza implements CommandExecutor, Listener {
         }
 
         GFB.CURRENT.put(p.getName(), GFB.PIZZALIEFERANT);
-        cooldown.put(p.getName(), System.currentTimeMillis() + 10 * 60 * 2000L);
+        if (Premium.hasPremium(p)) {
+            cooldown.put(p.getName(), System.currentTimeMillis() + 15 * 60 * 1000L);
+        } else {
+            cooldown.put(p.getName(), System.currentTimeMillis() + 20 * 60 * 1000L);
+        }
         p.sendMessage(PREFIX + "Du hast den Job als §6Pizzalieferant §7angenommen.");
         p.sendMessage(Messages.INFO + "Gehe nun in die Küche und nehme die Pizza aus dem Ofen (Rechtsklick).");
         int total = GFB.PIZZALIEFERANT.getLevel(p) + Script.getRandom(3,4);
@@ -134,7 +138,7 @@ public class Pizza implements CommandExecutor, Listener {
                 p.sendMessage(PREFIX + "Du hast alle Pizzen erfolgreich ausgeliefert.");
                 GFB.PIZZALIEFERANT.addExp(p, GFB.PIZZALIEFERANT.getLevel(p) + (TOTAL_SCORE.get(p.getName()))*2);
                 PayDay.addPayDay(p, (GFB.PIZZALIEFERANT.getLevel(p) + (TOTAL_SCORE.get(p.getName()))*8));
-                Script.addEXP(p, GFB.PIZZALIEFERANT.getLevel(p) + (TOTAL_SCORE.get(p.getName()))*4);
+                Script.addEXP(p, GFB.PIZZALIEFERANT.getLevel(p) + (TOTAL_SCORE.get(p.getName()))*4, true);
                 pizza.remove(p.getName());
                 timer.remove(p.getName());
                 GFB.CURRENT.remove(p.getName());
@@ -166,7 +170,7 @@ public class Pizza implements CommandExecutor, Listener {
             p.sendMessage(PREFIX + "Du hast alle Pizzen erfolgreich ausgeliefert.");
             GFB.PIZZALIEFERANT.addExp(p, GFB.PIZZALIEFERANT.getLevel(p) + (TOTAL_SCORE.get(p.getName()))*2);
             PayDay.addPayDay(p, (GFB.PIZZALIEFERANT.getLevel(p) + (TOTAL_SCORE.get(p.getName()))*12));
-            Script.addEXP(p, GFB.PIZZALIEFERANT.getLevel(p) + (TOTAL_SCORE.get(p.getName()))*8);
+            Script.addEXP(p, GFB.PIZZALIEFERANT.getLevel(p) + (TOTAL_SCORE.get(p.getName()))*8, true);
             pizza.remove(p.getName());
             timer.remove(p.getName());
             GFB.CURRENT.remove(p.getName());

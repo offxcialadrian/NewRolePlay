@@ -5,6 +5,7 @@ import de.newrp.API.Debug;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import net.kyori.adventure.text.Component;
+import net.minecraft.server.v1_16_R3.LevelVersion;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -36,6 +37,9 @@ public class MaskHandler implements Listener {
                         masks.put(event.getPlayer().getUniqueId(), System.currentTimeMillis() + 10 * 60 * 1000);
                         event.getPlayer().sendMessage(Component.text(PREFIX + "Du hast dir eine Maske übergezogen."));
                     }
+                } else if (event.getNewItem().getType() == Material.PLAYER_HEAD) {
+                    event.getPlayer().getInventory().addItem(event.getNewItem());
+                    event.getPlayer().getInventory().setItem(EquipmentSlot.HEAD, new ItemStack(Material.AIR));
                 }
             }
         }

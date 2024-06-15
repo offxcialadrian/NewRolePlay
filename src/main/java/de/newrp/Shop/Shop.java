@@ -55,6 +55,10 @@ public class Shop implements CommandExecutor, Listener, TabCompleter {
             return true;
         }
 
+        if (shop.isLocked()) {
+            p.sendMessage(Messages.ERROR + "§cDein Shop ist aktuell gesperrt.");
+            return true;
+        }
 
         if (args.length == 0) {
             p.sendMessage(Messages.ERROR + "Verwendung: /shop [kasse/sell/karte/info/setprice/upgradelager/sortiment]");
@@ -332,7 +336,7 @@ public class Shop implements CommandExecutor, Listener, TabCompleter {
                 }
                 if(!containsType(si, shop)) continue;
                 if(!shop.isInShop(si)) {
-                    is = Script.setNameAndLore(is, si.getName(), "§8» §6Lizensierungsgebühr: §6" + si.getLicensePrice() + "€", "§8» §6Einkaufspreis: §6" + si.getBuyPrice() + "€");
+                    is = Script.setNameAndLore(is, si.getName(), "§8» §6Lizensierungsgebühr: §6" + si.getLicensePrice() + "€", "§8» §6Einkaufspreis: §6" + si.getBuyPrice() + "€", "§8» §6Steuern: §6" + si.getTax() + "€");
                 } else {
                     is = Script.setNameAndLore(is, si.getName(), "§8» §cKlicke um aus Shop zu entfernen (es erfolgt keine Gutschrift der Lizensierungsgebühr)");
                 }

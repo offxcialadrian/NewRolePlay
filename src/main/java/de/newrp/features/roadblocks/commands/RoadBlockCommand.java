@@ -33,7 +33,7 @@ public class RoadBlockCommand implements CommandExecutor {
         }
 
         final Abteilung.Abteilungen abteilung = Beruf.getAbteilung(player);
-        if(!Beruf.hasAbteilung(player, Abteilung.Abteilungen.PRESSE, Abteilung.Abteilungen.AUSBILDER, Abteilung.Abteilungen.SEK, Abteilung.Abteilungen.ABTEILUNGSLEITUNG, Abteilung.Abteilungen.KRIMINALPOLIZEI)) {
+        if(!Beruf.hasAbteilung(player, Abteilung.Abteilungen.KRIMINALPOLIZEI, Abteilung.Abteilungen.SEK, Abteilung.Abteilungen.ABTEILUNGSLEITUNG)) {
             player.sendMessage(Messages.NO_PERMISSION);
             return false;
         }

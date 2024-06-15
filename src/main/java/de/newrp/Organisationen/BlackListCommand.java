@@ -1,13 +1,13 @@
 package de.newrp.Organisationen;
 
+import de.newrp.API.Activities;
+import de.newrp.API.Activity;
 import de.newrp.API.Messages;
-import de.newrp.API.Navi;
 import de.newrp.API.Script;
-import de.newrp.Administrator.BuildMode;
-import de.newrp.Administrator.GoTo;
 import de.newrp.Administrator.SDuty;
 import de.newrp.Player.AFK;
-import org.bukkit.Bukkit;
+import de.newrp.dependencies.DependencyContainer;
+import de.newrp.features.deathmatcharena.IDeathmatchArenaService;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -19,7 +19,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.util.StringUtil;
 
-import java.lang.reflect.Array;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class BlackListCommand implements CommandExecutor, Listener, TabCompleter {
@@ -29,6 +29,7 @@ public class BlackListCommand implements CommandExecutor, Listener, TabCompleter
         Player p = (Player) cs;
         if (cmd.getName().equalsIgnoreCase("bl") || cmd.getName().equalsIgnoreCase("blacklist")) {
             if (!Organisation.hasOrganisation(p)) return Collections.EMPTY_LIST;
+            if (Organisation.getOrganisation(p) == Organisation.HITMEN) return Collections.EMPTY_LIST;
             final List<String> oneArgList = new ArrayList<>();
             final List<String> completions = new ArrayList<>();
             for (Reasons reason : Reasons.getReasons(Organisation.getOrganisation(p))) {
@@ -36,7 +37,7 @@ public class BlackListCommand implements CommandExecutor, Listener, TabCompleter
             }
 
             if (args.length == 1) {
-                return null;
+                StringUtil.copyPartialMatches(args[args.length - 1], Arrays.asList("add", "remove", "list", "info"), completions);
             }
 
             if (args.length == 2) {
@@ -61,17 +62,17 @@ public class BlackListCommand implements CommandExecutor, Listener, TabCompleter
         LEICHENBEWACHUNG("Leichenbewachung", 600, 20, new Organisation[] {Organisation.CORLEONE, Organisation.KARTELL}),
         LEADERMORD_KARTELL("Leadermord", 1000, 50, new Organisation[] {Organisation.CORLEONE, Organisation.KARTELL}),
         PROVOKATION_KARTELL("Provokation", 250, 10, new Organisation[] {Organisation.KARTELL}),
-        Vendetta_FALCONE("Vendetta", 600, 50, new Organisation[] {Organisation.FALCONE}),
-        Tradimento_FALCONE("Tradimento", 500, 50, new Organisation[] {Organisation.FALCONE}),
-        Diffamazione_FALCONE("Diffamazione", 200, 20, new Organisation[] {Organisation.FALCONE}),
-        Invasione_FALCONE("Invasione", 300, 30, new Organisation[] {Organisation.FALCONE}),
+        Vendetta_FALCONE("Vendetta", 1000, 50, new Organisation[] {Organisation.FALCONE}),
+        Tradimento_FALCONE("Tradimento", 1000, 50, new Organisation[] {Organisation.FALCONE}),
+        Diffamazione_FALCONE("Diffamazione", 350, 20, new Organisation[] {Organisation.FALCONE}),
+        Invasione_FALCONE("Invasione", 750, 30, new Organisation[] {Organisation.FALCONE}),
         Vergogna_FALCONE("Vergogna", 1, 1, new Organisation[] {Organisation.FALCONE}),
-        Inganno_FALCONE("Inganno", 200, 20, new Organisation[] {Organisation.FALCONE}),
-        ADM("Asesinato de Miembros", 1000, 3, new Organisation[] {Organisation.SINALOA}),
-        FDR("Falta de Respeto", 1000, 1, new Organisation[] {Organisation.SINALOA}),
-        FDRG("Falta de Respeto Grave", 1000, 5, new Organisation[] {Organisation.SINALOA}),
-        TRAICION("Traición", 2000, 15, new Organisation[] {Organisation.SINALOA}),
-        ESPIONAJE("Espionaje", 3000, 15, new Organisation[] {Organisation.SINALOA});
+        Inganno_FALCONE("Inganno", 250, 20, new Organisation[] {Organisation.FALCONE}),
+        ADM("Asesinato de Miembros", 200, 3, new Organisation[] {Organisation.SINALOA}),
+        FDR("Falta de Respeto", 300, 1, new Organisation[] {Organisation.SINALOA}),
+        FDRG("Falta de Respeto Grave", 500, 5, new Organisation[] {Organisation.SINALOA}),
+        TRAICION("Traición", 800, 15, new Organisation[] {Organisation.SINALOA}),
+        ESPIONAJE("Espionaje", 1000, 15, new Organisation[] {Organisation.SINALOA});
 
         private final String name;
         private final int price;
@@ -122,9 +123,6 @@ public class BlackListCommand implements CommandExecutor, Listener, TabCompleter
             }
             return reasons;
         }
-
-
-
     }
 
     @Override
@@ -141,7 +139,7 @@ public class BlackListCommand implements CommandExecutor, Listener, TabCompleter
                     while (it.hasNext()) {
                         Blacklist bl = it.next();
                         if (bl.getUserName().equals(p.getName())) {
-                            sb.append("  §8×§6 ").append(f.getName()).append("§8: §cJa §7(§c").append(bl.getPrice()).append("$§8, ").append(bl.getKills()).append(" §cKills§8, Grund§8: §c").append(bl.getReason()).append("§7)\n");
+                            sb.append("  §8×§6 ").append(f.getName()).append("§8: §cJa §7(§c").append(bl.getPrice()).append("€§8, ").append(bl.getKills()).append(" §cKills§8, Grund§8: §c").append(bl.getReason()).append("§7)\n");
                             b = false;
                             break;
                         }
@@ -167,11 +165,16 @@ public class BlackListCommand implements CommandExecutor, Listener, TabCompleter
         Organisation o = Organisation.getOrganisation(p);
 
         if(!o.hasBlacklist()) {
-            p.sendMessage(Blacklist.PREFIX + "Deine Organisation hat keine Blacklist. Ihr schaltet die Blacklist mit Level 2 frei.");
+            p.sendMessage(Blacklist.PREFIX + "Deine Organisation hat noch keine Blacklist.");
             return true;
         }
 
-        if(args.length == 1 && args[0].equalsIgnoreCase("list")) {
+        if (Organisation.getOrganisation(p) == Organisation.HITMEN) {
+            p.sendMessage(Blacklist.PREFIX + "Deine Organisation hat keine Blacklist.");
+            return true;
+        }
+
+        if(args[0].equalsIgnoreCase("list")) {
             p.sendMessage("");
             List<Blacklist> blacklist = Blacklist.getBlacklist(o);
             StringBuilder sb = new StringBuilder("§8==== §eBlacklist ").append(o.getName()).append(" §7(§6").append(blacklist.size()).append("§7)§e §8====\n");
@@ -186,32 +189,57 @@ public class BlackListCommand implements CommandExecutor, Listener, TabCompleter
                             .append(" §7|§a ").append(bl.getKills()).append(" Kills §7|§a ").append(bl.getPrice()).append("€").append((AFK.isAFK(p1) ? " (AFK seit " + AFK.getAFKTime(p1) +  " Uhr)\n" : "\n"));
                 }
             }
-            for (Blacklist bl : offline) {
-                String time = getTime(bl);
-                sb.append(" §7» §c").append(bl.getUserName()).append(" §7|§c ").append(bl.getReason()).append(" §7|§c ").append(time)
-                        .append(" §7|§c ").append(bl.getKills()).append(" Kills §7|§c ").append(bl.getPrice()).append("€\n");
+            if (args.length > 1) {
+                for (Blacklist bl : offline) {
+                    String time = getTime(bl);
+                    sb.append(" §7» §c").append(bl.getUserName()).append(" §7|§c ").append(bl.getReason()).append(" §7|§c ").append(time)
+                            .append(" §7|§c ").append(bl.getKills()).append(" Kills §7|§c ").append(bl.getPrice()).append("€\n");
+                }
             }
             p.sendMessage(sb.toString());
             return true;
         }
 
-        if(args.length == 1) {
-            sendPossabilities(p);
-            return true;
-        }
-
-        if(args.length == 2 && args[0].equalsIgnoreCase("remove")) {
+        if (args.length > 1 && args[0].equalsIgnoreCase("info")) {
             OfflinePlayer tg = Script.getOfflinePlayer(args[1]);
             if(Script.getNRPID(tg) == 0) {
                 p.sendMessage(Blacklist.PREFIX + "Der Spieler wurde nicht gefunden.");
                 return true;
             }
-            if(!Blacklist.isOnBlacklist(tg, o)) {
+
+            if (!Blacklist.isOnBlacklist(tg, o)) {
                 p.sendMessage(Blacklist.PREFIX + "Der Spieler ist nicht auf der Blacklist.");
                 return true;
             }
 
-            if(Organisation.getRank(p) < 4) {
+            List<Blacklist> blacklist = Blacklist.getBlacklist(o);
+            StringBuilder sb = new StringBuilder("§8==== §eBlacklist ").append(o.getName()).append(" §7(§6").append(blacklist.size()).append("§7)§e §8====\n");
+            for (Blacklist bl : blacklist) {
+                if (Objects.equals(bl.getUserName(), tg.getName())) {
+                    String time = getTime(bl);
+                    sb.append(" §7» §6").append(Script.getName(tg)).append(" §7|§6 ").append(bl.getReason()).append(" §7|§6 ").append(time)
+                            .append(" §7|§6 ").append(bl.getKills()).append(" Kills §7|§6 ").append(bl.getPrice()).append("€");
+                    if (tg.isOnline()) {
+                        sb.append((AFK.isAFK(Objects.requireNonNull(tg.getPlayer())) ? " (AFK seit " + AFK.getAFKTime(tg.getPlayer()) + " Uhr)\n" : "\n"));
+                    }
+                }
+            }
+            p.sendMessage(sb.toString());
+            return true;
+        }
+
+        if (args.length > 1 && args[0].equalsIgnoreCase("remove")) {
+            OfflinePlayer tg = Script.getOfflinePlayer(args[1]);
+            if (Script.getNRPID(tg) == 0) {
+                p.sendMessage(Blacklist.PREFIX + "Der Spieler wurde nicht gefunden.");
+                return true;
+            }
+            if (!Blacklist.isOnBlacklist(tg, o)) {
+                p.sendMessage(Blacklist.PREFIX + "Der Spieler ist nicht auf der Blacklist.");
+                return true;
+            }
+
+            if (Organisation.getRank(p) < 4) {
                 p.sendMessage(Messages.NO_PERMISSION);
                 return true;
             }
@@ -224,13 +252,7 @@ public class BlackListCommand implements CommandExecutor, Listener, TabCompleter
             return true;
         }
 
-        if(args.length == 2) {
-            sendPossabilities(p);
-            return true;
-        }
-
-
-        if(args[0].equalsIgnoreCase("add")) {
+        if(args.length > 2 && args[0].equalsIgnoreCase("add")) {
             Player tg = Script.getPlayer(args[1]);
             if(tg == null) {
                 p.sendMessage(Messages.PLAYER_NOT_FOUND);
@@ -320,30 +342,21 @@ public class BlackListCommand implements CommandExecutor, Listener, TabCompleter
         }
 
         sendPossabilities(p);
+        return true;
 
-
-        return false;
     }
 
     private static String getTime(Blacklist bl) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(bl.getTime());
-
-        int mYear = calendar.get(Calendar.YEAR);
-        int mMonth = calendar.get(Calendar.MONTH) + 1;
-        int mDay = calendar.get(Calendar.DAY_OF_MONTH);
-
-        int mHour = calendar.get(Calendar.HOUR_OF_DAY);
-        int mMinute = calendar.get(Calendar.MINUTE);
-
-        String time = mDay + "." + mMonth + "." + mYear + " " + mHour + ":" + mMinute;
-        return time;
+        SimpleDateFormat format = new SimpleDateFormat("dd.MM.yy HH:mm");
+        Date date = new Date(bl.getTime());
+        return format.format(date);
     }
 
     public static void sendPossabilities(Player p) {
         p.sendMessage("§8=== §6Blacklist §8===");
         p.sendMessage("§8» §6/blacklist add [Spieler] [Grund]");
         p.sendMessage("§8» §6/blacklist remove [Spieler]");
+        p.sendMessage("§8» §6/blacklist info [Spieler]");
         p.sendMessage("§8» §6/blacklist list");
     }
 
@@ -353,21 +366,24 @@ public class BlackListCommand implements CommandExecutor, Listener, TabCompleter
         Player killer = killed.getKiller();
         if (killer == null) return;
 
-        Organisation f = Organisation.getOrganisation(killer);
-        if (!Blacklist.isOnBlacklist(killed, f)) return;
+        if (!Organisation.hasOrganisation(killer)) return;
+        Organisation orga = Organisation.getOrganisation(killer);
+        if (!Blacklist.isOnBlacklist(killed, orga)) return;
+        if (DependencyContainer.getContainer().getDependency(IDeathmatchArenaService.class).isInDeathmatch(killed, false)) return;
 
-        Blacklist bl = Blacklist.getBlacklistObject(Script.getNRPID(killed), f);
+        Blacklist bl = Blacklist.getBlacklistObject(Script.getNRPID(killed), orga);
         int kills = bl.getKills();
-        Script.addEXP(killer, Script.getRandom(3, 7));
-        f.addExp(Script.getRandom(5, 15));
-        f.sendMessage(Blacklist.PREFIX + Script.getName(killer) + " hat " + Script.getName(killed) + " getötet. (" + (bl.getKills()-1) + "/" + bl.getKills() + " Kills)");
+        Script.addEXP(killer, Script.getRandom(3, 7), true);
+        orga.addExp(Script.getRandom(5, 15));
+        orga.sendMessage(Blacklist.PREFIX + Script.getName(killer) + " hat " + Script.getName(killed) + " getötet. (" + (bl.getKills()-1) + "/" + bl.getKills() + " Kills)");
         if (kills == 1) {
-            f.sendMessage(Blacklist.PREFIX + Script.getName(killed) + " wurde automatisch von der Blacklist entfernt.");
-            killed.sendMessage(Blacklist.PREFIX + "Du wurdest automatisch von der Blacklist der " + f.getName() + " entfernt.");
-            Blacklist.remove(killed, f);
+            orga.sendMessage(Blacklist.PREFIX + Script.getName(killed) + " wurde automatisch von der Blacklist entfernt.");
+            killed.sendMessage(Blacklist.PREFIX + "Du wurdest automatisch von der Blacklist der " + orga.getName() + " entfernt.");
+            Blacklist.remove(killed, orga);
         } else {
             Organisation f1 = Organisation.getOrganisation(killer);
             killed.sendMessage(Blacklist.PREFIX + "Du wurdest getötet weil du auf der Blacklist der " + f1.getName() + " bist.");
+            Activity.grantActivity(Script.getNRPID(killer), Activities.BLKILL);
             bl.setKills(--kills);
         }
     }

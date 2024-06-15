@@ -57,7 +57,7 @@ public class Kennzeichen implements CommandExecutor, Listener {
                                         Script.removeMoney(p, PaymentType.BANK, 60);
                                     }
                                 } else {
-                                    p.sendMessage(PREFIX + "Ein Kennzeichen kostet 60$!");
+                                    p.sendMessage(PREFIX + "Ein Kennzeichen kostet 60€!");
                                 }
                             } else {
                                 p.sendMessage(PREFIX + "Das Kennzeichen darf keine Sonderzeichen beinhalten!");

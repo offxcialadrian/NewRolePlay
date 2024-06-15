@@ -351,6 +351,7 @@ public class Punish implements CommandExecutor, TabCompleter, Listener {
         if (punishment == Punishment.KICK || secondaryPunishment == Punishment.KICK) {
             tg.sendMessage(PREFIX + "Du wurdest von " + Script.getName(p) + " für " + v.getName() + " gekickt.");
             tg.sendMessage(PREFIX + "Grund: " + v.getDescription());
+            Script.executeUpdate("INSERT INTO `kick` (id, kick_id, nrp_id, time, reason, kicked_by) VALUES (NULL, '" + generatePunishID() + "', '" + Script.getNRPID(tg) + "', '" + System.currentTimeMillis() + "', '" + v.getName() + "', '" + Script.getNRPID(p) + "');");
             Log.WARNING.write(tg, "wurde von " + Messages.RANK_PREFIX(p) + " für " + v.getName() + " gekickt.");
             Log.HIGH.write(p, "hat " + Script.getName(tg) + " für " + v.getName() + " gekickt.");
             tg.kickPlayer("§8» §cNRP × New RolePlay §8┃ §cKICK §8« \n\n§8§m------------------------------\n\n§7Du wurdest vom Server gekickt§8.\n\n§7Grund §8× §e" + v.getDescription() + "\n\n§8§m------------------------------");

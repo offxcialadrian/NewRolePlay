@@ -126,7 +126,14 @@ public class Elevator implements Listener {
                 new Location(Script.WORLD, 720, 87, 910, 180.74292f, 1.8199842f), // 2
                 new Location(Script.WORLD, 721, 94, 910, 180.35693f, 0.17027745f), // 3
                 new Location(Script.WORLD, 721, 101, 910, 180.13672f, 1.2202556f)
-        });// 4
+        }),// 4
+        BND(18, "BND", new Location[]{
+                new Location(Script.WORLD, 822, 57, 1026.5, 180f, 0f), // 0
+                new Location(Script.WORLD, 822, 64, 1026.5, 180f, 0f), // 1
+                new Location(Script.WORLD, 822, 71, 1026.5, 180f, 0f), // 2
+                new Location(Script.WORLD, 822, 80, 1026.5, 180f, 0f), // 3
+                new Location(Script.WORLD, 822, 88, 1026.5, 180f, 0f)
+        });
 
         int id;
         String name;
@@ -268,13 +275,7 @@ public class Elevator implements Listener {
                 p.closeInventory();
             } else if (e.getCurrentItem().getType().equals(Material.CHEST) && e.getCurrentItem().hasItemMeta()) {
                 int current_etage = elevator.getEtageByLoc(p.getLocation());
-                int ziel_etage = 0;
-                if (e.getCurrentItem().getItemMeta().getDisplayName().equals("§6EG")) {
-                    ziel_etage = 0;
-                } else {
-                    ziel_etage = Integer.parseInt(e.getCurrentItem().getItemMeta().getDisplayName().replace("§6", "").replace(". Etage", ""));
-                }
-                final int Ziel_etage = ziel_etage;
+                final int Ziel_etage = getZielEtage(e);
                 int way = Math.abs(Math.abs(etage) - Math.abs(Ziel_etage)) * 3;
                 progress.put(p.getName(), 0.0);
                 p.sendMessage("§8[§c" + elevator.getName() + "§8] " + "§6Du fährst nun " + (Ziel_etage > 0 ? "in die " + Ziel_etage + ". Etage" : "ins EG") + "...");
@@ -308,6 +309,20 @@ public class Elevator implements Listener {
         }
     }
 
+    private static int getZielEtage(InventoryClickEvent e) {
+        int ziel_etage = 0;
+
+        // Ausnahmen
+        if (e.getCurrentItem().getItemMeta().getDisplayName().equals("§6Casino")) ziel_etage = 4;
+
+        if (ziel_etage == 0) {
+            if (!e.getCurrentItem().getItemMeta().getDisplayName().equals("§6EG")) {
+                ziel_etage = Integer.parseInt(e.getCurrentItem().getItemMeta().getDisplayName().replace("§6", "").replace(". Etage", ""));
+            }
+        }
+        return ziel_etage;
+    }
+
     public static void openGUI(Player p) {
         ElevatorAPI elevator = ElevatorAPI.getNearestElevator(5, p.getLocation());
         int etagen_amount = 0;
@@ -331,6 +346,10 @@ public class Elevator implements Listener {
             } else {
                 etage = "§6EG";
             }
+
+            // Ausnahmen
+            if (elevator.getName().equals("Casino")) if (i == 4) etage = "§6Casino";
+
             ItemStack no = new ItemStack(Material.IRON_DOOR);
             ItemMeta noMeta = no.getItemMeta();
             noMeta.setDisplayName("§6Tür öffnen");

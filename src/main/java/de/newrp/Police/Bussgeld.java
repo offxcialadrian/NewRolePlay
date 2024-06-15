@@ -1,9 +1,6 @@
 package de.newrp.Police;
 
-import de.newrp.API.Log;
-import de.newrp.API.Messages;
-import de.newrp.API.PaymentType;
-import de.newrp.API.Script;
+import de.newrp.API.*;
 import de.newrp.Administrator.SDuty;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Government.Stadtkasse;
@@ -85,6 +82,7 @@ public class Bussgeld implements CommandExecutor {
         tg.sendMessage(PREFIX + "Du hast ein Bussgeld in Höhe von " + amount + "€ erhalten.");
         Beruf.Berufe.POLICE.sendMessage(PREFIX + "Der Spieler " + Script.getName(tg) + " hat ein Bussgeld in Höhe von " + amount + "€ von " + Script.getName(p) + " erhalten.");
         Beruf.Berufe.GOVERNMENT.sendMessage(PREFIX + "Der Spieler " + Script.getName(tg) + " hat ein Bussgeld in Höhe von " + amount + "€ von " + Script.getName(p) + " erhalten.");
+        Activity.addActivity(Script.getNRPID(p), 0, Activities.BUSSGELD.getName(), Activities.BUSSGELD.getPoints() * ((float) amount / 100));
         Log.NORMAL.write(p, "hat " + Script.getName(tg) + " ein Bussgeld in Höhe von " + amount + "€ ausgestellt.");
 
 

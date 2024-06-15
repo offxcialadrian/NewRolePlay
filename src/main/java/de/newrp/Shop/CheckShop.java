@@ -59,8 +59,9 @@ public class CheckShop implements CommandExecutor {
         if(shop.getOwner() > 0) {
             p.sendMessage("§6=== " + shop.getPublicName() + " ===");
             p.sendMessage("§8» " + "§6Besitzer: " + Script.getOfflinePlayer(shop.getOwner()).getName());
+            p.sendMessage("§8» " + "§6Grundpreis: " + shop.getPrice() + "€");
             p.sendMessage("§8» " + "§6Kasse: " + shop.getKasse() + "€");
-            p.sendMessage("§8» " + "§6Betriebskosten: " + shop.getRunningCost() + "€");
+            // p.sendMessage("§8» " + "§6Betriebskosten: " + shop.getRunningCost() + "€");
             p.sendMessage("§8» " + "§6Miete (Gebäude): " + shop.getRent() + "€");
             p.sendMessage("§8» " + "§6Lager: " + shop.getLager() + "/" + shop.getLagerSize());
             p.sendMessage("§8» " + "§6Preise:");

@@ -2,11 +2,13 @@ package de.newrp.API;
 
 import de.newrp.Administrator.Notifications;
 import de.newrp.Administrator.SDuty;
+import de.newrp.Berufe.Beruf;
 import de.newrp.Call.Call;
 import de.newrp.Gangwar.GangwarCommand;
 import de.newrp.Player.Fesseln;
 import de.newrp.NewRoleplayMain;
 import de.newrp.dependencies.DependencyContainer;
+import de.newrp.features.bizwar.IBizWarService;
 import de.newrp.features.deathmatcharena.IDeathmatchArenaService;
 import de.newrp.features.deathmatcharena.data.DeathmatchArenaStats;
 import org.bukkit.*;
@@ -34,11 +36,17 @@ public class FriedhofListener implements Listener {
     public static final HashMap<String, EntityDamageEvent.DamageCause> DEATH_REASON = new HashMap<>();
     private final IDeathmatchArenaService deathmatchArenaService = DependencyContainer.getContainer().getDependency(IDeathmatchArenaService.class);
 
+    // 1Minify
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void onDeath(PlayerDeathEvent e) {
         if (!e.getEntity().getType().equals(EntityType.PLAYER)) return;
 
         Player p = e.getEntity();
+
+        if (Friedhof.getDead(p) != null) {
+            e.setCancelled(true);
+            return;
+        }
 
         if(this.deathmatchArenaService.isInDeathmatch(p.getPlayer(), false)) {
             p.sendMessage(Messages.INFO + "Weil du in der Deathmatch Arena bist, bist du direkt respawned");
@@ -64,8 +72,12 @@ public class FriedhofListener implements Listener {
         if (p.isInsideVehicle()) p.leaveVehicle();
         if(Fesseln.isTiedUp(p)) Fesseln.untie(p);
 
-        //Sekunden
-        int deathtime = (GangwarCommand.isInGangwar(p)?120:480);
+        int deathtime = 480;
+        if(GangwarCommand.isInGangwar(p)) {
+            deathtime = 120;
+        } else if(DependencyContainer.getContainer().getDependency(IBizWarService.class).isMemberOfBizWar(p)) {
+            deathtime = 60;
+        }
 
        /*boolean explosion = p.getLastDamageCause().getCause() == EntityDamageEvent.DamageCause.BLOCK_EXPLOSION ||
                 p.getLastDamageCause().getCause() == EntityDamageEvent.DamageCause.ENTITY_EXPLOSION;*/
@@ -107,6 +119,8 @@ public class FriedhofListener implements Listener {
         Friedhof.setDead(p, friedhof);
         Player killer = p.getKiller();
         Notifications.sendMessage(Notifications.NotificationType.DEAD, Script.getName(p) + " ist gestorben " + (killer!=null ? Messages.ARROW + " " + Script.getName(killer):Messages.ARROW + " " + (p.getLastDamageCause() != null?p.getLastDamageCause().getCause().name():"")));
+
+        Utils.alkLevel.remove(p.getUniqueId());
     }
 
     @EventHandler

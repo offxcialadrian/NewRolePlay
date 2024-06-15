@@ -1,13 +1,11 @@
 package de.newrp.Shop;
 
-import de.newrp.API.*;
+import de.newrp.API.Achievement;
+import de.newrp.API.Messages;
+import de.newrp.API.PaymentType;
+import de.newrp.API.Script;
 import de.newrp.Chat.Chat;
-import de.newrp.Entertainment.Lotto;
 import de.newrp.Player.Hotel;
-import de.newrp.Vehicle.Car;
-import de.newrp.Vehicle.CarType;
-import net.kyori.adventure.text.Component;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -18,9 +16,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -62,7 +58,7 @@ public class BuyClick implements Listener {
 
         ShopItem si = null;
         if (is.getType().equals(Material.BARRIER)) {
-            sendMessage(p, "Auf Wiedersehen!");
+            sendMessage(p, "Auf Wiedersehen!", s);
             return;
         }
 
@@ -81,7 +77,7 @@ public class BuyClick implements Listener {
 
         if(s.getType() == ShopType.HOTEL) {
             if(Hotel.hasHotelRoom(p)) {
-                sendMessage(p, "Alles Klar, Sie haben den Check-Out vollzogen.");
+                sendMessage(p, "Alles Klar, Sie haben den Check-Out vollzogen.", s);
                 Script.executeUpdate("DELETE FROM hotel WHERE nrp_id=" + Script.getNRPID(p));
                 return;
             }
@@ -98,7 +94,7 @@ public class BuyClick implements Listener {
             }
             Hotel.Rooms room = hotel.getFreeRoom(rt);
             if(room == null) {
-                sendMessage(p, "Es tut uns leid, aber wir haben keine freien Zimmer mehr.");
+                sendMessage(p, "Es tut uns leid, aber wir haben keine freien Zimmer mehr.", s);
                 return;
             }
             Achievement.HOTEL.grant(p);
@@ -122,20 +118,22 @@ public class BuyClick implements Listener {
                 PayShop.shops.put(p, s);
             }
 
-            sendMessage(p, "Möchten Sie Bar oder mit Karte bezahlen?");
             int price = (Buy.amount.containsKey(p.getName()) ? si.getPrice(s) * Buy.amount.get(p.getName()) : si.getPrice(s));
-            Inventory gui = p.getServer().createInventory(null, InventoryType.HOPPER, "§8[§aZahlungsmethode§8]");
-            ItemStack cash = Script.setNameAndLore(Script.getHead(60078), "§aBar","§8» §c" + (Buy.amount.containsKey(p.getName())?Buy.amount.get(p.getName()) + "x" + si.getPrice(s) + " (" + price + ")":si.getPrice(s)) + "€");
-            ItemStack bank = Script.setNameAndLore(Script.getHead(58268), "§aKarte","§8» §c" + (Buy.amount.containsKey(p.getName())?Buy.amount.get(p.getName()) + "x" + si.getPrice(s) + " (" + price + ")":si.getPrice(s)) + "€");
-            gui.setItem(1, cash);
-            gui.setItem(3, bank);
-            Script.fillInv(gui);
-            p.openInventory(gui);
-
-
+            if (s.acceptCard() || (Buy.amount.containsKey(p.getName()) && Buy.amount.get(p.getName()) > 1)) {
+                sendMessage(p, "Möchten Sie Bar oder mit Karte bezahlen?", s);
+                Inventory gui = p.getServer().createInventory(null, InventoryType.HOPPER, "§8[§aZahlungsmethode§8]");
+                ItemStack cash = Script.setNameAndLore(Script.getHead(60078), "§aBar","§8» §c" + (Buy.amount.containsKey(p.getName())?Buy.amount.get(p.getName()) + "x" + si.getPrice(s) + " (" + price + ")":si.getPrice(s)) + "€");
+                ItemStack bank = Script.setNameAndLore(Script.getHead(58268), "§aKarte","§8» §c" + (Buy.amount.containsKey(p.getName())?Buy.amount.get(p.getName()) + "x" + si.getPrice(s) + " (" + price + ")":si.getPrice(s)) + "€");
+                gui.setItem(1, cash);
+                gui.setItem(3, bank);
+                Script.fillInv(gui);
+                p.openInventory(gui);
+            } else {
+                PayShop.pay(p, PaymentType.CASH, PayShop.items.get(p), PayShop.shops.get(p));
+            }
         } else {
             String[] sorry = new String[]{"Verzeihung", "Tut mir Leid", "Tut uns Leid"};
-            sendMessage(p, sorry[Script.getRandom(0, sorry.length - 1)] + ", aber wir haben nicht mehr genug "+ si.getName() + "§r auf Lager.");
+            sendMessage(p, sorry[Script.getRandom(0, sorry.length - 1)] + ", aber wir haben nicht mehr genug "+ si.getName() + "§r auf Lager.", s);
             p.sendMessage(Messages.INFO + "Du kannst es mit dem GFB-Job \"Transport\" wieder auffüllen.");
         }
     }
@@ -159,9 +157,9 @@ public class BuyClick implements Listener {
         }
     }
 
-    public static void sendMessage(Player p, String msg) {
+    public static void sendMessage(Player p, String msg, Shops shop) {
         Set<String> foundNames = Chat.getMentionedNames(msg);
-        p.sendMessage(constructMessage("Verkäufer", msg, "sagt", foundNames, 1, Chat.ChatType.NORMAL));
+        p.sendMessage(constructMessage(ShopNPC.getNpcName(shop), msg, "sagt", foundNames, 1, Chat.ChatType.NORMAL));
     }
 
 }

@@ -78,6 +78,7 @@ public class Arbeitslosengeld implements CommandExecutor {
                             p.sendMessage(PREFIX + "Du hast den Antrag angenommen.");
                             OfflinePlayer player = getPlayerByArbeitslosengeldID(id);
                             Beruf.Berufe.GOVERNMENT.sendMessage(PREFIX + Script.getName(p) + " hat den Antrag #" + id + " angenommen.");
+                            Activity.grantActivity(Script.getNRPID(p), Activities.ARBEITSLOSENGELD);
                         } catch (Exception e) {
                             p.sendMessage(PREFIX + "Bitte gib eine gültige ID an.");
                             return true;

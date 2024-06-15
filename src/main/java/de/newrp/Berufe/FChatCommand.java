@@ -1,6 +1,5 @@
 package de.newrp.Berufe;
 
-import com.comphenix.protocol.PacketType;
 import de.newrp.Organisationen.Organisation;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

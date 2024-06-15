@@ -12,13 +12,16 @@ import de.newrp.Government.Stadtkasse;
 import de.newrp.House.House;
 import de.newrp.Medic.FeuerwehrEinsatz;
 import de.newrp.NewRoleplayMain;
-import de.newrp.Organisationen.LabBreakIn;
 import de.newrp.Organisationen.Organisation;
 import de.newrp.Player.AFK;
 import de.newrp.Player.Hotel;
 import de.newrp.Shop.Shop;
+import de.newrp.Shop.ShopItem;
 import de.newrp.Shop.ShopType;
 import de.newrp.Shop.Shops;
+import de.newrp.dependencies.DependencyContainer;
+import de.newrp.features.bizwar.IBizWarService;
+import de.newrp.features.bizwar.config.BizWarConfig;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -33,6 +36,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 public class AsyncHour extends BukkitRunnable {
 
@@ -50,14 +54,14 @@ public class AsyncHour extends BukkitRunnable {
             }
 
             for (Beruf.Berufe berufe : Beruf.Berufe.values()) {
-                Stadtkasse.removeStadtkasse(berufe.getLeasedAmount() * (berufe.getCarType().getTax() / 2), "Leasinggebühren " + berufe.getLeasedAmount() + "x " + berufe.getName());
+                Stadtkasse.removeStadtkasse(berufe.getLeasedAmount() * (berufe.getCarType().getTax()), "Leasinggebühren " + berufe.getLeasedAmount() + "x " + berufe.getName());
             }
 
-            if (Abteilung.Abteilungen.FEUERWEHR.getOnlineMembers().size() >= 2) {
-                if (Script.getRandom(1, 7) == Script.getRandom(1, 7)) {
-                    if (Script.getRandom(1, 3) == Script.getRandom(1, 3)) {
+            if (Abteilung.Abteilungen.FEUERWEHR.getOnlineMembers().size() + Abteilung.Abteilungen.OBERARZT.getOnlineMembers().size() + Abteilung.Abteilungen.CHEFARZT.getOnlineMembers().size() + Abteilung.Abteilungen.DIREKTOR.getOnlineMembers().size() > 2) {
+                if (new Random().nextInt(4) == 0) {
+                    if (new Random().nextInt(3) == 0) {
                         Shops[] b = new Shops[]{Shops.GUNSHOP, Shops.ANGELLADEN, Shops.DOENER, Shops.SUPERMARKT, Shops.APOTHEKE, Shops.APOTHEKE_AEKI,
-                                Shops.BLUMENLADEN, Shops.SHOE_MALL, Shops.JAGDHUETTE, Shops.HANKYS, Shops.CAFE, Shops.FLOWER,
+                                Shops.BLUMENLADEN, Shops.SHOE_MALL, Shops.JAGDHUETTE, Shops.ELEKTRO_GANG, Shops.CAFE, Shops.FLOWER,
                                 Shops.GEMUESE, Shops.BAECKEREI, Shops.IKEA};
                         new FeuerwehrEinsatz(null).start(b[Script.getRandom(0, (b.length - 1))]);
                     } else {
@@ -95,17 +99,17 @@ public class AsyncHour extends BukkitRunnable {
 
             for (Shops shop : Shops.values()) {
                 if (shop.getOwner() == 0) continue;
+                if (shop.isLocked()) continue;
                 int runningcost = 0;
                 HashMap<Integer, ItemStack> c = shop.getItems();
                 if (shop.getType() != ShopType.HOTEL) {
                     for (Map.Entry<Integer, ItemStack> n : c.entrySet()) {
                         ItemStack is = n.getValue();
-                        if (is == null) {
-                            continue;
-                        }
-                        runningcost += 5;
+                        if (is == null) continue;
+                        if (ShopItem.getShopItem(is) != null)
+                            runningcost += ShopItem.getShopItem(is).getTax();
                     }
-                    if (shop.acceptCard()) runningcost += 5;
+                    if (shop.acceptCard()) runningcost += Math.round((float) shop.getRent() / 2);
                 } else {
                     Hotel.Hotels hotel = Hotel.Hotels.getHotelByShop(shop);
                     assert hotel != null;
@@ -119,7 +123,7 @@ public class AsyncHour extends BukkitRunnable {
                     shop.removeKasse(shop.getRent());
                     Stadtkasse.addStadtkasse(shop.getRent(), "Miete von " + shop.getPublicName(), null);
                     if (Script.getPlayer(shop.getOwner()) != null) {
-                        Script.getPlayer(shop.getOwner()).sendMessage(Shop.PREFIX + "Dein Shop §e" + shop.getPublicName() + " §7hat §e" + shop.getRent() + "€ §7Miete und §e" + runningcost + "€ §7Betriebskosten verloren.");
+                        Script.getPlayer(shop.getOwner()).sendMessage(Shop.PREFIX + "Dein Shop §e" + shop.getPublicName() + " §7hat §e" + shop.getRent() + "€ §7Miete und §e" + runningcost + "€ §7Betriebskosten bezahlt.");
                     }
                 } else {
                     Abteilung.Abteilungen.FINANZAMT.sendMessage(Shop.PREFIX + "Der Shop §e" + shop.getPublicName() + " §7hat nicht genug Geld für die Betriebskosten und Miete (Verdacht auf Steuerhinterziehung).");
@@ -130,7 +134,22 @@ public class AsyncHour extends BukkitRunnable {
                 }
             }
 
+            final IBizWarService bizWarService = DependencyContainer.getContainer().getDependency(IBizWarService.class);
+            final BizWarConfig bizWarConfig = DependencyContainer.getContainer().getDependency(BizWarConfig.class);
             for (Organisation o : Organisation.values()) {
+                int shopExp = 0;
+                for (Shops shops : bizWarService.getShopsOfFaction(o)) {
+                    final int profitPerHour = bizWarConfig.getShopConfigs().stream().filter(e -> e.getShopId() == shops.getID()).findFirst().get().getProfitPerHour();
+                    o.addKasse(profitPerHour);
+                    o.sendMessage("§8[§eOrganisation§8] §e" + Messages.ARROW + " §7Deine Organisation hat §e" + profitPerHour + "€ und 2 Exp §7durch den Shop §e" + shops.getPublicName() + " §7erhalten.");
+                    shopExp += 2;
+                }
+
+                if(shopExp != 0) {
+                    o.addExp(shopExp);
+                    o.sendMessage("§8[§eOrganisation§8] §e" + Messages.ARROW + " §7Deine Organisation hat §e" + shopExp + " Exp §7durch die Shops erhalten.");
+                }
+
                 int i = 0;
                 for (Player all : o.getMembers()) {
                     if (!AFK.isAFK(all)) {

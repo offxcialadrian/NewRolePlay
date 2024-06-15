@@ -14,7 +14,7 @@ public class NoPush {
         org.bukkit.scoreboard.Team team = board.registerNewTeam("no_collision" + rand);
         team.setOption(org.bukkit.scoreboard.Team.Option.COLLISION_RULE, Team.OptionStatus.NEVER);
         team.addEntry(p.getName());
-        p.setScoreboard(board);
+        //p.setScoreboard(board);
     }
 
     public static void removePlayer(Player p) {

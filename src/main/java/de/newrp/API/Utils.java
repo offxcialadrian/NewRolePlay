@@ -3,24 +3,25 @@ package de.newrp.API;
 import com.google.gson.JsonObject;
 import de.newrp.Administrator.*;
 import de.newrp.Berufe.Beruf;
+import de.newrp.Berufe.Equip;
 import de.newrp.Berufe.Houseban;
 import de.newrp.Government.Wahlen;
 import de.newrp.House.AkkuCommand;
+import de.newrp.House.House;
 import de.newrp.Organisationen.Blacklist;
 import de.newrp.Organisationen.MaskHandler;
 import de.newrp.Organisationen.Organisation;
 import de.newrp.Player.Mobile;
 import de.newrp.Police.Fahndung;
 import de.newrp.NewRoleplayMain;
+import de.newrp.Shop.ShopItem;
 import de.newrp.dependencies.DependencyContainer;
 import de.newrp.discord.IJdaService;
+import de.newrp.features.addiction.IAddictionService;
+import de.newrp.features.scoreboards.IScoreboardService;
 import de.newrp.discord.impl.JdaService;
 import de.newrp.features.playertracker.IPlayerTrackerService;
 import de.newrp.features.recommendation.IRecommendationService;
-import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.JDA;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -60,7 +61,7 @@ public class Utils implements Listener {
 
     private static final Material[] DROP_BLACKLIST = new Material[]{Material.WOODEN_HOE, Material.LEAD, Material.ANDESITE_SLAB, Material.SHIELD, Material.LEATHER_CHESTPLATE, Material.WITHER_SKELETON_SKULL, Material.LEVER, Material.SHEARS};
     private static final String[] BLOCKED_COMMANDS = new String[]{
-            "/minecraft", "/spi", "/protocol", "/rl", "/restart", "/bukkit", "/version", "/icanhasbukkit", "/xp",
+            "/minecraft", "/spigot", "/protocol", "/rl", "/restart", "/bukkit", "/version", "/icanhasbukkit", "/xp",
             "/toggledownfall", "/testfor", "/recipe", "/effect", "/enchant", "/deop", "/defaultgamemode", "/ban-ip",
             "/banlist", "/advancement", "/?", "/gamemode", "/gamerule", "/kill", "/list", "/about",
             "/ability", "/advancement", "/alwaysday", "/attribute", "/ban-ip", "/banlist", "/bossbar", "/camera", "/camerashake",
@@ -140,9 +141,9 @@ public class Utils implements Listener {
     @EventHandler
     public void onPing(ServerListPingEvent e) {
         if (Script.isInTestMode()) {
-            e.setMotd("§5§lNew RolePlay §8┃ §5Reallife §8× §5RolePlay §8┃ §c1.16.5\n§8» §a§l" + "§e§lWartungsarbeiten!");
+            e.setMotd("§5§lNew RolePlay §8┃ §5Reallife §8× §5RolePlay §8┃ §c1.16.5 - 1.20.6\n§8» §a§l" + "§e§lWartungsarbeiten!");
         } else {
-            e.setMotd("§5§lNew RolePlay §8┃ §5Reallife §8× §5RolePlay §8┃ §c1.16.5\n§8» §a§l" + NewRoleplayMain.getInstance().getDescription().getVersion() + " §8- §6§lTHE NEXT BIG THING");
+            e.setMotd("§5§lNew RolePlay §8┃ §5Reallife §8× §5RolePlay §8┃ §c1.16.5 - 1.20.6\n§8» §a§l" + NewRoleplayMain.getInstance().getDescription().getVersion());
         }
     }
 
@@ -220,7 +221,7 @@ public class Utils implements Listener {
             e.setCancelled(true);
             fishCooldown.put(e.getPlayer().getName(), System.currentTimeMillis() + 2000);
             e.getPlayer().getInventory().addItem(getRandomFish());
-            Script.addEXP(e.getPlayer(), 1);
+            Script.addEXP(e.getPlayer(), 1, true);
             ItemStack rod = e.getPlayer().getInventory().getItemInMainHand();
             if (rod.getType() == Material.FISHING_ROD) {
                 if (rod.getDurability() == rod.getType().getMaxDurability()) {
@@ -278,8 +279,6 @@ public class Utils implements Listener {
         TextChannel channel = this.jdaService.getJda().getTextChannelById("1236441113057824881");
         channel.sendMessageEmbeds(embed.build()).queue();*/
 
-
-        p.getInventory().remove(Material.PLAYER_HEAD);
         if (Script.hasRank(p, Rank.DEVELOPER, false)) {
             Script.team.add(p);
 
@@ -325,7 +324,7 @@ public class Utils implements Listener {
                         p.sendMessage(Messages.INFO + "§lDas Team von New RolePlay wünscht dir alles Gute zum Geburtstag!");
                         p.sendMessage(Messages.INFO + "Als Geschenk erhältst du 500 Exp Premium!");
                         Script.executeAsyncUpdate("UPDATE birthday SET geschenk = 1 WHERE id = " + Script.getNRPID(p));
-                        Script.addEXP(p, 500);
+                        Script.addEXP(p, 500, false);
                     }
                 }
 
@@ -438,7 +437,11 @@ public class Utils implements Listener {
                 }
             }.runTaskLaterAsynchronously(NewRoleplayMain.getInstance(), 20L);
         }
-        Script.updateListname(p);
+        //Script.updateListname(p);
+
+        final IScoreboardService scoreboardService = DependencyContainer.getContainer().getDependency(IScoreboardService.class);
+        scoreboardService.createScoreboardOnJoin(p);
+
         Script.checkPlayerName(p);
         Script.resetHealth(p);
         Log.LOW.write(p, "hat den Server betreten.");
@@ -541,12 +544,50 @@ public class Utils implements Listener {
         }
     }
 
+    public static Map<UUID, Float> alkLevel = new HashMap<>();
+
+    @EventHandler
+    public void onAlk(PlayerItemConsumeEvent event) {
+        Player p = event.getPlayer();
+        ItemStack is = event.getItem().clone();
+        is.setAmount(1);
+        if (is.getType().equals(Material.HONEY_BOTTLE)) {
+            if (!BuildMode.isInBuildMode(p)) {
+                Health.THIRST.add(Script.getNRPID(p), Script.getRandomFloat(0F, 1F));
+                if (is.equals(ShopItem.VODKA.getItemStack())) {
+                    if (alkLevel.containsKey(p.getUniqueId()))
+                        alkLevel.put(p.getUniqueId(), alkLevel.get(p.getUniqueId()) + 1F);
+                    else alkLevel.put(p.getUniqueId(), 1F);
+                } else if (is.equals(ShopItem.BIER.getItemStack())) {
+                    if (alkLevel.containsKey(p.getUniqueId()))
+                        alkLevel.put(p.getUniqueId(), alkLevel.get(p.getUniqueId()) + 0.5F);
+                    else alkLevel.put(p.getUniqueId(), 0.5F);
+                } else if (is.equals(ShopItem.LIKOER.getItemStack())) {
+                    if (alkLevel.containsKey(p.getUniqueId()))
+                        alkLevel.put(p.getUniqueId(), alkLevel.get(p.getUniqueId()) + 1.5F);
+                    else alkLevel.put(p.getUniqueId(), 1.5F);
+                }
+
+                if (alkLevel.get(p.getUniqueId()) <= 1) p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 8 * 20, 0));
+                else if (alkLevel.get(p.getUniqueId()) <= 2) p.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 25 * 20, 1));
+                else if (alkLevel.get(p.getUniqueId()) <= 4) p.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 15 * 20, 0));
+                else if (alkLevel.get(p.getUniqueId()) <= 6) p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20 * 20, 0));
+                else if (alkLevel.get(p.getUniqueId()) <= 8) p.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 90 * 20, 0));
+                else if (alkLevel.get(p.getUniqueId()) <= 10) p.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 5 * 20, 0));
+                else p.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 30 * 20, 2));
+            }
+        }
+    }
+
     @EventHandler
     public void onHeal(EntityRegainHealthEvent e) {
         if (!(e.getEntity() instanceof Player)) return;
         if (((Player) e.getEntity()).hasPotionEffect(PotionEffectType.REGENERATION)) return;
-        if (e.getRegainReason() == EntityRegainHealthEvent.RegainReason.EATING || e.getRegainReason() == EntityRegainHealthEvent.RegainReason.SATIATED && ((Player) e.getEntity()).getHealth() >= (((Player) e.getEntity()).getMaxHealth() * 0.75)) {
-            e.setCancelled(true);
+        if (e.getRegainReason() == EntityRegainHealthEvent.RegainReason.EATING) e.setCancelled(true);
+        if (!House.isInHouse((Player) e.getEntity())) {
+            if (e.getRegainReason() == EntityRegainHealthEvent.RegainReason.SATIATED && ((Player) e.getEntity()).getHealth() >= (((Player) e.getEntity()).getMaxHealth() * 0.75)) {
+                e.setCancelled(true);
+            }
         }
     }
 
@@ -763,6 +804,7 @@ public class Utils implements Listener {
         channel.sendMessageEmbeds(embed.build()).queue();*/
         Log.LOW.write(p, "hat den Server verlassen.");
         Script.executeAsyncUpdate("INSERT INTO last_disconnect (nrp_id, time) VALUES (" + Script.getNRPID(p) + ", " + System.currentTimeMillis() + ")");
+        DependencyContainer.getContainer().getDependency(IAddictionService.class).flushData(p);
         new BukkitRunnable() {
 
             @Override

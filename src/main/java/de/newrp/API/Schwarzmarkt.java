@@ -1,25 +1,30 @@
 package de.newrp.API;
 
+import de.newrp.NewRoleplayMain;
 import de.newrp.Organisationen.SchwarzmarktListener;
+import de.newrp.Shop.ShopItem;
+import de.newrp.Shop.ShopNPC;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
+import net.citizensnpcs.trait.SkinLayers;
 import net.citizensnpcs.trait.SkinTrait;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 
 public enum Schwarzmarkt {
-    PFAND(0, "Pfandleihhaus", new Location(Script.WORLD, 556, 65, 1280, 270.3405f, 1.5001209f)),
-    GARAGE(1, "Garage", new Location(Script.WORLD, 708, 65, 1188, 138.8761f, 5.286323f)),
-    HAFEN(2, "Hafen", new Location(Script.WORLD, 940, 67, 1066, 358.9071f, 3.0365276f)),
-    FUNPARK(3, "Funpark", new Location(Script.WORLD, 843, 67, 739, 359.80933f, 1.5366807f)),
-    ARCADE(4, "Arcade", new Location(Script.WORLD, 424, 76, 735, 92.05975f, 2.5869339f)),
-    ALTSTADT(5, "Altstadt", new Location(Script.WORLD, 291, 67, 1005, -262.5547f, 6.029933f)),
-    WALD(6, "Wald", new Location(Script.WORLD, 477, 64, 1182, -0.783306f, 2.5498862f)),
-    UBAHN(7, "U-Bahn", new Location(Script.WORLD, 603, 57, 950, -60.532288f, 7.363153f)),
-    CASINO(8, "Casino", new Location(Script.WORLD, 802, 110, 849, -180.53113f, 3.600285f)),
-    MOTEL(9, "Motel", new Location(Script.WORLD, 808, 64, 1228, -61.73477f, 7.3633313f));
+    PFAND(0, "Pfandleihhaus", new Location(Script.WORLD, 559.9, 65, 1287.2, 120.3f, 0.4f)),
+    GARAGE(1, "Garage", new Location(Script.WORLD, 708, 65, 1187.6, -180.6f, -0.2f)),
+    HAFEN(2, "Hafen", new Location(Script.WORLD, 939.5, 67, 1066.5, 0.3f, 1.3f)),
+    FUNPARK(3, "Funpark", new Location(Script.WORLD, 843.4, 67, 739.4, -0.7f, 4.1f)),
+    ARCADE(4, "Arcade", new Location(Script.WORLD, 424.6, 76, 735.5, -269.6f, 0.6f)),
+    ALTSTADT(5, "Altstadt", new Location(Script.WORLD, 291.4, 67, 1005.2, 102.1f, 3f)),
+    WALD(6, "Wald", new Location(Script.WORLD, 477.3, 64, 1182.6, -9f, 1.4f)),
+    UBAHN(7, "U-Bahn", new Location(Script.WORLD, 603.2, 57, 950.6, -0.1f, 2.4f)),
+    CASINO(8, "Casino", new Location(Script.WORLD, 802.5, 110, 849.4, -180f, 2f)),
+    MOTEL(9, "Motel", new Location(Script.WORLD, 807.4, 64, 1228.6, -75.6f, 1.3f));
 
     public static final String PREFIX = "§8[§cSchwarzmarkt§8]§c " + Messages.ARROW + " §7";
     public static Schwarzmarkt CURRENT_LOCATION = null;
@@ -47,11 +52,14 @@ public enum Schwarzmarkt {
         }
 
         net.citizensnpcs.api.npc.NPC npc = net.citizensnpcs.api.CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, "§eSchwarzmarkt");
-        npc.getOrAddTrait(SkinTrait.class).setSkinName("JesusIsMyLife");
+        npc.getOrAddTrait(SkinTrait.class).setSkinName("hivewind");
+        npc.getOrAddTrait(SkinLayers.class).hideCape();
         npc.spawn(smarkt.getLocation());
+        Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> ShopNPC.addNpc(null, npc), 10 * 20L);
 
         SCHWARZMARKT_ID = npc.getId();
-        CURRENT_LOCATION.setTradeItem(Schwarzmarkt.TradeItem.values()[Script.getRandom(1, Schwarzmarkt.TradeItem.values().length - 1)].setAmount(Script.getRandom(3, 20)));
+        TradeItem item = Schwarzmarkt.TradeItem.values()[Script.getRandom(0, Schwarzmarkt.TradeItem.values().length - 1)];
+        CURRENT_LOCATION.setTradeItem(item.setAmount(Script.getRandom((int) Math.ceil((double) item.getMaxAmount() / 2), item.getMaxAmount())));
 
         CURRENT_LOCATION.amounts = new int[]{Script.getRandom(3, 7), Script.getRandom(3, 5), (Script.getRandom(1, 5) == 2 ? 1 : 0), 1, 1};
 
@@ -106,7 +114,21 @@ public enum Schwarzmarkt {
 
     public enum TradeItem {
         LOTTOSCHEIN(0, new ItemStack(Material.PAPER), "§7Lottoschein", 1),
-        BROT(1, new ItemStack(Material.BREAD), "§7Brot", 64);
+        BROT(1, new ItemStack(Material.BREAD), "§7Brot", 20),
+        LILIE(2, new ItemStack(Material.WHITE_TULIP), "§7Lilie", 4),
+        TULPE(3, new ItemStack(Material.RED_TULIP), "§7Tulpe", 4),
+        MARGARITE(4, new ItemStack(Material.OXEYE_DAISY), "§7Margarite", 4),
+        DISK_MELLOHI(5, new ItemStack(Material.MUSIC_DISC_MELLOHI), "§7Mellohi-Schallplatte", 1),
+        DISK_WAIT(6, new ItemStack(Material.MUSIC_DISC_WAIT), "§7Wait-Schallplatte", 1),
+        ZEITUNG(7, new ItemStack(Material.WRITTEN_BOOK), "§7Zeitung", 1),
+        HANDY(8, new ItemStack(Material.IRON_INGOT), "§7Hawaii P55", 1),
+        SNEAKER(9, new ItemStack(Material.LEATHER_BOOTS), "§7Sneaker", 1),
+        KABELBINDER(10, new ItemStack(Material.STRING), "§7Kabelbinder", 1),
+        KARTE(11, new ItemStack(Material.MAP), "§7Karte", 1),
+        TICKET(12, ShopItem.MONATSFAHRAUSWEIS.getItemStack(), "§7Monatsfahrausweis", 1),
+        KAFFEE(13, new ItemStack(Material.FLOWER_POT), "§7Kaffee", 1),
+        MEHL(14, new ItemStack(Material.WHITE_DYE), "§7Mehl", 1),
+        PLUSH(15, new ItemStack(Material.PLAYER_HEAD), "§7Stofftier", 1);
 
         private final int id;
         private final ItemStack item;

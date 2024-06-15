@@ -48,10 +48,22 @@ public class CooldownCommand implements CommandExecutor {
                         player.sendMessage(PREFIX + "Staatsbank: §5" + TimeUnit.MILLISECONDS.toMinutes(Bankraub.lastTime - System.currentTimeMillis() + Bankraub.BANKROB_COOLDOWN) + "min");
                     }
                 }
-                if (Bankautomaten.cooldown.containsKey(orga)) {
+                Bankautomaten.cooldown.putIfAbsent(orga, 0L);
+                if (Bankautomaten.cooldown.get(orga) > Bankautomaten.cooldowns) {
                     if (Bankautomaten.cooldown.get(orga) - System.currentTimeMillis() > 0) {
                         cd = true;
                         player.sendMessage(PREFIX + "ATM-Sprengung: §5" + TimeUnit.MILLISECONDS.toMinutes(Bankautomaten.cooldown.get(orga) - System.currentTimeMillis()) + "min");
+                    }
+                } else {
+                    if (Bankautomaten.cooldowns - System.currentTimeMillis() > 0) {
+                        cd = true;
+                        player.sendMessage(PREFIX + "ATM-Sprengung: §5" + TimeUnit.MILLISECONDS.toMinutes(Bankautomaten.cooldowns - System.currentTimeMillis()) + "min");
+                    }
+                }
+                if (HackPoliceComputer.lastTime != 0) {
+                    if (HackPoliceComputer.lastTime + HackPoliceComputer.TIMEOUT > System.currentTimeMillis()) {
+                        cd = true;
+                        player.sendMessage(PREFIX + "Polizeicomputer: §5" + TimeUnit.MILLISECONDS.toMinutes(HackPoliceComputer.lastTime + HackPoliceComputer.TIMEOUT - System.currentTimeMillis()) + "min");
                     }
                 }
 

@@ -4,6 +4,7 @@ import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.API.Team;
 import de.newrp.Berufe.Beruf;
+import de.newrp.Organisationen.Contract.model.Contract;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -108,6 +109,21 @@ public class Ablehnen implements CommandExecutor {
             Annehmen.offer.remove(p.getName() + ".house.rent");
             Annehmen.offer.remove(p.getName() + ".house.rent.owner");
             Annehmen.offer.remove(p.getName() + ".house.rent.price");
+        } else if (Annehmen.offer.containsKey(p.getName() + ".rob")) {
+            Player robber = Script.getPlayer(Annehmen.offer.get(p.getName() + ".rob"));
+            if (robber != null) {
+                robber.sendMessage(DENIED + Script.getName(p) + " hat es abgelehnt, den Ausraub einzutragen.");
+            }
+            p.sendMessage(DENIED + "Du hast es abgelehnt, den Ausraub einzutragen.");
+            Annehmen.offer.remove(p.getName() + ".rob");
+        } else if (Annehmen.offer.containsKey(p.getName() + ".contract")) {
+            Player target = Script.getPlayer(Annehmen.offer.get(p.getName() + ".contract"));
+            if (target != null) {
+                target.sendMessage(DENIED + Script.getName(p) + " hat es abgelehnt, das Kopfgeld einzutragen.");
+            }
+            p.sendMessage(DENIED + "Du hast es abgelehnt, das Kopfgeld einzutragen.");
+            Annehmen.offer.remove(p.getName() + ".contract");
+            Contract.removeOffer(p);
         } else {
             p.sendMessage(Messages.ERROR + "Du hast keine Anfrage.");
         }

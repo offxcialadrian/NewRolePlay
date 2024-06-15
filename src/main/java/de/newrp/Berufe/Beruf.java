@@ -8,6 +8,7 @@ import de.newrp.Government.Arbeitslosengeld;
 import de.newrp.TeamSpeak.TeamspeakServerGroup;
 import de.newrp.NewRoleplayMain;
 import de.newrp.Vehicle.CarType;
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
@@ -24,11 +25,11 @@ public class Beruf {
     public static String PREFIX = "§8[§eBeruf§8] §e" + Messages.ARROW + " §7";
 
     public enum Berufe {
-        GOVERNMENT(1, "Regierung", new Location(Script.WORLD, 562, 88, 992, 270.80725f, 18.372393f),false, true, true, 56, TeamspeakServerGroup.GOVERNMENT, new ForumGroup[]{ForumGroup.GOVERNMENT, ForumGroup.GOVERNMENT_LEADER}, CarType.MERCADAS, new Location(Script.WORLD,  466, 69, 981, 180, 0), 19),
-        NEWS(2, "News", new Location(Script.WORLD, 302, 67, 777, -24.381052f, 8.922394f), true, true, true, 95, TeamspeakServerGroup.NEWS, new ForumGroup[]{ForumGroup.NEWS, ForumGroup.NEWS_LEADER}, CarType.NMW, new Location(Script.WORLD, 283, 68, 741, -90, 0), 21),
-        POLICE(3, "Polizei", new Location(Script.WORLD, 420, 71, 819, 185.04346f, 15.860464f),false, true, true, 70, TeamspeakServerGroup.POLICE, new ForumGroup[]{ForumGroup.POLICE, ForumGroup.POLICE_LEADER}, CarType.AWDI, new Location(Script.WORLD, 431, 68, 859, 0, 0), 11),
-        RETTUNGSDIENST(4, "Rettungsdienst", new Location(Script.WORLD, 263, 75, 1254, 189.6543f, 26.346867f),false, true,true, 83, TeamspeakServerGroup.RETTUNGSDIENST, new ForumGroup[]{ForumGroup.RETTUNGSDIENST, ForumGroup.RETTUNGSDIENST_LEADER}, CarType.VOLTSWAGEN, new Location(Script.WORLD, 353, 75, 1253, 90, 0), 25),
-        BUNDESNACHRICHTENDIENST(5, "BND", new Location(Script.WORLD, 0, 0, 0),false, true, true, 646, TeamspeakServerGroup.BND, new ForumGroup[]{ForumGroup.POLICE, ForumGroup.POLICE_LEADER}, CarType.MERCADAS, new Location(Script.WORLD, 0, 0, 0, 0, 0), 0);
+        GOVERNMENT(1, "Regierung", new Location(Script.WORLD, 562, 88, 992, 270.80725f, 18.372393f),false, true, true, 56, TeamspeakServerGroup.GOVERNMENT, new ForumGroup[]{ForumGroup.GOVERNMENT, ForumGroup.GOVERNMENT_LEADER}, CarType.MERCADAS, new Location(Script.WORLD,  466, 69, 981, 180, 0), 19, new Location(Script.WORLD, 540, 88, 981)),
+        NEWS(2, "News", new Location(Script.WORLD, 302, 67, 777, -24.381052f, 8.922394f), true, true, true, 95, TeamspeakServerGroup.NEWS, new ForumGroup[]{ForumGroup.NEWS, ForumGroup.NEWS_LEADER}, CarType.NMW, new Location(Script.WORLD, 283, 68, 741, -90, 0), 21, new Location(Script.WORLD, 289, 67, 788)),
+        POLICE(3, "Polizei", new Location(Script.WORLD, 420, 71, 819, 185.04346f, 15.860464f),false, true, true, 70, TeamspeakServerGroup.POLICE, new ForumGroup[]{ForumGroup.POLICE, ForumGroup.POLICE_LEADER}, CarType.AWDI, new Location(Script.WORLD, 431, 68, 859, 0, 0), 11, new Location(Script.WORLD, 405, 71, 824)),
+        RETTUNGSDIENST(4, "Rettungsdienst", new Location(Script.WORLD, 263, 75, 1254, 189.6543f, 26.346867f),false, true,true, 83, TeamspeakServerGroup.RETTUNGSDIENST, new ForumGroup[]{ForumGroup.RETTUNGSDIENST, ForumGroup.RETTUNGSDIENST_LEADER}, CarType.VOLTSWAGEN, new Location(Script.WORLD, 353, 75, 1253, 90, 0), 25, new Location(Script.WORLD, 267, 75, 1253)),
+        BUNDESNACHRICHTENDIENST(5, "BND", new Location(Script.WORLD, 0, 0, 0),false, true, true, 646, TeamspeakServerGroup.BND, new ForumGroup[]{ForumGroup.POLICE, ForumGroup.POLICE_LEADER}, CarType.MERCADAS, new Location(Script.WORLD, 0, 0, 0, 0, 0), 0, new Location(Script.WORLD, 844.5, 56, 1006.4, -192.3f, 79f));
 
         int id;
         private final String name;
@@ -42,8 +43,10 @@ public class Beruf {
         CarType carType;
         Location garage;
         int width;
+        @Getter
+        final Location equipLoc;
 
-        Berufe(int id, String name, Location loc, boolean kasse, boolean duty, boolean equip, int channelid, TeamspeakServerGroup serverGroup, ForumGroup[] forumGroup, CarType carType, Location garage, int width) {
+        Berufe(int id, String name, Location loc, boolean kasse, boolean duty, boolean equip, int channelid, TeamspeakServerGroup serverGroup, ForumGroup[] forumGroup, CarType carType, Location garage, int width, Location equipLoc) {
             this.id = id;
             this.name = name;
             this.loc = loc;
@@ -56,6 +59,7 @@ public class Beruf {
             this.carType = carType;
             this.garage = garage;
             this.width = width;
+            this.equipLoc = equipLoc;
         }
 
         public static Map<Berufe, HashMap<UUID, Boolean>> BERUF_MEMBER = new ConcurrentHashMap<>();
@@ -303,7 +307,7 @@ public class Beruf {
         }
 
         public void addMember(Player p, Player leader) {
-            Script.executeUpdate("INSERT INTO berufe (nrp_id, berufID, salary, abteilung, leader, coleader) VALUES ('" + Script.getNRPID(p) + "', '" + getID() + "', '0', '0', '0', '0')");
+            Script.executeUpdate("INSERT INTO berufe (nrp_id, berufID, salary, abteilung, leader, coleader, invite) VALUES ('" + Script.getNRPID(p) + "', '" + getID() + "', '0', '0', '0', '0', " + System.currentTimeMillis() + ")");
             for (Player members : getPlayersFromBeruf(this)) {
                 members.sendMessage("§8[§6" + getName() + "§8] §6» §7" + p.getName() + " ist dem Beruf beigetreten.");
             }
@@ -315,7 +319,7 @@ public class Beruf {
         }
 
         public void addMember(OfflinePlayer p) {
-            Script.executeUpdate("INSERT INTO berufe (nrp_id, berufID, salary, abteilung, leader, coleader) VALUES ('" + Script.getNRPID(p) + "', '" + getID() + "', '0', '0', '0', '0')");
+            Script.executeUpdate("INSERT INTO berufe (nrp_id, berufID, salary, abteilung, leader, coleader, invite) VALUES ('" + Script.getNRPID(p) + "', '" + getID() + "', '0', '0', '0', '0', " + System.currentTimeMillis() + ")");
             for (Player members : getPlayersFromBeruf(this)) {
                 members.sendMessage("§8[§6" + getName() + "§8] §6» §7" + p.getName() + " ist dem Beruf beigetreten.");
             }
@@ -341,7 +345,7 @@ public class Beruf {
             }
             Script.executeUpdate("DELETE FROM berufe WHERE nrp_id = '" + Script.getNRPID(p) + "'");
             for (Player members : getPlayersFromBeruf(this)) {
-                members.sendMessage("§8[§6" + getName() + "§8] §6» §7" + p.getName() + "  hat den Beruf verlassen.");
+                members.sendMessage("§8[§6" + getName() + "§8] §6» §7" + p.getName() + " hat den Beruf verlassen.");
             }
             sendLeaderMessage("§8[§6" + getName() + "§8] §6» §7" + Script.getName(leader) + " hat " + p.getName() + " aus dem Beruf geworfen.");
             Script.sendTeamMessage("§8[§6BC§8] §6» §7" + Script.getName(leader) + " hat " + p.getName() + " aus dem Beruf " + getName() + " geworfen.");
@@ -483,5 +487,9 @@ public class Beruf {
             }
         }
         return list;
+    }
+
+    public static long getInvite(OfflinePlayer player) {
+        return Script.getLong(player, "berufe", "invite");
     }
 }

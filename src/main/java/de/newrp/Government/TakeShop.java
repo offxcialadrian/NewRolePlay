@@ -24,6 +24,11 @@ public class TakeShop implements CommandExecutor {
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
         Player p = (Player) cs;
 
+        if (!Beruf.hasBeruf(p)) {
+            p.sendMessage(Messages.NO_PERMISSION);
+            return true;
+        }
+
         if(!Beruf.getBeruf(p).equals(Beruf.Berufe.GOVERNMENT)) {
             p.sendMessage(Messages.NO_PERMISSION);
             return true;
@@ -60,7 +65,7 @@ public class TakeShop implements CommandExecutor {
 
         Stadtkasse.removeStadtkasse(shop.getPrice()/2, "Abkauf des Shops " + shop.getPublicName() + " durch " + Script.getName(p));
         Beruf.Berufe.GOVERNMENT.sendMessage(Shop.PREFIX + "Der Shop " + shop.getPublicName() + " ist nun im Besitz der Stadt.");
-        Beruf.Berufe.GOVERNMENT.sendMessage(Messages.INFO + "Das hat die Stadtkasse " + (shop.getPrice()/2) + "€ gekostet.");
+        Beruf.Berufe.GOVERNMENT.sendMessage(Messages.INFO + "Dies hat die Stadtkasse " + (shop.getPrice()/2) + "€ gekostet.");
         if(Script.getOfflinePlayer(shop.getOwner()).isOnline()) {
             Script.getOfflinePlayer(shop.getOwner()).getPlayer().sendMessage(Shop.PREFIX + "Dein Shop " + shop.getPublicName() + " wurde von der Stadt abgekauft.");
         } else {
@@ -78,6 +83,6 @@ public class TakeShop implements CommandExecutor {
         }
 
 
-        return false;
+        return true;
     }
 }

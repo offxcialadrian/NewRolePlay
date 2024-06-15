@@ -33,33 +33,17 @@ public class UseMedikamente implements Listener {
             if (m == null) return;
 
             if (m == Medikamente.SCHMERZMITTEL) {
-                if(Krankheit.ABHAENGIGKEIT.isInfected(Script.getNRPID(p))) {
-                    p.sendMessage(PREFIX + "Das konsumieren von Schmerzmitteln hat bei dir keine Wirkung gezeigt.");
-                    Script.playLocalSound(p.getLocation(), Sound.ENTITY_PLAYER_BURP, 5);
-                    p.getInventory().getItemInMainHand().setAmount(p.getInventory().getItemInMainHand().getAmount() - 1);
-                    p.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 20 * 5, 0));
-                    return;
-                }
                 Me.sendMessage(p, "nimmt ein Schmerzmittel ein.");
                 Script.playLocalSound(p.getLocation(), Sound.ENTITY_PLAYER_BURP, 5);
                 p.getInventory().getItemInMainHand().setAmount(p.getInventory().getItemInMainHand().getAmount() - 1);
                 p.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 20 * 15, 1));
-                Drogen.addToAdiction(p);
                 return;
             } else if(m == Medikamente.SCHMERZMITTEL_HIGH) {
-                if(Krankheit.ABHAENGIGKEIT.isInfected(Script.getNRPID(p))) {
-                    p.sendMessage(PREFIX + "Das konsumieren von Schmerzmitteln hat bei dir keine Wirkung gezeigt.");
-                    Script.playLocalSound(p.getLocation(), Sound.ENTITY_PLAYER_BURP, 5);
-                    p.getInventory().getItemInMainHand().setAmount(p.getInventory().getItemInMainHand().getAmount() - 1);
-                    p.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 20 * 5, 0));
-                    return;
-                }
                 Me.sendMessage(p, "nimmt ein Schmerzmittel ein.");
                 Script.playLocalSound(p.getLocation(), Sound.ENTITY_PLAYER_BURP, 5);
                 p.getInventory().getItemInMainHand().setAmount(p.getInventory().getItemInMainHand().getAmount() - 1);
                 if(!p.hasPotionEffect(PotionEffectType.ABSORPTION)) p.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 220 * 20, 2, false, false));
                 p.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 20 * 15, 2));
-                Drogen.addToAdiction(p);
                 return;
             }
 

@@ -6,7 +6,10 @@ import de.newrp.Gangwar.GangwarCommand;
 import de.newrp.Police.Handschellen;
 import de.newrp.NewRoleplayMain;
 import de.newrp.dependencies.DependencyContainer;
+import de.newrp.features.addiction.IAddictionService;
+import de.newrp.features.addiction.data.AddictionLevel;
 import de.newrp.features.deathmatcharena.IDeathmatchArenaService;
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -17,15 +20,17 @@ import org.bukkit.potion.PotionEffectType;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 public enum Drogen {
 
-    /*KOKAIN*/PULVER(0, true, "Pulver", new String[]{"Koks", "Kokain", "Pulver"}, null, "g", true, Material.SUGAR),
-    /*MARIHUANA*/KRÄUTER(1, true, "Kräuter", new String[]{"Kräuter", "Kraut", "Marihuana", "Gras", "Weed", "Hanf", "Ott"}, null, "g", true, Material.GREEN_DYE),
-    /*METHAMPHETAMIN*/KRISTALLE(2, true, "Kristalle", new String[]{"Kristalle", "Kristall", "Methamphetamin", "Meth", "Speed", "Chystal"}, null, "g", true, null),
-    /*MDMA*/ECSTASY(3, true, "Exiyty", new String[]{"Ecstasy", "XTC", "Pille", "Tablette"}, null, " Pillen", true, Material.WARPED_BUTTON),
-    ANTIBIOTIKA(6, false, "Antibiotika", null, DrugPurity.HIGH, " Päckchen", true, null);
+    /*KOKAIN*/PULVER(0, true, "Pulver", new String[]{"Koks", "Kokain", "Pulver"}, null, "g", true, Material.SUGAR, 80),
+    /*MARIHUANA*/KRÄUTER(1, true, "Kräuter", new String[]{"Kräuter", "Kraut", "Marihuana", "Gras", "Weed", "Hanf", "Ott"}, null, "g", true, Material.GREEN_DYE, 200),
+    /*METHAMPHETAMIN*/KRISTALLE(2, true, "Kristalle", new String[]{"Kristalle", "Kristall", "Methamphetamin", "Meth", "Speed", "Chystal"}, null, "g", true, null, 100),
+    /*MDMA*/ECSTASY(3, true, "Exiyty", new String[]{"Ecstasy", "XTC", "Pille", "Tablette"}, null, " Pillen", true, Material.WARPED_BUTTON, 10),
+    ANTIBIOTIKA(6, false, "Antibiotika", null, DrugPurity.HIGH, " Päckchen", true, null, 0);
     //SCHWARZPULVER(8, false, "Schwarzpulver", null, DrugPurity.HIGH, " Kisten", false, null),
     //EISEN(9, false, "Eisen", null, DrugPurity.HIGH, " Stück", false, null);
 
@@ -37,12 +42,14 @@ public enum Drogen {
     private final String suffix;
     private final boolean consumable;
     private Material material;
+    @Getter
+    private final int addictionChance;
 
 
 
     public static HashMap<String, Integer> taskID = new HashMap<>();
     public static HashMap<String, Drogen> test  = new HashMap<>();
-    Drogen(int id, boolean drug, String name, String[] alternativeNames, DrugPurity defaultPurity, String suffix, boolean consumable, Material material) {
+    Drogen(int id, boolean drug, String name, String[] alternativeNames, DrugPurity defaultPurity, String suffix, boolean consumable, Material material, int addictionChance) {
         this.id = id;
         this.drug = drug;
         this.name = name;
@@ -51,6 +58,7 @@ public enum Drogen {
         this.suffix = suffix;
         this.consumable = consumable;
         this.material = material;
+        this.addictionChance = addictionChance;
     }
 
     public static Drogen getItemByID(int id) {
@@ -112,7 +120,7 @@ public enum Drogen {
         try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM drug_addiction WHERE nrp_id='" + Script.getNRPID(p) + "' AND heal = false")) {
             while (rs.next()) {
-                if (rs.getLong("time") + TimeUnit.DAYS.toMillis(5) > System.currentTimeMillis()) {
+                if (rs.getLong("time") + TimeUnit.HOURS.toMillis(12) > System.currentTimeMillis()) {
                     i++;
                 }
             }
@@ -161,6 +169,9 @@ public enum Drogen {
         }
     }
 
+    public static Map<UUID, Drogen> lastDrug = new HashMap<>();
+    public static Map<UUID, Long> lastUse = new HashMap<>();
+
     public void consume(Player p, DrugPurity purity) {
         int id = Script.getNRPID(p);
         if (Handschellen.isCuffed(p)) {
@@ -171,6 +182,9 @@ public enum Drogen {
             Script.playLocalSound(p.getLocation(), Sound.ENTITY_PLAYER_BURP, 5);
             Me.sendMessage(p, "konsumiert " + this.getName() + ".");
         }
+
+        lastDrug.put(p.getUniqueId(), this);
+        lastUse.put(p.getUniqueId(), System.currentTimeMillis());
 
         if(test.containsKey(p.getName())) {
             test.remove(p.getName());
@@ -186,24 +200,25 @@ public enum Drogen {
 
         test.put(p.getName(), this);
         taskID.put(p.getName(), task);
+        final IAddictionService addictionService = DependencyContainer.getContainer().getDependency(IAddictionService.class);
 
         if(!GangwarCommand.isInGangwar(p) && !DependencyContainer.getContainer().getDependency(IDeathmatchArenaService.class).isInDeathmatch(p.getPlayer(), false)) {
-            if(Krankheit.ABHAENGIGKEIT.isInfected(id)) {
-                p.sendMessage(Messages.INFO + "Du hast eine Abhängigkeit entwickelt. Das Konsumieren hat keine Wirkung gezeigt.");
+            if(addictionService.getAddictionLevel(p, this).getAddictionLevel() == AddictionLevel.FULLY_ADDICTED) {
+                p.sendMessage(Messages.ERROR + "Du bist abhängig von " + this.getName() + ".");
                 return;
             }
         }
 
-        Drogen.addToAdiction(p);
+        addictionService.evaluteDrugUse(p.getPlayer(), this);
 
         switch (this) {
             case ECSTASY:
-                if(!p.hasPotionEffect(PotionEffectType.ABSORPTION)) p.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 300 * 20, 6 - purity.getID(), false, false));
+                if(!p.hasPotionEffect(PotionEffectType.ABSORPTION)) p.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 300 * 20, 7 - purity.getID(), false, false));
                 if (purity.getID() >= 2) {
                     p.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 20 * (5 + purity.getID()), 0, false, false));
                 }
-                p.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 2 * 20 * (8 - 2 * purity.getID()), 1, false, false));
-                p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 20 * (10 - purity.getID()), 1, false, false));
+                p.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 2 * 20 * (8 - 2 * purity.getID()), 2, false, false));
+                p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 30 * (10 - purity.getID()), 1, false, false));
                 break;
 
             case PULVER:

@@ -12,18 +12,25 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Collectors;
 
-public class AddOrgDoor implements CommandExecutor, Listener {
+public class AddOrgDoor implements CommandExecutor, Listener, TabCompleter {
 
-    private static final String PREFIX = "§8[§eBerufsdoor§8] §e» a";
+    private static final String PREFIX = "§8[§eBerufsdoor§8] §e» ";
     private static HashMap<String, Organisation> changing = new HashMap<>();
 
     @Override
@@ -86,5 +93,14 @@ public class AddOrgDoor implements CommandExecutor, Listener {
                 changing.remove(p.getName());
             }
         }
+    }
+
+    @Override
+    public @Nullable List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
+        ArrayList<String> orgs = new ArrayList<>();
+        for(Organisation o : Organisation.values()) {
+            orgs.add(o.getName());
+        }
+        return orgs;
     }
 }

@@ -109,7 +109,7 @@ public enum Achievement {
         if (!done) {
             Title.sendTitle(p, 20, 100, 20, "§aAchievement freigeschaltet!");
             p.sendMessage("§8[§aAchievement§8] §6» Du hast das Achievement \"§6§l" + this.getText() + "§r§6\" freigeschaltet!");
-            Script.addEXP(p, this.getExp());
+            Script.addEXP(p, this.getExp(), true);
             p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1.0F, 1.0F);
             Script.executeAsyncUpdate("INSERT INTO achievements (userID, achievementID, time, done) VALUES (" + id + ", " + this.getID() + ", " + System.currentTimeMillis() + ", TRUE);");
             if(this.getExplanation() != null) {
@@ -136,7 +136,7 @@ public enum Achievement {
                 Player player = p.getPlayer();
                 Title.sendTitle(player, 20, 100, 20, "§aAchievement freigeschaltet!");
                 player.sendMessage("§8[§aAchievement§8] §6» Du hast das Achievement \"§6§l" + this.getName() + "§r§6\" freigeschaltet!");
-                Script.addEXP(player, this.getExp());
+                Script.addEXP(player, this.getExp(), true);
                 player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1.0F, 1.0F);
             } else {
                 Script.addOfflineMessage(p, "§8[§aAchievement§8] §6» Du hast das Achievement \"§6§l" + this.getName() + "§r§6\" freigeschaltet!");

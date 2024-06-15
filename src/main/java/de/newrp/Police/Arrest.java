@@ -1,9 +1,6 @@
 package de.newrp.Police;
 
-import de.newrp.API.FahndungLog;
-import de.newrp.API.Log;
-import de.newrp.API.Messages;
-import de.newrp.API.Script;
+import de.newrp.API.*;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Berufe.Duty;
 import de.newrp.Government.Stadtkasse;
@@ -105,16 +102,17 @@ public class Arrest implements CommandExecutor {
                 if(Fahndung.getWanteds(tg) >= 80) Beruf.Berufe.BUNDESNACHRICHTENDIENST.sendMessage(Fahndung.PREFIX + "Fahndungsgrund: " + Straftat.getReason(i) + " | WantedPunkte: " + Straftat.getWanteds(i));
             }
         }
-        Fahndung.removeFahndung(tg);
 
 
         if (Mobile.hasPhone(tg)) {
             Mobile.getPhone(tg).setOff(tg);
         }
 
+        Activity.grantActivity(Script.getNRPID(p), Activities.ARREST);
+
         Log.NORMAL.write(p, "hat " + Script.getName(tg) + " verhaftet (" + wanteds + ")");
         Log.NORMAL.write(tg, "wurde von " + Script.getName(p) + " verhaftet (" + wanteds + ")");
-        Script.addEXP(p, Math.abs(wanteds / 6));
+        Script.addEXP(p, Math.abs(wanteds / 6), true);
         Script.removeWeapons(tg);
         Handschellen.uncuff(tg);
         p.getInventory().addItem(Script.setName(new ItemStack(Material.LEAD), "§7Handschellen"));

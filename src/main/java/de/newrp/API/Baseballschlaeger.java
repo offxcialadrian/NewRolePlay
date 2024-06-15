@@ -18,12 +18,13 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import java.util.HashMap;
+import java.util.Random;
 
 public class Baseballschlaeger implements Listener {
     final HashMap<String, Long> cooldown = new HashMap<>();
 
     public static ItemStack getItem() {
-        return Script.setName(new ItemStack(Material.BONE), "§7Baseballschläger");
+        return Script.setNameAndLore(Material.BONE, "§7Baseballschläger", "§6800/800");
     }
 
     @EventHandler
@@ -60,11 +61,11 @@ public class Baseballschlaeger implements Listener {
                     if (ammo > 0) {
                         cooldown.put(damager.getName(), time);
                         if (Spawnschutz.isInSpawnschutz(victim) || victim.getLevel() < 3) return;
-                        victim.damage(3D);
-                        if (Script.getRandom(1, 150) == 2) {
+                        victim.damage(Script.getRandom(6, 10));
+                        if (new Random().nextInt(20) == 0) {
                             Health.setBleeding(victim);
                         }
-                        if(Script.getRandom(1, 100) <= 15) {
+                        if(new Random().nextInt(6) == 0) {
                             if(!Krankheit.GEBROCHENER_ARM.isInfected(Script.getNRPID(victim))) {
                                 Me.sendMessage(victim,"hat sich " + (Script.getGender(victim) == Gender.MALE ? "sein" : "ihr") + "en Arm gebrochen.");
                                 Krankheit.GEBROCHENER_ARM.add(Script.getNRPID(victim));

@@ -4,6 +4,7 @@ import de.newrp.API.*;
 import de.newrp.Administrator.BuildMode;
 import de.newrp.Berufe.Beruf;
 import de.newrp.NewRoleplayMain;
+import de.newrp.Player.AFK;
 import org.bukkit.*;
 import org.bukkit.Particle;
 import org.bukkit.block.Block;
@@ -29,10 +30,7 @@ import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 public class LabBreakIn implements CommandExecutor, Listener {
@@ -206,10 +204,10 @@ public class LabBreakIn implements CommandExecutor, Listener {
 
     private static void giveDrug(Player p, Drogen.DrugPurity purity) {
         p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
-        int i = Script.getRandom(6, 7);
+        int i = Script.getRandom(6, 10);
         ItemStack item = new ItemStack(Material.WARPED_BUTTON, i);
         p.getInventory().addItem(new ItemBuilder(Material.WARPED_BUTTON).setAmount(i).setName(Drogen.ECSTASY.getName()).setLore("§7Reinheitsgrad: " + purity.getText()).build());
-        Organisation.getOrganisation(p).addExp(i * 4);
+        Organisation.getOrganisation(p).addExp(i * 6);
         p.sendMessage(PREFIX + "Du konntest " + i + " Pillen Exiyty herstellen.");
         Organisation.getOrganisation(p).sendMessage(PREFIX + "§6" + Script.getName(p) + " §7hat " + i + " Pillen Exiyty hergestellt.");
         Beruf.Berufe.POLICE.sendMessage(PREFIX + "Es wurde Exiyty hergestellt.");
@@ -253,6 +251,8 @@ public class LabBreakIn implements CommandExecutor, Listener {
         DOOR_BROKE_TIMES.clear();
         Beruf.Berufe.POLICE.sendMessage(PREFIX + "Es wurde ein Einbruch im Labor gemeldet!");
         Organisation.getOrganisation(p).sendMessage(PREFIX + "§6" + Script.getName(p) + " §7ist in das Labor eingebrochen.");
+        for (UUID m : Organisation.getOrganisation(p).getMember()) if (Bukkit.getOfflinePlayer(m).isOnline()) if (!AFK.isAFK(m)) if (Objects.requireNonNull(Bukkit.getPlayer(m)).getLocation().distance(p.getLocation()) <= 60)
+            Activity.grantActivity(Script.getNRPID(Bukkit.getPlayer(m)), Activities.LABOR);
     }
 
     public static void repairDoors(boolean complete) {

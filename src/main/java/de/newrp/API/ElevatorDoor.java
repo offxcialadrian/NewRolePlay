@@ -1026,7 +1026,7 @@ public class ElevatorDoor implements Listener {
                 new Location[]{
                         new Location(Script.WORLD, 725, 73, 908),
                         new Location(Script.WORLD, 726, 73, 908),
-                        new Location(Script.WORLD, 726, 73, 908),
+                        new Location(Script.WORLD, 725, 72, 908),
                         new Location(Script.WORLD, 726, 72, 908),
                         new Location(Script.WORLD, 725, 71, 908),
                         new Location(Script.WORLD, 726, 71, 908),
@@ -1099,7 +1099,7 @@ public class ElevatorDoor implements Listener {
                 new Location[]{
                         new Location(Script.WORLD, 720, 73, 908),
                         new Location(Script.WORLD, 721, 73, 908),
-                        new Location(Script.WORLD, 720, 73, 908),
+                        new Location(Script.WORLD, 720, 72, 908),
                         new Location(Script.WORLD, 721, 72, 908),
                         new Location(Script.WORLD, 720, 71, 908),
                         new Location(Script.WORLD, 721, 71, 908),
@@ -1163,7 +1163,97 @@ public class ElevatorDoor implements Listener {
                         new Location(Script.WORLD, 726, 109, 908),
                         new Location(Script.WORLD, 725, 108, 908),
                         new Location(Script.WORLD, 726, 108, 908),
-                }, Elevator.ElevatorAPI.HRVAEKI_RECHTS, 5);
+                }, Elevator.ElevatorAPI.HRVAEKI_RECHTS, 5),
+
+        BND_ETAGE_0(21, new Location(Script.WORLD, 822, 58, 1027), //AEKI GUI HAUS Rechts v. AEKI
+                new Location[]{
+                        new Location(Script.WORLD, 819, 58, 1023)}, // Tür öffen
+                new Location[]{
+                        new Location(Script.WORLD, 823, 57, 1024),
+                        new Location(Script.WORLD, 822, 57, 1024),
+                        new Location(Script.WORLD, 821, 57, 1024),
+                        new Location(Script.WORLD, 820, 57, 1024),
+                        new Location(Script.WORLD, 823, 58, 1024),
+                        new Location(Script.WORLD, 822, 58, 1024),
+                        new Location(Script.WORLD, 821, 58, 1024),
+                        new Location(Script.WORLD, 820, 58, 1024),
+                        new Location(Script.WORLD, 823, 59, 1024),
+                        new Location(Script.WORLD, 822, 59, 1024),
+                        new Location(Script.WORLD, 821, 59, 1024),
+                        new Location(Script.WORLD, 820, 59, 1024),
+                }, Elevator.ElevatorAPI.BND, 0),
+
+        BND_ETAGE_1(21, new Location(Script.WORLD, 822, 65, 1027), //AEKI GUI HAUS Rechts v. AEKI
+                new Location[]{
+                        new Location(Script.WORLD, 819, 65, 1023)}, // Tür öffen
+                new Location[]{
+                        new Location(Script.WORLD, 823, 64, 1024),
+                        new Location(Script.WORLD, 822, 64, 1024),
+                        new Location(Script.WORLD, 821, 64, 1024),
+                        new Location(Script.WORLD, 820, 64, 1024),
+                        new Location(Script.WORLD, 823, 65, 1024),
+                        new Location(Script.WORLD, 822, 65, 1024),
+                        new Location(Script.WORLD, 821, 65, 1024),
+                        new Location(Script.WORLD, 820, 65, 1024),
+                        new Location(Script.WORLD, 823, 66, 1024),
+                        new Location(Script.WORLD, 822, 66, 1024),
+                        new Location(Script.WORLD, 821, 66, 1024),
+                        new Location(Script.WORLD, 820, 66, 1024),
+                }, Elevator.ElevatorAPI.BND, 1),
+
+        BND_ETAGE_2(21, new Location(Script.WORLD, 822, 72, 1027), //AEKI GUI HAUS Rechts v. AEKI
+                new Location[]{
+                        new Location(Script.WORLD, 819, 72, 1023)}, // Tür öffen
+                new Location[]{
+                        new Location(Script.WORLD, 823, 71, 1024),
+                        new Location(Script.WORLD, 822, 71, 1024),
+                        new Location(Script.WORLD, 821, 71, 1024),
+                        new Location(Script.WORLD, 820, 71, 1024),
+                        new Location(Script.WORLD, 823, 72, 1024),
+                        new Location(Script.WORLD, 822, 72, 1024),
+                        new Location(Script.WORLD, 821, 72, 1024),
+                        new Location(Script.WORLD, 820, 72, 1024),
+                        new Location(Script.WORLD, 823, 73, 1024),
+                        new Location(Script.WORLD, 822, 73, 1024),
+                        new Location(Script.WORLD, 821, 73, 1024),
+                        new Location(Script.WORLD, 820, 73, 1024),
+                }, Elevator.ElevatorAPI.BND, 2),
+
+        BND_ETAGE_3(21, new Location(Script.WORLD, 822, 81, 1027), //AEKI GUI HAUS Rechts v. AEKI
+                new Location[]{
+                        new Location(Script.WORLD, 819, 81, 1023)}, // Tür öffen
+                new Location[]{
+                        new Location(Script.WORLD, 823, 80, 1024),
+                        new Location(Script.WORLD, 822, 80, 1024),
+                        new Location(Script.WORLD, 821, 80, 1024),
+                        new Location(Script.WORLD, 820, 80, 1024),
+                        new Location(Script.WORLD, 823, 81, 1024),
+                        new Location(Script.WORLD, 822, 81, 1024),
+                        new Location(Script.WORLD, 821, 81, 1024),
+                        new Location(Script.WORLD, 820, 81, 1024),
+                        new Location(Script.WORLD, 823, 82, 1024),
+                        new Location(Script.WORLD, 822, 82, 1024),
+                        new Location(Script.WORLD, 821, 82, 1024),
+                        new Location(Script.WORLD, 820, 82, 1024),
+                }, Elevator.ElevatorAPI.BND, 3),
+
+        BND_ETAGE_4(21, new Location(Script.WORLD, 822, 89, 1027), //AEKI GUI HAUS Rechts v. AEKI
+                new Location[]{
+                        new Location(Script.WORLD, 819, 89, 1023)}, // Tür öffen
+                new Location[]{
+                        new Location(Script.WORLD, 823, 88, 1024),
+                        new Location(Script.WORLD, 822, 88, 1024),
+                        new Location(Script.WORLD, 821, 88, 1024),
+                        new Location(Script.WORLD, 820, 88, 1024),
+                        new Location(Script.WORLD, 823, 89, 1024),
+                        new Location(Script.WORLD, 822, 89, 1024),
+                        new Location(Script.WORLD, 821, 89, 1024),
+                        new Location(Script.WORLD, 820, 89, 1024),
+                        new Location(Script.WORLD, 823, 90, 1024),
+                        new Location(Script.WORLD, 822, 90, 1024),
+                        new Location(Script.WORLD, 821, 90, 1024),
+                        new Location(Script.WORLD, 820, 90, 1024),
+                }, Elevator.ElevatorAPI.BND, 4);
 
 
 

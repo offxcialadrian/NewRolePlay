@@ -59,7 +59,11 @@ public class Strassenwartung implements CommandExecutor, Listener {
             return true;
         }
 
-        cooldown.put(p.getName(), System.currentTimeMillis() + 10 * 60 * 2000L);
+        if (Premium.hasPremium(p)) {
+            cooldown.put(p.getName(), System.currentTimeMillis() + 15 * 60 * 1000L);
+        } else {
+            cooldown.put(p.getName(), System.currentTimeMillis() + 20 * 60 * 1000L);
+        }
         GFB.CURRENT.put(p.getName(), GFB.STRASSENWARTUNG);
         int count = GFB.STRASSENWARTUNG.getLevel(p) + Script.getRandom(4, 5);
         SCORE.put(p.getName(), count);
@@ -97,7 +101,7 @@ public class Strassenwartung implements CommandExecutor, Listener {
                     p.sendMessage(PREFIX + "Du hast " + repaired_total + " Straßen repariert.");
                     PayDay.addPayDay(p, (GFB.STRASSENWARTUNG.getLevel(p) + Script.getRandom(1, 2) * repaired_total) *3);
                     GFB.STRASSENWARTUNG.addExp(p, GFB.STRASSENWARTUNG.getLevel(p) + Script.getRandom(3, 4) * repaired_total);
-                    Script.addEXP(p, GFB.STRASSENWARTUNG.getLevel(p) + Script.getRandom(1, 2) * repaired_total*2);
+                    Script.addEXP(p, GFB.STRASSENWARTUNG.getLevel(p) + Script.getRandom(1, 2) * repaired_total*2, true);
                     Cache.loadInventory(p);
                     GFB.CURRENT.remove(p.getName());
                     construction.remove(p.getName());
@@ -148,7 +152,7 @@ public class Strassenwartung implements CommandExecutor, Listener {
             int repaired_total = TOTAL_SCORE.get(p.getName()) - SCORE.get(p.getName());
             p.sendMessage(PREFIX + "Du hast alle Straßen repariert.");
             PayDay.addPayDay(p, GFB.STRASSENWARTUNG.getLevel(p) + (repaired_total*6));
-            Script.addEXP(p, GFB.STRASSENWARTUNG.getLevel(p) + (repaired_total*6));
+            Script.addEXP(p, GFB.STRASSENWARTUNG.getLevel(p) + (repaired_total*6), true);
             GFB.STRASSENWARTUNG.addExp(p, GFB.STRASSENWARTUNG.getLevel(p) + (repaired_total*4));
             Cache.loadInventory(p);
             GFB.CURRENT.remove(p.getName());
@@ -164,7 +168,7 @@ public class Strassenwartung implements CommandExecutor, Listener {
             int repaired_total = TOTAL_SCORE.get(p.getName()) - SCORE.get(p.getName());
             p.sendMessage(PREFIX + "Du hast alle Straßen repariert.");
             PayDay.addPayDay(p, GFB.STRASSENWARTUNG.getLevel(p) + (repaired_total*3));
-            Script.addEXP(p, GFB.STRASSENWARTUNG.getLevel(p) + (repaired_total*3));
+            Script.addEXP(p, GFB.STRASSENWARTUNG.getLevel(p) + (repaired_total*3), true);
             GFB.STRASSENWARTUNG.addExp(p, GFB.STRASSENWARTUNG.getLevel(p) + (repaired_total*2));
             Cache.loadInventory(p);
             GFB.CURRENT.remove(p.getName());

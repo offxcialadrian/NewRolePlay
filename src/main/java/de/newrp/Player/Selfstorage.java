@@ -7,6 +7,7 @@ import de.newrp.Berufe.Equip;
 import de.newrp.GFB.GFB;
 import de.newrp.Waffen.Weapon;
 import de.newrp.NewRoleplayMain;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;

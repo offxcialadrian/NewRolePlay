@@ -1,17 +1,17 @@
 package de.newrp;
 
 import de.newrp.API.*;
-import de.newrp.Administrator.*;
 import de.newrp.Administrator.ParticleCommand;
+import de.newrp.Administrator.*;
 import de.newrp.Berufe.*;
 import de.newrp.Call.CallCommand;
 import de.newrp.Call.HangupCommand;
 import de.newrp.Call.PickupCommand;
 import de.newrp.Chat.*;
-import de.newrp.Player.CooldownCommand;
 import de.newrp.Commands.DiscordCommand;
 import de.newrp.Commands.Test;
 import de.newrp.Entertainment.*;
+import de.newrp.Entertainment.Pets.handler.Pets;
 import de.newrp.Forum.ForumCommand;
 import de.newrp.GFB.*;
 import de.newrp.Gangwar.Capture;
@@ -22,6 +22,9 @@ import de.newrp.House.*;
 import de.newrp.Medic.*;
 import de.newrp.News.*;
 import de.newrp.Organisationen.*;
+import de.newrp.Organisationen.Contract.command.ContractCommand;
+import de.newrp.Organisationen.Contract.handler.ContractHandler;
+import de.newrp.Organisationen.Contract.model.Contract;
 import de.newrp.Player.*;
 import de.newrp.Police.*;
 import de.newrp.Runnable.*;
@@ -46,12 +49,25 @@ import de.newrp.discord.events.GuildReadyListener;
 import de.newrp.discord.impl.JdaService;
 import de.newrp.discord.listeners.SupportListener;
 import de.newrp.discord.listeners.VerifyListener;
+import de.newrp.features.addiction.IAddictionService;
+import de.newrp.features.addiction.impl.AddictionService;
+import de.newrp.features.bizwar.IBizWarService;
+import de.newrp.features.bizwar.commands.ActiveExtortedShopsCommand;
+import de.newrp.features.bizwar.commands.FreeBizCommand;
+import de.newrp.features.bizwar.commands.JoinFightCommand;
+import de.newrp.features.bizwar.commands.StartBizWarCommand;
+import de.newrp.features.bizwar.config.BizWarConfig;
+import de.newrp.features.bizwar.impl.BizWarService;
+import de.newrp.features.bizwar.listener.BizWarPlayerDamageListener;
+import de.newrp.features.bizwar.listener.BizWarPlayerDeathListener;
 import de.newrp.features.deathmatcharena.IDeathmatchArenaService;
 import de.newrp.features.deathmatcharena.commands.DeathmatchArenaCommand;
 import de.newrp.features.deathmatcharena.data.DeathmatchArenaConfig;
 import de.newrp.features.deathmatcharena.impl.DeathmatchArenaService;
 import de.newrp.features.deathmatcharena.listener.DeathmatchQuitListener;
 import de.newrp.features.deathmatcharena.listener.DeathmatchRespawnListener;
+import de.newrp.features.dsgvo.commands.DsgvoCommand;
+import de.newrp.features.dsgvo.commands.ImprintCommand;
 import de.newrp.features.emergencycall.IEmergencyCallService;
 import de.newrp.features.emergencycall.commands.*;
 import de.newrp.features.emergencycall.impl.EmergencyCallService;
@@ -74,7 +90,9 @@ import de.newrp.features.roadblocks.impl.FactionBlockService;
 import de.newrp.features.roadblocks.listener.FactionBlockClickListener;
 import de.newrp.features.roadblocks.listener.FactionBlockDropItemListener;
 import de.newrp.features.roadblocks.listener.FactionBlockQuitListener;
+import de.newrp.features.scoreboards.IScoreboardService;
 import de.newrp.features.scoreboards.config.ScoreboardConfig;
+import de.newrp.features.scoreboards.impl.ScoreboardService;
 import de.newrp.features.takemoney.ITakeMoneyService;
 import de.newrp.features.takemoney.impl.TakeMoneyService;
 import net.citizensnpcs.api.CitizensAPI;
@@ -186,12 +204,22 @@ public class NewRoleplayMain extends JavaPlugin {
         ATM.restore();
         House.loadHouses();
         Blacklist.load();
+        Contract.load();
         Plantage.loadAll();
+        Dart.clear();
         Bukkit.getScheduler().runTaskLater(this, CitizensAPI.getNPCRegistry()::deregisterAll, 2L);
-        Bukkit.getScheduler().runTaskLater(this, Schwarzmarkt::spawnRandom, 4L);
+        Bukkit.getScheduler().runTaskLater(this, Schwarzmarkt::spawnRandom, 80L);
+        Bukkit.getScheduler().runTaskLater(this, Dealer::spawn, 100L);
         Zeitung.restoreZeitung();
-        LabBreakIn.repairDoors(false);
+        Bukkit.getScheduler().runTaskLater(this, () -> {
+            LabBreakIn.repairDoors(false);
+            HackPoliceComputer.repairDoors();
+            BreakOutHandler.repairDoor();
+            Pets.reset();
+        }, 20L);
+        Bukkit.getScheduler().runTaskLater(this, ShopNPC::spawn, 60L);
         OrgSpray.FraktionSpray.init();
+        Bukkit.getScheduler().runTaskLater(this, () -> House.reset(90 * 24 * 60 * 60 * 1000L), 60 * 20L);
 
         LabyAPI.initialize(LabyAPI.getService());
 
@@ -211,6 +239,8 @@ public class NewRoleplayMain extends JavaPlugin {
 
         Bukkit.getConsoleSender().sendMessage("§cNRP §8× §astarting complete..");
         Bukkit.getConsoleSender().sendMessage("§cNRP §8× §aViel Erfolg heute..");
+
+        DependencyContainer.getContainer().getDependency(IBizWarService.class).loadActiveExtortions();
     }
 
     @Override
@@ -237,6 +267,7 @@ public class NewRoleplayMain extends JavaPlugin {
         getCommand("punish").setTabCompleter(new Punish());
         getCommand("tp").setTabCompleter(new Teleport());
         getCommand("fahndung").setTabCompleter(new Fahndung());
+        getCommand("addorgdoor").setTabCompleter(new AddOrgDoor());
         getCommand("sduty").setExecutor(new SDuty());
         getCommand("debug").setExecutor(new DebugCommand());
         getCommand("nrp").setExecutor(new NRPChat());
@@ -314,7 +345,6 @@ public class NewRoleplayMain extends JavaPlugin {
         getCommand("berufskasse").setExecutor(new Berufkasse());
         getCommand("member").setExecutor(new MemberCommand());
         getCommand("addberufsdoor").setExecutor(new AddBerufsDoor());
-        getCommand("installaddon").setExecutor(new InstallAddon());
         getCommand("revive").setExecutor(new ReviveCommand());
         getCommand("friedhof").setExecutor(new FriedhofInfo());
         getCommand("debugstick").setExecutor(new GetDebugStick());
@@ -479,7 +509,7 @@ public class NewRoleplayMain extends JavaPlugin {
         getCommand("trennen").setExecutor(new Trennen());
         getCommand("drogenbank").setExecutor(new Drogenbank());
         getCommand("addorgdoor").setExecutor(new AddOrgDoor());
-        getCommand("destroykoms").setExecutor(new DestroyKoms());
+        // getCommand("destroykoms").setExecutor(new DestroyKoms());
         getCommand("teamactivity").setExecutor(new TeamActivity());
         getCommand("bussgeld").setExecutor(new Bussgeld());
         getCommand("bankraub").setExecutor(new Bankraub());
@@ -535,8 +565,34 @@ public class NewRoleplayMain extends JavaPlugin {
         getCommand("dev").setExecutor(new DevChat());
         getCommand("resetcooldown").setExecutor(new ResetCooldownCommand());
         getCommand("gameboost").setExecutor(new Gameboost());
+        getCommand("recruited").setExecutor(new RecruitedCommand());
         getCommand("sound").setExecutor(new SoundCommand());
         getCommand("particle").setExecutor(new ParticleCommand());
+        getCommand("startbizwar").setExecutor(new StartBizWarCommand());
+        getCommand("joinfight").setExecutor(new JoinFightCommand());
+        getCommand("freebiz").setExecutor(new FreeBizCommand());
+        getCommand("activeextortions").setExecutor(new ActiveExtortedShopsCommand());
+        getCommand("abteilungschat").setExecutor(new AbteilungsChat());
+        getCommand("activity").setExecutor(new ActivityCommand());
+        getCommand("checkactivity").setExecutor(new CheckActivityCommand());
+        getCommand("addactivity").setExecutor(new AddActivityCommand());
+        getCommand("removeactivity").setExecutor(new RemoveActivityCommand());
+        getCommand("resetactivity").setExecutor(new ResetActivityCommand());
+        getCommand("sperrshop").setExecutor(new SperrShop());
+        getCommand("equipprice").setExecutor(new EquipPriceCommand());
+        getCommand("spind").setExecutor(new SpindCommand());
+        getCommand("sperrlizenz").setExecutor(new SperrLizenzCommand());
+        getCommand("umsatz").setExecutor(new UmsatzCommand());
+        getCommand("alktest").setExecutor(new AlkTestCommand());
+        getCommand("drugtest").setExecutor(new DrugTestCommand());
+        getCommand("dsgvo").setExecutor(new DsgvoCommand());
+        getCommand("imprint").setExecutor(new ImprintCommand());
+        getCommand("casino").setExecutor(new Casino());
+        getCommand("getjsonlocation").setExecutor(new GetJsonLocation());
+        getCommand("dart").setExecutor(new Dart());
+        getCommand("ausraub").setExecutor(new AusraubCommand());
+        getCommand("pets").setExecutor(new Pets());
+        getCommand("contract").setExecutor(new ContractCommand());
     }
 
     /**
@@ -605,6 +661,8 @@ public class NewRoleplayMain extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new UseMedikamente(), this);
         Bukkit.getPluginManager().registerEvents(new Selfstorage(), this);
         Bukkit.getPluginManager().registerEvents(new Baseballschlaeger(), this);
+        Bukkit.getPluginManager().registerEvents(new Messer(), this);
+        Bukkit.getPluginManager().registerEvents(new Machete(), this);
         Bukkit.getPluginManager().registerEvents(new Checkpoints(), this);
         Bukkit.getPluginManager().registerEvents(new Vertraege(), this);
         Bukkit.getPluginManager().registerEvents(new GetShulker(), this);
@@ -690,9 +748,18 @@ public class NewRoleplayMain extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new RecommendationInventoryClickListener(), this);
         Bukkit.getPluginManager().registerEvents(new RecommendationChatListener(), this);
         Bukkit.getPluginManager().registerEvents(new RecommendationInventoryCloseListener(), this);
+        Bukkit.getPluginManager().registerEvents(new BizWarPlayerDamageListener(), this);
+        Bukkit.getPluginManager().registerEvents(new BizWarPlayerDeathListener(), this);
         Bukkit.getPluginManager().registerEvents(new PlaytimePlayerListener(), this);
         Bukkit.getPluginManager().registerEvents(new DrogenbankHouse(), this);
-        Bukkit.getPluginManager().registerEvents(new EventListener(), this);
+        Bukkit.getPluginManager().registerEvents(new SpindCommand(), this);
+        Bukkit.getPluginManager().registerEvents(new MuscleDamage(), this);
+        Bukkit.getPluginManager().registerEvents(new Dart(), this);
+        Bukkit.getPluginManager().registerEvents(new BreakOutHandler(), this);
+        Bukkit.getPluginManager().registerEvents(new ShopNPC(), this);
+        Bukkit.getPluginManager().registerEvents(new Dealer(), this);
+        Bukkit.getPluginManager().registerEvents(new Pets(), this);
+        Bukkit.getPluginManager().registerEvents(new ContractHandler(), this);
     }
 
     /**
@@ -706,10 +773,13 @@ public class NewRoleplayMain extends JavaPlugin {
         DependencyContainer.getContainer().add(IJdaService.class, new JdaService());
         DependencyContainer.getContainer().add(IDeathmatchArenaService.class, new DeathmatchArenaService());
         DependencyContainer.getContainer().add(IFactionBlockService.class, new FactionBlockService());
+        DependencyContainer.getContainer().add(IScoreboardService.class, new ScoreboardService());
         DependencyContainer.getContainer().add(ITakeMoneyService.class, new TakeMoneyService());
         DependencyContainer.getContainer().add(IRecommendationService.class, new RecommendationService());
         DependencyContainer.getContainer().add(IPlayerTrackerService.class, new PlayerTrackerService());
+        DependencyContainer.getContainer().add(IBizWarService.class, new BizWarService());
         DependencyContainer.getContainer().add(IPlaytimeService.class, new PlaytimeService());
+        DependencyContainer.getContainer().add(IAddictionService.class, new AddictionService());
     }
 
     /**
@@ -735,6 +805,11 @@ public class NewRoleplayMain extends JavaPlugin {
         this.configService.saveConfig(scoreboardConfigFile, new ScoreboardConfig(), false);
         DependencyContainer.getContainer().add(ScoreboardConfig.class, this.configService.readConfig(scoreboardConfigFile, ScoreboardConfig.class));
         Bukkit.getLogger().info("Successfully read Scoreboard Configuration!");
+
+        final File bizWarConfigFile = new File(pluginFolder, "bizwarlocations.json");
+        this.configService.saveConfig(bizWarConfigFile, new BizWarConfig(), false);
+        DependencyContainer.getContainer().add(BizWarConfig.class, this.configService.readConfig(bizWarConfigFile, BizWarConfig.class));
+        Bukkit.getLogger().info("Successfully read BizWar Configuration!");
     }
 
     public static boolean isTest() {

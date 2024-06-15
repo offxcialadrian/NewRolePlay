@@ -50,6 +50,11 @@ public class ErsteHilfeSchein implements CommandExecutor {
             return true;
         }
 
+        if (Licenses.ERSTE_HILFE.isLocked(Script.getNRPID(tg))) {
+            p.sendMessage(Messages.ERROR + "Der Erste-Hilfe-Ausweis der Person wurde gesperrt.");
+            return true;
+        }
+
         if(tg.getLocation().distance(p.getLocation()) > 5) {
             p.sendMessage(Messages.ERROR + "Der Spieler ist zu weit entfernt.");
             return true;

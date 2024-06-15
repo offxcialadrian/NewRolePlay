@@ -40,6 +40,12 @@ public class Personalausweis implements CommandExecutor, Listener {
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         Player p = (Player) cs;
         int id = Script.getNRPID(p);
+
+        if (Licenses.PERSONALAUSWEIS.isLocked(Script.getNRPID(p))) {
+            p.sendMessage(Messages.ERROR + "Dein Personalausweis wurde gesperrt.");
+            return true;
+        }
+
         if (Licenses.PERSONALAUSWEIS.hasLicense(id)) {
             Achievement.PERSONALAUSWEIS.grant(p);
             if (args.length == 1 && args[0].equalsIgnoreCase("info")) {

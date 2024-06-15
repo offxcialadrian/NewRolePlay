@@ -17,8 +17,8 @@ public class MuscleDamage implements Listener {
                 e.setDamage(0D);
                 e.setCancelled(true);
             } else {
-                double[] damage = {0, .5, 1};
-                e.setDamage(damage[lvl]);
+                double dmg = (((double) lvl) / 20) + 0.5;
+                e.setDamage(Script.getRandomFloat(dmg, dmg * 2));
             }
         }
     }

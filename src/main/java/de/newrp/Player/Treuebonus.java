@@ -3,10 +3,9 @@ package de.newrp.Player;
 import de.newrp.API.*;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Berufe.Duty;
+import de.newrp.NewRoleplayMain;
 import de.newrp.Organisationen.MaskHandler;
 import de.newrp.Organisationen.Organisation;
-import de.newrp.NewRoleplayMain;
-import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -23,7 +22,6 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -129,7 +127,7 @@ public class Treuebonus implements CommandExecutor, Listener {
             p.sendMessage(prefix + "Du hast in " + getMinutesToBonus(p) + "min deinen nächsten Treuebonus. §8[§c" + Treuebonus.points.get(p.getUniqueId()) + " Punkte§8]");
         } else {
             Inventory inv = p.getServer().createInventory(null, InventoryType.HOPPER, "§bTreuebonus §8[§c" + Treuebonus.points.get(p.getUniqueId()) + "§8]");
-            int price = 15 * ((Script.getLevel(p) / 5) + 1);
+            int price = 10 + (Math.round((float) Script.getLevelCost(p) / 1000) * 2);
             inv.setItem(0, Script.setNameAndLore(Material.EXPERIENCE_BOTTLE, "§6+1000 Exp", "§c10 Treuepunkte"));
             inv.setItem(1, Script.setNameAndLore(Material.GOLD_INGOT, "§6+2500€", "§c12 Treuepunkte"));
             inv.setItem(2, Script.setNameAndLore(Material.DIAMOND, "§67 Tage Premium", "§c24 Treuepunkte"));
@@ -223,7 +221,7 @@ public class Treuebonus implements CommandExecutor, Listener {
                         if (punkte >= price) {
                             Treuebonus.remove(p, price);
                             p.sendMessage(Treuebonus.prefix + "Du hast +1000 Exp eingelöst.");
-                            Script.addEXP(p, 1000);
+                            Script.addEXP(p, 1000, true);
                         } else {
                             p.sendMessage(Treuebonus.prefix + "Das kostet " + price + " Treuepunkte! (Dir fehlen §9" + (price - punkte) + " Punkte§7)");
                         }
@@ -234,7 +232,7 @@ public class Treuebonus implements CommandExecutor, Listener {
                         int punkte = Treuebonus.points.get(p.getUniqueId());
                         if (punkte >= price) {
                             Treuebonus.remove(p, price);
-                            p.sendMessage(Treuebonus.prefix + "Du hast 2500$ eingelöst.");
+                            p.sendMessage(Treuebonus.prefix + "Du hast 2500€ eingelöst.");
                             Script.addMoney(p, PaymentType.BANK, 2500);
                         } else {
                             p.sendMessage(Treuebonus.prefix + "Das kostet " + price + " Treuepunkte! (Dir fehlen §9" + (price - punkte) + " Punkte§7)");
@@ -254,7 +252,7 @@ public class Treuebonus implements CommandExecutor, Listener {
                         break;
                     }
                     case "§6+1 Level": {
-                        int price = 15 * ((Script.getLevel(p) / 5) + 1);
+                        int price = 10 + (Math.round((float) Script.getLevelCost(p) / 1000) * 2);
                         int punkte = Treuebonus.points.get(p.getUniqueId());
                         if (punkte >= price) {
                             Treuebonus.remove(p, price);

@@ -1,11 +1,18 @@
 package de.newrp.Organisationen;
 
 import de.newrp.API.Baseballschlaeger;
+import de.newrp.API.Machete;
 import de.newrp.API.Script;
 import de.newrp.Berufe.Equip;
+import de.newrp.NewRoleplayMain;
+import de.newrp.Shop.ShopItem;
 import de.newrp.Waffen.Weapon;
 import lombok.Getter;
 import org.bukkit.inventory.ItemStack;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 @Getter
 public enum Stuff {
@@ -16,7 +23,9 @@ public enum Stuff {
     PISTOLE(4, Weapon.PISTOLE.getName(), Weapon.PISTOLE.getWeapon(), 3, 350),
     STRIKER(5, Weapon.MP7.getName(), Weapon.MP7.getWeapon(), 4, 700),
     BRECHI(6, "Brechstange", Script.brechstange(), 5, 250),
-    SCHUTZWESTE(7, "Schutzweste", Equip.Stuff.KEVLAR.getItem(), 6, 700);
+    SCHUTZWESTE(7, "Schutzweste", Equip.Stuff.KEVLAR.getItem(), 6, 700),
+    MACHETE(8, "Machete", Machete.getItem(), 7, 3100),
+    MUNITION_MP7(9, Weapon.MP7.getAmmoType().getName(), Script.setName(Equip.Stuff.MUNITION_MP7.getItem(), Weapon.MP7.getAmmoType().getName()), 5, 55);
 
     private final int id;
     private final String name;
@@ -34,7 +43,7 @@ public enum Stuff {
 
     public static Stuff getStuff(String name) {
         for (Stuff stuff : values()) {
-            if (stuff.getName().equalsIgnoreCase(name)) {
+            if (stuff.getName().equalsIgnoreCase(name.replaceAll("§7", ""))) {
                 return stuff;
             }
         }
@@ -48,5 +57,27 @@ public enum Stuff {
             }
         }
         return null;
+    }
+
+    public int getPrice(int org) {
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT * FROM equip WHERE id=" + -org + " AND equip=" + this.id)) {
+            if (rs.next()) return rs.getInt("price");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public void setPrice(int org, int price) {
+        if (getPrice(org) == 0) {
+            try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
+                 ResultSet rs = stmt.executeQuery("SELECT * FROM equip WHERE id=" + -org + " AND equip=" + this.id)) {
+                if (!rs.next()) Script.executeUpdate("INSERT INTO equip (id, equip, price) VALUES (" + -org + ", " + this.id + ", 0)");
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        Script.executeUpdate("UPDATE equip SET price=" + price + " WHERE id=" + -org + " AND equip=" + this.id);
     }
 }

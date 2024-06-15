@@ -3,6 +3,10 @@ package de.newrp.Administrator;
 import de.newrp.NewRoleplayMain;
 import de.newrp.API.*;
 import de.newrp.Police.Jail;
+import de.newrp.dependencies.DependencyContainer;
+import de.newrp.features.scoreboards.BoardConfiguration;
+import de.newrp.features.scoreboards.IScoreboardService;
+import de.newrp.features.scoreboards.boards.CheckpointsScoreboardConfiguration;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -19,6 +23,7 @@ import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Scoreboard;
+import org.checkerframework.checker.units.qual.C;
 
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -131,26 +136,19 @@ public class Checkpoints implements Listener {
         p.sendMessage(Messages.INFO + "Du musst den dir zugewiesenen Redstone-Block finden und anklicken, um ihn zu entfernen.");
         p.sendMessage(Messages.INFO + "Du hast " + checkpoints + " Checkpoints.");
 
-        setScoreboard(p, checkpoints);
+        setScoreboard(p, checkpoints, false);
         setCheckpoints(p, checkpoints, false);
     }
 
-    public static void setScoreboard(Player p, int checkpoints) {
-        Scoreboard board = Bukkit.getScoreboardManager().getNewScoreboard();
-        Objective obj = board.getObjective("Checkpoints");
-        if (obj == null) {
-            obj = board.registerNewObjective("Checkpoints", "dummy");
-        }
-        obj.setDisplaySlot(DisplaySlot.SIDEBAR);
-        obj.setDisplayName(ChatColor.BLUE + "" + ChatColor.BOLD + "§cNRP × Checkpoints");
-        Score score1 = obj.getScore(ChatColor.GRAY + "§bCheckpoints§8:");
-        Score score2 = obj.getScore(ChatColor.DARK_AQUA + " §8» §a" + checkpoints);
-        Score blank = obj.getScore(" ");
+    public static void setScoreboard(Player p, int checkpoints, boolean updateScoreboard) {
+        final IScoreboardService scoreboardService = DependencyContainer.getContainer().getDependency(IScoreboardService.class);
+        final BoardConfiguration configuration = new CheckpointsScoreboardConfiguration();
 
-        blank.setScore(2);
-        score1.setScore(1);
-        score2.setScore(0);
-        p.setScoreboard(board);
+        if(!updateScoreboard) {
+            scoreboardService.setScoreboard(configuration, p);
+        }
+        scoreboardService.updateBoard(configuration, p, Map.of("checkpoints", checkpoints + ""));
+
     }
 
     public static boolean hasCheckpoints(Player p) {
@@ -223,7 +221,7 @@ public class Checkpoints implements Listener {
         CHECKPOINTS.put(p.getName(), amount);
         Script.executeAsyncUpdate("INSERT INTO checkpoints (id, checkpoints) VALUES (" + Script.getNRPID(p) + ", " + amount + ") ON DUPLICATE KEY UPDATE checkpoints = " + amount);
         if (updateScoreboard) {
-            setScoreboard(p, amount);
+            setScoreboard(p, amount, false);
         }
     }
 
@@ -273,7 +271,7 @@ public class Checkpoints implements Listener {
             p.sendMessage(PREFIX + "Du hast noch " + getCheckpoints(p) + " Checkpoints.");
             place(p);
             CHECKPOINTS.put(p.getName(), getCheckpoints(p));
-            setScoreboard(p, getCheckpoints(p));
+            setScoreboard(p, getCheckpoints(p), true);
             Location loc = new Location(Script.WORLD, 484, 8, 561, 87.723145f, 7.387953f);
             loc.getChunk().load();
             p.teleport(loc);

@@ -34,6 +34,11 @@ public class Fahrschule implements CommandExecutor, Listener {
         if (sender instanceof Player) {
             Player player = (Player) sender;
 
+            if (Licenses.FUEHRERSCHEIN.isLocked(Script.getNRPID(player))) {
+                player.sendMessage(Messages.ERROR + "Dein Führerschein wurde gesperrt.");
+                return true;
+            }
+
             if (player.getLocation().distance(HologramList.FAHRSCHULE.getLocation()) > 5) {
                 player.sendMessage(Component.text(PREFIX + "Du bist nicht in der Fahrschule!"));
                 return true;
@@ -148,14 +153,14 @@ public class Fahrschule implements CommandExecutor, Listener {
                     if (Script.removeMoney(player, PaymentType.BANK, amount)) {
                         Stadtkasse.addStadtkasse(amount, "Fahrschule " + player.getName(), Steuern.Steuer.MEHRWERTSTEUER);
                         player.sendMessage(Component.text(PREFIX + "Herzlichen Glückwunsch, du hast deine Führerschein-Prüfung bestanden!"));
-                        Script.addEXP(player, 10 + new Random().nextInt(20));
+                        Script.addEXP(player, 10 + new Random().nextInt(20), true);
                         Licenses.FUEHRERSCHEIN.grant(Script.getNRPID(player));
                     } else {
                         player.sendMessage(PREFIX + "Du hast nicht genug Geld, um deinen Führerschein zu bezahlen!");
                     }
                     index.remove(player.getUniqueId());
                     guis.remove(player.getUniqueId());
-                    player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
+                    //player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
                     Cache.loadScoreboard(player);
                 }, 100 * 20L);
         }

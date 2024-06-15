@@ -25,6 +25,7 @@ public class Strafzettel {
     public static HashMap<Player, String> reasons = new HashMap<>();
     public static HashMap<Player, Integer> prices = new HashMap<>();
     public static List<Player> removes = new ArrayList<>();
+    public static List<Player> info = new ArrayList<>();
 
     private final int carID;
     private final String reason;
@@ -64,5 +65,8 @@ public class Strafzettel {
 
     public static boolean isRemoving(Player player) {
         return removes.contains(player);
+    }
+    public static boolean isChecking(Player player) {
+        return info.contains(player);
     }
 }

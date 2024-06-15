@@ -1,9 +1,6 @@
 package de.newrp.GFB;
 
-import de.newrp.API.Messages;
-import de.newrp.API.PayDay;
-import de.newrp.API.PaymentType;
-import de.newrp.API.Script;
+import de.newrp.API.*;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -130,7 +127,11 @@ public class Kellner implements CommandExecutor, Listener {
             }
         }
 
-        cooldown.put(p.getName(), System.currentTimeMillis() + 10 * 60 * 2000L);
+        if (Premium.hasPremium(p)) {
+            cooldown.put(p.getName(), System.currentTimeMillis() + 15 * 60 * 1000L);
+        } else {
+            cooldown.put(p.getName(), System.currentTimeMillis() + 20 * 60 * 1000L);
+        }
         GFB.CURRENT.put(p.getName(), GFB.KELLNER);
         int totalscore = GFB.KELLNER.getLevel(p) + Script.getRandom(8, 12);
         SCORE.put(p.getName(), totalscore);
@@ -187,7 +188,7 @@ public class Kellner implements CommandExecutor, Listener {
                 GFB.KELLNER.addExp(p, GFB.KELLNER.getLevel(p) + Script.getRandom(5, 7));
                 SCORE.remove(p.getName());
                 GFB.CURRENT.remove(p.getName());
-                Script.addEXP(p, GFB.KELLNER.getLevel(p) + Script.getRandom(5, 7)*2);
+                Script.addEXP(p, GFB.KELLNER.getLevel(p) + Script.getRandom(5, 7)*2, true);
                 PayDay.addPayDay(p, (GFB.KELLNER.getLevel(p) + TOTAL_SCORE.get(p.getName()))*3);
                 TOTAL_SCORE.remove(p.getName());
                 return;

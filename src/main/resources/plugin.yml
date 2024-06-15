@@ -1,6 +1,6 @@
 name: NewRolePlay
 main: de.newrp.NewRoleplayMain
-version: 1.1.0
+version: 1.1.1
 description: NewRP Serversystem
 author: NewRP Entwicklungs-Team
 api-version: 1.16
@@ -200,9 +200,6 @@ commands:
     aliases: [ members, memberinfo ]
   addberufsdoor:
     description: add a door to a beruf
-  installaddon:
-    description: install an addon
-    aliases: [ installhausaddon, installhouseaddon ]
   revive:
     description: revive a player
     aliases: [ rev ]
@@ -533,7 +530,7 @@ commands:
     description: add premium to a player
   leaderchat:
     description: send a message to the leaderchat
-    aliases: [ l ]
+    aliases: [ l, lchat ]
   waffenschein:
     description: view the waffenschein
     aliases: [ waffenscheine ]
@@ -643,8 +640,8 @@ commands:
     aliases: [ drogenkasse, drogenkassen, dbank, dkasse ]
   addorgdoor:
     description: add a door to an organisation
-  destroykoms:
-    description: destroy all koms
+#  destroykoms:
+#    description: destroy all koms
   restorezeitung:
     description: restore the zeitung
   teamactivity:
@@ -693,6 +690,7 @@ commands:
   deletenotruf:
     description: delete a notruf
   checkactivemembers:
+    aliases: [ cam ]
     description: check the active members
   endfire:
     description: end the fire
@@ -739,7 +737,7 @@ commands:
     aliases: [ license ]
   fahrschule:
     description: how to drive
-    aliases: [ drivingschool ]
+    aliases: [ drivingschool, führerschein ]
   leasing:
     description: lease a car
     aliases: [ garage ]
@@ -783,7 +781,76 @@ commands:
     description: resets the cooldown
   gameboost:
     description: activates the gameboost system
+  startbizwar:
+    description: starts a biz war
+  activeextortions:
+    description: lists the extorted shops
+  joinfight:
+    description: joins a fight
+  freebiz:
+    description: frees a biz
+  recruited:
+    description: marks a recruiting player
+    aliases: [ uwu, angeworben ]
   sound:
     description: sound
   particle:
     description: particle
+  abteilungschat:
+    description: write in the subfrak-chat
+    aliases: [ a, achat, sf ]
+  activity:
+    description: shows activity
+    aliases: [ akti, aktis, aktivitäten ]
+  checkactivity:
+    description: checks activity
+    aliases: [ checkakti, checkaktis, checkaktivitäten ]
+  addactivity:
+    description: adds activity
+    aliases: [ addakti, giveactivity, giveakti, addaktivität, giveaktivität ]
+  removeactivity:
+    description: removes activity
+    aliases: [ removeakti, deleteactivity, deleteakti, removeaktivität, deleteaktivität ]
+  resetactivity:
+    description: resets activity
+    aliases: [ resetakti, resetaktis, resetaktivitäten ]
+  sperrshop:
+    description: locks a shop
+  equipprice:
+    description: changes equipprices
+    aliases: [ equippreis ]
+  spind:
+    description: opens fraction locker
+    aliases: [ locker ]
+  sperrlizenz:
+    description: locks a license
+    aliases: [ sperrlicense, locklicense ]
+  umsatz:
+    description: presents biz revenue
+    aliases: [ revenue ]
+  alktest:
+    description: test for alk
+    aliases: [ alkoholtest ]
+  drugtest:
+    description: test for drugs
+    aliases: [ drogentest ]
+  imprint:
+    description: shows the imprint link to the sender
+    aliases: [ impressum ]
+  dsgvo:
+    description: shows the dsgvo link to the sender
+    aliases: [ datenschutz, datenschutzerklaerung ]
+  casino:
+    description: toggle casino settings
+  getjsonlocation:
+    description: json location
+  dart:
+    description: get dart arrows
+  ausraub:
+    description: marks a player as robbed
+  pets:
+    description: toggles pet options
+    aliases: [ pet, haustier, haustiere ]
+  contract:
+    description: hitmens contract-system
+    aliases: [ contracts, cts, kopfgeld ]

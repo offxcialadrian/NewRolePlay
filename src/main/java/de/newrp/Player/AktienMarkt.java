@@ -71,7 +71,7 @@ public class AktienMarkt implements CommandExecutor, Listener {
                                 p.sendMessage(Messages.ERROR + "Es gibt keine §6" + aktie.getName() + " §cAktien!");
                         } else {
                             p.sendMessage(Messages.ERROR + "Du hast nicht genug Geld!");
-                            p.sendMessage(Messages.INFO + "Du benötigst " + (aktie.getPrice() + getPercentage(10, aktie.getPrice())) + "$.");
+                            p.sendMessage(Messages.INFO + "Du benötigst " + (aktie.getPrice() + getPercentage(10, aktie.getPrice())) + "€.");
                         }
                     } else if (e.getClick().equals(ClickType.RIGHT)) {
                         if (aktie.getAmountByPlayer(p) < 1) return;

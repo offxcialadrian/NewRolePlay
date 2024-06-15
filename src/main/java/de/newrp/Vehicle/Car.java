@@ -275,7 +275,7 @@ public class Car {
         score13.setScore(0);
 
         Cache.saveScoreboard(p);
-        p.setScoreboard(b);
+        //p.setScoreboard(b);
     }
 
     public void updateCarSidebar(Player p, Car car) {
@@ -315,7 +315,7 @@ public class Car {
         score12.setScore(1);
         score13.setScore(0);
 
-        p.setScoreboard(b);
+        //p.setScoreboard(b);
     }
 
     public double getSpeed() {

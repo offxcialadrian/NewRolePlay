@@ -92,7 +92,11 @@ public class Transport implements CommandExecutor, Listener {
             return true;
         }
 
-        cooldown.put(p.getName(), System.currentTimeMillis() + 10 * 60 * 2000L);
+        if (Premium.hasPremium(p)) {
+            cooldown.put(p.getName(), System.currentTimeMillis() + 15 * 60 * 1000L);
+        } else {
+            cooldown.put(p.getName(), System.currentTimeMillis() + 20 * 60 * 1000L);
+        }
         GFB.CURRENT.put(p.getName(), GFB.TRANSPORT);
         p.sendMessage(GFB.PREFIX + "Du hast den Job §6Transport §7angenommen.");
         p.sendMessage(GFB.PREFIX + "Wähle nun ein Ziel aus.");
@@ -207,7 +211,7 @@ public class Transport implements CommandExecutor, Listener {
             int add = GFB.TRANSPORT.getLevel(p) + SAFE_SCORE.get(p.getName());
             GFB.TRANSPORT.addExp(p, add);
             PayDay.addPayDay(p, add*6);
-            Script.addEXP(p, add*4);
+            Script.addEXP(p, add*4, true);
             GFB.CURRENT.remove(p.getName());
             SCORE.remove(p.getName());
             STARTED.remove(p.getName());

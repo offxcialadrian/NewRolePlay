@@ -1,9 +1,6 @@
 package de.newrp.Administrator;
 
-import de.newrp.API.Messages;
-import de.newrp.API.Rank;
-import de.newrp.API.Schwarzmarkt;
-import de.newrp.API.Script;
+import de.newrp.API.*;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -28,6 +25,7 @@ public class ResetSchwarzmarkt implements CommandExecutor {
         }
 
         Schwarzmarkt.spawnRandom();
+        Dealer.respawn();
         p.sendMessage(Schwarzmarkt.PREFIX + "Der Schwarzmarkt wurde zurückgesetzt.");
         Script.sendTeamMessage(p, ChatColor.RED, "hat den Schwarzmarkt zurückgesetzt.", true);
 

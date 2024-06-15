@@ -11,6 +11,8 @@ import de.newrp.House.HouseAddon;
 import de.newrp.Medic.Medikamente;
 import de.newrp.Medic.Rezept;
 import de.newrp.NewRoleplayMain;
+import de.newrp.Organisationen.AusraubCommand;
+import de.newrp.Organisationen.Contract.model.Contract;
 import de.newrp.Organisationen.Organisation;
 import de.newrp.Shop.Shops;
 import de.newrp.TeamSpeak.TeamSpeak;
@@ -28,6 +30,8 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
+import java.util.Objects;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 public class Annehmen implements CommandExecutor {
@@ -57,7 +61,7 @@ public class Annehmen implements CommandExecutor {
 
             team.addMember(p);
             p.sendMessage(ACCEPTED + "Du bist dem Team " + team.getName() + " beigetreten.");
-            Script.addEXP(p, 100);
+            Script.addEXP(p, 100, true);
             for (Player all : Bukkit.getOnlinePlayers()) {
                 if (Team.getTeam(all) == team)
                     all.sendMessage("§8[§e" + team.getName() + "§8] §e" + p.getName() + " §8» §7ist dem Team beigetreten.");
@@ -387,10 +391,11 @@ public class Annehmen implements CommandExecutor {
             Log.NORMAL.write(p, "hat " + amount + "x Rezept für " + m.getName() + " von " + Script.getName(tg) + " erhalten.");
             Log.NORMAL.write(tg, "hat " + amount + "x Rezept für " + m.getName() + " an " + Script.getName(p) + " gegeben.");
             Beruf.Berufe.RETTUNGSDIENST.sendMessage(Rezept.PREFIX + Script.getName(tg) + " hat " + Script.getName(p) + " " + amount + "x Rezept für " + m.getName() + " ausgestellt.");
+            Activity.addActivity(Script.getNRPID(tg), 0, Activities.REZEPT.getName(), Activities.REZEPT.getPoints() * amount);
             offer.remove(p.getName() + ".rezept");
             offer.remove(p.getName() + ".medikament");
             offer.remove(p.getName() + ".rezept.anzahl");
-            Stadtkasse.removeStadtkasse(10*amount, "Rezeptausstellung an " + Script.getName(p));
+            Stadtkasse.addStadtkasse(amount * 200, "Rezept für " + m.getName() + " an " + p.getName(), null);
             Achievement.REZEPT.grant(p);
 
         } else if(offer.containsKey(p.getName() + ".house.rent")) {
@@ -447,6 +452,41 @@ public class Annehmen implements CommandExecutor {
             offer.remove(p.getName() + ".house.rent.price");
             Achievement.HAUS.grant(p);
             Achievement.HOUSE_RENT.grant(p);
+        } else if (offer.containsKey(p.getName() + ".rob")) {
+            p.sendMessage(AusraubCommand.PREFIX + "Der Ausraub wurde erfolgreich eingetragen.");
+            Player target = Bukkit.getPlayer(offer.get(p.getName()));
+            if (target != null) {
+                target.sendMessage(AusraubCommand.PREFIX + "Der Ausraub wurde erfolgreich eingetragen.");
+                AusraubCommand.robs.put(target.getUniqueId(), System.currentTimeMillis());
+                if (Organisation.hasOrganisation(p)) {
+                    for (UUID m : Organisation.getOrganisation(p).getMember()) {
+                        if (Bukkit.getPlayer(m).getLocation().distance(p.getLocation()) < 20) {
+                            if (!AFK.isAFK(m)) {
+                                Activity.grantActivity(Script.getNRPID(Bukkit.getPlayer(m)), Activities.AUSRAUB);
+                            }
+                        }
+                    }
+                }
+            }
+            offer.remove(p.getName() + ".rob");
+        } else if (offer.containsKey(p.getName() + ".contract")) {
+            Player target = Bukkit.getPlayer(offer.get(p.getName() + ".contract"));
+            if (target != null) {
+                Contract ct = Contract.getOffer(p);
+                if (Script.removeMoney(p, PaymentType.CASH, ct.getPrice())) {
+                    Contract.add(ct);
+                    Organisation.HITMEN.sendMessage(Contract.PREFIX + target.getName() + " hat §6" + Objects.requireNonNull(Script.getOfflinePlayer(ct.getUserID())).getName() + " §7ein Kopfgeld in Höhe von §6" + ct.getPrice() + "€ §7ausgesetzt.");
+                    p.sendMessage(Contract.PREFIX + "Das Kopfgeld wurde erfolgreich eingetragen.");
+                    Contract.addCustomer(p);
+                    Activity.grantActivity(Script.getNRPID(target), Activities.CONTRACT);
+                } else {
+                    p.sendMessage(Messages.ERROR + "Du benötigst " + ct.getPrice() + "€.");
+                }
+            }
+            Contract.removeOffer(p);
+            offer.remove(p.getName() + ".contract");
+        } else if (offer.containsKey(p.getName() + ".petkill")) {
+            offer.remove(p.getName() + ".petkill");
         } else {
             p.sendMessage(Messages.ERROR + "Dir wird nichts angeboten.");
         }

@@ -66,7 +66,7 @@ public class BurnPlant implements CommandExecutor {
 
         for (Player nearbyCop : nearbyCops) {
             nearbyCop.sendMessage(Plantage.PREFIX + "Du hast erfolgreich eine " + typeName + " Plantage verbrannt.");
-            Script.addEXP(nearbyCop, Script.getRandom(8, 12));
+            Script.addEXP(nearbyCop, Script.getRandom(8, 12), true);
         }
 
 

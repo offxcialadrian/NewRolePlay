@@ -2,6 +2,7 @@ package de.newrp.GFB;
 
 import de.newrp.API.Messages;
 import de.newrp.API.PayDay;
+import de.newrp.API.Premium;
 import de.newrp.API.Script;
 import de.newrp.NewRoleplayMain;
 import org.bukkit.Location;
@@ -67,7 +68,11 @@ public class Eishalle implements CommandExecutor, Listener {
         }
 
         CURRENT = p;
-        cooldown.put(p.getName(), System.currentTimeMillis() + 10 * 60 * 2000L);
+        if (Premium.hasPremium(p)) {
+            cooldown.put(p.getName(), System.currentTimeMillis() + 15 * 60 * 1000L);
+        } else {
+            cooldown.put(p.getName(), System.currentTimeMillis() + 20 * 60 * 1000L);
+        }
         for(Block block : Script.getBlocksBetween(new Location(Script.WORLD, 385, 66, 764), new Location(Script.WORLD, 370, 66, 741))) {
             block.setType(Material.PACKED_ICE);
         }
@@ -112,7 +117,7 @@ public class Eishalle implements CommandExecutor, Listener {
         GFB.CURRENT.remove(p.getName());
         GFB.EISHALLE.addExp(p, GFB.EISHALLE.getLevel(p) + Script.getRandom(5, 7)*2);
         PayDay.addPayDay(p, (GFB.EISHALLE.getLevel(p) + Script.getRandom(5, 7)*2)*3);
-        Script.addEXP(p, GFB.EISHALLE.getLevel(p)+ Script.getRandom(5, 7)*2);
+        Script.addEXP(p, GFB.EISHALLE.getLevel(p)+ Script.getRandom(5, 7)*2, true);
     }
 
     @EventHandler

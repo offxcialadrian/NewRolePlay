@@ -1,8 +1,6 @@
 package de.newrp.Organisationen;
 
-import de.newrp.API.ItemBuilder;
-import de.newrp.API.Messages;
-import de.newrp.API.Script;
+import de.newrp.API.*;
 import de.newrp.NewRoleplayMain;
 import org.bukkit.*;
 import org.bukkit.block.Banner;
@@ -76,8 +74,7 @@ public class OrgSpray implements Listener {
                         progressBar(8, p);
                         addSpray(p, b);
                         small_cooldown.put(p.getName(), System.currentTimeMillis() + 1500);
-                        if (level >= 7) {
-                            p.getInventory().getItemInMainHand().setAmount(p.getInventory().getItemInMainHand().getAmount() - 1);
+                        if (level >= 6) {
                             LAST_CLICK.remove(p.getName());
                             LEVEL.remove(p.getName());
                         }
@@ -165,7 +162,7 @@ public class OrgSpray implements Listener {
             m.remove(p.getName());
             p.sendMessage(PREFIX + "Du hast das Graffiti entfernt.");
             p.getInventory().getItemInMainHand().setAmount(p.getInventory().getItemInMainHand().getAmount() - 1);
-            Script.addEXP(p, Script.getRandom(3, 5));
+            Script.addEXP(p, Script.getRandom(3, 5), true);
         } else {
             m.put(p.getName(), map);
         }
@@ -238,8 +235,11 @@ public class OrgSpray implements Listener {
             m.remove(p.getName());
             p.sendMessage(PREFIX + "Du hast das Graffiti mit deiner Organisationsflagge übersprayt.");
             f.sendMessage(PREFIX + p.getName() + " hat ein Graffiti mit der Flagge der Organisation übersprayt.");
+            if (p.getInventory().getItemInMainHand().getType().equals(Material.LEVER))
+                p.getInventory().getItemInMainHand().setAmount(p.getInventory().getItemInMainHand().getAmount() - 1);
             f.addExp(Script.getRandom(5, 10));
-            Script.addEXP(p, Script.getRandom(3, 5));
+            Activity.grantActivity(Script.getNRPID(p), Activities.GRAFFITI);
+            Script.addEXP(p, Script.getRandom(3, 5), true);
         } else {
             m.put(p.getName(), map);
         }
@@ -314,12 +314,14 @@ public class OrgSpray implements Listener {
                 return patterns;
             } else if (this == FALCONE) {
                 List<Pattern> patterns = new ArrayList<>();
-                patterns.add(new Pattern(DyeColor.WHITE, PatternType.BASE));
-                patterns.add(new Pattern(DyeColor.GREEN, PatternType.CROSS));  //Bitte überprüfen, ob es das diagonale ist
-                patterns.add(new Pattern(DyeColor.GREEN, PatternType.RHOMBUS_MIDDLE));
-                patterns.add(new Pattern(DyeColor.WHITE, PatternType.CIRCLE_MIDDLE));
-                patterns.add(new Pattern(DyeColor.RED, PatternType.DIAGONAL_RIGHT));
-                patterns.add(new Pattern(DyeColor.WHITE, PatternType.STRIPE_DOWNLEFT));
+                patterns.add(new Pattern(DyeColor.LIGHT_GRAY, PatternType.BASE));
+                patterns.add(new Pattern(DyeColor.YELLOW, PatternType.RHOMBUS_MIDDLE));
+                patterns.add(new Pattern(DyeColor.LIGHT_GRAY, PatternType.HALF_HORIZONTAL_MIRROR));
+                patterns.add(new Pattern(DyeColor.YELLOW, PatternType.CIRCLE_MIDDLE));
+                patterns.add(new Pattern(DyeColor.LIGHT_GRAY, PatternType.TRIANGLE_BOTTOM));
+                patterns.add(new Pattern(DyeColor.YELLOW, PatternType.TRIANGLE_BOTTOM));
+                patterns.add(new Pattern(DyeColor.LIGHT_GRAY, PatternType.STRIPE_BOTTOM));
+                patterns.add(new Pattern(DyeColor.GRAY, PatternType.BORDER));
                 return patterns;
             } else if (this == KARTELL) {
                 List<Pattern> patterns = new ArrayList<>();

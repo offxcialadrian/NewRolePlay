@@ -1,9 +1,6 @@
 package de.newrp.Organisationen;
 
-import de.newrp.API.Log;
-import de.newrp.API.Messages;
-import de.newrp.API.PaymentType;
-import de.newrp.API.Script;
+import de.newrp.API.*;
 import de.newrp.Administrator.Notifications;
 import de.newrp.Administrator.SDuty;
 import de.newrp.Berufe.Beruf;
@@ -109,13 +106,14 @@ public class RobCommand implements CommandExecutor {
                                 player.sendMessage(PREFIX + "Du hast " + finalMoney + "€ von " + finalVictim.getName() + " gestohlen.");
                                 int exp = finalMoney / 5;
                                 if (exp > 50) exp = 50;
-                                Script.addEXP(player, exp);
+                                Script.addEXP(player, exp, true);
                                 Script.removeMoney(finalVictim, PaymentType.CASH, finalMoney);
                                 Script.addMoney(player, PaymentType.CASH, finalMoney);
                                 cooldownsV.put(finalVictim.getUniqueId(), System.currentTimeMillis() + 2 * 60 * 60 * 1000);
                                 Log.LOW.write(finalVictim, "bekommt von " + Script.getName(player) + " " + finalMoney + "€ gestohlen.");
                                 Log.LOW.write(player, "stiehlt von " + Script.getName(finalVictim) + " " + finalMoney + "€.");
                                 Notifications.sendMessage(Notifications.NotificationType.PAYMENT, Script.getName(player) + " hat " + Script.getName(finalVictim) + " " + finalMoney + "€ gestohlen. (CASH)");
+                                Activity.grantActivity(Script.getNRPID(player), Activities.ROB);
                             } else {
                                 player.sendMessage(PREFIX + "Die Person hat sich zu viel bewegt!");
                             }

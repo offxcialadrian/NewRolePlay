@@ -1,11 +1,10 @@
 package de.newrp.Organisationen;
 
-import de.newrp.API.Messages;
-import de.newrp.API.PaymentType;
-import de.newrp.API.Script;
+import de.newrp.API.*;
 import de.newrp.Berufe.Beruf;
 import de.newrp.House.House;
 import de.newrp.House.HouseAddon;
+import de.newrp.Player.AFK;
 import de.newrp.Police.Handschellen;
 import de.newrp.NewRoleplayMain;
 import de.newrp.dependencies.DependencyContainer;
@@ -13,6 +12,7 @@ import de.newrp.features.emergencycall.IEmergencyCallService;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.data.type.Door;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -22,8 +22,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class BreakIn implements Listener {
     private static final String PREFIX = "§8[§cEinbruch§8]§6 ";
@@ -37,13 +36,15 @@ public class BreakIn implements Listener {
 
     @EventHandler
     public void onInteract(PlayerInteractEvent e) {
-        Player p = (Player) e.getPlayer();
+        Player p = e.getPlayer();
         if(!p.getInventory().getItemInMainHand().equals(Script.brechstange())) return;
 
         long time = System.currentTimeMillis();
         Long lastUsage = TOTAL_COOLDOWN.get(p.getName());
         if (HOUSES.containsKey(p.getName()) || TOTAL_COOLDOWN.containsKey(p.getName()) && lastUsage + 9000000 > time) {
-            p.sendMessage(Messages.ERROR + "Du kannst nur alle 3 Stunden in ein Haus einbrechen.");
+            if (Objects.requireNonNull(e.getClickedBlock()).getType() == Material.OAK_DOOR) {
+                p.sendMessage(Messages.ERROR + "Du kannst nur alle 3 Stunden in ein Haus einbrechen.");
+            }
             return;
         }
 
@@ -70,7 +71,9 @@ public class BreakIn implements Listener {
 
         House house = House.getNearHouse(p.getLocation(), 3);
         if (house == null) {
-            Script.sendActionBar(p, PREFIX + "Du kannst hier nicht einbrechen.");
+            if (Objects.requireNonNull(e.getClickedBlock()).getType() == Material.OAK_DOOR) {
+                Script.sendActionBar(p, PREFIX + "Du kannst hier nicht einbrechen.");
+            }
             return;
         }
 
@@ -78,16 +81,19 @@ public class BreakIn implements Listener {
             Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> Beruf.Berufe.POLICE.sendMessage(this.emergencyCallService.getPrefix() + "Es wurde ein Einbruch bei Haus " + house.getID() + " gemeldet."), 10 * 20L);
         }
 
-
         COOLDOWNS.put(p.getName(), System.currentTimeMillis());
         HOUSES.put(p.getName(), house);
         p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 90 * 20, 2));
         p.sendMessage(PREFIX + "Du hast begonnen in das Haus " + house.getID() + " einzubrechen.");
+        if (Organisation.hasOrganisation(p)) {
+            for (UUID m : Organisation.getOrganisation(p).getMember()) if (Bukkit.getOfflinePlayer(m).isOnline()) if (!AFK.isAFK(m)) if (Objects.requireNonNull(Bukkit.getPlayer(m)).getLocation().distance(p.getLocation()) <= 20)
+                Activity.grantActivity(Script.getNRPID(Bukkit.getPlayer(m)), Activities.EINBRUCH);
+        }
         progress.put(p.getName(), 0.0);
         new BukkitRunnable() {
             @Override
             public void run() {
-                if(p.getLocation().distance(house.getSignLocation()) > 3) {
+                if (p.getLocation().distance(house.getSignLocation()) > 3) {
                     p.sendMessage(PREFIX + "Du hast den Einbruch abgebrochen.");
                     if (p.hasPotionEffect(PotionEffectType.SLOW)) p.removePotionEffect(PotionEffectType.SLOW);
                     progress.remove(p.getName());
@@ -95,7 +101,7 @@ public class BreakIn implements Listener {
                     return;
                 }
 
-                if(!p.getInventory().getItemInMainHand().equals(brechstange)) {
+                if (!p.getInventory().getItemInMainHand().equals(brechstange)) {
                     p.sendMessage(PREFIX + "Du hast den Einbruch abgebrochen.");
                     if (p.hasPotionEffect(PotionEffectType.SLOW)) p.removePotionEffect(PotionEffectType.SLOW);
                     progress.remove(p.getName());
@@ -103,7 +109,7 @@ public class BreakIn implements Listener {
                     return;
                 }
 
-                if(Handschellen.isCuffed(p)) {
+                if (Handschellen.isCuffed(p)) {
                     p.sendMessage(PREFIX + "Du hast den Einbruch abgebrochen.");
                     if (p.hasPotionEffect(PotionEffectType.SLOW)) p.removePotionEffect(PotionEffectType.SLOW);
                     progress.remove(p.getName());
@@ -111,7 +117,7 @@ public class BreakIn implements Listener {
                     return;
                 }
 
-                if(!COOLDOWNS.containsKey(p.getName())) {
+                if (!COOLDOWNS.containsKey(p.getName())) {
                     p.sendMessage(PREFIX + "Du hast den Einbruch abgebrochen.");
                     if (p.hasPotionEffect(PotionEffectType.SLOW)) p.removePotionEffect(PotionEffectType.SLOW);
                     progress.remove(p.getName());
@@ -119,7 +125,7 @@ public class BreakIn implements Listener {
                     return;
                 }
 
-                if(progress.get(p.getName()) < 60) {
+                if (progress.get(p.getName()) < 60) {
                     progress.put(p.getName(), progress.get(p.getName()) + 1);
                     progressBar(61, p);
                     return;
@@ -127,6 +133,16 @@ public class BreakIn implements Listener {
 
 
                 House house = HOUSES.get(p.getName());
+                if (house.hasAddon(HouseAddon.SICHERHEITSTUER)) {
+                    if (new Random().nextInt(4) > 0) {
+                        p.sendMessage(PREFIX + "Der Einbruch ist fehlgeschlagen.");
+                        TOTAL_COOLDOWN.put(p.getName(), System.currentTimeMillis());
+                        ItemStack item = p.getInventory().getItemInMainHand();
+                        if (item.getType() == Material.BLAZE_ROD) item.setAmount(item.getAmount() - 1);
+                        return;
+                    }
+                }
+
                 int geld = (house.getKasse() / 3);
                 p.sendMessage(PREFIX + "Du hast alles. Verschwinde nun bevor die Polizei eintrifft!");
                 p.getInventory().getItemInMainHand().setAmount(p.getInventory().getItemInMainHand().getAmount() - 1);

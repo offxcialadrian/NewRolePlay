@@ -20,11 +20,11 @@ public class Cache {
     }
 
     public static void loadScoreboard(Player p) {
-        if (getScoreboard(p) != null) {
+        /*if (getScoreboard(p) != null) {
             p.setScoreboard(getScoreboard(p));
         } else {
             p.setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
-        }
+        }*/
     }
 
     public static void saveScoreboard(Player p) {

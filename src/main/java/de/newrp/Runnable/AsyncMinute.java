@@ -30,7 +30,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
+import static de.newrp.Ticket.TicketCommand.getSupporterID;
 import static de.newrp.Ticket.TicketCommand.queue;
 
 public class AsyncMinute extends BukkitRunnable {
@@ -93,11 +95,16 @@ public class AsyncMinute extends BukkitRunnable {
 
         if (Calendar.getInstance().get(Calendar.MINUTE) == 0 || Calendar.getInstance().get(Calendar.MINUTE) == 15 || Calendar.getInstance().get(Calendar.MINUTE) == 30 || Calendar.getInstance().get(Calendar.MINUTE) == 45) {
             for (Player p : Bukkit.getOnlinePlayers()) {
+                if (Script.getLevel(p) <= 3) {
+                    p.sendMessage("§8[§bNeuling§8] §b" + Messages.ARROW + " §7Bei Fragen benutze den Neulingschat §6/nc §7um Hilfe zu erhalten!");
+                }
                 if (Premium.hasPremium(p)) continue;
                 String advert = advertises[Script.getRandom(0, advertises.length - 1)];
                 p.sendMessage(advert);
-                Title.sendTitle(p, 20, 100, 20, advert.split(Messages.ARROW)[0], advert.split(Messages.ARROW)[1]);
                 Script.sendActionBar(p, "§8[§cWerbung§8] §c" + Messages.ARROW + " §7Mit Premium erhältst du keine Werbung.");
+                if (Script.getLevel(p) > 3) {
+                    Title.sendTitle(p, 20, 100, 20, advert.split(Messages.ARROW)[0], advert.split(Messages.ARROW)[1]);
+                }
             }
         }
 
@@ -115,27 +122,23 @@ public class AsyncMinute extends BukkitRunnable {
             }
         }
 
-        if (Calendar.getInstance().get(Calendar.MINUTE) % 2 == 0) {
-            int amount = 0;
-            for (Map.Entry<Integer, Ticket.Queue> ignored : queue.entrySet()) {
-                amount++;
-            }
-            if (amount > 0) {
-                for (Player nrp : Script.getNRPTeam()) {
-                    // Better than querying the player's rank
-                    if(Team.getTeam(nrp) == Team.Teams.ENTWICKLUNG) {
-                        continue;
-                    }
-
-                    Title.sendTitle(nrp, 20, 100, 20, "§8[§6Tickets§8] §6" + Messages.ARROW + " §7Es sind noch " + amount + " Tickets offen.");
-                    nrp.sendMessage("§8[§6Tickets§8] §6" + Messages.ARROW + " §7Es sind noch " + amount + " Tickets offen.");
-                    nrp.playSound(nrp.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
-                    nrp.sendMessage(Messages.INFO + "Bitte beachte, dass die Bearbeitung von Tickets eine hohe Priorität hat.");
-                    Bukkit.getScheduler().runTask(NewRoleplayMain.getInstance(), () -> {
-                        if(SDuty.isSDuty(nrp) && Script.getRank(nrp) != Rank.OWNER) nrp.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 12 * 20, 2, false, false));
-                    });
+        int amount = 0;
+        for (Map.Entry<Integer, Ticket.Queue> ignored : queue.entrySet()) {
+            amount++;
+        }
+        if (amount > 0) {
+            for (Player nrp : Script.getNRPTeam()) {
+                // Better than querying the player's rank
+                if(Team.getTeam(nrp) == Team.Teams.ENTWICKLUNG) {
+                    continue;
                 }
+
+                Title.sendTitle(nrp, 20, 100, 20, "§8[§6Tickets§8] §6" + Messages.ARROW + " §7Es sind noch " + amount + " Tickets offen.");
+                nrp.sendMessage("§8[§6Tickets§8] §6" + Messages.ARROW + " §7Es sind noch " + amount + " Tickets offen.");
+                nrp.playSound(nrp.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
+                nrp.sendMessage(Messages.INFO + "Bitte beachte, dass die Bearbeitung von Tickets eine hohe Priorität hat.");
             }
+        }
             /*for(Entity e : Script.WORLD.getEntities()) {
                 if(e instanceof Player) continue;
                 if(e instanceof Item && ((Item) e).getItemStack().getType() == Material.PLAYER_HEAD) continue;
@@ -146,7 +149,6 @@ public class AsyncMinute extends BukkitRunnable {
                 if(e.getEntityId() == CitizensAPI.getNPCRegistry().getById(Schwarzmarkt.SCHWARZMARKT_ID).getEntity().getEntityId()) continue;
                 e.remove();
             }*/
-        }
 
         if (Calendar.getInstance().get(Calendar.MINUTE) % 15 == 0) {
             for (Player p : Bukkit.getOnlinePlayers()) {
@@ -168,15 +170,31 @@ public class AsyncMinute extends BukkitRunnable {
                 }
             }
             Script.increasePlayTime(p);
+
             if (Script.getRandom(1, 10) == 1) {
                 if (Krankheit.HUSTEN.isInfected(Script.getNRPID(p)) && !Friedhof.isDead(p) && !AFK.isAFK(p)) {
                     if(!Spectate.isSpectating(p)) Me.sendMessage(p, "hustet.");
                     for (Player p2 : Bukkit.getOnlinePlayers()) {
                         if (p2.getLocation().distance(p.getLocation()) <= 5) {
-                            if (!Krankheit.HUSTEN.isInfected(Script.getNRPID(p2)) && !Krankheit.HUSTEN.isImpfed(Script.getNRPID(p2)) && !SDuty.isSDuty(p))
-                                Krankheit.HUSTEN.add(Script.getNRPID(p2));
+                            if (!Krankheit.HUSTEN.isInfected(Script.getNRPID(p2)) && !Krankheit.HUSTEN.isImpfed(Script.getNRPID(p2)) && !SDuty.isSDuty(p)) {
+                                if (Script.getRandom(1, 5) == 1) {
+                                    Krankheit.HUSTEN.add(Script.getNRPID(p2));
+                                }
+                            }
                         }
                     }
+                }
+            }
+
+            if (Utils.alkLevel.containsKey(p.getUniqueId())) {
+                if (Utils.alkLevel.get(p.getUniqueId()) >= 2) {
+                    if (new Random().nextInt(3) == 0) {
+                        if (!Spectate.isSpectating(p)) Me.sendMessage(p, "übergibt sich.");
+                    }
+                }
+
+                if (Utils.alkLevel.get(p.getUniqueId()) > 0) {
+                    Utils.alkLevel.put(p.getUniqueId(), Utils.alkLevel.get(p.getUniqueId()) - 0.5F);
                 }
             }
         }

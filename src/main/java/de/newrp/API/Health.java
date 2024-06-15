@@ -16,6 +16,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
+import java.util.Objects;
 
 public enum Health {
     THIRST(1, "thirst", "Durst", 20, 20),
@@ -95,10 +96,7 @@ public enum Health {
 
     public static int getMuscleLevel(int id) {
         float f = Health.MUSCLES.get(id);
-        if (f < 1) return 0;
-        if (f < 5) return 1;
-        if (f >= 5) return 2;
-        return 0;
+        return (int) Math.floor(f);
     }
 
     public static void setBleeding(Player p) {
@@ -220,10 +218,11 @@ public enum Health {
                 }
             }
         }
-        if (this.id == 2) {
-            if (get(id) > .3) {
+        // Unnötig - kann bei MUSCLES.add bearbeitet werden statt hier entfernt zu werden ~1Minify
+        /*if (this.id == 2) {
+            if (get(id) > .3) { // > .3 trifft immer zu da Anagbe 1F-2F random ist ~1Minify
                 Health.MUSCLES.remove(id, Script.getRandomFloat(.03F, .05F));
             }
-        }
+        }*/
     }
 }

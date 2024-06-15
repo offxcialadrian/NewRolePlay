@@ -27,7 +27,7 @@ public class GasStationBuyHandler implements GenericBuyHandler {
             if (Script.removeMoney(player, PaymentType.CASH, money)) {
                 refuels.get(player).fill(amount.get(player));
                 refuels.remove(player);
-                BuyClick.sendMessage(player, "Vielen Dank fürs Tanken!");
+                BuyClick.sendMessage(player, "Vielen Dank fürs Tanken!", shop);
                 int m = (int) Math.ceil(money * 0.6);
                 if (shop.getOwner() > 0) {
                     shop.addKasse(m);

@@ -72,7 +72,7 @@ public class Waffenschein implements CommandExecutor {
                             return true;
                         }
 
-                        if (Script.getMoney(tg, PaymentType.BANK) < Math.min(10000, Script.getLevel(tg) * 1000)) {
+                        if (Script.getMoney(tg, PaymentType.BANK) < Math.min(10000, Script.getLevel(tg) * 500) + 3000) {
                             p.sendMessage(PREFIX + "Der Spieler hat nicht genug Geld.");
                             return true;
                         }
@@ -119,6 +119,11 @@ public class Waffenschein implements CommandExecutor {
 
             }
 
+        }
+
+        if (Licenses.WAFFENSCHEIN.isLocked(Script.getNRPID(p))) {
+            p.sendMessage(Messages.ERROR + "Dein Waffenschein wurde gesperrt.");
+            return true;
         }
 
         if (Licenses.WAFFENSCHEIN.hasLicense(Script.getNRPID(p))) {

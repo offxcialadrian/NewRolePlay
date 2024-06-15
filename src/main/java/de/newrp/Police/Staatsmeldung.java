@@ -1,8 +1,6 @@
 package de.newrp.Police;
 
-import de.newrp.API.Log;
-import de.newrp.API.Messages;
-import de.newrp.API.Script;
+import de.newrp.API.*;
 import de.newrp.Berufe.Abteilung;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Berufe.Duty;
@@ -38,8 +36,8 @@ public class Staatsmeldung implements CommandExecutor {
             return true;
         }
 
-        if (!Beruf.hasAbteilung(p, Abteilung.Abteilungen.ABTEILUNGSLEITUNG, Abteilung.Abteilungen.PRESSE, Abteilung.Abteilungen.INNENMINISTERIUM, Abteilung.Abteilungen.KRIMINALPOLIZEI)) {
-            p.sendMessage(Messages.ERROR + "Du bist nicht befähigten Abteilung!");
+        if (!Beruf.hasAbteilung(p, Abteilung.Abteilungen.ABTEILUNGSLEITUNG, Abteilung.Abteilungen.KRIMINALPOLIZEI, Abteilung.Abteilungen.INNENMINISTERIUM)) {
+            p.sendMessage(Messages.ERROR + "Du bist nicht in der Presseabteilung!");
             return true;
         }
 
@@ -54,6 +52,7 @@ public class Staatsmeldung implements CommandExecutor {
         Bukkit.broadcastMessage("§8===============");
         Script.sendTeamMessage("§7Diese Meldung wurde von §b" + Script.getName(p) + " §7gesendet.");
         Log.NORMAL.write(p, "hat eine Staatsmeldung gesendet (" + msg + ")");
+        Activity.grantActivity(Script.getNRPID(p), Activities.MELDUNG);
 
         return false;
     }

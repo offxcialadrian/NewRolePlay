@@ -17,7 +17,7 @@ public enum HologramList {
     DUTY_MEDIC_2(11, "§8/§6duty",new Location(Script.WORLD, 286, 74, 1239)),
     EQUIP_MEDIC(12, "§8/§6equip",new Location(Script.WORLD, 267,74,1253)),
     EQUIP_NEWS(13, "§8/§6equip",new Location(Script.WORLD, 289, 66, 788)),
-    BLACKJACK(14, "§8/§6blackjack",new Location(Script.WORLD, 790, 108, 858)),
+    BLACKJACK(14, "§8/§6blackjack",new Location(Script.WORLD, 790.5, 108, 858.5)),
     ARBEITSLOSENGELD(15, "§8/§6arbeitslosengeld",new Location(Script.WORLD, 552, 69, 966)),
     SELFSTORAGE(16, "§8/§6selfstorage",new Location(Script.WORLD, 1012, 67, 1202)),
     BUY_ELEKTRO(17, "§8/§6buy", new Location(Script.WORLD, 865, 73, 964)),
@@ -87,13 +87,23 @@ public enum HologramList {
     GAS_STATION_GANG(85, "§8/§6buy", new Location(Script.WORLD, 819, 66, 1326, 90.0f, 0.0f)),
     FAHRSCHULE(86, "§8/§6fahrschule", new Location(Script.WORLD, 396, 76, 1124, 90.0f, 0.0f)),
     KFZSTELLE(87, "§8/§6kennzeichen", new Location(Script.WORLD, 394, 76, 1085, 90.0f, 0.0f)),
-    DM_JOIN(88, "§8/§6dm join", new Location(Script.WORLD, 433.5, 12, 1111.5)),
+    DM_JOIN(88, "§8/§6dm join", new Location(Script.WORLD, 429.5, 76, 1115.5)),
     DROPTABAK(89, "§8/§6droptabak", new Location(Script.WORLD, 97, 65, 641)),
     EQUIP_FALCONE(90, "§8/§6equip", new Location(Script.WORLD, 749, 118, 851)),
     EQUIP_CORLEONE(91, "§8/§6equip", new Location(Script.WORLD, 203, 103, 481)),
     EQUIP_KARTELL(92, "§8/§6equip", new Location(Script.WORLD, 238, 68, 1132)),
     EQUIP_HITMAN(93, "§8/§6equip", new Location(Script.WORLD, 717.5, 54, 879.5)),
-    EQUIP_SINALOA(94, "§8/§6equip", new Location(Script.WORLD, 669, 69, 1124));
+    EQUIP_SINALOA(94, "§8/§6equip", new Location(Script.WORLD, 669, 69, 1124)),
+    BUY_BAR(95, "§8/§6buy", new Location(Script.WORLD, 704.5, 68, 859.5, 0.0f, 0.0f)),
+    BUY_CLUB(96, "§8/§6buy", new Location(Script.WORLD, 477.5, 66, 1285.5, 0.0f, 0.0f)),
+    BUY_MERCH(97, "§8/§6buy", new Location(Script.WORLD, 66.5, 75, 694.5, 0.0f, 0.0f)),
+    // BUY_MERCH_PIER(98, "§8/§6buy", new Location(Script.WORLD, 806, 65, 727, 0.0f, 0.0f));
+    DART_BAR(98, "§8/§6dart", new Location(Script.WORLD, 707, 68, 863, 0.0f, 0.0f)),
+    DART_CLUB(99, "§8/§6dart", new Location(Script.WORLD, 482.5, 66, 1284.5, 0.0f, 0.0f)),
+    SHISHA(100, "§8/§6buy", new Location(Script.WORLD, 708.4, 64, 1214.6, -190.6f, 80.4f)),
+    PETSHOP(101, "§8/§6buy", new Location(Script.WORLD, 593.6, 68, 1116, 0.8f, 90f)),
+    EQUIP_BND(102, "§8/§6equip", new Location(Script.WORLD, 844.6, 55, 1006.3, -188.5f, 82f)),
+    DUTY_BND(103, "§8/§6duty", new Location(Script.WORLD, 816.5, 54, 1015.6, -275.7f, 37.5f));
 
     private final int id;
     private final String name;

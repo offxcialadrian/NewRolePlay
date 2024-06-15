@@ -474,7 +474,7 @@ public class House {
             s.setLine(0, "");
             s.setLine(1, "== " + this.houseID + " ==");
             s.setLine(2, "Frei");
-            s.setLine(3, this.price + "$");
+            s.setLine(3, this.price + "€");
             s.update(true);
         }
     }
@@ -524,6 +524,19 @@ public class House {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static void reset(long time) {
+        for (House house : House.HOUSES) {
+            if (house.getOwner() != 0) {
+                long last = Script.getLastDisconnect(Script.getOfflinePlayer(house.getOwner()));
+                if (time != 0 && last != 0) {
+                    if (System.currentTimeMillis() - last > time) {
+                        house.reset();
+                    }
+                }
+            }
+        }
     }
 
     public static class Mieter {

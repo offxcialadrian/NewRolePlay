@@ -100,6 +100,7 @@ public class Notifications implements CommandExecutor, Listener {
             for (Player p : Script.getNRPTeam()) {
                 hasReceived.add(p.getUniqueId());
                 if (isNotificationEnabled(p, type)) {
+                    if(msg.contains("/sql")) continue; // members of the nrp team shouldn't see internal tables, which they do if they see a /sql command being ran
                     p.sendMessage((type == NotificationType.ADVANCED_ANTI_CHEAT ? AntiCheatSystem.PREFIX : PREFIX) + msg);
                 }
             }
@@ -193,13 +194,14 @@ public class Notifications implements CommandExecutor, Listener {
         if (e.getMessage().startsWith("/nrp")) return;
         if (e.getMessage().startsWith("/spec")) return;
         if (e.getMessage().startsWith("/tc")) return;
+        if (e.getMessage().startsWith("/casino p")) return; // Verhindert, dass NRPs einen Glücksspiel-Vorteil haben.
         Log.COMMAND.write(e.getPlayer(), e.getMessage());
         if (e.getMessage().startsWith("/sql")) return;
         if (e.getMessage().startsWith("/op") || e.getMessage().startsWith("/deop") || e.getMessage().startsWith("/gamemode") || e.getMessage().startsWith("/punish") || e.getMessage().startsWith("/nrp") || e.getMessage().startsWith("/setsupporter") ||
             e.getMessage().startsWith("/rnrp") || e.getMessage().startsWith("/tp")) {
             if (!Script.isNRPTeam(e.getPlayer()))
-                sendMessage(NotificationType.ADVANCED_ANTI_CHEAT, "§c" + Script.getName(e.getPlayer()) +  " hat versucht einen Team-Befehl auszuführen (" + e.getMessage() + ")");
-    }
+                sendMessage(NotificationType.ADVANCED_ANTI_CHEAT, "§c" + Script.getName(e.getPlayer()) + " hat versucht einen Team-Befehl auszuführen (" + e.getMessage() + ")");
+        }
         sendMessage(NotificationType.COMMAND, "§e" + Script.getName(e.getPlayer()) + " §7hat den Befehl §e" + e.getMessage() + " §7ausgeführt.");
     }
 

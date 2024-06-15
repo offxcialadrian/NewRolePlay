@@ -172,7 +172,11 @@ public class Kebap implements Listener, CommandExecutor {
             }
         }
 
-        cooldown.put(p.getName(), System.currentTimeMillis() + 10 * 60 * 2000L);
+        if (Premium.hasPremium(p)) {
+            cooldown.put(p.getName(), System.currentTimeMillis() + 15 * 60 * 1000L);
+        } else {
+            cooldown.put(p.getName(), System.currentTimeMillis() + 20 * 60 * 1000L);
+        }
         GFB.CURRENT.put(p.getName(), GFB.DOENERMANN);
         int count = GFB.DOENERMANN.getLevel(p) + Script.getRandom(5, 7);
         SCORE.put(p.getName(), count);
@@ -233,7 +237,7 @@ public class Kebap implements Listener, CommandExecutor {
             SCORE.remove(p.getName());
             NEEDED.remove(p.getName());
             GFB.CURRENT.remove(p.getName());
-            Script.addEXP(p, GFB.DOENERMANN.getLevel(p) + TOTAL_SCORE.get(p.getName()) * 2);
+            Script.addEXP(p, GFB.DOENERMANN.getLevel(p) + TOTAL_SCORE.get(p.getName()) * 2, true);
             TOTAL_SCORE.remove(p.getName());
             p.closeInventory();
         }
@@ -272,7 +276,7 @@ public class Kebap implements Listener, CommandExecutor {
                     SCORE.remove(p.getName());
                     NEEDED.remove(p.getName());
                     GFB.CURRENT.remove(p.getName());
-                    Script.addEXP(p, GFB.DOENERMANN.getLevel(p) + Script.getRandom(5, 7) * 2);
+                    Script.addEXP(p, GFB.DOENERMANN.getLevel(p) + Script.getRandom(5, 7) * 2, true);
                     TOTAL_SCORE.remove(p.getName());
                 } else {
                     p.sendMessage(Messages.ERROR + "Du hast noch nicht alle Zutaten hinzugefügt.");

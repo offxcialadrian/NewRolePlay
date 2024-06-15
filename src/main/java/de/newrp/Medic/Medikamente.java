@@ -15,7 +15,7 @@ import java.util.List;
 
 public enum Medikamente {
 
-    HUSTENSAFT(1, "Hustensaft", ShopItem.HUSTENSAFT, new ItemBuilder(Material.PAPER).setName("§fHustensaft").build(), new ItemBuilder(Material.PAPER).setName("Rezept für Hustensaft").build() ,Krankheit.HUSTEN, 10, false, true),
+    HUSTENSAFT(1, "Hustensaft", ShopItem.HUSTENSAFT, new ItemBuilder(Material.PAPER).setName("§fHustensaft").build(), new ItemBuilder(Material.PAPER).setName("Rezept für Hustensaft").build() ,Krankheit.HUSTEN, 10, true, true),
     SCHMERZMITTEL(2, "Schmerzmittel", ShopItem.SCHMERZMITTEL, new ItemBuilder(Material.PAPER).setName("§fSchmerzmittel").build(), new ItemBuilder(Material.PAPER).setName("Rezept für Schmerzmittel").build(), null, 10, false, true),
     SCHMERZMITTEL_HIGH(3, "Schmerzmittel (High)", ShopItem.SCHMERZMITTEL_HIGH, new ItemBuilder(Material.PAPER).setName("§fSchmerzmittel (High)").build(), new ItemBuilder(Material.PAPER).setName("Rezept für Schmerzmittel (High)").build(), null, 10, true, false),
     ANTIBIOTIKA(4, "Antibiotika", ShopItem.ANTIBIOTIKA, new ItemBuilder(Material.PAPER).setName("§fAntibiotika").build(), new ItemBuilder(Material.PAPER).setName("Rezept für Antibiotika").build(), Krankheit.CHOLERA, 10, true, true),

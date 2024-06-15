@@ -6,7 +6,7 @@
 
   <groupId>de</groupId>
   <artifactId>newrp</artifactId>
-  <version>1.1.0</version>
+  <version>1.1.1</version>
   <packaging>jar</packaging>
 
   <name>NewRoleplay</name>
@@ -32,7 +32,7 @@
             <artifactId>maven-jar-plugin</artifactId>
             <version>2.3.1</version>
             <configuration>
-                <outputDirectory>C:\Users\adria\OneDrive\Desktop\New RolePlay</outputDirectory>
+                <outputDirectory>libs</outputDirectory>
             </configuration>
         </plugin>
       <plugin>
