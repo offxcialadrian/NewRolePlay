@@ -453,20 +453,22 @@ public class Annehmen implements CommandExecutor {
             Achievement.HAUS.grant(p);
             Achievement.HOUSE_RENT.grant(p);
         } else if (offer.containsKey(p.getName() + ".rob")) {
-            p.sendMessage(AusraubCommand.PREFIX + "Der Ausraub wurde erfolgreich eingetragen.");
             Player target = Bukkit.getPlayer(offer.get(p.getName()));
             if (target != null) {
-                target.sendMessage(AusraubCommand.PREFIX + "Der Ausraub wurde erfolgreich eingetragen.");
                 AusraubCommand.robs.put(target.getUniqueId(), System.currentTimeMillis());
+                target.sendMessage(AusraubCommand.PREFIX + "Der Ausraub wurde erfolgreich eingetragen.");
                 if (Organisation.hasOrganisation(p)) {
                     for (UUID m : Organisation.getOrganisation(p).getMember()) {
-                        if (Bukkit.getPlayer(m).getLocation().distance(p.getLocation()) < 20) {
-                            if (!AFK.isAFK(m)) {
-                                Activity.grantActivity(Script.getNRPID(Bukkit.getPlayer(m)), Activities.AUSRAUB);
+                        if (Bukkit.getOfflinePlayer(m).isOnline()) {
+                            if (Bukkit.getPlayer(m).getLocation().distance(p.getLocation()) < 20) {
+                                if (!AFK.isAFK(m)) {
+                                    Activity.grantActivity(Script.getNRPID(Bukkit.getPlayer(m)), Activities.AUSRAUB);
+                                }
                             }
                         }
                     }
                 }
+                p.sendMessage(AusraubCommand.PREFIX + "Der Ausraub wurde erfolgreich eingetragen.");
             }
             offer.remove(p.getName() + ".rob");
         } else if (offer.containsKey(p.getName() + ".contract")) {

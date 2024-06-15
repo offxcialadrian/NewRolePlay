@@ -26,7 +26,7 @@ public class AusraubCommand implements CommandExecutor {
             Player player = (Player) sender;
 
             if (args.length == 0) {
-                player.sendMessage(Messages.ERROR + "/ausraub [player]");
+                player.sendMessage(Messages.ERROR + "/ausraub [Räuber]");
                 return true;
             }
 
