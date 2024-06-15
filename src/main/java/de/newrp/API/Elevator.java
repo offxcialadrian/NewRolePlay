@@ -128,11 +128,11 @@ public class Elevator implements Listener {
                 new Location(Script.WORLD, 721, 101, 910, 180.13672f, 1.2202556f)
         }),// 4
         BND(18, "BND", new Location[]{
-                new Location(Script.WORLD, 822, 57, 1026.5, 353.9f, 90f), // 0
-                new Location(Script.WORLD, 822, 64, 1026.5, 195.7f, 75.9f), // 1
-                new Location(Script.WORLD, 822, 71, 1026.5, 198.1f, 76.6f), // 2
-                new Location(Script.WORLD, 822, 80, 1026.5, 194.3f, 80.1f), // 3
-                new Location(Script.WORLD, 822, 88, 1026.4, 179.7f, 90f)
+                new Location(Script.WORLD, 822, 57, 1026.5, 180f, 0f), // 0
+                new Location(Script.WORLD, 822, 64, 1026.5, 180f, 0f), // 1
+                new Location(Script.WORLD, 822, 71, 1026.5, 180f, 0f), // 2
+                new Location(Script.WORLD, 822, 80, 1026.5, 180f, 0f), // 3
+                new Location(Script.WORLD, 822, 88, 1026.5, 180f, 0f)
         });
 
         int id;
