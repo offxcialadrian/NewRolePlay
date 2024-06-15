@@ -8,8 +8,8 @@ public enum Rank {
     OWNER(0, 300, "Geschäftsführer", "Geschäftsführer", "ADMIN", "0001ceo", 0),
     ADMINISTRATOR(1, 250, "Administrator", "Administration", "ADMIN", "0002admin", 50),
     FRAKTIONSMANAGER(6, 200, "Fraktionsmanager", "Fraktionsmanager", "FM", "0002fm", 50),
-    MODERATOR(2, 150, "Moderator", "Moderation", "MOD", "0003mod", 50),
-    SUPPORTER(3, 100, "Supporter", "Support", "SUP", "0002sup", 100),
+    MODERATOR(2, 150, "Moderator", "Moderation", "MOD", "0002mod", 50),
+    SUPPORTER(3, 100, "Supporter", "Support", "SUP", "0003sup", 100),
     DEVELOPER(4, 50, "Developer", "Developer", "DEV", "0005dev", 100),
     PLAYER(5, 1, "Spieler", "Spieler", "", "", 0);
 
