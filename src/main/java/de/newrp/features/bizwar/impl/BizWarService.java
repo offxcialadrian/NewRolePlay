@@ -76,8 +76,8 @@ public class BizWarService implements IBizWarService {
 
         this.activeBizWarInformations.add(bizWarInformation);
         bizWarInformation.startBizWarScheduler(this);
-        this.addOrgaCooldown(organisation, TimeUnit.HOURS.toMillis(2));
-        this.addShopCooldown(shop, TimeUnit.HOURS.toMillis(24));
+        this.addOrgaCooldown(organisation, TimeUnit.HOURS.toMillis(1));
+        this.addShopCooldown(shop, TimeUnit.HOURS.toMillis(1));
 
         for (final UUID defenderPlayerUUID : defenderOrganisation.getMember()) {
             final Player defenderPlayer = Bukkit.getPlayer(defenderPlayerUUID);
