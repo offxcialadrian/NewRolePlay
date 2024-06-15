@@ -137,7 +137,7 @@ public class Dart implements Listener, CommandExecutor {
                 return true;
             }
 
-            if (Script.removeMoney(player, PaymentType.CASH, 20)) {
+            if (Script.removeMoney(player, PaymentType.CASH, 25)) {
                 player.getInventory().addItem(Script.setName(new ItemStack(Material.SPECTRAL_ARROW, 10), "§eDart-Pfeile"));
                 player.sendMessage(PREFIX + "Du hast dir 10 Dart-Pfeile gekauft.");
                 player.sendMessage(Messages.INFO + "Der Spieler, der am nächsten an 69 Punkten ist, hat gewonnen.");
@@ -146,7 +146,7 @@ public class Dart implements Listener, CommandExecutor {
                 if (shop.getOwner() > 0)
                     Script.sendActionBar(Objects.requireNonNull(Script.getPlayer(shop.getOwner())), Shop.PREFIX + "Dein Shop §6" + shop.getPublicName() + " §7hat §620€ §7Gewinn gemacht aus dem Verkauf von §610x Dart-Pfeile §7(§620€§7)");
             } else {
-                player.sendMessage(PREFIX + "Du benötigst 20€ um dir Pfeile zu kaufen.");
+                player.sendMessage(PREFIX + "Du benötigst 25€ um dir Pfeile zu kaufen.");
             }
         }
 
