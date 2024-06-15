@@ -181,10 +181,12 @@ public class BizWarService implements IBizWarService {
 
         if(bizWarInformation.getAttackerOrganisation() == organisation) {
             bizWarInformation.getJoinedMembersOfAttackers().add(player.getUniqueId());
-            bizWarInformation.getDefenderOrganisation().sendMessage(this.getPrefix() + "§e" + player.getName() + " §7ist den Angreifern beigetreten (§e" + bizWarInformation.getJoinedMembersOfAttackers().size() + "§7)!");
+            bizWarInformation.getAttackerOrganisation().sendMessage(this.getPrefix() + "§a" + player.getName() + " §7ist euch beigetreten (§e" + bizWarInformation.getJoinedMembersOfAttackers().size() + "§7)!");
+            bizWarInformation.getDefenderOrganisation().sendMessage(this.getPrefix() + "§c" + player.getName() + " §7ist den Angreifern beigetreten (§e" + bizWarInformation.getJoinedMembersOfAttackers().size() + "§7)!");
         } else {
             bizWarInformation.getJoinedMembersOfDefenders().add(player.getUniqueId());
-            bizWarInformation.getDefenderOrganisation().sendMessage(this.getPrefix() + "§e" + player.getName() + " §7ist den Verteidigern beigetreten (§e" + bizWarInformation.getJoinedMembersOfAttackers().size() + "§7)!");
+            bizWarInformation.getDefenderOrganisation().sendMessage(this.getPrefix() + "a" + player.getName() + " §7ist euch beigetreten (§e" + bizWarInformation.getJoinedMembersOfAttackers().size() + "§7)!");
+            bizWarInformation.getAttackerOrganisation().sendMessage(this.getPrefix() + "§c" + player.getName() + " §7ist den Verteidigern beigetreten (§e" + bizWarInformation.getJoinedMembersOfAttackers().size() + "§7)!");
         }
 
         Cache.saveInventory(player);
