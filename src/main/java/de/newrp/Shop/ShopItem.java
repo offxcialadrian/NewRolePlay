@@ -127,7 +127,7 @@ public enum ShopItem {
     VODKA(140, "§6Kartoffelwasser", Script.setName(new ItemStack(Material.HONEY_BOTTLE), "§6Kartoffelwasser"), 1, 1, 1, 6, 600, 1, true, true, false, new ShopType[] {ShopType.BAR}),
     BIER(141, "§6Gerstensaft", Script.setName(new ItemStack(Material.HONEY_BOTTLE), "§6Gerstensaft"), 1, 1, 1, 4, 400, 1, true, true, false, new ShopType[] {ShopType.BAR}),
     LIKOER(142, "§6Kräutertrunk", Script.setName(new ItemStack(Material.HONEY_BOTTLE), "§6Kräutertrunk"), 1, 1, 1, 8, 800, 1, true, true, false, new ShopType[] {ShopType.BAR}),
-    TEDDY(143, "§dTeddy-Bär", createItem(3006, "§dTeddy"), 1, 1, 1, 50, 1000, 0, false, true, false, new ShopType[] {ShopType.MERCH}),
+    TEDDY(143, "§dTeddy", createItem(3006, "§dTeddy"), 1, 1, 1, 50, 1000, 0, false, true, false, new ShopType[] {ShopType.MERCH}),
     PANDA(144, "§dPanda", createItem(352, "§dPanda"), 1, 1, 1, 50, 1000, 0, false, true, false, new ShopType[] {ShopType.MERCH}),
     DEER(145, "§dRentier", createItem(69035, "§dRentier"), 1, 1, 1, 50, 1000, 0, false, true, false, new ShopType[] {ShopType.MERCH}),
     UNICORN(146, "§dEinhorn", createItem(25401, "§dEinhorn"), 1, 1, 1, 50, 1000, 0, false, true, false, new ShopType[] {ShopType.MERCH}),
