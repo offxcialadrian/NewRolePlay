@@ -83,7 +83,7 @@ public class RemoveActivityCommand implements CommandExecutor, TabCompleter {
                     Activity.deleteActivity(Script.getNRPID(target), Script.getNRPID(player), activity);
                 }
             } else {
-                player.sendMessage(Messages.ERROR + "/addactivity [name] [activity]");
+                player.sendMessage(Messages.ERROR + "/removeactivity [name] [activity]");
             }
         }
 

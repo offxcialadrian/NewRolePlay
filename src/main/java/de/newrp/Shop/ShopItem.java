@@ -127,7 +127,7 @@ public enum ShopItem {
     VODKA(140, "§6Kartoffelwasser", Script.setName(new ItemStack(Material.HONEY_BOTTLE), "§6Kartoffelwasser"), 1, 1, 1, 6, 600, 1, true, true, false, new ShopType[] {ShopType.BAR}),
     BIER(141, "§6Gerstensaft", Script.setName(new ItemStack(Material.HONEY_BOTTLE), "§6Gerstensaft"), 1, 1, 1, 4, 400, 1, true, true, false, new ShopType[] {ShopType.BAR}),
     LIKOER(142, "§6Kräutertrunk", Script.setName(new ItemStack(Material.HONEY_BOTTLE), "§6Kräutertrunk"), 1, 1, 1, 8, 800, 1, true, true, false, new ShopType[] {ShopType.BAR}),
-    TEDDY(143, "§dTeddy-Bär", createItem(3006, "§dTeddy"), 1, 1, 1, 50, 1000, 0, false, true, false, new ShopType[] {ShopType.MERCH}),
+    TEDDY(143, "§dTeddy", createItem(3006, "§dTeddy"), 1, 1, 1, 50, 1000, 0, false, true, false, new ShopType[] {ShopType.MERCH}),
     PANDA(144, "§dPanda", createItem(352, "§dPanda"), 1, 1, 1, 50, 1000, 0, false, true, false, new ShopType[] {ShopType.MERCH}),
     DEER(145, "§dRentier", createItem(69035, "§dRentier"), 1, 1, 1, 50, 1000, 0, false, true, false, new ShopType[] {ShopType.MERCH}),
     UNICORN(146, "§dEinhorn", createItem(25401, "§dEinhorn"), 1, 1, 1, 50, 1000, 0, false, true, false, new ShopType[] {ShopType.MERCH}),
@@ -144,10 +144,10 @@ public enum ShopItem {
     COW(157, "§dKuh", createItem(51250, "§dKuh"), 1, 1, 1, 50, 1000, 0, false, true, false, new ShopType[] {ShopType.MERCH}),
     TURTLE(158, "§dSchildkröte", createItem(65736, "§dSchildkröte"), 1, 1, 1, 50, 1000, 0, false, true, false, new ShopType[] {ShopType.MERCH}),
     LION(159, "§dLöwe", createItem(4662, "§dLöwe"), 1, 1, 1, 50, 1000, 0, false, true, false, new ShopType[] {ShopType.MERCH}),
-    PET_DOG(160, "Hund", Script.setName(new ItemStack(Material.WOLF_SPAWN_EGG), "§aHund"), 1, 1, 1, 4000, 6000, 15, false, false, false, new ShopType[] {ShopType.PETS}),
-    PET_CAT(161, "Katze", Script.setName(new ItemStack(Material.CAT_SPAWN_EGG), "§aKatze"), 1, 1, 1, 6000, 8000, 15, false, false, false, new ShopType[] {ShopType.PETS}),
-    PET_PARROT(162, "Papagei", Script.setName(new ItemStack(Material.PARROT_SPAWN_EGG), "§aPapagei"), 1, 1, 1, 10000, 12000, 15, false, false, false, new ShopType[] {ShopType.PETS}),
-    PET_FOX(163, "Fuchs", Script.setName(new ItemStack(Material.FOX_SPAWN_EGG), "§aFuchs"), 1, 1, 1, 20000, 15000, 15, false, false, false, new ShopType[] {ShopType.PETS});
+    PET_DOG(160, "§aHund", Script.setName(new ItemStack(Material.WOLF_SPAWN_EGG), "§aHund"), 1, 1, 1, 4000, 6000, 30, false, false, false, new ShopType[] {ShopType.PETS}),
+    PET_CAT(161, "§aKatze", Script.setName(new ItemStack(Material.CAT_SPAWN_EGG), "§aKatze"), 1, 1, 1, 6000, 8000, 30, false, false, false, new ShopType[] {ShopType.PETS}),
+    PET_PARROT(162, "§aPapagei", Script.setName(new ItemStack(Material.PARROT_SPAWN_EGG), "§aPapagei"), 1, 1, 1, 10000, 12000, 30, false, false, false, new ShopType[] {ShopType.PETS}),
+    PET_FOX(163, "§aFuchs", Script.setName(new ItemStack(Material.FOX_SPAWN_EGG), "§aFuchs"), 1, 1, 1, 20000, 15000, 30, false, false, false, new ShopType[] {ShopType.PETS});
 
 
     private final int id;
