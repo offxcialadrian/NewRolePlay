@@ -74,6 +74,7 @@ public class AFK implements CommandExecutor, Listener {
                 SDuty.updateScoreboard();
             }
         }.runTaskLater(NewRoleplayMain.getInstance(), 20L);
+        Script.updateListname(p);
     }
 
     public static void updateAFK(Player p) {
