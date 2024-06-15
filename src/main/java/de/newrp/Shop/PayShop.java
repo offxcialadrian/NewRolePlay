@@ -91,6 +91,14 @@ public class PayShop implements Listener {
                     houseaddon.put(p.getName(), HouseAddon.HAUSKASSE);
                     p.sendMessage(Messages.INFO + "Gehe zu deinem Haus und rechtsklicke das Hausschild, um das Hauskassen-Addon zu installieren.");
                     break;
+                case ALARMANLAGE:
+                    if (houseaddon.containsKey(p.getName())) {
+                        p.sendMessage(Messages.ERROR + "Installiere zuerst das " + houseaddon.get(p.getName()).getName() + "-Addon.");
+                        return;
+                    }
+                    houseaddon.put(p.getName(), HouseAddon.ALARM);
+                    p.sendMessage(Messages.INFO + "Gehe zu deinem Haus und rechtsklicke das Hausschild, um das Hauskassen-Addon zu installieren.");
+                    break;
                 case KUEHLSCHRANK:
                     if (houseaddon.containsKey(p.getName())) {
                         p.sendMessage(Messages.ERROR + "Installiere zuerst das " + houseaddon.get(p.getName()).getName() + "-Addon.");
