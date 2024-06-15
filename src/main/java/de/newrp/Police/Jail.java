@@ -41,7 +41,7 @@ public class Jail {
     public static boolean isInJail(Player p) {
         if (JAIL.containsKey(p.getName())) {
             Jail j = getJail(p);
-            if ((j.getArrestTime() + TimeUnit.SECONDS.toMillis(j.getDuration())) >= System.currentTimeMillis()) {
+            if ((j.getArrestTime() + TimeUnit.SECONDS.toMicros(j.getDuration())) >= System.currentTimeMillis()) {
                 return p.getLocation().distance(new Location(Script.WORLD, 1031, 60, 553)) < 70;
             }
         }
