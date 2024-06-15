@@ -148,6 +148,15 @@ public enum Shops {
         return null;
     }
 
+    public static Shops getShopByLocationFurther(Location loc) {
+        for (Shops shop : Shops.values()) {
+            if (shop.getLocation().distance(loc) < 8) {
+                return shop;
+            }
+        }
+        return null;
+    }
+
     public static Shops getShopByLocation(Location loc, float distance) {
         Shops shop = null;
         for(Shops s : Shops.values()) {

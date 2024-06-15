@@ -78,7 +78,7 @@ public class ShopNPC implements Listener {
     public static void onNPC(NPCRightClickEvent event) {
         if (event.getNPC().getEntity().getType() == EntityType.PLAYER) {
             Player player = event.getClicker();
-            Shops shop = Shops.getShopByLocation(player.getLocation());
+            Shops shop = Shops.getShopByLocationFurther(player.getLocation());
             if (shop == null) return;
             player.performCommand("buy");
         }
