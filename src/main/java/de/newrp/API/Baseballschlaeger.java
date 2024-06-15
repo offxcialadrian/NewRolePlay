@@ -13,6 +13,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -61,7 +62,9 @@ public class Baseballschlaeger implements Listener {
                     if (ammo > 0) {
                         cooldown.put(damager.getName(), time);
                         if (Spawnschutz.isInSpawnschutz(victim) || victim.getLevel() < 3) return;
-                        victim.damage(Script.getRandom(6, 10));
+                        double dmg = Script.getRandom(6, 10);
+                        victim.damage(dmg);
+                        victim.setLastDamageCause(new EntityDamageByEntityEvent(damager, victim, EntityDamageEvent.DamageCause.ENTITY_ATTACK, dmg));
                         if (new Random().nextInt(20) == 0) {
                             Health.setBleeding(victim);
                         }
