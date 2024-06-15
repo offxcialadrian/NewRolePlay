@@ -64,7 +64,7 @@ public class Baseballschlaeger implements Listener {
                         if (Spawnschutz.isInSpawnschutz(victim) || victim.getLevel() < 3) return;
                         double dmg = Script.getRandom(6, 10);
                         victim.damage(dmg);
-                        victim.setLastDamageCause(new EntityDamageByEntityEvent(damager, victim, EntityDamageEvent.DamageCause.ENTITY_ATTACK, dmg));
+                        victim.setLastDamageCause(new EntityDamageEvent(damager, EntityDamageEvent.DamageCause.ENTITY_ATTACK, dmg));
                         if (new Random().nextInt(20) == 0) {
                             Health.setBleeding(victim);
                         }

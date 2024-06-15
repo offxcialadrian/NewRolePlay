@@ -63,7 +63,7 @@ public class Messer implements Listener {
                         if (Spawnschutz.isInSpawnschutz(victim) || victim.getLevel() < 3) return;
                         double dmg = Script.getRandom(8, 13);
                         victim.damage(dmg);
-                        victim.setLastDamageCause(new EntityDamageByEntityEvent(damager, victim, EntityDamageEvent.DamageCause.ENTITY_ATTACK, dmg));
+                        victim.setLastDamageCause(new EntityDamageEvent(damager, EntityDamageEvent.DamageCause.ENTITY_ATTACK, dmg));
                         if (new Random().nextInt(4) == 0) {
                             Health.setBleeding(victim);
                         }

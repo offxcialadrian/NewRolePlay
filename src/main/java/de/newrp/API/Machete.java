@@ -64,7 +64,7 @@ public class Machete implements Listener {
                         if (Spawnschutz.isInSpawnschutz(victim) || victim.getLevel() < 3) return;
                         double dmg = Script.getRandom(9, 15);
                         victim.damage(dmg);
-                        victim.setLastDamageCause(new EntityDamageByEntityEvent(damager, victim, EntityDamageEvent.DamageCause.ENTITY_ATTACK, dmg));
+                        victim.setLastDamageCause(new EntityDamageEvent(damager, EntityDamageEvent.DamageCause.ENTITY_ATTACK, dmg));
                         if (new Random().nextInt(2) == 0) {
                             Health.setBleeding(victim);
                         }
