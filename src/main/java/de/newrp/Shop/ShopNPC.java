@@ -1,9 +1,11 @@
 package de.newrp.Shop;
 
+import com.comphenix.protocol.PacketType;
 import com.destroystokyo.paper.event.server.ServerTickEndEvent;
 import de.newrp.API.Gender;
 import de.newrp.API.Script;
 import net.citizensnpcs.api.CitizensAPI;
+import net.citizensnpcs.api.event.NPCRightClickEvent;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.trait.SkinLayers;
 import net.citizensnpcs.trait.SkinTrait;
@@ -69,6 +71,16 @@ public class ShopNPC implements Listener {
             }
 
             if (closest != null) npc.faceLocation(closest.getLocation().clone());
+        }
+    }
+
+    @EventHandler
+    public static void onNPC(NPCRightClickEvent event) {
+        if (event.getNPC().getEntity().getType() == EntityType.PLAYER) {
+            Player player = event.getClicker();
+            Shops shop = Shops.getShopByLocation(player.getLocation());
+            if (shop == null) return;
+            player.performCommand("buy");
         }
     }
 
