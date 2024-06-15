@@ -64,6 +64,7 @@ public enum SlotLimit {
             statement.setInt(1, id);
             statement.setInt(2, id);
             statement.setInt(3, id);
+            statement.setInt(4, id);
             try (ResultSet rs = statement.executeQuery()) {
                 if (rs.next()) {
                     h += rs.getInt("house");
