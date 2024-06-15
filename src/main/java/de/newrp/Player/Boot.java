@@ -63,9 +63,9 @@ public class Boot implements CommandExecutor {
                     Me.sendMessage(p, "ist am Ziel angekommen.");
                     Script.removeMoney(p, PaymentType.BANK, 10);
                     if(distanceToBoatOnJva < 5) {
-                        p.teleport(new Location(Script.WORLD, 791, 63, 549, 182.14655f, 9.560561f));
+                        p.teleport(new Location(Script.WORLD, 791.5, 63, 549.4, 0.8f, -0.3f));
                     } else {
-                        p.teleport(new Location(Script.WORLD, 997, 63, 568, 89.792786f, 7.7781887f));
+                        p.teleport(new Location(Script.WORLD, 997.5, 63, 568.5, 270.8f, -0.6f));
                     }
                     LEVEL.remove(p.getName());
                     cancel();

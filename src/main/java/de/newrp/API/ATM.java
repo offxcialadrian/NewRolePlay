@@ -13,13 +13,16 @@ public enum ATM {
     ATM_6(6, new Location(Script.WORLD, 576, 70, 968), 0),
     ATM_7(7, new Location(Script.WORLD, 776, 75, 895), 0),
     ATM_8(8, new Location(Script.WORLD, 808, 67, 713), 0),
-    ATM_9(9, new Location(Script.WORLD, 929, 77, 920, -181.79962f, 17.700035f), 0),
-    ATM_10(10, new Location(Script.WORLD, 933, 77, 920, -94.64969f, 16.05004f), 0),
-    ATM_11(11, new Location(Script.WORLD, 936, 77, 920, -62.699703f, 18.750032f), 0),
-    ATM_12(12, new Location(Script.WORLD, 802, 64, 1217, -103.067116f, 25.628996f), 0),
+    ATM_9(9, new Location(Script.WORLD, 929, 77, 920), 0),
+    ATM_10(10, new Location(Script.WORLD, 933, 77, 920), 0),
+    ATM_11(11, new Location(Script.WORLD, 936, 77, 920), 0),
+    ATM_12(12, new Location(Script.WORLD, 802, 64, 1217), 0),
     ATM_13(13, new Location(Script.WORLD, 553, 65, 1307), 0),
-    ATM_14(14, new Location(Script.WORLD, 85, 66, 630), 0),
-    ATM_15(15, new Location(Script.WORLD, 621, 66, 693), 0);
+    ATM_14(14, new Location(Script.WORLD, 260.5, 66, 924), 0),
+    ATM_15(15, new Location(Script.WORLD, 621, 66, 693), 0),
+    ATM_16(16, new Location(Script.WORLD, 80.5, 66, 685.5), 0),
+    ATM_17(17, new Location(Script.WORLD, 815.5, 67, 1328.5), 0),
+    ATM_18(18, new Location(Script.WORLD, 625.5, 65, 1207.5), 0);
 
     private final int id;
     private final Location loc;
