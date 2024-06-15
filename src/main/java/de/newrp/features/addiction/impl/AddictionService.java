@@ -114,6 +114,8 @@ public class AddictionService implements IAddictionService {
     @Override
     public void flushData(Player player) {
         Bukkit.getScheduler().runTaskAsynchronously(NewRoleplayMain.getInstance(), () -> {
+            if(!this.addictionLevelMap.containsKey(player.getUniqueId())) return;
+
             for (final AddictionData addictionData : this.addictionLevelMap.get(player.getUniqueId())) {
                 try(final PreparedStatement preparedStatement = NewRoleplayMain.getConnection().prepareStatement("REPLACE INTO addiction(nrp_id, drug_id, addiction_level, heal) VALUES(?, ?, ?, ?)")) {
                     preparedStatement.setInt(1, addictionData.getNrpId());
