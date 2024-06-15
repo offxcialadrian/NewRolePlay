@@ -10,6 +10,7 @@ import de.newrp.Berufe.Abteilung;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Berufe.Duty;
 import de.newrp.Organisationen.MaskHandler;
+import de.newrp.Player.AFK;
 import de.newrp.Ticket.TicketCommand;
 import de.newrp.dependencies.DependencyContainer;
 import de.newrp.features.scoreboards.BoardConfiguration;
@@ -212,6 +213,10 @@ public class ScoreboardService implements IScoreboardService {
             } else {
                 if(Duty.isInDuty(player)) {
                     finalTeamName = factionTeamName;
+                }
+
+                if(AFK.isAFK(player)) {
+                    finalTeamName = getAFKTeamName();
                 }
 
                 if(MaskHandler.masks.containsKey(player.getUniqueId())) {
