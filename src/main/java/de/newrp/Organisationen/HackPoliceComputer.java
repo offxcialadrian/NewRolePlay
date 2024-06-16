@@ -256,6 +256,7 @@ public class HackPoliceComputer implements CommandExecutor, Listener {
 
     public static void toggleDoorState(Block block, boolean open, boolean playSound) {
         BlockState state = block.getState();
+        if (!(state.getBlockData() instanceof Door)) return;
         Door door = (Door) state.getBlockData();
         door.setOpen(open);
         state.setBlockData(door);
