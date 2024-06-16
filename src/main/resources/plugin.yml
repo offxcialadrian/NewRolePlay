@@ -785,6 +785,7 @@ commands:
     description: starts a biz war
   activeextortions:
     description: lists the extorted shops
+    aliases: [ bizwar ]
   joinfight:
     description: joins a fight
   freebiz:
