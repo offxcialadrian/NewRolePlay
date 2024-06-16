@@ -53,7 +53,7 @@ public class StartBizWarCommand implements CommandExecutor {
         final long timeTillNextAttackOnOrganisation = organisationCooldown - System.currentTimeMillis();
 
         if(timeTillNextAttackOnOrganisation > 0) {
-            player.sendMessage(Messages.ERROR + "§cDeine Organisation kann erst in §c§l" + new SimpleDateFormat("HH 'Stunden und' mm 'Minuten'").format(timeTillNextAttackOnOrganisation) + " §cerneut angreifen!");
+            player.sendMessage(Messages.ERROR + "§cDeine Organisation kann erst in " + TimeUnit.MILLISECONDS.toMinutes(timeTillNextAttackOnOrganisation)  + "min §cerneut angreifen!");
             return false;
         }
 
