@@ -314,14 +314,14 @@ public class OrgSpray implements Listener {
                 return patterns;
             } else if (this == FALCONE) {
                 List<Pattern> patterns = new ArrayList<>();
-                patterns.add(new Pattern(DyeColor.LIGHT_GRAY, PatternType.BASE));
-                patterns.add(new Pattern(DyeColor.YELLOW, PatternType.RHOMBUS_MIDDLE));
-                patterns.add(new Pattern(DyeColor.LIGHT_GRAY, PatternType.HALF_HORIZONTAL_MIRROR));
-                patterns.add(new Pattern(DyeColor.YELLOW, PatternType.CIRCLE_MIDDLE));
-                patterns.add(new Pattern(DyeColor.LIGHT_GRAY, PatternType.TRIANGLE_BOTTOM));
-                patterns.add(new Pattern(DyeColor.YELLOW, PatternType.TRIANGLE_BOTTOM));
-                patterns.add(new Pattern(DyeColor.LIGHT_GRAY, PatternType.STRIPE_BOTTOM));
-                patterns.add(new Pattern(DyeColor.GRAY, PatternType.BORDER));
+                patterns.add(new Pattern(DyeColor.WHITE, PatternType.BASE));
+                patterns.add(new Pattern(DyeColor.BLACK, PatternType.RHOMBUS_MIDDLE));
+                patterns.add(new Pattern(DyeColor.WHITE, PatternType.HALF_HORIZONTAL_MIRROR));
+                patterns.add(new Pattern(DyeColor.BLACK, PatternType.CIRCLE_MIDDLE));
+                patterns.add(new Pattern(DyeColor.WHITE, PatternType.TRIANGLE_BOTTOM));
+                patterns.add(new Pattern(DyeColor.BLACK, PatternType.TRIANGLE_BOTTOM));
+                patterns.add(new Pattern(DyeColor.WHITE, PatternType.STRIPE_BOTTOM));
+                patterns.add(new Pattern(DyeColor.BLACK, PatternType.BORDER));
                 return patterns;
             } else if (this == TRIOLA) {
                 List<Pattern> patterns = new ArrayList<>();
