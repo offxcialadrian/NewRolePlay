@@ -147,7 +147,8 @@ public enum ShopItem {
     PET_DOG(160, "§aHund", Script.setName(new ItemStack(Material.WOLF_SPAWN_EGG), "§aHund"), 1, 1, 1, 4000, 6000, 30, false, false, false, new ShopType[] {ShopType.PETS}),
     PET_CAT(161, "§aKatze", Script.setName(new ItemStack(Material.CAT_SPAWN_EGG), "§aKatze"), 1, 1, 1, 6000, 8000, 30, false, false, false, new ShopType[] {ShopType.PETS}),
     PET_PARROT(162, "§aPapagei", Script.setName(new ItemStack(Material.PARROT_SPAWN_EGG), "§aPapagei"), 1, 1, 1, 10000, 12000, 30, false, false, false, new ShopType[] {ShopType.PETS}),
-    PET_FOX(163, "§aFuchs", Script.setName(new ItemStack(Material.FOX_SPAWN_EGG), "§aFuchs"), 1, 1, 1, 20000, 15000, 30, false, false, false, new ShopType[] {ShopType.PETS});
+    PET_FOX(163, "§aFuchs", Script.setName(new ItemStack(Material.FOX_SPAWN_EGG), "§aFuchs"), 1, 1, 1, 20000, 15000, 30, false, false, false, new ShopType[] {ShopType.PETS}),
+    CD_12(164, "§6Pigstep", new ItemStack(Material.MUSIC_DISC_PIGSTEP), 1, 1, 1, 5, 200, 0, false, true, false, new ShopType[] {ShopType.MUSIC});
 
 
     private final int id;
