@@ -82,11 +82,11 @@ public class NaviClick implements Listener {
                     }
                     case "§6Illegale Organisationen": {
                         Inventory inv = Bukkit.createInventory(null, 18, "§e§lNavi");
-                        inv.setItem(0, Script.setName(Material.GRASS, "§6" + Navi.GROVE.getName()));
-                        inv.setItem(1, Script.setName(Material.OAK_BOAT, "§6" + Navi.HITMEN.getName()));
-                        inv.setItem(2, Script.setName(Material.WITHER_ROSE, "§6" + Navi.CORLEONE.getName()));
-                        inv.setItem(3, Script.setName(Material.WITHER_SKELETON_SKULL, "§6" + Navi.FALCONE.getName()));
-                        inv.setItem(4, Script.setName(Material.DEAD_BUSH, "§6" + Navi.KARTELL.getName()));
+                        // inv.setItem(0, Script.setName(Material.GRASS, "§6" + Navi.GROVE.getName()));
+                        inv.setItem(0, Script.setName(Material.OAK_BOAT, "§6" + Navi.HITMEN.getName()));
+                        inv.setItem(1, Script.setName(Material.WITHER_ROSE, "§6" + Navi.CORLEONE.getName()));
+                        inv.setItem(2, Script.setName(Material.WITHER_SKELETON_SKULL, "§6" + Navi.FALCONE.getName()));
+                        inv.setItem(3, Script.setName(Material.DIAMOND_HORSE_ARMOR, "§6" + Navi.TRIOLA.getName()));
                         // inv.setItem(5, Script.setName(Material.DIAMOND_HORSE_ARMOR, "§6" + Navi.SINALOA.getName()));
                         inv.setItem(13, Script.setName(Material.REDSTONE, "§cZurück"));
                         Script.fillInv(inv);

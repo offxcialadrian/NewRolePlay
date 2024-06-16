@@ -253,7 +253,7 @@ public class OrgSpray implements Listener {
     public enum FraktionSpray {
         GROVE(0),
         BRATERSTWO(1),
-        KARTELL(2),
+        TRIOLA(2),
         FALCONE(3),
         CORLEONE(4),
         POLICE(5);
@@ -323,7 +323,7 @@ public class OrgSpray implements Listener {
                 patterns.add(new Pattern(DyeColor.LIGHT_GRAY, PatternType.STRIPE_BOTTOM));
                 patterns.add(new Pattern(DyeColor.GRAY, PatternType.BORDER));
                 return patterns;
-            } else if (this == KARTELL) {
+            } else if (this == TRIOLA) {
                 List<Pattern> patterns = new ArrayList<>();
                 patterns.add(new Pattern(DyeColor.WHITE, PatternType.BASE));
                 patterns.add(new Pattern(DyeColor.RED, PatternType.BORDER));
@@ -363,7 +363,7 @@ public class OrgSpray implements Listener {
             } else if (this == CORLEONE) {
                 meta.setDisplayName("Corleone");
                 meta.setPatterns(getPattern());
-            } else if (this == KARTELL) {
+            } else if (this == TRIOLA) {
                 meta.setDisplayName("Kartell");
                 meta.setPatterns(getPattern());
             } else if (this == BRATERSTWO) {
