@@ -23,14 +23,14 @@ public enum RobLocation {
     GERICHT("Gerichtsgebäude", new Location(Script.WORLD, 777, 79, 966), Organisation.KARTELL, "Kasse"),
     LABOR("Labor", new Location(Script.WORLD, 383, 75, 1307), Organisation.KARTELL, "Lager"),
     GARAGE("Garage", new Location(Script.WORLD, 681, 64, 1234), Organisation.KARTELL, "Lager"),
-    KINO("Kino", new Location(Script.WORLD, 817, 74, 926), Organisation.SINALOA, "Kasse"),
-    TIERHEIM("Tierheim", new Location(Script.WORLD, 592, 69, 1118), Organisation.SINALOA, "Kasse"),
-    WAGEN("HotDog-Wagen", new Location(Script.WORLD, 843, 66, 741), Organisation.SINALOA, "Lager"),
-    FLUGZEUG("Flugzeug", new Location(Script.WORLD, 851, 69, 1271), Organisation.SINALOA, "Lager"),
-    ARCADE("Arcade", new Location(Script.WORLD, 401, 67, 750), Organisation.HITMEN, "Kasse"),
+    KINO("Kino", new Location(Script.WORLD, 817, 74, 926), Organisation.HITMEN, "Kasse"),
+    // TIERHEIM("Tierheim", new Location(Script.WORLD, 592, 69, 1118), Organisation.SINALOA, "Kasse"),
+    // WAGEN("HotDog-Wagen", new Location(Script.WORLD, 843, 66, 741), Organisation.SINALOA, "Lager"),
+    FLUGZEUG("Flugzeug", new Location(Script.WORLD, 851, 69, 1271), Organisation.HITMEN, "Lager"),
+    // ARCADE("Arcade", new Location(Script.WORLD, 401, 67, 750), Organisation.HITMEN, "Kasse"),
     GELDWAGEN("Geldwagen", new Location(Script.WORLD, 909, 76, 912), Organisation.HITMEN, "Kasse"),
-    BAR("Bar", new Location(Script.WORLD, 699, 69, 865), Organisation.HITMEN, "Lager"),
-    NOODLES("Noodles", new Location(Script.WORLD, 867, 83, 952), Organisation.HITMEN, "Lager");
+    BAR("Bar", new Location(Script.WORLD, 699, 69, 865), Organisation.HITMEN, "Lager");
+    // NOODLES("Noodles", new Location(Script.WORLD, 867, 83, 952), Organisation.HITMEN, "Lager");
 
     private final String name;
     private final Location loc;
