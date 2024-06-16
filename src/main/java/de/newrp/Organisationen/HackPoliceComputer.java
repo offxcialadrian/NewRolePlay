@@ -39,7 +39,7 @@ import org.bukkit.scheduler.BukkitTask;
 
 public class HackPoliceComputer implements CommandExecutor, Listener {
     public static final String prefix = "§8[§9Polizeicomputer§8] §9" + Messages.ARROW + " §7";
-    public static final Location LOCATION = new Location(Script.WORLD, 448, 32, 855, -88.80542f, 24.899044f);
+    public static final Location LOCATION = new Location(Script.WORLD, 450.5, 47.1, 828.5, 89.8f, 90f);
     public static final long TIMEOUT = TimeUnit.HOURS.toMillis(3);
     private static final Location doorOne = new Location(Script.WORLD, 412, 67, 818);
     private static final Location doorTwo = new Location(Script.WORLD, 411, 67, 818);
