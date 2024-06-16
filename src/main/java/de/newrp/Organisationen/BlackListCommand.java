@@ -7,6 +7,7 @@ import de.newrp.API.Script;
 import de.newrp.Administrator.SDuty;
 import de.newrp.Player.AFK;
 import de.newrp.dependencies.DependencyContainer;
+import de.newrp.features.bizwar.IBizWarService;
 import de.newrp.features.deathmatcharena.IDeathmatchArenaService;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -370,6 +371,7 @@ public class BlackListCommand implements CommandExecutor, Listener, TabCompleter
         Organisation orga = Organisation.getOrganisation(killer);
         if (!Blacklist.isOnBlacklist(killed, orga)) return;
         if (DependencyContainer.getContainer().getDependency(IDeathmatchArenaService.class).isInDeathmatch(killed, false)) return;
+        if(DependencyContainer.getContainer().getDependency(IBizWarService.class).isMemberOfBizWar(killed)) return;
 
         Blacklist bl = Blacklist.getBlacklistObject(Script.getNRPID(killed), orga);
         int kills = bl.getKills();

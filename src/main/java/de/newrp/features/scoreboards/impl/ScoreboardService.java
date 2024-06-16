@@ -13,6 +13,7 @@ import de.newrp.Organisationen.MaskHandler;
 import de.newrp.Player.AFK;
 import de.newrp.Ticket.TicketCommand;
 import de.newrp.dependencies.DependencyContainer;
+import de.newrp.features.bizwar.IBizWarService;
 import de.newrp.features.scoreboards.BoardConfiguration;
 import de.newrp.features.scoreboards.IScoreboardService;
 import de.newrp.features.scoreboards.config.ScoreboardConfig;
@@ -190,6 +191,11 @@ public class ScoreboardService implements IScoreboardService {
     }
 
     @Override
+    public String getBizWarName() {
+        return "1000bizwar";
+    }
+
+    @Override
     public Team getTeamNameForCurrentState(Player player) {
         final Beruf.Berufe faction = Beruf.getBeruf(player);
         final Abteilung.Abteilungen abteilungen = Beruf.getAbteilung(player);
@@ -207,10 +213,18 @@ public class ScoreboardService implements IScoreboardService {
         if (SDuty.isSDuty(player)) {
             final Rank rank = Script.getRank(player);
             finalTeamName = rank.getScoreboardName();
+
+            if(AFK.isAFK(player)) {
+                finalTeamName = getAFKTeamName();
+            }
         } else {
             if(Friedhof.isDead(player)) {
                 finalTeamName = getDeadTeamName();
             } else {
+                if(DependencyContainer.getContainer().getDependency(IBizWarService.class).isMemberOfBizWar(player)) {
+                    finalTeamName = getBizWarName();
+                }
+
                 if(Duty.isInDuty(player)) {
                     finalTeamName = factionTeamName;
                 }

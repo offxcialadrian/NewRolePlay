@@ -44,7 +44,7 @@ public class StartBizWarCommand implements CommandExecutor {
         }*/ // Deactivate with Hitman features
         final int playerRankInOrganisation = Organisation.getRank(player);
 
-        if(playerRankInOrganisation <= 2) {
+        if(playerRankInOrganisation < 2) {
             player.sendMessage(Messages.NO_PERMISSION);
             return false;
         }
