@@ -43,6 +43,7 @@ public enum Health {
 
     public static void update() {
         for (Player p : Bukkit.getOnlinePlayers()) {
+            if (AFK.isAFK(p)) continue;
             if (BLEEDING.containsKey(p.getName()) && !GangwarCommand.isInGangwar(p)) {
                 float amount = BLEEDING.get(p.getName());
                 Health.BLOOD.remove(Script.getNRPID(p), amount);
