@@ -82,7 +82,8 @@ public enum Navi {
     KNAST("Gefängnis", new Location(Script.WORLD, 1018, 68, 549, 180.84424f, -9.02183f)),
     PARK("Park", new Location(Script.WORLD, 527.3, 68.9, 1121.4, -357.9f, 8.6f)),
     PET("Tierheim", new Location(Script.WORLD, 593.5, 69, 1114.5, 16.8f, 90f)),
-    BND("BND", new Location(Script.WORLD, 822, 71, 1005, 16.8f, 90f));
+    BND("BND", new Location(Script.WORLD, 822, 71, 1005, 16.8f, 90f)),
+    KIRCHE("Kirche", new Location(Script.WORLD, 242.4, 78.1, 660.5, 90.4f, 90f));
 
 
     private final String name;

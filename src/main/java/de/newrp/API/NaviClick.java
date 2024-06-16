@@ -115,7 +115,8 @@ public class NaviClick implements Listener {
                         Inventory inv = Bukkit.createInventory(null, 18, "§e§lNavi");
                         inv.setItem(0, Script.setName(Material.PAINTING, "§6" + Navi.MUSEUM.getName()));
                         inv.setItem(1, Script.setName(Material.PRISMARINE, "§6" + Navi.STATUE.getName()));
-                        inv.setItem(2, Script.setName(Material.NAUTILUS_SHELL, "§6" + Navi.ZOO.getName()));
+                        inv.setItem(2, Script.setName(Material.POPPY, "§6" + Navi.KIRCHE.getName()));
+                        inv.setItem(3, Script.setName(Material.NAUTILUS_SHELL, "§6" + Navi.ZOO.getName()));
                         inv.setItem(13, Script.setName(Material.REDSTONE, "§cZurück"));
                         Script.fillInv(inv);
                         p.openInventory(inv);
