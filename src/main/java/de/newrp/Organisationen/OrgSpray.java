@@ -325,13 +325,10 @@ public class OrgSpray implements Listener {
                 return patterns;
             } else if (this == TRIOLA) {
                 List<Pattern> patterns = new ArrayList<>();
-                patterns.add(new Pattern(DyeColor.WHITE, PatternType.BASE));
-                patterns.add(new Pattern(DyeColor.RED, PatternType.BORDER));
-                patterns.add(new Pattern(DyeColor.WHITE, PatternType.TRIANGLE_BOTTOM));
-                patterns.add(new Pattern(DyeColor.RED, PatternType.STRIPE_CENTER));
-                patterns.add(new Pattern(DyeColor.BLUE, PatternType.TRIANGLE_TOP));
-                patterns.add(new Pattern(DyeColor.WHITE, PatternType.TRIANGLES_TOP));
-                patterns.add(new Pattern(DyeColor.BLUE, PatternType.TRIANGLES_TOP));
+                patterns.add(new Pattern(DyeColor.BLUE, PatternType.BASE));
+                patterns.add(new Pattern(DyeColor.RED, PatternType.STRIPE_BOTTOM));
+                patterns.add(new Pattern(DyeColor.WHITE, PatternType.STRIPE_TOP));
+                patterns.add(new Pattern(DyeColor.BLACK, PatternType.FLOWER));
                 return patterns;
             } else if (this == BRATERSTWO) {
                 List<Pattern> patterns = new ArrayList<>();
