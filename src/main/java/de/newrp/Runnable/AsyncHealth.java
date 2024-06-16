@@ -20,6 +20,7 @@ public class AsyncHealth extends BukkitRunnable {
     @Override
     public void run() {
         for (Player p : Bukkit.getOnlinePlayers()) {
+            if (AFK.isAFK(p)) continue;
             if (Health.BLEEDING.containsKey(p.getName()) && !GangwarCommand.isInGangwar(p)) {
                 if(Script.getRandom(1, 100) <20) {
                     Krankheit.ENTZUENDUNG.add(Script.getNRPID(p));
