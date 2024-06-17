@@ -14,7 +14,7 @@ public class GangwarZonesCommand implements CommandExecutor {
 
         p.sendMessage(GangwarCommand.PREFIX + "Die Zonen sind derzeit wie folgt verteilt:");
         for(GangwarZones zone : GangwarZones.values()) {
-            p.sendMessage(GangwarCommand.PREFIX + "Die Zone " + zone.getName() + " gehört derzeit " + zone.getOwner().getName());
+            p.sendMessage(GangwarCommand.PREFIX + "Die Zone " + zone.getName() + " gehört " + zone.getOwner().getName());
         }
 
         return false;
