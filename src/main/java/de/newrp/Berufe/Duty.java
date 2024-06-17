@@ -107,14 +107,14 @@ public class Duty implements CommandExecutor {
             }
 
             if (isInDuty(p)) {
-                Bukkit.getScoreboardManager().getMainScoreboard().getTeam("fbnd").removeEntry(p.getName());
+                Bukkit.getScoreboardManager().getMainScoreboard().getTeam("fbka").removeEntry(p.getName());
                 Beruf.Berufe.BUNDESKRIMINALAMT.sendMessage(PREFIX + Script.getName(p) + " hat den Dienst verlassen.");
                 Beruf.getBeruf(p.getPlayer()).changeDuty(p, false);
                 Script.updateListname(p);
                 return true;
             }
 
-            Bukkit.getScoreboardManager().getMainScoreboard().getTeam("fbnd").addEntry(p.getName());
+            Bukkit.getScoreboardManager().getMainScoreboard().getTeam("fbka").addEntry(p.getName());
             Beruf.getBeruf(p.getPlayer()).changeDuty(p, true);
             Beruf.Berufe.BUNDESKRIMINALAMT.sendMessage(PREFIX + Script.getName(p) + " hat den Dienst betreten.");
             Script.updateListname(p);

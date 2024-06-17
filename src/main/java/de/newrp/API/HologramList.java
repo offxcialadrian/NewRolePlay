@@ -102,8 +102,8 @@ public enum HologramList {
     DART_CLUB(99, "§8/§6dart", new Location(Script.WORLD, 482.5, 66, 1284.5, 0.0f, 0.0f)),
     SHISHA(100, "§8/§6buy", new Location(Script.WORLD, 708.4, 64, 1214.6, -190.6f, 80.4f)),
     PETSHOP(101, "§8/§6buy", new Location(Script.WORLD, 593.6, 68, 1116, 0.8f, 90f)),
-    EQUIP_BND(102, "§8/§6equip", new Location(Script.WORLD, 844.6, 55, 1006.3, -188.5f, 82f)),
-    DUTY_BND(103, "§8/§6duty", new Location(Script.WORLD, 816.5, 54, 1015.6, -275.7f, 37.5f));
+    EQUIP_BKA(102, "§8/§6equip", new Location(Script.WORLD, 844.6, 55, 1006.3, -188.5f, 82f)),
+    DUTY_BKA(103, "§8/§6duty", new Location(Script.WORLD, 816.5, 54, 1015.6, -275.7f, 37.5f));
 
     private final int id;
     private final String name;

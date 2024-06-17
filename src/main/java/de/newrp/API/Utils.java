@@ -343,8 +343,8 @@ public class Utils implements Listener {
                 for (Player cops : Beruf.Berufe.POLICE.getMembers()) {
                     Script.setSubtitle(cops, p.getUniqueId(), "§cFahndung: " + Fahndung.getWanteds(p) + " Wanted(s)");
                 }
-                for(Player bnd : Beruf.Berufe.BUNDESKRIMINALAMT.getMembers()) {
-                    Script.setSubtitle(bnd, p.getUniqueId(), "§cFahndung: " + Fahndung.getWanteds(p) + " Wanted(s)");
+                for(Player bka : Beruf.Berufe.BUNDESKRIMINALAMT.getMembers()) {
+                    Script.setSubtitle(bka, p.getUniqueId(), "§cFahndung: " + Fahndung.getWanteds(p) + " Wanted(s)");
                 }
             }
 

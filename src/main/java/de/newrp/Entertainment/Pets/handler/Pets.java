@@ -395,7 +395,7 @@ public class Pets implements Listener, CommandExecutor, TabCompleter {
                     }
                     if (!Premium.hasPremium(player)) {
                         if (args[0].contains("&")) {
-                            player.sendMessage(Messages.ERROR + "Der Name ist nicht verfügbar.");
+                            player.sendMessage(Messages.ERROR + "Der Name ist nur mit Premium verfügbar.");
                             return true;
                         }
                     } else {
