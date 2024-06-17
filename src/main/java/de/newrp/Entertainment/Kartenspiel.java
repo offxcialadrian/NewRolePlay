@@ -1,8 +1,6 @@
 package de.newrp.Entertainment;
 
-import de.newrp.API.Messages;
-import de.newrp.API.PaymentType;
-import de.newrp.API.Script;
+import de.newrp.API.*;
 import de.newrp.NewRoleplayMain;
 import de.newrp.Organisationen.Organisation;
 import org.bukkit.Bukkit;
@@ -96,6 +94,7 @@ public class Kartenspiel implements CommandExecutor, Listener {
                                 member.put(p.getName(), "Croupier");
                             } else {
                                 member.put(p.getName(), m.getName());
+                                Activity.grantActivity(Script.getNRPID(m), Activities.CASINO);
                             }
                             openGUI(p);
                         } else
