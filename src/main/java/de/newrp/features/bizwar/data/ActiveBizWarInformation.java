@@ -39,22 +39,16 @@ public class ActiveBizWarInformation {
     }
 
     public void tickBizWar(final IBizWarService bizWarService) {
-        final long endTime = this.startTimestamp + TimeUnit.MINUTES.toMillis(7);
+        final long endTime = this.startTimestamp + TimeUnit.MINUTES.toMillis(10);
         final long minutesPassedSinceStart = TimeUnit.MILLISECONDS.toMinutes(System.currentTimeMillis() - this.startTimestamp);
         System.out.println(minutesPassedSinceStart);
-        if(minutesPassedSinceStart >= 7) {
+        if(minutesPassedSinceStart >= 10) {
             bizWarService.finishBizWar(this.attackedShop);
             Bukkit.getScheduler().cancelTask(this.schedulerId);
             return;
         }
-
-        final long minutesReamining = 7 - minutesPassedSinceStart;
         final long secondsRemaining = TimeUnit.MILLISECONDS.toSeconds(endTime - System.currentTimeMillis());
-        String time = " §7§o(" + minutesReamining + " " + (minutesReamining == 1 ? "Minute" : "Minuten") + " verbleibend)";
-
-        if(minutesReamining == 6) {
-            time = " §7§o(" + secondsRemaining + " " + (secondsRemaining == 1 ? "Sekunde" : "Sekunden") + " verbleibend)";
-        }
+        String time = " §7§o(" + secondsRemaining + " " + (secondsRemaining == 1 ? "Sekunde" : "Sekunden") + " verbleibend)";
 
 
         for (UUID joinedMembersOfAttacker : this.getJoinedMembersOfAttackers()) {

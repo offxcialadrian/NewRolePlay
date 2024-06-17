@@ -60,7 +60,7 @@ public class Waffenschein implements CommandExecutor {
                 if (args[0].equalsIgnoreCase("accept")) {
                     try {
                         int id = Integer.parseInt(args[1]);
-                        OfflinePlayer tg = getPlayerByWaffenscheinID(id);
+                        OfflinePlayer tg =  getPlayerByWaffenscheinID(id);
 
                         if (id <= 0) {
                             p.sendMessage(PREFIX + "Bitte gib eine gültige ID an.");
