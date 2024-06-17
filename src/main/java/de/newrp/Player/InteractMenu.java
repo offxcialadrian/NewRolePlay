@@ -322,9 +322,9 @@ public class InteractMenu implements Listener {
                 }
 
                 Inventory inv2 = Bukkit.createInventory(null, 9 * 4, "§8[§9Frisk§8] §e» §9" + tg.getName());
-                for (ItemStack is : tg.getInventory().getContents()) {
+                for (ItemStack is : tg.getInventory().getContents().clone()) {
                     if (is == null) continue;
-                    inv2.addItem(is);
+                    inv2.addItem(is.clone());
                 }
                 p.openInventory(inv2);
                 Me.sendMessage(p, "durchsucht " + Script.getName(tg) + ".");
