@@ -37,7 +37,7 @@ public enum Navi {
     TELLERWÄSCHER("Tellerwäscher", new Location(Script.WORLD, 579, 67, 744, -77.8775f, 5.445472f)),
     TRANSPORT("Transport", new Location(Script.WORLD, 932, 66, 1083, 178.20059f, 4.050012f)),
     IMKEREI("Imkerei", new Location(Script.WORLD, 216, 66, 773, 201.95145f, 0.35791647f)),
-    ELEKTROLADEN("Elektroladen", new Location(Script.WORLD, 864, 74, 963, -41.849865f, 19.049988f)),
+    ELEKTROLADEN("Jupiter", new Location(Script.WORLD, 865.4, 74.1, 962.6, 53.2f, 90f)),
     X3("X3", new Location(Script.WORLD, 693, 71, 992, -269.9325f, 1.3498036f)),
     APOTHEKE_KH("Apotheke am Krankenhaus", new Location(Script.WORLD, 342, 78, 1078, -89.94908f, 2.8520296f)),
     APOTHEKE_X3("Apotheke am AEKI", new Location(Script.WORLD, 662, 68, 860, -180.32812f, 4.0531044f)),
@@ -47,7 +47,7 @@ public enum Navi {
     MUSIKLADEN_HAFEN("Musikladen (Hafen)", new Location(Script.WORLD, 329, 77, 997, 148.47311f, 16.413198f)),
     WAFFENLADEN_GANG("Waffenladen (Gang)", new Location(Script.WORLD, 534, 65, 1314, -269.9749f, 90.0f)),
     GEMUESELADEN("Gemüseladen", new Location(Script.WORLD, 842, 74, 918, -356.24542f, 9.236951f)),
-    HANKYS_GANG("Hankys (Gang)", new Location(Script.WORLD, 557, 64, 1270, -0.9939575f, 90.0f)),
+    HANKYS_GANG("Hankys", new Location(Script.WORLD, 557, 64, 1270, -0.9939575f, 90.0f)),
     FAHRZEUGHAENDLER("Fahrzeughändler", new Location(Script.WORLD, 411, 77, 1081, -180.1416f, 90.0f)),
     BLUMENLADEN_STRAND("Blumenladen (Strand)", new Location(Script.WORLD, 517, 66, 774, -1.5904541f, 90.0f)),
     HANKYS("Hankys", new Location(Script.WORLD, 557, 64, 1270, -359.05908f, 12.675349f)),
@@ -83,7 +83,8 @@ public enum Navi {
     PARK("Park", new Location(Script.WORLD, 527.3, 68.9, 1121.4, -357.9f, 8.6f)),
     PET("Tierheim", new Location(Script.WORLD, 593.5, 69, 1114.5, 16.8f, 90f)),
     BND("BND", new Location(Script.WORLD, 822, 71, 1005, 16.8f, 90f)),
-    KIRCHE("Kirche", new Location(Script.WORLD, 242.4, 78.1, 660.5, 90.4f, 90f));
+    KIRCHE("Kirche", new Location(Script.WORLD, 242.4, 78.1, 660.5, 90.4f, 90f)),
+    SUPERMARKT_GANG("Supermarkt (Gang)", new Location(Script.WORLD, 616.4, 65, 1272.5, 84.5f, 87.4f));
 
 
     private final String name;
