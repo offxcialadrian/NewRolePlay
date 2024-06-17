@@ -191,6 +191,8 @@ public class BizWarService implements IBizWarService {
             bizWarInformation.getAttackerOrganisation().sendMessage(this.getPrefix() + "§c" + player.getName() + " §7ist den Verteidigern beigetreten (§e" + bizWarInformation.getJoinedMembersOfAttackers().size() + "§7)!");
         }
 
+        Activity.grantActivity(Script.getNRPID(player), Activities.BIZWAR);
+
         Script.updateListname(player);
 
         Cache.saveInventory(player);

@@ -52,7 +52,8 @@ public enum Activities {
     CONTRACT("Auftrag", 0.3F, Arrays.asList(-3)),
     CT_KILL("Kopfgeld", 0.6F, Arrays.asList(-3)),
     NOTRUF("Notruf", 0.4F, Arrays.asList(3, 4)),
-    IMPFUNG("Impfung", 0.4F, Arrays.asList(4));
+    IMPFUNG("Impfung", 0.4F, Arrays.asList(4)),
+    BIZWAR("BizWar", 0.3F, Arrays.asList(0));
 
     // 0 = Alle Organisationen
     // Negative ID = Orga-ID
