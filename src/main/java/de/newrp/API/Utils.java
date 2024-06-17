@@ -3,10 +3,8 @@ package de.newrp.API;
 import com.google.gson.JsonObject;
 import de.newrp.Administrator.*;
 import de.newrp.Berufe.Beruf;
-import de.newrp.Berufe.Equip;
 import de.newrp.Berufe.Houseban;
 import de.newrp.Government.Wahlen;
-import de.newrp.House.AkkuCommand;
 import de.newrp.House.House;
 import de.newrp.Organisationen.Blacklist;
 import de.newrp.Organisationen.MaskHandler;
@@ -19,7 +17,6 @@ import de.newrp.dependencies.DependencyContainer;
 import de.newrp.discord.IJdaService;
 import de.newrp.features.addiction.IAddictionService;
 import de.newrp.features.scoreboards.IScoreboardService;
-import de.newrp.discord.impl.JdaService;
 import de.newrp.features.playertracker.IPlayerTrackerService;
 import de.newrp.features.recommendation.IRecommendationService;
 import org.bukkit.Bukkit;
@@ -55,7 +52,6 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 import static de.newrp.API.Rank.DEVELOPER;
-import static de.newrp.API.Rank.SUPPORTER;
 
 public class Utils implements Listener {
 
@@ -347,10 +343,9 @@ public class Utils implements Listener {
                 for (Player cops : Beruf.Berufe.POLICE.getMembers()) {
                     Script.setSubtitle(cops, p.getUniqueId(), "§cFahndung: " + Fahndung.getWanteds(p) + " Wanted(s)");
                 }
-            }
-
-            if(Fahndung.isFahnded(p) && Fahndung.getWanteds(p)>=80) {
-
+                for(Player bnd : Beruf.Berufe.BUNDESKRIMINALAMT.getMembers()) {
+                    Script.setSubtitle(bnd, p.getUniqueId(), "§cFahndung: " + Fahndung.getWanteds(p) + " Wanted(s)");
+                }
             }
 
             if(Houseban.isHousebanned(p, Beruf.Berufe.RETTUNGSDIENST)) {
@@ -360,7 +355,7 @@ public class Utils implements Listener {
             }
 
             if (Beruf.hasBeruf(p)) {
-                if (Beruf.getBeruf(p) == Beruf.Berufe.POLICE) {
+                if (Beruf.getBeruf(p) == Beruf.Berufe.POLICE || Beruf.getBeruf(p) == Beruf.Berufe.BUNDESKRIMINALAMT){
                     for (Player fahnded : Fahndung.getList()) {
                         if(fahnded == null) continue;
                         Script.setSubtitle(p, fahnded.getUniqueId(), "§cFahndung: " + Fahndung.getWanteds(fahnded) + " Wanted(s)");

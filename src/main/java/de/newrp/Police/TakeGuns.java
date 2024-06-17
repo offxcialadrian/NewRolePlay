@@ -2,7 +2,6 @@ package de.newrp.Police;
 
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
-import de.newrp.Administrator.Spectate;
 import de.newrp.Berufe.Beruf;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -50,7 +49,7 @@ public class TakeGuns implements CommandExecutor {
         p.sendMessage(Messages.INFO + "Du hast " + tg.getName() + " entwaffnet.");
         tg.sendMessage(Messages.INFO + "Polizist " + p.getName() + " hat dich entwaffnet.");
         Beruf.Berufe.POLICE.sendMessage("§9Beamter " + Script.getName(p) + " hat " + Script.getName(tg) + " die Waffen abgenommen.");
-        Beruf.Berufe.BUNDESNACHRICHTENDIENST.sendMessage("§9Beamter " + Script.getName(p) + " hat " + Script.getName(tg) + " die Waffen abgenommen.");
+        Beruf.Berufe.BUNDESKRIMINALAMT.sendMessage("§9Beamter " + Script.getName(p) + " hat " + Script.getName(tg) + " die Waffen abgenommen.");
         return true;
 
     }

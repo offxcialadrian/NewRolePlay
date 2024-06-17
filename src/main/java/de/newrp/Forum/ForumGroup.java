@@ -30,7 +30,9 @@ public enum ForumGroup {
     GROVE(26, "Groves Street"),
     GROVE_LEADER(23, "Groves Street Leader"),
     SINOLA_MEMBER(29, "Sinola-Kartell Member"),
-    SINOLA_LEADER(30, "Sinola-Kartell Leader");
+    SINOLA_LEADER(30, "Sinola-Kartell Leader"),
+    BKA_MEMBER(39, "BKA Member"),
+    BKA_LEADER(38, "BKA Leader");
 
     private final int id;
     private final String name;

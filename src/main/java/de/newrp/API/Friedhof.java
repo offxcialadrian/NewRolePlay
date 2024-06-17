@@ -127,7 +127,11 @@ public class Friedhof {
 
         Location loc = locs[Script.getRandom(0, locs.length - 1)];
         Debug.debug("loc: " + loc);
-        p.teleport(loc);
+        try {
+            p.teleport(loc);
+        } catch (Exception e) {
+            NewRoleplayMain.handleError(e);
+        }
 
         /*p.getKiller().sendMessage(Messages.INFO + "§c§lKILL! §6" + Script.getName(p) + " §fdu hast getötet!");
 
