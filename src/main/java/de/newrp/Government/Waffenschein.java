@@ -72,7 +72,7 @@ public class Waffenschein implements CommandExecutor {
                             return true;
                         }
 
-                        if (Script.getMoney(tg, PaymentType.BANK) < Math.min(10000, Script.getLevel(tg) * 500) + 3000) {
+                        if (Script.getMoney(tg, PaymentType.BANK) < Math.min(10000, (Script.getLevel(tg) * 500) + 3000)) {
                             p.sendMessage(PREFIX + "Der Spieler hat nicht genug Geld.");
                             return true;
                         }
@@ -152,14 +152,14 @@ public class Waffenschein implements CommandExecutor {
             return true;
         }
 
-        if (Script.getMoney(p, PaymentType.BANK) < Math.min(10000, Script.getLevel(p) * 1000)) {
+        if (Script.getMoney(p, PaymentType.BANK) < Math.min(10000, (Script.getLevel(p) * 500) + 3000)) {
             p.sendMessage(Messages.ERROR + "Du hast nicht genug Geld.");
-            p.sendMessage(Messages.INFO + "Du benötigst " + Math.min(10000, Script.getLevel(p) * 1000) + "€.");
+            p.sendMessage(Messages.INFO + "Du benötigst " + Math.min(10000, (Script.getLevel(p) * 500) + 3000) + "€.");
             return true;
         }
 
         p.sendMessage(PREFIX + "Du hast erfolgreich einen Waffenschein beantragt. Bitte warte auf eine Antwort durch die Verwaltung.");
-        p.sendMessage(Messages.INFO + "Die Ausstellung des Waffenscheins kostet dich " + Math.min(10000, Script.getLevel(p) * 1000) + "€. Falls du nicht bereit bist, so viel zu zahlen, kannst du den Antrag zurückziehen.");
+        p.sendMessage(Messages.INFO + "Die Ausstellung des Waffenscheins kostet dich " + Math.min(10000, (Script.getLevel(p) * 500) + 3000) + "€. Falls du nicht bereit bist, so viel zu zahlen, kannst du den Antrag zurückziehen.");
         Script.executeAsyncUpdate("INSERT INTO waffenschein (nrp_id, date, accepted) VALUES ('" + Script.getNRPID(p) + "', '" + System.currentTimeMillis() + "', '0')");
         Beruf.Berufe.GOVERNMENT.sendMessage(PREFIX + Script.getName(p) + " hat einen Waffenschein beantragt.");
 
@@ -205,8 +205,8 @@ public class Waffenschein implements CommandExecutor {
                 Script.executeAsyncUpdate("UPDATE waffenschein SET accepted=1 WHERE id='" + id + "'");
                 Licenses.WAFFENSCHEIN.grant(rs.getInt("nrp_id"));
                 OfflinePlayer p = Script.getOfflinePlayer(rs.getInt("nrp_id"));
-                Script.removeMoney(p, PaymentType.BANK, Math.min(10000, (Script.getLevel(Script.getOfflinePlayer(rs.getInt("nrp_id"))) * 1000)));
-                Stadtkasse.addStadtkasse(Math.min(10000, Script.getLevel(Script.getOfflinePlayer(rs.getInt("nrp_id"))) * 1000), "Waffenschein von " + p.getName() + ".", null);
+                Script.removeMoney(p, PaymentType.BANK, Math.min(10000, (Script.getLevel(Script.getOfflinePlayer(rs.getInt("nrp_id"))) * 500) + 3000));
+                Stadtkasse.addStadtkasse(Math.min(10000, (Script.getLevel(Script.getOfflinePlayer(rs.getInt("nrp_id"))) * 500) + 3000), "Waffenschein von " + p.getName() + ".", null);
                 if (p.getPlayer() != null) {
                     p.getPlayer().sendMessage(PREFIX + "Dein Antrag auf einen Waffenschein wurde angenommen.");
                 } else {
