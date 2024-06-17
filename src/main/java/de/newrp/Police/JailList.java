@@ -21,7 +21,7 @@ public class JailList implements CommandExecutor {
             return true;
         }
 
-        if (!Beruf.getBeruf(p).equals(Beruf.Berufe.POLICE) && !Beruf.getBeruf(p).equals(Beruf.Berufe.BUNDESNACHRICHTENDIENST)) {
+        if (!Beruf.getBeruf(p).equals(Beruf.Berufe.POLICE) && !Beruf.getBeruf(p).equals(Beruf.Berufe.BUNDESKRIMINALAMT)) {
             p.sendMessage(Messages.ERROR + "Du bist kein Polizist.");
             return true;
         }

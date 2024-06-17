@@ -153,9 +153,13 @@ public class Chat implements Listener {
             return;
         }
 
-        if (TicketCommand.getTicket(p) != null) {
-            handleTicket(p, e.getMessage());
-            return;
+        for(Player players : Bukkit.getOnlinePlayers()) {
+            if(TicketCommand.getTicket(players) != null) {
+                if(TicketCommand.getConversation(TicketCommand.getTicket(players)).contains(p)) {
+                    handleTicket(p, e.getMessage());
+                    return;
+                }
+            }
         }
 
         for(String arg : e.getMessage().split(" ")) {

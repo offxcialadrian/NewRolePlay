@@ -26,7 +26,7 @@ public enum TeamspeakServerGroup {
     ENTWICKLUNG(50),
     DEV(53),
     CEO(54),
-    BND(55);
+    BKA(55);
 
     private final int groupID;
 

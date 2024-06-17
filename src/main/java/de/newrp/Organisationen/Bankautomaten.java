@@ -65,7 +65,7 @@ public class Bankautomaten implements Listener {
                 .filter((nearbyPlayer) -> !SDuty.isSDuty(nearbyPlayer))
                 .filter(nearbyPlayer -> !AFK.isAFK(nearbyPlayer)).collect(Collectors.toList());
 
-        List<UUID> bnd = Beruf.Berufe.BUNDESNACHRICHTENDIENST.getMember().stream()
+        List<UUID> bnd = Beruf.Berufe.BUNDESKRIMINALAMT.getMember().stream()
                 .filter(Duty::isInDuty)
                 .filter((nearbyPlayer) -> !SDuty.isSDuty(nearbyPlayer))
                 .filter(nearbyPlayer -> !AFK.isAFK(nearbyPlayer)).collect(Collectors.toList());

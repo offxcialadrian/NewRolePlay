@@ -100,15 +100,15 @@ public class Duty implements CommandExecutor {
             return true;
         }
 
-        if(Beruf.getBeruf(p) == Beruf.Berufe.BUNDESNACHRICHTENDIENST) {
-            if (p.getLocation().distance(new Location(Script.WORLD, 816.4, 55, 1015.7, -356.3f, 77.7f)) > 10) {
+        if(Beruf.getBeruf(p) == Beruf.Berufe.BUNDESKRIMINALAMT) {
+            if (p.getLocation().distance(new Location(Script.WORLD, 815.8, 55, 1016.2, 257.1f, 28.6f)) > 10) {
                 p.sendMessage(Messages.ERROR + "Du befindest dich nicht in der Nähe des Duty-Punkt");
                 return true;
             }
 
             if (isInDuty(p)) {
                 Bukkit.getScoreboardManager().getMainScoreboard().getTeam("fbnd").removeEntry(p.getName());
-                Beruf.Berufe.BUNDESNACHRICHTENDIENST.sendMessage(PREFIX + Script.getName(p) + " hat den Dienst verlassen.");
+                Beruf.Berufe.BUNDESKRIMINALAMT.sendMessage(PREFIX + Script.getName(p) + " hat den Dienst verlassen.");
                 Beruf.getBeruf(p.getPlayer()).changeDuty(p, false);
                 Script.updateListname(p);
                 return true;
@@ -116,7 +116,7 @@ public class Duty implements CommandExecutor {
 
             Bukkit.getScoreboardManager().getMainScoreboard().getTeam("fbnd").addEntry(p.getName());
             Beruf.getBeruf(p.getPlayer()).changeDuty(p, true);
-            Beruf.Berufe.BUNDESNACHRICHTENDIENST.sendMessage(PREFIX + Script.getName(p) + " hat den Dienst betreten.");
+            Beruf.Berufe.BUNDESKRIMINALAMT.sendMessage(PREFIX + Script.getName(p) + " hat den Dienst betreten.");
             Script.updateListname(p);
             return true;
         }

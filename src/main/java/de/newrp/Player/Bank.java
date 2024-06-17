@@ -2,9 +2,7 @@ package de.newrp.Player;
 
 import de.newrp.API.*;
 import de.newrp.Administrator.BuildMode;
-import de.newrp.Administrator.GoTo;
 import de.newrp.Administrator.Notifications;
-import de.newrp.Administrator.SDuty;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Chat.Me;
 import de.newrp.Government.Stadtkasse;
@@ -302,7 +300,7 @@ public class Bank implements CommandExecutor, TabCompleter {
             if(reason.length() == 0) reason = new StringBuilder("Kein Verwendungszweck angegeben.");
 
             if(reason.toString().contains("drogen")) {
-                Beruf.Berufe.BUNDESNACHRICHTENDIENST.sendMessage(PREFIX + "§c" + Script.getName(p) + " hat eine Überweisung mit dem Verwendungszweck 'Drogen' an " + Script.getName(tg) + " getätigt.");
+                Beruf.Berufe.BUNDESKRIMINALAMT.sendMessage(PREFIX + "§c" + Script.getName(p) + " hat eine Überweisung mit dem Verwendungszweck 'Drogen' an " + Script.getName(tg) + " getätigt.");
             }
 
             if(betrag > Banken.getBankByPlayer(p).getTransactionLimit()) {

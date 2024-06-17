@@ -160,6 +160,7 @@ public class FrakChatColor implements CommandExecutor, Listener {
         inv.setItem(10, Script.setName(new ItemStack(Material.BLUE_WOOL, 1), "§9Blau"));
         inv.setItem(11, Script.setName(new ItemStack(Material.GREEN_WOOL, 1), "§2Grün"));
         inv.setItem(12, Script.setName(new ItemStack(Material.RED_WOOL, 1), "§4Rot"));
+        inv.setItem(13, Script.setName(new ItemStack(Material.BLUE_WOOL, 1), "§1Dunkelblau"));
         p.openInventory(inv);
     }
 

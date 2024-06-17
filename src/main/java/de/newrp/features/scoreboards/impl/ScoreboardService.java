@@ -4,14 +4,12 @@ import de.newrp.API.Debug;
 import de.newrp.API.Friedhof;
 import de.newrp.API.Rank;
 import de.newrp.API.Script;
-import de.newrp.Administrator.BuildMode;
 import de.newrp.Administrator.SDuty;
 import de.newrp.Berufe.Abteilung;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Berufe.Duty;
 import de.newrp.Organisationen.MaskHandler;
 import de.newrp.Player.AFK;
-import de.newrp.Ticket.TicketCommand;
 import de.newrp.dependencies.DependencyContainer;
 import de.newrp.features.bizwar.IBizWarService;
 import de.newrp.features.scoreboards.BoardConfiguration;
@@ -32,7 +30,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 
 public class ScoreboardService implements IScoreboardService {
 
@@ -205,7 +202,7 @@ public class ScoreboardService implements IScoreboardService {
         if (faction == Beruf.Berufe.RETTUNGSDIENST) factionTeamName = "0009medic";
         if (faction == Beruf.Berufe.GOVERNMENT) factionTeamName = "0006government";
         if (faction == Beruf.Berufe.NEWS) factionTeamName = "0010news";
-        if (faction == Beruf.Berufe.BUNDESNACHRICHTENDIENST) factionTeamName = "0007bnd";
+        if (faction == Beruf.Berufe.BUNDESKRIMINALAMT) factionTeamName = "0007bnd";
         if (abteilungen == Abteilung.Abteilungen.ZIVILPOLIZEI) factionTeamName = "1000default";
 
 
