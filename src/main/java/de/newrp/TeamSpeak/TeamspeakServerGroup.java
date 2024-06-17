@@ -17,7 +17,7 @@ public enum TeamspeakServerGroup {
     BAUTEAM(21),
     EARLYACCESSTEAM(42),
     RETTUNGSDIENST(26),
-    TRIOLA(43),
+    TRIORLA(43),
     FALCONE(46),
     CORLEONE(44),
     GROVE(48),
