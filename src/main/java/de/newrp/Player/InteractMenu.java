@@ -357,7 +357,7 @@ public class InteractMenu implements Listener {
                 break;
             case "Abhängigkeit behandeln":
                 final IAddictionService addictionService = DependencyContainer.getContainer().getDependency(IAddictionService.class);
-                if (addictionService.isAddictedToAnything(tg)) {
+                if (!addictionService.isAddictedToAnything(tg)) {
                     p.sendMessage(Messages.ERROR + "Der Spieler ist nicht abhängig.");
                     return;
                 }
