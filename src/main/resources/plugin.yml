@@ -22,8 +22,9 @@ commands:
     aliases: [ teamchat ]
   heal:
     description: heile einen spieler
-  blackjack:
-    description: spiele blackjack
+  kartenspiel:
+    description: spiele kartenspiel
+    aliases: [ cardgame, karten, cards ]
   buildmode:
     description: geh in den buildmode
     aliases: [ bm, baumodus ]

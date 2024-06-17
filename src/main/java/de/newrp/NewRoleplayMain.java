@@ -272,7 +272,7 @@ public class NewRoleplayMain extends JavaPlugin {
         getCommand("debug").setExecutor(new DebugCommand());
         getCommand("nrp").setExecutor(new NRPChat());
         getCommand("heal").setExecutor(new HealCommand());
-        getCommand("blackjack").setExecutor(new BlackJack());
+        getCommand("kartenspiel").setExecutor(new Kartenspiel());
         getCommand("buildmode").setExecutor(new BuildMode());
         getCommand("goto").setExecutor(new GoTo());
         getCommand("weather").setExecutor(new WeatherControl());
@@ -600,7 +600,7 @@ public class NewRoleplayMain extends JavaPlugin {
      */
     private void registerAllListeners() {
         Bukkit.getPluginManager().registerEvents(new SDuty(), this);
-        Bukkit.getPluginManager().registerEvents(new BlackJack(), this);
+        Bukkit.getPluginManager().registerEvents(new Kartenspiel(), this);
         Bukkit.getPluginManager().registerEvents(new BuildMode(), this);
         Bukkit.getPluginManager().registerEvents(new Chat(), this);
         Bukkit.getPluginManager().registerEvents(new Tazer(), this);
