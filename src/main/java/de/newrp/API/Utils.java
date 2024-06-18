@@ -25,7 +25,6 @@ import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.ShulkerBox;
-import org.bukkit.block.data.type.Sign;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -939,13 +938,12 @@ public class Utils implements Listener {
         return true;
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public static void colorSign(PlayerInteractEvent event) {
         if (event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
         if (event.getClickedBlock() == null) return;
-        if (!(event.getClickedBlock().getState() instanceof Sign)) return;
         Player player = event.getPlayer();
-        player.sendMessage("Test");
+        if (!(event.getClickedBlock().getState() instanceof org.bukkit.block.Sign)) return;
         if (BuildMode.isInBuildMode(player)) return;
         ItemStack item = player.getActiveItem();
         if (item == null) return;
