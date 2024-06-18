@@ -1,9 +1,12 @@
 package de.newrp.API;
 
+import de.newrp.Berufe.Beruf;
+import de.newrp.Organisationen.Organisation;
 import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 @Getter()
@@ -59,6 +62,8 @@ public enum Activities {
     // 0 = Alle Organisationen
     // Negative ID = Orga-ID
 
+    public static final HashMap<Integer, List<Activities>> disabled = new HashMap<>();
+
     public final String name;
     public final float points;
     public final List<Integer> user;
@@ -67,6 +72,43 @@ public enum Activities {
         this.name = name;
         this.points = points;
         this.user = user;
+    }
+
+    public static void loadDisabled() {
+        for (Beruf.Berufe beruf : Beruf.Berufe.values()) {
+            switch (beruf) {
+                case GOVERNMENT:
+                    disabled.put(beruf.getID(), Arrays.asList());
+                case NEWS:
+                    disabled.put(beruf.getID(), Arrays.asList());
+                case POLICE:
+                    disabled.put(beruf.getID(), Arrays.asList());
+                case RETTUNGSDIENST:
+                    disabled.put(beruf.getID(), Arrays.asList(BANDAGE, REZEPT, GIPS));
+                default:
+            }
+        }
+        for (Organisation orga : Organisation.values()) {
+            switch (orga) {
+                case FALCONE:
+                    disabled.put(-orga.getID(), Arrays.asList());
+                case TRIORLA:
+                    disabled.put(-orga.getID(), Arrays.asList());
+                case HITMEN:
+                    disabled.put(-orga.getID(), Arrays.asList());
+                case CORLEONE:
+                    disabled.put(-orga.getID(), Arrays.asList());
+                default:
+            }
+        }
+    }
+
+    public static List<Activities> getDisabled(int id) {
+        return disabled.get(id);
+    }
+
+    public static boolean isDisabled(int id, Activity activity) {
+        return getDisabled(id).contains(getActivity(activity.getName()));
     }
 
     public static List<String> getCompletions(int id) {

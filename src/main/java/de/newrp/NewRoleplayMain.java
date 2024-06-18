@@ -219,6 +219,7 @@ public class NewRoleplayMain extends JavaPlugin {
         }, 20L);
         Bukkit.getScheduler().runTaskLater(this, ShopNPC::spawn, 60L);
         OrgSpray.FraktionSpray.init();
+        Bukkit.getScheduler().runTaskLater(this, Activities::loadDisabled, 80L);
         Bukkit.getScheduler().runTaskLater(this, () -> House.reset(90 * 24 * 60 * 60 * 1000L), 60 * 20L);
 
         LabyAPI.initialize(LabyAPI.getService());

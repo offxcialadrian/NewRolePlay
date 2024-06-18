@@ -65,13 +65,16 @@ public class ActivityCommand implements CommandExecutor {
                 }
             }
 
-            List<Activity> activities = Activity.getActivities(Script.getNRPID(target), Activity.getResetDate(Beruf.hasBeruf(target) ? Beruf.getBeruf(target).getID() : -Organisation.getOrganisation(target).getID()));
+            int id = Beruf.hasBeruf(target) ? Beruf.getBeruf(target).getID() : -Organisation.getOrganisation(target).getID();
+
+            List<Activity> activities = Activity.getActivities(Script.getNRPID(target), Activity.getResetDate(id));
             if (activities != null) {
                 if (!activities.isEmpty()) {
                     player.sendMessage(" §8======= §3§lAktivitäten §8======= ");
                     HashMap<String, Integer> activitymap = new HashMap<>();
                     HashMap<String, Float> points = new HashMap<>();
                     for (Activity activity : activities) {
+                        if (Activities.isDisabled(id, activity)) continue;
                         if (!activitymap.containsKey(activity.getName())) {
                             activitymap.put(activity.getName(), 1);
                             points.put(activity.getName(), activity.getPoints());

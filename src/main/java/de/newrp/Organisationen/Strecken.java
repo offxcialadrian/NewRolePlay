@@ -32,10 +32,6 @@ public class Strecken implements CommandExecutor {
             p.sendMessage(Messages.ERROR + "Du hast keine Substanz in der Hand.");
             return true;
         }
-        if(droge == Drogen.ECSTASY) {
-            p.sendMessage(Messages.ERROR + "Du kannst diese Drogen nicht strecken.");
-            return true;
-        }
         Drogen.DrugPurity purity = Drogen.DrugPurity.getPurityByName(p.getInventory().getItemInMainHand().getItemMeta().getLore().get(0).replace("§7Reinheitsgrad: ", ""));
         if(purity == null) {
             p.sendMessage(Messages.ERROR + "Diese Substanz hat keinen Reinheitsgrad.");
