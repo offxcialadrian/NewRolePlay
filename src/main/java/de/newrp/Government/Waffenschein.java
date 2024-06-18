@@ -73,7 +73,7 @@ public class Waffenschein implements CommandExecutor {
                         }
 
                         if (Script.getMoney(tg, PaymentType.BANK) < Math.min(10000, (Script.getLevel(tg) * 500) + 3000)) {
-                            p.sendMessage(PREFIX + "Der Spieler hat nicht genug Geld.");
+                            p.sendMessage(PREFIX + "Der Spieler hat nur " + Script.getMoney(tg, PaymentType.BANK) + "€ von " + Math.min(10000, (Script.getLevel(tg) * 500) + 3000) + "€.");
                             return true;
                         }
 
