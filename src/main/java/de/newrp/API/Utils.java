@@ -1,5 +1,6 @@
 package de.newrp.API;
 
+import com.comphenix.protocol.PacketType;
 import com.google.gson.JsonObject;
 import de.newrp.Administrator.*;
 import de.newrp.Berufe.Beruf;
@@ -19,10 +20,7 @@ import de.newrp.features.addiction.IAddictionService;
 import de.newrp.features.scoreboards.IScoreboardService;
 import de.newrp.features.playertracker.IPlayerTrackerService;
 import de.newrp.features.recommendation.IRecommendationService;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.ShulkerBox;
 import org.bukkit.entity.*;
@@ -31,6 +29,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockExplodeEvent;
+import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
@@ -40,6 +39,7 @@ import org.bukkit.event.server.TabCompleteEvent;
 import org.bukkit.help.HelpTopic;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.Dye;
 import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -931,4 +931,12 @@ public class Utils implements Listener {
         return true;
     }
 
+    @EventHandler
+    public static void colorSign(SignChangeEvent event) {
+        Player player = event.getPlayer();
+        if (BuildMode.isInBuildMode(player)) return;
+        ItemStack item = player.getActiveItem();
+        if (item == null) return;
+        if (item.getData() instanceof Dye) event.setCancelled(true);
+    }
 }
