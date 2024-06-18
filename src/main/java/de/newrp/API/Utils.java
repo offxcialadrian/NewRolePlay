@@ -1,35 +1,37 @@
 package de.newrp.API;
 
-import com.comphenix.protocol.PacketType;
 import com.google.gson.JsonObject;
 import de.newrp.Administrator.*;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Berufe.Houseban;
 import de.newrp.Government.Wahlen;
 import de.newrp.House.House;
+import de.newrp.NewRoleplayMain;
 import de.newrp.Organisationen.Blacklist;
 import de.newrp.Organisationen.MaskHandler;
 import de.newrp.Organisationen.Organisation;
 import de.newrp.Player.Mobile;
 import de.newrp.Police.Fahndung;
-import de.newrp.NewRoleplayMain;
 import de.newrp.Shop.ShopItem;
 import de.newrp.dependencies.DependencyContainer;
 import de.newrp.discord.IJdaService;
 import de.newrp.features.addiction.IAddictionService;
-import de.newrp.features.scoreboards.IScoreboardService;
 import de.newrp.features.playertracker.IPlayerTrackerService;
 import de.newrp.features.recommendation.IRecommendationService;
-import org.bukkit.*;
+import de.newrp.features.scoreboards.IScoreboardService;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.ShulkerBox;
+import org.bukkit.block.data.type.Sign;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockExplodeEvent;
-import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
@@ -84,7 +86,7 @@ public class Utils implements Listener {
     public static final int WORLD_BORDER_MAX_X = 1100;
     public static final int WORLD_BORDER_MIN_Z = 420;
     public static final int WORLD_BORDER_MAX_Z = 1362;
-    private IJdaService jdaService =  DependencyContainer.getContainer().getDependency(IJdaService.class);
+    private IJdaService jdaService = DependencyContainer.getContainer().getDependency(IJdaService.class);
     public static HashMap<String, Long> fishCooldown = new HashMap<>();
     public static HashMap<String, Integer> fishCount = new HashMap<>();
 
@@ -265,7 +267,7 @@ public class Utils implements Listener {
         try {
             MaskHandler.clearMasksOutOfEnderchest(p);
             DependencyContainer.getContainer().getDependency(IPlayerTrackerService.class).increaseUniquePlayerSize(p);
-        } catch(final Exception exception) {
+        } catch (final Exception exception) {
             NewRoleplayMain.handleError(exception);
         }
 
@@ -279,7 +281,7 @@ public class Utils implements Listener {
             Script.team.add(p);
 
             final Rank rank = Script.getRank(p);
-            if(rank == Rank.DEVELOPER || rank == Rank.ADMINISTRATOR || rank == Rank.OWNER) {
+            if (rank == Rank.DEVELOPER || rank == Rank.ADMINISTRATOR || rank == Rank.OWNER) {
                 // Adding permissions to a developer, administrator or owner so they can use /tps and /timings
                 final PermissionAttachment permissionAttachment = p.addAttachment(NewRoleplayMain.getInstance());
                 permissionAttachment.setPermission("bukkit.command.timings", true);
@@ -288,7 +290,7 @@ public class Utils implements Listener {
         }
 
         Bukkit.getScheduler().runTaskAsynchronously(NewRoleplayMain.getInstance(), () -> {
-            if(Script.isNRPTeam(p) || Team.getTeam(p) == Team.Teams.ENTWICKLUNG) {
+            if (Script.isNRPTeam(p) || Team.getTeam(p) == Team.Teams.ENTWICKLUNG) {
                 Notifications.loadNotificationsForPlayer(p);
             }
         });
@@ -314,7 +316,7 @@ public class Utils implements Listener {
             Script.executeUpdate("DELETE FROM last_disconnect WHERE nrp_id = " + Script.getNRPID(p));
             Script.sendActionBar(e.getPlayer(), "§7Willkommen zurück auf §eNewRP§7!");
             p.sendMessage(TippOfTheDay.PREFIX + TippOfTheDay.getRandomTipp());
-            if(Licenses.PERSONALAUSWEIS.hasLicense(Script.getNRPID(p))) {
+            if (Licenses.PERSONALAUSWEIS.hasLicense(Script.getNRPID(p))) {
                 if (Script.haveBirthDay(p)) {
                     if (!hasOpenPresent(p)) {
                         p.sendMessage(Messages.INFO + "§lDas Team von New RolePlay wünscht dir alles Gute zum Geburtstag!");
@@ -325,7 +327,7 @@ public class Utils implements Listener {
                 }
 
                 final IRecommendationService recommendationService = DependencyContainer.getContainer().getDependency(IRecommendationService.class);
-                if(!recommendationService.hasRecommendation(p)) {
+                if (!recommendationService.hasRecommendation(p)) {
                     recommendationService.openInventoryForRecommendation(p);
                 }
 
@@ -343,27 +345,27 @@ public class Utils implements Listener {
                 for (Player cops : Beruf.Berufe.POLICE.getMembers()) {
                     Script.setSubtitle(cops, p.getUniqueId(), "§cFahndung: " + Fahndung.getWanteds(p) + " Wanted(s)");
                 }
-                for(Player bka : Beruf.Berufe.BUNDESKRIMINALAMT.getMembers()) {
+                for (Player bka : Beruf.Berufe.BUNDESKRIMINALAMT.getMembers()) {
                     Script.setSubtitle(bka, p.getUniqueId(), "§cFahndung: " + Fahndung.getWanteds(p) + " Wanted(s)");
                 }
             }
 
-            if(Houseban.isHousebanned(p, Beruf.Berufe.RETTUNGSDIENST)) {
-                for(Player medics : Beruf.Berufe.RETTUNGSDIENST.getMembers()) {
+            if (Houseban.isHousebanned(p, Beruf.Berufe.RETTUNGSDIENST)) {
+                for (Player medics : Beruf.Berufe.RETTUNGSDIENST.getMembers()) {
                     Script.setSubtitle(medics, p.getUniqueId(), "§cHausverbot: " + Houseban.getReason(p, Beruf.Berufe.RETTUNGSDIENST));
                 }
             }
 
             if (Beruf.hasBeruf(p)) {
-                if (Beruf.getBeruf(p) == Beruf.Berufe.POLICE || Beruf.getBeruf(p) == Beruf.Berufe.BUNDESKRIMINALAMT){
+                if (Beruf.getBeruf(p) == Beruf.Berufe.POLICE || Beruf.getBeruf(p) == Beruf.Berufe.BUNDESKRIMINALAMT) {
                     for (Player fahnded : Fahndung.getList()) {
-                        if(fahnded == null) continue;
+                        if (fahnded == null) continue;
                         Script.setSubtitle(p, fahnded.getUniqueId(), "§cFahndung: " + Fahndung.getWanteds(fahnded) + " Wanted(s)");
                     }
-                } else if(Beruf.getBeruf(p) == Beruf.Berufe.RETTUNGSDIENST) {
-                    for(int i : Houseban.getHousebannedNRPIDs(Beruf.Berufe.RETTUNGSDIENST)) {
+                } else if (Beruf.getBeruf(p) == Beruf.Berufe.RETTUNGSDIENST) {
+                    for (int i : Houseban.getHousebannedNRPIDs(Beruf.Berufe.RETTUNGSDIENST)) {
                         Player housebanned = Script.getPlayer(i);
-                        if(housebanned == null) continue;
+                        if (housebanned == null) continue;
                         Script.setSubtitle(p, housebanned.getUniqueId(), "§cHausverbot: " + Houseban.getReason(housebanned, Beruf.Berufe.RETTUNGSDIENST));
                     }
                 }
@@ -563,12 +565,18 @@ public class Utils implements Listener {
                     else alkLevel.put(p.getUniqueId(), 1.5F);
                 }
 
-                if (alkLevel.get(p.getUniqueId()) <= 1) p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 8 * 20, 0));
-                else if (alkLevel.get(p.getUniqueId()) <= 2) p.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 25 * 20, 1));
-                else if (alkLevel.get(p.getUniqueId()) <= 4) p.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 15 * 20, 0));
-                else if (alkLevel.get(p.getUniqueId()) <= 6) p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20 * 20, 0));
-                else if (alkLevel.get(p.getUniqueId()) <= 8) p.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 90 * 20, 0));
-                else if (alkLevel.get(p.getUniqueId()) <= 10) p.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 5 * 20, 0));
+                if (alkLevel.get(p.getUniqueId()) <= 1)
+                    p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 8 * 20, 0));
+                else if (alkLevel.get(p.getUniqueId()) <= 2)
+                    p.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 25 * 20, 1));
+                else if (alkLevel.get(p.getUniqueId()) <= 4)
+                    p.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 15 * 20, 0));
+                else if (alkLevel.get(p.getUniqueId()) <= 6)
+                    p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20 * 20, 0));
+                else if (alkLevel.get(p.getUniqueId()) <= 8)
+                    p.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 90 * 20, 0));
+                else if (alkLevel.get(p.getUniqueId()) <= 10)
+                    p.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 5 * 20, 0));
                 else p.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 30 * 20, 2));
             }
         }
@@ -589,7 +597,7 @@ public class Utils implements Listener {
     @EventHandler
     public void FrameEntity(EntityDamageByEntityEvent e) {
         if (e.getEntity() instanceof ArmorStand) {
-            if(!(e.getDamager() instanceof Player)) {
+            if (!(e.getDamager() instanceof Player)) {
                 e.setCancelled(true);
             } else {
                 if (!BuildMode.isInBuildMode((Player) e.getDamager())) e.setCancelled(true);
@@ -786,7 +794,7 @@ public class Utils implements Listener {
         }
 
         final Mobile.Phones phones = Mobile.getPhone(p);
-        if(Mobile.playerAkku.containsKey(p.getUniqueId()) && phones != null) {
+        if (Mobile.playerAkku.containsKey(p.getUniqueId()) && phones != null) {
             phones.saveAkku(p);
             Mobile.playerAkku.remove(p.getUniqueId());
         }
@@ -932,11 +940,17 @@ public class Utils implements Listener {
     }
 
     @EventHandler
-    public static void colorSign(SignChangeEvent event) {
+    public static void colorSign(PlayerInteractEvent event) {
+        if (event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
+        if (event.getClickedBlock() == null) return;
+        if (!(event.getClickedBlock().getState() instanceof Sign)) return;
         Player player = event.getPlayer();
+        player.sendMessage("Test");
         if (BuildMode.isInBuildMode(player)) return;
         ItemStack item = player.getActiveItem();
         if (item == null) return;
-        if (item.getData() instanceof Dye) event.setCancelled(true);
+        if (item.getData() instanceof Dye)
+            event.setCancelled(true);
     }
+
 }
