@@ -89,7 +89,7 @@ public class Strecken implements CommandExecutor {
         }
 
         p.sendMessage(Organisation.PREFIX + "Du hast " + amountOfSubstanz + " " + ChatColor.stripColor(is.getItemMeta().getDisplayName()) + "§7 zu " + amountOfSubstanz + "x " + purity.getText() + " verarbeitet.");
-        Organisation.getOrganisation(p).sendMessage(Organisation.PREFIX + p.getName() + " hat " + amountOfSubstanz + " " + ChatColor.stripColor(is.getItemMeta().getDisplayName()) + "§7 zu " + amountOfSubstanz + "x " + purity.getText() + " verarbeitet.");
+        Organisation.getOrganisation(p).sendMessage(Organisation.PREFIX + p.getName() + " hat " + amountOfSubstanz + " " + ChatColor.stripColor(is.getItemMeta().getDisplayName()) + "§7 zu " + (amountOfSubstanz * 2) + "x " + purity.getText() + " verarbeitet.");
 
         return false;
     }
