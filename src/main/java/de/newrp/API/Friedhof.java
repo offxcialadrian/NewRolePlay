@@ -107,13 +107,13 @@ public class Friedhof {
             if (Beruf.hasBeruf(p.getKiller())) {
                 if (Beruf.getBeruf(p.getKiller()) == Beruf.Berufe.POLICE) {
                     if (Fahndung.isFahnded(p)) {
-                        Activity.grantActivity(Script.getNRPID(p), Activities.WPKILL);
+                        Activity.grantActivity(Script.getNRPID(p.getKiller()), Activities.WPKILL);
                     }
                 }
             } else if (Organisation.hasOrganisation(p.getKiller())) {
                 if (Beruf.hasBeruf(p)) {
                     if (Beruf.getBeruf(p) == Beruf.Berufe.POLICE) {
-                        Activity.grantActivity(Script.getNRPID(p), Activities.COPKILL);
+                        Activity.grantActivity(Script.getNRPID(p.getKiller()), Activities.COPKILL);
                     }
                 }
             }
