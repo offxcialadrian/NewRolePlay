@@ -36,7 +36,6 @@ public class Chat implements Listener {
             "ritzen",
             "akbar",
             "vergasen",
-            "88",
             "nazi",
             "transe",
             "schwuchtel",
