@@ -186,7 +186,6 @@ public class Waffen implements Listener {
                 }
 
                 robcooldown.put(org, System.currentTimeMillis() + 10800000);
-                // 1Minify
                 p.sendMessage(PREFIX + "Der Shop ist in 360 Sekunden überfallen.");
                 Beruf.Berufe.POLICE.sendMessage(PREFIX + "ACHTUNG! ES WURDE EIN STILLER ALARM IM SHOP " + shop.getPublicName() + " AUSGELÖST!");
                 Beruf.Berufe.POLICE.sendMessage(Messages.INFO + "In der Nähe von " + Navi.getNextNaviLocation(p.getLocation()).getName());
