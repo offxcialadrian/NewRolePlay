@@ -120,7 +120,7 @@ public class MemberCommand implements CommandExecutor, TabCompleter {
                     return;
                 }
 
-                p.sendMessage(PREFIX + tg.getName() + " befindet sich in " + (Beruf.hasBeruf(tg)? Beruf.getBeruf(tg).getName() : Organisation.getOrganisation(tg).getName()) + " als " + (Beruf.hasBeruf(tg)? Beruf.getAbteilung(tg).getName() : Organisation.getRankName(tg) + " [" + Organisation.getRank(tg) + "]") + ".");
+                p.sendMessage(PREFIX + tg.getName() + " befindet sich in " + (Beruf.hasBeruf(tg)? Beruf.getBeruf(tg).getName() : Organisation.getOrganisation(tg).getName()) + " als " + (Beruf.hasBeruf(tg)? Beruf.getAbteilung(tg).getGenderedName(tg) : Organisation.getRankName(tg) + " [" + Organisation.getRank(tg) + "]") + ".");
             });
 
             return true;

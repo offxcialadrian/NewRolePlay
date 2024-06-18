@@ -81,11 +81,7 @@ public class LabBreakIn implements CommandExecutor, Listener {
         removePotion(playerInventory);
         Bukkit.getScheduler().cancelTask(schedulerID);
         if (!brewingStandLocation.equals(putLocation)) {
-            progress = 0;
-            lastPut = 0;
-            schedulerID = 0;
-            putLocation = null;
-            brokeIn = null;
+            resetProgress();
             Organisation.getOrganisation(p).sendMessage(Messages.ERROR + Script.getName(p) + " hat die Zutat in den falschen Braustand gefüllt.");
             Beruf.Berufe.POLICE.sendMessage(PREFIX + "Es wurde ein Fehler bei der Herstellung von Exiyty gemacht");
             for (Entity nearbyEntity : brewingStandLocation.getNearbyEntities(15, 7, 15)) {
@@ -110,6 +106,8 @@ public class LabBreakIn implements CommandExecutor, Listener {
         if (lastPut != 0 && timeDifference > 30 * 1000L) {
             p.sendMessage(Messages.ERROR + " Du hast zu lange gebraucht um das Exiyty herzustellen.");
             Organisation.getOrganisation(p).sendMessage(PREFIX + "§c" + Script.getName(p) + " §7hat zu lange gebraucht um das Exiyty herzustellen.");
+            // 1Minify
+            resetProgress();
             return;
         }
         removePotion(brewingStand.getInventory());
@@ -128,11 +126,7 @@ public class LabBreakIn implements CommandExecutor, Listener {
                 purity = Drogen.DrugPurity.BAD;
             }
 
-            progress = 0;
-            lastPut = 0;
-            schedulerID = 0;
-            putLocation = null;
-            brokeIn = null;
+            resetProgress();
             giveDrug(p, purity);
             return;
         }
@@ -385,12 +379,16 @@ public class LabBreakIn implements CommandExecutor, Listener {
         final Player player = event.getPlayer();
         if (player.getName().equalsIgnoreCase(brokeIn)) {
             Bukkit.getScheduler().cancelTask(schedulerID);
-            progress = 0;
-            lastPut = 0;
-            schedulerID = 0;
-            putLocation = null;
-            brokeIn = null;
+            resetProgress();
         }
+    }
+
+    private static void resetProgress() {
+        progress = 0;
+        lastPut = 0;
+        schedulerID = 0;
+        putLocation = null;
+        brokeIn = null;
     }
 
 }

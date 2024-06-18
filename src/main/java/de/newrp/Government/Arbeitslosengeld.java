@@ -59,10 +59,6 @@ public class Arbeitslosengeld implements CommandExecutor {
                     if (args[0].equalsIgnoreCase("accept")) {
                         try {
                             int id = Integer.parseInt(args[1]);
-                            if (isAccepted(p)) {
-                                p.sendMessage(PREFIX + "Du hast diesen Antrag bereits angenommen.");
-                                return true;
-                            }
 
                             if (id <= 0) {
                                 p.sendMessage(PREFIX + "Bitte gib eine gültige ID an.");
@@ -74,9 +70,14 @@ public class Arbeitslosengeld implements CommandExecutor {
                                 return true;
                             }
 
+                            OfflinePlayer offlinePlayer = getPlayerByArbeitslosengeldID(id);
+                            if (isAccepted(offlinePlayer)) {
+                                p.sendMessage(PREFIX + "Dieser Antrag wurde bereits angenommen.");
+                                return true;
+                            }
+
                             acceptApplication(id);
                             p.sendMessage(PREFIX + "Du hast den Antrag angenommen.");
-                            OfflinePlayer player = getPlayerByArbeitslosengeldID(id);
                             Beruf.Berufe.GOVERNMENT.sendMessage(PREFIX + Script.getName(p) + " hat den Antrag #" + id + " angenommen.");
                             Activity.grantActivity(Script.getNRPID(p), Activities.ARBEITSLOSENGELD);
                         } catch (Exception e) {
@@ -196,6 +197,10 @@ public class Arbeitslosengeld implements CommandExecutor {
     }
 
     public static boolean isAccepted(Player p) {
+        return Script.getInt(p, "arbeitslosengeld", "accepted") == 1;
+    }
+
+    public static boolean isAccepted(OfflinePlayer p) {
         return Script.getInt(p, "arbeitslosengeld", "accepted") == 1;
     }
 

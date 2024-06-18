@@ -1,5 +1,6 @@
 package de.newrp.Berufe;
 
+import de.newrp.API.Gender;
 import de.newrp.API.Messages;
 import de.newrp.API.Rank;
 import de.newrp.API.Script;
@@ -24,51 +25,53 @@ public class Abteilung implements CommandExecutor, TabCompleter {
     private static final String PREFIX = "§8[§eAbteilung§8] §e» ";
 
     public enum Abteilungen {
-        GOVERNMENT_NONE(0, GOVERNMENT, "Regierungsmitglied", false),
-        INNENMINISTERIUM(2, GOVERNMENT, "Innenministerium", false),
-        FINANZAMT(3, GOVERNMENT, "Finanzministerium", false),
-        JUSTIZMINISTERIUM(4, GOVERNMENT, "Justizministerium", false),
-        VIZEKANZLER(5, GOVERNMENT, "Vizekanzler", true),
-        STAATSOBERHAUPT(6, GOVERNMENT, "Bundeskanzler", true),
-        STREIFENPOLIZEI(0, POLICE, "Streifenpolizist", false),
-        ZIVILPOLIZEI(1, POLICE, "Zivilpolizei", false),
-        KRIMINALPOLIZEI(2, POLICE, "Kriminalpolizei", false),
-        SEK(3, POLICE, "SEK", false),
-        ABTEILUNGSLEITUNG(6, POLICE, "Abteilungsleiter", true),
-        POLIZEIVIZE(7, POLICE, "Polizeivizepräsident", true),
-        POLIZEIPRÄSIDENT(8, POLICE, "Polizeipräsident", true),
-        VOLONTAER(0, NEWS, "Volontäre", false),
-        JOURNALIST(1, NEWS, "Journalismus", false),
-        TV(2, NEWS, "TV-Moderation", false),
-        CHEFREDAKTION(3, NEWS, "Chefredaktion", true),
-        MEDIZINSTUDENT(0, RETTUNGSDIENST, "Medizinstudent", false),
-        ASSISTENZARZT(1, RETTUNGSDIENST, "Assistenzarzt", false),
-        ORTHOPAEDIE(2, RETTUNGSDIENST, "Orthopädie", false),
-        CHIRURGIE(3, RETTUNGSDIENST, "Chirurgie", false),
-        NOTFALLMEDIZIN(4, RETTUNGSDIENST, "Notfallmedizin", false),
-        ALLGEMEINMEDIZIN(5, RETTUNGSDIENST, "Allgemeinmedizin", false),
-        OBERARZT(6, RETTUNGSDIENST, "Oberarzt", true),
-        CHEFARZT(7, RETTUNGSDIENST, "Chefarzt", true),
-        DIREKTOR(8, RETTUNGSDIENST, "Ärztliches-Direktorium", true),
-        FEUERWEHR(9, RETTUNGSDIENST, "Feuerwehr", false),
-        Agent(0, BUNDESNACHRICHTENDIENST, "Agent", false),
-        ANALYST(1, BUNDESNACHRICHTENDIENST, "Analyst", false),
-        OPERATOR(2, BUNDESNACHRICHTENDIENST, "Operator", false),
-        HUMAN_RESOURCES(3, BUNDESNACHRICHTENDIENST, "Human Resources", true),
-        VIZEPRÄSIDENT(4, BUNDESNACHRICHTENDIENST, "Vizepräsident", true),
-        PRÄSIDENT(5, BUNDESNACHRICHTENDIENST, "Präsident", true);
+        GOVERNMENT_NONE(0, GOVERNMENT, "Regierungsmitglied", false, null),
+        INNENMINISTERIUM(2, GOVERNMENT, "Innenministerium", false, "Innenminister"),
+        FINANZAMT(3, GOVERNMENT, "Finanzministerium", false, "Finanzminister"),
+        JUSTIZMINISTERIUM(4, GOVERNMENT, "Justizministerium", false, "Justizminister"),
+        VIZEKANZLER(5, GOVERNMENT, "Vizekanzler", true, "Vizekanzler"),
+        STAATSOBERHAUPT(6, GOVERNMENT, "Bundeskanzler", true, "Bundeskanzler"),
+        STREIFENPOLIZEI(0, POLICE, "Streifenpolizist", false, "Streifenpolizist"),
+        ZIVILPOLIZEI(1, POLICE, "Zivilpolizei", false, "Zivilpolizist"),
+        KRIMINALPOLIZEI(2, POLICE, "Kriminalpolizei", false, "Kriminalpolizist"),
+        SEK(3, POLICE, "SEK", false, null),
+        ABTEILUNGSLEITUNG(6, POLICE, "Abteilungsleiter", true, "Abteilungsleiter"),
+        POLIZEIVIZE(7, POLICE, "Polizeivizepräsident", true, "Polizeivizepräsident"),
+        POLIZEIPRÄSIDENT(8, POLICE, "Polizeipräsident", true, "Polizeipräsident"),
+        VOLONTAER(0, NEWS, "Volontäre", false, null),
+        JOURNALIST(1, NEWS, "Journalismus", false, "Journalist"),
+        TV(2, NEWS, "TV-Moderation", false, "TV-Moderator"),
+        CHEFREDAKTION(3, NEWS, "Chefredaktion", true, "Chefredaktör"),
+        MEDIZINSTUDENT(0, RETTUNGSDIENST, "Medizinstudent", false, "Medizinstudent"),
+        ASSISTENZARZT(1, RETTUNGSDIENST, "Assistenzarzt", false, "Assistenzarzt"),
+        ORTHOPAEDIE(2, RETTUNGSDIENST, "Orthopädie", false, null),
+        CHIRURGIE(3, RETTUNGSDIENST, "Chirurgie", false, "Chirurg"),
+        NOTFALLMEDIZIN(4, RETTUNGSDIENST, "Notfallmedizin", false, "Notfallmediziner"),
+        ALLGEMEINMEDIZIN(5, RETTUNGSDIENST, "Allgemeinmedizin", false, "Allgemeinmediziner"),
+        OBERARZT(6, RETTUNGSDIENST, "Oberarzt", true, "Oberarzt"),
+        CHEFARZT(7, RETTUNGSDIENST, "Chefarzt", true, "Chefarzt"),
+        DIREKTOR(8, RETTUNGSDIENST, "Ärztliches-Direktorium", true, null),
+        FEUERWEHR(9, RETTUNGSDIENST, "Feuerwehr", false, null),
+        Agent(0, BUNDESNACHRICHTENDIENST, "Agent", false, "Agent"),
+        ANALYST(1, BUNDESNACHRICHTENDIENST, "Analyst", false, "Analyst"),
+        OPERATOR(2, BUNDESNACHRICHTENDIENST, "Operator", false, null),
+        HUMAN_RESOURCES(3, BUNDESNACHRICHTENDIENST, "Human Resources", true, null),
+        VIZEPRÄSIDENT(4, BUNDESNACHRICHTENDIENST, "Vizepräsident", true, "Vizepräsident"),
+        PRÄSIDENT(5, BUNDESNACHRICHTENDIENST, "Präsident", true, "Präsident");
 
 
         private final int id;
         private final Beruf.Berufe beruf;
         private final String name;
         private final boolean leader;
+        private final String g_name;
 
-        Abteilungen(int id, Beruf.Berufe beruf, String name, boolean leader) {
+        Abteilungen(int id, Beruf.Berufe beruf, String name, boolean leader, String g_name) {
             this.id = id;
             this.beruf = beruf;
             this.name = name;
             this.leader = leader;
+            this.g_name = g_name;
         }
 
         public int getID() {
@@ -81,6 +84,13 @@ public class Abteilung implements CommandExecutor, TabCompleter {
 
         public String getName() {
             return name.replace("_", " ");
+        }
+
+        public String getGenderedName(OfflinePlayer player) {
+            if (Script.getGender(player).equals(Gender.FEMALE) && g_name != null) {
+                return g_name.replace("arzt", "ärzt") + "in";
+            }
+            return name;
         }
 
         // Abteilungsleiter, nicht zu verwechseln mit Leader
@@ -199,7 +209,7 @@ public class Abteilung implements CommandExecutor, TabCompleter {
 
                 p.sendMessage(PREFIX + "Alle Abteilungen der " + b.getName() + ":");
                 for(OfflinePlayer all : b.getAllMembers()) {
-                    p.sendMessage("§8» §6" + all.getName() + "§8: §6" + Beruf.getAbteilung(all).getName());
+                    p.sendMessage("§8» §6" + all.getName() + "§8: §6" + Beruf.getAbteilung(all).getGenderedName(all));
                 }
                 return true;
             } else if(Beruf.isLeader(p, true)){
