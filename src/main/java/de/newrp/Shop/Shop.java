@@ -280,7 +280,7 @@ public class Shop implements CommandExecutor, Listener, TabCompleter {
                 p.sendMessage(PREFIX + "Dein Shop akzeptiert bereits Kartenzahlung.");
                 p.sendMessage(Messages.INFO + "Du zahlst auf jede Kartenzahlung eine Gebühr von 2% und Betriebskosten von 20€/Stunde.");
             }
-            int price = 21000;
+            int price = 7500;
             p.sendMessage(PREFIX + "Du kannst Kartenzahlung für " + price + "€ anbieten.");
             p.sendMessage(Messages.INFO + "Nutze /shop karte confirm um Kartenzahlung anzubieten.");
             return true;
