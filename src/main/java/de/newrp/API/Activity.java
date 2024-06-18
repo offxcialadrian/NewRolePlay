@@ -76,7 +76,7 @@ public class Activity {
             if (Objects.requireNonNull(Script.getOfflinePlayer(giver)).isOnline()) {
                 Objects.requireNonNull(Script.getPlayer(giver)).sendMessage(PREFIX + "§7Aktivität §3§l" + name + " §7von §3" + Objects.requireNonNull(Script.getOfflinePlayer(id)).getName() + " §7entfernt.");
                 if (Objects.requireNonNull(Script.getOfflinePlayer(id)).isOnline()) {
-                    Objects.requireNonNull(Script.getPlayer(id)).sendMessage(PREFIX + "§7Aktivität §3§l" + name + " §7durch §3" + Objects.requireNonNull(Script.getOfflinePlayer(id)).getName() + " §7entfernt.");
+                    Objects.requireNonNull(Script.getPlayer(id)).sendMessage(PREFIX + "§7Aktivität §3§l" + name + " §7durch §3" + Objects.requireNonNull(Script.getOfflinePlayer(giver)).getName() + " §7entfernt.");
                 }
             }
         }
