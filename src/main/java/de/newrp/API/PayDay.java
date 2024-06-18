@@ -59,8 +59,8 @@ public class PayDay extends BukkitRunnable {
             double lohnsteuer = Steuern.Steuer.LOHNSTEUER.getPercentage();
             double gfb_lohnsteuer = Steuern.Steuer.GFB_LOHNSTEUER.getPercentage();
             double krankenversicherung = Steuern.Steuer.KRANKENVERSICHERUNG.getPercentage();
-            if (BeziehungCommand.isMarried(p)) lohnsteuer = lohnsteuer - 5.0;
-            if (BeziehungCommand.isMarried(p)) gfb_lohnsteuer = gfb_lohnsteuer - 5.0;
+            if (BeziehungCommand.isMarried(p)) lohnsteuer = Math.max(0.0, lohnsteuer - 5.0);
+            if (BeziehungCommand.isMarried(p)) gfb_lohnsteuer = Math.max(0.0, gfb_lohnsteuer - 5.0);
             p.sendMessage("§9=== §l§ePayDay §9===");
             p.sendMessage("§8" + Messages.ARROW + " §7Kontostand: " + (Script.getMoney(p, PaymentType.BANK) >= 0 ? "§a" : "§c") + Script.getMoney(p, PaymentType.BANK) + "€");
             p.sendMessage("§8" + Messages.ARROW + " §7Kontoführungsgebühr: §c-" + Banken.getBankByPlayer(p).getKontoKosten() + "€");
