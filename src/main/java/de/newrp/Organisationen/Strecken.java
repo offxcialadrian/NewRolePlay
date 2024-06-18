@@ -84,7 +84,7 @@ public class Strecken implements CommandExecutor {
             }
         }
         purity = Drogen.DrugPurity.getPurityByID(purity.getID() + 1);
-        for(int i = 0; i < (amountOfSubstanz*1.5); i++) {
+        for(int i = 0; i < (amountOfSubstanz * 2); i++) {
             p.getInventory().addItem(new ItemBuilder(is.getType()).setName(is.getItemMeta().getDisplayName()).setLore("§7Reinheitsgrad: " + purity.getText()).build());
         }
 
