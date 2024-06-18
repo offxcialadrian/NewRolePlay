@@ -253,7 +253,7 @@ public class OrgSpray implements Listener {
     public enum FraktionSpray {
         GROVE(0),
         BRATERSTWO(1),
-        KARTELL(2),
+        TRIORLA(2),
         FALCONE(3),
         CORLEONE(4),
         POLICE(5);
@@ -314,24 +314,21 @@ public class OrgSpray implements Listener {
                 return patterns;
             } else if (this == FALCONE) {
                 List<Pattern> patterns = new ArrayList<>();
-                patterns.add(new Pattern(DyeColor.LIGHT_GRAY, PatternType.BASE));
-                patterns.add(new Pattern(DyeColor.YELLOW, PatternType.RHOMBUS_MIDDLE));
-                patterns.add(new Pattern(DyeColor.LIGHT_GRAY, PatternType.HALF_HORIZONTAL_MIRROR));
-                patterns.add(new Pattern(DyeColor.YELLOW, PatternType.CIRCLE_MIDDLE));
-                patterns.add(new Pattern(DyeColor.LIGHT_GRAY, PatternType.TRIANGLE_BOTTOM));
-                patterns.add(new Pattern(DyeColor.YELLOW, PatternType.TRIANGLE_BOTTOM));
-                patterns.add(new Pattern(DyeColor.LIGHT_GRAY, PatternType.STRIPE_BOTTOM));
-                patterns.add(new Pattern(DyeColor.GRAY, PatternType.BORDER));
-                return patterns;
-            } else if (this == KARTELL) {
-                List<Pattern> patterns = new ArrayList<>();
                 patterns.add(new Pattern(DyeColor.WHITE, PatternType.BASE));
-                patterns.add(new Pattern(DyeColor.RED, PatternType.BORDER));
+                patterns.add(new Pattern(DyeColor.BLACK, PatternType.RHOMBUS_MIDDLE));
+                patterns.add(new Pattern(DyeColor.WHITE, PatternType.HALF_HORIZONTAL_MIRROR));
+                patterns.add(new Pattern(DyeColor.BLACK, PatternType.CIRCLE_MIDDLE));
                 patterns.add(new Pattern(DyeColor.WHITE, PatternType.TRIANGLE_BOTTOM));
-                patterns.add(new Pattern(DyeColor.RED, PatternType.STRIPE_CENTER));
-                patterns.add(new Pattern(DyeColor.BLUE, PatternType.TRIANGLE_TOP));
-                patterns.add(new Pattern(DyeColor.WHITE, PatternType.TRIANGLES_TOP));
-                patterns.add(new Pattern(DyeColor.BLUE, PatternType.TRIANGLES_TOP));
+                patterns.add(new Pattern(DyeColor.BLACK, PatternType.TRIANGLE_BOTTOM));
+                patterns.add(new Pattern(DyeColor.WHITE, PatternType.STRIPE_BOTTOM));
+                patterns.add(new Pattern(DyeColor.BLACK, PatternType.BORDER));
+                return patterns;
+            } else if (this == TRIORLA) {
+                List<Pattern> patterns = new ArrayList<>();
+                patterns.add(new Pattern(DyeColor.BLUE, PatternType.BASE));
+                patterns.add(new Pattern(DyeColor.RED, PatternType.STRIPE_BOTTOM));
+                patterns.add(new Pattern(DyeColor.WHITE, PatternType.STRIPE_TOP));
+                patterns.add(new Pattern(DyeColor.BLACK, PatternType.FLOWER));
                 return patterns;
             } else if (this == BRATERSTWO) {
                 List<Pattern> patterns = new ArrayList<>();
@@ -363,7 +360,7 @@ public class OrgSpray implements Listener {
             } else if (this == CORLEONE) {
                 meta.setDisplayName("Corleone");
                 meta.setPatterns(getPattern());
-            } else if (this == KARTELL) {
+            } else if (this == TRIORLA) {
                 meta.setDisplayName("Kartell");
                 meta.setPatterns(getPattern());
             } else if (this == BRATERSTWO) {

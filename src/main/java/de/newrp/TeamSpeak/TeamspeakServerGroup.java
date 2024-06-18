@@ -17,7 +17,7 @@ public enum TeamspeakServerGroup {
     BAUTEAM(21),
     EARLYACCESSTEAM(42),
     RETTUNGSDIENST(26),
-    KARTELL(43),
+    TRIORLA(43),
     FALCONE(46),
     CORLEONE(44),
     GROVE(48),
@@ -26,7 +26,7 @@ public enum TeamspeakServerGroup {
     ENTWICKLUNG(50),
     DEV(53),
     CEO(54),
-    BND(55);
+    BKA(55);
 
     private final int groupID;
 

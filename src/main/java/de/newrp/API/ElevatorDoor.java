@@ -1165,7 +1165,7 @@ public class ElevatorDoor implements Listener {
                         new Location(Script.WORLD, 726, 108, 908),
                 }, Elevator.ElevatorAPI.HRVAEKI_RECHTS, 5),
 
-        BND_ETAGE_0(21, new Location(Script.WORLD, 822, 58, 1027), //AEKI GUI HAUS Rechts v. AEKI
+        BKA_ETAGE_0(21, new Location(Script.WORLD, 822, 58, 1027), //AEKI GUI HAUS Rechts v. AEKI
                 new Location[]{
                         new Location(Script.WORLD, 819, 58, 1023)}, // Tür öffen
                 new Location[]{
@@ -1181,9 +1181,9 @@ public class ElevatorDoor implements Listener {
                         new Location(Script.WORLD, 822, 59, 1024),
                         new Location(Script.WORLD, 821, 59, 1024),
                         new Location(Script.WORLD, 820, 59, 1024),
-                }, Elevator.ElevatorAPI.BND, 0),
+                }, Elevator.ElevatorAPI.BKA, 0),
 
-        BND_ETAGE_1(21, new Location(Script.WORLD, 822, 65, 1027), //AEKI GUI HAUS Rechts v. AEKI
+        BKA_ETAGE_1(21, new Location(Script.WORLD, 822, 65, 1027), //AEKI GUI HAUS Rechts v. AEKI
                 new Location[]{
                         new Location(Script.WORLD, 819, 65, 1023)}, // Tür öffen
                 new Location[]{
@@ -1199,9 +1199,9 @@ public class ElevatorDoor implements Listener {
                         new Location(Script.WORLD, 822, 66, 1024),
                         new Location(Script.WORLD, 821, 66, 1024),
                         new Location(Script.WORLD, 820, 66, 1024),
-                }, Elevator.ElevatorAPI.BND, 1),
+                }, Elevator.ElevatorAPI.BKA, 1),
 
-        BND_ETAGE_2(21, new Location(Script.WORLD, 822, 72, 1027), //AEKI GUI HAUS Rechts v. AEKI
+        BKA_ETAGE_2(21, new Location(Script.WORLD, 822, 72, 1027), //AEKI GUI HAUS Rechts v. AEKI
                 new Location[]{
                         new Location(Script.WORLD, 819, 72, 1023)}, // Tür öffen
                 new Location[]{
@@ -1217,9 +1217,9 @@ public class ElevatorDoor implements Listener {
                         new Location(Script.WORLD, 822, 73, 1024),
                         new Location(Script.WORLD, 821, 73, 1024),
                         new Location(Script.WORLD, 820, 73, 1024),
-                }, Elevator.ElevatorAPI.BND, 2),
+                }, Elevator.ElevatorAPI.BKA, 2),
 
-        BND_ETAGE_3(21, new Location(Script.WORLD, 822, 81, 1027), //AEKI GUI HAUS Rechts v. AEKI
+        BKA_ETAGE_3(21, new Location(Script.WORLD, 822, 81, 1027), //AEKI GUI HAUS Rechts v. AEKI
                 new Location[]{
                         new Location(Script.WORLD, 819, 81, 1023)}, // Tür öffen
                 new Location[]{
@@ -1235,9 +1235,9 @@ public class ElevatorDoor implements Listener {
                         new Location(Script.WORLD, 822, 82, 1024),
                         new Location(Script.WORLD, 821, 82, 1024),
                         new Location(Script.WORLD, 820, 82, 1024),
-                }, Elevator.ElevatorAPI.BND, 3),
+                }, Elevator.ElevatorAPI.BKA, 3),
 
-        BND_ETAGE_4(21, new Location(Script.WORLD, 822, 89, 1027), //AEKI GUI HAUS Rechts v. AEKI
+        BKA_ETAGE_4(21, new Location(Script.WORLD, 822, 89, 1027), //AEKI GUI HAUS Rechts v. AEKI
                 new Location[]{
                         new Location(Script.WORLD, 819, 89, 1023)}, // Tür öffen
                 new Location[]{
@@ -1253,7 +1253,7 @@ public class ElevatorDoor implements Listener {
                         new Location(Script.WORLD, 822, 90, 1024),
                         new Location(Script.WORLD, 821, 90, 1024),
                         new Location(Script.WORLD, 820, 90, 1024),
-                }, Elevator.ElevatorAPI.BND, 4);
+                }, Elevator.ElevatorAPI.BKA, 4);
 
 
 

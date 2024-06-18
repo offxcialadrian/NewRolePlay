@@ -89,17 +89,17 @@ public class Arrest implements CommandExecutor {
         String message;
         if (hour > 0) {
             Beruf.Berufe.POLICE.sendMessage(Fahndung.PREFIX + Script.getName(tg) + " wurde von " + Script.getName(p) + " eingesperrt. Fahndungszeit: " + hour + " Stunden.");
-            if(Fahndung.getWanteds(tg) >= 80) Beruf.Berufe.BUNDESNACHRICHTENDIENST.sendMessage(Fahndung.PREFIX + Script.getName(tg) + " wurde von " + Script.getName(p) + " eingesperrt. Fahndungszeit: " + hour + " Stunden.");
+            if(Fahndung.getWanteds(tg) >= 80) Beruf.Berufe.BUNDESKRIMINALAMT.sendMessage(Fahndung.PREFIX + Script.getName(tg) + " wurde von " + Script.getName(p) + " eingesperrt. Fahndungszeit: " + hour + " Stunden.");
             for (int i : Fahndung.getStraftatIDs(tg)) {
                 Beruf.Berufe.POLICE.sendMessage(Fahndung.PREFIX + "Fahndungsgrund: " + Straftat.getReason(i) + " | WantedPunkte: " + Straftat.getWanteds(i));
-                if(Fahndung.getWanteds(tg) >= 80) Beruf.Berufe.BUNDESNACHRICHTENDIENST.sendMessage(Fahndung.PREFIX + "Fahndungsgrund: " + Straftat.getReason(i) + " | WantedPunkte: " + Straftat.getWanteds(i));
+                if(Fahndung.getWanteds(tg) >= 80) Beruf.Berufe.BUNDESKRIMINALAMT.sendMessage(Fahndung.PREFIX + "Fahndungsgrund: " + Straftat.getReason(i) + " | WantedPunkte: " + Straftat.getWanteds(i));
             }
         } else {
             Beruf.Berufe.POLICE.sendMessage(Fahndung.PREFIX + Script.getName(tg) + " wurde von " + Script.getName(p) + " eingesperrt. Fahndungszeit: " + minute + " Minuten.");
-            if(Fahndung.getWanteds(tg) >= 80) Beruf.Berufe.BUNDESNACHRICHTENDIENST.sendMessage(Fahndung.PREFIX + Script.getName(tg) + " wurde von " + Script.getName(p) + " eingesperrt. Fahndungszeit: " + minute + " Minuten.");
+            if(Fahndung.getWanteds(tg) >= 80) Beruf.Berufe.BUNDESKRIMINALAMT.sendMessage(Fahndung.PREFIX + Script.getName(tg) + " wurde von " + Script.getName(p) + " eingesperrt. Fahndungszeit: " + minute + " Minuten.");
             for (int i : Fahndung.getStraftatIDs(tg)) {
                 Beruf.Berufe.POLICE.sendMessage(Fahndung.PREFIX + "Fahndungsgrund: " + Straftat.getReason(i) + " | WantedPunkte: " + Straftat.getWanteds(i));
-                if(Fahndung.getWanteds(tg) >= 80) Beruf.Berufe.BUNDESNACHRICHTENDIENST.sendMessage(Fahndung.PREFIX + "Fahndungsgrund: " + Straftat.getReason(i) + " | WantedPunkte: " + Straftat.getWanteds(i));
+                if(Fahndung.getWanteds(tg) >= 80) Beruf.Berufe.BUNDESKRIMINALAMT.sendMessage(Fahndung.PREFIX + "Fahndungsgrund: " + Straftat.getReason(i) + " | WantedPunkte: " + Straftat.getWanteds(i));
             }
         }
 

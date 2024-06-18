@@ -1,12 +1,8 @@
 package de.newrp.Entertainment;
 
-import com.comphenix.protocol.PacketType;
-import de.newrp.API.Messages;
-import de.newrp.API.PaymentType;
-import de.newrp.API.Script;
+import de.newrp.API.*;
 import de.newrp.NewRoleplayMain;
 import de.newrp.Organisationen.Organisation;
-import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -29,7 +25,7 @@ import java.util.UUID;
 
 import static de.newrp.Entertainment.Cards.ACE;
 
-public class BlackJack implements CommandExecutor, Listener {
+public class Kartenspiel implements CommandExecutor, Listener {
 
     private static final HashMap<String, Integer> bet = new HashMap<>();
     private static final HashMap<String, Integer> cashier = new HashMap<>();
@@ -38,7 +34,7 @@ public class BlackJack implements CommandExecutor, Listener {
     private static final ArrayList<String> game = new ArrayList<>();
     private static final HashMap<String, Integer> win = new HashMap<>();
     private static Integer all = 0;
-    private static final String PREFIX = "§8[§6BlackJack§8] §6" + Messages.ARROW + " §7";
+    private static final String PREFIX = "§8[§6Kartenspiel§8] §6" + Messages.ARROW + " §7";
 
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
@@ -98,19 +94,20 @@ public class BlackJack implements CommandExecutor, Listener {
                                 member.put(p.getName(), "Croupier");
                             } else {
                                 member.put(p.getName(), m.getName());
+                                Activity.grantActivity(Script.getNRPID(m), Activities.CASINO);
                             }
                             openGUI(p);
                         } else
                             p.sendMessage(Messages.ERROR + "Du hast nicht genug Geld für diesen Einsatz.");
                     } catch (NumberFormatException ex) {
-                        p.sendMessage(Messages.ERROR + "/blackjack [Einsatz]");
+                        p.sendMessage(Messages.ERROR + "/kartenspiel [Einsatz]");
                     }
                 } else
-                    p.sendMessage(Messages.ERROR + "/blackjack [Einsatz]");
+                    p.sendMessage(Messages.ERROR + "/kartenspiel [Einsatz]");
             } else
                 openGUI(p);
         } else
-            p.sendMessage(Messages.ERROR + "Du bist nicht am Blackjack-Tisch!");
+            p.sendMessage(Messages.ERROR + "Du bist nicht am Kartenspiel-Tisch!");
         return false;
     }
 
@@ -119,7 +116,7 @@ public class BlackJack implements CommandExecutor, Listener {
         Player p = (Player) e.getWhoClicked();
         if (e.getCurrentItem() == null) return;
         if (!e.getCurrentItem().hasItemMeta()) return;
-        if (e.getView().getTitle().equalsIgnoreCase("§6Casino §8» §7BlackJack")) {
+        if (e.getView().getTitle().equalsIgnoreCase("§6Casino §8» §7Kartenspiel")) {
             e.setCancelled(true);
             if (e.getCurrentItem().getItemMeta().getDisplayName().equals("§aHit")) {
                 p.closeInventory();
@@ -248,7 +245,7 @@ public class BlackJack implements CommandExecutor, Listener {
     }
 
     private static void openGUI(Player p) {
-        Inventory inv = Bukkit.createInventory(null, 9 * 4, "§6Casino §8» §7BlackJack");
+        Inventory inv = Bukkit.createInventory(null, 9 * 4, "§6Casino §8» §7Kartenspiel");
         ItemStack bankIS = new ItemStack(Material.PAPER);
         ItemMeta bankMETA = bankIS.getItemMeta();
         bankMETA.setDisplayName("§6" + member.get(p.getName()));
@@ -294,7 +291,7 @@ public class BlackJack implements CommandExecutor, Listener {
         all += (int) Math.round(bet.get(p.getName()) * 0.75);
         Casino.removeMoney((int) Math.round(bet.get(p.getName()) * 0.75));
         for (UUID id : Organisation.FALCONE.getMember()) if (Bukkit.getOfflinePlayer(id).isOnline()) if (Organisation.getRank(Bukkit.getPlayer(id)) >= 3)
-            Bukkit.getPlayer(id).sendMessage(Casino.PREFIX + p.getName() + " hat beim BlackJack" + (member.get(p.getName()).equals("Croupier") ? "" : " mit " + member.get(p.getName())) + " §c" + bet.get(p.getName()) + "€ §7gewonnen.");
+            Bukkit.getPlayer(id).sendMessage(Casino.PREFIX + p.getName() + " hat beim Kartenspiel" + (member.get(p.getName()).equals("Croupier") ? "" : " mit " + member.get(p.getName())) + " §c" + bet.get(p.getName()) + "€ §7gewonnen.");
         bet.remove(p.getName());
         player.remove(p.getName());
         cashier.remove(p.getName());
@@ -309,7 +306,7 @@ public class BlackJack implements CommandExecutor, Listener {
         if (Script.getPlayer(member.get(p.getName())) != null)
             Script.getPlayer(member.get(p.getName())).sendMessage(PREFIX + "§6" + p.getName() + " §7hat gegen dich unentschieden. §8(§6" + player.get(p.getName()) + "§8:§6" + cashier.get(p.getName()) + "§8)");
         for (UUID id : Organisation.FALCONE.getMember()) if (Bukkit.getOfflinePlayer(id).isOnline()) if (Organisation.getRank(Bukkit.getPlayer(id)) >= 3)
-            Bukkit.getPlayer(id).sendMessage(Casino.PREFIX + p.getName() + " hat beim BlackJack" + (member.get(p.getName()).equals("Croupier") ? "" : " mit " + member.get(p.getName())) + " 0€ gewonnen.");
+            Bukkit.getPlayer(id).sendMessage(Casino.PREFIX + p.getName() + " hat beim Kartenspiel" + (member.get(p.getName()).equals("Croupier") ? "" : " mit " + member.get(p.getName())) + " 0€ gewonnen.");
         bet.remove(p.getName());
         player.remove(p.getName());
         cashier.remove(p.getName());
@@ -329,7 +326,7 @@ public class BlackJack implements CommandExecutor, Listener {
         all -= bet.get(p.getName());
         Casino.addMoney(bet.get(p.getName()));
         for (UUID id : Organisation.FALCONE.getMember()) if (Bukkit.getOfflinePlayer(id).isOnline()) if (Organisation.getRank(Bukkit.getPlayer(id)) >= 3)
-            Bukkit.getPlayer(id).sendMessage(Casino.PREFIX + p.getName() + " hat beim BlackJack" + (member.get(p.getName()).equals("Croupier") ? "" : " mit " + member.get(p.getName())) + " §a" + bet.get(p.getName()) + "€ §7verloren.");
+            Bukkit.getPlayer(id).sendMessage(Casino.PREFIX + p.getName() + " hat beim Kartenspiel" + (member.get(p.getName()).equals("Croupier") ? "" : " mit " + member.get(p.getName())) + " §a" + bet.get(p.getName()) + "€ §7verloren.");
         if (!member.get(p.getName()).equals("Croupier")) Organisation.FALCONE.addExp(Script.getRandom(4, 8));
         bet.remove(p.getName());
         player.remove(p.getName());

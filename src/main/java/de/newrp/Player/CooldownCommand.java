@@ -2,6 +2,8 @@ package de.newrp.Player;
 
 import de.newrp.API.Messages;
 import de.newrp.Organisationen.*;
+import de.newrp.dependencies.DependencyContainer;
+import de.newrp.features.bizwar.IBizWarService;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -65,6 +67,12 @@ public class CooldownCommand implements CommandExecutor {
                         cd = true;
                         player.sendMessage(PREFIX + "Polizeicomputer: §5" + TimeUnit.MILLISECONDS.toMinutes(HackPoliceComputer.lastTime + HackPoliceComputer.TIMEOUT - System.currentTimeMillis()) + "min");
                     }
+                }
+
+                final IBizWarService bizWarService = DependencyContainer.getContainer().getDependency(IBizWarService.class);
+                if(bizWarService.getActiveCooldownOnOrganisation(orga) > System.currentTimeMillis()) {
+                    cd = true;
+                    player.sendMessage(PREFIX + "BizWar: §5" + TimeUnit.MILLISECONDS.toMinutes(bizWarService.getActiveCooldownOnOrganisation(orga) - System.currentTimeMillis()) + "min");
                 }
 
                 if (!cd) player.sendMessage(PREFIX + "Es gibt aktuell keine Cooldowns!");

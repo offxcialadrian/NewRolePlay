@@ -29,7 +29,7 @@ public class Beruf {
         NEWS(2, "News", new Location(Script.WORLD, 302, 67, 777, -24.381052f, 8.922394f), true, true, true, 95, TeamspeakServerGroup.NEWS, new ForumGroup[]{ForumGroup.NEWS, ForumGroup.NEWS_LEADER}, CarType.NMW, new Location(Script.WORLD, 283, 68, 741, -90, 0), 21, new Location(Script.WORLD, 289, 67, 788)),
         POLICE(3, "Polizei", new Location(Script.WORLD, 420, 71, 819, 185.04346f, 15.860464f),false, true, true, 70, TeamspeakServerGroup.POLICE, new ForumGroup[]{ForumGroup.POLICE, ForumGroup.POLICE_LEADER}, CarType.AWDI, new Location(Script.WORLD, 431, 68, 859, 0, 0), 11, new Location(Script.WORLD, 405, 71, 824)),
         RETTUNGSDIENST(4, "Rettungsdienst", new Location(Script.WORLD, 263, 75, 1254, 189.6543f, 26.346867f),false, true,true, 83, TeamspeakServerGroup.RETTUNGSDIENST, new ForumGroup[]{ForumGroup.RETTUNGSDIENST, ForumGroup.RETTUNGSDIENST_LEADER}, CarType.VOLTSWAGEN, new Location(Script.WORLD, 353, 75, 1253, 90, 0), 25, new Location(Script.WORLD, 267, 75, 1253)),
-        BUNDESNACHRICHTENDIENST(5, "BND", new Location(Script.WORLD, 0, 0, 0),false, true, true, 646, TeamspeakServerGroup.BND, new ForumGroup[]{ForumGroup.POLICE, ForumGroup.POLICE_LEADER}, CarType.MERCADAS, new Location(Script.WORLD, 0, 0, 0, 0, 0), 0, new Location(Script.WORLD, 844.5, 56, 1006.4, -192.3f, 79f));
+        BUNDESKRIMINALAMT(5, "BKA", new Location(Script.WORLD, 0, 0, 0),false, true, true, 646, TeamspeakServerGroup.BKA, new ForumGroup[]{ForumGroup.BKA_MEMBER, ForumGroup.BKA_LEADER}, CarType.MERCADAS, new Location(Script.WORLD, 0, 0, 0, 0, 0), 0, new Location(Script.WORLD, 844.5, 56, 1006.4, -192.3f, 79f));
 
         int id;
         private final String name;

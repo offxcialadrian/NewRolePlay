@@ -44,7 +44,7 @@ public class StartBizWarCommand implements CommandExecutor {
         }*/ // Deactivate with Hitman features
         final int playerRankInOrganisation = Organisation.getRank(player);
 
-        if(playerRankInOrganisation <= 2) {
+        if(playerRankInOrganisation < 2) {
             player.sendMessage(Messages.NO_PERMISSION);
             return false;
         }
@@ -53,7 +53,7 @@ public class StartBizWarCommand implements CommandExecutor {
         final long timeTillNextAttackOnOrganisation = organisationCooldown - System.currentTimeMillis();
 
         if(timeTillNextAttackOnOrganisation > 0) {
-            player.sendMessage(Messages.ERROR + "§cDeine Organisation kann erst in §c§l" + new SimpleDateFormat("HH 'Stunden und' mm 'Minuten'").format(timeTillNextAttackOnOrganisation) + " §cerneut angreifen!");
+            player.sendMessage(Messages.ERROR + "§cDeine Organisation kann erst in " + TimeUnit.MILLISECONDS.toMinutes(timeTillNextAttackOnOrganisation)  + "min §cerneut angreifen!");
             return false;
         }
 
@@ -93,6 +93,11 @@ public class StartBizWarCommand implements CommandExecutor {
 
         if(activeOwner == organisation) {
             player.sendMessage(Messages.ERROR + "§cDu kannst einen Shop unter eurer Kontrolle nicht erneut angreifen!");
+            return false;
+        }
+
+        if(bizWarService.getBizWarOfOrganisation(activeOwner) != null) {
+            player.sendMessage(Messages.ERROR + "§cDie Organisation §e" + activeOwner.getName() + " §cist bereits in einem Biz War!");
             return false;
         }
 

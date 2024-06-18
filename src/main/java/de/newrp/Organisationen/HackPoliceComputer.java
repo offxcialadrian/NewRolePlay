@@ -3,25 +3,21 @@ package de.newrp.Organisationen;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 import de.newrp.API.Debug;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
-import de.newrp.Administrator.SDuty;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Berufe.Duty;
 import de.newrp.Player.AFK;
 import de.newrp.Police.Fahndung;
 import de.newrp.NewRoleplayMain;
-import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
-import org.bukkit.block.BrewingStand;
 import org.bukkit.block.data.type.Door;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -39,7 +35,7 @@ import org.bukkit.scheduler.BukkitTask;
 
 public class HackPoliceComputer implements CommandExecutor, Listener {
     public static final String prefix = "§8[§9Polizeicomputer§8] §9" + Messages.ARROW + " §7";
-    public static final Location LOCATION = new Location(Script.WORLD, 448, 32, 855, -88.80542f, 24.899044f);
+    public static final Location LOCATION = new Location(Script.WORLD, 450.5, 47.1, 828.5, 89.8f, 90f);
     public static final long TIMEOUT = TimeUnit.HOURS.toMillis(3);
     private static final Location doorOne = new Location(Script.WORLD, 412, 67, 818);
     private static final Location doorTwo = new Location(Script.WORLD, 411, 67, 818);
@@ -84,7 +80,7 @@ public class HackPoliceComputer implements CommandExecutor, Listener {
 
         List<Player> cops = new ArrayList<>();
         cops.addAll(Beruf.Berufe.POLICE.getMembers());
-        cops.addAll(Beruf.Berufe.BUNDESNACHRICHTENDIENST.getMembers());
+        cops.addAll(Beruf.Berufe.BUNDESKRIMINALAMT.getMembers());
         cops.removeIf(player -> !Duty.isInDuty(player));
         cops.removeIf(AFK::isAFK);
 
@@ -121,6 +117,7 @@ public class HackPoliceComputer implements CommandExecutor, Listener {
         p.sendMessage(prefix + "Du hast einen Hackversuch gestartet. Geschätzte Dauer: " + lengthInSeconds + " Sekunden.");
         p.sendMessage(Messages.INFO + "Bewege dich nicht mehr als 10 Meter vom Computer weg.");
         Beruf.Berufe.POLICE.sendMessage(prefix + "Der Polizeicomputer wird gehackt! Überprüfe die Personen in der Nähe.");
+        Beruf.Berufe.BUNDESKRIMINALAMT.sendMessage(prefix + "Der Polizeicomputer wird gehackt! Überprüfe die Personen in der Nähe.");
         hacker = p;
 
         BukkitTask task = new BukkitRunnable() {
@@ -134,6 +131,7 @@ public class HackPoliceComputer implements CommandExecutor, Listener {
                     if (player.getLocation().distance(LOCATION) > 20) continue;
 
                     Beruf.Berufe.POLICE.sendMessage(prefix + "Der Polizeicomputer hat die Fahndung von " + Script.getName(player) + " gelöscht.");
+                    Beruf.Berufe.BUNDESKRIMINALAMT.sendMessage(prefix + "Der Polizeicomputer hat die Fahndung von " + Script.getName(player) + " gelöscht.");
                     Organisation.getOrganisation(player).sendMessage(prefix + "Der Polizeicomputer hat die Fahndung von " + Script.getName(player) + " gelöscht.");
                     Fahndung.removeFahndung(player);
                     player.sendMessage(prefix + "Der Polizeicomputer hat deine Akten gelöscht.");
@@ -256,6 +254,7 @@ public class HackPoliceComputer implements CommandExecutor, Listener {
 
     public static void toggleDoorState(Block block, boolean open, boolean playSound) {
         BlockState state = block.getState();
+        if (!(state.getBlockData() instanceof Door)) return;
         Door door = (Door) state.getBlockData();
         door.setOpen(open);
         state.setBlockData(door);

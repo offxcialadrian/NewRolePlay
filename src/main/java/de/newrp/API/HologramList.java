@@ -17,7 +17,7 @@ public enum HologramList {
     DUTY_MEDIC_2(11, "§8/§6duty",new Location(Script.WORLD, 286, 74, 1239)),
     EQUIP_MEDIC(12, "§8/§6equip",new Location(Script.WORLD, 267,74,1253)),
     EQUIP_NEWS(13, "§8/§6equip",new Location(Script.WORLD, 289, 66, 788)),
-    BLACKJACK(14, "§8/§6blackjack",new Location(Script.WORLD, 790.5, 108, 858.5)),
+    KARTENSPIEL(14, "§8/§6kartenspiel",new Location(Script.WORLD, 790.5, 108, 858.5)),
     ARBEITSLOSENGELD(15, "§8/§6arbeitslosengeld",new Location(Script.WORLD, 552, 69, 966)),
     SELFSTORAGE(16, "§8/§6selfstorage",new Location(Script.WORLD, 1012, 67, 1202)),
     BUY_ELEKTRO(17, "§8/§6buy", new Location(Script.WORLD, 865, 73, 964)),
@@ -78,7 +78,7 @@ public enum HologramList {
     DBANK_GROVE(76, "§8/§6dbank", new Location(Script.WORLD, 752, 53, 1266, 193.52417f, 13.093105f)),
     DBANK_HITMAN(77, "§8/§6dbank", new Location(Script.WORLD, 724, 55, 890)),
     DBANK_FALCONE(78, "§8/§6dbank", new Location(Script.WORLD, 761, 118, 847, 258.50473f, 17.865908f)),
-    HACKPOLICE(79, "§8/§6hackpolicecomputer", new Location(Script.WORLD, 448, 31, 855, -88.80542f, 24.899044f)),
+    HACKPOLICE(79, "§8/§6hackpolicecomputer", new Location(Script.WORLD, 450.5, 46, 828.5, 89.8f, 90f)),
     DOENERMANN(80, "§8/§6dönermann", new Location(Script.WORLD, 445, 64, 664, -59.75107f, 7.6497645f)),
     DBANK_KARTELL2(81, "§8/§6dbank", new Location(Script.WORLD, 653, 69, 1122, 100.18604f, 22.990175f)),
     //BLUMEN_GANG(82, "§8/§6buy", new Location(Script.WORLD, 513, 62, 1318, -2.5583496f, 20.098667f)),
@@ -93,7 +93,7 @@ public enum HologramList {
     EQUIP_CORLEONE(91, "§8/§6equip", new Location(Script.WORLD, 203, 103, 481)),
     EQUIP_KARTELL(92, "§8/§6equip", new Location(Script.WORLD, 238, 68, 1132)),
     EQUIP_HITMAN(93, "§8/§6equip", new Location(Script.WORLD, 717.5, 54, 879.5)),
-    EQUIP_SINALOA(94, "§8/§6equip", new Location(Script.WORLD, 669, 69, 1124)),
+    // EQUIP_SINALOA(94, "§8/§6equip", new Location(Script.WORLD, 669, 69, 1124)),
     BUY_BAR(95, "§8/§6buy", new Location(Script.WORLD, 704.5, 68, 859.5, 0.0f, 0.0f)),
     BUY_CLUB(96, "§8/§6buy", new Location(Script.WORLD, 477.5, 66, 1285.5, 0.0f, 0.0f)),
     BUY_MERCH(97, "§8/§6buy", new Location(Script.WORLD, 66.5, 75, 694.5, 0.0f, 0.0f)),
@@ -102,8 +102,8 @@ public enum HologramList {
     DART_CLUB(99, "§8/§6dart", new Location(Script.WORLD, 482.5, 66, 1284.5, 0.0f, 0.0f)),
     SHISHA(100, "§8/§6buy", new Location(Script.WORLD, 708.4, 64, 1214.6, -190.6f, 80.4f)),
     PETSHOP(101, "§8/§6buy", new Location(Script.WORLD, 593.6, 68, 1116, 0.8f, 90f)),
-    EQUIP_BND(102, "§8/§6equip", new Location(Script.WORLD, 844.6, 55, 1006.3, -188.5f, 82f)),
-    DUTY_BND(103, "§8/§6duty", new Location(Script.WORLD, 816.5, 54, 1015.6, -275.7f, 37.5f));
+    EQUIP_BKA(102, "§8/§6equip", new Location(Script.WORLD, 844.6, 55, 1006.3, -188.5f, 82f)),
+    DUTY_BKA(103, "§8/§6duty", new Location(Script.WORLD, 816.5, 54, 1015.6, -275.7f, 37.5f));
 
     private final int id;
     private final String name;

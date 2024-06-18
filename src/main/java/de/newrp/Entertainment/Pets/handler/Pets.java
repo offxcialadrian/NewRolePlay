@@ -395,7 +395,7 @@ public class Pets implements Listener, CommandExecutor, TabCompleter {
                     }
                     if (!Premium.hasPremium(player)) {
                         if (args[0].contains("&")) {
-                            player.sendMessage(Messages.ERROR + "Der Name ist nicht verfügbar.");
+                            player.sendMessage(Messages.ERROR + "Der Name ist nur mit Premium verfügbar.");
                             return true;
                         }
                     } else {
@@ -424,7 +424,8 @@ public class Pets implements Listener, CommandExecutor, TabCompleter {
                         shop.addKasse(1000);
                         Stadtkasse.addStadtkasse(1000, "Tier-Namensänderung", null);
                         if (shop.getOwner() > 0)
-                            Script.sendActionBar(Objects.requireNonNull(Script.getPlayer(shop.getOwner())), Shop.PREFIX + "Dein Shop §6" + shop.getPublicName() + " §7hat §61000€ §7Gewinn gemacht aus dem Verkauf von §6Namensänderung §7(§62000€§7)");
+                            if (Script.getOfflinePlayer(shop.getOwner()).isOnline())
+                                Script.sendActionBar(Objects.requireNonNull(Script.getPlayer(shop.getOwner())), Shop.PREFIX + "Dein Shop §6" + shop.getPublicName() + " §7hat §61000€ §7Gewinn gemacht aus dem Verkauf von §6Namensänderung §7(§62000€§7)");
                     } else {
                         player.sendMessage(Messages.ERROR + "Du benötigst 2000€ um dein Haustier umzubenennen.");
                     }

@@ -326,7 +326,7 @@ public class PayShop implements Listener {
                 case PET_CAT:
                 case PET_FOX:
                 case PET_PARROT:
-                    PetType petType = PetType.getType(si.getName());
+                    PetType petType = PetType.getType(si.getName().replace("§a", ""));
                     if (petType == null) return;
                     if (Pets.amount.get(p.getUniqueId()) >= SlotLimit.PET.get(Script.getNRPID(p))) {
                         p.sendMessage(Component.text(Messages.ERROR + "Du hast keine Haustier-Slots übrig."));

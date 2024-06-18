@@ -76,8 +76,8 @@ public class BizWarService implements IBizWarService {
 
         this.activeBizWarInformations.add(bizWarInformation);
         bizWarInformation.startBizWarScheduler(this);
-        this.addOrgaCooldown(organisation, TimeUnit.HOURS.toMillis(2));
-        this.addShopCooldown(shop, TimeUnit.HOURS.toMillis(24));
+        this.addOrgaCooldown(organisation, TimeUnit.HOURS.toMillis(1));
+        this.addShopCooldown(shop, TimeUnit.HOURS.toMillis(1));
 
         for (final UUID defenderPlayerUUID : defenderOrganisation.getMember()) {
             final Player defenderPlayer = Bukkit.getPlayer(defenderPlayerUUID);
@@ -132,6 +132,7 @@ public class BizWarService implements IBizWarService {
         for (UUID joinedMembersOfDefender : activeBizWarInformation.getJoinedMembersOfDefenders()) {
             final Player player = Bukkit.getPlayer(joinedMembersOfDefender);
             if(player == null) continue;
+            Script.updateListname(player);
 
             Cache.loadInventory(player);
         }
@@ -139,6 +140,7 @@ public class BizWarService implements IBizWarService {
         for (UUID joinedMembersOfAttacker : activeBizWarInformation.getJoinedMembersOfAttackers()) {
             final Player player = Bukkit.getPlayer(joinedMembersOfAttacker);
             if(player == null) continue;
+            Script.updateListname(player);
 
             Cache.loadInventory(player);
         }
@@ -188,6 +190,10 @@ public class BizWarService implements IBizWarService {
             bizWarInformation.getDefenderOrganisation().sendMessage(this.getPrefix() + "a" + player.getName() + " §7ist euch beigetreten (§e" + bizWarInformation.getJoinedMembersOfAttackers().size() + "§7)!");
             bizWarInformation.getAttackerOrganisation().sendMessage(this.getPrefix() + "§c" + player.getName() + " §7ist den Verteidigern beigetreten (§e" + bizWarInformation.getJoinedMembersOfAttackers().size() + "§7)!");
         }
+
+        Activity.grantActivity(Script.getNRPID(player), Activities.BIZWAR);
+
+        Script.updateListname(player);
 
         Cache.saveInventory(player);
         this.equipPlayerForBizWar(player);

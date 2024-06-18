@@ -37,7 +37,7 @@ public enum Navi {
     TELLERWÄSCHER("Tellerwäscher", new Location(Script.WORLD, 579, 67, 744, -77.8775f, 5.445472f)),
     TRANSPORT("Transport", new Location(Script.WORLD, 932, 66, 1083, 178.20059f, 4.050012f)),
     IMKEREI("Imkerei", new Location(Script.WORLD, 216, 66, 773, 201.95145f, 0.35791647f)),
-    ELEKTROLADEN("Elektroladen", new Location(Script.WORLD, 864, 74, 963, -41.849865f, 19.049988f)),
+    ELEKTROLADEN("Jupiter", new Location(Script.WORLD, 865.4, 74.1, 962.6, 53.2f, 90f)),
     X3("X3", new Location(Script.WORLD, 693, 71, 992, -269.9325f, 1.3498036f)),
     APOTHEKE_KH("Apotheke am Krankenhaus", new Location(Script.WORLD, 342, 78, 1078, -89.94908f, 2.8520296f)),
     APOTHEKE_X3("Apotheke am AEKI", new Location(Script.WORLD, 662, 68, 860, -180.32812f, 4.0531044f)),
@@ -47,7 +47,7 @@ public enum Navi {
     MUSIKLADEN_HAFEN("Musikladen (Hafen)", new Location(Script.WORLD, 329, 77, 997, 148.47311f, 16.413198f)),
     WAFFENLADEN_GANG("Waffenladen (Gang)", new Location(Script.WORLD, 534, 65, 1314, -269.9749f, 90.0f)),
     GEMUESELADEN("Gemüseladen", new Location(Script.WORLD, 842, 74, 918, -356.24542f, 9.236951f)),
-    HANKYS_GANG("Hankys (Gang)", new Location(Script.WORLD, 557, 64, 1270, -0.9939575f, 90.0f)),
+    HANKYS_GANG("Hankys", new Location(Script.WORLD, 557, 64, 1270, -0.9939575f, 90.0f)),
     FAHRZEUGHAENDLER("Fahrzeughändler", new Location(Script.WORLD, 411, 77, 1081, -180.1416f, 90.0f)),
     BLUMENLADEN_STRAND("Blumenladen (Strand)", new Location(Script.WORLD, 517, 66, 774, -1.5904541f, 90.0f)),
     HANKYS("Hankys", new Location(Script.WORLD, 557, 64, 1270, -359.05908f, 12.675349f)),
@@ -58,12 +58,12 @@ public enum Navi {
     HITMEN("The-Rebels-Mercs", new Location(Script.WORLD, 714, 71, 897, -181.29352f, 49.499653f)),
     CORLEONE("Corleone-Familie", new Location(Script.WORLD, 125, 105, 487, 270.77173f, -1.7501303f)),
     FALCONE("Falcone-Famiglia", new Location(Script.WORLD, 792, 119, 842, -359.60718f, 2.5677238f)),
-    KARTELL("Puertoricanisches Kartell", new Location(Script.WORLD, 198, 66, 1120, -90.13266f, 0.2703893f)),
+    // KARTELL("Puertoricanisches Kartell", new Location(Script.WORLD, 198, 66, 1120, -90.13266f, 0.2703893f)),
     JVA("Justizvollzugsanstalt", new Location(Script.WORLD, 999, 63, 573, -90.138885f, 2.3394775f)),
     BLUMENHANDLUNG("Blumenhandlung", new Location(Script.WORLD, 316, 76, 932, -181.94073f, 90.0f)),
     HOTEL("Hotel", new Location(Script.WORLD, 246, 66, 971, -89.51709f, 1.3498956f)),
     DOENERBUDE("Dönerbude", new Location(Script.WORLD, 445, 64, 664)),
-    SINALOA("Sinaloa-Kartell", new Location(Script.WORLD, 667, 70, 1094, 78.44797f, 42.449993f)),
+    TRIORLA("Tri-Orla", new Location(Script.WORLD, 667, 70, 1094, 78.44797f, 42.449993f)),
     BLUMENLADEN_GANG("Blumenladen (Gang)", new Location(Script.WORLD, 513, 63, 1317, -355.5548f, 16.964155f)),
     SHISHABAR("Shishabar", new Location(Script.WORLD, 709, 65, 1218, 0.0f, 0.0f)),
     TABAKPLANTAGE("Tabakplantage", new Location(Script.WORLD, 94, 66, 628, 29.992523f, 7.2927737f)),
@@ -82,7 +82,9 @@ public enum Navi {
     KNAST("Gefängnis", new Location(Script.WORLD, 1018, 68, 549, 180.84424f, -9.02183f)),
     PARK("Park", new Location(Script.WORLD, 527.3, 68.9, 1121.4, -357.9f, 8.6f)),
     PET("Tierheim", new Location(Script.WORLD, 593.5, 69, 1114.5, 16.8f, 90f)),
-    BND("BND", new Location(Script.WORLD, 822, 71, 1005, 16.8f, 90f));
+    BKA("BKA", new Location(Script.WORLD, 822, 71, 1005, 16.8f, 90f)),
+    KIRCHE("Kirche", new Location(Script.WORLD, 242.4, 78.1, 660.5, 90.4f, 90f)),
+    SUPERMARKT_GANG("Supermarkt (Gang)", new Location(Script.WORLD, 616.4, 65, 1272.5, 84.5f, 87.4f));
 
 
     private final String name;

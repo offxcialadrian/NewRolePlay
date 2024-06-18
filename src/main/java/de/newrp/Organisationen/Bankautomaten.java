@@ -65,12 +65,12 @@ public class Bankautomaten implements Listener {
                 .filter((nearbyPlayer) -> !SDuty.isSDuty(nearbyPlayer))
                 .filter(nearbyPlayer -> !AFK.isAFK(nearbyPlayer)).collect(Collectors.toList());
 
-        List<UUID> bnd = Beruf.Berufe.BUNDESNACHRICHTENDIENST.getMember().stream()
+        List<UUID> bka = Beruf.Berufe.BUNDESKRIMINALAMT.getMember().stream()
                 .filter(Duty::isInDuty)
                 .filter((nearbyPlayer) -> !SDuty.isSDuty(nearbyPlayer))
                 .filter(nearbyPlayer -> !AFK.isAFK(nearbyPlayer)).collect(Collectors.toList());
 
-        if (cops.size() + bnd.size() < 3 && !Script.isInTestMode()) {
+        if (cops.size() + bka.size() < 3 && !Script.isInTestMode()) {
             p.sendMessage(Messages.ERROR + "Es braucht mindestens 3 Beamte um einen Bankautomaten zu zerstören.");
             return;
         }

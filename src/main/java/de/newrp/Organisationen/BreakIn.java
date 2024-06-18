@@ -71,10 +71,12 @@ public class BreakIn implements Listener {
 
         House house = House.getNearHouse(p.getLocation(), 3);
         if (house == null) {
-            if (Objects.requireNonNull(e.getClickedBlock()).getType() == Material.OAK_DOOR) {
-                Script.sendActionBar(p, PREFIX + "Du kannst hier nicht einbrechen.");
+            if (e.getClickedBlock() != null) {
+                if (Objects.requireNonNull(e.getClickedBlock()).getType() == Material.OAK_DOOR) {
+                    Script.sendActionBar(p, PREFIX + "Du kannst hier nicht einbrechen.");
+                }
+                return;
             }
-            return;
         }
 
         if (house.hasAddon(HouseAddon.ALARM)) {

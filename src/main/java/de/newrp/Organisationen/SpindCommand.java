@@ -27,10 +27,13 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.HashMap;
 
 public class SpindCommand implements CommandExecutor, Listener {
 
     public static final String PREFIX = "§8[§eSpind§8] §e» §7";
+
+    private static HashMap<Integer, Boolean> opened = new HashMap<>();
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
@@ -52,8 +55,13 @@ public class SpindCommand implements CommandExecutor, Listener {
                     player.sendMessage(Messages.ERROR + "Du musst dich in der Nähe des Equip-Punktes befinden.");
                     return true;
                 }
-                Beruf.getBeruf(player).sendLeaderMessage(PREFIX + player.getName() + " greift auf den Spind zu.");
                 id = Beruf.getBeruf(player).getID();
+                opened.putIfAbsent(id, false);
+                if (opened.get(id)) {
+                    player.sendMessage(Messages.ERROR + "Es greift bereits jemand auf den Spind zu.");
+                    return true;
+                }
+                Beruf.getBeruf(player).sendLeaderMessage(PREFIX + player.getName() + " greift auf den Spind zu.");
             }
             if (Organisation.hasOrganisation(player)) {
                 if (Organisation.getRank(player) < 4 && !Organisation.isLeader(player, true)) {
@@ -69,6 +77,11 @@ public class SpindCommand implements CommandExecutor, Listener {
                     return true;
                 }
                 id = -Organisation.getOrganisation(player).getID();
+                opened.putIfAbsent(id, false);
+                if (opened.get(id)) {
+                    player.sendMessage(Messages.ERROR + "Es greift bereits jemand auf den Spind zu.");
+                    return true;
+                }
                 Organisation.getOrganisation(player).sendLeaderMessage(PREFIX + player.getName() + " greift auf den Spind zu.");
             }
 
@@ -85,6 +98,7 @@ public class SpindCommand implements CommandExecutor, Listener {
             }
 
             player.openInventory(inv);
+            opened.put(id, true);
         }
 
         return true;
@@ -138,6 +152,7 @@ public class SpindCommand implements CommandExecutor, Listener {
                 }
 
                 setInv(id, event.getView().getTopInventory());
+                opened.put(id, false);
             }
         }
     }

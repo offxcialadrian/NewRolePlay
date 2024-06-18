@@ -138,7 +138,7 @@ public class Reinforcement implements CommandExecutor {
                 if (reinf_type.get(tg.getName()).isDChat()) {
 
                     for (Beruf.Berufe berufe : Beruf.Berufe.values()) {
-                        if (berufe != Beruf.Berufe.RETTUNGSDIENST && berufe != Beruf.Berufe.POLICE && berufe != Beruf.Berufe.GOVERNMENT && berufe != Beruf.Berufe.BUNDESNACHRICHTENDIENST)
+                        if (berufe != Beruf.Berufe.RETTUNGSDIENST && berufe != Beruf.Berufe.POLICE && berufe != Beruf.Berufe.GOVERNMENT && berufe != Beruf.Berufe.BUNDESKRIMINALAMT)
                             continue;
                         berufe.sendMessage("§7➲ §a" + Beruf.getBeruf(p).getName() + " " + Script.getName(p) + " kommt zum Verstärkungsruf von " + Script.getName(tg) + "! §7" + "(ETA: " + calcETA(p.getLocation().distance(new_reinforcement.get(tg.getName()))) + " Sekunden & " + (int) p.getLocation().distance(new_reinforcement.get(tg.getName())) + "m)");
                     }
@@ -200,7 +200,7 @@ public class Reinforcement implements CommandExecutor {
         }
 
         if (type.isDChat()) {
-            if (beruf != Beruf.Berufe.RETTUNGSDIENST && beruf != Beruf.Berufe.POLICE && beruf != Beruf.Berufe.GOVERNMENT && beruf != Beruf.Berufe.BUNDESNACHRICHTENDIENST) {
+            if (beruf != Beruf.Berufe.RETTUNGSDIENST && beruf != Beruf.Berufe.POLICE && beruf != Beruf.Berufe.GOVERNMENT && beruf != Beruf.Berufe.BUNDESKRIMINALAMT) {
                 p.sendMessage(Messages.ERROR + "Du bist nicht im Rettungsdienst, Polizei oder Regierung.");
                 return true;
             }
@@ -209,7 +209,7 @@ public class Reinforcement implements CommandExecutor {
             for (UUID uuid : Objects.requireNonNull(Beruf.Berufe.RETTUNGSDIENST.getMember())) staatler.add(Bukkit.getPlayer(uuid));
             for (UUID uuid : Objects.requireNonNull(Beruf.Berufe.POLICE.getMember())) staatler.add(Bukkit.getPlayer(uuid));
             for (UUID uuid : Objects.requireNonNull(Beruf.Berufe.GOVERNMENT.getMember())) staatler.add(Bukkit.getPlayer(uuid));
-            for (UUID uuid : Objects.requireNonNull(Beruf.Berufe.BUNDESNACHRICHTENDIENST.getMember())) staatler.add(Bukkit.getPlayer(uuid));
+            for (UUID uuid : Objects.requireNonNull(Beruf.Berufe.BUNDESKRIMINALAMT.getMember())) staatler.add(Bukkit.getPlayer(uuid));
             for (Player member : staatler) {
                 member.sendMessage("§c§l" + type.getName() + " §a" + Beruf.getBeruf(p).getName() + " " + Script.getName(p) + " benötigt Unterstützung! §8➥ §7" + Navi.getNextNaviLocation(p.getLocation()).getName() + " §7(" + (int) member.getLocation().distance(p.getLocation()) + "m)");
                 OnMyWayLink(member, p);

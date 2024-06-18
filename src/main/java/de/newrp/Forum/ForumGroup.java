@@ -19,8 +19,8 @@ public enum ForumGroup {
     NEWS(16, "News"),
     NEWS_LEADER(17, "News Leader"),
     VERIFIED(18, "Verifiziert"),
-    KARTELL(24, "Kartell"),
-    KARTELL_LEADER(19, "Kartell Leader"),
+    TRIORLA(24, "Tri Orla"),
+    TRIORLA_LEADER(19, "Tri Orla Leader"),
     FALCONE(25, "Falcone"),
     FALCONE_LEADER(22, "Falcone Leader"),
     CORLEONE(27, "Corleone"),
@@ -30,7 +30,9 @@ public enum ForumGroup {
     GROVE(26, "Groves Street"),
     GROVE_LEADER(23, "Groves Street Leader"),
     SINOLA_MEMBER(29, "Sinola-Kartell Member"),
-    SINOLA_LEADER(30, "Sinola-Kartell Leader");
+    SINOLA_LEADER(30, "Sinola-Kartell Leader"),
+    BKA_MEMBER(39, "BKA Member"),
+    BKA_LEADER(38, "BKA Leader");
 
     private final int id;
     private final String name;

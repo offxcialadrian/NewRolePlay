@@ -8,7 +8,6 @@ import org.bukkit.scoreboard.Team.Option;
 import org.bukkit.scoreboard.Team.OptionStatus;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -50,7 +49,7 @@ public class ScoreboardManager {
         POLICE("cpolice", null, null),
         MEDIC("dmedic", null, null),
         NEWS("enews", null, null),
-        BND("fbnd", null, null),
+        BKA("fbka", null, null),
         PLAYER("player", null, null);
 
 

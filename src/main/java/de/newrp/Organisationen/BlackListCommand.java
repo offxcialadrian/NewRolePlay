@@ -7,6 +7,7 @@ import de.newrp.API.Script;
 import de.newrp.Administrator.SDuty;
 import de.newrp.Player.AFK;
 import de.newrp.dependencies.DependencyContainer;
+import de.newrp.features.bizwar.IBizWarService;
 import de.newrp.features.deathmatcharena.IDeathmatchArenaService;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -55,24 +56,24 @@ public class BlackListCommand implements CommandExecutor, Listener, TabCompleter
     }
 
     public enum Reasons {
-        GANGZONE("Gangzones", 500, 50, new Organisation[] {Organisation.CORLEONE, Organisation.KARTELL}),
-        ORGASCHÄDIGUNG("Organisationsschädigung", 800, 60, new Organisation[] {Organisation.CORLEONE, Organisation.KARTELL}),
+        GANGZONE("Gangzones", 500, 50, new Organisation[] {Organisation.CORLEONE, Organisation.TRIORLA}),
+        ORGASCHÄDIGUNG("Organisationsschädigung", 800, 60, new Organisation[] {Organisation.CORLEONE, Organisation.TRIORLA}),
         BLUTRACHE("Blutrache", 300, 25, new Organisation[] {Organisation.CORLEONE}),
-        VOGELFREI("Vogelfrei", 1, 0, new Organisation[] {Organisation.CORLEONE, Organisation.KARTELL, Organisation.FALCONE, Organisation.SINALOA}),
-        LEICHENBEWACHUNG("Leichenbewachung", 600, 20, new Organisation[] {Organisation.CORLEONE, Organisation.KARTELL}),
-        LEADERMORD_KARTELL("Leadermord", 1000, 50, new Organisation[] {Organisation.CORLEONE, Organisation.KARTELL}),
-        PROVOKATION_KARTELL("Provokation", 250, 10, new Organisation[] {Organisation.KARTELL}),
+        VOGELFREI("Vogelfrei", 1, 0, new Organisation[] {Organisation.CORLEONE, Organisation.TRIORLA, Organisation.FALCONE}),
+        LEICHENBEWACHUNG("Leichenbewachung", 600, 20, new Organisation[] {Organisation.CORLEONE, Organisation.TRIORLA}),
+        LEADERMORD_KARTELL("Leadermord", 1000, 50, new Organisation[] {Organisation.CORLEONE, Organisation.TRIORLA}),
+        PROVOKATION_KARTELL("Provokation", 250, 10, new Organisation[] {Organisation.TRIORLA}),
         Vendetta_FALCONE("Vendetta", 1000, 50, new Organisation[] {Organisation.FALCONE}),
         Tradimento_FALCONE("Tradimento", 1000, 50, new Organisation[] {Organisation.FALCONE}),
         Diffamazione_FALCONE("Diffamazione", 350, 20, new Organisation[] {Organisation.FALCONE}),
         Invasione_FALCONE("Invasione", 750, 30, new Organisation[] {Organisation.FALCONE}),
         Vergogna_FALCONE("Vergogna", 1, 1, new Organisation[] {Organisation.FALCONE}),
-        Inganno_FALCONE("Inganno", 250, 20, new Organisation[] {Organisation.FALCONE}),
-        ADM("Asesinato de Miembros", 200, 3, new Organisation[] {Organisation.SINALOA}),
-        FDR("Falta de Respeto", 300, 1, new Organisation[] {Organisation.SINALOA}),
-        FDRG("Falta de Respeto Grave", 500, 5, new Organisation[] {Organisation.SINALOA}),
-        TRAICION("Traición", 800, 15, new Organisation[] {Organisation.SINALOA}),
-        ESPIONAJE("Espionaje", 1000, 15, new Organisation[] {Organisation.SINALOA});
+        Inganno_FALCONE("Inganno", 250, 20, new Organisation[] {Organisation.FALCONE});
+        /// ADM("Asesinato de Miembros", 200, 3, new Organisation[] {Organisation.SINALOA}),
+        // FDR("Falta de Respeto", 300, 1, new Organisation[] {Organisation.SINALOA}),
+        // FDRG("Falta de Respeto Grave", 500, 5, new Organisation[] {Organisation.SINALOA}),
+        // TRAICION("Traición", 800, 15, new Organisation[] {Organisation.SINALOA}),
+        // ESPIONAJE("Espionaje", 1000, 15, new Organisation[] {Organisation.SINALOA});
 
         private final String name;
         private final int price;
@@ -370,6 +371,7 @@ public class BlackListCommand implements CommandExecutor, Listener, TabCompleter
         Organisation orga = Organisation.getOrganisation(killer);
         if (!Blacklist.isOnBlacklist(killed, orga)) return;
         if (DependencyContainer.getContainer().getDependency(IDeathmatchArenaService.class).isInDeathmatch(killed, false)) return;
+        if(DependencyContainer.getContainer().getDependency(IBizWarService.class).isMemberOfBizWar(killed)) return;
 
         Blacklist bl = Blacklist.getBlacklistObject(Script.getNRPID(killed), orga);
         int kills = bl.getKills();

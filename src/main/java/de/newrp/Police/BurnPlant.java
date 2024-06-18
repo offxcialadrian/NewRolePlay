@@ -24,7 +24,7 @@ public class BurnPlant implements CommandExecutor {
             return true;
         }
 
-        if (!Beruf.getBeruf(p).equals(Beruf.Berufe.POLICE) && !Beruf.getBeruf(p).equals(Beruf.Berufe.BUNDESNACHRICHTENDIENST)) {
+        if (!Beruf.getBeruf(p).equals(Beruf.Berufe.POLICE) && !Beruf.getBeruf(p).equals(Beruf.Berufe.BUNDESKRIMINALAMT)) {
             p.sendMessage(Messages.ERROR + "Du bist kein Polizist.");
             return true;
         }
@@ -46,7 +46,7 @@ public class BurnPlant implements CommandExecutor {
                 .filter(ent -> ent instanceof Player)
                 .map(ent -> (Player) ent)
                 .filter(Beruf::hasBeruf)
-                .filter(nearbyPlayer -> Beruf.getBeruf(nearbyPlayer).equals(Beruf.Berufe.POLICE) || Beruf.getBeruf(nearbyPlayer).equals(Beruf.Berufe.BUNDESNACHRICHTENDIENST))
+                .filter(nearbyPlayer -> Beruf.getBeruf(nearbyPlayer).equals(Beruf.Berufe.POLICE) || Beruf.getBeruf(nearbyPlayer).equals(Beruf.Berufe.BUNDESKRIMINALAMT))
                 .filter(Duty::isInDuty)
                 .filter(nearbyPlayer -> !AFK.isAFK(nearbyPlayer)).collect(Collectors.toList());
 

@@ -42,6 +42,8 @@ public interface IScoreboardService {
 
     String getDeadTeamName();
 
+    String getBizWarName();
+
     Team getTeamNameForCurrentState(final Player player);
 
 }

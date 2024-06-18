@@ -115,7 +115,7 @@ public class Dealer implements Listener {
             }
             if (isUndercover()) {
                 int finalPrice = price;
-                Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> Beruf.Berufe.BUNDESNACHRICHTENDIENST.sendMessage(PREFIX + "Der Undercover-Dealer meldet einen Verkauf von " + amount + "g " + drug.getName() + " von " + player.getName() + " für " + finalPrice + "€."), 10 * 20L);
+                Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> Beruf.Berufe.BUNDESKRIMINALAMT.sendMessage(PREFIX + "Der Undercover-Dealer meldet einen Verkauf von " + amount + "g " + drug.getName() + " von " + player.getName() + " für " + finalPrice + "€."), 10 * 20L);
             }
             player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
         }

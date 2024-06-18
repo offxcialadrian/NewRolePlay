@@ -4,7 +4,6 @@ import com.github.theholywaffle.teamspeak3.api.wrapper.Client;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import de.newrp.Administrator.AntiCheatSystem;
-import de.newrp.Administrator.BuildMode;
 import de.newrp.Administrator.SDuty;
 import de.newrp.Berufe.*;
 import de.newrp.Forum.Forum;
@@ -15,7 +14,6 @@ import de.newrp.Player.AFK;
 import de.newrp.Player.Mobile;
 import de.newrp.Police.Fahndung;
 import de.newrp.TeamSpeak.TeamSpeak;
-import de.newrp.Ticket.TicketCommand;
 import de.newrp.Votifier.VoteListener;
 import de.newrp.Waffen.Weapon;
 import de.newrp.NewRoleplayMain;
@@ -65,7 +63,6 @@ import java.time.Period;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
-import java.util.regex.Matcher;
 
 import static de.newrp.API.Rank.*;
 
@@ -498,7 +495,7 @@ public class Script {
         if (rank == MODERATOR) return "MOD × " + player.getName();
         if (rank == FRAKTIONSMANAGER) return "FM × " + player.getName();
         if (rank == ADMINISTRATOR) return "ADMIN × " + player.getName();
-        if (rank == OWNER) return "ADMIN × " + player.getName();
+        if (rank == OWNER) return "CEO × " + player.getName();
         return player.getName();
     }
 
@@ -510,7 +507,7 @@ public class Script {
             if (getRank(p) == MODERATOR) return "MOD × " + p.getName();
             if (getRank(p) == FRAKTIONSMANAGER) return "FM × " + p.getName();
             if (getRank(p) == ADMINISTRATOR) return "ADMIN × " + p.getName();
-            if (getRank(p) == OWNER) return "ADMIN × " + p.getName();
+            if (getRank(p) == OWNER) return "CEO × " + p.getName();
         }
         return p.getName();
     }
@@ -588,9 +585,15 @@ public class Script {
             for (UUID cops : Beruf.Berufe.POLICE.getMember()) {
                 Script.setSubtitle(Objects.requireNonNull(Bukkit.getPlayer(cops)), p.getUniqueId(), "§cFahndung: " + Fahndung.getWanteds(p) + " Wanted(s)");
             }
+            for(UUID medics : Beruf.Berufe.BUNDESKRIMINALAMT.getMember()) {
+                Script.setSubtitle(Objects.requireNonNull(Bukkit.getPlayer(medics)), p.getUniqueId(), "§cFahndung: " + Fahndung.getWanteds(p) + " Wanted(s)");
+            }
         } else {
             for (UUID cops : Beruf.Berufe.POLICE.getMember()) {
                 Script.setSubtitle(Objects.requireNonNull(Bukkit.getPlayer(cops)), p.getUniqueId(), null);
+            }
+            for(UUID medics : Beruf.Berufe.BUNDESKRIMINALAMT.getMember()) {
+                Script.setSubtitle(Objects.requireNonNull(Bukkit.getPlayer(medics)), p.getUniqueId(), null);
             }
         }
     }
@@ -967,6 +970,18 @@ public class Script {
     public static void executeUpdate(String sql) {
         try (Statement stmt = NewRoleplayMain.getConnection().createStatement()) {
             stmt.executeUpdate(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            Debug.debug("SQLException -> " + sql);
+            System.out.println("SQLException -> " + sql);
+        }
+    }
+
+    public static void executeUpdate(String... sql) {
+        try (Statement stmt = NewRoleplayMain.getConnection().createStatement()) {
+            for (String s : sql) {
+                stmt.executeUpdate(s);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
             Debug.debug("SQLException -> " + sql);

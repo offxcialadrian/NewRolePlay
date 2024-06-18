@@ -51,7 +51,7 @@ public class TakeDrugs implements CommandExecutor {
         p.sendMessage(Messages.INFO + "Du hast " + tg.getName() + " die Drogen abgenommen.");
         tg.sendMessage(Messages.INFO + "Polizist " + p.getName() + " hat dir die Drogen abgenommen");
         Beruf.Berufe.POLICE.sendMessage("§9Beamter " + Script.getName(p) + " hat " + Script.getName(tg) + " die Drogen abgenommen");
-        Beruf.Berufe.BUNDESNACHRICHTENDIENST.sendMessage("§9Beamter " + Script.getName(p) + " hat " + Script.getName(tg) + " die Drogen abgenommen");
+        Beruf.Berufe.BUNDESKRIMINALAMT.sendMessage("§9Beamter " + Script.getName(p) + " hat " + Script.getName(tg) + " die Drogen abgenommen");
         return true;
 
     }

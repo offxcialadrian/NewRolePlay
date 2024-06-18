@@ -30,7 +30,7 @@ public enum Activities {
     ROB("Raub", 0.2F, Arrays.asList(0)),
     EINBRUCH("Einbruch", 0.3F, Arrays.asList(0, 3)),
     PFANDNAHME("Pfandnahme", 2.0F, Arrays.asList(0, 3, 4)),
-    PLANTAGE("Plantage", 0.2F, Arrays.asList(0, 3)),
+    PLANTAGE("Plantage", 0.1F, Arrays.asList(0, 3)),
     DROGEN("Drogen", 0.01F, Arrays.asList(0)),
     GELD("Geld", 0.05F, Arrays.asList(0, 1, 2, 3, 4)),
     BANKRAUB("Bankraub", 1.8F, Arrays.asList(0, 3)),
@@ -52,7 +52,9 @@ public enum Activities {
     CONTRACT("Auftrag", 0.3F, Arrays.asList(-3)),
     CT_KILL("Kopfgeld", 0.6F, Arrays.asList(-3)),
     NOTRUF("Notruf", 0.4F, Arrays.asList(3, 4)),
-    IMPFUNG("Impfung", 0.4F, Arrays.asList(4));
+    IMPFUNG("Impfung", 0.4F, Arrays.asList(4)),
+    BIZWAR("BizWar", 0.3F, Arrays.asList(0)),
+    CASINO("Casino", 0.02F, Arrays.asList(-1));
 
     // 0 = Alle Organisationen
     // Negative ID = Orga-ID

@@ -4,15 +4,14 @@ import de.newrp.API.Debug;
 import de.newrp.API.Friedhof;
 import de.newrp.API.Rank;
 import de.newrp.API.Script;
-import de.newrp.Administrator.BuildMode;
 import de.newrp.Administrator.SDuty;
 import de.newrp.Berufe.Abteilung;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Berufe.Duty;
 import de.newrp.Organisationen.MaskHandler;
 import de.newrp.Player.AFK;
-import de.newrp.Ticket.TicketCommand;
 import de.newrp.dependencies.DependencyContainer;
+import de.newrp.features.bizwar.IBizWarService;
 import de.newrp.features.scoreboards.BoardConfiguration;
 import de.newrp.features.scoreboards.IScoreboardService;
 import de.newrp.features.scoreboards.config.ScoreboardConfig;
@@ -31,7 +30,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 
 public class ScoreboardService implements IScoreboardService {
 
@@ -190,6 +188,11 @@ public class ScoreboardService implements IScoreboardService {
     }
 
     @Override
+    public String getBizWarName() {
+        return "1000bizwar";
+    }
+
+    @Override
     public Team getTeamNameForCurrentState(Player player) {
         final Beruf.Berufe faction = Beruf.getBeruf(player);
         final Abteilung.Abteilungen abteilungen = Beruf.getAbteilung(player);
@@ -199,7 +202,7 @@ public class ScoreboardService implements IScoreboardService {
         if (faction == Beruf.Berufe.RETTUNGSDIENST) factionTeamName = "0009medic";
         if (faction == Beruf.Berufe.GOVERNMENT) factionTeamName = "0006government";
         if (faction == Beruf.Berufe.NEWS) factionTeamName = "0010news";
-        if (faction == Beruf.Berufe.BUNDESNACHRICHTENDIENST) factionTeamName = "0007bnd";
+        if (faction == Beruf.Berufe.BUNDESKRIMINALAMT) factionTeamName = "0007bka";
         if (abteilungen == Abteilung.Abteilungen.ZIVILPOLIZEI) factionTeamName = "1000default";
 
 
@@ -207,10 +210,18 @@ public class ScoreboardService implements IScoreboardService {
         if (SDuty.isSDuty(player)) {
             final Rank rank = Script.getRank(player);
             finalTeamName = rank.getScoreboardName();
+
+            if(AFK.isAFK(player)) {
+                finalTeamName = getAFKTeamName();
+            }
         } else {
             if(Friedhof.isDead(player)) {
                 finalTeamName = getDeadTeamName();
             } else {
+                if(DependencyContainer.getContainer().getDependency(IBizWarService.class).isMemberOfBizWar(player)) {
+                    finalTeamName = getBizWarName();
+                }
+
                 if(Duty.isInDuty(player)) {
                     finalTeamName = factionTeamName;
                 }
