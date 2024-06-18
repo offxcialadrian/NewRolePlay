@@ -942,8 +942,8 @@ public class Utils implements Listener {
     public static void colorSign(PlayerInteractEvent event) {
         if (event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
         if (event.getClickedBlock() == null) return;
-        Player player = event.getPlayer();
         if (!(event.getClickedBlock().getState() instanceof org.bukkit.block.Sign)) return;
+        Player player = event.getPlayer();
         if (BuildMode.isInBuildMode(player)) return;
         ItemStack item = player.getActiveItem();
         if (item == null) return;
