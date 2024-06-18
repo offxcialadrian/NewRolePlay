@@ -947,6 +947,7 @@ public class Utils implements Listener {
         if (BuildMode.isInBuildMode(player)) return;
         ItemStack item = player.getActiveItem();
         if (item == null) return;
+        player.sendMessage(String.valueOf(item.getData()));
         if (item.getData() instanceof Dye)
             event.setCancelled(true);
     }

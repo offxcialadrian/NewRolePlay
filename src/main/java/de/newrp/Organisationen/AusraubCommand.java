@@ -36,10 +36,13 @@ public class AusraubCommand implements CommandExecutor {
                 return true;
             }
 
+            /*
             if (player.getName().equals(target.getName())) {
                 player.sendMessage(Messages.ERROR + "Du kannst dich nicht selbst ausgeraubt haben.");
                 return true;
             }
+
+             */
 
             if (!Organisation.hasOrganisation(target)) {
                 player.sendMessage(Messages.ERROR + "Der Spieler ist in keiner Organisation.");

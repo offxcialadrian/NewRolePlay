@@ -453,7 +453,7 @@ public class Annehmen implements CommandExecutor {
             Achievement.HAUS.grant(p);
             Achievement.HOUSE_RENT.grant(p);
         } else if (offer.containsKey(p.getName() + ".rob")) {
-            Player target = Bukkit.getPlayer(offer.get(p.getName()));
+            Player target = Bukkit.getPlayer(offer.get(p.getName() + ".rob"));
             if (target != null) {
                 AusraubCommand.robs.put(target.getUniqueId(), System.currentTimeMillis());
                 target.sendMessage(AusraubCommand.PREFIX + "Der Ausraub wurde erfolgreich eingetragen.");
