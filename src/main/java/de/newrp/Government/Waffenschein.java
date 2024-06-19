@@ -7,6 +7,8 @@ import de.newrp.API.Script;
 import de.newrp.Berufe.Abteilung;
 import de.newrp.Berufe.Beruf;
 import de.newrp.NewRoleplayMain;
+import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -222,12 +224,16 @@ public class Waffenschein implements CommandExecutor {
         try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM waffenschein WHERE id='" + id + "'")) {
             if (rs.next()) {
-                Script.executeAsyncUpdate("DELETE from waffenschein WHERE id='" + id + "'");
-                Player p = Script.getPlayer(rs.getInt("nrp_id"));
-                if (p != null) {
-                    p.sendMessage(PREFIX + "Dein Antrag auf einen Waffenschein wurde abgelehnt.");
-                } else {
-                    Script.addOfflineMessage(rs.getInt("nrp_id"), PREFIX + "Dein Antrag auf einen Waffenschein wurde abgelehnt.");
+                Script.executeAsyncUpdate("DELETE from waffenschein WHERE id=" + id);
+                if (rs.next()) {
+                    OfflinePlayer p = Script.getOfflinePlayer(rs.getInt("nrp_id"));
+                    if (p != null) {
+                        if (p.isOnline()) {
+                            p.getPlayer().sendMessage(PREFIX + "Dein Antrag auf einen Waffenschein wurde abgelehnt.");
+                        } else {
+                            Script.addOfflineMessage(rs.getInt("nrp_id"), PREFIX + "Dein Antrag auf einen Waffenschein wurde abgelehnt.");
+                        }
+                    }
                 }
             }
         } catch (Exception e) {
@@ -238,7 +244,7 @@ public class Waffenschein implements CommandExecutor {
     public static OfflinePlayer getPlayerByWaffenscheinID(int id) {
         try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM waffenschein WHERE id=" + id)) {
-            return Script.getOfflinePlayer(rs.getInt("nrp_id"));
+            if (rs.next()) return Script.getOfflinePlayer(rs.getInt("nrp_id"));
         } catch (Exception e) {
             e.printStackTrace();
         }
