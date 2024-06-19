@@ -311,12 +311,11 @@ public class PayDay extends BukkitRunnable {
 
             if (RecruitedCommand.isRecruited(Script.getNRPID(p))) {
                 int r = RecruitedCommand.getRecruiter(Script.getNRPID(p));
-                if (Script.getPlayer(r) != null) {
-                    if (Objects.requireNonNull(Script.getPlayer(r)).isOnline()) {
-                        int x = Script.getRandom(10, 30);
-                        Script.addEXP(r, x);
+                if (Script.getOfflinePlayer(r) != null) {
+                    int x = Script.getRandom(10, 30);
+                    Script.addEXP(r, x);
+                    if (Objects.requireNonNull(Script.getOfflinePlayer(r)).isOnline())
                         Script.sendActionBar(Objects.requireNonNull(Script.getPlayer(r)), RecruitedCommand.PREFIX + "§a+" + x + " Exp §7für " + p.getName());
-                    }
                 }
             }
 
