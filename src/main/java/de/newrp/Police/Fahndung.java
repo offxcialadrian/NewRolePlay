@@ -117,6 +117,8 @@ public class Fahndung implements CommandExecutor, TabCompleter {
         }
 
 
+        // Test
+        /*
         if(tg == p) {
             p.sendMessage(Messages.ERROR + "Du kannst dich nicht selbst fahnden.");
             return true;
@@ -136,6 +138,7 @@ public class Fahndung implements CommandExecutor, TabCompleter {
             p.sendMessage(Messages.ERROR + "Du kannst keine Regierungsmitglieder fahnden.");
             return true;
         }
+         */
 
         ArrayList<Straftat> straftaten = new ArrayList<>();
         StringBuilder sb = new StringBuilder();

@@ -12,6 +12,7 @@ import org.bukkit.inventory.ItemStack;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
@@ -48,6 +49,10 @@ public class Jail {
         return false;
     }
 
+    public static boolean isInBuilding(Player p) {
+        return p.getLocation().distance(new Location(Script.WORLD, 1031, 60, 553)) < 70;
+    }
+
     public static int getJailtimeDatabase(Player p) {
         try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT time FROM jail WHERE nrp_id=" + Script.getNRPID(p))) {
@@ -70,7 +75,7 @@ public class Jail {
             Bukkit.getScheduler().cancelTask(taskID);
 
             taskID = Bukkit.getScheduler().scheduleSyncDelayedTask(NewRoleplayMain.getInstance(), () -> {
-                if (p.isOnline()) if (isInJail(p)) unarrest(p);
+                if (p.isOnline()) if (isInBuilding(p)) unarrest(p);
             }, (left - seconds) * 20L);
             j.setTaskID(taskID);
             j.setDuration(j.getDuration() - seconds);
@@ -86,7 +91,7 @@ public class Jail {
             JAIL.remove(p.getName());
         }
         final int taskID = Bukkit.getScheduler().scheduleSyncDelayedTask(NewRoleplayMain.getInstance(), () -> {
-            if (p.isOnline()) if (isInJail(p)) unarrest(p);
+            if (p.isOnline()) if (isInBuilding(p)) unarrest(p);
         }, time * 20L);
         Jail j = new Jail(Script.getNRPID(p), p.getName(), System.currentTimeMillis(), time);
         j.setTaskID(taskID);
