@@ -60,7 +60,7 @@ public class Waffenschein implements CommandExecutor {
                 if (args[0].equalsIgnoreCase("accept")) {
                     try {
                         int id = Integer.parseInt(args[1]);
-                        OfflinePlayer tg =  getPlayerByWaffenscheinID(id);
+                        OfflinePlayer tg = getPlayerByWaffenscheinID(id);
 
                         if (id <= 0) {
                             p.sendMessage(PREFIX + "Bitte gib eine gültige ID an.");
@@ -235,10 +235,10 @@ public class Waffenschein implements CommandExecutor {
         }
     }
 
-    public static Player getPlayerByWaffenscheinID(int id) {
+    public static OfflinePlayer getPlayerByWaffenscheinID(int id) {
         try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM waffenschein WHERE id=" + id)) {
-            return Script.getPlayer(rs.getInt("nrp_id"));
+            return Script.getOfflinePlayer(rs.getInt("nrp_id"));
         } catch (Exception e) {
             e.printStackTrace();
         }
