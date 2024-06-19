@@ -50,7 +50,12 @@ public class Strecken implements CommandExecutor {
             if(is == null) continue;
             if(is.getItemMeta() == null) continue;
             if(is.getItemMeta().getDisplayName().equalsIgnoreCase("§fMehl")) amountOfMehl += is.getAmount();
-            if(is.getItemMeta().getDisplayName().equalsIgnoreCase(droge.getName()) && (Drogen.DrugPurity.getPurityByName(is.getItemMeta().getLore().get(0).replace("§7Reinheitsgrad: ", "")) == purity)) amountOfSubstanz += is.getAmount();
+        }
+
+        if(p.getInventory().getItemInMainHand().getType() != Material.AIR && p.getInventory().getItemInMainHand().hasItemMeta() && p.getInventory().getItemInMainHand().getItemMeta().hasDisplayName()) {
+            if(p.getInventory().getItemInMainHand().getItemMeta().getDisplayName().equalsIgnoreCase(droge.getName()) && (Drogen.DrugPurity.getPurityByName(p.getInventory().getItemInMainHand().getItemMeta().getLore().get(0).replace("§7Reinheitsgrad: ", "")) == purity)) {
+                amountOfSubstanz += p.getInventory().getItemInMainHand().getAmount();
+            }
         }
 
         if(amountOfMehl == 0) {
