@@ -31,7 +31,7 @@ public class ReviveCommand implements CommandExecutor {
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
         Player p = (Player) cs;
 
-        if (args.length > 0 && Script.hasRank(p, Rank.SUPPORTER, false) && SDuty.isSDuty(p)) {
+        if (args.length > 0 && Script.hasRank(p, Rank.SUPPORTER, true) && SDuty.isSDuty(p)) {
 
             Player tg = Script.getPlayer(args[0]);
             if (tg == null) {

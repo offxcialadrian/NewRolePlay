@@ -945,10 +945,8 @@ public class Utils implements Listener {
         if (!(event.getClickedBlock().getState() instanceof org.bukkit.block.Sign)) return;
         Player player = event.getPlayer();
         if (BuildMode.isInBuildMode(player)) return;
-        ItemStack item = player.getActiveItem();
-        if (item == null) return;
-        player.sendMessage(String.valueOf(item.getData()));
-        if (item.getData() instanceof Dye)
+        ItemStack item = player.getItemInHand();
+        if (String.valueOf(item.getType()).endsWith("_DYE"))
             event.setCancelled(true);
     }
 
