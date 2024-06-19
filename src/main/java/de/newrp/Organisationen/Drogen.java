@@ -8,6 +8,7 @@ import de.newrp.NewRoleplayMain;
 import de.newrp.dependencies.DependencyContainer;
 import de.newrp.features.addiction.IAddictionService;
 import de.newrp.features.addiction.data.AddictionLevel;
+import de.newrp.features.bizwar.IBizWarService;
 import de.newrp.features.deathmatcharena.IDeathmatchArenaService;
 import lombok.Getter;
 import org.bukkit.Bukkit;
@@ -202,10 +203,12 @@ public enum Drogen {
         taskID.put(p.getName(), task);
         final IAddictionService addictionService = DependencyContainer.getContainer().getDependency(IAddictionService.class);
 
-        if(!GangwarCommand.isInGangwar(p) && !DependencyContainer.getContainer().getDependency(IDeathmatchArenaService.class).isInDeathmatch(p.getPlayer(), false)) {
-            if(addictionService.getAddictionLevel(p, this).getAddictionLevel() == AddictionLevel.FULLY_ADDICTED) {
-                p.sendMessage(Messages.ERROR + "Du bist abhängig von " + this.getName() + ".");
-                return;
+        if(!DependencyContainer.getContainer().getDependency(IBizWarService.class).isMemberOfBizWar(p)) {
+            if(!GangwarCommand.isInGangwar(p) && !DependencyContainer.getContainer().getDependency(IDeathmatchArenaService.class).isInDeathmatch(p.getPlayer(), false)) {
+                if(addictionService.getAddictionLevel(p, this).getAddictionLevel() == AddictionLevel.FULLY_ADDICTED) {
+                    p.sendMessage(Messages.ERROR + "Du bist abhängig von " + this.getName() + ".");
+                    return;
+                }
             }
         }
 

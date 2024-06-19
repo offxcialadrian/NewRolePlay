@@ -145,6 +145,11 @@ public class AddictionService implements IAddictionService {
 
     @Override
     public boolean isAddictedToAnything(Player player) {
+        if(this.addictionLevelMap.containsKey(player.getUniqueId())) {
+            if(this.addictionLevelMap.get(player.getUniqueId()).stream().anyMatch(e -> e.getAddictionLevel() == AddictionLevel.FULLY_ADDICTED)) {
+                return true;
+            }
+        }
         try(final PreparedStatement preparedStatement = NewRoleplayMain.getConnection().prepareStatement("SELECT nrp_id FROM addiction WHERE nrp_id = ? AND addiction_level = 'FULLY_ADDICTED'")) {
             preparedStatement.setInt(1, Script.getNRPID(player));
             try(final ResultSet resultSet = preparedStatement.executeQuery()) {

@@ -7,6 +7,7 @@ import de.newrp.Player.AFK;
 import de.newrp.Police.Jail;
 import de.newrp.NewRoleplayMain;
 import de.newrp.dependencies.DependencyContainer;
+import de.newrp.features.bizwar.IBizWarService;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
@@ -44,7 +45,7 @@ public enum Health {
     public static void update() {
         for (Player p : Bukkit.getOnlinePlayers()) {
             if (AFK.isAFK(p)) continue;
-            if (BLEEDING.containsKey(p.getName()) && !GangwarCommand.isInGangwar(p)) {
+            if (BLEEDING.containsKey(p.getName()) && !GangwarCommand.isInGangwar(p) && !DependencyContainer.getContainer().getDependency(IBizWarService.class).isMemberOfBizWar(p)) {
                 float amount = BLEEDING.get(p.getName());
                 Health.BLOOD.remove(Script.getNRPID(p), amount);
                 p.damage(.5D);
@@ -101,8 +102,8 @@ public enum Health {
     }
 
     public static void setBleeding(Player p) {
-        if (!SDuty.isSDuty(p) && !GangwarCommand.isInGangwar(p)) {
-            if (Health.BLEEDING.containsKey(p.getName()) && !GangwarCommand.isInGangwar(p)) {
+        if (!SDuty.isSDuty(p) && !GangwarCommand.isInGangwar(p) && !DependencyContainer.getContainer().getDependency(IBizWarService.class).isMemberOfBizWar(p)) {
+            if (Health.BLEEDING.containsKey(p.getName()) && !GangwarCommand.isInGangwar(p) && !DependencyContainer.getContainer().getDependency(IBizWarService.class).isMemberOfBizWar(p)) {
                 float amount = Health.BLEEDING.get(p.getName());
                 amount += Script.getRandomFloat(.1F, .3F);
                 Health.BLEEDING.put(p.getName(), amount);
