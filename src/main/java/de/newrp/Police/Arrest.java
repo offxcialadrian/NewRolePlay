@@ -58,14 +58,10 @@ public class Arrest implements CommandExecutor {
             return true;
         }
 
-        // Test
-        /*
         if (!Handschellen.isCuffed(tg)) {
             p.sendMessage(Messages.ERROR + "Der Spieler ist nicht in Handschellen.");
             return true;
         }
-
-         */
 
         long time = Fahndung.getFahndedTime(tg);
         int wanteds = Fahndung.getWanteds(tg);
