@@ -279,7 +279,7 @@ public class Pets implements Listener, CommandExecutor, TabCompleter {
                     String name = rs.getString("name");
                     String variant = rs.getString("variant");
                     int health = rs.getInt("health");
-                    NPC npc = createNPC(type, "§o" + name);
+                    NPC npc = createNPC(type, "§f§o" + name);
                     BukkitTask task = runnable(uuid, npc, name).runTaskTimer(NewRoleplayMain.getInstance(), 2 * 20L, 10L);
                     pets.add(new Pet(uuid, type, variant, name, npc, task, health, false));
                 }
