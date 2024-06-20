@@ -60,14 +60,16 @@ public class Messer implements Listener {
                     if (ammo == 0) ammo = 500;
                     if (ammo > 0) {
                         cooldown.put(damager.getName(), time);
-                        if (Spawnschutz.isInSpawnschutz(victim) || victim.getLevel() < 3) return;
-                        double dmg = Script.getRandom(8, 13);
-                        victim.damage(dmg);
-                        victim.setLastDamageCause(new EntityDamageEvent(damager, EntityDamageEvent.DamageCause.ENTITY_ATTACK, dmg));
-                        if (new Random().nextInt(4) == 0) {
-                            Health.setBleeding(victim);
+                        if (Spawnschutz.isInSpawnschutz(victim)) return;
+                        if (Script.getLevel(victim) > 1 && !SDuty.isSDuty(victim) && !AFK.isAFK(victim)) {
+                            double dmg = Script.getRandom(8, 13);
+                            victim.damage(dmg);
+                            victim.setLastDamageCause(new EntityDamageEvent(damager, EntityDamageEvent.DamageCause.ENTITY_ATTACK, dmg));
+                            if (new Random().nextInt(4) == 0) {
+                                Health.setBleeding(victim);
+                            }
+                            damager.getInventory().setItemInMainHand(Waffen.setAmmo(is, ammo - 1, 500));
                         }
-                        damager.getInventory().setItemInMainHand(Waffen.setAmmo(is, ammo - 1, 500));
                     } else {
                         damager.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
                         damager.playSound(damager.getLocation(), Sound.ITEM_FLINTANDSTEEL_USE, 1.0F, 1.0F);
