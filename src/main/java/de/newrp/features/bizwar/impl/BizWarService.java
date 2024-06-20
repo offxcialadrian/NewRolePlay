@@ -16,6 +16,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -37,15 +38,17 @@ public class BizWarService implements IBizWarService {
         try(final PreparedStatement preparedStatement = NewRoleplayMain.getConnection().prepareStatement("SELECT * FROM extorted_shops")) {
             try(final ResultSet resultSet = preparedStatement.executeQuery()) {
                 while (resultSet.next()) {
-                    System.out.println("Found column");
                     final int shopID = resultSet.getInt("shop_id");
                     final int organisationID = resultSet.getInt("organisation_id");
                     final long extortedTimestamp = resultSet.getLong("exorted_timestamp");
-                    System.out.println("ShopID: " + shopID + " OrganisationID: " + organisationID + " Timestamp: " + extortedTimestamp);
 
                     final Shops shop = Shops.getShop(shopID);
                     final Organisation organisation = Organisation.getOrganisation(organisationID);
                     if(organisation == null) {
+                        continue;
+                    }
+
+                    if(this.bizWarConfig.getShopConfigs().stream().noneMatch(e -> e.getShopId() == shop.getID())) {
                         continue;
                     }
 
@@ -77,7 +80,7 @@ public class BizWarService implements IBizWarService {
         this.activeBizWarInformations.add(bizWarInformation);
         bizWarInformation.startBizWarScheduler(this);
         this.addOrgaCooldown(organisation, TimeUnit.HOURS.toMillis(1));
-        this.addShopCooldown(shop, TimeUnit.HOURS.toMillis(1));
+        this.addShopCooldown(shop, TimeUnit.MINUTES.toMillis(30));
 
         for (final UUID defenderPlayerUUID : defenderOrganisation.getMember()) {
             final Player defenderPlayer = Bukkit.getPlayer(defenderPlayerUUID);
@@ -94,7 +97,8 @@ public class BizWarService implements IBizWarService {
             if(attackerPlayer == null) continue;
 
             attackerPlayer.sendTitle("§a§lBiz War gestartet", "Viel Erfolg!", 10, 60, 10);
-            attackerPlayer.sendMessage(this.getPrefix() + "§7Deine Organisation §e" + organisation.getName() + " §7greift den Shop §e" + shop.getPublicName() + " §7an!");
+            attackerPlayer.sendMessage(this.getPrefix() + "§7Deine Organisation greift den Shop §e" + shop.getPublicName() + " §7an!");
+            attackerPlayer.sendMessage(Messages.INFO + "Ihr greift §e" + defenderOrganisation.getName() + " §7an!");
             attackerPlayer.sendMessage(Messages.INFO + "Du kannst dem Biz War mit /joinfight beitreten!");
             attackerPlayer.playSound(attackerPlayer.getLocation(), Sound.ENTITY_WITHER_SPAWN, 1f, 1f);
         }
@@ -120,7 +124,7 @@ public class BizWarService implements IBizWarService {
             winnerPlayer.sendMessage(getPrefix() + "Deine Organisation hat den Biz War gegen §c" + loser.getName() + " §7gewonnen!");
             winnerPlayer.playSound(winnerPlayer.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, 1f, 1f);
         }
-        winner.addExp(Script.getRandom(30, 40));
+        winner.addExp(Script.getRandom(70, 90));
 
         for (UUID loserUUID : loser.getMember()) {
             final Player loserPlayer = Bukkit.getPlayer(loserUUID);
@@ -128,12 +132,17 @@ public class BizWarService implements IBizWarService {
             loserPlayer.sendMessage(getPrefix() + "Deine Organisation hat den Biz War gegen §a" + winner.getName() + " §7verloren!");
             loserPlayer.playSound(loserPlayer.getLocation(), Sound.ENTITY_WITHER_DEATH, 1f, 1f);
         }
+        winner.removeExp(Script.getRandom(30, 45));
 
         for (UUID joinedMembersOfDefender : activeBizWarInformation.getJoinedMembersOfDefenders()) {
             final Player player = Bukkit.getPlayer(joinedMembersOfDefender);
             if(player == null) continue;
             Script.updateListname(player);
-
+            Script.resetHealth(player);
+            for (PotionEffect activePotionEffect : player.getActivePotionEffects()) {
+                player.removePotionEffect(activePotionEffect.getType());
+            }
+            player.setHealth(player.getMaxHealth());
             Cache.loadInventory(player);
         }
 
@@ -141,7 +150,11 @@ public class BizWarService implements IBizWarService {
             final Player player = Bukkit.getPlayer(joinedMembersOfAttacker);
             if(player == null) continue;
             Script.updateListname(player);
-
+            Script.resetHealth(player);
+            for (PotionEffect activePotionEffect : player.getActivePotionEffects()) {
+                player.removePotionEffect(activePotionEffect.getType());
+            }
+            player.setHealth(player.getMaxHealth());
             Cache.loadInventory(player);
         }
         this.setOwnerOfShop(shop, winner);
@@ -289,10 +302,13 @@ public class BizWarService implements IBizWarService {
     public void equipPlayerForBizWar(Player player) {
         player.getInventory().clear();
         player.getInventory().setArmorContents(null);
+        player.setHealth(40);
 
         for (Weapon weapon : Weapon.values()) {
             if(weapon == Weapon.SNIPER) continue;
             if(weapon == Weapon.DESERT_EAGLE) continue;
+            if(weapon == Weapon.MP7) continue;
+            if(weapon == Weapon.PISTOLE) continue;
 
             player.getInventory().addItem(Waffen.setAmmo(weapon.getWeapon(), weapon.getMagazineSize(), 100));
         }
