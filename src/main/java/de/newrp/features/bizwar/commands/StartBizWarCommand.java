@@ -78,7 +78,7 @@ public class StartBizWarCommand implements CommandExecutor {
         final long timeTillNextAttack = shopCooldown - System.currentTimeMillis();
 
         if(timeTillNextAttack > 0) {
-            player.sendMessage(Messages.ERROR + "§cDu kannst diesen Shop erst in §c§l" + new SimpleDateFormat("HH 'Stunden und' mm 'Minuten'").format(timeTillNextAttack) + " §cerneut angreifen!");
+            player.sendMessage(Messages.ERROR + "§cDu kannst diesen Shop erst in" + TimeUnit.MILLISECONDS.toMinutes(timeTillNextAttack) + "min erneut angreifen!");
             return false;
         }
 
@@ -87,7 +87,7 @@ public class StartBizWarCommand implements CommandExecutor {
             organisation.sendMessage(this.bizWarService.getPrefix() + "Der Shop §e" + shop.getPublicName() + " §7wurde von §e" + Script.getName(player) + " §7übernommen!");
             this.bizWarService.setOwnerOfShop(shop, organisation);
             this.bizWarService.addOrgaCooldown(organisation, TimeUnit.HOURS.toMillis(1));
-            organisation.sendMessage(Messages.INFO + "Wegen der kampflosen Übernahme habt ihr nur einen Cooldown von einer Stunde bekommmen");
+            organisation.sendMessage(Messages.INFO + "Wegen der kampflosen Übernahme habt ihr einen Cooldown von einer Stunde bekommmen");
             return false;
         }
 
