@@ -119,12 +119,11 @@ public enum Shops {
         if (this.getType() != ShopType.HOTEL) {
             for (Map.Entry<Integer, ItemStack> n : c.entrySet()) {
                 ItemStack is = n.getValue();
-                if (is == null) {
-                    continue;
-                }
-                runningcost += 5;
+                if (is == null) continue;
+                if (ShopItem.getShopItem(is) != null)
+                    runningcost += ShopItem.getShopItem(is).getTax();
             }
-            if (this.acceptCard()) runningcost += 5;
+            if (this.acceptCard()) runningcost += Math.round((float) this.getRent() / 2);
         } else {
             Hotel.Hotels hotel = Hotel.Hotels.getHotelByShop(this);
             assert hotel != null;

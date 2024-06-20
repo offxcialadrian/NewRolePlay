@@ -100,23 +100,7 @@ public class AsyncHour extends BukkitRunnable {
             for (Shops shop : Shops.values()) {
                 if (shop.getOwner() == 0) continue;
                 if (shop.isLocked()) continue;
-                int runningcost = 0;
-                HashMap<Integer, ItemStack> c = shop.getItems();
-                if (shop.getType() != ShopType.HOTEL) {
-                    for (Map.Entry<Integer, ItemStack> n : c.entrySet()) {
-                        ItemStack is = n.getValue();
-                        if (is == null) continue;
-                        if (ShopItem.getShopItem(is) != null)
-                            runningcost += ShopItem.getShopItem(is).getTax();
-                    }
-                    if (shop.acceptCard()) runningcost += Math.round((float) shop.getRent() / 2);
-                } else {
-                    Hotel.Hotels hotel = Hotel.Hotels.getHotelByShop(shop);
-                    assert hotel != null;
-                    for (Hotel.Rooms room : hotel.getRentedRooms()) {
-                        runningcost += room.getPrice() / 2;
-                    }
-                }
+                int runningcost = shop.getRunningCost();
                 int totalcost = runningcost + shop.getRent();
                 if (shop.getKasse() >= totalcost) {
                     shop.removeKasse(runningcost);
