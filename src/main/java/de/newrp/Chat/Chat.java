@@ -192,7 +192,7 @@ public class Chat implements Listener {
             Set<String> foundNames = Chat.getMentionedNames(e.getMessage());
             Location pLoc = p.getLocation();
             String speakWord = "flüstert";
-            Notifications.sendMessage(Notifications.NotificationType.CHAT, "§8[§c" + p.getLevel() + "§8] §7" + Script.getName(p) + " flüstert: §7" + e.getMessage());
+            Notifications.sendMessage(Notifications.NotificationType.CHAT, "§8[§c" + p.getLevel() + "§8] §7" + p.getName() + " flüstert: §7" + e.getMessage());
             for (Player online : Bukkit.getOnlinePlayers()) {
                 double distance = pLoc.distance(online.getLocation());
                 if (distance > 8.0D) {
@@ -227,7 +227,7 @@ public class Chat implements Listener {
         Set<String> foundNames = getMentionedNames(message);
         String speakWord = "sagt";
         if(message.endsWith("?")) speakWord = "fragt";
-        Notifications.sendMessage(Notifications.NotificationType.CHAT, "§8[§c" + Script.getLevel(p) + "§8] §7" + Script.getName(p) + " " + speakWord + ": §7" + message);
+        Notifications.sendMessage(Notifications.NotificationType.CHAT, "§8[§c" + Script.getLevel(p) + "§8] §7" + p.getName() + " " + speakWord + ": §7" + message);
         Script.updateExpBar(p);
         for (Player online : Bukkit.getOnlinePlayers()) {
             double distance = p.getLocation().distance(online.getLocation());
