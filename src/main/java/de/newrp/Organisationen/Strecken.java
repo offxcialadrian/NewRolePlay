@@ -16,29 +16,35 @@ public class Strecken implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender cs, @NotNull Command cmd, @NotNull String s, @NotNull String[] args) {
         Player p = (Player) cs;
 
-        if(!Organisation.hasOrganisation(p)) {
+        if (!Organisation.hasOrganisation(p)) {
             p.sendMessage(Messages.ERROR + "Du bist in keiner Organisation.");
             return true;
         }
 
         p.getInventory().getItemInMainHand();
-        if(p.getInventory().getItemInMainHand().getType() == Material.AIR || !p.getInventory().getItemInMainHand().hasItemMeta()) {
+        if (p.getInventory().getItemInMainHand().getType() == Material.AIR || !p.getInventory().getItemInMainHand().hasItemMeta()) {
             p.sendMessage(Messages.ERROR + "Du hast keine Substanz in der Hand.");
             return true;
         }
 
         Drogen droge = Drogen.getItemByName(ChatColor.stripColor(p.getInventory().getItemInMainHand().getItemMeta().getDisplayName()));
-        if(droge == null) {
+        if (droge == null) {
             p.sendMessage(Messages.ERROR + "Du hast keine Substanz in der Hand.");
             return true;
         }
+
         Drogen.DrugPurity purity = Drogen.DrugPurity.getPurityByName(p.getInventory().getItemInMainHand().getItemMeta().getLore().get(0).replace("§7Reinheitsgrad: ", ""));
-        if(purity == null) {
+        if (purity == null) {
             p.sendMessage(Messages.ERROR + "Diese Substanz hat keinen Reinheitsgrad.");
             return true;
         }
 
-        if(purity == Drogen.DrugPurity.BAD) {
+        if (droge == Drogen.ECSTASY && purity.getID() > 0) {
+            p.sendMessage(Messages.ERROR + "Diese Substanz kann nicht weiter gestreckt werden.");
+            return true;
+        }
+
+        if (purity == Drogen.DrugPurity.BAD) {
             p.sendMessage(Messages.ERROR + "Diese Substanz ist zu schlecht um sie zu verarbeiten.");
             return true;
         }
@@ -46,40 +52,40 @@ public class Strecken implements CommandExecutor {
         int amountOfMehl = 0;
         int amountOfSubstanz = 0;
 
-        for(ItemStack is : p.getInventory().getContents()) {
-            if(is == null) continue;
-            if(is.getItemMeta() == null) continue;
-            if(is.getItemMeta().getDisplayName().equalsIgnoreCase("§fMehl")) amountOfMehl += is.getAmount();
+        for (ItemStack is : p.getInventory().getContents()) {
+            if (is == null) continue;
+            if (is.getItemMeta() == null) continue;
+            if (is.getItemMeta().getDisplayName().equalsIgnoreCase("§fMehl")) amountOfMehl += is.getAmount();
         }
 
-        if(p.getInventory().getItemInMainHand().getType() != Material.AIR && p.getInventory().getItemInMainHand().hasItemMeta() && p.getInventory().getItemInMainHand().getItemMeta().hasDisplayName()) {
-            if(p.getInventory().getItemInMainHand().getItemMeta().getDisplayName().equalsIgnoreCase(droge.getName()) && (Drogen.DrugPurity.getPurityByName(p.getInventory().getItemInMainHand().getItemMeta().getLore().get(0).replace("§7Reinheitsgrad: ", "")) == purity)) {
+        if (p.getInventory().getItemInMainHand().getType() != Material.AIR && p.getInventory().getItemInMainHand().hasItemMeta() && p.getInventory().getItemInMainHand().getItemMeta().hasDisplayName()) {
+            if (p.getInventory().getItemInMainHand().getItemMeta().getDisplayName().equalsIgnoreCase(droge.getName()) && (Drogen.DrugPurity.getPurityByName(p.getInventory().getItemInMainHand().getItemMeta().getLore().get(0).replace("§7Reinheitsgrad: ", "")) == purity)) {
                 amountOfSubstanz += p.getInventory().getItemInMainHand().getAmount();
             }
         }
 
-        if(amountOfMehl == 0) {
+        if (amountOfMehl == 0) {
             p.sendMessage(Messages.ERROR + "Du hast kein Mehl.");
             return true;
         }
 
-        if(amountOfSubstanz == 0) {
+        if (amountOfSubstanz == 0) {
             p.sendMessage(Messages.ERROR + "Du hast keine Substanz.");
             return true;
         }
 
-        if(amountOfMehl < amountOfSubstanz) {
+        if (amountOfMehl < amountOfSubstanz) {
             p.sendMessage(Messages.ERROR + "Du benötigst mindestens so viel Mehl wie Substanz.");
             return true;
         }
 
         ItemStack is = p.getInventory().getItemInMainHand().clone();
         p.getInventory().setItemInMainHand(null);
-        for(ItemStack item : p.getInventory().getContents()) {
-            if(item == null) continue;
-            if(item.getItemMeta() == null) continue;
-            if(item.getItemMeta().getDisplayName().equalsIgnoreCase("§fMehl")) {
-                if(item.getAmount() > amountOfSubstanz) {
+        for (ItemStack item : p.getInventory().getContents()) {
+            if (item == null) continue;
+            if (item.getItemMeta() == null) continue;
+            if (item.getItemMeta().getDisplayName().equalsIgnoreCase("§fMehl")) {
+                if (item.getAmount() > amountOfSubstanz) {
                     item.setAmount(item.getAmount() - amountOfSubstanz);
                     break;
                 } else {
@@ -89,7 +95,7 @@ public class Strecken implements CommandExecutor {
             }
         }
         purity = Drogen.DrugPurity.getPurityByID(purity.getID() + 1);
-        for(int i = 0; i < (amountOfSubstanz * 2); i++) {
+        for (int i = 0; i < (amountOfSubstanz * 2); i++) {
             p.getInventory().addItem(new ItemBuilder(is.getType()).setName(is.getItemMeta().getDisplayName()).setLore("§7Reinheitsgrad: " + purity.getText()).build());
         }
 
