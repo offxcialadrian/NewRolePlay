@@ -57,7 +57,7 @@ public class PayDay extends BukkitRunnable {
             double einkommenssteuer = Steuern.Steuer.EINKOMMENSSTEUER.getPercentage();
             double arbeitslosenversicherung = Steuern.Steuer.ARBEITSLOSENVERSICHERUNG.getPercentage();
             double lohnsteuer = Steuern.Steuer.LOHNSTEUER.getPercentage();
-            double gfb_lohnsteuer = Steuern.Steuer.GFB_LOHNSTEUER.getPercentage();
+            double gfb_lohnsteuer = (Script.getLevel(p) < 3 ? 0 : Steuern.Steuer.GFB_LOHNSTEUER.getPercentage());
             double krankenversicherung = Steuern.Steuer.KRANKENVERSICHERUNG.getPercentage();
             if (BeziehungCommand.isMarried(p)) lohnsteuer = Math.max(0.0, lohnsteuer - 5.0);
             if (BeziehungCommand.isMarried(p)) gfb_lohnsteuer = Math.max(0.0, gfb_lohnsteuer - 5.0);
