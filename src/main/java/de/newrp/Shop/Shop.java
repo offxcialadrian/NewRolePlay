@@ -6,7 +6,6 @@ import de.newrp.Berufe.Abteilung;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Government.Stadtkasse;
 import de.newrp.Government.Steuern;
-import de.newrp.Organisationen.Organisation;
 import de.newrp.Player.Annehmen;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -23,7 +22,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
 public class Shop implements CommandExecutor, Listener, TabCompleter {
 
@@ -329,9 +327,9 @@ public class Shop implements CommandExecutor, Listener, TabCompleter {
             Inventory inv = Bukkit.createInventory(null, 9*3, "§7Sortiment " + shop.getPublicName());
             for(ShopItem si : ShopItem.values()) {
                 ItemStack is = si.getItemStack().clone();
-                if(is == null && si == ShopItem.Zeitung && !shop.isInShop(ShopItem.Zeitung)) {
+                if(is == null && si == ShopItem.ZEITUNG && !shop.isInShop(ShopItem.ZEITUNG)) {
                     is = Script.setNameAndLore(Material.WRITTEN_BOOK, "§9Zeitung", "§8» §6Lizensierungsgebühr: §6" + si.getLicensePrice() + "€", "§8» §6Einkaufspreis: §6" + si.getBuyPrice() + "€");
-                } else if(is == null && si == ShopItem.Zeitung && shop.isInShop(ShopItem.Zeitung)) {
+                } else if(is == null && si == ShopItem.ZEITUNG && shop.isInShop(ShopItem.ZEITUNG)) {
                     is = Script.setNameAndLore(Material.WRITTEN_BOOK, "§9Zeitung", "§8» §cKlicke um aus Shop zu entfernen");
                 }
                 if(!containsType(si, shop)) continue;
@@ -378,7 +376,7 @@ public class Shop implements CommandExecutor, Listener, TabCompleter {
             ItemStack is = e.getCurrentItem();
 
             if(is.getType() == Material.WRITTEN_BOOK) {
-                si = ShopItem.Zeitung;
+                si = ShopItem.ZEITUNG;
             } else {
                 Debug.debug("Getting shop item " + is.getType() + " for shop " + s.getPublicName());
                 si = ShopItem.getShopItem(is);
@@ -426,7 +424,7 @@ public class Shop implements CommandExecutor, Listener, TabCompleter {
 
 
             if(is.getType() == Material.WRITTEN_BOOK) {
-                si = ShopItem.Zeitung;
+                si = ShopItem.ZEITUNG;
             } else {
                 si = ShopItem.getShopItem(is);
             }

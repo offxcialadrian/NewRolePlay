@@ -64,9 +64,7 @@ public class Buy implements CommandExecutor {
 
         for (Map.Entry<Integer, ItemStack> n : shopItems.entrySet()) {
             ItemStack is = n.getValue();
-            if (is == null) {
-                continue;
-            }
+            if (is == null) continue;
             inv.setItem(i++, is);
         }
 

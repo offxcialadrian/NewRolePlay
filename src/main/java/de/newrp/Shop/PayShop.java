@@ -215,7 +215,7 @@ public class PayShop implements Listener {
                     }
                     Weapon.PISTOLE.addMunition(Script.getNRPID(p), Weapon.PISTOLE.getMagazineSize());
                     break;
-                case Zeitung:
+                case ZEITUNG:
                     //p.getInventory().addItem(Zeitung.zeitung);
                     Zeitung(p);
                     Beruf.Berufe.NEWS.addKasse(si.getBuyPrice());
