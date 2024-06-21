@@ -124,7 +124,7 @@ public class BizWarService implements IBizWarService {
             winnerPlayer.sendMessage(getPrefix() + "Deine Organisation hat den Biz War gegen §c" + loser.getName() + " §7gewonnen!");
             winnerPlayer.playSound(winnerPlayer.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, 1f, 1f);
         }
-        winner.addExp(Script.getRandom(70, 90));
+
 
         for (UUID loserUUID : loser.getMember()) {
             final Player loserPlayer = Bukkit.getPlayer(loserUUID);
@@ -132,7 +132,12 @@ public class BizWarService implements IBizWarService {
             loserPlayer.sendMessage(getPrefix() + "Deine Organisation hat den Biz War gegen §a" + winner.getName() + " §7verloren!");
             loserPlayer.playSound(loserPlayer.getLocation(), Sound.ENTITY_WITHER_DEATH, 1f, 1f);
         }
-        winner.removeExp(Script.getRandom(30, 45));
+
+        // Only add if fight has happened
+        if(!loser.getMember().isEmpty()) {
+            winner.addExp(Script.getRandom(70, 90));
+            loser.removeExp(Script.getRandom(30, 45));
+        }
 
         for (UUID joinedMembersOfDefender : activeBizWarInformation.getJoinedMembersOfDefenders()) {
             final Player player = Bukkit.getPlayer(joinedMembersOfDefender);
