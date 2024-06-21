@@ -302,7 +302,8 @@ public class BizWarService implements IBizWarService {
     public void equipPlayerForBizWar(Player player) {
         player.getInventory().clear();
         player.getInventory().setArmorContents(null);
-        player.setHealth(40);
+        player.setMaxHealth(40);
+        player.setHealth(player.getMaxHealth());
 
         for (Weapon weapon : Weapon.values()) {
             if(weapon == Weapon.SNIPER) continue;
