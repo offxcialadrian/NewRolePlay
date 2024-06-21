@@ -270,11 +270,11 @@ public class LockpickHandler implements Listener {
         } else if (Objects.equals(type, "Lager")) {
             for (int m = 0; m < 36; m++) {
                 float x = new Random().nextFloat();
-                int g = 1 + new Random().nextInt(10);
+                int g = 1 + new Random().nextInt(7);
                 ItemStack drug;
-                if (x < 0.25) {
+                if (x < 0.4) {
                     drug = new ItemStack(Material.SUGAR);
-                } else if (x < 0.50) {
+                } else if (x < 0.8) {
                     drug = new ItemStack(Material.GREEN_DYE);
                 } else {
                     drug = new ItemStack(Material.AIR);
