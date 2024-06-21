@@ -3,8 +3,6 @@ package de.newrp.Entertainment;
 import de.newrp.API.Messages;
 import de.newrp.API.PaymentType;
 import de.newrp.API.Script;
-import de.newrp.API.Utils;
-import de.newrp.Administrator.SDuty;
 import de.newrp.NewRoleplayMain;
 import de.newrp.Organisationen.Organisation;
 import de.newrp.Player.AFK;

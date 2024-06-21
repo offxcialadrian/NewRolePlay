@@ -491,11 +491,11 @@ public class Script {
     public static String getTeamPrefix(final Player player) {
         final Rank rank = getRank(player);
         if (rank == DEVELOPER) return "DEV × " + player.getName();
-        if (rank == SUPPORTER) return "SUP × " + player.getName();
-        if (rank == MODERATOR) return "MOD × " + player.getName();
+        if (rank == SUPPORTER) return "NRP × " + player.getName();
+        if (rank == MODERATOR) return "NRP × " + player.getName();
         if (rank == FRAKTIONSMANAGER) return "FM × " + player.getName();
-        if (rank == ADMINISTRATOR) return "ADMIN × " + player.getName();
-        if (rank == OWNER) return "CEO × " + player.getName();
+        if (rank == ADMINISTRATOR) return "NRP × " + player.getName();
+        if (rank == OWNER) return "NRP × " + player.getName();
         return player.getName();
     }
 
@@ -503,11 +503,11 @@ public class Script {
         if (p.getPlayer() != null && p.isOnline()) {
             if(!SDuty.isSDuty(p.getPlayer())) return p.getName();
             if (getRank(p) == DEVELOPER) return "DEV × " + p.getName();
-            if (getRank(p) == SUPPORTER) return "SUP × " + p.getName();
-            if (getRank(p) == MODERATOR) return "MOD × " + p.getName();
+            if (getRank(p) == SUPPORTER) return "NRP × " + p.getName();
+            if (getRank(p) == MODERATOR) return "NRP × " + p.getName();
             if (getRank(p) == FRAKTIONSMANAGER) return "FM × " + p.getName();
-            if (getRank(p) == ADMINISTRATOR) return "ADMIN × " + p.getName();
-            if (getRank(p) == OWNER) return "CEO × " + p.getName();
+            if (getRank(p) == ADMINISTRATOR) return "NRP × " + p.getName();
+            if (getRank(p) == OWNER) return "NRP × " + p.getName();
         }
         return p.getName();
     }

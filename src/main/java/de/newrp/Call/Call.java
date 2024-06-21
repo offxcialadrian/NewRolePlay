@@ -3,6 +3,7 @@ package de.newrp.Call;
 import de.newrp.API.Gender;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
+import de.newrp.Berufe.WiretapCall;
 import de.newrp.Player.Mobile;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -46,6 +47,7 @@ public class Call {
                 people.add(p);
                 people.add(tg);
                 ON_CALL.put(getCallIDByPlayer(p), people);
+                WiretapCall.sendNotification(p, getCallIDByPlayer(p), true);
                 p.sendMessage(PREFIX + "Der Anruf wurde angenommen!");
                 tg.sendMessage(PREFIX + "Du telefonierst nun mit " + Script.getName(tg));
                 Script.executeAsyncUpdate("INSERT INTO call_history (nrp_id, participants, time) VALUES ('" + Script.getNRPID(p) + "', '" + Script.getName(tg) + "', '" + System.currentTimeMillis() + "')");
@@ -55,6 +57,7 @@ public class Call {
                 waitingList.remove(p);
                 onCallList.add(p);
                 ON_CALL.put(getCallIDByPlayer(p), onCallList);
+                WiretapCall.sendNotification(p, getCallIDByPlayer(p), false);
                 WAITING_FOR_CALL.put(getCallIDByPlayer(p), waitingList);
                 StringBuilder sb = new StringBuilder();
                 sb.append(PREFIX);
@@ -89,15 +92,18 @@ public class Call {
         return -1;
     }
 
+    // 1Minify
     public static void sendMessage(Player chatter, String msg, boolean shout) {
-        for (Player p : ON_CALL.get(getCallIDByPlayer(chatter))) {
+        int callId = getCallIDByPlayer(chatter);
+        if(!Mobile.hasConnection(chatter)) msg = distortMessage(msg);
+        String message = Script.getName(chatter) + " " + (shout ? "schreit: " : (msg.endsWith("?") ? "fragt: " : "sagt: ")) + msg;
+        for (Player p : ON_CALL.get(callId)) {
             if (!p.equals(chatter)) {
                 Mobile.getPhone(p).removeAkku(p, 1);
-                if(!Mobile.hasConnection(chatter))
-                    msg = distortMessage(msg);
-                p.sendMessage(PREFIX + Script.getName(chatter) + " "+  (shout?"schreit: ":(msg.endsWith("?")?"fragt: ":"sagt: ")) + msg);
+                p.sendMessage(PREFIX + message);
             }
         }
+        WiretapCall.sendCallMessage(callId, message);
     }
 
     public static void sendSystemMessage(Player chatter, String msg, boolean skipChatter) {
