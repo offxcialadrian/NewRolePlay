@@ -91,7 +91,15 @@ public class WiretapCall implements CommandExecutor {
         } else {
             message = PREFIX + player.getName() + " ist dem Anruf §e#" + callId + " §7beigetreten";
         }
-        Beruf.getPlayersFromBeruf(Beruf.Berufe.BUNDESKRIMINALAMT).forEach(player1 -> Script.sendClickableMessage(player1, message, "/abhören " + player.getName(), "§cAnruf Abhören"));
+
+        for (UUID memberUuid : Beruf.Berufe.BUNDESKRIMINALAMT.getMember()) {
+            final Player memberPlayer = Bukkit.getPlayer(memberUuid);
+            if(memberPlayer == null) {
+                continue;
+            }
+
+            Script.sendClickableMessage(memberPlayer, message, "/abhören " + player.getName(), "§cAnruf Abhören")
+        }
     }
 
     public static void sendCallMessage(int callId, String message) {
