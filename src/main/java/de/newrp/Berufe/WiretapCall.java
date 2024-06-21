@@ -98,7 +98,7 @@ public class WiretapCall implements CommandExecutor {
                 continue;
             }
 
-            Script.sendClickableMessage(memberPlayer, message, "/abhören " + player.getName(), "§cAnruf Abhören")
+            Script.sendClickableMessage(memberPlayer, message, "/abhören " + player.getName(), "§cAnruf Abhören");
         }
     }
 
