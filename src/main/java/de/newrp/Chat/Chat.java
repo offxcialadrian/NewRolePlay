@@ -120,7 +120,7 @@ public class Chat implements Listener {
         for (String foundName : foundNames) {
             message = StringUtils.replace(message, foundName, "§l" + foundName + color);
         }
-        return sb.append(color).append(Script.getName(p)).append(" ").append(speakWord).append(": ").append(message).toString();
+        return sb.append(color).append(p.getName()).append(" ").append(speakWord).append(": ").append(message).toString();
     }
 
     public static String constructMessage(String s, String message, String speakWord, Set<String> foundNames, double distance, ChatType chatType) {
