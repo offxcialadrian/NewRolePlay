@@ -112,7 +112,7 @@ public class LabBreakIn implements CommandExecutor, Listener {
         }
         removePotion(brewingStand.getInventory());
         p.sendMessage(PREFIX + "Du hast die Zutat in den Braustand gefüllt.");
-        p.sendMessage(PREFIX + progress + "/" + NEEDED_PROGRESS);
+        p.sendMessage(PREFIX + (progress + 1) + "/" + NEEDED_PROGRESS);
         if (++progress == NEEDED_PROGRESS) {
 
             Drogen.DrugPurity purity;
