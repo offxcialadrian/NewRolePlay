@@ -61,7 +61,7 @@ public class ActiveBizWarInformation {
                 Script.sendActionBar(player, "§c§lDu bist zu weit vom Shop entfernt!");
                 continue;
             }
-            Script.sendActionBar(player, "§a" + this.currentAttackerPoints + " §7| §c" + this.currentDefenderPoints + time + " §7(" + distanceToShop + " vom Shop entfernt)");
+            Script.sendActionBar(player, "§a" + this.currentAttackerPoints + " §7| §c" + this.currentDefenderPoints + time + " §7(" + distanceToShop + "m vom Shop entfernt)");
         }
 
         for (UUID joinedMembersOfDefender : this.getJoinedMembersOfDefenders()) {
@@ -74,7 +74,7 @@ public class ActiveBizWarInformation {
                 Script.sendActionBar(player, "§c§lDu bist zu weit vom Shop entfernt!");
                 continue;
             }
-            Script.sendActionBar(player, "§a" + this.currentDefenderPoints + " §7| §c" + this.currentAttackerPoints + time + " §7(" + distanceToShop + " vom Shop entfernt)");
+            Script.sendActionBar(player, "§a" + this.currentDefenderPoints + " §7| §c" + this.currentAttackerPoints + time + " §7(" + distanceToShop + "m vom Shop entfernt)");
         }
     }
 
