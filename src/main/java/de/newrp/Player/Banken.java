@@ -15,6 +15,9 @@ import org.bukkit.inventory.Inventory;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
 
 public class Banken implements CommandExecutor, Listener {
 
@@ -92,8 +95,8 @@ public class Banken implements CommandExecutor, Listener {
             return null;
         }
 
-        public double interestToPercent() {
-            return interest * 100;
+        public double interestToPercent(Player player) {
+            return 100 * Math.min(Math.round(20 * Math.sqrt((Script.getMoney(player, PaymentType.BANK) > 0 ? (int) (interest * Script.getMoney(player, PaymentType.BANK)) : (int) (0.02 * Script.getMoney(player, PaymentType.BANK))))), limit) / (double) Script.getMoney(player, PaymentType.BANK);
         }
 
         public static Bank getBankByPlayer(Player p) {
@@ -168,12 +171,13 @@ public class Banken implements CommandExecutor, Listener {
 
         Inventory inv = Bukkit.createInventory(null, 9, "§aBanken");
         int i = 0;
+        DecimalFormat df = new DecimalFormat("#.##", new DecimalFormatSymbols(Locale.ENGLISH));
         for (Bank bank : Bank.values()) {
             inv.setItem(i, new ItemBuilder(Material.CHEST).setName("§9" + bank.getName()).setLore(
                     " §7 " + Messages.ARROW + " Einrichtungsgebühr: §e" + bank.getEinrichtigungsKosten() + "€",
                     " §7 " + Messages.ARROW + " Transaktionsgebühr: §e" + bank.getTransactionKosten() + "€",
                     " §7 " + Messages.ARROW + " Transaktionslimit: §e" + bank.getTransactionLimit() + "€",
-                    " §7 " + Messages.ARROW + " Zinsen: §e" + bank.interestToPercent() + "%",
+                    " §7 " + Messages.ARROW + " Zinsen: §e" + df.format(bank.interestToPercent(p)) + "%",
                     " §7 " + Messages.ARROW + " Zinsgrenze: §e" + bank.getLimit() + "€",
                     " §7 " + Messages.ARROW + " Kontoführungsgebühr: §e" + bank.getKontoKosten() + "€").build());
             i++;
