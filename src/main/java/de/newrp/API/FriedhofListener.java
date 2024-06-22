@@ -102,7 +102,7 @@ public class FriedhofListener implements Listener {
                 Activity.grantActivity(Script.getNRPID(killer), Activities.CT_KILL);
                 Contract.remove(ct);
 
-                Friedhof friedhof = new Friedhof(Script.getNRPID(p), p.getName(), new Location(Script.WORLD, 0D, 1000D, 0D), System.currentTimeMillis(), 1200, 0, null);
+                Friedhof friedhof = new Friedhof(Script.getNRPID(p), p.getName(), new Location(Script.WORLD, 0D, 1000D, 0D), System.currentTimeMillis(), 600, 0, null);
                 Friedhof.setDead(p, friedhof);
                 Script.setMoney(p, PaymentType.CASH, 0);
                 p.getInventory().clear();
