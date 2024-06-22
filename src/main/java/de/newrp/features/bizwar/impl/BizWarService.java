@@ -75,7 +75,7 @@ public class BizWarService implements IBizWarService {
                 optional.get().getDefenderSpawn().toLocation(),
                 1,
                 0,
-                0);
+                0, 0);
 
         this.activeBizWarInformations.add(bizWarInformation);
         bizWarInformation.startBizWarScheduler(this);
