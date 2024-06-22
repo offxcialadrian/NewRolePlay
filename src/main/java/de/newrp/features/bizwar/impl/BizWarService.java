@@ -387,6 +387,9 @@ public class BizWarService implements IBizWarService {
         if(isAttacker) {
             boolean allAttackersDead = true;
             for (UUID joinedMembersOfAttacker : activeBizWarInformation.getJoinedMembersOfAttackers()) {
+                if(joinedMembersOfAttacker == player.getUniqueId()) {
+                    continue;
+                }
                 final Player attacker = Bukkit.getPlayer(joinedMembersOfAttacker);
                 if(attacker == null) continue;
                 if(!Friedhof.isDead(attacker)) {
@@ -408,6 +411,9 @@ public class BizWarService implements IBizWarService {
         } else {
             boolean allDefendersDead = true;
             for (UUID joinedMembersOfDefenders : activeBizWarInformation.getJoinedMembersOfDefenders()) {
+                if(joinedMembersOfDefenders == player.getUniqueId()) {
+                    continue;
+                }
                 final Player defender = Bukkit.getPlayer(joinedMembersOfDefenders);
                 if(defender == null) continue;
                 if(!Friedhof.isDead(defender)) {
