@@ -203,10 +203,15 @@ public class BizWarService implements IBizWarService {
             bizWarInformation.getJoinedMembersOfAttackers().add(player.getUniqueId());
             bizWarInformation.getAttackerOrganisation().sendMessage(this.getPrefix() + "§a" + player.getName() + " §7ist euch beigetreten (§e" + bizWarInformation.getJoinedMembersOfAttackers().size() + "§7)!");
             bizWarInformation.getDefenderOrganisation().sendMessage(this.getPrefix() + "§c" + player.getName() + " §7ist den Angreifern beigetreten (§e" + bizWarInformation.getJoinedMembersOfAttackers().size() + "§7)!");
+            player.teleport(bizWarInformation.getAttackerSpawn());
+            player.sendMessage(Messages.INFO + "Du bist nun Teil vom Biz War, daher wurdest du zum Angreifer Spawn teleportiert!");
+
         } else {
             bizWarInformation.getJoinedMembersOfDefenders().add(player.getUniqueId());
             bizWarInformation.getDefenderOrganisation().sendMessage(this.getPrefix() + "§a" + player.getName() + " §7ist euch beigetreten (§e" + bizWarInformation.getJoinedMembersOfAttackers().size() + "§7)!");
             bizWarInformation.getAttackerOrganisation().sendMessage(this.getPrefix() + "§c" + player.getName() + " §7ist den Verteidigern beigetreten (§e" + bizWarInformation.getJoinedMembersOfAttackers().size() + "§7)!");
+            player.teleport(bizWarInformation.getDefenderSpawn());
+            player.sendMessage(Messages.INFO + "Du bist nun Teil vom Biz War, daher wurdest du zum Verteidiger Spawn teleportiert!");
         }
 
         Activity.grantActivity(Script.getNRPID(player), Activities.BIZWAR);

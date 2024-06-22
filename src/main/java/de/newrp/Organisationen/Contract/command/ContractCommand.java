@@ -1,5 +1,7 @@
 package de.newrp.Organisationen.Contract.command;
 
+import de.newrp.API.Activities;
+import de.newrp.API.Activity;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.Organisationen.Contract.model.Contract;
@@ -41,11 +43,10 @@ public class ContractCommand implements CommandExecutor, TabCompleter {
             }
 
             switch (args[0].toLowerCase()) {
-                case "add":
+                case "set":
                     if (args.length > 3) {
-                        OfflinePlayer target = Script.getOfflinePlayer(args[1]);
-                        int id = Script.getNRPID(target);
-                        if (id == 0) {
+                        Player target = Script.getPlayer(args[1]);
+                        if(target == null) {
                             player.sendMessage(Messages.PLAYER_NOT_FOUND);
                             return true;
                         }
@@ -67,21 +68,13 @@ public class ContractCommand implements CommandExecutor, TabCompleter {
                             return true;
                         }
 
-                        Player customer = Script.getPlayer(args[3]);
-                        if (customer == null) {
-                            player.sendMessage(Messages.PLAYER_NOT_FOUND);
-                            return true;
-                        }
-                        if (Contract.wasCustomer(customer)) {
-                            player.sendMessage(Contract.PREFIX + "Der Spieler hat heute schon ein Kopfgeld ausgesetzt.");
-                            return true;
-                        }
                         Contract ct = Contract.create(target, price);
-                        Contract.addOffer(customer, ct);
-                        Annehmen.offer.put(customer.getName() + ".contract", player.getName());
-                        player.sendMessage(Contract.PREFIX + "Du hast " + customer.getName() + " eine Anfrage zum Eintragen eines Kopfgeldes für §6" + target.getName() + " §7in Höhe von §6" + price + "€ §7gemacht.");
-                        customer.sendMessage(Contract.PREFIX + player.getName() + " hat dir eine Anfrage zum Eintragen eines Kopfgeldes für §6" + target.getName() + " §7in Höhe von §6" + price + "€ §7gemacht.");
-                        Script.sendAcceptMessage(customer);
+                        Contract.add(ct);
+                        Organisation.HITMEN.sendMessage(Contract.PREFIX + player.getName() + " hat §6" + target.getName() + " §7ein Kopfgeld in Höhe von §6" + ct.getPrice() + "€ §7ausgesetzt.");
+                        player.sendMessage(Contract.PREFIX + "Das Kopfgeld wurde erfolgreich eingetragen.");
+                        Contract.addCustomer(target);
+                        Activity.grantActivity(Script.getNRPID(player), Activities.CONTRACT);
+                        Organisation.HITMEN.removeKasse(price);
                         return true;
                     }
                     break;
@@ -160,7 +153,7 @@ public class ContractCommand implements CommandExecutor, TabCompleter {
 
     public static void sendPossabilities(Player player) {
         player.sendMessage("§8=== §6Contracts §8===");
-        player.sendMessage("§8» §6/contract add [Spieler] [Preis] [Käufer]");
+        player.sendMessage("§8» §6/contract set [Spieler] [Preis]");
         player.sendMessage("§8» §6/contract remove [Spieler]");
         player.sendMessage("§8» §6/contract info [Spieler]");
         player.sendMessage("§8» §6/contract list");
