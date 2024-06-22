@@ -25,7 +25,7 @@ public enum Activities {
     ROLEPLAY("Roleplay", 1.0F, Arrays.asList(0, 1, 2, 3, 4)),
     GRAFFITI("Graffiti", 0.05F, Arrays.asList(0)),
     ATM("Sprengung", 0.5F, Arrays.asList(0, 3)),
-    COPKILL("Cop-Mord", 0.1F, Arrays.asList(0)),
+    COPKILL("Mord", 0.1F, Arrays.asList(0)),
     BLKILL("Vergeltung", 0.2F, Arrays.asList(0)),
     BREAKIN("Break-In", 0.4F, Arrays.asList(0, 3)),
     UEBERFALL("Überfall", 0.5F, Arrays.asList(0, 3)),
