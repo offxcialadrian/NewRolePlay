@@ -5,6 +5,8 @@ import de.newrp.Administrator.SDuty;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Call.Call;
 import de.newrp.Gangwar.GangwarCommand;
+import de.newrp.Organisationen.Contract.model.Contract;
+import de.newrp.Organisationen.Organisation;
 import de.newrp.Player.Fesseln;
 import de.newrp.NewRoleplayMain;
 import de.newrp.dependencies.DependencyContainer;
@@ -78,9 +80,6 @@ public class FriedhofListener implements Listener {
             deathtime = 60;
         }
 
-       /*boolean explosion = p.getLastDamageCause().getCause() == EntityDamageEvent.DamageCause.BLOCK_EXPLOSION ||
-                p.getLastDamageCause().getCause() == EntityDamageEvent.DamageCause.ENTITY_EXPLOSION;*/
-
         World w = p.getWorld();
         Location deathLocation = p.getLocation();
 
@@ -89,6 +88,41 @@ public class FriedhofListener implements Listener {
         meta.setOwningPlayer(p);
         meta.setDisplayName("§6" + p.getName());
         head.setItemMeta(meta);
+
+        Player killer = p.getKiller();
+
+        if ((Organisation.getOrganisation(killer) == Organisation.HITMEN) && (!DependencyContainer.getContainer().getDependency(IBizWarService.class).isMemberOfBizWar(p)) && (!DependencyContainer.getContainer().getDependency(IDeathmatchArenaService.class).isInDeathmatch(p, false))) {
+            Contract ct = Contract.getContract(p);
+            if(ct != null) {
+                Script.addEXP(killer, Script.getRandom(8, 16), true);
+                Organisation.HITMEN.addExp(Script.getRandom(20, 30));
+                Organisation.HITMEN.sendMessage(Contract.PREFIX + Script.getName(killer) + " hat " + Script.getName(p) + " getötet.");
+                Organisation.HITMEN.addKasse(ct.getPrice());
+                p.sendMessage(Contract.PREFIX + "Du wurdest getötet weil ein Kopfgeld auf dich ausgesetzt wurde.");
+                Activity.grantActivity(Script.getNRPID(killer), Activities.CT_KILL);
+                Contract.remove(ct);
+
+                Friedhof friedhof = new Friedhof(Script.getNRPID(p), p.getName(), new Location(Script.WORLD, 0D, 1000D, 0D), System.currentTimeMillis(), 1200, 0, null);
+                Friedhof.setDead(p, friedhof);
+                Script.setMoney(p, PaymentType.CASH, 0);
+                p.getInventory().clear();
+                p.getItemOnCursor().setType(Material.AIR);
+
+                if(Call.isOnCall(p)) {
+                    if (Call.isWaitingForCall(p)) {
+                        Call.deny(p);
+                    } else if (Call.getParticipants(Call.getCallIDByPlayer(p)).size() == 1) {
+                        Call.abort(p);
+                    } else {
+                        Call.hangup(p);
+                    }
+                }
+
+                Notifications.sendMessage(Notifications.NotificationType.DEAD, Script.getName(p) + " ist gestorben (Kopfgeld) " + (killer!=null ? Messages.ARROW + " " + Script.getName(killer):Messages.ARROW + " " + (p.getLastDamageCause() != null?p.getLastDamageCause().getCause().name():"")));
+                return;
+            }
+        }
+
         Corpse.spawnNPC(p);
         int cash = Script.getMoney(p, PaymentType.CASH);
         Script.setMoney(p, PaymentType.CASH, 0);
@@ -116,7 +150,6 @@ public class FriedhofListener implements Listener {
 
         Friedhof friedhof = new Friedhof(Script.getNRPID(p), p.getName(), deathLocation, System.currentTimeMillis(), deathtime, cash, inventoryContent);
         Friedhof.setDead(p, friedhof);
-        Player killer = p.getKiller();
         Notifications.sendMessage(Notifications.NotificationType.DEAD, Script.getName(p) + " ist gestorben " + (killer!=null ? Messages.ARROW + " " + Script.getName(killer):Messages.ARROW + " " + (p.getLastDamageCause() != null?p.getLastDamageCause().getCause().name():"")));
 
         Utils.alkLevel.remove(p.getUniqueId());
