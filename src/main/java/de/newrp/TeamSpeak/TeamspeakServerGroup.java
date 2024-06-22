@@ -22,7 +22,7 @@ public enum TeamspeakServerGroup {
     CORLEONE(44),
     GROVE(48),
     BRATERSTWO(45),
-    SINOLA_KARTELL(49),
+    MIAMI_VIPERS(49),
     ENTWICKLUNG(50),
     DEV(53),
     CEO(54),

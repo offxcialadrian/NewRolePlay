@@ -256,6 +256,7 @@ public class OrgSpray implements Listener {
         TRIORLA(2),
         FALCONE(3),
         CORLEONE(4),
+        MIAMI_VIPERS(6),
         POLICE(5);
 
         private final int id;
@@ -343,6 +344,17 @@ public class OrgSpray implements Listener {
             } else if (this == POLICE) {
                 List<Pattern> patterns = new ArrayList<>();
                 patterns.add(new Pattern(DyeColor.WHITE, PatternType.BASE));
+                return patterns;
+            } else if(this == MIAMI_VIPERS) {
+                // To-Do: Change
+                List<Pattern> patterns = new ArrayList<>();
+                patterns.add(new Pattern(DyeColor.WHITE, PatternType.BASE));
+                patterns.add(new Pattern(DyeColor.RED, PatternType.CURLY_BORDER));
+                patterns.add(new Pattern(DyeColor.YELLOW, PatternType.CIRCLE_MIDDLE));
+                patterns.add(new Pattern(DyeColor.RED, PatternType.GRADIENT));
+                patterns.add(new Pattern(DyeColor.RED, PatternType.CROSS)); //Bitte überprüfen, ob es das diagonale ist
+                patterns.add(new Pattern(DyeColor.WHITE, PatternType.FLOWER));
+                patterns.add(new Pattern(DyeColor.WHITE, PatternType.TRIANGLE_TOP));
                 return patterns;
             }
             return new ArrayList<>();
