@@ -44,7 +44,7 @@ public class ContractCommand implements CommandExecutor, TabCompleter {
 
             switch (args[0].toLowerCase()) {
                 case "set":
-                    if (args.length > 3) {
+                    if (args.length > 2) {
                         Player target = Script.getPlayer(args[1]);
                         if(target == null) {
                             player.sendMessage(Messages.PLAYER_NOT_FOUND);
