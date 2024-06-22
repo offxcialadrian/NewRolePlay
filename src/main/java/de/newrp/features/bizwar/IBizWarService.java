@@ -46,6 +46,8 @@ public interface IBizWarService {
 
     String getPrefix();
 
+    void checkForTeamKill(final Player player);
+
     void addOrgaCooldown(final Organisation organisation, final long cooldown);
 
     void addShopCooldown(final Shops shop, final long cooldown);

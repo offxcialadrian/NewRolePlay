@@ -4,6 +4,7 @@ import de.newrp.API.*;
 import de.newrp.NewRoleplayMain;
 import de.newrp.Organisationen.Drogen;
 import de.newrp.Organisationen.Organisation;
+import de.newrp.Shop.ShopItem;
 import de.newrp.Shop.Shops;
 import de.newrp.Waffen.Waffen;
 import de.newrp.Waffen.Weapon;
@@ -14,8 +15,10 @@ import de.newrp.features.bizwar.config.BizWarShopConfig;
 import de.newrp.features.bizwar.data.ActiveBizWarInformation;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 
 import java.sql.PreparedStatement;
@@ -133,7 +136,6 @@ public class BizWarService implements IBizWarService {
             loserPlayer.playSound(loserPlayer.getLocation(), Sound.ENTITY_WITHER_DEATH, 1f, 1f);
         }
 
-        // Only add if fight has happened
         if(!loser.getMember().isEmpty()) {
             winner.addExp(Script.getRandom(70, 90));
             loser.removeExp(Script.getRandom(30, 45));
@@ -218,6 +220,7 @@ public class BizWarService implements IBizWarService {
 
         Script.updateListname(player);
 
+        Krankheit.ENTZUENDUNG.remove(Script.getNRPID(player));
         Cache.saveInventory(player);
         this.equipPlayerForBizWar(player);
     }
@@ -315,14 +318,9 @@ public class BizWarService implements IBizWarService {
         player.setMaxHealth(40);
         player.setHealth(player.getMaxHealth());
 
-        for (Weapon weapon : Weapon.values()) {
-            if(weapon == Weapon.SNIPER) continue;
-            if(weapon == Weapon.DESERT_EAGLE) continue;
-            if(weapon == Weapon.MP7) continue;
-            if(weapon == Weapon.PISTOLE) continue;
-
-            player.getInventory().addItem(Waffen.setAmmo(weapon.getWeapon(), weapon.getMagazineSize(), 100));
-        }
+        player.getInventory().addItem(Waffen.setAmmo(Weapon.AK47.getWeapon(), Weapon.AK47.getMagazineSize(), 300));
+        player.getInventory().addItem(Waffen.setAmmo(Weapon.JAGDFLINTE.getWeapon(), Weapon.JAGDFLINTE.getMagazineSize(), 15));
+        player.getInventory().addItem(new ItemBuilder(Material.BREAD).setNoDrop().setAmount(64).build());
 
         for (final Drogen drug : Drogen.values()) {
             if(drug == Drogen.ANTIBIOTIKA) {
@@ -337,8 +335,18 @@ public class BizWarService implements IBizWarService {
                 continue;
             }
 
-            player.getInventory().addItem(new ItemBuilder(drug.getMaterial()).setName(drug.getName()).setLore("§7Reinheitsgrad: " + Drogen.DrugPurity.HIGH.getText()).setAmount(5).build());
+
+            player.getInventory().addItem(new ItemBuilder(drug.getMaterial()).setName(drug.getName()).setNoDrop().setLore("§7Reinheitsgrad: " + Drogen.DrugPurity.HIGH.getText()).setAmount(5).build());
         }
+
+        player.getInventory().addItem(new ItemBuilder(ShopItem.SCHMERZMITTEL_HIGH.getItemStack().clone()).setNoDrop().setAmount(10).build());
+        player.getInventory().addItem(new ItemBuilder(ShopItem.VERBAND.getItemStack().clone()).setNoDrop().setAmount(2).build());
+
+        final ItemStack itemStack = new ItemBuilder(ShopItem.TRINKWASSER.getItemStack().clone()).setNoDrop().build();
+        for(int i = 0; i < 10; i++) {
+            player.getInventory().addItem(itemStack);
+        }
+
     }
 
     @Override
@@ -365,6 +373,60 @@ public class BizWarService implements IBizWarService {
     @Override
     public String getPrefix() {
         return "§8[§cBIZ-War§8] §c" + Messages.ARROW + " §7";
+    }
+
+    @Override
+    public void checkForTeamKill(Player player) {
+        if(!this.isMemberOfBizWar(player)) {
+            return;
+        }
+
+        final ActiveBizWarInformation activeBizWarInformation = this.getBizWarOfPlayer(player);
+        final boolean isAttacker = activeBizWarInformation.getJoinedMembersOfAttackers().contains(player.getUniqueId());
+
+        if(isAttacker) {
+            boolean allAttackersDead = true;
+            for (UUID joinedMembersOfAttacker : activeBizWarInformation.getJoinedMembersOfAttackers()) {
+                final Player attacker = Bukkit.getPlayer(joinedMembersOfAttacker);
+                if(attacker == null) continue;
+                if(!Friedhof.isDead(attacker)) {
+                    allAttackersDead = false;
+                    break;
+                }
+            }
+
+            if(allAttackersDead) {
+                activeBizWarInformation.getDefenderOrganisation().sendMessage(this.getPrefix() + "§6§lAce! §7Ihr habt alle Angreifer getötet, gute Arbeit!");
+                for (UUID uuid : activeBizWarInformation.getDefenderOrganisation().getMember()) {
+                    final Player defender = Bukkit.getPlayer(uuid);
+                    if(defender == null) continue;
+
+                    defender.playSound(defender.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1f, 1f);
+                    defender.sendTitle("§6§lAce!", "§7Ihr habt alle Angreifer getötet!", 10, 60, 10);
+                }
+            }
+        } else {
+            boolean allDefendersDead = true;
+            for (UUID joinedMembersOfDefenders : activeBizWarInformation.getJoinedMembersOfDefenders()) {
+                final Player defender = Bukkit.getPlayer(joinedMembersOfDefenders);
+                if(defender == null) continue;
+                if(!Friedhof.isDead(defender)) {
+                    allDefendersDead = false;
+                    break;
+                }
+            }
+
+            if(allDefendersDead) {
+                activeBizWarInformation.getAttackerOrganisation().sendMessage(this.getPrefix() + "§6§lAce! §7Ihr habt alle Verteidiger getötet, gute Arbeit!");
+                for (UUID uuid : activeBizWarInformation.getAttackerOrganisation().getMember()) {
+                    final Player attacker = Bukkit.getPlayer(uuid);
+                    if(attacker == null) continue;
+
+                    attacker.playSound(attacker.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1f, 1f);
+                    attacker.sendTitle("§6§lAce!", "§7Ihr habt alle Verteidiger getötet!", 10, 60, 10);
+                }
+            }
+        }
     }
 
     @Override

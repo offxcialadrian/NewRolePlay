@@ -77,6 +77,7 @@ public class FriedhofListener implements Listener {
         if(GangwarCommand.isInGangwar(p)) {
             deathtime = 120;
         } else if(DependencyContainer.getContainer().getDependency(IBizWarService.class).isMemberOfBizWar(p)) {
+            DependencyContainer.getContainer().getDependency(IBizWarService.class).checkForTeamKill(p);
             deathtime = 60;
         }
 

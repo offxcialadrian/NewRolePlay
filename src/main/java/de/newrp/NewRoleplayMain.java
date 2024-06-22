@@ -761,7 +761,7 @@ public class NewRoleplayMain extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new ShopNPC(), this);
         Bukkit.getPluginManager().registerEvents(new Dealer(), this);
         Bukkit.getPluginManager().registerEvents(new Pets(), this);
-        Bukkit.getPluginManager().registerEvents(new ContractHandler(), this);
+        Bukkit.getPluginManager().registerEvents(new NoDropListener(), this);
     }
 
     /**
