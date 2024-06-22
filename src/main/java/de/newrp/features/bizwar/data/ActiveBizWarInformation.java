@@ -64,7 +64,7 @@ public class ActiveBizWarInformation {
                 continue;
             }
             final int distanceToShop = (int) player.getLocation().distance(this.attackedShop.getLocation());
-            if(distanceToShop > 75) {
+            if(distanceToShop > 150) {
                 Script.sendActionBar(player, "§c§lDu bist zu weit vom Shop entfernt!");
                 continue;
             }
@@ -82,7 +82,7 @@ public class ActiveBizWarInformation {
                 continue;
             }
             final int distanceToShop = (int) player.getLocation().distance(this.attackedShop.getLocation());
-            if(distanceToShop > 75) {
+            if(distanceToShop > 150) {
                 Script.sendActionBar(player, "§c§lDu bist zu weit vom Shop entfernt!");
                 continue;
             }

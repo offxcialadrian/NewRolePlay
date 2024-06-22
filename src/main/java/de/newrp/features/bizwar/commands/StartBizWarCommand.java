@@ -86,8 +86,7 @@ public class StartBizWarCommand implements CommandExecutor {
         if(activeOwner == null) {
             organisation.sendMessage(this.bizWarService.getPrefix() + "Der Shop §e" + shop.getPublicName() + " §7wurde von §e" + Script.getName(player) + " §7übernommen!");
             this.bizWarService.setOwnerOfShop(shop, organisation);
-            this.bizWarService.addOrgaCooldown(organisation, TimeUnit.HOURS.toMillis(1));
-            organisation.sendMessage(Messages.INFO + "Wegen der kampflosen Übernahme habt ihr einen Cooldown von einer Stunde bekommmen");
+            organisation.sendMessage(Messages.INFO + "Wegen der kampflosen Übernahme habt ihr keinen Cooldown bekommen");
             return false;
         }
 
