@@ -63,8 +63,8 @@ public class ContractCommand implements CommandExecutor, TabCompleter {
                             return true;
                         }
 
-                        if (price < 2000) {
-                            player.sendMessage(Messages.ERROR + "Der Mindestpreis für Kopfgeld beträgt 2000€.");
+                        if (price < 1000) {
+                            player.sendMessage(Messages.ERROR + "Der Mindestpreis für Kopfgeld beträgt 1000€.");
                             return true;
                         }
 
