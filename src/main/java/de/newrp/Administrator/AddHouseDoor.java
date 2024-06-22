@@ -77,7 +77,7 @@ public class AddHouseDoor implements CommandExecutor, Listener {
         Player p = e.getPlayer();
         p.getInventory().getItemInMainHand();
         if (p.getInventory().getItemInMainHand().hasItemMeta()) return;
-        if (!Script.hasRank(p, Rank.ADMINISTRATOR, false)) return;
+        if (!Script.hasRank(p, Rank.MODERATOR, false)) return;
         if(!SDuty.isSDuty(p)) return;
         e.setCancelled(true);
         if (action == Action.RIGHT_CLICK_BLOCK) {
