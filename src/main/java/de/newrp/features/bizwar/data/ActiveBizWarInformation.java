@@ -57,8 +57,6 @@ public class ActiveBizWarInformation {
             final Player player = Bukkit.getPlayer(joinedMembersOfAttacker);
             if(player == null) continue;
 
-
-
             if(Friedhof.isDead(player)) {
                 if(ticksPassedSinceStart % 20 == 0) {
                    player.sendMessage(DependencyContainer.getContainer().getDependency(IBizWarService.class).getPrefix() + "§7Es steht §a" + this.currentAttackerPoints + " (Ihr) §7zu §c" + this.currentDefenderPoints + " (" + this.defenderOrganisation.getName() + ")");
