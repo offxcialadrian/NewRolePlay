@@ -98,6 +98,8 @@ public enum Activities {
                     disabled.put(-orga.getID(), Arrays.asList());
                 case CORLEONE:
                     disabled.put(-orga.getID(), Arrays.asList());
+                case MIAMI_VIPERS:
+                    disabled.put(-orga.getID(), Arrays.asList());
                 default:
             }
         }
