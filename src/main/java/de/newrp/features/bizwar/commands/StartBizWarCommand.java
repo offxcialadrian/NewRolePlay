@@ -85,7 +85,7 @@ public class StartBizWarCommand implements CommandExecutor {
         final long timeTillNextAttack = shopCooldown - System.currentTimeMillis();
 
         if(timeTillNextAttack > 0) {
-            player.sendMessage(Messages.ERROR + "§cDu kannst diesen Shop erst in" + TimeUnit.MILLISECONDS.toMinutes(timeTillNextAttack) + "min erneut angreifen!");
+            player.sendMessage(Messages.ERROR + "§cDu kannst diesen Shop erst in " + TimeUnit.MILLISECONDS.toMinutes(timeTillNextAttack) + "min erneut angreifen!");
             return false;
         }
 
