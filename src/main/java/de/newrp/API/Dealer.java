@@ -85,13 +85,13 @@ public class Dealer implements Listener {
             int price;
             switch (drug) {
                 case PULVER:
-                    price = 30;
+                    price = 10;
                     break;
                 case KRÄUTER:
-                    price = 35;
+                    price = 15;
                     break;
                 case ECSTASY:
-                    price = 400;
+                    price = 150;
                     break;
                 case KRISTALLE:
                     price = 1000;
