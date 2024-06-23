@@ -1814,10 +1814,6 @@ public class Script {
     }
 
     public static void addEXP(Player p, int exp, boolean event) {
-        /// ???
-        if (exp > 200) {
-            Script.sendTeamMessage(AntiCheatSystem.PREFIX + "Verdacht auf Exp-Cheat bei " + Script.getName(p) + " (+" + exp + " Exp)");
-        }
         int id = getNRPID(p);
         if (event) {
             if (Script.getLevel(p) > 1) {
@@ -1835,6 +1831,10 @@ public class Script {
             }
         } else {
             p.sendMessage(" §a+" + exp + " Exp!");
+        }
+
+        if (exp > 200) {
+            Script.sendTeamMessage(AntiCheatSystem.PREFIX + "Verdacht auf Exp-Cheat bei " + Script.getName(p) + " (+" + exp + " Exp)");
         }
 
         sendActionBar(p, "§a+ " + exp + " Exp!");
