@@ -269,7 +269,9 @@ public class Arbeitslosengeld implements CommandExecutor {
     public static Player getPlayerByArbeitslosengeldID(int id) {
         try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM arbeitslosengeld WHERE id=" + id)) {
-            return Script.getPlayer(rs.getInt("nrp_id"));
+            if(rs.next()) {
+                return Script.getPlayer(rs.getInt("nrp_id"));
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
