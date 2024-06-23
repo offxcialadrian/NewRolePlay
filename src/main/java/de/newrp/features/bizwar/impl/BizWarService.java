@@ -300,14 +300,24 @@ public class BizWarService implements IBizWarService {
 
     @Override
     public void setOwnerOfShop(Shops shop, Organisation organisation) {
-        this.activeExtortions.put(shop, organisation);
-        try(final PreparedStatement preparedStatement = NewRoleplayMain.getConnection().prepareStatement("REPLACE INTO extorted_shops(shop_id, organisation_id, exorted_timestamp) VALUES(?, ?, ?)")) {
-            preparedStatement.setInt(1, shop.getID());
-            preparedStatement.setInt(2, organisation.getID());
-            preparedStatement.setLong(3, System.currentTimeMillis());
-            preparedStatement.executeUpdate();
-        } catch (Exception e) {
-            NewRoleplayMain.handleError(e);
+        if(organisation == null) {
+            this.activeExtortions.remove(shop);
+            try(final PreparedStatement preparedStatement = NewRoleplayMain.getConnection().prepareStatement("DELETE FROM extorted_shops WHERE shop_id = ?")) {
+                preparedStatement.setInt(1, shop.getID());
+                preparedStatement.executeUpdate();
+            } catch (Exception e) {
+                NewRoleplayMain.handleError(e);
+            }
+        } else {
+            this.activeExtortions.put(shop, organisation);
+            try(final PreparedStatement preparedStatement = NewRoleplayMain.getConnection().prepareStatement("REPLACE INTO extorted_shops(shop_id, organisation_id, exorted_timestamp) VALUES(?, ?, ?)")) {
+                preparedStatement.setInt(1, shop.getID());
+                preparedStatement.setInt(2, organisation.getID());
+                preparedStatement.setLong(3, System.currentTimeMillis());
+                preparedStatement.executeUpdate();
+            } catch (Exception e) {
+                NewRoleplayMain.handleError(e);
+            }
         }
     }
 
