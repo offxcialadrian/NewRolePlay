@@ -66,7 +66,6 @@ public class RecommendationService implements IRecommendationService {
 
     @Override
     public boolean hasActiveChatInput(Player player) {
-        System.out.println("has active chat input: " + this.activeChatInputs.contains(player.getUniqueId()));
         return this.activeChatInputs.contains(player.getUniqueId());
     }
 }

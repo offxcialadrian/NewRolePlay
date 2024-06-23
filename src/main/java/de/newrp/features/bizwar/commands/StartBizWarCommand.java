@@ -2,10 +2,13 @@ package de.newrp.features.bizwar.commands;
 
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
+import de.newrp.Gangwar.GangwarCommand;
 import de.newrp.Organisationen.Organisation;
 import de.newrp.Shop.Shops;
 import de.newrp.dependencies.DependencyContainer;
 import de.newrp.features.bizwar.IBizWarService;
+import de.newrp.features.bizwar.config.BizWarConfig;
+import de.newrp.features.bizwar.config.BizWarShopConfig;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -13,6 +16,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.text.SimpleDateFormat;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 public class StartBizWarCommand implements CommandExecutor {
@@ -37,6 +41,7 @@ public class StartBizWarCommand implements CommandExecutor {
             player.sendMessage(Messages.ERROR + "§cDu musst mindestens Level 3 sein um einen Biz War starten zu können");
             return false;
         }
+
 
         /*if(organisation == Organisation.HITMEN) {
             player.sendMessage(Messages.ERROR + "§cDeine Fraktion kann keinen Biz War starten!");
@@ -74,6 +79,8 @@ public class StartBizWarCommand implements CommandExecutor {
         }
 
 
+
+
         final long shopCooldown = this.bizWarService.getActiveCooldownOnShop(shop);
         final long timeTillNextAttack = shopCooldown - System.currentTimeMillis();
 
@@ -83,16 +90,26 @@ public class StartBizWarCommand implements CommandExecutor {
         }
 
         final Organisation activeOwner = bizWarService.getCurrentOwnerOfShop(shop);
+        final Optional<BizWarShopConfig> optional = DependencyContainer.getContainer().getDependency(BizWarConfig.class).getShopConfigs().stream().filter(e -> e.getShopId() == shop.getID()).findFirst();
+        if(!optional.isPresent()) {
+            player.sendMessage("Der Shop §e" + shop.getPublicName() + " §7kann nicht angegriffen werden!");
+            return false;
+        }
         if(activeOwner == null) {
             organisation.sendMessage(this.bizWarService.getPrefix() + "Der Shop §e" + shop.getPublicName() + " §7wurde von §e" + Script.getName(player) + " §7übernommen!");
             this.bizWarService.setOwnerOfShop(shop, organisation);
-            this.bizWarService.addOrgaCooldown(organisation, TimeUnit.HOURS.toMillis(1));
-            organisation.sendMessage(Messages.INFO + "Wegen der kampflosen Übernahme habt ihr einen Cooldown von einer Stunde bekommmen");
+            organisation.sendMessage(Messages.INFO + "Wegen der kampflosen Übernahme habt ihr keinen Cooldown bekommen");
             return false;
         }
 
         if(activeOwner == organisation) {
             player.sendMessage(Messages.ERROR + "§cDu kannst einen Shop unter eurer Kontrolle nicht erneut angreifen!");
+            return false;
+        }
+
+
+        if(GangwarCommand.isInGangwar(activeOwner)) {
+            player.sendMessage(Messages.ERROR + "§cDie Organisation §e" + activeOwner.getName() + " §cist in einem Gangwar!");
             return false;
         }
 

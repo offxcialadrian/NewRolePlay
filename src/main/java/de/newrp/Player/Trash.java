@@ -46,7 +46,6 @@ public class Trash implements Listener {
             }
         }
         Inventory inv = Bukkit.createInventory(null, InventoryType.HOPPER, "§7Mülleimer");
-        Bukkit.getLogger().info("b is " + b);
         if (b) {
             ItemStack is;
             if (content.containsKey(e.getBlock().getLocation())) {

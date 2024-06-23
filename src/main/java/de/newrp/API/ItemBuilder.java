@@ -1,8 +1,11 @@
 package de.newrp.API;
 
+import de.newrp.NewRoleplayMain;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataType;
 
 import java.util.Arrays;
 
@@ -20,6 +23,11 @@ public class ItemBuilder {
         this(material, (short) 0);
     }
 
+    public ItemBuilder(ItemStack itemStack) {
+        is = itemStack;
+        im = is.getItemMeta();
+    }
+
     public ItemBuilder setName(String name) {
         im.setDisplayName(name);
         return this;
@@ -33,6 +41,26 @@ public class ItemBuilder {
     public ItemBuilder setAmount(int amount) {
         is.setAmount(amount);
         return this;
+    }
+
+    public ItemBuilder setNBTString(String key, String value) {
+        im.getPersistentDataContainer().set(new NamespacedKey(NewRoleplayMain.getInstance(), key), PersistentDataType.STRING, value);
+        return this;
+    }
+
+    public ItemBuilder setNoDrop() {
+        return setNBTString("noDrop", "true");
+    }
+
+    public boolean isNoDrop() {
+        return hasNBTString("noDrop");
+    }
+
+    public boolean hasNBTString(String key) {
+        if(im == null) {
+            return false;
+        }
+        return im.getPersistentDataContainer().has(new NamespacedKey(NewRoleplayMain.getInstance(), key), PersistentDataType.STRING);
     }
 
     public ItemStack build() {

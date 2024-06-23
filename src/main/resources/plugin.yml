@@ -856,3 +856,5 @@ commands:
   contract:
     description: hitmens contract-system
     aliases: [ contracts, cts, kopfgeld ]
+  getshopid:
+    description: get shop id

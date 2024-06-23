@@ -39,7 +39,7 @@ public class Strecken implements CommandExecutor {
             return true;
         }
 
-        if (droge == Drogen.ECSTASY && purity.getID() > 0) {
+        if (droge == Drogen.ECSTASY) {
             p.sendMessage(Messages.ERROR + "Diese Substanz kann nicht weiter gestreckt werden.");
             return true;
         }

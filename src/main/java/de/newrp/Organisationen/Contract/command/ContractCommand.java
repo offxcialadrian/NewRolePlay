@@ -44,7 +44,7 @@ public class ContractCommand implements CommandExecutor, TabCompleter {
 
             switch (args[0].toLowerCase()) {
                 case "set":
-                    if (args.length > 3) {
+                    if (args.length > 2) {
                         Player target = Script.getPlayer(args[1]);
                         if(target == null) {
                             player.sendMessage(Messages.PLAYER_NOT_FOUND);
@@ -63,8 +63,8 @@ public class ContractCommand implements CommandExecutor, TabCompleter {
                             return true;
                         }
 
-                        if (price < 2000) {
-                            player.sendMessage(Messages.ERROR + "Der Mindestpreis für Kopfgeld beträgt 2000€.");
+                        if (price < 1000) {
+                            player.sendMessage(Messages.ERROR + "Der Mindestpreis für Kopfgeld beträgt 1000€.");
                             return true;
                         }
 

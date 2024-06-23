@@ -91,8 +91,10 @@ public class SQLCommand implements CommandExecutor {
                     break;
                 case "run":
                     if(!NewRoleplayMain.isTest()) {
-                        player.sendMessage(Messages.ERROR + "Dieser Befehl ist nur im Testmodus ausführbar!");
-                        return;
+                        if(!Team.isTeamLeader(player)) {
+                            player.sendMessage(Messages.ERROR + "Dieser Befehl ist nur im Testmodus ausführbar!");
+                            return;
+                        }
                     }
 
                     if(args.length < 2) {
