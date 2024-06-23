@@ -79,7 +79,7 @@ public class Sellfisch implements CommandExecutor {
             if (is.getType() != Material.TROPICAL_FISH && is.getType() != Material.COD && is.getType() != Material.SALMON && is.getType() != Material.PUFFERFISH)
                 continue;
             if(is.getType() == Material.PUFFERFISH) i += ((3*is.getAmount())/2);
-            if(is.getType() == Material.TROPICAL_FISH) i += (int) (1.25*is.getAmount());
+            if(is.getType() == Material.TROPICAL_FISH) i += (int) (10*is.getAmount());
             if(is.getType() == Material.COD) i += is.getAmount();
             if(is.getType() == Material.SALMON) i += (int) (1.5*is.getAmount());
             c += is.getAmount();
