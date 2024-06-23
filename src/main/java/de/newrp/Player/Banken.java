@@ -171,7 +171,7 @@ public class Banken implements CommandExecutor, Listener {
 
         Inventory inv = Bukkit.createInventory(null, 9, "§aBanken");
         int i = 0;
-        DecimalFormat df = new DecimalFormat("#.##", new DecimalFormatSymbols(Locale.ENGLISH));
+        DecimalFormat df = new DecimalFormat("#.####", new DecimalFormatSymbols(Locale.ENGLISH));
         for (Bank bank : Bank.values()) {
             inv.setItem(i, new ItemBuilder(Material.CHEST).setName("§9" + bank.getName()).setLore(
                     " §7 " + Messages.ARROW + " Einrichtungsgebühr: §e" + bank.getEinrichtigungsKosten() + "€",

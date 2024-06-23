@@ -273,9 +273,9 @@ public class LockpickHandler implements Listener {
                 int g = 1 + new Random().nextInt(7);
                 ItemStack drug;
                 if (x < 0.4) {
-                    drug = new ItemStack(Material.SUGAR);
+                    drug = new ItemStack(Material.SUGAR, g);
                 } else if (x < 0.8) {
-                    drug = new ItemStack(Material.GREEN_DYE);
+                    drug = new ItemStack(Material.GREEN_DYE, g);
                 } else {
                     drug = new ItemStack(Material.AIR);
                 }
