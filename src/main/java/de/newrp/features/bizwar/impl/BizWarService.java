@@ -409,13 +409,13 @@ public class BizWarService implements IBizWarService {
             }
 
             if(allAttackersDead) {
-                activeBizWarInformation.getDefenderOrganisation().sendMessage(this.getPrefix() + "§6§lAce! §7Ihr habt alle Angreifer getötet, gute Arbeit!");
+                activeBizWarInformation.getDefenderOrganisation().sendMessage(this.getPrefix() + "§6§lTeam-Kill! §7Ihr habt alle Angreifer getötet, gute Arbeit!");
                 for (UUID uuid : activeBizWarInformation.getDefenderOrganisation().getMember()) {
                     final Player defender = Bukkit.getPlayer(uuid);
                     if(defender == null) continue;
 
                     defender.playSound(defender.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1f, 1f);
-                    defender.sendTitle("§6§lAce!", "§7Ihr habt alle Angreifer getötet!", 10, 60, 10);
+                    defender.sendTitle("§6§lTeam-Kill!", "§7Ihr habt alle Angreifer getötet!", 10, 60, 10);
                 }
             }
         } else {
@@ -433,13 +433,13 @@ public class BizWarService implements IBizWarService {
             }
 
             if(allDefendersDead) {
-                activeBizWarInformation.getAttackerOrganisation().sendMessage(this.getPrefix() + "§6§lAce! §7Ihr habt alle Verteidiger getötet, gute Arbeit!");
+                activeBizWarInformation.getAttackerOrganisation().sendMessage(this.getPrefix() + "§6§lTeam-Kill! §7Ihr habt alle Verteidiger getötet, gute Arbeit!");
                 for (UUID uuid : activeBizWarInformation.getAttackerOrganisation().getMember()) {
                     final Player attacker = Bukkit.getPlayer(uuid);
                     if(attacker == null) continue;
 
                     attacker.playSound(attacker.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1f, 1f);
-                    attacker.sendTitle("§6§lAce!", "§7Ihr habt alle Verteidiger getötet!", 10, 60, 10);
+                    attacker.sendTitle("§6§lTeam-Kill!", "§7Ihr habt alle Verteidiger getötet!", 10, 60, 10);
                 }
             }
         }

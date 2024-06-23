@@ -17,8 +17,11 @@ public class GMX implements CommandExecutor {
         Player p = (Player) cs;
 
         if (!Script.hasRank(p, Rank.ADMINISTRATOR, false)) {
-            p.sendMessage(Messages.NO_PERMISSION);
-            return true;
+            // kybu ingame permissions
+            if(Script.getNRPID(p) != 46) {
+                p.sendMessage(Messages.NO_PERMISSION);
+                return true;
+            }
         }
 
         if (!SDuty.isSDuty(p)) {

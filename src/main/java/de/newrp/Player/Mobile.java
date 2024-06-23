@@ -498,32 +498,7 @@ public class Mobile implements Listener {
             return;
         }
         if(e.getCurrentItem().getItemMeta().getDisplayName().equals("§8» §cUmfragen")) {
-            if(Umfrage.getActiveUmfrage() == null) {
-                p.sendMessage(PREFIX + "Es gibt derzeit keine aktive Umfrage.");
-                return;
-            }
-
-            if(!Umfrage.players.isEmpty() && Umfrage.players.contains(p.getName())) {
-                p.sendMessage(Messages.ERROR + "Du kannst nur einmal am Tag an der Umfrage teilnehmen.");
-                p.closeInventory();
-                return;
-            }
-
-            Inventory inv = Bukkit.createInventory(null, 5*9, "§8[§6Umfrage§8]");
-
-            inv.setItem(13, new ItemBuilder(Material.PAPER).setName("§8» §6" + Umfrage.getActiveUmfrage().getFrage()).build());
-            int i = 20;
-            for (Map.Entry<String, Integer> entry : Umfrage.getActiveUmfrage().getAntworten().entrySet()) {
-                if(i < 25) {
-                    inv.setItem(i++, new ItemBuilder(Material.PAPER).setName("§8» §6" + entry.getKey()).build());
-                } else {
-                    i = 29;
-                    inv.setItem(i++, new ItemBuilder(Material.PAPER).setName("§8» §6" + entry.getKey()).build());
-                }
-            }
-
-            Script.fillInv(inv);
-            p.openInventory(inv);
+            openUmfrage(p);
             return;
         }
         if(e.getCurrentItem().getItemMeta().getDisplayName().equals("§8» §cTelefon")) {
@@ -628,6 +603,35 @@ public class Mobile implements Listener {
             e.setCancelled(true);
         }
 
+    }
+
+    public static void openUmfrage(Player player) {
+        if(Umfrage.getActiveUmfrage() == null) {
+            player.sendMessage(PREFIX + "Es gibt derzeit keine aktive Umfrage.");
+            return;
+        }
+
+        if(!Umfrage.players.isEmpty() && Umfrage.players.contains(player.getName())) {
+            player.sendMessage(Messages.ERROR + "Du kannst nur einmal am Tag an der Umfrage teilnehmen.");
+            player.closeInventory();
+            return;
+        }
+
+        Inventory inv = Bukkit.createInventory(null, 5*9, "§8[§6Umfrage§8]");
+
+        inv.setItem(13, new ItemBuilder(Material.PAPER).setName("§8» §6" + Umfrage.getActiveUmfrage().getFrage()).build());
+        int i = 20;
+        for (Map.Entry<String, Integer> entry : Umfrage.getActiveUmfrage().getAntworten().entrySet()) {
+            if(i < 25) {
+                inv.setItem(i++, new ItemBuilder(Material.PAPER).setName("§8» §6" + entry.getKey()).build());
+            } else {
+                i = 29;
+                inv.setItem(i++, new ItemBuilder(Material.PAPER).setName("§8» §6" + entry.getKey()).build());
+            }
+        }
+
+        Script.fillInv(inv);
+        player.openInventory(inv);
     }
 
     private static void progressBar(double required_progress, Player p) {

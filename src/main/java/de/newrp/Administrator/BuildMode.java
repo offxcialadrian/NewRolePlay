@@ -216,9 +216,8 @@ public class BuildMode implements CommandExecutor, Listener {
         p.setGameMode(GameMode.CREATIVE);
         Log.NORMAL.write(p, "hat den BuildMode betreten.");
         for (Player online : Bukkit.getOnlinePlayers()) {
-            if (!Script.hasRank(online, Rank.SUPPORTER, false)) {
+            if (!Script.hasRank(online, Rank.DEVELOPER, false)) {
                 if (Team.getTeam(online) != Team.Teams.BAU) {
-                    //Debug.debug("hiding " + p.getName() + " from " + online.getName());
                     online.hidePlayer(NewRoleplayMain.getInstance(), p);
                 }
             }

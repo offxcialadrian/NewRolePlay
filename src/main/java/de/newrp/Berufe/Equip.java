@@ -43,7 +43,7 @@ public class Equip implements CommandExecutor, Listener {
         RAUCHGRANATE(9, "Rauchgranate", Script.rauchgranate(), 200, 0, new Abteilung.Abteilungen[]{Abteilung.Abteilungen.SEK, Abteilung.Abteilungen.ABTEILUNGSLEITUNG}, new Beruf.Berufe[]{Beruf.Berufe.POLICE}, true),
         FLASHBANG(10, "Flashbang", Script.flashbang(), 150, 0, new Abteilung.Abteilungen[]{Abteilung.Abteilungen.SEK, Abteilung.Abteilungen.ABTEILUNGSLEITUNG}, new Beruf.Berufe[]{Beruf.Berufe.POLICE}, true),
         FALLSCHIRM(11, "Fallschirm", Script.fallschirm(), 300, 0, null, new Beruf.Berufe[]{Beruf.Berufe.POLICE}, false),
-        ZEITUNG(12, "Buch und Stift", Script.setName(new ItemStack(Material.WRITABLE_BOOK), "§7Buch und Stift"), 20, 0, new Abteilung.Abteilungen[]{Abteilung.Abteilungen.JOURNALIST}, new Beruf.Berufe[]{Beruf.Berufe.NEWS}, false),
+        ZEITUNG(12, "Buch und Stift", Script.setName(new ItemStack(Material.WRITABLE_BOOK), "§7Buch und Stift"), 20, 0, new Abteilung.Abteilungen[]{Abteilung.Abteilungen.JOURNALIST, Abteilung.Abteilungen.CHEFREDAKTION, Abteilung.Abteilungen.TV}, new Beruf.Berufe[]{Beruf.Berufe.NEWS}, false),
         VERBAND(13, "Verband", new ItemBuilder(Material.PAPER).setName("§7Verband").setAmount(5).build(), 50, 0, null, new Beruf.Berufe[]{Beruf.Berufe.RETTUNGSDIENST}, true),
         GIPS(14, "Gips", Script.setName(new ItemStack(Material.PAPER), "§7Gips"), 50, 0, null, new Beruf.Berufe[]{Beruf.Berufe.RETTUNGSDIENST}, true),
         SCHWERE_SCHUTZWESTE(15, "Schwere Schutzweste", Script.kevlar(2), 1200, 0, new Abteilung.Abteilungen[]{Abteilung.Abteilungen.SEK, Abteilung.Abteilungen.ABTEILUNGSLEITUNG}, new Beruf.Berufe[]{Beruf.Berufe.POLICE}, true),

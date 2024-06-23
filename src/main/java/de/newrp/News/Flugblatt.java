@@ -62,8 +62,7 @@ public class Flugblatt implements CommandExecutor, Listener {
             p.sendMessage(Messages.ERROR + "Bitte gib eine Zahl größer als 0 an.");
             return true;
         }
-
-        if(Beruf.getAbteilung(p) != Abteilung.Abteilungen.JOURNALIST && Beruf.isLeader(p, false)) {
+        if(!Beruf.getAbteilung(p).equals(Abteilung.Abteilungen.JOURNALIST) && !Beruf.getAbteilung(p).equals(Abteilung.Abteilungen.CHEFREDAKTION) && !Beruf.isLeader(p, false)) {
             p.sendMessage(Messages.ERROR + "Du bist kein Journalist.");
             return true;
         }
@@ -74,6 +73,17 @@ public class Flugblatt implements CommandExecutor, Listener {
 
         if(Beruf.Berufe.NEWS.getKasse() < (amount*(pages*2))) {
             p.sendMessage(Messages.ERROR + "Die News hat nicht genug Geld.");
+            return true;
+        }
+        int freeSpace = 0;
+        for(int i = 0; i < 36; i++) {
+            if(p.getInventory().getItem(i) == null) {
+                freeSpace++;
+            }
+        }
+        if(freeSpace * 16 < amount) {
+            p.sendMessage(Messages.ERROR + "Du hast nicht genügend Platz im Inventar.");
+            p.sendMessage(Messages.INFO + "Du hast maximal Platz für " + (freeSpace*16) + " Flugblätter.");
             return true;
         }
 

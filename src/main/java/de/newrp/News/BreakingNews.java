@@ -4,6 +4,7 @@ import de.newrp.API.*;
 import de.newrp.Berufe.Abteilung;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Player.Mobile;
+import org.bouncycastle.jcajce.provider.symmetric.ARC4;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.command.Command;
@@ -52,12 +53,13 @@ public class BreakingNews implements CommandExecutor {
         BREAKING_NEWS_TIME = System.currentTimeMillis();
         for (Player all : Bukkit.getOnlinePlayers()) {
             if (Mobile.hasPhone(p) && Mobile.hasConnection(p)) {
-                all.sendMessage(NEWS + "NachrichtenApp: Es gibt eine Breaking News!");
+                all.sendMessage(NEWS + "NachrichtenApp: Es gibt eine Breaking News von " + p.getName() + "!");
                 if (!Mobile.getPhone(p).getLautlos(p)) {
                     all.playSound(all.getLocation(), Sound.ENTITY_SHEEP_AMBIENT, 1, 1);
                 }
             }
         }
+        p.sendMessage(NEWS + "§6Du hast eine Breaking-News geschaltet:\n" + msg.toString().replace(NEWS, ""));
         Log.HIGH.write(p, "hat eine Breaking News geschaltet: " + msg.toString());
         Activity.grantActivity(Script.getNRPID(p), Activities.NEWS);
         Script.addEXP(p, Script.getRandom(4, 8), true);
