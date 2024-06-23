@@ -2,6 +2,7 @@ package de.newrp.features.bizwar.commands;
 
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
+import de.newrp.Gangwar.GangwarCommand;
 import de.newrp.Organisationen.Organisation;
 import de.newrp.Shop.Shops;
 import de.newrp.dependencies.DependencyContainer;
@@ -37,6 +38,7 @@ public class StartBizWarCommand implements CommandExecutor {
             player.sendMessage(Messages.ERROR + "§cDu musst mindestens Level 3 sein um einen Biz War starten zu können");
             return false;
         }
+
 
         /*if(organisation == Organisation.HITMEN) {
             player.sendMessage(Messages.ERROR + "§cDeine Fraktion kann keinen Biz War starten!");
@@ -74,6 +76,8 @@ public class StartBizWarCommand implements CommandExecutor {
         }
 
 
+
+
         final long shopCooldown = this.bizWarService.getActiveCooldownOnShop(shop);
         final long timeTillNextAttack = shopCooldown - System.currentTimeMillis();
 
@@ -92,6 +96,12 @@ public class StartBizWarCommand implements CommandExecutor {
 
         if(activeOwner == organisation) {
             player.sendMessage(Messages.ERROR + "§cDu kannst einen Shop unter eurer Kontrolle nicht erneut angreifen!");
+            return false;
+        }
+
+
+        if(GangwarCommand.isInGangwar(activeOwner)) {
+            player.sendMessage(Messages.ERROR + "§cDie Organisation §e" + activeOwner.getName() + " §cist in einem Gangwar!");
             return false;
         }
 

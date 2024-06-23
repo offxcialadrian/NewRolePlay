@@ -57,6 +57,9 @@ public class ItemBuilder {
     }
 
     public boolean hasNBTString(String key) {
+        if(im == null) {
+            return false;
+        }
         return im.getPersistentDataContainer().has(new NamespacedKey(NewRoleplayMain.getInstance(), key), PersistentDataType.STRING);
     }
 
