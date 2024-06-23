@@ -7,6 +7,8 @@ import de.newrp.Organisationen.Organisation;
 import de.newrp.Shop.Shops;
 import de.newrp.dependencies.DependencyContainer;
 import de.newrp.features.bizwar.IBizWarService;
+import de.newrp.features.bizwar.config.BizWarConfig;
+import de.newrp.features.bizwar.config.BizWarShopConfig;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -14,6 +16,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.text.SimpleDateFormat;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 public class StartBizWarCommand implements CommandExecutor {
@@ -87,6 +90,11 @@ public class StartBizWarCommand implements CommandExecutor {
         }
 
         final Organisation activeOwner = bizWarService.getCurrentOwnerOfShop(shop);
+        final Optional<BizWarShopConfig> optional = DependencyContainer.getContainer().getDependency(BizWarConfig.class).getShopConfigs().stream().filter(e -> e.getShopId() == shop.getID()).findFirst();
+        if(!optional.isPresent()) {
+            player.sendMessage("Der Shop §e" + shop.getPublicName() + " §7kann nicht angegriffen werden!");
+            return false;
+        }
         if(activeOwner == null) {
             organisation.sendMessage(this.bizWarService.getPrefix() + "Der Shop §e" + shop.getPublicName() + " §7wurde von §e" + Script.getName(player) + " §7übernommen!");
             this.bizWarService.setOwnerOfShop(shop, organisation);

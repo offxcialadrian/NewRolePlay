@@ -19,7 +19,7 @@ public class NoDropListener implements Listener {
         }
     }
 
-    @EventHandler
+    /*@EventHandler
     public void onItemSwitch(final InventoryClickEvent event) {
         if(event.getClickedInventory() != null && event.getClickedInventory().getType() != InventoryType.PLAYER) {
             final ItemStack itemStack = event.getCurrentItem();
@@ -31,6 +31,6 @@ public class NoDropListener implements Listener {
                 event.setCancelled(true);
             }
         }
-    }
+    }*/
 
 }

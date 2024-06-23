@@ -323,7 +323,7 @@ public class GangwarCommand implements CommandExecutor, Listener {
             if(w == Weapon.SNIPER) continue;
             if(w == Weapon.MP7) continue;
 
-            p.getInventory().addItem(Waffen.setAmmo(w.getWeapon(), w.getMagazineSize(), 500));
+            p.getInventory().addItem(new ItemBuilder(Waffen.setAmmo(w.getWeapon(), w.getMagazineSize(), 500)).setNoDrop().build());
         }
         for (final Drogen drug : Drogen.values()) {
             if(drug == Drogen.ANTIBIOTIKA) {
@@ -338,9 +338,9 @@ public class GangwarCommand implements CommandExecutor, Listener {
                 continue;
             }
 
-            p.getInventory().addItem(new ItemBuilder(drug.getMaterial()).setName(drug.getName()).setLore("§7Reinheitsgrad: " + Drogen.DrugPurity.HIGH.getText()).setAmount(10).build());
+            p.getInventory().addItem(new ItemBuilder(drug.getMaterial()).setNoDrop().setName(drug.getName()).setLore("§7Reinheitsgrad: " + Drogen.DrugPurity.HIGH.getText()).setAmount(10).build());
         }
-        p.getInventory().addItem(new ItemBuilder(Material.BREAD).setAmount(32).build());
+        p.getInventory().addItem(new ItemBuilder(Material.BREAD).setNoDrop().setAmount(32).build());
         //p.getInventory().addItem(new ItemBuilder(Material.POTION).setAmount(1).build());
     }
 
