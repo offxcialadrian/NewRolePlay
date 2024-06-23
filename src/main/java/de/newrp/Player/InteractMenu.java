@@ -112,11 +112,12 @@ public class InteractMenu implements Listener {
         }
 
         if (Beruf.hasBeruf(p)) {
-            if ((Beruf.getBeruf(p).equals(Beruf.Berufe.POLICE) || Beruf.getBeruf(p).equals(Beruf.Berufe.BUNDESKRIMINALAMT)) && Duty.isInDuty(p)) {
-                inv.setItem(39, new ItemBuilder(Material.IRON_DOOR).setName("§6Durchsuchen").setLore("§8× §7Durchsuche §6" + Script.getName(tg) + "§7.").build());
+            if ((Beruf.getBeruf(p).equals(Beruf.Berufe.POLICE) || Beruf.getBeruf(p).equals(Beruf.Berufe.BUNDESKRIMINALAMT)) || Beruf.getBeruf(p).equals(Beruf.Berufe.NEWS) && Duty.isInDuty(p)) {
                 inv.setItem(41, new ItemBuilder(Material.NETHER_STAR).setName("§6Marke zeigen").setLore("§8× §7Zeige deine Marke").build());
             }
-
+            if ((Beruf.getBeruf(p).equals(Beruf.Berufe.POLICE) || Beruf.getBeruf(p).equals(Beruf.Berufe.BUNDESKRIMINALAMT)) && Duty.isInDuty(p)) {
+                inv.setItem(39, new ItemBuilder(Material.IRON_DOOR).setName("§6Durchsuchen").setLore("§8× §7Durchsuche §6" + Script.getName(tg) + "§7.").build());
+            }
             if (Beruf.getBeruf(p).equals(Beruf.Berufe.RETTUNGSDIENST) && Duty.isInDuty(p)) {
                 inv.setItem(39, new ItemBuilder(Material.PLAYER_HEAD).setName("§6Abhängigkeit behandeln").setLore("§8× §7Behandle die Abhängigkeit von §6" + Script.getName(tg) + "§7.").build());
             }

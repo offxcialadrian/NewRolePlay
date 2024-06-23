@@ -5,6 +5,7 @@ import de.newrp.Administrator.AntiCheatSystem;
 import de.newrp.Administrator.Notifications;
 import de.newrp.Administrator.Punish;
 import de.newrp.Call.Call;
+import de.newrp.News.TV;
 import de.newrp.Player.Passwort;
 import de.newrp.Player.ToggleWhisper;
 import de.newrp.Ticket.Ticket;
@@ -149,6 +150,11 @@ public class Chat implements Listener {
 
         if (Passwort.isLocked(e.getPlayer())) {
             p.sendMessage(Messages.ERROR + "Du musst dein Passwort eingeben!");
+            return;
+        }
+
+        if(TV.tvs.containsKey(e.getPlayer())) {
+            p.sendMessage(Messages.ERROR + "Du kannst nicht reden während du Fernsehen schaust!");
             return;
         }
 

@@ -3,7 +3,9 @@ package de.newrp.News;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.Berufe.Beruf;
+import de.newrp.Player.Mobile;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -23,12 +25,13 @@ public class UmfragenCommand implements CommandExecutor, Listener {
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
         Player p = (Player) cs;
 
-        if (!Beruf.hasBeruf(p)) {
-            p.sendMessage(Messages.NO_PERMISSION);
-            return true;
-        }
+        if(!Beruf.hasBeruf(p) || Beruf.getBeruf(p) != Beruf.Berufe.NEWS) {
+            Location location = new Location(Script.WORLD, 277, 68, 785);
+            if(p.getLocation().distance(location) < 5) {
+                Mobile.openUmfrage(p);
+                return true;
+            }
 
-        if (Beruf.getBeruf(p) != Beruf.Berufe.NEWS) {
             p.sendMessage(Messages.NO_PERMISSION);
             return true;
         }

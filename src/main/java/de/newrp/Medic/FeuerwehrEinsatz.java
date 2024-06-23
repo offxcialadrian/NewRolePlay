@@ -64,7 +64,7 @@ public class FeuerwehrEinsatz {
         if (Abteilung.Abteilungen.FEUERWEHR.getOnlineMembers().size() >= 2) {
             if (getHaus() == null) return;
             removeTotalFire();
-            Beruf.Berufe.NEWS.sendMessage(Beruf.PREFIX + "Es wurde ein Feuer bei Haus " + getHaus().getID() + " gemeldet!");
+            Beruf.Berufe.NEWS.sendMessage(Beruf.PREFIX + "Es wurde ein §c§lFeuer §7bei §eHaus " + getHaus().getID() + " §7gemeldet!");
             for (Abteilung.Abteilungen abteilungen : Set.of(Abteilung.Abteilungen.FEUERWEHR, Abteilung.Abteilungen.CHEFARZT, Abteilung.Abteilungen.OBERARZT, Abteilung.Abteilungen.DIREKTOR)) {
                 abteilungen.sendMessage(FeuerwehrEinsatz.PREFIX + "§4Brand 3, Haus:" + getHaus().getID() + ", Alle verfügbaren Einheiten!");
             }
@@ -125,7 +125,7 @@ public class FeuerwehrEinsatz {
 
     public void start(Shops biz) {
         business = biz;
-        Beruf.Berufe.NEWS.sendMessage(Beruf.PREFIX + "Es wurde ein Feuer bei " + biz.getName() + " gemeldet!");
+        Beruf.Berufe.NEWS.sendMessage(Beruf.PREFIX + "Es wurde ein §c§lFeuer §7bei §e" + biz.getName() + " §7gemeldet!");
         for (Abteilung.Abteilungen abteilungen : Set.of(Abteilung.Abteilungen.FEUERWEHR, Abteilung.Abteilungen.CHEFARZT, Abteilung.Abteilungen.OBERARZT, Abteilung.Abteilungen.DIREKTOR)) {
             abteilungen.sendMessage(FeuerwehrEinsatz.PREFIX + "§4Brand 4, " + biz.getName() + ", Alle verfügbaren Einheiten!");
         }
