@@ -23,6 +23,7 @@ public class AsyncHealth extends BukkitRunnable {
             if (AFK.isAFK(p)) continue;
             if (Health.BLEEDING.containsKey(p.getName()) && !GangwarCommand.isInGangwar(p)) {
                 if(Script.getRandom(1, 100) <20) {
+                    p.sendMessage(Health.PREFIX + "Deine Wunde hat sich entzündet...");
                     Krankheit.ENTZUENDUNG.add(Script.getNRPID(p));
                 }
                 float amount = Health.BLEEDING.get(p.getName());

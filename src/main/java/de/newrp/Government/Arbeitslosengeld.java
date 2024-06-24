@@ -177,6 +177,12 @@ public class Arbeitslosengeld implements CommandExecutor {
             return true;
         }
 
+        if(Script.getLevel(p) <= 3) {
+            Script.executeAsyncUpdate("INSERT INTO arbeitslosengeld (nrp_id, money, date, accepted, until) VALUES ('" + Script.getNRPID(p) + "', '" + Script.getMoney(p, PaymentType.BANK) + "', '" + System.currentTimeMillis() + "', '1', " + (System.currentTimeMillis() + 1000 * 60 * 60 * 24 * 7) + ")");
+            p.sendMessage(PREFIX + "Du hast erfolgreich Arbeitslosengeld genommen");
+            Beruf.Berufe.GOVERNMENT.sendMessage(PREFIX + Script.getName(p) + " hat Arbeitslosengeld genommen (Spieler <= Level 3)");
+            return false;
+        }
         p.sendMessage(PREFIX + "Du hast erfolgreich Arbeitslosengeld beantragt. Bitte warte auf eine Antwort durch die Verwaltung.");
         Script.executeAsyncUpdate("INSERT INTO arbeitslosengeld (nrp_id, money, date, accepted) VALUES ('" + Script.getNRPID(p) + "', '" + Script.getMoney(p, PaymentType.BANK) + "', '" + System.currentTimeMillis() + "', '0')");
         Beruf.Berufe.GOVERNMENT.sendMessage(PREFIX + Script.getName(p) + " hat Arbeitslosengeld beantragt.");

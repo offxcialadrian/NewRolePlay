@@ -7,6 +7,7 @@ import de.newrp.Administrator.AntiCheatSystem;
 import de.newrp.Administrator.SDuty;
 import de.newrp.Berufe.*;
 import de.newrp.Forum.Forum;
+import de.newrp.Government.Arbeitslosengeld;
 import de.newrp.House.House;
 import de.newrp.Organisationen.Blacklist;
 import de.newrp.Organisationen.Organisation;
@@ -1731,7 +1732,7 @@ public class Script {
             }
         }
 
-        Material[] blocked = new Material[]{Material.TNT, Material.LEATHER_CHESTPLATE, Material.FEATHER, Material.BONE, Material.FLINT, Material.IRON_SWORD};
+        Material[] blocked = new Material[]{Material.TNT, Material.LEATHER_CHESTPLATE, Material.BONE, Material.FLINT};
         for (Material mat : blocked) {
             p.getInventory().remove(mat);
             if (p.getInventory().getItemInOffHand().getType().equals(mat)) {
@@ -1796,6 +1797,11 @@ public class Script {
         int lvl = getLevel(p) + 1;
         int id = getNRPID(p);
         setLevel(p, lvl, 0);
+        if(lvl == 4 && Arbeitslosengeld.hasArbeitslosengeld(p)) {
+            Arbeitslosengeld.deleteArbeitslosengeld(p);
+            p.sendMessage(Messages.INFO + "Dein Arbeitslosengeld wurde beendet, da du nun Level 4 erreicht hast.");
+        }
+
         p.sendMessage(Script.PREFIX + "§aDu bist nun Level §6" + lvl + "§a!");
         setExpbarPercentage(p, 0);
         resetHealth(p);

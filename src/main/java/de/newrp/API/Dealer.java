@@ -83,15 +83,16 @@ public class Dealer implements Listener {
             Drogen.DrugPurity purity = Drogen.DrugPurity.getPurityByName(player.getInventory().getItemInMainHand().getItemMeta().getLore().get(0).replace("§7Reinheitsgrad: ", ""));
             if (purity == null) return;
             int price;
+            final boolean isCivil = !Organisation.hasOrganisation(player) && !Beruf.hasBeruf(player);
             switch (drug) {
                 case PULVER:
-                    price = 10;
+                    price = isCivil ? 25 : 15;
                     break;
                 case KRÄUTER:
-                    price = 15;
+                    price = isCivil ? 30 : 20;
                     break;
                 case ECSTASY:
-                    price = 150;
+                    price = isCivil ? 250 : 175;
                     break;
                 case KRISTALLE:
                     price = 1000;
@@ -104,7 +105,7 @@ public class Dealer implements Listener {
             }
             int amount = player.getInventory().getItemInMainHand().getAmount();
             price -= (int) Math.round(price * 0.2 * purity.getID());
-            if (!Organisation.hasOrganisation(player) && !Beruf.hasBeruf(player)) price = (int) Math.round(price * 1.5);
+            if (isCivil) price = (int) Math.round(price * 1.5);
             price *= amount;
             Me.sendMessage(player, "tauscht etwas mit dem Dealer aus.");
             if (new Random().nextInt(10) == 0) {
