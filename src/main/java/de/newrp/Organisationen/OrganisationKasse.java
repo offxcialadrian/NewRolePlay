@@ -71,6 +71,10 @@ public class OrganisationKasse implements CommandExecutor, TabCompleter {
         if (args.length == 2) {
             if (args[0].equalsIgnoreCase("auszahlen")) {
                 try {
+                    if(Organisation.getRank(p) < 5) {
+                        p.sendMessage(Messages.NO_PERMISSION);
+                        return true;
+                    }
                     int amount = Integer.parseInt(args[1]);
                     if (amount < 0) {
                         p.sendMessage(Messages.ERROR + "Der Betrag muss positiv sein.");

@@ -314,7 +314,7 @@ public class PayShop implements Listener {
                         return;
                     }
 
-                    CarType carType = CarType.getCarTypeByName(si.getName());
+                    CarType carType = CarType.getCarTypeByName(ChatColor.stripColor(si.getName()));
                     assert carType != null;
                     Car car = Car.createCar(carType, new Location(p.getWorld(), 393 + new Random().nextInt(3), 76.5, 1090), p);
                     assert car != null;
