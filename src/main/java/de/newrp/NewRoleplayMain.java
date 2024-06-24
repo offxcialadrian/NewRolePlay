@@ -595,6 +595,7 @@ public class NewRoleplayMain extends JavaPlugin {
         getCommand("pets").setExecutor(new Pets());
         getCommand("contract").setExecutor(new ContractCommand());
         getCommand("getshopid").setExecutor(new GetShopIdCommand());
+        getCommand("wiretap").setExecutor(new WiretapCall());
     }
 
     /**
