@@ -271,7 +271,7 @@ public class PayShop implements Listener {
                     boolean hasRezept = Rezept.hasRezept(p, m);
                     Rezept.removeRezept(p, m);
 
-                    if (m == Medikamente.SCHMERZMITTEL_HIGH && hasRezept && Beruf.hasBeruf(p, Beruf.Berufe.POLICE)) {
+                    if (m == Medikamente.SCHMERZMITTEL_HIGH && hasRezept && (Beruf.hasBeruf(p, Beruf.Berufe.POLICE) || Beruf.hasBeruf(p, Beruf.Berufe.BUNDESKRIMINALAMT))) {
                         p.sendMessage(Messages.INFO + "Deine Krankenversicherung hat die Kosten für das Medikament übernommen.");
                         Script.addMoney(p, PaymentType.BANK, singlePrice);
                         Stadtkasse.removeStadtkasse(singlePrice, "Kostenübernahme durch Krankenversicherung an " + Script.getName(p));
