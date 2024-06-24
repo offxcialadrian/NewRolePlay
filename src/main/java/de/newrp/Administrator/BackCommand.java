@@ -15,12 +15,12 @@ public class BackCommand implements CommandExecutor {
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
         Player p = (Player) cs;
 
-        if(!Script.hasRank(p, Rank.DEVELOPER, false)) {
+        if(!Script.hasRank(p, Rank.DEVELOPER, false) && !BuildMode.isInBuildMode(p)) {
             p.sendMessage(Messages.NO_PERMISSION);
             return true;
         }
 
-        if(!SDuty.isSDuty(p)) {
+        if(!SDuty.isSDuty(p) && !BuildMode.isInBuildMode(p)) {
             p.sendMessage(Messages.NO_SDUTY);
             return true;
         }

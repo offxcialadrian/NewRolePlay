@@ -99,14 +99,14 @@ public class GoTo implements CommandExecutor, TabCompleter {
         Player p = (Player) cs;
 
         if (!Script.hasRank(p, Rank.DEVELOPER, false)) {
-            if(!Script.isInTestMode() || !BuildMode.isInBuildMode(p)) {
+            if (!Script.isInTestMode() && !BuildMode.isInBuildMode(p)) {
                 p.sendMessage(Messages.NO_PERMISSION);
                 return true;
             }
         }
 
         if (!SDuty.isSDuty(p)) {
-            if(!Script.isInTestMode() || !BuildMode.isInBuildMode(p)) {
+            if (!Script.isInTestMode() && !BuildMode.isInBuildMode(p)) {
                 p.sendMessage(Messages.NO_SDUTY);
                 return true;
             }
