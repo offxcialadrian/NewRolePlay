@@ -350,6 +350,7 @@ public class NewRoleplayMain extends JavaPlugin {
         getCommand("friedhof").setExecutor(new FriedhofInfo());
         getCommand("debugstick").setExecutor(new GetDebugStick());
         getCommand("head").setExecutor(new HeadCommand());
+        getCommand("abhören").setExecutor(new WiretapCall());
         getCommand("news").setExecutor(new NewsCommand());
         getCommand("mieter").setExecutor(new MieterCommand());
         getCommand("unrent").setExecutor(new UnrentCommand());
@@ -595,7 +596,6 @@ public class NewRoleplayMain extends JavaPlugin {
         getCommand("pets").setExecutor(new Pets());
         getCommand("contract").setExecutor(new ContractCommand());
         getCommand("getshopid").setExecutor(new GetShopIdCommand());
-        getCommand("wiretap").setExecutor(new WiretapCall());
     }
 
     /**

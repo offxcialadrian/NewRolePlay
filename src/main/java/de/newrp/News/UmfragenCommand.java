@@ -32,7 +32,7 @@ public class UmfragenCommand implements CommandExecutor, Listener {
                 return true;
             }
 
-            p.sendMessage(Messages.NO_PERMISSION);
+            p.sendMessage(PREFIX + "Du kannst eine Umfrage nur per Handy oder im Eingang des News-Gebäude's ausfüllen.");
             return true;
         }
 

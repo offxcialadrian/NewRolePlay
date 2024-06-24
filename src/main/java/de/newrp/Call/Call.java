@@ -47,7 +47,6 @@ public class Call {
                 people.add(p);
                 people.add(tg);
                 ON_CALL.put(getCallIDByPlayer(p), people);
-                WiretapCall.sendNotification(p, getCallIDByPlayer(p), true);
                 p.sendMessage(PREFIX + "Der Anruf wurde angenommen!");
                 tg.sendMessage(PREFIX + "Du telefonierst nun mit " + Script.getName(tg));
                 Script.executeAsyncUpdate("INSERT INTO call_history (nrp_id, participants, time) VALUES ('" + Script.getNRPID(p) + "', '" + Script.getName(tg) + "', '" + System.currentTimeMillis() + "')");
@@ -57,7 +56,6 @@ public class Call {
                 waitingList.remove(p);
                 onCallList.add(p);
                 ON_CALL.put(getCallIDByPlayer(p), onCallList);
-                WiretapCall.sendNotification(p, getCallIDByPlayer(p), false);
                 WAITING_FOR_CALL.put(getCallIDByPlayer(p), waitingList);
                 StringBuilder sb = new StringBuilder();
                 sb.append(PREFIX);
@@ -73,6 +71,7 @@ public class Call {
                 p.sendMessage(sb.toString());
                 Script.executeAsyncUpdate("INSERT INTO call_history (nrp_id, participants, time) VALUES ('" + Script.getNRPID(p) + "', '" + sb.toString() + "', '" + System.currentTimeMillis() + "')");
                 sendSystemMessage(p, "§7" + Script.getName(p) + " ist dem Anruf beigetreten.", true);
+                WiretapCall.sendNotification(p, getCallIDByPlayer(p));
             }
         }
     }

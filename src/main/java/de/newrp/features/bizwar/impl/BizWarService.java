@@ -126,6 +126,8 @@ public class BizWarService implements IBizWarService {
             winnerPlayer.sendTitle("§a§lBIZ-War gewonnen!", "§7Ihr habt erfolgreich den Biz War gewonnen!", 0, 100, 0);
             winnerPlayer.sendMessage(getPrefix() + "Deine Organisation hat den Biz War gegen §c" + loser.getName() + " §7gewonnen!");
             winnerPlayer.playSound(winnerPlayer.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, 1f, 1f);
+            Script.addEXP(Script.getNRPID(winnerPlayer), Script.getRandom(40, 50));
+            winnerPlayer.sendMessage(Messages.INFO + "Danke für deine Teilnahme am Biz War!");
         }
 
 
@@ -134,6 +136,8 @@ public class BizWarService implements IBizWarService {
             loserPlayer.sendTitle("§c§lBIZ-War verloren!", "§7Ihr habt den Biz War verloren!", 0, 100, 0);
             loserPlayer.sendMessage(getPrefix() + "Deine Organisation hat den Biz War gegen §a" + winner.getName() + " §7verloren!");
             loserPlayer.playSound(loserPlayer.getLocation(), Sound.ENTITY_WITHER_DEATH, 1f, 1f);
+            Script.addEXP(Script.getNRPID(loserPlayer), Script.getRandom(40, 50));
+            loserPlayer.sendMessage(Messages.INFO + "Danke für deine Teilnahme am Biz War!");
         }
 
         if(!loser.getMember().isEmpty()) {

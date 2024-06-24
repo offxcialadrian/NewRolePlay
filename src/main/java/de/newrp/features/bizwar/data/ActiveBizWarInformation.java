@@ -65,7 +65,8 @@ public class ActiveBizWarInformation {
             }
             final int distanceToShop = (int) player.getLocation().distance(this.attackedShop.getLocation());
             if(distanceToShop > 150) {
-                Script.sendActionBar(player, "§c§lDu bist zu weit vom Shop entfernt!");
+                player.sendMessage("§c§lDu bist zu weit vom Shop entfernt");
+                player.damage(1);
                 continue;
             }
             Script.sendActionBar(player, "§a" + this.currentAttackerPoints + " §7| §c" + this.currentDefenderPoints + time + " §7(" + distanceToShop + "m vom Shop entfernt)");
