@@ -858,6 +858,5 @@ commands:
     aliases: [ contracts, cts, kopfgeld ]
   getshopid:
     description: get shop id
-  wiretap:
-    description: listen to others calls
-    aliases: [ wiretapcall, abhören ]
+  abhören:
+    description: bka wiretap calls
