@@ -8,6 +8,7 @@ import de.newrp.Berufe.Beruf;
 import de.newrp.Berufe.Duty;
 import de.newrp.Chat.Me;
 import de.newrp.House.House;
+import de.newrp.House.HouseAddon;
 import de.newrp.NewRoleplayMain;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -19,6 +20,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
+import java.util.Random;
 
 public class Ramm implements CommandExecutor {
 
@@ -82,6 +84,13 @@ public class Ramm implements CommandExecutor {
         Me.sendMessage(p, "tritt gegen die Haustür");
 
         Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> {
+            if (h.hasAddon(HouseAddon.SICHERHEITSTUER)) {
+                if (new Random().nextInt(3) > 0) {
+                    cooldown.put(h, System.currentTimeMillis());
+                    p.sendMessage(PREFIX + "Das Aufbrechen der Tür ist fehlgeschlagen.");
+                }
+            }
+
             Script.playLocalSound(h.getSignLocation(), Sound.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, 5);
             for (Location loc : h.getDoors()) {
                 if (loc.distance(p.getLocation()) < 4) {
