@@ -383,8 +383,8 @@ public class Annehmen implements CommandExecutor {
             Medikamente m = Medikamente.getMedikament(offer.get(p.getName() + ".rezept.medikament"));
             int amount = (offer.containsKey(p.getName() + ".rezept.anzahl") ? Integer.parseInt(offer.get(p.getName() + ".rezept.anzahl")) : 1);
             if (m == null) return true;
-            p.sendMessage(ACCEPTED + "Du hast ein Rezept für " + m.getName() + " erhalten.");
-            tg.sendMessage(ACCEPTED + Script.getName(p) + " hat das Rezept genommen.");
+            p.sendMessage(ACCEPTED + "Du hast " + amount + "x Rezepte für " + m.getName() + " erhalten.");
+            tg.sendMessage(ACCEPTED + Script.getName(p) + " hat die Rezepte genommen.");
             for(int i = 0; i < amount; i++) {
                 p.getInventory().addItem(m.getRezept());
             }

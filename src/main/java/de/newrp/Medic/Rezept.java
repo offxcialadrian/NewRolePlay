@@ -94,9 +94,10 @@ public class Rezept implements CommandExecutor, TabCompleter {
             return true;
         }
 
+        int amount = 0;
         if(args.length == 3) {
             try {
-                int amount = Integer.parseInt(args[2]);
+                amount = Integer.parseInt(args[2]);
                 if(amount < 1) {
                     p.sendMessage(Messages.ERROR + "Die Anzahl muss mindestens 1 sein.");
                     return true;
@@ -116,8 +117,8 @@ public class Rezept implements CommandExecutor, TabCompleter {
         if(args.length == 3) {
             Annehmen.offer.put(tg.getName() + ".rezept.anzahl", args[2]);
         }
-        p.sendMessage(PREFIX + "Du hast " + Script.getName(tg) + " ein Rezept für " + m.getName() + " angeboten.");
-        tg.sendMessage(PREFIX + Script.getName(p) + " hat dir ein Rezept für " + m.getName() + " angeboten.");
+        p.sendMessage(PREFIX + "Du hast " + Script.getName(tg) + " " + amount + "x Rezepte für " + m.getName() + " angeboten.");
+        tg.sendMessage(PREFIX + Script.getName(p) + " hat dir " + amount + "x Rezepte für " + m.getName() + " angeboten.");
         Script.sendAcceptMessage(tg);
 
         return false;
