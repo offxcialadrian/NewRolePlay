@@ -244,6 +244,7 @@ public class LabBreakIn implements CommandExecutor, Listener {
         new Route(p.getName(), Script.getNRPID(p), p.getLocation(), new Location(Script.WORLD, 364, 69, 1310, -182.26685f, 27.894108f), PREFIX + "Schütte nun die Chemikalien zusammen um Exiyty zu bekommen.", () -> Script.performCommand(p, "mixingredients")).start();
         DOOR_BROKE_TIMES.clear();
         Beruf.Berufe.POLICE.sendMessage(PREFIX + "Es wurde ein Einbruch im Labor gemeldet!");
+        Beruf.Berufe.BUNDESKRIMINALAMT.sendMessage(PREFIX + "Es wurde ein Einbruch im Labor gemeldet!");
         Organisation.getOrganisation(p).sendMessage(PREFIX + "§6" + Script.getName(p) + " §7ist in das Labor eingebrochen.");
         for (UUID m : Organisation.getOrganisation(p).getMember()) if (Bukkit.getOfflinePlayer(m).isOnline()) if (!AFK.isAFK(m)) if (Objects.requireNonNull(Bukkit.getPlayer(m)).getLocation().distance(p.getLocation()) <= 60)
             Activity.grantActivity(Script.getNRPID(Bukkit.getPlayer(m)), Activities.LABOR);

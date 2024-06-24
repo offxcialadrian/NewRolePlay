@@ -59,13 +59,13 @@ public class Spawnchange implements CommandExecutor, Listener {
                 case "§6Krankenhaus":
                     p.sendMessage(PREFIX + "Du hast deinen Spawnpoint auf das Krankenhaus gesetzt.");
                     Script.setString(p, "spawnpoint", "name", "Krankenhaus");
-                    Script.setString(p, "spawnpoint", "loc", "278/75/1232/270.05463f/0.84689033f");
+                    Script.setString(p, "spawnpoint", "loc", "278/75/1232/180.0/0.0");
                     p.closeInventory();
                     break;
                 case "§6Stadthalle":
                     p.sendMessage(PREFIX + "Du hast deinen Spawnpoint auf die Stadthalle gesetzt.");
                     Script.setString(p, "spawnpoint", "name", "Stadthalle");
-                    Script.setString(p, "spawnpoint", "loc", "581/69/992/-269.48206f/-3.5868206f)");
+                    Script.setString(p, "spawnpoint", "loc", "581/69/992/-90.0/0.0)");
                     p.closeInventory();
                     break;
                 case "§6HQ":

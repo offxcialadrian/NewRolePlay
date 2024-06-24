@@ -19,7 +19,7 @@ public enum Navi {
     MUSEUM("Museum", new Location(Script.WORLD, 431, 73, 1019, 90.14921f, -0.7499361f)),
     POLIZEIREVIER("Polizeirevier", new Location(Script.WORLD, 418, 71, 853, 180.99817f, 3.560546f)),
     SCHULE("Schule", new Location(Script.WORLD, 732, 67, 754, -193.64954f, 7.0500283f)),
-    STADTHALLE("Stadthalle", new Location(Script.WORLD, 555, 70, 991, 88.77539f, 2.5500057f)),
+    STADTHALLE("Stadthalle", new Location(Script.WORLD, 555, 70, 991, -90.0f, 0.0f)),
     SUPERMARKT("Supermarkt", new Location(Script.WORLD, 628, 68, 859, 268.71005f, 1.7223763f)),
     KELLNER("Kellner", new Location(Script.WORLD, 420, 69, 931, 277.80017f, 1.9499232f)),
     LAGERARBEITER("Lagerarbeiter", new Location(Script.WORLD, 997, 69, 1257, 1.3507984f, 1.4999542f)),
