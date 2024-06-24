@@ -1,12 +1,12 @@
 package de.newrp.Berufe;
 
-import de.newrp.API.Messages;
 import de.newrp.API.PaymentType;
 import de.newrp.API.Script;
 import de.newrp.Call.Call;
 import de.newrp.NewRoleplayMain;
 import de.newrp.Organisationen.Organisation;
 import de.newrp.Player.Mobile;
+import de.newrp.Police.Fahndung;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.bukkit.Bukkit;
@@ -20,6 +20,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 
 public class WiretapCall implements CommandExecutor {
@@ -75,6 +76,10 @@ public class WiretapCall implements CommandExecutor {
             player.sendMessage(PREFIX + "§c" + args[0] + " §7tätigt gerade keinen Anruf.");
             return true;
         }
+        if(Fahndung.getWanteds(callPlayer) == 0) {
+            player.sendMessage(PREFIX + "Nach §c" + args[0] + " §7wird nicht gefahndet.");
+            return true;
+        }
         int callId = Call.getCallIDByPlayer(callPlayer);
         boolean hasMember = Call.ON_CALL.get(callId).stream().anyMatch(Organisation::hasOrganisation);
         if(!hasMember) {
@@ -92,20 +97,18 @@ public class WiretapCall implements CommandExecutor {
         if(players.size() != 2) {
             return;
         }
-        Player orgaMember = Call.ON_CALL.get(callId).stream().filter(Organisation::hasOrganisation).findAny().orElse(null);
-        if(orgaMember == null) {
+        List<Player> orgaMembers = players.stream().filter(Organisation::hasOrganisation).collect(Collectors.toList());
+        if(orgaMembers.isEmpty()) {
             return;
         }
-        String message;
-        if(player.equals(orgaMember)) {
-            message = PREFIX + orgaMember.getName() + " ist einem Anruf beigetreten.";
-        } else {
-            message = PREFIX + orgaMember.getName() + " hat ein Anruf gestartet.";
+        boolean hasWanteds = orgaMembers.stream().anyMatch(player1 -> Fahndung.getWanteds(player1) != 0);
+        if(!hasWanteds) {
+            return;
         }
-        for (UUID memberUuid : Beruf.Berufe.BUNDESKRIMINALAMT.getMember()) {
-            final Player memberPlayer = Bukkit.getPlayer(memberUuid);
+        for (UUID memberUUID : Beruf.Berufe.BUNDESKRIMINALAMT.getMember()) {
+            final Player memberPlayer = Bukkit.getPlayer(memberUUID);
             if(memberPlayer != null) {
-                Script.sendClickableMessage(memberPlayer, message, "/abhören " + player.getName(), "§cAnruf Abhören");
+                Script.sendClickableMessage(memberPlayer, PREFIX + orgaMembers.get(0).getName() + " hat ein Anruf gestartet.", "/abhören " + player.getName(), "§cAnruf Abhören");
             }
         }
     }
