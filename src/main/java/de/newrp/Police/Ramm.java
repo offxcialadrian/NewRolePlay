@@ -88,6 +88,7 @@ public class Ramm implements CommandExecutor {
                 if (new Random().nextInt(3) > 0) {
                     cooldown.put(h, System.currentTimeMillis());
                     p.sendMessage(PREFIX + "Das Aufbrechen der Tür ist fehlgeschlagen.");
+                    return;
                 }
             }
 
