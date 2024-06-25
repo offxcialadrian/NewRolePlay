@@ -140,7 +140,6 @@ public class Mobile implements Listener {
 
         public void addAkku(Player p, int akku) {
             akku = getAkku(p) + akku;
-            System.out.println("adding akku to " + p.getName() + " " + akku);
             playerAkku.replace(p.getUniqueId(), akku);
             //Script.executeAsyncUpdate("UPDATE phone SET akku = " + akku + " WHERE nrp_id = " + Script.getNRPID(p));
         }

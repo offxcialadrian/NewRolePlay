@@ -1825,7 +1825,7 @@ public class Script {
             if (Script.getLevel(p) > 1) {
                 if (NewRoleplayMain.event == Event.TRIPPLE_XP) {
                     exp *= 3;
-                    p.sendMessage(" §a+" + exp + " Exp! §7(§6§lTRIPPLE EXP§7)");
+                    p.sendMessage(" §a+" + exp + " Exp! §7(§6§lTRIPLE EXP§7)");
                 } else if (NewRoleplayMain.event == Event.DOUBLE_XP || NewRoleplayMain.event == Event.DOUBLE_XP_WEEKEND || NewRoleplayMain.event == Event.VOTE) {
                     exp *= 2;
                     p.sendMessage(" §a+" + exp + " Exp! §7(§6§lDOUBLE EXP§7)");

@@ -57,19 +57,18 @@ public class FreeBizCommand implements CommandExecutor {
         this.bizWarService.setBeeingFreed(shop, player);
 
         Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> {
-            if(!this.bizWarService.isBeeingFreed(shop)) {
-                return;
-            }
+            this.bizWarService.setBeeingFreed(shop, null);
 
             final double distanceOfPlayerToShop = player.getLocation().distance(shop.getLocation());
             if(distanceOfPlayerToShop > 5) {
                 Beruf.Berufe.POLICE.sendMessage(this.bizWarService.getPrefix() + "Der Spieler §e" + player.getName() + " §7hat versucht den Shop §e" + shop.getPublicName() + " §7zu befreien, war aber zu weit entfernt.");
+                organisation.sendMessage(this.bizWarService.getPrefix() + "Die Polizei ist beim Versuch euren Shop §e" + shop.getPublicName() + " §7zu befreien gescheitert!");
                 return;
             }
 
             this.bizWarService.setOwnerOfShop(shop, null);
             Beruf.Berufe.POLICE.sendMessage(this.bizWarService.getPrefix() + "Der Shop " + shop.getPublicName() + " wurde befreit.");
-            this.bizWarService.setBeeingFreed(shop, null);
+            organisation.sendMessage(this.bizWarService.getPrefix() + "Die Polizei hat euren Shop §e" + shop.getPublicName() + " §7befreit!");
         }, (20 * 60) * 5);
 
 
