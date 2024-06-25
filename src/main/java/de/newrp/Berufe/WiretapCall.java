@@ -34,7 +34,7 @@ public class WiretapCall implements CommandExecutor {
             return false;
         }
         Player player = (Player) commandSender;
-        if(Beruf.getBeruf(player).equals(Beruf.Berufe.BUNDESKRIMINALAMT)) {
+        if(Beruf.getBeruf(player) != Beruf.Berufe.BUNDESKRIMINALAMT) {
             player.sendMessage(PREFIX + "Du bist kein Mitglied des Bundeskriminalamts.");
             return true;
         }
@@ -57,10 +57,10 @@ public class WiretapCall implements CommandExecutor {
             player.sendMessage(PREFIX + "Du musst dein Handy in der Hand halten.");
             return true;
         }
-        if(phone.getID() == 3) {
+        /*if(phone.getID() == 3) {
             player.sendMessage(PREFIX + "Dieses Handy besitzt nicht die modernsten Funkausstattungen.");
             return true;
-        }
+        }*/
         Player callPlayer = Script.getPlayer(args[0]);
         if(callPlayer == null) {
             player.sendMessage(PREFIX + "Der Spieler §c" + args[0] + " §7wurde nicht gefunden.");
