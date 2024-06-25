@@ -31,7 +31,7 @@ public class AddHouseDoor implements CommandExecutor, Listener {
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
         Player p = (Player) cs;
 
-        if(!Script.hasRank(p, Rank.MODERATOR, false)) {
+        if(!Script.hasRank(p, Rank.MODERATOR, false) && !Script.hasRankExact(p, Rank.DEVELOPER)) {
             p.sendMessage(Messages.NO_PERMISSION);
             return true;
         }

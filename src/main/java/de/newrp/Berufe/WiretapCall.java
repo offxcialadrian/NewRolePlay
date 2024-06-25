@@ -63,10 +63,10 @@ public class WiretapCall implements CommandExecutor {
             player.sendMessage(PREFIX + "Dein Handy muss angeschaltet sein.");
             return true;
         }
-        /*if(phone.getID() == 3) {
+        if(phone.getID() == 3) {
             player.sendMessage(PREFIX + "Dieses Handy besitzt nicht die modernsten Funkausstattungen.");
             return true;
-        }*/
+        }
         Player callPlayer = Script.getPlayer(args[0]);
         if(callPlayer == null) {
             player.sendMessage(PREFIX + "§c" + args[0] + " §7wurde nicht gefunden.");
