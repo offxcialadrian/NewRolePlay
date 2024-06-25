@@ -56,12 +56,12 @@ public class BlackListCommand implements CommandExecutor, Listener, TabCompleter
     }
 
     public enum Reasons {
-        GANGZONE("Gangzones", 500, 50, new Organisation[] {Organisation.CORLEONE, Organisation.TRIORLA}),
-        ORGASCHÄDIGUNG("Organisationsschädigung", 800, 60, new Organisation[] {Organisation.CORLEONE, Organisation.TRIORLA}),
+        GANGZONE("Gangzone", 500, 50, new Organisation[] {Organisation.CORLEONE, Organisation.TRIORLA, Organisation.MIAMI_VIPERS}),
+        ORGASCHÄDIGUNG("Organisationsschädigung", 800, 60, new Organisation[] {Organisation.CORLEONE, Organisation.TRIORLA, Organisation.MIAMI_VIPERS}),
         BLUTRACHE("Blutrache", 300, 25, new Organisation[] {Organisation.CORLEONE}),
-        VOGELFREI("Vogelfrei", 1, 0, new Organisation[] {Organisation.CORLEONE, Organisation.TRIORLA, Organisation.FALCONE}),
+        VOGELFREI("Vogelfrei", 1, 0, new Organisation[] {Organisation.CORLEONE, Organisation.TRIORLA, Organisation.FALCONE, Organisation.MIAMI_VIPERS}),
         LEICHENBEWACHUNG("Leichenbewachung", 600, 20, new Organisation[] {Organisation.CORLEONE, Organisation.TRIORLA}),
-        LEADERMORD_KARTELL("Leadermord", 1000, 50, new Organisation[] {Organisation.CORLEONE, Organisation.TRIORLA}),
+        LEADERMORD_KARTELL("Leadermord", 1000, 50, new Organisation[] {Organisation.CORLEONE, Organisation.TRIORLA, Organisation.MIAMI_VIPERS}),
         PROVOKATION_KARTELL("Provokation", 250, 10, new Organisation[] {Organisation.TRIORLA}),
         Vendetta_FALCONE("Vendetta", 1000, 50, new Organisation[] {Organisation.FALCONE}),
         Tradimento_FALCONE("Tradimento", 1000, 50, new Organisation[] {Organisation.FALCONE}),
