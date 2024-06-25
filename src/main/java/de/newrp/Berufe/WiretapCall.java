@@ -87,7 +87,7 @@ public class WiretapCall implements CommandExecutor {
         return true;
     }
 
-    public static void sendNotification(Player player, int callId) {
+    public static void sendNotification(int callId) {
         List<Player> players = Call.ON_CALL.get(callId);
         if(players.size() != 2) {
             return;
