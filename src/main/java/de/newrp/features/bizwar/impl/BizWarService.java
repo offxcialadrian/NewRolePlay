@@ -118,7 +118,7 @@ public class BizWarService implements IBizWarService {
         }
 
         this.activeBizWarInformations.remove(activeBizWarInformation);
-        final Organisation winner = activeBizWarInformation.getCurrentAttackerPoints() >= activeBizWarInformation.getCurrentDefenderPoints() ? activeBizWarInformation.getAttackerOrganisation() : activeBizWarInformation.getDefenderOrganisation();
+        final Organisation winner = activeBizWarInformation.getCurrentAttackerPoints() > activeBizWarInformation.getCurrentDefenderPoints() ? activeBizWarInformation.getAttackerOrganisation() : activeBizWarInformation.getDefenderOrganisation();
         final Organisation loser = activeBizWarInformation.getAttackerOrganisation() == winner ? activeBizWarInformation.getDefenderOrganisation() : activeBizWarInformation.getAttackerOrganisation();
 
         for (UUID winnerUUID : winner.getMember()) {
