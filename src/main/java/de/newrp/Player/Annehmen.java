@@ -315,7 +315,7 @@ public class Annehmen implements CommandExecutor {
             }
 
             Organisation organisation = Organisation.getOrganisation(leader);
-            organisation.addExp(Script.getRandom(50, 100));
+            organisation.addExp(Script.getRandom(50, 100), false);
             p.sendMessage(ACCEPTED + "Du bist der Organisation " + organisation.getName() + " beigetreten.");
             leader.sendMessage(PREFIX + Script.getName(p) + " ist der Organisation beigetreten.");
             leader.sendMessage(Messages.INFO + "Nutze /salary [Spieler] [Gehalt], um " + Script.getName(p) + " ein Gehalt zu geben.");

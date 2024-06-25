@@ -209,7 +209,7 @@ public class Waffen implements Listener {
                             org.sendMessage(PREFIX + Script.getName(p) + " hat einen Shop überfallen und " + remove + "€ gestohlen.");
                             Beruf.Berufe.POLICE.sendMessage(PREFIX + "Der Shop " + shop.getName() + " wurde überfallen. Es wurden " + remove + "€ gestohlen.");
                             Script.addMoney(p, PaymentType.CASH, remove);
-                            org.addExp(remove / 50);
+                            org.addExp(remove / 50, true);
                             DependencyContainer.getContainer().getDependency(ITakeMoneyService.class).addIllegalObtainedMoneyToPlayer(p, remove);
                             progress.remove(p.getName());
                             robShopPlayers.remove(p.getName());

@@ -141,8 +141,8 @@ public class BizWarService implements IBizWarService {
         }
 
         if(!loser.getMember().isEmpty()) {
-            winner.addExp(Script.getRandom(70, 90));
-            loser.removeExp(Script.getRandom(30, 45));
+            winner.addExp(Script.getRandom(70, 90), true);
+            loser.removeExp(Script.getRandom(30, 45), true);
         }
 
         for (UUID joinedMembersOfDefender : activeBizWarInformation.getJoinedMembersOfDefenders()) {

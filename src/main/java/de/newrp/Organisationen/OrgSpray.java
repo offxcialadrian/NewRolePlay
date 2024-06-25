@@ -237,7 +237,7 @@ public class OrgSpray implements Listener {
             f.sendMessage(PREFIX + p.getName() + " hat ein Graffiti mit der Flagge der Organisation übersprayt.");
             if (p.getInventory().getItemInMainHand().getType().equals(Material.LEVER))
                 p.getInventory().getItemInMainHand().setAmount(p.getInventory().getItemInMainHand().getAmount() - 1);
-            f.addExp(Script.getRandom(5, 10));
+            f.addExp(Script.getRandom(5, 10), false);
             Activity.grantActivity(Script.getNRPID(p), Activities.GRAFFITI);
             Script.addEXP(p, Script.getRandom(3, 5), true);
         } else {

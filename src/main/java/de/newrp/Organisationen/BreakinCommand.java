@@ -90,7 +90,7 @@ public class BreakinCommand implements CommandExecutor {
                                         Bukkit.getScheduler().runTaskLater(NewRoleplayMain.getInstance(), () -> {
                                             DependencyContainer.getContainer().getDependency(ITakeMoneyService.class).deleteMoney(player);
                                         }, (20 * 60) * 7);
-                                        orga.addExp(LockpickHandler.value.get(player) / 60);
+                                        orga.addExp(LockpickHandler.value.get(player) / 60, true);
                                         DependencyContainer.getContainer().getDependency(ITakeMoneyService.class).addIllegalObtainedMoneyToPlayer(player, LockpickHandler.value.get(player));
                                         Beruf.Berufe.GOVERNMENT.sendMessage(PREFIX + "Die Stadtkasse ist für den Raub bei " + rob.getName() + " aufgekommen und hat " + (LockpickHandler.value.get(player)/2) + "€ verloren.");
                                         Beruf.Berufe.POLICE.sendMessage(PREFIX + "Der Raub bei " + rob.getName() + " konnte nicht verhindert werden.");
@@ -121,7 +121,7 @@ public class BreakinCommand implements CommandExecutor {
                                         } else {
                                             orga.sendMessage(PREFIX + player.getName() + " hat " + LockpickHandler.kraeuter.get(player) + "g Kräuter aus dem Lager gestohlen.");
                                         }
-                                        orga.addExp((LockpickHandler.pulver.get(player) + LockpickHandler.kraeuter.get(player)) / 4);
+                                        orga.addExp((LockpickHandler.pulver.get(player) + LockpickHandler.kraeuter.get(player)) / 4, true);
                                         Beruf.Berufe.POLICE.sendMessage(PREFIX + "Der Raub bei " + rob.getName() + " konnte nicht verhindert werden.");
                                     } else {
                                         orga.sendMessage(PREFIX + player.getName() + " hat es nicht geschafft Drogen aus dem Lager zu stehlen.");

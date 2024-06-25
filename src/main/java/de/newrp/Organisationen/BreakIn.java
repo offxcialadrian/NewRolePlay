@@ -155,11 +155,11 @@ public class BreakIn implements Listener {
                 HOUSES.remove(p.getName());
                 TOTAL_COOLDOWN.put(p.getName(), System.currentTimeMillis());
                 progress.remove(p.getName());
-                if(house.hasAddon(HouseAddon.ALARM)) {
+                if (house.hasAddon(HouseAddon.ALARM)) {
                     Beruf.Berufe.POLICE.sendMessage(emergencyCallService.getPrefix() + "Ein Einbruch bei Haus " + house.getID() + " wurde gemeldet.");
                 }
-                if(Organisation.hasOrganisation(p)) {
-                    Organisation.getOrganisation(p).addExp(Script.getRandom(5, 7));
+                if (Organisation.hasOrganisation(p)) {
+                    Organisation.getOrganisation(p).addExp(Script.getRandom(10, 20), false);
                 }
                 this.cancel();
                 return;

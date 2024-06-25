@@ -78,7 +78,7 @@ public class Arrest implements CommandExecutor {
         if (Organisation.hasOrganisation(tg)) {
             Organisation o = Organisation.getOrganisation(tg);
             int add = Fahndung.getWanteds(tg) / 4;
-            o.addExp(add);
+            o.addExp(add, false);
         }
         int minute = 0;
         int hour = (int) TimeUnit.MILLISECONDS.toHours(time);
