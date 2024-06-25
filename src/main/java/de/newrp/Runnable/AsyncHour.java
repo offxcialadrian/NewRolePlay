@@ -130,7 +130,7 @@ public class AsyncHour extends BukkitRunnable {
                 }
 
                 if(shopExp != 0) {
-                    o.addExp(shopExp);
+                    o.addExp(shopExp, false);
                     o.sendMessage("§8[§eOrganisation§8] §e" + Messages.ARROW + " §7Deine Organisation hat §e" + shopExp + " Exp §7durch die Shops erhalten.");
                 }
 
@@ -141,7 +141,7 @@ public class AsyncHour extends BukkitRunnable {
                     }
                 }
                 if (i == 0) continue;
-                o.addExp(i);
+                o.addExp(i, false);
                 o.sendMessage("§8[§eOrganisation§8] §e" + Messages.ARROW + " §7Deine Organisation hat §e" + i + " §7Erfahrungspunkte durch §e" + (i / 10) + " aktive Mitglieder §7erhalten.");
              }
 

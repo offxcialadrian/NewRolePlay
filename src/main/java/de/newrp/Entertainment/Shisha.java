@@ -62,43 +62,39 @@ public class Shisha implements Listener {
                 if (!p.getInventory().getItemInMainHand().getType().equals(Material.STICK))
                     return;
 
-                if (Chair.sitsOnChair(p)) {
-                    if (getUses(p.getInventory().getItemInMainHand()) > 0) {
-                        if (new CooldownAPI(p, CooldownAPI.CooldownTime.MEDIUM, false).checkInput(Shisha.class)) {
-                            if (!EXHALE.containsKey(p.getName())) {
-                                EXHALE.put(p.getName(), System.currentTimeMillis() + TimeUnit.SECONDS.toMillis(5));
-                                p.sendMessage(PREFIX + "Du hast genug an der Shisha gezogen. Mit Linksklick kannst du den Rauch ausatmen.");
-                            }
+                if (getUses(p.getInventory().getItemInMainHand()) > 0) {
+                    if (new CooldownAPI(p, CooldownAPI.CooldownTime.MEDIUM, false).checkInput(Shisha.class)) {
+                        if (!EXHALE.containsKey(p.getName())) {
+                            EXHALE.put(p.getName(), System.currentTimeMillis() + TimeUnit.SECONDS.toMillis(5));
+                            p.sendMessage(PREFIX + "Du hast genug an der Shisha gezogen. Mit Linksklick kannst du den Rauch ausatmen.");
                         }
-                    } else {
-                        p.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
-                        p.sendMessage("§7Du hast die Shisha zu ende geraucht.");
                     }
+                } else {
+                    p.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
+                    p.sendMessage("§7Du hast die Shisha zu Ende geraucht.");
                 }
             }
         } else if (e.getAction() == Action.LEFT_CLICK_AIR || e.getAction() == Action.LEFT_CLICK_BLOCK) {
             Player p = e.getPlayer();
-            if (Chair.sitsOnChair(p)) {
-                if (getUses(p.getInventory().getItemInMainHand()) > 0) {
-                    if (EXHALE.containsKey(p.getName()) && EXHALE.get(p.getName()) > System.currentTimeMillis()) {
-                        ShishaType type = getType(p.getInventory().getItemInMainHand());
-                        if (type == null) return;
-                        Location loc = p.getEyeLocation();
-                        double maxLength = 4D;
+            if (getUses(p.getInventory().getItemInMainHand()) > 0) {
+                if (EXHALE.containsKey(p.getName()) && EXHALE.get(p.getName()) > System.currentTimeMillis()) {
+                    ShishaType type = getType(p.getInventory().getItemInMainHand());
+                    if (type == null) return;
+                    Location loc = p.getEyeLocation();
+                    double maxLength = 4D;
 
-                        float offset = type.getSmoke();
-                        Particle particle = new Particle(org.bukkit.Particle.CLOUD, loc, false, offset, offset, offset, 0.01F, (int) maxLength);
+                    float offset = type.getSmoke();
+                    Particle particle = new Particle(org.bukkit.Particle.CLOUD, loc, false, offset, offset, offset, 0.01F, (int) maxLength);
 
-                        for (double d = 0; d <= maxLength; d += 0.1) {
-                            loc.add(loc.getDirection().multiply(.1D));
+                    for (double d = 0; d <= maxLength; d += 0.1) {
+                        loc.add(loc.getDirection().multiply(.1D));
 
-                            particle.setLocation(loc);
-                            particle.sendAll();
-                        }
-                        Achievement.SHISHA.grant(p);
-                        p.getInventory().setItemInMainHand(setUses(p, p.getInventory().getItemInMainHand()));
-                        EXHALE.remove(p.getName());
+                        particle.setLocation(loc);
+                        particle.sendAll();
                     }
+                    Achievement.SHISHA.grant(p);
+                    p.getInventory().setItemInMainHand(setUses(p, p.getInventory().getItemInMainHand()));
+                    EXHALE.remove(p.getName());
                 }
             }
         }

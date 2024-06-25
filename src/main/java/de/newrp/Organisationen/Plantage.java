@@ -313,7 +313,7 @@ public class Plantage {
         getLocation().getBlock().setType(Material.AIR);
         getLocation().getBlock().getRelative(BlockFace.DOWN).setType(Material.DIRT);
         p.playSound(p.getLocation(), org.bukkit.Sound.ITEM_HOE_TILL, 1F, 1F);
-        getOrganisation().addExp(Script.getRandom(10, 20));
+        getOrganisation().addExp(Script.getRandom(10, 20), false);
         Script.addEXP(p, Script.getRandom(10, 20), true);
         Script.executeAsyncUpdate("DELETE FROM plantage WHERE plantID = " + this.plantID);
         PLANTAGEN.remove(this);

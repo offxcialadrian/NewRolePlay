@@ -139,7 +139,7 @@ public class HackPoliceComputer implements CommandExecutor, Listener {
                 }
 
                 p.sendMessage(prefix + "Du hast die Akten der Personen erfolgreich gelöscht.");
-                if (Organisation.hasOrganisation(p)) Organisation.getOrganisation(p).addExp(i * 8);
+                if (Organisation.hasOrganisation(p)) Organisation.getOrganisation(p).addExp(i * 8, false);
 
                 schedulerID = -1;
                 lastTime = now;

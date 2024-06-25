@@ -34,11 +34,31 @@ public class ActiveExtortedShopsCommand implements CommandExecutor {
 
         final BizWarConfig bizWarConfig = DependencyContainer.getContainer().getDependency(BizWarConfig.class);
         if (!bizWarConfig.getShopConfigs().isEmpty()) {
-            player.sendMessage(bizWarService.getPrefix() + "§7Folgende Businesses können noch erpresst werden:");
+            if (emptyShops())
+                player.sendMessage(bizWarService.getPrefix() + "§7Folgende Businesses können noch erpresst werden:");
+
             for (BizWarShopConfig shopConfig : bizWarConfig.getShopConfigs()) {
                 if (!extortedShops.contains(shopConfig.getShopId())) {
                     player.sendMessage(bizWarService.getPrefix() + " §7- §e" + Shops.getShop(shopConfig.getShopId()).getPublicName());
                 }
+            }
+        }
+
+        return false;
+    }
+
+    private boolean emptyShops() {
+        final Set<Integer> extortedShops = new HashSet<>();
+        for (Organisation organisation : Organisation.values()) {
+            for (Shops shops : bizWarService.getShopsOfFaction(organisation)) {
+                extortedShops.add(shops.getID());
+            }
+        }
+
+        final BizWarConfig bizWarConfig = DependencyContainer.getContainer().getDependency(BizWarConfig.class);
+        for (BizWarShopConfig shopConfig : bizWarConfig.getShopConfigs()) {
+            if (!extortedShops.contains(shopConfig.getShopId())) {
+                return true;
             }
         }
 

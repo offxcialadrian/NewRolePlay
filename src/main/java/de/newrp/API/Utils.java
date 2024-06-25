@@ -952,4 +952,9 @@ public class Utils implements Listener {
             event.setCancelled(true);
     }
 
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public static void onEgg(EntityInteractEvent event) {
+        if (event.getBlock().getType() == Material.TURTLE_EGG)
+            event.setCancelled(true);
+    }
 }

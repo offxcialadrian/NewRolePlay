@@ -257,7 +257,7 @@ public class Bankraub implements CommandExecutor, Listener {
             }
 
             int result = Script.getRandom(8000, 12000);
-            faction.addExp(result / 100);
+            faction.addExp(result / 100, true);
             Script.addMoney(Script.getNRPID(p), PaymentType.CASH, result);
             Log.HIGH.write(p, "hat einen Bankraub erfolgreich abgeschlossen und " + result + " € erbeutet.");
             Stadtkasse.removeStadtkasse(result, "Bankraub");

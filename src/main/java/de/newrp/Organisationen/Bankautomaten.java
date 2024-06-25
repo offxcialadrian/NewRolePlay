@@ -152,7 +152,7 @@ public class Bankautomaten implements Listener {
                     o.sendMessage(PREFIX + Script.getName(p) + " hat einen Bankautomaten zerstört und " + remove + "€ gestohlen.");
                     Beruf.Berufe.POLICE.sendMessage(PREFIX + "Der Bankautomat " + atm.getID() + " wurde zerstört. Es wurden " + remove + "€ gestohlen.");
                     Script.addMoney(p, PaymentType.CASH, remove);
-                    o.addExp(remove / 100);
+                    o.addExp(remove / 100, true);
                     DependencyContainer.getContainer().getDependency(ITakeMoneyService.class).addIllegalObtainedMoneyToPlayer(p, remove);
                     progress.remove(p.getName());
                     cancel();

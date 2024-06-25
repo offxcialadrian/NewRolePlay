@@ -205,7 +205,7 @@ public class Drogenbank implements CommandExecutor, Listener {
             int amount = inv.getItem(i).getAmount();
             Drogenbank.addDrogen(Organisation.getOrganisation(p), droge, purity, amount);
             Organisation.getOrganisation(p).sendMessage(Organisation.PREFIX + "Es wurden " + amount + "g " + droge.getName() + " mit dem Reinheitsgrad " + purity.getText() + " von " + Script.getName(p) + " in die Drogenbank gelegt.");
-            Activity.addActivity(Script.getNRPID(p), 0, Activities.PLANTAGE.getName(), Activities.PLANTAGE.getPoints() * amount);
+            Activity.addActivity(Script.getNRPID(p), 0, Activities.DROGEN.getName(), Activities.DROGEN.getPoints() * amount);
         }
     }
 

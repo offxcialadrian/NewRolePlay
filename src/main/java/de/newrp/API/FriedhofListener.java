@@ -96,7 +96,7 @@ public class FriedhofListener implements Listener {
             Contract ct = Contract.getContract(p);
             if(ct != null) {
                 Script.addEXP(killer, Script.getRandom(8, 16), true);
-                Organisation.HITMEN.addExp(Script.getRandom(20, 30));
+                Organisation.HITMEN.addExp(Script.getRandom(20, 30), true);
                 Organisation.HITMEN.sendMessage(Contract.PREFIX + Script.getName(killer) + " hat " + Script.getName(p) + " getötet.");
                 Organisation.HITMEN.addKasse(ct.getPrice());
                 p.sendMessage(Contract.PREFIX + "Du wurdest getötet weil ein Kopfgeld auf dich ausgesetzt wurde.");

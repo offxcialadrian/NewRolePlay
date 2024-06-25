@@ -241,13 +241,13 @@ public class GangwarCommand implements CommandExecutor, Listener {
         }
 
         o.sendMessage(PREFIX + "Deine Organisation hat den Gangwar in der Zone " + zone.getName() + " gewonnen.");
-        o.addExp(points.get(o));
+        o.addExp(points.get(o), true);
         for (UUID m : o.getMember()) if (Bukkit.getOfflinePlayer(m).isOnline()) if (!AFK.isAFK(m))
             Activity.grantActivity(Script.getNRPID(Bukkit.getPlayer(m)), Activities.GANGWAR);
         other.sendMessage(PREFIX + "Deine Organisation hat den Gangwar in der Zone " + zone.getName() + " verloren.");
         for (UUID m : other.getMember()) if (Bukkit.getOfflinePlayer(m).isOnline()) if (!AFK.isAFK(m))
             Activity.grantActivity(Script.getNRPID(Bukkit.getPlayer(m)), Activities.GANGWAR);
-        other.addExp(points.get(other) / 2);
+        other.addExp(points.get(other) / 2, true);
 
         if(zone.getOwner() != o) {
             zone.setOwner(o);

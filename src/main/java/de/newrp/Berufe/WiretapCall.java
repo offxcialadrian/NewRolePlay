@@ -1,12 +1,11 @@
 package de.newrp.Berufe;
 
-import de.newrp.API.Messages;
 import de.newrp.API.PaymentType;
 import de.newrp.API.Script;
 import de.newrp.Call.Call;
 import de.newrp.NewRoleplayMain;
-import de.newrp.Organisationen.Organisation;
 import de.newrp.Player.Mobile;
+import de.newrp.Police.Fahndung;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.bukkit.Bukkit;
@@ -17,15 +16,17 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 public class WiretapCall implements CommandExecutor {
 
-    private static final String PREFIX = "§8[§cAbhören§8] §8" + Messages.ARROW + " §7";
+    private static final String PREFIX = "§8[§cAbhören§8] §8» §7";
 
-    public static HashMap<UUID, PlayerWiretap> wiretap = new HashMap<>();
+    public static Map<UUID, PlayerWiretap> wiretap = new ConcurrentHashMap<>();
     private BukkitRunnable runnable = null;
 
     @Override
@@ -38,7 +39,7 @@ public class WiretapCall implements CommandExecutor {
             player.sendMessage(PREFIX + "Du bist kein Mitglied des Bundeskriminalamts.");
             return true;
         }
-        if(!wiretap.containsKey(player.getUniqueId())) {
+        if(wiretap.containsKey(player.getUniqueId())) {
             wiretap.remove(player.getUniqueId());
             updateRunnable();
             player.sendMessage(PREFIX + "Die Abhörung wurde beendet.");
@@ -52,9 +53,14 @@ public class WiretapCall implements CommandExecutor {
             player.sendMessage(PREFIX + "Nutze §c/abhören [Name]");
             return true;
         }
-        Mobile.Phones phone = Mobile.Phones.getPhone(player.getInventory().getItemInMainHand());
-        if(phone == null) {
+        Mobile.Phones phone = Mobile.getPhone(player);
+        if(phone == null || !Mobile.isPhone(player.getInventory().getItemInMainHand())) {
             player.sendMessage(PREFIX + "Du musst dein Handy in der Hand halten.");
+            return true;
+        }
+
+        if(!Mobile.mobileIsOn(player)) {
+            player.sendMessage(PREFIX + "Dein Handy muss angeschaltet sein.");
             return true;
         }
         /*if(phone.getID() == 3) {
@@ -63,42 +69,39 @@ public class WiretapCall implements CommandExecutor {
         }*/
         Player callPlayer = Script.getPlayer(args[0]);
         if(callPlayer == null) {
-            player.sendMessage(PREFIX + "Der Spieler §c" + args[0] + " §7wurde nicht gefunden.");
-            return true;
-        }
-        if(!Organisation.hasOrganisation(callPlayer)) {
-            player.sendMessage(PREFIX + "Du kannst nur Anrufe von Spielern aus Organisationen abhören.");
+            player.sendMessage(PREFIX + "§c" + args[0] + " §7wurde nicht gefunden.");
             return true;
         }
         if(!Call.isOnActiveCall(callPlayer)) {
-            player.sendMessage(PREFIX + "Der Spieler §c" + args[0] + " tätigt gerade keinen Anruf.");
+            player.sendMessage(PREFIX + "§c" + args[0] + " §7tätigt gerade keinen Anruf.");
             return true;
         }
         int callId = Call.getCallIDByPlayer(callPlayer);
-        wiretap.put(player.getUniqueId(), new PlayerWiretap(player, callPlayer, callId, System.currentTimeMillis()));
-        player.sendMessage(PREFIX + "Du hörst nun den Anruf §e#" + callId + " §7von §6" + args[0] + " §7ab.");
+        boolean hasWanteds = Call.ON_CALL.get(callId).stream().anyMatch(player1 -> Fahndung.getWanteds(player1) != 0);
+        if(!hasWanteds) {
+            player.sendMessage(PREFIX + "Nach §c" + args[0] + " §7wird nicht gefahndet.");
+            return true;
+        }
+        wiretap.put(player.getUniqueId(), new PlayerWiretap(player, callId, System.currentTimeMillis()));
+        player.sendMessage(PREFIX + "Du hörst nun den Anruf von §c" + args[0] + " §7ab.");
         updateRunnable();
         return true;
     }
 
-    public static void sendNotification(Player player, int callId, boolean created) {
-        if(!Organisation.hasOrganisation(player)) {
+    public static void sendNotification(int callId) {
+        List<Player> players = Call.ON_CALL.get(callId);
+        if(players.size() != 2) {
             return;
         }
-        String message;
-        if(created) {
-            message = PREFIX + player.getName() + " hat den Anruf §e#" + callId + " §7gestartet";
-        } else {
-            message = PREFIX + player.getName() + " ist dem Anruf §e#" + callId + " §7beigetreten";
+        boolean hasWanteds = players.stream().anyMatch(player1 -> Fahndung.getWanteds(player1) != 0);
+        if(!hasWanteds) {
+            return;
         }
-
-        for (UUID memberUuid : Beruf.Berufe.BUNDESKRIMINALAMT.getMember()) {
-            final Player memberPlayer = Bukkit.getPlayer(memberUuid);
-            if(memberPlayer == null) {
-                continue;
+        for (UUID memberUUID : Beruf.Berufe.BUNDESKRIMINALAMT.getMember()) {
+            final Player memberPlayer = Bukkit.getPlayer(memberUUID);
+            if(memberPlayer != null) {
+                Script.sendClickableMessage(memberPlayer, PREFIX + players.get(0).getName() + " hat einen Anruf mit " + players.get(1).getName() + " gestartet.", "/abhören " + players.get(0).getName(), "§cAnruf Abhören");
             }
-
-            Script.sendClickableMessage(memberPlayer, message, "/abhören " + player.getName(), "§cAnruf Abhören");
         }
     }
 
@@ -132,7 +135,6 @@ public class WiretapCall implements CommandExecutor {
     public static class PlayerWiretap {
 
         private final Player player;
-        private final Player callPlayer;
         private final int callId;
         private long millis;
 
@@ -143,7 +145,7 @@ public class WiretapCall implements CommandExecutor {
                 wiretap.remove(player.getUniqueId());
                 return;
             }
-            if(millis < newMillis) {
+            if(millis > newMillis) {
                 return;
             }
             millis = newMillis+60000;
@@ -158,7 +160,7 @@ public class WiretapCall implements CommandExecutor {
                 return;
             }
             Script.removeMoney(player, PaymentType.BANK, 50);
-            player.sendMessage(PREFIX + "Dir wurden 50€ Abhörgebühren abgerechnet.");
+            Script.sendActionBar(player, PREFIX + "Dir wurden 50€ Abhörgebühren abgerechnet.");
         }
 
     }

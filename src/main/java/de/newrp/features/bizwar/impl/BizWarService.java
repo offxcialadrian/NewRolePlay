@@ -118,7 +118,7 @@ public class BizWarService implements IBizWarService {
         }
 
         this.activeBizWarInformations.remove(activeBizWarInformation);
-        final Organisation winner = activeBizWarInformation.getCurrentAttackerPoints() >= activeBizWarInformation.getCurrentDefenderPoints() ? activeBizWarInformation.getAttackerOrganisation() : activeBizWarInformation.getDefenderOrganisation();
+        final Organisation winner = activeBizWarInformation.getCurrentAttackerPoints() > activeBizWarInformation.getCurrentDefenderPoints() ? activeBizWarInformation.getAttackerOrganisation() : activeBizWarInformation.getDefenderOrganisation();
         final Organisation loser = activeBizWarInformation.getAttackerOrganisation() == winner ? activeBizWarInformation.getDefenderOrganisation() : activeBizWarInformation.getAttackerOrganisation();
 
         for (UUID winnerUUID : winner.getMember()) {
@@ -141,8 +141,8 @@ public class BizWarService implements IBizWarService {
         }
 
         if(!loser.getMember().isEmpty()) {
-            winner.addExp(Script.getRandom(70, 90));
-            loser.removeExp(Script.getRandom(30, 45));
+            winner.addExp(Script.getRandom(70, 90), true);
+            loser.removeExp(Script.getRandom(30, 45), true);
         }
 
         for (UUID joinedMembersOfDefender : activeBizWarInformation.getJoinedMembersOfDefenders()) {
@@ -214,8 +214,8 @@ public class BizWarService implements IBizWarService {
 
         } else {
             bizWarInformation.getJoinedMembersOfDefenders().add(player.getUniqueId());
-            bizWarInformation.getDefenderOrganisation().sendMessage(this.getPrefix() + "§a" + player.getName() + " §7ist euch beigetreten (§e" + bizWarInformation.getJoinedMembersOfAttackers().size() + "§7)!");
-            bizWarInformation.getAttackerOrganisation().sendMessage(this.getPrefix() + "§c" + player.getName() + " §7ist den Verteidigern beigetreten (§e" + bizWarInformation.getJoinedMembersOfAttackers().size() + "§7)!");
+            bizWarInformation.getDefenderOrganisation().sendMessage(this.getPrefix() + "§a" + player.getName() + " §7ist euch beigetreten (§e" + bizWarInformation.getJoinedMembersOfDefenders().size() + "§7)!");
+            bizWarInformation.getAttackerOrganisation().sendMessage(this.getPrefix() + "§c" + player.getName() + " §7ist den Verteidigern beigetreten (§e" + bizWarInformation.getJoinedMembersOfDefenders().size() + "§7)!");
             player.teleport(bizWarInformation.getDefenderSpawn());
             player.sendMessage(Messages.INFO + "Du bist nun Teil vom Biz War, daher wurdest du zum Verteidiger Spawn teleportiert!");
         }

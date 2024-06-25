@@ -127,19 +127,14 @@ public enum Organisation {
         return 0;
     }
 
-    public void addExp(int amount) {
-        if(this.getLevel()==10) {
-            for(Player all : getMembers()) {
-                Script.sendActionBar(all, PREFIX + "Deine Organisation hat das maximale Level erreicht.");
-            }
-            return;
-        }
-        if(getExp() + amount >= getLevelCost()) {
-            sendMessage(PREFIX + "Deine Organisation hat Level " + (getLevel() + 1) + " erreicht.");
+    public void addExp(int amount, boolean msg) {
+        if (this.getLevel() == 10) return;
+        if (getExp() + amount >= getLevelCost()) {
             Script.executeUpdate("UPDATE organisation_level SET level='" + (getLevel() + 1) + "', exp='" + 0 + "' WHERE organisationID='" + this.id + "'");
+            if (msg) sendMessage(PREFIX + "Deine Organisation hat Level " + (getLevel() + 1) + " erreicht.");
         } else {
             Script.executeUpdate("UPDATE organisation_level SET exp='" + (getExp() + amount) + "' WHERE organisationID='" + this.id + "'");
-            sendMessage(PREFIX + "Deine Organisation hat " + amount + " Erfahrungspunkte erhalten §8(§e" + getExp() + "§7/§e" + getLevelCost() + "§8)§7.");
+            if (msg) sendMessage(PREFIX + "Deine Organisation hat " + amount + " Erfahrungspunkte erhalten §8(§e" + getExp() + "§7/§e" + getLevelCost() + "§8)§7.");
         }
     }
 
@@ -174,14 +169,14 @@ public enum Organisation {
         return fraktionSpray;
     }
 
-    public void removeExp(int amount) {
+    public void removeExp(int amount, boolean msg) {
         if(getExp() - amount < 0) {
-            sendMessage(PREFIX + "Deine Organisation hat Level " + (getLevel() - 1) + " erreicht.");
             Script.executeUpdate("UPDATE organisation_level SET level='" + (getLevel() - 1) + "' WHERE organisationID='" + this.id + "'");
             Script.executeUpdate("UPDATE organisation_level SET exp='" + (getLevelCost() - amount) + "' WHERE organisationID='" + this.id + "'");
+            if (msg) sendMessage(PREFIX + "Deine Organisation hat Level " + (getLevel() - 1) + " erreicht.");
         } else {
             Script.executeUpdate("UPDATE organisation_level SET exp='" + (getExp() - amount) + "' WHERE organisationID='" + this.id + "'");
-            sendMessage(PREFIX + "Deine Organisation hat " + amount + " Erfahrungspunkte verloren §8(§e" + getExp() + "§7/§e" + getLevelCost() + "§8)§7.");
+            if (msg) sendMessage(PREFIX + "Deine Organisation hat " + amount + " Erfahrungspunkte verloren §8(§e" + getExp() + "§7/§e" + getLevelCost() + "§8)§7.");
         }
     }
 

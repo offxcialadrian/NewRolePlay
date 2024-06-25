@@ -49,9 +49,11 @@ public class PlaytimeService implements IPlaytimeService {
             }
 
             if (playtimeData.getA_hours() % 50 == 0 && playtimeData.getA_minutes() == 0) {
-                player.sendMessage(Script.PREFIX + "Du spielst nun bereits seit " + playtimeData.getA_hours() + " Stunden aktiv auf NRP × New RolePlay. Vielen Dank dafür!");
-                player.sendMessage(Script.PREFIX + "Du erhältst als Dankeschön für deine Treue " + playtimeData.getA_hours() + " Exp");
-                Script.addEXP(player, playtimeData.getA_hours(), true);
+                int h = playtimeData.getA_hours();
+                player.sendMessage(Script.PREFIX + "Du spielst nun bereits seit " + h + " Stunden aktiv auf NRP × New RolePlay. Vielen Dank dafür!");
+                if (h > 1000) h = 1000;
+                player.sendMessage(Script.PREFIX + "Du erhältst als Dankeschön für deine Treue " + h + " Exp");
+                Script.addEXP(player, h, true);
             }
 
             if (playtimeData.getA_hours() % 150 == 0 && playtimeData.getA_minutes() == 0) {
