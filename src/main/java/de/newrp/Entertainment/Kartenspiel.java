@@ -62,7 +62,7 @@ public class Kartenspiel implements CommandExecutor, Listener {
             return true;
         }
 
-        if (p.getLocation().distance(new Location(Script.WORLD, 790, 109, 858)) < 8) {
+        if (p.getLocation().distance(new Location(Script.WORLD, 792, 109, 858)) < 8) {
             if (!bet.containsKey(p.getName())) {
                 if (args.length > 0) {
                     try {
