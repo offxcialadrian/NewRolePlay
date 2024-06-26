@@ -37,9 +37,19 @@ public class BizWarPlayerDeathListener implements Listener {
 
         final boolean isAttacker = activeBizWarInformation.getAttackerOrganisation().getMembers().contains(player);
         if(isAttacker) {
-            activeBizWarInformation.setCurrentDefenderPoints(activeBizWarInformation.getCurrentDefenderPoints() + (isMVO(activeBizWarInformation.getAttackerOrganisation()) ? 2 : 1));
+            activeBizWarInformation.setCurrentDefenderPoints(activeBizWarInformation.getCurrentDefenderPoints() + 1);
+            if(Script.getRandom(0, 1) == 0) {
+                if(isMVO(activeBizWarInformation.getAttackerOrganisation())) {
+                    activeBizWarInformation.setCurrentDefenderPoints(activeBizWarInformation.getCurrentDefenderPoints() + 1);
+                }
+            }
         } else {
-            activeBizWarInformation.setCurrentAttackerPoints(activeBizWarInformation.getCurrentAttackerPoints() + (isMVO(activeBizWarInformation.getDefenderOrganisation()) ? 2 : 1));
+            activeBizWarInformation.setCurrentAttackerPoints(activeBizWarInformation.getCurrentAttackerPoints() + 1);
+            if(Script.getRandom(0, 1) == 0) {
+                if(isMVO(activeBizWarInformation.getDefenderOrganisation())) {
+                    activeBizWarInformation.setCurrentAttackerPoints(activeBizWarInformation.getCurrentAttackerPoints() + 1);
+                }
+            }
         }
 
         if(killer == null) {
