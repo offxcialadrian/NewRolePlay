@@ -860,3 +860,5 @@ commands:
     description: get shop id
   abhören:
     description: bka wiretap calls
+  anews:
+    description: automatic news sending system

@@ -52,29 +52,21 @@ public class ANewsCommand implements CommandExecutor {
             player.sendMessage(Messages.ERROR + "Du kannst diesen Befehl gerade nicht benutzen.");
             return true;
         }
-        if(!abteilungen.contains(Beruf.getAbteilung(player)) || !Beruf.isLeader(player, false)) {
-            player.sendMessage(Messages.ERROR + "Deine Abteilung hat keine Befugnis hierzu.");
-            return true;
-        }
         if(args.length < 1) {
-            if(Beruf.isLeader(player, false)) {
-                if(messages.isEmpty()) {
-                    player.sendMessage(prefix + "Aktuell gibt es keine ANews.");
-                    return true;
-                }
-                player.sendMessage(prefix + "Liste aller ANews:");
-                messages.forEach((id, message) -> {
-                    if(message.isAccepted()) {
-                        String text = prefix + "§6#" + id + " §8× §6" + message.getPlayer().getName() + " §8× §6" + message.getTimeAsString() + " §8× §aAkzeptiert §8× §6" + message.getText();
-                        player.sendMessage(text);
-                    } else {
-                        String text = prefix + "§6#" + id + " §8× §6" + message.getPlayer().getName() + " §8× §6" + message.getTimeAsString() + " §8× §7Offen §8× §6" + message.getText();
-                        Script.sendClickableMessage(player, text, "/anews accept " + id, "§6News Annehmen");
-                    }
-                });
+            if(messages.isEmpty()) {
+                player.sendMessage(prefix + "Aktuell gibt es keine ANews.");
                 return true;
             }
-            sendUsage(player);
+            player.sendMessage(prefix + "Liste aller ANews:");
+            messages.forEach((id, message) -> {
+                if(message.isAccepted()) {
+                    String text = prefix + "§6#" + id + " §8× §6" + message.getPlayer().getName() + " §8× §6" + message.getTimeAsString() + " §8× §aAkzeptiert §8× §6" + message.getText();
+                    player.sendMessage(text);
+                } else {
+                    String text = prefix + "§6#" + id + " §8× §6" + message.getPlayer().getName() + " §8× §6" + message.getTimeAsString() + " §8× §7Offen §8× §6" + message.getText();
+                    Script.sendClickableMessage(player, text, "/anews accept " + id, "§6News Annehmen");
+                }
+            });
             return true;
         }
         if(Beruf.isLeader(player, false)) {
@@ -101,7 +93,8 @@ public class ANewsCommand implements CommandExecutor {
             }
         }
         if(args.length < 3) {
-            sendUsage(player);
+            player.sendMessage(prefix + "Nutze: §6/anews create [Zeit] [Text]");
+            player.sendMessage(Messages.INFO + "Die Zeit muss im Format HH:mm angegeben werden.");
             return true;
         }
         if(args[0].equalsIgnoreCase("create")) {
@@ -131,11 +124,6 @@ public class ANewsCommand implements CommandExecutor {
             updateRunnable();
         }
         return true;
-    }
-
-    private void sendUsage(Player player) {
-        player.sendMessage(prefix + "Nutze: §6/anews create [Zeit] [Text]");
-        player.sendMessage(Messages.INFO + "Die Zeit muss im Format HH:mm angegeben werden.");
     }
 
     private void updateRunnable() {
