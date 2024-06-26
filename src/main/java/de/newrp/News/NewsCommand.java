@@ -60,15 +60,17 @@ public class NewsCommand implements CommandExecutor {
         }
 
         if(wahlenNewsActive) wahlenNews = true;
-
-        for(Player all : Bukkit.getOnlinePlayers()) {
-            all.sendMessage(msg.toString());
-        }
-        Script.sendTeamMessage(NEWS + "Diese News wurde geschaltet von " + Script.getName(p));
-        Beruf.Berufe.NEWS.sendMessage(NEWS + "Diese News wurde geschaltet von " + Script.getName(p));
-        Activity.grantActivity(Script.getNRPID(p), Activities.NEWS);
-        Script.addEXP(p, Script.getRandom(4, 8), true);
-
+        sendNewsMessage(p, msg.toString());
         return false;
+    }
+
+    public static void sendNewsMessage(Player player, String text) {
+        for(Player all : Bukkit.getOnlinePlayers()) {
+            all.sendMessage(text);
+        }
+        Script.sendTeamMessage(NEWS + "Diese News wurde geschaltet von " + Script.getName(player));
+        Beruf.Berufe.NEWS.sendMessage(NEWS + "Diese News wurde geschaltet von " + Script.getName(player));
+        Activity.grantActivity(Script.getNRPID(player), Activities.NEWS);
+        Script.addEXP(player, Script.getRandom(4, 8), true);
     }
 }
