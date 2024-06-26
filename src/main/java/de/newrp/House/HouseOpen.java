@@ -5,7 +5,9 @@ import de.newrp.API.Script;
 import de.newrp.Administrator.BuildMode;
 import de.newrp.Administrator.SDuty;
 import de.newrp.Berufe.Beruf;
+import de.newrp.Government.Marry;
 import de.newrp.Organisationen.Organisation;
+import de.newrp.Player.BeziehungCommand;
 import de.newrp.Police.Ramm;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -45,8 +47,10 @@ public class HouseOpen implements Listener {
         if (house != null) {
             Long lastUsage = Ramm.cooldown.get(house);
             if (lastUsage != null && lastUsage + TimeUnit.MINUTES.toMillis(5) > System.currentTimeMillis()) return false;
-            if (house.isMieter(Script.getNRPID(p))) return true;
             if (house.getOwner() == 0) return true;
+            if (house.isMieter(Script.getNRPID(p))) return true;
+            if (BeziehungCommand.isMarried(p))
+                if (house.isMieter(Script.getNRPID(BeziehungCommand.getPartner(p)))) return true;
         }
         if (orgDoor(p, b)) return true;
         if (berufsDoor(p, b)) return true;
