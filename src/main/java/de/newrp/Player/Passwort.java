@@ -24,7 +24,7 @@ import java.util.List;
 
 public class Passwort implements CommandExecutor, Listener {
 
-    private static String PREFIX = "§8[§6Passwort§8] §8» §7";
+    private static final String PREFIX = "§8[§6Passwort§8] §8» §7";
     static final List<String> locked = new ArrayList<>();
 
     public static boolean isLocked(Player p) {

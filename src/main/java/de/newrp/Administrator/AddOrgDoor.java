@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
 public class AddOrgDoor implements CommandExecutor, Listener, TabCompleter {
 
     private static final String PREFIX = "§8[§eBerufsdoor§8] §e» ";
-    private static HashMap<String, Organisation> changing = new HashMap<>();
+    private static final HashMap<String, Organisation> changing = new HashMap<>();
 
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {

@@ -164,7 +164,7 @@ public enum ShopItem {
     private final boolean reopen;
     private final boolean addtoinv;
     private final boolean premium;
-    private ShopType[] types;
+    private final ShopType[] types;
 
     ShopItem(int id, String name, ItemStack is, int size, int min, int max, int buyPrice, int licensePrice, int tax, boolean reopen, boolean addtoinv, boolean premium, ShopType[] types) {
         this.id = id;

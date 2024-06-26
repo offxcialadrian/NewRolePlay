@@ -26,7 +26,7 @@ import java.util.*;
 public class Shop implements CommandExecutor, Listener, TabCompleter {
 
     public static String PREFIX = "§8[§6Shop§8] » §7";
-    private static HashMap<Player, Integer> priceMap = new HashMap<>();
+    private static final HashMap<Player, Integer> priceMap = new HashMap<>();
 
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
@@ -457,7 +457,6 @@ public class Shop implements CommandExecutor, Listener, TabCompleter {
             p.sendMessage(PREFIX + "Du hast " + si.getName() + " §7aus deinem Shop-Sortiment entfernt.");
             Notifications.sendMessage(Notifications.NotificationType.SHOP, Script.getName(p) + " hat " + si.getName() + " §aaus sein Shop-Sortiment entfernt. [Shop: " + s.getPublicName() + "]");
             p.closeInventory();
-            return;
         }
     }
 

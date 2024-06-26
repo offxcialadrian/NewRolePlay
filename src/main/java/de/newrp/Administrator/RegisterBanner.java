@@ -47,7 +47,7 @@ public class RegisterBanner implements CommandExecutor, Listener {
         if(!banner.contains(p)) return;
         if(e.getClickedBlock() == null) return;
         if(e.getClickedBlock().getType() != Material.WHITE_WALL_BANNER) return;
-        Script.executeUpdate("INSERT INTO graffiti (x, y, z, org) VALUES (" + (int) e.getClickedBlock().getX() + ", " + (int) e.getClickedBlock().getY() + ", " + (int) e.getClickedBlock().getZ() + ", " + "NULL" + ")");
+        Script.executeUpdate("INSERT INTO graffiti (x, y, z, org) VALUES (" + e.getClickedBlock().getX() + ", " + e.getClickedBlock().getY() + ", " + e.getClickedBlock().getZ() + ", " + "NULL" + ")");
         p.sendMessage(PREFIX + "Banner registriert.");
     }
 

@@ -38,7 +38,7 @@ public class Checkpoints implements Listener {
 
     public static String PREFIX = "§8[§cCheckpoints§8] §c" + Messages.ARROW + " §7";
 
-    private static Location[] locs = new Location[] {
+    private static final Location[] locs = new Location[] {
             new Location(Script.WORLD, 490, 11, 535),
             new Location(Script.WORLD, 495, 7, 543),
             new Location(Script.WORLD, 506, 10, 543),

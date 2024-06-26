@@ -11,10 +11,10 @@ import java.util.HashMap;
 
 public class Umfrage {
 
-    private int id;
-    private String frage;
-    private HashMap<String, Integer> antworten;
-    private boolean active;
+    private final int id;
+    private final String frage;
+    private final HashMap<String, Integer> antworten;
+    private final boolean active;
 
     public static ArrayList<String> players = new ArrayList<>();
 

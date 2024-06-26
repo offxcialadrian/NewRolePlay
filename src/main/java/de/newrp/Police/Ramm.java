@@ -24,7 +24,7 @@ import java.util.Random;
 
 public class Ramm implements CommandExecutor {
 
-    private static String PREFIX = "§8[§9Ramm§8] §9" + Messages.ARROW + " §7";
+    private static final String PREFIX = "§8[§9Ramm§8] §9" + Messages.ARROW + " §7";
     public static HashMap<House, Long> cooldown = new HashMap<>();
 
     @Override

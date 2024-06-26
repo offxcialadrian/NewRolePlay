@@ -127,7 +127,6 @@ public class JailWork implements CommandExecutor, Listener {
                 inv.setItem(7, new ItemBuilder(Material.PAPER).setName(getPreviousNumber(inv.getItem(7).getItemMeta().getDisplayName())).setLore("§bLinksklick für die nächste Zahl", "§bRechtsklick um eine Zahl zurückzugehen").build());
             }
         } else {
-            return;
         }
 
     }

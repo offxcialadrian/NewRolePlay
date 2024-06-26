@@ -96,7 +96,7 @@ public class OrgSpray implements Listener {
                 sb.append("§8▉");
             }
         }
-        Script.sendActionBar(p, "§eGraffiti sprühen.. §8» §a" + sb.toString());
+        Script.sendActionBar(p, "§eGraffiti sprühen.. §8» §a" + sb);
     }
 
     public void removeSpray(Player p, Block b) {

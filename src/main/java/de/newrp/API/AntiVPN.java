@@ -16,7 +16,7 @@ import java.util.HashMap;
 
 public class AntiVPN implements Listener {
     public static final HashMap<String, Boolean> IP_CACHE = new HashMap<>();
-    private static String PREFIX = "§8[§cAntiVPN§8] §c" + Messages.ARROW + " §7";
+    private static final String PREFIX = "§8[§cAntiVPN§8] §c" + Messages.ARROW + " §7";
     public static boolean activated = true;
 
     @EventHandler

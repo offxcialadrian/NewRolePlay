@@ -86,7 +86,6 @@ public class Verband implements Listener {
                 LEVEL.remove(p.getName());
                 return;
             }
-            return;
         }
 
     }
@@ -224,6 +223,6 @@ public class Verband implements Listener {
                 sb.append("§8▉");
             }
         }
-        Script.sendActionBar(p, "§cVerband anlegen.. §8» §a" + sb.toString());
+        Script.sendActionBar(p, "§cVerband anlegen.. §8» §a" + sb);
     }
 }

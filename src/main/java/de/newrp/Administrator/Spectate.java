@@ -23,7 +23,7 @@ public class Spectate implements CommandExecutor, Listener {
     public static final HashMap<String, Location> spawn = new HashMap<>();
     public static final HashMap<Player, String> spectate = new HashMap<>();
 
-    private static String PREFIX = "§8[§cSpectate§8] §c» §7";
+    private static final String PREFIX = "§8[§cSpectate§8] §c» §7";
     public static boolean isSpectating(Player admin) {
         if (admin == null) return false;
         return spectate.containsKey(admin);

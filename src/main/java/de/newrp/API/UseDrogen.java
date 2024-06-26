@@ -100,6 +100,6 @@ public class UseDrogen implements Listener {
                 sb.append("§8▉");
             }
         }
-        Script.sendActionBar(p, "§cKonsumieren.. §8» §a" + sb.toString());
+        Script.sendActionBar(p, "§cKonsumieren.. §8» §a" + sb);
     }
 }

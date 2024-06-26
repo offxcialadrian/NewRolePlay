@@ -33,7 +33,7 @@ public class SpindCommand implements CommandExecutor, Listener {
 
     public static final String PREFIX = "§8[§eSpind§8] §e» §7";
 
-    private static HashMap<Integer, Boolean> opened = new HashMap<>();
+    private static final HashMap<Integer, Boolean> opened = new HashMap<>();
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {

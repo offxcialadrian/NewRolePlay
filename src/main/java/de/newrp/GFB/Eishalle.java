@@ -24,7 +24,7 @@ import java.util.concurrent.TimeUnit;
 
 public class Eishalle implements CommandExecutor, Listener {
 
-    private static String PREFIX = "§8[§bEishalle§8] §b" + Messages.ARROW + " §7";
+    private static final String PREFIX = "§8[§bEishalle§8] §b" + Messages.ARROW + " §7";
     public static HashMap<String, Long> antispam = new HashMap<>();
     public static HashMap<String, Long> cooldown = new HashMap<>();
     public static Player CURRENT = null;

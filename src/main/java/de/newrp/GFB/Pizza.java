@@ -186,24 +186,12 @@ public class Pizza implements CommandExecutor, Listener {
     @EventHandler
     public void onQuit(PlayerQuitEvent e) {
         Player p = e.getPlayer();
-        if(GFB.CURRENT.containsKey(p.getName())) {
-            GFB.CURRENT.remove(p.getName());
-        }
-        if(cooldown.containsKey(p.getName())) {
-            cooldown.remove(p.getName());
-        }
-        if(pizza.containsKey(p.getName())) {
-            pizza.remove(p.getName());
-        }
-        if(house.containsKey(p.getName())) {
-            house.remove(p.getName());
-        }
-        if(TOTAL_SCORE.containsKey(p.getName())) {
-            TOTAL_SCORE.remove(p.getName());
-        }
-        if(timer.containsKey(p.getName())) {
-            timer.remove(p.getName());
-        }
+        GFB.CURRENT.remove(p.getName());
+        cooldown.remove(p.getName());
+        pizza.remove(p.getName());
+        house.remove(p.getName());
+        TOTAL_SCORE.remove(p.getName());
+        timer.remove(p.getName());
     }
 
     public static OfflinePlayer getRandomPlayer(House h) {

@@ -148,9 +148,9 @@ public class BreakIn implements Listener {
                 int geld = (house.getKasse() / 3);
                 p.sendMessage(PREFIX + "Du hast alles. Verschwinde nun bevor die Polizei eintrifft!");
                 p.getInventory().getItemInMainHand().setAmount(p.getInventory().getItemInMainHand().getAmount() - 1);
-                Script.addMoney(p, PaymentType.CASH, (int) (geld));
+                Script.addMoney(p, PaymentType.CASH, geld);
 
-                house.setKasse(house.getKasse() - (int) (geld));
+                house.setKasse(house.getKasse() - geld);
                 COOLDOWNS.remove(p.getName());
                 HOUSES.remove(p.getName());
                 TOTAL_COOLDOWN.put(p.getName(), System.currentTimeMillis());
@@ -162,11 +162,9 @@ public class BreakIn implements Listener {
                     Organisation.getOrganisation(p).addExp(Script.getRandom(10, 20), false);
                 }
                 this.cancel();
-                return;
 
             }
         }.runTaskTimer(NewRoleplayMain.getInstance(), 20L, 20L);
-        return;
 
     }
 
@@ -182,7 +180,7 @@ public class BreakIn implements Listener {
                 sb.append("§8▉");
             }
         }
-        Script.sendActionBar(p, "§cEinbrechen.. §8» §a" + sb.toString());
+        Script.sendActionBar(p, "§cEinbrechen.. §8» §a" + sb);
     }
 
 }

@@ -645,7 +645,7 @@ public class Mobile implements Listener {
                 sb.append("§8▉");
             }
         }
-        Script.sendActionBar(p, "§cHandy anschalten.. §8» §a" + sb.toString());
+        Script.sendActionBar(p, "§cHandy anschalten.. §8» §a" + sb);
     }
 
     public static int getMissedCalls(Player p) {

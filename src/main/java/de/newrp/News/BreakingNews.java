@@ -60,7 +60,7 @@ public class BreakingNews implements CommandExecutor {
             }
         }
         p.sendMessage(NEWS + "§6Du hast eine Breaking-News geschaltet:\n" + msg.toString().replace(NEWS, ""));
-        Log.HIGH.write(p, "hat eine Breaking News geschaltet: " + msg.toString());
+        Log.HIGH.write(p, "hat eine Breaking News geschaltet: " + msg);
         Activity.grantActivity(Script.getNRPID(p), Activities.NEWS);
         Script.addEXP(p, Script.getRandom(4, 8), true);
         return true;

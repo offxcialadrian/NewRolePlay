@@ -69,7 +69,6 @@ public class Pfandautomat implements Listener {
             Script.addMoney(p, PaymentType.CASH, 1);
             LAST_CLICK.remove(p.getName());
             LEVEL.remove(p.getName());
-            return;
         }
 
     }
@@ -86,7 +85,7 @@ public class Pfandautomat implements Listener {
                 sb.append("§8▉");
             }
         }
-        Script.sendActionBar(p, "§cPfand einwerfen.. §8» §a" + sb.toString());
+        Script.sendActionBar(p, "§cPfand einwerfen.. §8» §a" + sb);
     }
 
 }

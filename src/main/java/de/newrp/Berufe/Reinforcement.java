@@ -17,8 +17,8 @@ import java.util.*;
 
 public class Reinforcement implements CommandExecutor {
 
-    private HashMap<String, Types> reinf_type = new HashMap<>();
-    private static HashMap<String, Location> new_reinforcement = new HashMap<>();
+    private final HashMap<String, Types> reinf_type = new HashMap<>();
+    private static final HashMap<String, Location> new_reinforcement = new HashMap<>();
 
     enum Types {
         NORMAL(0, "Unterstützung benötigt!", "", false),

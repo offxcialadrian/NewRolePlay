@@ -98,7 +98,7 @@ public class CheckPlayerCommand implements CommandExecutor {
                     houses.append(house.getID()).append(house.getID() == House.getHouses(Script.getNRPID(offtg)).get(House.getHouses(Script.getNRPID(offtg)).size() - 1).getID() ? "" : ", ");
                 }
                 if (houses.toString().equalsIgnoreCase("")) houses = new StringBuilder("Keine Häuser");
-                p.sendMessage("§7Häuser §8× §e" + houses.toString());
+                p.sendMessage("§7Häuser §8× §e" + houses);
                 return true;
             }
 
@@ -144,7 +144,7 @@ public class CheckPlayerCommand implements CommandExecutor {
                 houses.append(house.getID()).append(house.getID() == House.getHouses(Script.getNRPID(tg)).get(House.getHouses(Script.getNRPID(tg)).size() - 1).getID() ? "" : ", ");
             }
             if (houses.toString().equalsIgnoreCase("")) houses = new StringBuilder("Keine Häuser");
-            p.sendMessage("§7Häuser §8× §e" + houses.toString());
+            p.sendMessage("§7Häuser §8× §e" + houses);
             return false;
         }
 
@@ -194,7 +194,7 @@ public class CheckPlayerCommand implements CommandExecutor {
                 houses.append(house.getID()).append(house.getID() == House.getHouses(Script.getNRPID(offtg)).get(House.getHouses(Script.getNRPID(offtg)).size() - 1).getID() ? "" : ", ");
             }
             if (houses.toString().equalsIgnoreCase("")) houses = new StringBuilder("Keine Häuser");
-            p.sendMessage("§7Häuser §8× §e" + houses.toString());
+            p.sendMessage("§7Häuser §8× §e" + houses);
             return true;
         }
 
@@ -239,7 +239,7 @@ public class CheckPlayerCommand implements CommandExecutor {
             houses.append(house.getID()).append(house.getID() == House.getHouses(Script.getNRPID(tg)).get(House.getHouses(Script.getNRPID(tg)).size() - 1).getID() ? "" : ", ");
         }
         if (houses.toString().equalsIgnoreCase("")) houses = new StringBuilder("Keine Häuser");
-        p.sendMessage("§7Häuser §8× §e" + houses.toString());
+        p.sendMessage("§7Häuser §8× §e" + houses);
 
 
         return false;

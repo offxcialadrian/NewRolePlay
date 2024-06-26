@@ -96,6 +96,6 @@ public class Impfen implements Listener {
                 sb.append("§8▉");
             }
         }
-        Script.sendActionBar(p, "§cImpfen.. §8» §a" + sb.toString());
+        Script.sendActionBar(p, "§cImpfen.. §8» §a" + sb);
     }
 }

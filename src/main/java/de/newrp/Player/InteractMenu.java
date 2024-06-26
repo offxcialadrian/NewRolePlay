@@ -514,7 +514,7 @@ public class InteractMenu implements Listener {
                 sb.append("§8▉");
             }
         }
-        Script.sendActionBar(p, "§cFesseln öffnen.. §8» §a" + sb.toString());
+        Script.sendActionBar(p, "§cFesseln öffnen.. §8» §a" + sb);
     }
 
     @EventHandler

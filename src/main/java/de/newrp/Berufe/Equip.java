@@ -66,14 +66,14 @@ public class Equip implements CommandExecutor, Listener {
         LATTE_MACCHIATO(31, "Latte Macchiato", new ItemBuilder(Material.FLOWER_POT).setName("§rLatte Macchiato").build(), 2, 0, null, new Beruf.Berufe[]{Beruf.Berufe.GOVERNMENT}, false),
         FEUERLOESCHER(32, "Feuerlöscher", Script.feuerloescher(Script.feuerloescher(), 800), 300, 0, new Abteilung.Abteilungen[]{Abteilung.Abteilungen.FEUERWEHR, Abteilung.Abteilungen.OBERARZT}, new Beruf.Berufe[]{Beruf.Berufe.RETTUNGSDIENST}, false);
 
-        private String name;
-        private int id;
-        private ItemStack item;
-        private int cost;
-        private int ammo;
-        private Abteilung.Abteilungen[] abteilung;
-        private Beruf.Berufe[] beruf;
-        private boolean remove;
+        private final String name;
+        private final int id;
+        private final ItemStack item;
+        private final int cost;
+        private final int ammo;
+        private final Abteilung.Abteilungen[] abteilung;
+        private final Beruf.Berufe[] beruf;
+        private final boolean remove;
 
 
         Stuff(int id, String name, ItemStack item, int cost, int ammo, Abteilung.Abteilungen[] abteilung, Beruf.Berufe[] beruf, boolean remove) {

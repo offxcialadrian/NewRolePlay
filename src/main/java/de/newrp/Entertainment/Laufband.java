@@ -15,9 +15,9 @@ import java.util.ArrayList;
 
 public class Laufband implements CommandExecutor, Listener {
 
-    private static ArrayList<Player> ontrain = new ArrayList<>();
-    private static Location to = new Location(Script.WORLD, 455, 57.5, 762);
-    private static Location from = new Location(Script.WORLD, 456, 57.5, 762);
+    private static final ArrayList<Player> ontrain = new ArrayList<>();
+    private static final Location to = new Location(Script.WORLD, 455, 57.5, 762);
+    private static final Location from = new Location(Script.WORLD, 456, 57.5, 762);
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
         Player p = (Player) cs;

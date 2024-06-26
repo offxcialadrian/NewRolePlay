@@ -19,7 +19,7 @@ import java.util.ArrayList;
 public class GetShulker implements CommandExecutor, Listener {
 
 
-    private static ArrayList<Player> getShulker = new ArrayList<>();
+    private static final ArrayList<Player> getShulker = new ArrayList<>();
 
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {

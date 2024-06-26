@@ -70,17 +70,17 @@ public class SMSCommand implements CommandExecutor {
 
         if(!Mobile.hasConnection(tg) || !Mobile.mobileIsOn(tg)) {
             p.sendMessage(PREFIX + "Du hast " + Script.getName(tg) + " eine Nachricht gesendet.");
-            p.sendMessage(PREFIX + "§7" + message.toString());
+            p.sendMessage(PREFIX + "§7" + message);
             waitingForMessage.add(tg.getName());
-            Script.executeAsyncUpdate("INSERT INTO messages (nrp_id, sender, message, time, seen) VALUES ('" + Script.getNRPID(tg) + "', '" + Script.getNRPID(p) + "', '" + message.toString() + "', '" + System.currentTimeMillis() + "', false)");
+            Script.executeAsyncUpdate("INSERT INTO messages (nrp_id, sender, message, time, seen) VALUES ('" + Script.getNRPID(tg) + "', '" + Script.getNRPID(p) + "', '" + message + "', '" + System.currentTimeMillis() + "', false)");
             return true;
         }
 
         p.sendMessage(PREFIX + "Du hast " + Script.getName(tg) + " eine Nachricht gesendet.");
-        p.sendMessage(PREFIX + "§7" + message.toString());
+        p.sendMessage(PREFIX + "§7" + message);
         tg.sendMessage(PREFIX + "Du hast eine neue Nachricht von " + Script.getName(p) + " erhalten.");
-        tg.sendMessage(PREFIX + "§7" + message.toString());
-        Script.executeAsyncUpdate("INSERT INTO messages (nrp_id, sender, message, time, seen) VALUES ('" + Script.getNRPID(tg) + "', '" + Script.getNRPID(p) + "', '" + message.toString() + "', '" + System.currentTimeMillis() + "', true)");
+        tg.sendMessage(PREFIX + "§7" + message);
+        Script.executeAsyncUpdate("INSERT INTO messages (nrp_id, sender, message, time, seen) VALUES ('" + Script.getNRPID(tg) + "', '" + Script.getNRPID(p) + "', '" + message + "', '" + System.currentTimeMillis() + "', true)");
         if(!Mobile.getPhone(tg).getLautlos(tg)) tg.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
 
 

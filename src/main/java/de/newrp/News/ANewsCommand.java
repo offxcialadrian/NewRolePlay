@@ -23,9 +23,9 @@ public class ANewsCommand implements CommandExecutor {
             Abteilung.Abteilungen.CHEFREDAKTION,
             Abteilung.Abteilungen.JOURNALIST
     ));
-    private ArrayList<ANewsMessage> messages = new ArrayList<>();
+    private final ArrayList<ANewsMessage> messages = new ArrayList<>();
     public static String prefix = "§8[§6A-News§8] §8» §6";
-    private int lastId = 1;
+    private final int lastId = 1;
 
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {

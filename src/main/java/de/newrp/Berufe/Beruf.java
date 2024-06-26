@@ -123,7 +123,7 @@ public class Beruf {
             return kasse;
         }
 
-        private static HashMap<Location, Berufe> DOORS = new HashMap<>();
+        private static final HashMap<Location, Berufe> DOORS = new HashMap<>();
 
         public static void loadDoors() {
             setDoors();

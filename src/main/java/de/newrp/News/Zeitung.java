@@ -58,7 +58,7 @@ public class Zeitung implements CommandExecutor, Listener {
                 text.append(seite).append("/{new_page}/");
             }
         }
-        Debug.debug("text: " + text.toString());
+        Debug.debug("text: " + text);
         text = new StringBuilder(text.toString().replace("'", "`"));
         Script.executeUpdate("INSERT INTO zeitung (time, herrausbringer, content) VALUES ('" + System.currentTimeMillis() + "', " + Script.getNRPID(p) + ", '" + text.substring(0, text.length() - 12) + "');");
     }

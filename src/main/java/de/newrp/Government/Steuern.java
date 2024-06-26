@@ -29,7 +29,7 @@ public class Steuern implements CommandExecutor, TabCompleter {
 
     private static final String PREFIX = "§8[§eSteuern§8] §e» ";
 
-    private static HashMap<Steuer, Long> steuern = new HashMap<>();
+    private static final HashMap<Steuer, Long> steuern = new HashMap<>();
 
     public enum Steuer {
         EINKOMMENSSTEUER(1, "Einkommenssteuer", "einkommenssteuer", "Die Einkommenssteuer wird auf dein Profit am PayDay erhoben."),

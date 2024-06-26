@@ -42,7 +42,7 @@ public enum Drogen {
     private final DrugPurity defaultPurity;
     private final String suffix;
     private final boolean consumable;
-    private Material material;
+    private final Material material;
     @Getter
     private final int addictionChance;
 

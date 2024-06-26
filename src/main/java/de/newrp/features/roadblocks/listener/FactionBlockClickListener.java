@@ -58,7 +58,6 @@ public class FactionBlockClickListener implements Listener {
         if(isCopActiveDuty || isMedicActiveDuty) {
             this.factionBlockService.placeFactionBlock(player, event.getClickedBlock().getLocation(), isCopActiveDuty ? Beruf.Berufe.POLICE : Beruf.Berufe.RETTUNGSDIENST);
             lastUsed = System.currentTimeMillis();
-            return;
         }
     }
 

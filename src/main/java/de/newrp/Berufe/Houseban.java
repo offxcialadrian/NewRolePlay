@@ -25,7 +25,7 @@ import java.util.List;
 public class Houseban implements CommandExecutor, Listener, TabCompleter {
 
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd.MM.yyyy HH:mm");
-    private static String PREFIX = "§8[§6Hausverbot§8] §7»§7 ";
+    private static final String PREFIX = "§8[§6Hausverbot§8] §7»§7 ";
 
     public enum Reasons {
         LEICHENBEWACHUNG(1, "Leichenbewachung", new String[]{"leichenbewachung", "leichen", "leiche", "lb"}, 7),

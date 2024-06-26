@@ -45,7 +45,7 @@ public class CheckOrganisation implements CommandExecutor, TabCompleter {
                 }
                 leaders.append("§e").append(all.getName()).append(" §8[§e").append(Organisation.getRank(all)).append("§8]");
             }
-            p.sendMessage(PREFIX + "§8» §7Leader: §e" + leaders.toString());
+            p.sendMessage(PREFIX + "§8» §7Leader: §e" + leaders);
             StringBuilder members = new StringBuilder();
             for(OfflinePlayer all : o.getAllMembers()) {
                 if(members.length() > 0) {
@@ -53,7 +53,7 @@ public class CheckOrganisation implements CommandExecutor, TabCompleter {
                 }
                 members.append("§e").append(all.getName()).append(" §8[§e").append(Organisation.getRank(all)).append("§8]");
             }
-            p.sendMessage(PREFIX + "§8» §7Mitglieder: §e" + members.toString());
+            p.sendMessage(PREFIX + "§8» §7Mitglieder: §e" + members);
             p.sendMessage(PREFIX + "§8» §7Rangnamen:");
             for(int i = 0; i <= 6; i++) {
                 p.sendMessage(PREFIX + "§8» §7Rang " + i + ": §e" + o.getRankName(i, Gender.MALE) + " §8| §e" + o.getRankName(i, Gender.FEMALE));
@@ -96,7 +96,7 @@ public class CheckOrganisation implements CommandExecutor, TabCompleter {
             }
             leaders.append(all.getName());
         }
-        p.sendMessage(PREFIX + "§8» §7Leader: §e" + leaders.toString());
+        p.sendMessage(PREFIX + "§8» §7Leader: §e" + leaders);
         StringBuilder members = new StringBuilder();
         for(OfflinePlayer all : o.getAllMembers()) {
             if(members.length() > 0) {
@@ -104,7 +104,7 @@ public class CheckOrganisation implements CommandExecutor, TabCompleter {
             }
             members.append("§e" + all.getName() + " §8[§e" + Organisation.getRank(all) + "§8]");
         }
-        p.sendMessage(PREFIX + "§8» §7Mitglieder: §e" + members.toString());
+        p.sendMessage(PREFIX + "§8» §7Mitglieder: §e" + members);
         p.sendMessage(PREFIX + "§8» §7Rangnamen:");
         for(int i = 0; i <= 6; i++) {
             p.sendMessage(PREFIX + "§8» §7Rang " + i + ": §e" + o.getRankName(i, Gender.MALE) + " §8| §e" + o.getRankName(i, Gender.FEMALE));

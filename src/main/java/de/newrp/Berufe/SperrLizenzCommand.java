@@ -16,7 +16,7 @@ import java.util.Map;
 
 public class SperrLizenzCommand implements CommandExecutor, TabCompleter {
 
-    private static String PREFIX = "§8[§cSperre§8] §c" + Messages.ARROW + " §7";
+    private static final String PREFIX = "§8[§cSperre§8] §c" + Messages.ARROW + " §7";
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {

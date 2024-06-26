@@ -24,7 +24,7 @@ import java.util.HashMap;
 public class AddBerufsDoor implements CommandExecutor, Listener {
 
     private static final String PREFIX = "§8[§eBerufsdoor§8] §e» ";
-    private static HashMap<String, Beruf.Berufe> changing = new HashMap<>();
+    private static final HashMap<String, Beruf.Berufe> changing = new HashMap<>();
 
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {

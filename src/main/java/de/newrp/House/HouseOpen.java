@@ -53,8 +53,7 @@ public class HouseOpen implements Listener {
                 if (house.isMieter(Script.getNRPID(BeziehungCommand.getPartner(p)))) return true;
         }
         if (orgDoor(p, b)) return true;
-        if (berufsDoor(p, b)) return true;
-        return false;
+        return berufsDoor(p, b);
     }
 
     public boolean isPlayersDoor(Player p, Block b) {

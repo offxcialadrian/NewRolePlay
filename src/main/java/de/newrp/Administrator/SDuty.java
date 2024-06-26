@@ -85,7 +85,7 @@ public class SDuty implements CommandExecutor, Listener {
 
     public static void removeSDuty(Player p) {
         Log.NORMAL.write(p, "hat den Supporter-Dienst verlassen.");
-        if (BuildMode.isInBuildMode(p)) {;
+        if (BuildMode.isInBuildMode(p)) {
             BuildMode.removeBuildMode(p);
             p.sendMessage(BuildMode.PREFIX + "Du hast den BuildMode verlassen.");
             Script.sendTeamMessage(p, ChatColor.YELLOW, "hat den BuildMode verlassen.", true);
@@ -160,7 +160,7 @@ public class SDuty implements CommandExecutor, Listener {
     @EventHandler
     public void foodChange(FoodLevelChangeEvent e) {
         if (e.getEntity() instanceof Player) {
-            if (e.getFoodLevel() > ((Player) e.getEntity()).getFoodLevel()) return;
+            if (e.getFoodLevel() > e.getEntity().getFoodLevel()) return;
             Player p = (Player) e.getEntity();
             if (isSDuty(p)) e.setCancelled(true);
         }

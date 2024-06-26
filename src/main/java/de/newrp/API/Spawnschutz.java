@@ -23,7 +23,7 @@ import java.util.HashMap;
 public class Spawnschutz implements Listener {
     public static final HashMap<String, Long> spawnschutz = new HashMap<>();
     public static final HashMap<String, Long> cooldown = new HashMap<>();
-    private static String PREFIX = "§8[§6Spawnschutz§8] §6" + Messages.ARROW + " ";
+    private static final String PREFIX = "§8[§6Spawnschutz§8] §6" + Messages.ARROW + " ";
 
     public static boolean isInSpawnschutz(Player p) {
         return spawnschutz.containsKey(p.getName());

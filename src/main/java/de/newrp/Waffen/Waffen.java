@@ -243,7 +243,7 @@ public class Waffen implements Listener {
                 sb.append("§8▉");
             }
         }
-        Script.sendActionBar(p, "§cÜberfall.. §8» §a" + sb.toString());
+        Script.sendActionBar(p, "§cÜberfall.. §8» §a" + sb);
     }
 
     @EventHandler

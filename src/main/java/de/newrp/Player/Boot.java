@@ -91,7 +91,7 @@ public class Boot implements CommandExecutor {
                 sb.append("§8▉");
             }
         }
-        Script.sendActionBar(p, "§cBoot fahren.. §8» §a" + sb.toString());
+        Script.sendActionBar(p, "§cBoot fahren.. §8» §a" + sb);
     }
 
 }

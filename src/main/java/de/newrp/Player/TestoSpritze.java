@@ -87,7 +87,6 @@ public class TestoSpritze implements Listener {
                 LEVEL.remove(p.getName());
                 return;
             }
-            return;
         }
     }
 
@@ -107,6 +106,6 @@ public class TestoSpritze implements Listener {
                 sb.append("§8▉");
             }
         }
-        Script.sendActionBar(p, "§cTestosteronspritze verwenden.. §8» §a" + sb.toString());
+        Script.sendActionBar(p, "§cTestosteronspritze verwenden.. §8» §a" + sb);
     }
 }

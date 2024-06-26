@@ -25,7 +25,7 @@ import java.util.HashMap;
 public class AddHouseDoor implements CommandExecutor, Listener {
 
     private static final String PREFIX = "§8[§eHaustür§8] §e» ";
-    private static HashMap<String, House> changing = new HashMap<>();
+    private static final HashMap<String, House> changing = new HashMap<>();
 
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {

@@ -25,9 +25,9 @@ public enum GFB {
     TABAKPLANTAGE(11, "Tabakplantage", new Location(Script.WORLD, 1015, 65, 1316, 0.0f, 0.0f));
 
 
-    private int id;
-    private String name;
-    private Location location;
+    private final int id;
+    private final String name;
+    private final Location location;
 
     GFB(int id, String name, Location loc) {
         this.id = id;

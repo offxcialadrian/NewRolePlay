@@ -29,7 +29,7 @@ public enum Weapon {
     private final double reload;
     private final double armor;
     private final int max_wear;
-    private double knockback;
+    private final double knockback;
     private final Munition ammo;
 
     Weapon(int weaponID, ItemStack is, String name, float recoil, double cooldown, int magazine, double damage, double reload, double armor, int max_wear, double knockback, Munition ammo) {

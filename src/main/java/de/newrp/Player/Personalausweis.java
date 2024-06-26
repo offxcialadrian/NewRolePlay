@@ -261,7 +261,6 @@ public class Personalausweis implements CommandExecutor, Listener {
         if (e.getView().getTitle().equals("§3Personalausweis")) {
             if (save_close.contains(e.getPlayer().getName())) {
                 save_close.remove(e.getPlayer().getName());
-                return;
             }
         }
     }
@@ -273,7 +272,7 @@ public class Personalausweis implements CommandExecutor, Listener {
     public void updateGUI(Inventory inv, Player p, int day, int month, int year) {
         p.setItemOnCursor(new ItemStack(Material.AIR));
         inv.setItem(1, Script.setNameAndLore(Material.PAPER, "§6" + day + ".", "§bLinks: +1 Tag §7|§b Rechts: -1 Tag"));
-        inv.setItem(3, Script.setNameAndLore(Material.PAPER, "§6" + Script.getMonth(month, true) + "", "§bLinks: +1 Monat §7|§b Rechts: -1 Monat"));
+        inv.setItem(3, Script.setNameAndLore(Material.PAPER, "§6" + Script.getMonth(month, true), "§bLinks: +1 Monat §7|§b Rechts: -1 Monat"));
         inv.setItem(5, Script.setNameAndLore(Material.PAPER, "§6" + year, "§bLinks: +1 Jahr §7|§b Rechts: -1 Jahr"));
         inv.setItem(8, Script.setNameAndLore(Material.STONE_BUTTON, "§aBestätigen", "§6" + day + "." + Script.getMonth(month, true) + "." + year + " §7(" + (Script.getGender(p).equals(Gender.MALE) ? "§bMännlich" : "§cWeiblich") + "§7)"));
     }

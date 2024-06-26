@@ -49,7 +49,7 @@ public class ToDoCommand implements CommandExecutor {
             }
 
             try (Statement stmt = NewRoleplayMain.getConnection().createStatement()) {
-                stmt.executeUpdate("INSERT INTO todos (nrp_id, todo) VALUES (" + Script.getNRPID(p) + ", '" + todo.toString() + "')");
+                stmt.executeUpdate("INSERT INTO todos (nrp_id, todo) VALUES (" + Script.getNRPID(p) + ", '" + todo + "')");
                 p.sendMessage(PREFIX + "ToDo hinzugefügt.");
             } catch (Exception e) {
                 e.printStackTrace();

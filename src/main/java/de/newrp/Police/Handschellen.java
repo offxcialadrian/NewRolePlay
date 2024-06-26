@@ -150,7 +150,7 @@ public class Handschellen implements Listener {
                 sb.append("§8▉");
             }
         }
-        Script.sendActionBar(p, "§cHandschellen anlegen.. §8» §a" + sb.toString());
+        Script.sendActionBar(p, "§cHandschellen anlegen.. §8» §a" + sb);
     }
 
 

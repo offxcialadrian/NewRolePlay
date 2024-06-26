@@ -426,7 +426,6 @@ public class PayShop implements Listener {
             if (!items.containsKey(p)) return;
             if (!shops.containsKey(p)) return;
             pay(p, PaymentType.BANK, items.get(p), shops.get(p));
-            return;
         }
 
     }
@@ -452,7 +451,7 @@ public class PayShop implements Listener {
         }
     }
 
-    private static String[] POST_TRADE = new String[] {
+    private static final String[] POST_TRADE = new String[] {
             "Vielen Dank für Ihren Einkauf.",
             "Danke für das Geschäft!",
             "Möchten Sie eine Tüte dazu?",

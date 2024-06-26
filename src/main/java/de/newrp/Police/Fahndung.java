@@ -157,7 +157,7 @@ public class Fahndung implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        String substring = sb.toString().substring(0, sb.toString().length() - 3);
+        String substring = sb.substring(0, sb.toString().length() - 3);
         Log.NORMAL.write(p, "hat eine Fahdung auf " + Script.getName(tg) + " ausgeschrieben (" + substring + ")");
         Log.NORMAL.write(tg, "hat von " + Script.getName(p) + " eine Fahndung ausgeschrieben bekommen (" + substring + ")");
         Beruf.Berufe.POLICE.sendMessage(PREFIX + "Der Spieler §e" + Script.getName(tg) + " §7wird nun wegen §e" + substring + " §7gefahndet.");

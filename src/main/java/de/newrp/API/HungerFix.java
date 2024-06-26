@@ -20,7 +20,7 @@ public class HungerFix implements Listener {
 
     @EventHandler
     public void onHungerLoss(FoodLevelChangeEvent e) {
-        if(e.getFoodLevel() > ((Player) e.getEntity()).getFoodLevel()) {
+        if(e.getFoodLevel() > e.getEntity().getFoodLevel()) {
             return;
         }
         int i = Script.getRandom(1, 40);

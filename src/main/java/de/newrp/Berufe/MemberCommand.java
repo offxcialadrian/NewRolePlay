@@ -85,7 +85,6 @@ public class MemberCommand implements CommandExecutor, TabCompleter {
                             i++;
                         }
                         p.sendMessage(PREFIX  + "§8" + Messages.ARROW + " §6" + i + " Mitglieder");
-                        return;
                     }
                 });
             }

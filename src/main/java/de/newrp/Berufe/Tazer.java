@@ -117,8 +117,6 @@ public class Tazer implements Listener {
     @EventHandler
     public void onQuit(PlayerQuitEvent e) {
         Player p = e.getPlayer();
-        if (cooldowns.containsKey(p.getName())) {
-            cooldowns.remove(p.getName());
-        }
+        cooldowns.remove(p.getName());
     }
 }

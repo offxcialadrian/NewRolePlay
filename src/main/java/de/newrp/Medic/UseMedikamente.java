@@ -22,7 +22,7 @@ public class UseMedikamente implements Listener {
 
     public static HashMap<String, Integer> use = new HashMap<>();
     public static String PREFIX = "§8[§cMedikamente§8] §c" + Messages.ARROW + " §7";
-    private long lastUsedTimestamp = System.currentTimeMillis();
+    private final long lastUsedTimestamp = System.currentTimeMillis();
 
     @EventHandler
     public void onConsume(PlayerInteractEvent e) {
@@ -76,7 +76,6 @@ public class UseMedikamente implements Listener {
                     Me.sendMessage(p, "nimmt ein Medikament ein.");
                     Script.playLocalSound(p.getLocation(), Sound.ENTITY_PLAYER_BURP, 5);
                     p.getInventory().getItemInMainHand().setAmount(p.getInventory().getItemInMainHand().getAmount() - 1);
-                    return;
                 }
 
             }

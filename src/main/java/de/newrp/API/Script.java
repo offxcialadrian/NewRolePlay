@@ -2269,11 +2269,11 @@ public class Script {
     }
 
     public static int getPercentage(double amount, double total) {
-        return (int) ((double) amount / total * 100);
+        return (int) (amount / total * 100);
     }
 
     public static int getPercentage(double amount, int total) {
-        return (int) ((double) amount / total * 100);
+        return (int) (amount / total * 100);
     }
 
     public static boolean isLong(String str) {

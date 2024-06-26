@@ -137,6 +137,6 @@ public class Krankheitstest implements Listener {
                 sb.append("§8▉");
             }
         }
-        Script.sendActionBar(p, "§cBlut abnehmen.. §8» §a" + sb.toString());
+        Script.sendActionBar(p, "§cBlut abnehmen.. §8» §a" + sb);
     }
 }

@@ -42,7 +42,7 @@ public class Car {
     private boolean locked;
     private boolean started;
     private boolean activated;
-    private boolean bomb;
+    private final boolean bomb;
     private String licenseplate;
     private Strafzettel strafzettel;
     private final List<VehicleAddon> addons;

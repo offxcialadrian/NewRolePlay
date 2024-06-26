@@ -119,7 +119,7 @@ public class StartTransport implements CommandExecutor, Listener {
                 sb.append("§8▉");
             }
         }
-        Script.sendActionBar(p, "§cLaden.. §8» §a" + sb.toString());
+        Script.sendActionBar(p, "§cLaden.. §8» §a" + sb);
     }
 
 }

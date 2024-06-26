@@ -15,8 +15,8 @@ import org.bukkit.entity.Player;
 public class SalaryCommand implements CommandExecutor {
 
     private static final String PREFIX = "§8[§eGehalt§8] §e» ";
-    private static int max = 2500;
-    private static int min = 0;
+    private static final int max = 2500;
+    private static final int min = 0;
 
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {

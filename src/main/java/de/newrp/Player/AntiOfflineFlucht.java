@@ -21,7 +21,7 @@ public class AntiOfflineFlucht implements Listener {
     public static final HashMap<String, Long> cooldowns = new HashMap<>();
     public final HashMap<String, Long> kick = new HashMap<>();
     public final ArrayList<Player> oflucht = new ArrayList<>();
-    private static String PREFIX = "§8[§cAntiOfflineFlucht§8] §c" + Messages.ARROW + " ";
+    private static final String PREFIX = "§8[§cAntiOfflineFlucht§8] §c" + Messages.ARROW + " ";
 
     public static void offlinefluchtLog(final Player p, String reason) {
         String location = p.getLocation().getBlockX() + "/" + p.getLocation().getBlockY() + "/" + p.getLocation().getBlockZ();

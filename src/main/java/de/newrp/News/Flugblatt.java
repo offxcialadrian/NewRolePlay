@@ -116,7 +116,7 @@ public class Flugblatt implements CommandExecutor, Listener {
                 text.append(ChatColor.stripColor(seite)).append("/{new_page}/");
             }
         }
-        Debug.debug("text: " + text.toString());
+        Debug.debug("text: " + text);
         text = new StringBuilder(text.toString().replace("'", "`"));
         Script.executeUpdate("INSERT INTO flugblatt (time, herrausbringer, content) VALUES ('" + System.currentTimeMillis() + "', " + Script.getNRPID(p) + ", '" + text.substring(0, text.length() - 12) + "');");
     }

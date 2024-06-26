@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 
 public class RentCommand implements CommandExecutor {
 
-    private static String PREFIX = "§8[§6Vermieten§8] §6» §7";
+    private static final String PREFIX = "§8[§6Vermieten§8] §6» §7";
 
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {

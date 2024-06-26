@@ -203,7 +203,6 @@ public class Chair implements Listener {
         //if (((Stairs) b.getBlockData()).getFacing() == BlockFace.DOWN) return false;
         if (!b.getRelative(BlockFace.UP).getType().equals(Material.AIR) || b.getRelative(BlockFace.DOWN).getType().equals(Material.AIR))
             return false;
-        if (!p.isOnGround()) return false;
-        return true;
+        return p.isOnGround();
     }
 }

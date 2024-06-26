@@ -67,8 +67,8 @@ public class StatsCommand implements CommandExecutor {
             }
         }
         if(houses.toString().equalsIgnoreCase("")) houses = new StringBuilder("Keine Häuser");
-        p.sendMessage("§7Häuser §8× §e" + houses.toString());
-        p.sendMessage("§7Lizenzen §8× §e" + licenses.toString());
+        p.sendMessage("§7Häuser §8× §e" + houses);
+        p.sendMessage("§7Lizenzen §8× §e" + licenses);
 
         Achievement.STATS.grant(p);
 

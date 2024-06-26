@@ -33,9 +33,9 @@ public class Bankraub implements CommandExecutor, Listener {
     private static long cooldown;
     public static final long BANKROB_COOLDOWN = TimeUnit.HOURS.toMillis(5);
     private static final long BLOCK_CLICK_DELAY = TimeUnit.SECONDS.toMillis(30);
-    private static ArrayList<Location> blocks = new ArrayList<>();
+    private static final ArrayList<Location> blocks = new ArrayList<>();
     public static String PREFIX = "§8[§9Bankraub§8] §9» §7";
-    private static Location[] locs = new Location[]{
+    private static final Location[] locs = new Location[]{
             // Wall West
             new Location(Script.WORLD, 984, 70, 961, 90, 0),
             new Location(Script.WORLD, 984, 71, 961, 90, 0),
@@ -95,7 +95,7 @@ public class Bankraub implements CommandExecutor, Listener {
     };
     private static boolean miniGameIsActive;
     private static Player bankRobberPlayer;
-    private static Location bankraub = new Location(Script.WORLD, 994, 70, 963, -0.6021996f, 20.250021f);
+    private static final Location bankraub = new Location(Script.WORLD, 994, 70, 963, -0.6021996f, 20.250021f);
     private static Location loc = null;
 
     @Override

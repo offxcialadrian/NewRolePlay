@@ -26,7 +26,7 @@ import java.util.HashMap;
 
 public class Lagerarbeiter implements CommandExecutor, Listener {
 
-    private static String PREFIX = "§8[§6Lagerarbeiter§8] §8» §6";
+    private static final String PREFIX = "§8[§6Lagerarbeiter§8] §8» §6";
     public static HashMap<String, Waren> ON_JOB = new HashMap<>();
     public static HashMap<String, Integer> SCORE = new HashMap<>();
     public static HashMap<String, Long> cooldown = new HashMap<>();

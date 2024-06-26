@@ -121,7 +121,7 @@ public class Gips implements Listener {
                 sb.append("§8▉");
             }
         }
-        Script.sendActionBar(p, "§cGips anlegen.. §8» §a" + sb.toString());
+        Script.sendActionBar(p, "§cGips anlegen.. §8» §a" + sb);
     }
 
 

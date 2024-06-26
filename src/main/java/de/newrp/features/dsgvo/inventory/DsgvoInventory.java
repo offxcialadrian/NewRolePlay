@@ -11,8 +11,8 @@ import org.bukkit.inventory.ItemStack;
 public class DsgvoInventory {
 
     private final Inventory inventory;
-    private boolean accepted = false;
-    private int page = 0;
+    private final boolean accepted = false;
+    private final int page = 0;
     private final ItemStack holder;
 
     public DsgvoInventory(final Player player) {

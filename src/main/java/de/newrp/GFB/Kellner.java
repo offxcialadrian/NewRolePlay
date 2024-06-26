@@ -20,7 +20,7 @@ import java.util.HashMap;
 
 public class Kellner implements CommandExecutor, Listener {
 
-    private static String PREFIX = "§8[§6Kellner§8] §6" + Messages.ARROW + " §7";
+    private static final String PREFIX = "§8[§6Kellner§8] §6" + Messages.ARROW + " §7";
 
     public enum Tables {
         TISCH1(1, "Tisch 1", new Location(Script.WORLD, 421, 70, 932)),
@@ -204,7 +204,7 @@ public class Kellner implements CommandExecutor, Listener {
         Player p = e.getPlayer();
         if(!GFB.CURRENT.containsKey(p.getName())) return;
         GFB.CURRENT.remove(p.getName());
-        if(SCORE.containsKey(p.getName())) SCORE.remove(p.getName());
+        SCORE.remove(p.getName());
     }
 
 }

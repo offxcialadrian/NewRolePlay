@@ -14,7 +14,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public class Baulog implements CommandExecutor {
 
-    private static String PREFIX = "§8[§6Baulog§8] §6" + Messages.ARROW + " ";
+    private static final String PREFIX = "§8[§6Baulog§8] §6" + Messages.ARROW + " ";
 
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {

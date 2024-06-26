@@ -20,8 +20,8 @@ import java.util.concurrent.TimeUnit;
 
 public class Checkfinances implements CommandExecutor {
 
-    private static HashMap<String, Long> check = new HashMap<>();
-    private static String PREFIX = "§8[§eFinanzamt§8] §e» §7";
+    private static final HashMap<String, Long> check = new HashMap<>();
+    private static final String PREFIX = "§8[§eFinanzamt§8] §e» §7";
     private static final long TIMEOUT = TimeUnit.MINUTES.toMillis(1);
     private static final long TIMEOUT2 = TimeUnit.MINUTES.toMillis(2);
     private static long lastTime;

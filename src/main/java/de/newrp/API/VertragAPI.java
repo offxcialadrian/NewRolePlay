@@ -12,11 +12,11 @@ import java.util.List;
 public class VertragAPI {
 
 
-    private int id;
-    private int from;
-    private int to;
-    private String bedingung;
-    private long time;
+    private final int id;
+    private final int from;
+    private final int to;
+    private final String bedingung;
+    private final long time;
 
     public VertragAPI(int id, int from, int to, String bedingung, long time) {
         this.id = id;

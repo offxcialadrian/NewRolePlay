@@ -186,7 +186,6 @@ public static HashMap<String, Long> cooldown = new HashMap<>();
             if (title.equals("Gesucht?")) {
                 p.sendMessage(PREFIX + Script.getName(tg) + " ist " + (Fahndung.isFahnded(tg) ? "§cGesucht!" : "§anicht gesucht"));
                 p.closeInventory();
-                return;
             }
         }
     }

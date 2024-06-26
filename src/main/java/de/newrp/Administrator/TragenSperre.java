@@ -13,7 +13,7 @@ import org.bukkit.entity.Player;
 
 public class TragenSperre implements CommandExecutor {
 
-    private static String PREFIX = "§8[§aTragensperre§8] §a" + Messages.ARROW + " ";
+    private static final String PREFIX = "§8[§aTragensperre§8] §a" + Messages.ARROW + " ";
 
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {

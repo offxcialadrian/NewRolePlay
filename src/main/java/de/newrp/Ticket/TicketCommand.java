@@ -276,7 +276,7 @@ public class TicketCommand implements CommandExecutor {
                 return true;
             } else {
 
-                if (getGreeting(p).equals(msg.toString())) {
+                if (getGreeting(p).contentEquals(msg)) {
                     p.sendMessage(Messages.ERROR + "Die Nachricht ist bereits die aktuelle Nachricht.");
                     return true;
                 }

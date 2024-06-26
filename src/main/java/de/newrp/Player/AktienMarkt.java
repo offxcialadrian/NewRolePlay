@@ -21,7 +21,7 @@ public class AktienMarkt implements CommandExecutor, Listener {
 
     public static String PREFIX = "§8[§6Aktie§8]§6 " + Messages.ARROW + " §7";
 
-    private static HashMap<String, Boolean> cooldown = new HashMap<>();
+    private static final HashMap<String, Boolean> cooldown = new HashMap<>();
 
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {

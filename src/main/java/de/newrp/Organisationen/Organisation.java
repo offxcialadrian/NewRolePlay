@@ -147,7 +147,7 @@ public enum Organisation {
         return level_cost;
     }
 
-    private static HashMap<Location, Organisation> DOORS = new HashMap<>();
+    private static final HashMap<Location, Organisation> DOORS = new HashMap<>();
 
     public static void loadDoors() {
         setDoors();

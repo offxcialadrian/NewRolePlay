@@ -190,8 +190,8 @@ public class EmergencyCallService implements IEmergencyCallService {
 
     @Override
     public boolean isBlocked(OfflinePlayer targetPlayer, Beruf.Berufe faction) {
-        if(this.blockedCache.asMap().containsKey(targetPlayer.getUniqueId().toString() + "_" + faction.getName())) {
-            return this.blockedCache.getIfPresent(targetPlayer.getUniqueId().toString() + "_" + faction.getName());
+        if(this.blockedCache.asMap().containsKey(targetPlayer.getUniqueId() + "_" + faction.getName())) {
+            return this.blockedCache.getIfPresent(targetPlayer.getUniqueId() + "_" + faction.getName());
         }
         try (final PreparedStatement statement = NewRoleplayMain.getConnection().prepareStatement(
                 "SELECT nrp_id FROM blocked_notruf WHERE nrp_id = ? AND berufID = ?")) {
@@ -199,7 +199,7 @@ public class EmergencyCallService implements IEmergencyCallService {
             statement.setInt(2, faction.getID());
             try (final ResultSet resultSet = statement.executeQuery()) {
                 final boolean isBlocked = resultSet.next();
-                this.blockedCache.put(targetPlayer.getUniqueId().toString() + "_" + faction.getName(), isBlocked);
+                this.blockedCache.put(targetPlayer.getUniqueId() + "_" + faction.getName(), isBlocked);
                 return isBlocked;
             }
         } catch (SQLException e) {
@@ -231,7 +231,7 @@ public class EmergencyCallService implements IEmergencyCallService {
         stringBuilder.append("§6Am nächsten sind: ");
         List<Player> nearbyPlayers = getNearbyPlayersOfFactionToLocation(location, faction);
         if(nearbyPlayers.isEmpty()) {
-            return stringBuilder.toString() + "§6Keine Person im Dienst ist in der Nähe";
+            return stringBuilder + "§6Keine Person im Dienst ist in der Nähe";
         }
 
         final Player firstPlayer = nearbyPlayers.get(0);

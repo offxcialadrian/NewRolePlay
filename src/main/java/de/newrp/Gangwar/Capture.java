@@ -112,6 +112,6 @@ public class Capture implements CommandExecutor, Listener {
                 sb.append("§8▉");
             }
         }
-        Script.sendActionBar(p, "§cPunkt einnehmen.. §8» §a" + sb.toString());
+        Script.sendActionBar(p, "§cPunkt einnehmen.. §8» §a" + sb);
     }
 }

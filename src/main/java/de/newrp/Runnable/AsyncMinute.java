@@ -39,7 +39,7 @@ public class AsyncMinute extends BukkitRunnable {
 
     public static HashMap<String, Integer> battery = new HashMap<>();
 
-    private static String[] advertises = new String[]{
+    private static final String[] advertises = new String[]{
             "§8[§cWerbung§8] §c" + Messages.ARROW + " §7Nutze bei deinem LabyMod-Einkauf den Code §cNEWRP §7und erhalte 10% Rabatt!",
             "§8[§cWerbung§8] §c" + Messages.ARROW + " §7Schau mal auf unseren §9Discord §7vorbei: §9https://discord.gg/newroleplay",
             "§8[§cWerbung§8] §c" + Messages.ARROW + " §7Schau mal auf unseren §fTeamspeak §7vorbei: §fnewrp.de",

@@ -183,7 +183,7 @@ public class Bankautomaten implements Listener {
                 sb.append("§8▉");
             }
         }
-        Script.sendActionBar(p, "§cBankautomat sprengen.. §8» §a" + sb.toString());
+        Script.sendActionBar(p, "§cBankautomat sprengen.. §8» §a" + sb);
     }
 
 }

@@ -22,8 +22,8 @@ import java.util.Locale;
 public class GetLocation implements CommandExecutor, Listener {
 
     private static final String PREFIX = "§8[§eGetLocation§8] §7";
-    private static ArrayList<Player> location = new ArrayList<>();
-    private static HashMap<String, Long> cooldown = new HashMap<>();
+    private static final ArrayList<Player> location = new ArrayList<>();
+    private static final HashMap<String, Long> cooldown = new HashMap<>();
 
 
     @Override

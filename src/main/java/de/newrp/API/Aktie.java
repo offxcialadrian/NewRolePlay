@@ -34,10 +34,10 @@ public enum Aktie {
         this.maxshares = maxshares;
     }
 
-    private static int mincap = 1;
-    private static int maxcap = 1;
+    private static final int mincap = 1;
+    private static final int maxcap = 1;
 
-    private static boolean skipcalculation = false;
+    private static final boolean skipcalculation = false;
 
     public int getID() {
         return this.id;
@@ -194,8 +194,7 @@ public enum Aktie {
         try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM player_shares WHERE id = " + id + " AND aktien_id = " + aktie.getID())) {
             if (rs.next()) {
-                if (rs.getInt("amount") > 0) return true;
-                return false;
+                return rs.getInt("amount") > 0;
             } else
                 return false;
         } catch (SQLException ex) {

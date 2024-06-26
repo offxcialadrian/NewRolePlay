@@ -20,8 +20,8 @@ public class ShopNPC implements Listener {
 
     private static final List<String> FEMALE = Arrays.asList("Marie", "Sophie", "Maria", "Sofia", "Emma", "Emilia", "Hannah", "Mia", "Anna", "Lina", "Lea", "Ella", "Lena", "Clara", "Leonie", "Amelie", "Luisa", "Emily", "Charlotte", "Mila", "Lilly", "Johanna", "Nora", "Lara", "Laura", "Greta", "Sarah", "Marlene", "Victoria", "Julia", "Frieda", "Leni", "Helena", "Ida", "Maya", "Paulina", "Mara", "Lotta", "Anni", "Elisa", "Melina", "Valentina", "Isabella", "Lia", "Stella", "Alina", "Eva", "Livia", "Mathilda", "Juna");
     private static final List<String> MALE = Arrays.asList("Paul", "Alexander", "Maximilian", "Elias", "Leon", "Ben", "Noah", "Louis", "Felix", "Lukas", "Finn", "Henry", "Jakob", "Luca", "Emil", "Jonas", "Liam", "David", "Leo", "Julian", "Jannik", "Anton", "Matteo", "Max", "Oskar", "Theo", "Samuel", "Philipp", "Moritz", "Jakob", "Jannis", "Nico", "Erik", "Johannes", "Matthias", "Adam", "Benjamin", "Jonathan", "Vincent", "Luis", "Hannes", "Linus", "Simon", "Jan", "Tom", "Lenny", "Adrian", "Till", "Aaron", "Fabian");
-    private static final List<String> FEMALE_SKINS = Arrays.asList("Flolady");
-    private static final List<String> MALE_SKINS = Arrays.asList("CraftBad");
+    private static final List<String> FEMALE_SKINS = List.of("Flolady");
+    private static final List<String> MALE_SKINS = List.of("CraftBad");
 
     private static final HashMap<Shops, NPC> npcs = new HashMap<>();
 

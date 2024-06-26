@@ -469,6 +469,6 @@ public class Friedhof {
             lefttime = left + " Sekunden";
         }
         progress.replace(p.getName(), progress.get(p.getName())+1.0);
-        Script.sendActionBar(p, "§cTOT! §8» §a" + sb.toString() + " §8× §7" + lefttime);
+        Script.sendActionBar(p, "§cTOT! §8» §a" + sb + " §8× §7" + lefttime);
     }
 }

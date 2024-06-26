@@ -335,9 +335,9 @@ public class BlackListCommand implements CommandExecutor, Listener, TabCompleter
 
             Blacklist.add(tg, o, reasons.toString(), kills, price);
             p.sendMessage(Blacklist.PREFIX + "Der Spieler wurde auf die Blacklist gesetzt.");
-            tg.sendMessage(Blacklist.PREFIX + "Du wurdest auf die Blacklist der " + o.getName() + " gesetzt (Grund: " + reasons.toString() + " | Preis: " + price + "€)");
+            tg.sendMessage(Blacklist.PREFIX + "Du wurdest auf die Blacklist der " + o.getName() + " gesetzt (Grund: " + reasons + " | Preis: " + price + "€)");
             o.sendMessage(Blacklist.PREFIX + Script.getName(p) + " hat " + Script.getName(tg) + " auf die Blacklist gesetzt.");
-            o.sendMessage(Blacklist.PREFIX + "Grund: " + reasons.toString() + " | Preis: " + price + "€");
+            o.sendMessage(Blacklist.PREFIX + "Grund: " + reasons + " | Preis: " + price + "€");
             Script.updateBlackListSubtitle(tg);
             return true;
         }

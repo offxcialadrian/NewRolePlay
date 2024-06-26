@@ -164,7 +164,7 @@ public class Fesseln implements Listener {
                 sb.append("§8▉");
             }
         }
-        Script.sendActionBar(p, "§cFesseln.. §8» §a" + sb.toString());
+        Script.sendActionBar(p, "§cFesseln.. §8» §a" + sb);
     }
 
 }

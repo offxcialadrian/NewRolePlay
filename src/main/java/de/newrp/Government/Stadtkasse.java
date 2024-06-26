@@ -86,8 +86,8 @@ public class Stadtkasse implements CommandExecutor {
                     reason.append(args[i]);
                 }
             }
-            Stadtkasse.removeStadtkasse(betrag, "Auszahlung von " + Script.getName(p) + " Verwendungszweck: " + reason.toString());
-            Beruf.Berufe.GOVERNMENT.sendMessage(PREFIX + "Es wurde " + betrag + "€ aus der Stadtkasse ausgezahlt. Verwendungszweck: " + reason.toString());
+            Stadtkasse.removeStadtkasse(betrag, "Auszahlung von " + Script.getName(p) + " Verwendungszweck: " + reason);
+            Beruf.Berufe.GOVERNMENT.sendMessage(PREFIX + "Es wurde " + betrag + "€ aus der Stadtkasse ausgezahlt. Verwendungszweck: " + reason);
             Script.addMoney(p, PaymentType.CASH, betrag);
             return true;
         }

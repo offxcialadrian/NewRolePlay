@@ -14,7 +14,7 @@ import java.sql.Statement;
 
 public class Sperrinfo implements CommandExecutor {
 
-    private static String PREFIX = "§8[§cSperrinfo§8] §c" + Messages.ARROW + " ";
+    private static final String PREFIX = "§8[§cSperrinfo§8] §c" + Messages.ARROW + " ";
 
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {

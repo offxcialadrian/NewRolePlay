@@ -87,7 +87,7 @@ public class Utils implements Listener {
     public static final int WORLD_BORDER_MAX_X = 1100;
     public static final int WORLD_BORDER_MIN_Z = 420;
     public static final int WORLD_BORDER_MAX_Z = 1362;
-    private IJdaService jdaService = DependencyContainer.getContainer().getDependency(IJdaService.class);
+    private final IJdaService jdaService = DependencyContainer.getContainer().getDependency(IJdaService.class);
     public static HashMap<String, Long> fishCooldown = new HashMap<>();
     public static HashMap<String, Integer> fishCount = new HashMap<>();
 
@@ -663,7 +663,6 @@ public class Utils implements Listener {
         if (blk == null) return;
         if (blk.getType().name().startsWith("POTTED_") || blk.getType() == Material.FLOWER_POT) {
             e.setCancelled(!BuildMode.isInBuildMode(e.getPlayer()));
-            return;
         }
     }
 

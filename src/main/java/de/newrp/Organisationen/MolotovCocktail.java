@@ -36,8 +36,8 @@ public class MolotovCocktail implements CommandExecutor, Listener {
     final HashMap<String, Long> cooldowns = new HashMap<>();
     public static HashMap<String, Long> create_time = new HashMap<>();
     public static HashMap<String, Integer> player_progress = new HashMap<>();
-    private static Location molotov = new Location(Script.WORLD, 713, 71, 544);
-    private static String prefix = "§8[§cMolotov Cocktail§8] §c" + Messages.ARROW + " §7";
+    private static final Location molotov = new Location(Script.WORLD, 713, 71, 544);
+    private static final String prefix = "§8[§cMolotov Cocktail§8] §c" + Messages.ARROW + " §7";
 
     @EventHandler
     public void onDrop(final PlayerDropItemEvent e) {

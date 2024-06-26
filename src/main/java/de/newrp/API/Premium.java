@@ -100,7 +100,6 @@ public class Premium {
                 if (rs.next()) {
                     if (rs.getLong("until") > System.currentTimeMillis()) {
                         Script.executeAsyncUpdate("UPDATE premium SET until=" + (rs.getLong("until") + time) + " WHERE nrp_id=" + Script.getNRPID(p));
-                        return;
                     }
                 }
             } catch (Exception e) {
@@ -119,7 +118,6 @@ public class Premium {
                 if (rs.next()) {
                     if (rs.getLong("until") > System.currentTimeMillis()) {
                         Script.executeAsyncUpdate("UPDATE premium SET until=" + (rs.getLong("until") + time) + " WHERE nrp_id=" + Script.getNRPID(p));
-                        return;
                     }
                 }
             } catch (Exception e) {

@@ -19,7 +19,6 @@ public class DeathmatchRespawnListener implements Listener {
             event.setRespawnLocation(this.deathmatchArenaService.getRandomSpawnPoint());
             player.getInventory().clear();
             this.deathmatchArenaService.equipWeaponsAndDrugs(player);
-            return;
         }
     }
 
