@@ -90,6 +90,8 @@ public class AddHouseDoor implements CommandExecutor, Listener {
                 Location loc2 = loc.clone().add(0, (top ? -1 : +1), 0);
                 Script.executeAsyncUpdate("INSERT INTO house_door (houseID, x, y, z) VALUES (" + house + ", " + loc.getX() + ", " + loc.getY() + ", " + loc.getZ() + ");");
                 Script.executeAsyncUpdate("INSERT INTO house_door (houseID, x, y, z) VALUES (" + house + ", " + loc2.getX() + ", " + loc2.getY() + ", " + loc2.getZ() + ");");
+                changing.get(p.getName()).addDoor(loc);
+                changing.get(p.getName()).addDoor(loc2);
                 p.sendMessage(PREFIX + "Du hast die Tür hinzugefügt.");
                 Script.sendTeamMessage(p, ChatColor.WHITE, "hat eine Haustüre zu Haus " + house + " registriert!", false);
                 changing.remove(p.getName());

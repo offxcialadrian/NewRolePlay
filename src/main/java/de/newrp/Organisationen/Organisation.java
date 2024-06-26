@@ -147,22 +147,37 @@ public enum Organisation {
         return level_cost;
     }
 
+    private static HashMap<Location, Organisation> DOORS = new HashMap<>();
+
+    public static void loadDoors() {
+        setDoors();
+    }
+
+    public void addDoor(Location loc) {
+        DOORS.put(loc, this);
+    }
+
     public ArrayList<Location> getDoors() {
-        ArrayList<Location> locs = new ArrayList<>();
+        ArrayList<Location> doors = new ArrayList<>();
+        for (Location loc : DOORS.keySet())
+            if (DOORS.get(loc) == this) doors.add(loc);
+        return doors;
+    }
+
+    public static void setDoors() {
         try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
-             ResultSet rs = stmt.executeQuery("SELECT orgID, x, y, z FROM orgadoor WHERE orgID=" + this.id)) {
+             ResultSet rs = stmt.executeQuery("SELECT orgID, x, y, z FROM orgadoor")) {
             while (rs.next()) {
+                int id = rs.getInt("orgID");
                 int x = rs.getInt("x");
                 int y = rs.getInt("y");
                 int z = rs.getInt("z");
                 Location loc = new Location(Script.WORLD, x, y, z);
-                if (!locs.contains(loc)) locs.add(loc);
+                if (!DOORS.containsKey(loc)) DOORS.put(loc, getOrganisation(id));
             }
-            return locs;
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return locs;
     }
 
     public OrgSpray.FraktionSpray getFraktionSpray() {

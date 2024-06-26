@@ -3,6 +3,8 @@ package de.newrp.House;
 import de.newrp.API.Debug;
 import de.newrp.API.Script;
 import de.newrp.NewRoleplayMain;
+import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -40,8 +42,10 @@ public class House {
     private int slots;
     private int price;
     private int snacks;
+    @Getter
+    private ArrayList<Location> doors;
 
-    public House(int houseID, int owner, Location[] location, Location sign, int kasse, int slots, int price, int snacks, List<HouseAddon> addons, List<Mieter> mieter) {
+    public House(int houseID, int owner, Location[] location, Location sign, int kasse, int slots, int price, int snacks, List<HouseAddon> addons, List<Mieter> mieter, ArrayList<Location> doors) {
         this.houseID = houseID;
         this.owner = owner;
         this.location = location;
@@ -52,6 +56,7 @@ public class House {
         this.snacks = snacks;
         this.addons = addons;
         this.mieter = mieter;
+        this.doors = doors;
     }
 
     public static Mieter getMieter(House h, int id) {
@@ -114,12 +119,10 @@ public class House {
                         }
                     }
 
-                    House house = new House(houseID, owner, new Location[]{min, max}, sign, kasse, slots, price, snacks, addons, mieter);
-
+                    ArrayList<Location> doors = setDoors(houseID);
+                    House house = new House(houseID, owner, new Location[]{min, max}, sign, kasse, slots, price, snacks, addons, mieter, doors);
                     HOUSES.add(house);
 
-                    getHouseSignLocation(houseID);
-                    getHouseDoors(houseID);
                     Bukkit.getScheduler().runTask(NewRoleplayMain.getInstance(), () -> house.updateSign(ownerName));
                 }
             } catch (SQLException e) {
@@ -127,6 +130,18 @@ public class House {
                 Debug.debug("SQLException -> " + e.getMessage());
             }
         });
+    }
+
+    public static ArrayList<Location> setDoors(int id) {
+        ArrayList<Location> doors = new ArrayList<>();
+        try (Statement stmt_ = NewRoleplayMain.getConnection().createStatement();
+             ResultSet rs_ = stmt_.executeQuery("SELECT x, y, z FROM house_door WHERE houseID=" + id)) {
+            while (rs_.next())
+                doors.add(new Location(Script.WORLD, rs_.getInt("x"), rs_.getInt("y"), rs_.getInt("z")));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return doors;
     }
 
     public static House getInsideHouse(Player p) {
@@ -212,6 +227,10 @@ public class House {
             }
         }
         return null;
+    }
+
+    public void addDoor(Location loc) {
+        this.doors.add(loc);
     }
 
     public static boolean isValid(int house) {
@@ -404,26 +423,6 @@ public class House {
         Script.executeAsyncUpdate("DELETE FROM house_bewohner WHERE houseID = " + houseID);
         Script.executeAsyncUpdate("DELETE FROM house_door WHERE houseID = " + houseID);
         HOUSES.remove(this);
-    }
-
-    public ArrayList<Location> getDoors() {
-        return getHouseDoors(this.houseID);
-    }
-
-    public static ArrayList<Location> getHouseDoors(int house) {
-        ArrayList<Location> list = new ArrayList<>();
-        try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
-             ResultSet rs = stmt.executeQuery("SELECT x, y, z FROM house_door WHERE houseID=" + house)) {
-            while (rs.next()) {
-                int x = rs.getInt("x");
-                int y = rs.getInt("y");
-                int z = rs.getInt("z");
-                list.add(new Location(Script.WORLD, x, y, z));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return list;
     }
 
     public boolean isInside(Player p) {

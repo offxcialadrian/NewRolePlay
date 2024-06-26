@@ -82,6 +82,8 @@ public class AddBerufsDoor implements CommandExecutor, Listener {
                     Location loc2 = loc.clone().add(0, (top ? -1 : +1), 0);
                     Script.executeAsyncUpdate("INSERT INTO berufsdoor (berufID, x, y, z) VALUES (" + changing.get(p.getName()).getID() + ", " + loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ() + ");");
                     Script.executeAsyncUpdate("INSERT INTO berufsdoor (berufID, x, y, z) VALUES (" + changing.get(p.getName()).getID() + ", " + loc2.getBlockX() + ", " + loc2.getBlockY() + ", " + loc2.getBlockZ() + ");");
+                    changing.get(p.getName()).addDoor(loc);
+                    changing.get(p.getName()).addDoor(loc2);
                     p.sendMessage(PREFIX + "Du hast die Tür hinzugefügt.");
                     changing.remove(p.getName());
                 }

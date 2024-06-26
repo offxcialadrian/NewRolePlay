@@ -190,7 +190,7 @@ public class HouseRegister implements CommandExecutor, Listener {
 
     public static class HouseRegistration {
 
-        private final List<Location> doors;
+        private final ArrayList<Location> doors;
         private final String adminName;
         private int houseID;
         private int ownerID;
@@ -200,7 +200,7 @@ public class HouseRegister implements CommandExecutor, Listener {
         private Location sign;
         private int price;
 
-        public HouseRegistration(int houseID, int ownerID, String ownerName, Location house_region_max, Location house_region_min, Location sign, int price, List<Location> doors, String adminName) {
+        public HouseRegistration(int houseID, int ownerID, String ownerName, Location house_region_max, Location house_region_min, Location sign, int price, ArrayList<Location> doors, String adminName) {
             this.houseID = houseID;
             this.ownerID = ownerID;
             this.ownerName = ownerName;
@@ -321,7 +321,7 @@ public class HouseRegister implements CommandExecutor, Listener {
                         try (ResultSet keys = statement.getGeneratedKeys()) {
                             if (keys.next()) {
                                 int houseID = reg.getHouseID();
-                                House house = new House(houseID, reg.ownerID, new Location[]{reg.house_region_min, reg.house_region_max}, reg.sign, 0, 2, reg.price, 0, new ArrayList<>(), mieter);
+                                House house = new House(houseID, reg.ownerID, new Location[]{reg.house_region_min, reg.house_region_max}, reg.sign, 0, 2, reg.price, 0, new ArrayList<>(), mieter, doors);
                                 House.HOUSES.add(house);
                                 reg.setHouseID(houseID);
                                 if (reg.ownerID != 0) {
@@ -372,7 +372,7 @@ public class HouseRegister implements CommandExecutor, Listener {
                 }
                 s.update(true);
             } else {
-                House house = new House(this.houseID, this.ownerID, new Location[]{this.house_region_min, this.house_region_max}, this.sign, 0, 2, this.price, 0, new ArrayList<>(), mieter);
+                House house = new House(this.houseID, this.ownerID, new Location[]{this.house_region_min, this.house_region_max}, this.sign, 0, 2, this.price, 0, new ArrayList<>(), mieter, doors);
                 House.HOUSES.add(house);
                 if (this.ownerID != 0) {
                     if (House.PLAYER_HOUSES.containsKey(this.ownerID)) {

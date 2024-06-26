@@ -207,6 +207,8 @@ public class NewRoleplayMain extends JavaPlugin {
         Contract.load();
         Plantage.loadAll();
         Dart.clear();
+        Bukkit.getScheduler().runTaskLater(this, Organisation::loadDoors, 60L);
+        Bukkit.getScheduler().runTaskLater(this, Beruf.Berufe::loadDoors, 60L);
         Bukkit.getScheduler().runTaskLater(this, CitizensAPI.getNPCRegistry()::deregisterAll, 2L);
         Bukkit.getScheduler().runTaskLater(this, Schwarzmarkt::spawnRandom, 80L);
         Bukkit.getScheduler().runTaskLater(this, Dealer::spawn, 100L);

@@ -5,6 +5,7 @@ import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.Forum.ForumGroup;
 import de.newrp.Government.Arbeitslosengeld;
+import de.newrp.Organisationen.Organisation;
 import de.newrp.TeamSpeak.TeamspeakServerGroup;
 import de.newrp.NewRoleplayMain;
 import de.newrp.Vehicle.CarType;
@@ -122,23 +123,39 @@ public class Beruf {
             return kasse;
         }
 
+        private static HashMap<Location, Berufe> DOORS = new HashMap<>();
+
+        public static void loadDoors() {
+            setDoors();
+        }
+
+        public void addDoor(Location loc) {
+            DOORS.put(loc, this);
+        }
+
         public ArrayList<Location> getDoors() {
+            ArrayList<Location> doors = new ArrayList<>();
+            for (Location loc : DOORS.keySet())
+                if (DOORS.get(loc) == this) doors.add(loc);
+            return doors;
+        }
+
+        public static void setDoors() {
             ArrayList<Location> locs = new ArrayList<>();
             try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
-                 ResultSet rs = stmt.executeQuery("SELECT berufID, x, y, z FROM berufsdoor WHERE berufID=" + this.id)) {
+                 ResultSet rs = stmt.executeQuery("SELECT berufID, x, y, z FROM berufsdoor")) {
                 while (rs.next()) {
+                    int id = rs.getInt("berufID");
                     int x = rs.getInt("x");
                     int y = rs.getInt("y");
                     int z = rs.getInt("z");
                     Location loc = new Location(Script.WORLD, x, y, z);
-                    if (!locs.contains(loc)) locs.add(loc);
+                    if (!DOORS.containsKey(loc)) DOORS.put(loc, getBeruf(id));
                 }
-                return locs;
             } catch (SQLException e) {
                 Debug.debug("SQLException -> " + e.getMessage());
                 e.printStackTrace();
             }
-            return locs;
         }
 
         public int getKasse() {

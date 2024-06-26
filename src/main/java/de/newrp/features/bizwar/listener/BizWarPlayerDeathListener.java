@@ -37,7 +37,7 @@ public class BizWarPlayerDeathListener implements Listener {
 
         final boolean isAttacker = activeBizWarInformation.getAttackerOrganisation().getMembers().contains(player);
         if(isAttacker) {
-            activeBizWarInformation.setCurrentDefenderPoints(activeBizWarInformation.getCurrentDefenderPoints() + 1);
+            activeBizWarInformation.setCurrentDefenderPoints(activeBizWarInformation.getCurrentDefenderPoints() + (isMVO(activeBizWarInformation.getAttackerOrganisation()) ? 2 : 1));
         } else {
             activeBizWarInformation.setCurrentAttackerPoints(activeBizWarInformation.getCurrentAttackerPoints() + (isMVO(activeBizWarInformation.getDefenderOrganisation()) ? 2 : 1));
         }

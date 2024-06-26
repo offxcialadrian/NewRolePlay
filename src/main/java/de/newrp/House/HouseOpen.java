@@ -44,13 +44,13 @@ public class HouseOpen implements Listener {
         House house = House.getHouseByDoor(b.getLocation());
         if (house != null) {
             Long lastUsage = Ramm.cooldown.get(house);
-            if (lastUsage != null && lastUsage + TimeUnit.MINUTES.toMillis(5) > System.currentTimeMillis()) {
-                return false;
-            }
+            if (lastUsage != null && lastUsage + TimeUnit.MINUTES.toMillis(5) > System.currentTimeMillis()) return false;
+            if (house.isMieter(Script.getNRPID(p))) return true;
+            if (house.getOwner() == 0) return true;
         }
-        if (isPlayersDoor(p, b)) return true;
         if (orgDoor(p, b)) return true;
-        return berufsDoor(p, b);
+        if (berufsDoor(p, b)) return true;
+        return false;
     }
 
     public boolean isPlayersDoor(Player p, Block b) {
@@ -63,11 +63,8 @@ public class HouseOpen implements Listener {
         Beruf.Berufe beruf = Beruf.getBeruf(p);
         if(beruf == null) return false;
         ArrayList<Location> locs = beruf.getDoors();
-        if (locs != null) {
-            for (Location l : locs) {
-                if (b.getLocation().equals(l)) return true;
-            }
-        }
+        for (Location l : locs)
+            if (b.getLocation().equals(l)) return true;
         return false;
     }
 
@@ -75,11 +72,8 @@ public class HouseOpen implements Listener {
         Organisation org = Organisation.getOrganisation(p);
         if(org == null) return false;
         ArrayList<Location> locs = org.getDoors();
-        if (locs != null) {
-            for (Location l : locs) {
-                if (b.getLocation().equals(l)) return true;
-            }
-        }
+        for (Location l : locs)
+            if (b.getLocation().equals(l)) return true;
         return false;
     }
 }
