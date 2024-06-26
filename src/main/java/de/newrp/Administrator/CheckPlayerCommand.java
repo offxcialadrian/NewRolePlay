@@ -42,7 +42,8 @@ public class CheckPlayerCommand implements CommandExecutor {
         }
 
         if (!Script.hasRank(p, Rank.SUPPORTER, false)) {
-            p.sendMessage(Messages.NO_PERMISSION);
+            if (Script.getRank(p) != Rank.DEVELOPER)
+                p.sendMessage(Messages.NO_PERMISSION);
             return true;
         }
 
