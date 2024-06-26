@@ -3,7 +3,6 @@ package de.newrp.News;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.Administrator.Checkpoints;
-import de.newrp.Berufe.Abteilung;
 import de.newrp.Berufe.Beruf;
 import de.newrp.NewRoleplayMain;
 import de.newrp.Police.Jail;
@@ -18,21 +17,18 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.Map;
 import java.util.Objects;
+import java.util.TreeMap;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 // 1Minify - Automatic News System
 public class ANewsCommand implements CommandExecutor {
 
-    private final ArrayList<Abteilung.Abteilungen> abteilungen = new ArrayList<>(Arrays.asList(
-            Abteilung.Abteilungen.CHEFREDAKTION,
-            Abteilung.Abteilungen.JOURNALIST
-    ));
     private final Map<Integer, ANewsMessage> messages = new ConcurrentHashMap<>();
     public static String prefix = "§8[§6ANews§8] §8» §7";
     private int lastId = 1;
@@ -58,13 +54,17 @@ public class ANewsCommand implements CommandExecutor {
                 return true;
             }
             player.sendMessage(prefix + "Liste aller ANews:");
-            messages.forEach((id, message) -> {
+            getTimeSorted().forEach((id, message) -> {
                 if(message.isAccepted()) {
                     String text = prefix + "§6#" + id + " §8× §6" + message.getPlayer().getName() + " §8× §6" + message.getTimeAsString() + " §8× §aAkzeptiert §8× §6" + message.getText();
                     player.sendMessage(text);
                 } else {
                     String text = prefix + "§6#" + id + " §8× §6" + message.getPlayer().getName() + " §8× §6" + message.getTimeAsString() + " §8× §7Offen §8× §6" + message.getText();
-                    Script.sendClickableMessage(player, text, "/anews accept " + id, "§6News Annehmen");
+                    if(Beruf.isLeader(player, false)) {
+                        Script.sendClickableMessage(player, text, "/anews accept " + id, "§6News Annehmen");
+                    } else {
+                        player.sendMessage(text);
+                    }
                 }
             });
             return true;
@@ -124,6 +124,12 @@ public class ANewsCommand implements CommandExecutor {
             updateRunnable();
         }
         return true;
+    }
+
+    private Map<Integer, ANewsMessage> getTimeSorted() {
+        TreeMap<Integer, ANewsMessage> sortedMap = new TreeMap<>(Comparator.comparingLong(key -> messages.get(key).getMillis()));
+        sortedMap.putAll(messages);
+        return sortedMap;
     }
 
     private void updateRunnable() {
