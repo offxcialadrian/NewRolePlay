@@ -271,6 +271,7 @@ public class NewRoleplayMain extends JavaPlugin {
         getCommand("tp").setTabCompleter(new Teleport());
         getCommand("fahndung").setTabCompleter(new Fahndung());
         getCommand("addorgdoor").setTabCompleter(new AddOrgDoor());
+        getCommand("anews").setTabCompleter(new ANewsCommand());
         getCommand("sduty").setExecutor(new SDuty());
         getCommand("debug").setExecutor(new DebugCommand());
         getCommand("nrp").setExecutor(new NRPChat());
@@ -605,6 +606,7 @@ public class NewRoleplayMain extends JavaPlugin {
      * Registers all listeners, soon to be fully automatic
      */
     private void registerAllListeners() {
+        Bukkit.getPluginManager().registerEvents(new ANewsCommand(), this);
         Bukkit.getPluginManager().registerEvents(new SDuty(), this);
         Bukkit.getPluginManager().registerEvents(new Kartenspiel(), this);
         Bukkit.getPluginManager().registerEvents(new BuildMode(), this);
