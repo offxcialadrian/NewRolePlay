@@ -57,18 +57,20 @@ public class BlackListCommand implements CommandExecutor, Listener, TabCompleter
 
     public enum Reasons {
         GANGZONE("Gangzone", 500, 50, new Organisation[] {Organisation.CORLEONE, Organisation.TRIORLA, Organisation.MIAMI_VIPERS}),
-        ORGASCHÄDIGUNG("Organisationsschädigung", 800, 60, new Organisation[] {Organisation.CORLEONE, Organisation.TRIORLA, Organisation.MIAMI_VIPERS}),
+        ORGASCHÄDIGUNG("Organisationsschädigung", 800, 60, new Organisation[] {Organisation.CORLEONE, Organisation.TRIORLA}),
         BLUTRACHE("Blutrache", 300, 25, new Organisation[] {Organisation.CORLEONE}),
         VOGELFREI("Vogelfrei", 1, 0, new Organisation[] {Organisation.CORLEONE, Organisation.TRIORLA, Organisation.FALCONE, Organisation.MIAMI_VIPERS}),
         LEICHENBEWACHUNG("Leichenbewachung", 600, 20, new Organisation[] {Organisation.CORLEONE, Organisation.TRIORLA}),
-        LEADERMORD_KARTELL("Leadermord", 1000, 50, new Organisation[] {Organisation.CORLEONE, Organisation.TRIORLA, Organisation.MIAMI_VIPERS}),
+        LEADERMORD_KARTELL("Leadermord", 1000, 50, new Organisation[] {Organisation.CORLEONE, Organisation.TRIORLA}),
         PROVOKATION_KARTELL("Provokation", 250, 10, new Organisation[] {Organisation.TRIORLA}),
         Vendetta_FALCONE("Vendetta", 1000, 50, new Organisation[] {Organisation.FALCONE}),
         Tradimento_FALCONE("Tradimento", 1000, 50, new Organisation[] {Organisation.FALCONE}),
         Diffamazione_FALCONE("Diffamazione", 350, 20, new Organisation[] {Organisation.FALCONE}),
         Invasione_FALCONE("Invasione", 750, 30, new Organisation[] {Organisation.FALCONE}),
         Vergogna_FALCONE("Vergogna", 1, 1, new Organisation[] {Organisation.FALCONE}),
-        Inganno_FALCONE("Inganno", 250, 20, new Organisation[] {Organisation.FALCONE});
+        Inganno_FALCONE("Inganno", 250, 20, new Organisation[] {Organisation.FALCONE}),
+        Sabotage("Sabotage", 800, 60, new Organisation[] {Organisation.MIAMI_VIPERS}),
+        LEADER_ASSASSINATION("Leader Assassination", 1000, 50, new Organisation[] {Organisation.MIAMI_VIPERS});
         /// ADM("Asesinato de Miembros", 200, 3, new Organisation[] {Organisation.SINALOA}),
         // FDR("Falta de Respeto", 300, 1, new Organisation[] {Organisation.SINALOA}),
         // FDRG("Falta de Respeto Grave", 500, 5, new Organisation[] {Organisation.SINALOA}),
