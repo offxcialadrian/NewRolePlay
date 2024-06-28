@@ -27,7 +27,7 @@ public enum ShopItem {
     ALARMANLAGE(7, "§7Alarmanlage", new ItemStack(Material.REDSTONE), 10, 1, 20, HouseAddon.ALARM.getPrice(), 12000, 6, false, false, false, new ShopType[] {ShopType.HOUSEADDON}),
     KUEHLSCHRANK(9, "§7Kühlschrank", new ItemStack(Material.CHEST), 10, 1, 20, HouseAddon.KUEHLSCHRANK.getPrice(), 1200, 5, false, false, false, new ShopType[] {ShopType.HOUSEADDON}),
     PISTOLE(10, "§7Glory", new ItemStack(Material.IRON_HORSE_ARMOR), 15, 1, 1, 2000, 12000, 4, false, false, false, new ShopType[] {ShopType.GUNSHOP}),
-    AMMO_9MM(11, "§79mm Munition (" + Weapon.PISTOLE.getName() + ")", new ItemBuilder(Material.ARROW).setAmount(Weapon.PISTOLE.getMagazineSize()).build(), 1, 1, 1, 2, 6000, 4, false, false, false, new ShopType[] {ShopType.GUNSHOP}),
+    AMMO_9MM(11, "§79mm Munition (" + Weapon.PISTOLE.getName() + ")", new ItemBuilder(Material.ARROW).setAmount(Weapon.PISTOLE.getMagazineSize()).build(), 1, 1, 1, 15, 6000, 4, false, false, false, new ShopType[] {ShopType.GUNSHOP}),
     AK47(12, "§7Peacekeeper", new ItemStack(Material.DIAMOND_HORSE_ARMOR), 20, 1, 1, 5000, 22000, 16, false, false, false, new ShopType[] {ShopType.GUNSHOP}),
     HEISSE_SCHOKOLADE(43, "§7Heiße Schokolade",new ItemBuilder(Material.FLOWER_POT).setName("§7Heiße Schokolade").build(), 3, 2, 25, 3, 1800, 1, true, true, false, new ShopType[] {ShopType.CAFE}),
     FILTERKAFFEE(44, "§7Filterkaffee", new ItemBuilder(Material.FLOWER_POT).setName("§7Filterkaffee").build(), 3, 2, 25, 3, 1800, 1, true, true, false, new ShopType[] {ShopType.CAFE}),
