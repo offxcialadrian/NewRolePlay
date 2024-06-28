@@ -124,7 +124,7 @@ public class Flammenwerfer implements Listener {
                             double ey = loc.getY();
                             double ez = loc.getZ();
                             if (bx - 0.75D <= ex && ex <= bx + 1.75D && bz - 0.75D <= ez && ez <= bz + 1.75D && (by - 1) <= ey && ey <= by + 2.5D) {
-                                e.damage(1.0D);
+                                e.damage(2.0D);
                                 e.setFireTicks(100);
                             }
                         }
