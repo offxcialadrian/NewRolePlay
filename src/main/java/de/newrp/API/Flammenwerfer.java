@@ -1,6 +1,8 @@
 package de.newrp.API;
 
+import de.newrp.Administrator.SDuty;
 import de.newrp.NewRoleplayMain;
+import de.newrp.Player.AFK;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
@@ -119,6 +121,11 @@ public class Flammenwerfer implements Listener {
                         int by = block.getY();
                         int bz = block.getZ();
                         for (LivingEntity e : livingE) {
+                            if (e instanceof Player) {
+                                if (AFK.isAFK((Player) e)) continue;
+                                if (SDuty.isSDuty((Player) e)) continue;
+                                if (Spawnschutz.isInSpawnschutz((Player) e)) continue;
+                            }
                             Location loc = e.getLocation();
                             double ex = loc.getX();
                             double ey = loc.getY();
