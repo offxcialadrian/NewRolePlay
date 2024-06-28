@@ -1732,7 +1732,7 @@ public class Script {
             }
         }
 
-        Material[] blocked = new Material[]{Material.TNT, Material.LEATHER_CHESTPLATE, Material.BONE, Material.FLINT, Material.BLAZE_POWDER};
+        Material[] blocked = new Material[]{Material.TNT, Material.LEATHER_CHESTPLATE, Material.BONE, Material.FLINT, Material.BLAZE_POWDER, Material.BONE, Material.IRON_SWORD};
         for (Material mat : blocked) {
             p.getInventory().remove(mat);
             if (p.getInventory().getItemInOffHand().getType().equals(mat)) {
