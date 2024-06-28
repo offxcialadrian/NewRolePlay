@@ -99,7 +99,8 @@ public class UmsatzCommand implements CommandExecutor {
             }
 
             player.sendMessage(Shop.PREFIX + "§7Umsatz von §6" + shop.getName() + "§7 in " + TimeUnit.MILLISECONDS.toHours(time) + " Stunden:");
-            player.sendMessage("     §8" + Messages.ARROW + " §6Kasse: §7" + shop.getKasse() + "€");
+            if (shop.getOwner() == Script.getNRPID(player))
+                player.sendMessage("     §8" + Messages.ARROW + " §6Kasse: §7" + shop.getKasse() + "€");
             player.sendMessage("     §8" + Messages.ARROW + " §6Netto: §7" + n + "€ §8(§7" + ((double) Math.round(((float) n / b) * 1000) / 10) + "%§8)");
             player.sendMessage("     §8" + Messages.ARROW + " §6Brutto: §7" + b + "€");
             player.sendMessage("     §8" + Messages.ARROW + " §6Menge: §7" + a + "x");
