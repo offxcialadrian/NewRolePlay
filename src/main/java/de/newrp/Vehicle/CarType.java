@@ -1,5 +1,6 @@
 package de.newrp.Vehicle;
 
+import de.newrp.Government.Steuern;
 import de.newrp.Shop.ShopItem;
 import org.bukkit.Material;
 import org.bukkit.TreeSpecies;
@@ -87,7 +88,7 @@ public enum CarType {
     }
 
     public int getTax() {
-        return this.tax;
+        return (int) Steuern.Steuer.GRUNDSTEUER.getPercentage() * (this.tax / 20);
     }
 
     public float getSpeed() {
