@@ -212,7 +212,7 @@ public class Gips implements Listener {
         if (hits.get(d) < 5) return;
 
         if (Script.getLevel(d) > 1 && !SDuty.isSDuty(d) && !AFK.isAFK(d)) {
-            if (Script.getRandom(1, 100) <= Health.getMuscleLevel(Script.getNRPID(d)) / 5) {
+            if (Script.getRandom(1, 100) <= Health.getMuscleLevel(Script.getNRPID(p)) / 5) {
                 if (!Krankheit.GEBROCHENER_ARM.isInfected(Script.getNRPID(d))) {
                     Me.sendMessage(d, "hat sich " + (Script.getGender(d) == Gender.MALE ? "sein" : "ihr") + "en Arm gebrochen.");
                     Krankheit.GEBROCHENER_ARM.add(Script.getNRPID(d));
