@@ -127,12 +127,7 @@ public class NewRoleplayMain extends JavaPlugin {
         Bukkit.getConsoleSender().sendMessage("§cNRP §8× §aStarting with version " + this.getDescription().getVersion() + "..");
 
         this.configService = new ConfigService();
-        Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
-            @Override
-            public void uncaughtException(Thread t, Throwable e) {
-                Debug.debug("Uncaught Exception -> " + e.getMessage());
-            }
-        });
+        Thread.setDefaultUncaughtExceptionHandler((t, e) -> Debug.debug("Uncaught Exception -> " + e.getMessage()));
 
         // Loads all configurations
         this.loadConfig();
@@ -768,6 +763,7 @@ public class NewRoleplayMain extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new Dealer(), this);
         Bukkit.getPluginManager().registerEvents(new Pets(), this);
         Bukkit.getPluginManager().registerEvents(new NoDropListener(), this);
+        Bukkit.getPluginManager().registerEvents(new Flammenwerfer(), this);
     }
 
     /**
