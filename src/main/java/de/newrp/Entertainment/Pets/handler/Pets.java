@@ -163,7 +163,11 @@ public class Pets implements Listener, CommandExecutor, TabCompleter {
 
     public static void refresh() {
         for (LivingEntity entity : Script.WORLD.getLivingEntities()) {
-            if (!(entity instanceof Player)) if (!(entity instanceof ArmorStand)) if (!CitizensAPI.getNPCRegistry().isNPC(entity)) entity.remove();
+            if (!(entity instanceof Player)) if (!(entity instanceof ArmorStand)) if (!CitizensAPI.getNPCRegistry().isNPC(entity)) {
+                if (entity instanceof Ageable)
+                    if (!((Ageable) entity).isAdult()) continue;
+                entity.remove();
+            };
         }
     }
 
