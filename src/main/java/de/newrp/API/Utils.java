@@ -206,7 +206,20 @@ public class Utils implements Listener {
         e.setExpToDrop(0);
 
         if (e.getState() == PlayerFishEvent.State.CAUGHT_FISH) {
+            if (fishCooldown.containsKey(e.getPlayer().getName()) && fishCooldown.get(e.getPlayer().getName()) > System.currentTimeMillis()) {
+                fishCount.put(e.getPlayer().getName(), fishCount.computeIfAbsent(e.getPlayer().getName(), k -> 0) + 1);
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        if (fishCount.get(e.getPlayer().getName()) > 2)
+                            Notifications.sendMessage(Notifications.NotificationType.ADVANCED_ANTI_CHEAT, "Verdacht auf Angelmissbrauch bei " + e.getPlayer().getName() + " (" + Script.getPercentage(fishCount.get(e.getPlayer().getName()), 6) + "%)");
+                    }
+                }.runTaskLaterAsynchronously(NewRoleplayMain.getInstance(), 20 * 5);
+                e.setCancelled(true);
+                return;
+            }
             e.setCancelled(true);
+            fishCooldown.put(e.getPlayer().getName(), System.currentTimeMillis() + 2000);
             ItemStack rod = e.getPlayer().getInventory().getItemInMainHand();
             final int enchantmentLevel = rod.getEnchantmentLevel(Enchantment.LUCK);
             e.getPlayer().getInventory().addItem(getRandomFish(enchantmentLevel));
