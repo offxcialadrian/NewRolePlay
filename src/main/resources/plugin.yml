@@ -862,3 +862,5 @@ commands:
     description: bka wiretap calls
   anews:
     description: automatic news sending system
+  takehouse:
+    description: takes a players house
