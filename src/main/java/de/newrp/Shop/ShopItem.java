@@ -8,6 +8,7 @@ import de.newrp.Waffen.Weapon;
 import de.newrp.NewRoleplayMain;
 import org.bukkit.Color;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
@@ -150,7 +151,8 @@ public enum ShopItem {
     PET_FOX(163, "§aFuchs", Script.setName(new ItemStack(Material.FOX_SPAWN_EGG), "§aFuchs"), 1, 1, 1, 20000, 15000, 30, false, false, false, new ShopType[] {ShopType.PETS}),
     CD_12(164, "§6Pigstep", new ItemStack(Material.MUSIC_DISC_PIGSTEP), 1, 1, 1, 5, 200, 0, false, true, false, new ShopType[] {ShopType.MUSIC}),
     DOENER(165, "§7Döner", new ItemBuilder(Material.COOKED_MUTTON).setName("§7Döner").setAmount(1).build(), 1, 1, 1, 1, 3000, 1, false, true, false, new ShopType[] {ShopType.FASTFOOD}),
-    FLAMMI(166, "§cFlammenwerfer", Script.setNameAndLore(Material.BLAZE_POWDER, "§cFlammenwerfer", "§6500§8/§6500"), 8, 1, 1, 4000, 23000, 10, false, true, false, new ShopType[] {ShopType.GUNSHOP});
+    FLAMMI(166, "§cFlammenwerfer", Script.setNameAndLore(Material.BLAZE_POWDER, "§cFlammenwerfer", "§6500§8/§6500"), 8, 1, 1, 4000, 23000, 10, false, true, false, new ShopType[] {ShopType.GUNSHOP}),
+    SUPER_ANGEL(167, "§6§lSuper Angel", new ItemBuilder(Material.FISHING_ROD).addEnchantment(Enchantment.DURABILITY, 3).addEnchantment(Enchantment.LUCK, 2).setName("§6§lSuper Angel").build(), 1, 1, 1, 200, 5000, 10, false, true, false, new ShopType[] {ShopType.ANGELSHOP});
 
 
     private final int id;

@@ -195,7 +195,6 @@ public class Pets implements Listener, CommandExecutor, TabCompleter {
             }
             if (entity instanceof Fox) {
                 ((Fox) entity).setFirstTrustedPlayer(player);
-                ((Fox) entity).setCanPickupItems(true);
             }
             if (entity instanceof Sittable)
                 ((Sittable) entity).setSitting(false);

@@ -26,6 +26,7 @@ import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.ShulkerBox;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -205,21 +206,9 @@ public class Utils implements Listener {
         e.setExpToDrop(0);
 
         if (e.getState() == PlayerFishEvent.State.CAUGHT_FISH) {
-            if (fishCooldown.containsKey(e.getPlayer().getName()) && fishCooldown.get(e.getPlayer().getName()) > System.currentTimeMillis()) {
-                fishCount.put(e.getPlayer().getName(), fishCount.computeIfAbsent(e.getPlayer().getName(), k -> 0) + 1);
-                new BukkitRunnable() {
-                    @Override
-                    public void run() {
-                        if (fishCount.get(e.getPlayer().getName()) > 2)
-                            Notifications.sendMessage(Notifications.NotificationType.ADVANCED_ANTI_CHEAT, "Verdacht auf Angelmissbrauch bei " + e.getPlayer().getName() + " (" + Script.getPercentage(fishCount.get(e.getPlayer().getName()), 6) + "%)");
-                    }
-                }.runTaskLaterAsynchronously(NewRoleplayMain.getInstance(), 20 * 5);
-                e.setCancelled(true);
-                return;
-            }
             e.setCancelled(true);
-            fishCooldown.put(e.getPlayer().getName(), System.currentTimeMillis() + 2000);
-            e.getPlayer().getInventory().addItem(getRandomFish());
+            final int enchantmentLevel = e.getPlayer().getActiveItem() != null ? e.getPlayer().getActiveItem().getEnchantmentLevel(Enchantment.LUCK) : 0;
+            e.getPlayer().getInventory().addItem(getRandomFish(enchantmentLevel));
             Script.addEXP(e.getPlayer(), 1, true);
             ItemStack rod = e.getPlayer().getInventory().getItemInMainHand();
             if (rod.getType() == Material.FISHING_ROD) {
@@ -233,12 +222,12 @@ public class Utils implements Listener {
         }
     }
 
-    public static ItemStack getRandomFish() {
+    public static ItemStack getRandomFish(int enchantmentLevel) {
         int random = Script.getRandom(1, 100);
-        if (random <= 60) return new ItemStack(Material.COD);
-        if (random <= 80) return new ItemStack(Material.SALMON);
-        if (random <= 90) return new ItemStack(Material.PUFFERFISH);
-        return new ItemStack(Material.TROPICAL_FISH);
+        if (random <= 60) return new ItemStack(Material.COD, enchantmentLevel == 0 ? 1 : enchantmentLevel);
+        if (random <= 80) return new ItemStack(Material.SALMON, enchantmentLevel == 0 ? 1 : enchantmentLevel);
+        if (random <= 90) return new ItemStack(Material.PUFFERFISH, enchantmentLevel == 0 ? 1 : enchantmentLevel);
+        return new ItemStack(Material.TROPICAL_FISH, enchantmentLevel == 0 ? 1 : enchantmentLevel);
     }
 
     public void sendServerBanner(Player player, String imageUrl) {
