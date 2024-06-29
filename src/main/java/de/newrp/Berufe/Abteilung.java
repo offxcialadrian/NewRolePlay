@@ -31,6 +31,8 @@ public class Abteilung implements CommandExecutor, TabCompleter {
         JUSTIZMINISTERIUM(4, GOVERNMENT, "Justizministerium", false, "Justizminister"),
         VIZEKANZLER(5, GOVERNMENT, "Vizekanzler", true, "Vizekanzler"),
         STAATSOBERHAUPT(6, GOVERNMENT, "Bundeskanzler", true, "Bundeskanzler"),
+        FINANZMINISTER(7, GOVERNMENT, "Finanzminister", true, "Finanzminister"),
+        JUSTIZMINISTER(8, GOVERNMENT, "Justizminister", true, "Justizminister"),
         STREIFENPOLIZEI(0, POLICE, "Streifenpolizist", false, "Streifenpolizist"),
         ZIVILPOLIZEI(1, POLICE, "Zivilpolizei", false, "Zivilpolizist"),
         KRIMINALPOLIZEI(2, POLICE, "Kriminalpolizei", false, "Kriminalpolizist"),

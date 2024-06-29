@@ -1,14 +1,22 @@
 package de.newrp.Government;
 
 import de.newrp.API.Messages;
+import de.newrp.API.PaymentType;
 import de.newrp.API.Script;
+import de.newrp.Berufe.Abteilung;
 import de.newrp.Berufe.Beruf;
+import de.newrp.NewRoleplayMain;
 import de.newrp.Player.Annehmen;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class Loan implements CommandExecutor {
 
@@ -27,9 +35,27 @@ public class Loan implements CommandExecutor {
             return true;
         }
 
-        if (!Beruf.isLeader(p, true)) {
+        if (!Beruf.isLeader(p, true) && !Beruf.getAbteilung(p).isLeader()) {
             p.sendMessage(Messages.NO_PERMISSION);
             return true;
+        }
+
+        if (args.length == 0) {
+            p.sendMessage(PREFIX + "Aktuell vergebene Kredite:");
+            try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
+                 ResultSet rs = stmt.executeQuery("SELECT userID, amount, zins, id FROM loans WHERE time < " + System.currentTimeMillis())) {
+                while (rs.next()) {
+                    OfflinePlayer op = Script.getOfflinePlayer(rs.getInt("userID"));
+                    int amount = rs.getInt("amount");
+                    double interest = rs.getDouble("zins");
+                    int id = rs.getInt("id");
+
+                    if (op == null) continue;
+                    p.sendMessage("       §8" + Messages.ARROW + " §7" + op.getName() + " §8| §7" + amount + "€ §8| §7" + interest + "% §8| §7ID: " + id);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
 
         if (args.length != 4) {
