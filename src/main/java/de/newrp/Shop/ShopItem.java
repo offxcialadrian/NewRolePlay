@@ -37,7 +37,7 @@ public enum ShopItem {
     CRAPPUCHINO(47, "§7Crappuchino", new ItemBuilder(Material.FLOWER_POT).setName("§7Crappuchino").build(), 3, 2, 25, 3, 1800, 1, true, true, false, new ShopType[] {ShopType.CAFE}),
     ZEITUNG(48, de.newrp.News.Zeitung.zeitung.getItemMeta().getDisplayName(), de.newrp.News.Zeitung.zeitung, 3, 2, 25, de.newrp.News.Zeitung.getBuyPrice(), 1800, 2, true, false, false, new ShopType[] {ShopType.CAFE, ShopType.SUPERMARKET, ShopType.NEWS}),
     SCHMERZMITTEL(49, "§fSchmerzmittel", new ItemBuilder(Material.PAPER).setName("§fSchmerzmittel").setAmount(Medikamente.SCHMERZMITTEL.getNeeded()).build(), 10, 2, 25, 45, 4900, 5, true, true, false, new ShopType[] {ShopType.PHARMACY}),
-    BASEBALLSCHLAEGER(50, "§7Baseballschläger", Baseballschlaeger.getItem(), 1, 1, 1, 220, 4500, 4, false, true, false, new ShopType[] {ShopType.GUNSHOP}),
+    BASEBALLSCHLAEGER(50, "§7Baseballschläger", Baseballschlaeger.getItem(), 1, 1, 1, 320, 4500, 4, false, true, false, new ShopType[] {ShopType.GUNSHOP}),
     SAMSUNG_HANDY(52, "§cSamstar", new ItemBuilder(Material.GOLD_INGOT).setName("§cSamstar").build(), 5, 1, 1, 100, 3500, 10, false, false, false, new ShopType[] {ShopType.ELECTRONIC}),
     HUAWEI_HANDY(53, "§cHawaii P55", new ItemBuilder(Material.IRON_INGOT).setName("§cHawaii P55").build(), 5, 1, 1, 50, 600, 8, false, false, false, new ShopType[] {ShopType.ELECTRONIC}),
     APPLE_HANDY(55, "§cyouPhone 15", new ItemBuilder(Material.NETHERITE_INGOT).setName("§cyouPhone 15").build(), 5, 1, 1, 300, 11000, 12, false, false, false, new ShopType[] {ShopType.ELECTRONIC}),
@@ -152,7 +152,8 @@ public enum ShopItem {
     CD_12(164, "§6Pigstep", new ItemStack(Material.MUSIC_DISC_PIGSTEP), 1, 1, 1, 5, 200, 0, false, true, false, new ShopType[] {ShopType.MUSIC}),
     DOENER(165, "§7Döner", new ItemBuilder(Material.COOKED_MUTTON).setName("§7Döner").setAmount(1).build(), 1, 1, 1, 1, 3000, 1, false, true, false, new ShopType[] {ShopType.FASTFOOD}),
     FLAMMI(166, "§cFlammenwerfer", Script.setNameAndLore(Material.BLAZE_POWDER, "§cFlammenwerfer", "§6500§8/§6500"), 8, 1, 1, 4000, 23000, 10, false, true, false, new ShopType[] {ShopType.GUNSHOP}),
-    SUPER_ANGEL(167, "§6§lSuper Angel", new ItemBuilder(Material.FISHING_ROD).addEnchantment(Enchantment.DURABILITY, 3).addEnchantment(Enchantment.LUCK, 2).setName("§6§lSuper Angel").build(), 1, 1, 1, 200, 5000, 10, false, true, false, new ShopType[] {ShopType.ANGELSHOP});
+    SUPER_ANGEL(167, "§6§lSuper Angel", new ItemBuilder(Material.FISHING_ROD).addEnchantment(Enchantment.DURABILITY, 3).addEnchantment(Enchantment.LUCK, 2).setName("§6§lSuper Angel").build(), 1, 1, 1, 200, 5000, 10, false, true, false, new ShopType[] {ShopType.ANGELSHOP}),
+    JAGDMESSER(168, "§7Jagdmesser", Jagdmesser.getItem(), 1, 1, 1, 900, 8000, 5, false, true, false, new ShopType[] {ShopType.JAGDHUETTE});
 
 
     private final int id;
