@@ -207,16 +207,14 @@ public class Utils implements Listener {
 
         if (e.getState() == PlayerFishEvent.State.CAUGHT_FISH) {
             e.setCancelled(true);
-            final int enchantmentLevel = e.getPlayer().getActiveItem() != null ? e.getPlayer().getActiveItem().getEnchantmentLevel(Enchantment.LUCK) : 0;
+            ItemStack rod = e.getPlayer().getInventory().getItemInMainHand();
+            final int enchantmentLevel = rod.getEnchantmentLevel(Enchantment.LUCK);
             e.getPlayer().getInventory().addItem(getRandomFish(enchantmentLevel));
             Script.addEXP(e.getPlayer(), 1, true);
-            ItemStack rod = e.getPlayer().getInventory().getItemInMainHand();
             if (rod.getType() == Material.FISHING_ROD) {
                 if (rod.getDurability() == rod.getType().getMaxDurability()) {
                     e.getPlayer().getInventory().setItemInMainHand(null);
                     e.getPlayer().sendMessage(Messages.INFO + "Deine Angel ist kaputt gegangen.");
-                } else {
-                    rod.setDurability((short) (rod.getDurability() + 1));
                 }
             }
         }
