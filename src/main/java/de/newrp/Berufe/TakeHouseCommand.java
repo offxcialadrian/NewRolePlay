@@ -1,7 +1,9 @@
 package de.newrp.Berufe;
 
 import de.newrp.API.Messages;
+import de.newrp.API.PaymentType;
 import de.newrp.API.Script;
+import de.newrp.Government.Stadtkasse;
 import de.newrp.House.House;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -59,7 +61,6 @@ public class TakeHouseCommand implements CommandExecutor {
                 return true;
             }
 
-            house.setOwner(0);
             player.sendMessage(PREFIX + "Du hast das Haus von " + Script.getOfflinePlayer(house.getOwner()).getName() + " übernommen.");
             if (Script.getOfflinePlayer(house.getOwner()).isOnline()) {
                 Script.getPlayer(house.getOwner()).sendMessage(PREFIX + "Dein Haus " + id + " wurde von der Regierung übernommen.");
@@ -73,6 +74,16 @@ public class TakeHouseCommand implements CommandExecutor {
                     Script.getPlayer(mieter.getID()).sendMessage(PREFIX + "Dein Mietvertrag für das Haus " + id + " wurde gekündigt.");
                 }
             }
+
+            Stadtkasse.removeStadtkasse(2000 + (house.getPrice() / 2), "Haus " + id + " übernommen");
+            Script.addMoney(house.getOwner(), PaymentType.BANK, house.getPrice() / 2);
+            if (Script.getOfflinePlayer(house.getOwner()).isOnline()) {
+                Script.getPlayer(house.getOwner()).sendMessage(Messages.INFO + "Du hast " + (house.getPrice() / 2) + "€ erhalten.");
+            } else {
+                Script.addOfflineMessage(Script.getOfflinePlayer(house.getOwner()), Messages.INFO + "Du hast " + (house.getPrice() / 2) + "€ erhalten.");
+            }
+
+            house.setOwner(0);
         }
 
         return true;
