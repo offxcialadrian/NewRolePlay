@@ -3,6 +3,7 @@ package de.newrp.API;
 import de.newrp.NewRoleplayMain;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
@@ -45,6 +46,11 @@ public class ItemBuilder {
 
     public ItemBuilder setNBTString(String key, String value) {
         im.getPersistentDataContainer().set(new NamespacedKey(NewRoleplayMain.getInstance(), key), PersistentDataType.STRING, value);
+        return this;
+    }
+
+    public ItemBuilder addEnchantment(final Enchantment enchantment, final int level) {
+        im.addEnchant(enchantment, level, true);
         return this;
     }
 

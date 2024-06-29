@@ -26,6 +26,7 @@ import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.ShulkerBox;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -219,26 +220,25 @@ public class Utils implements Listener {
             }
             e.setCancelled(true);
             fishCooldown.put(e.getPlayer().getName(), System.currentTimeMillis() + 2000);
-            e.getPlayer().getInventory().addItem(getRandomFish());
-            Script.addEXP(e.getPlayer(), 1, true);
             ItemStack rod = e.getPlayer().getInventory().getItemInMainHand();
+            final int enchantmentLevel = rod.getEnchantmentLevel(Enchantment.LUCK);
+            e.getPlayer().getInventory().addItem(getRandomFish(enchantmentLevel));
+            Script.addEXP(e.getPlayer(), 1, true);
             if (rod.getType() == Material.FISHING_ROD) {
                 if (rod.getDurability() == rod.getType().getMaxDurability()) {
                     e.getPlayer().getInventory().setItemInMainHand(null);
                     e.getPlayer().sendMessage(Messages.INFO + "Deine Angel ist kaputt gegangen.");
-                } else {
-                    rod.setDurability((short) (rod.getDurability() + 1));
                 }
             }
         }
     }
 
-    public static ItemStack getRandomFish() {
+    public static ItemStack getRandomFish(int enchantmentLevel) {
         int random = Script.getRandom(1, 100);
-        if (random <= 60) return new ItemStack(Material.COD);
-        if (random <= 80) return new ItemStack(Material.SALMON);
-        if (random <= 90) return new ItemStack(Material.PUFFERFISH);
-        return new ItemStack(Material.TROPICAL_FISH);
+        if (random <= 60) return new ItemStack(Material.COD, enchantmentLevel == 0 ? 1 : enchantmentLevel);
+        if (random <= 80) return new ItemStack(Material.SALMON, enchantmentLevel == 0 ? 1 : enchantmentLevel);
+        if (random <= 90) return new ItemStack(Material.PUFFERFISH, enchantmentLevel == 0 ? 1 : enchantmentLevel);
+        return new ItemStack(Material.TROPICAL_FISH, enchantmentLevel == 0 ? 1 : enchantmentLevel);
     }
 
     public void sendServerBanner(Player player, String imageUrl) {
