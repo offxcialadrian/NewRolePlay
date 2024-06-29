@@ -2,6 +2,7 @@ package de.newrp.Votifier;
 
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
+import de.newrp.GFB.GFB;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -19,6 +20,10 @@ public class VoteShop implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String label, String[] args) {
         Player p = (Player) cs;
+        if (GFB.CURRENT.containsKey(p.getName())) {
+            p.sendMessage(Messages.ERROR + "Du kannst den VoteShop nicht öffnen, während du einen Job tätigst.");
+            return true;
+        }
         Inventory inv = p.getServer().createInventory(null, 18, "§l§6Voteshop");
         inv.setItem(4, Script.setNameAndLore(Script.addGlow(new ItemStack(Material.NETHER_STAR)), "§3§lVoteshop", "§cDu hast §l" + (VoteListener.getVotepoints(Script.getNRPID(p)) > 0 ? VoteListener.getVotepoints(Script.getNRPID(p)) : "keine") + "§c Votepunkte!"));
         inv.setItem(11, Script.setNameAndLore(new ItemStack(Material.CHEST, Votekiste.NORMAL.getPrice()), "§6Votekiste §7[§3§lNormal§7]", "§c" + Votekiste.NORMAL.getPrice() + " Votepunkte", "§8=========",
