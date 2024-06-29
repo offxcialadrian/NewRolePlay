@@ -153,7 +153,7 @@ public enum ShopItem {
     DOENER(165, "§7Döner", new ItemBuilder(Material.COOKED_MUTTON).setName("§7Döner").setAmount(1).build(), 1, 1, 1, 1, 3000, 1, false, true, false, new ShopType[] {ShopType.FASTFOOD}),
     FLAMMI(166, "§cFlammenwerfer", Script.setNameAndLore(Material.BLAZE_POWDER, "§cFlammenwerfer", "§6500§8/§6500"), 8, 1, 1, 4000, 23000, 10, false, true, false, new ShopType[] {ShopType.GUNSHOP}),
     SUPER_ANGEL(167, "§6§lSuper Angel", new ItemBuilder(Material.FISHING_ROD).addEnchantment(Enchantment.DURABILITY, 3).addEnchantment(Enchantment.LUCK, 2).setName("§6§lSuper Angel").build(), 1, 1, 1, 200, 5000, 10, false, true, false, new ShopType[] {ShopType.ANGELSHOP}),
-    JAGDMESSER(168, "§7Jagdmesser", Jagdmesser.getItem(), 1, 1, 1, 900, 8000, 5, false, true, false, new ShopType[] {ShopType.JAGDHUETTE});
+    JAGDMESSER(168, "§7Jagdmesser", Jagdmesser.getItem(), 1, 1, 1, 600, 8000, 5, false, true, false, new ShopType[] {ShopType.JAGDHUETTE});
 
 
     private final int id;
