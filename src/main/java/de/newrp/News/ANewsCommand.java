@@ -69,7 +69,7 @@ public class ANewsCommand implements CommandExecutor, TabCompleter, Listener {
             player.openInventory(inventory);
             return true;
         }
-        if(Beruf.isLeader(player, false)) {
+        if(Beruf.isLeader(player, true)) {
             if(args[0].equalsIgnoreCase("accept") || args[0].equalsIgnoreCase("delete")) {
                 int id = Integer.parseInt(args[1]);
                 if(!messages.containsKey(id)) {

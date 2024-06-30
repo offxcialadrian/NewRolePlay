@@ -422,8 +422,12 @@ public class Pets implements Listener, CommandExecutor, TabCompleter {
                     if (Script.removeMoney(player, PaymentType.BANK, 2000)) {
                         setName(Script.getNRPID(player), renaming.get(player.getUniqueId()).getName(), args[0]);
                         player.sendMessage(PREFIX + "Du hast dein Haustier zu " + args[0] + " umbenannt.");
-                        player.sendMessage(Messages.INFO + "Verwende §6/pets §rum deine Haustiere neu zu laden.");
+                        //player.sendMessage(Messages.INFO + "Verwende §6/pets §rum deine Haustiere neu zu laden.");
+                        player.sendMessage(Messages.INFO + "Deine Haustiere wurden neu geladen.");
                         renaming.remove(player.getUniqueId());
+
+                        despawn(player);
+                        spawn(player);
 
                         Shops shop = Shops.PET;
                         shop.addKasse(1000);
