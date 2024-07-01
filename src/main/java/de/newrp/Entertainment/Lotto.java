@@ -159,7 +159,7 @@ public class Lotto implements CommandExecutor {
             Script.removeMoney(p, PaymentType.BANK, i);
             addLottoJackpot(i);
             p.sendMessage(PREFIX + "Du hast " + i + "€ in den Jackpot gespendet.");
-            if(i>5000) {
+            if(i>=5000) {
                 Bukkit.broadcastMessage(NEWS + Script.getName(p) + " hat " + i + "€ in den Lotto-Jackpot gespendet!");
             }
             return true;
