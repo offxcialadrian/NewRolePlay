@@ -62,7 +62,7 @@ public class Flugblatt implements CommandExecutor, Listener {
             p.sendMessage(Messages.ERROR + "Bitte gib eine Zahl größer als 0 an.");
             return true;
         }
-        if(!Beruf.getAbteilung(p).equals(Abteilung.Abteilungen.JOURNALIST) && !Beruf.getAbteilung(p).equals(Abteilung.Abteilungen.CHEFREDAKTION) && !Beruf.isLeader(p, false)) {
+        if(!Beruf.getAbteilung(p, true).equals(Abteilung.Abteilungen.JOURNALIST) && !Beruf.getAbteilung(p, true).equals(Abteilung.Abteilungen.CHEFREDAKTION) && !Beruf.isLeader(p, false)) {
             p.sendMessage(Messages.ERROR + "Du bist kein Journalist.");
             return true;
         }

@@ -168,7 +168,7 @@ public class Drone implements Listener {
         if (beruf == null) return;
         Player p = e.getPlayer();
         p.getInventory().getItemInMainHand().setAmount(p.getInventory().getItemInMainHand().getAmount() - 1);
-        beruf.sendMessage(PREFIX + Beruf.getAbteilung(p).getName() + " " + Script.getName(p) + " hat eine Drohne gestartet.");
+        beruf.sendMessage(PREFIX + Beruf.getAbteilung(p, true).getName() + " " + Script.getName(p) + " hat eine Drohne gestartet.");
         start(p, beruf);
     }
 }

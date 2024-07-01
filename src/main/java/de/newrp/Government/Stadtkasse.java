@@ -37,7 +37,7 @@ public class Stadtkasse implements CommandExecutor {
             return true;
         }
 
-        if (!Beruf.isLeader(p, true) && Beruf.getAbteilung(p) != Abteilung.Abteilungen.FINANZAMT && !Script.hasRank(p, Rank.ADMINISTRATOR, false)) {
+        if (!Beruf.isLeader(p, true) && Beruf.getAbteilung(p, true) != Abteilung.Abteilungen.FINANZAMT && !Script.hasRank(p, Rank.ADMINISTRATOR, false)) {
             p.sendMessage(Messages.NO_PERMISSION);
             return true;
         }

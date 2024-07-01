@@ -319,8 +319,8 @@ public class Beruf {
 
         public static boolean hasAbteilung(Player p, Abteilung abteilung) {
             if(Beruf.isLeader(p, true)) return true;
-            if(getAbteilung(p) == null) return false;
-            return (getAbteilung(p).equals(abteilung));
+            if(getAbteilung(p, true) == null) return false;
+            return (getAbteilung(p, true).equals(abteilung));
         }
 
         public void addMember(Player p, Player leader) {
@@ -457,12 +457,34 @@ public class Beruf {
         Script.setInt(p, "berufe", "coleader", 0);
     }
 
-    public static Abteilung.Abteilungen getAbteilung(Player p) {
-        return Abteilung.Abteilungen.getAbteilung(Script.getInt(p, "berufe", "abteilung"), getBeruf(p));
+    public static Abteilung.Abteilungen getAbteilung(Player p, boolean getLower) {
+        Abteilung.Abteilungen abteilung = Abteilung.Abteilungen.getAbteilung(Script.getInt(p, "berufe", "abteilung"), getBeruf(p));
+        if (getLower) {
+            if (abteilung != null) {
+                switch (abteilung) {
+                    case FINANZMINISTER:
+                        return Abteilung.Abteilungen.FINANZAMT;
+                    case JUSTIZMINISTER:
+                        return Abteilung.Abteilungen.JUSTIZMINISTERIUM;
+                }
+            }
+        }
+        return abteilung;
     }
 
-    public static Abteilung.Abteilungen getAbteilung(OfflinePlayer p) {
-        return Abteilung.Abteilungen.getAbteilung(Script.getInt(p, "berufe", "abteilung"), getBeruf(p));
+    public static Abteilung.Abteilungen getAbteilung(OfflinePlayer p, boolean getLower) {
+        Abteilung.Abteilungen abteilung = Abteilung.Abteilungen.getAbteilung(Script.getInt(p, "berufe", "abteilung"), getBeruf(p));
+        if (getLower) {
+            if (abteilung != null) {
+                switch (abteilung) {
+                    case FINANZMINISTER:
+                        return Abteilung.Abteilungen.FINANZAMT;
+                    case JUSTIZMINISTER:
+                        return Abteilung.Abteilungen.JUSTIZMINISTERIUM;
+                }
+            }
+        }
+        return abteilung;
     }
 
     public static boolean isLeader(Player p, boolean coleader) {
@@ -483,10 +505,10 @@ public class Beruf {
 
     public static boolean hasAbteilung(Player p, Abteilung.Abteilungen... abteilungen) {
         if(isLeader(p, true)) return true;
-        if(getAbteilung(p) == null) return false;
+        if(getAbteilung(p, true) == null) return false;
 
         for (Abteilung.Abteilungen abteilung : abteilungen) {
-            if(getAbteilung(p).equals(abteilung)) return true;
+            if(getAbteilung(p, true).equals(abteilung)) return true;
         }
         return false;
     }

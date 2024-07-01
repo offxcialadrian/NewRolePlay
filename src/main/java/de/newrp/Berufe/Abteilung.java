@@ -135,7 +135,7 @@ public class Abteilung implements CommandExecutor, TabCompleter {
         public List<Player> getOnlineMembers() {
             List<Player> list = new ArrayList<>();
             for (Player all : Bukkit.getOnlinePlayers()) {
-                if(Beruf.getAbteilung(all) == this)
+                if(Beruf.getAbteilung(all, true) == this)
                     list.add(all.getPlayer());
             }
             return list;
@@ -188,7 +188,7 @@ public class Abteilung implements CommandExecutor, TabCompleter {
 
             OfflinePlayer tg = Script.getOfflinePlayer(args[0]);
             if(Script.getNRPID(args[0]) != 0) {
-                p.sendMessage(PREFIX + "§6" + tg.getName() + " ist in der Abteilung §6" + Beruf.getAbteilung(tg).getName());
+                p.sendMessage(PREFIX + "§6" + tg.getName() + " ist in der Abteilung §6" + Beruf.getAbteilung(tg, true).getName());
                 return true;
             }
 
@@ -211,7 +211,7 @@ public class Abteilung implements CommandExecutor, TabCompleter {
 
                 p.sendMessage(PREFIX + "Alle Abteilungen der " + b.getName() + ":");
                 for(OfflinePlayer all : b.getAllMembers()) {
-                    p.sendMessage("§8» §6" + all.getName() + "§8: §6" + Beruf.getAbteilung(all).getGenderedName(all));
+                    p.sendMessage("§8» §6" + all.getName() + "§8: §6" + Beruf.getAbteilung(all, true).getGenderedName(all));
                 }
                 return true;
             } else if(Beruf.isLeader(p, true)){

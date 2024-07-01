@@ -21,7 +21,7 @@ public class Marry implements CommandExecutor {
             return true;
         }
 
-        if (Beruf.getAbteilung(p) != Abteilung.Abteilungen.INNENMINISTERIUM && !Beruf.isLeader(p, true)) {
+        if (Beruf.getAbteilung(p, true) != Abteilung.Abteilungen.INNENMINISTERIUM && !Beruf.isLeader(p, true)) {
             p.sendMessage(Messages.NO_PERMISSION);
             return true;
         }

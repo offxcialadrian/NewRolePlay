@@ -334,7 +334,7 @@ public class InteractMenu implements Listener {
             case "Marke zeigen":
                 Me.sendMessage(p, "zeigt " + Script.getName(tg) + " seine Marke.");
                 tg.sendMessage(PREFIX + "Marke von " + Script.getName(p) + ":");
-                tg.sendMessage(PREFIX + " §8× §6" + Beruf.getAbteilung(p).getName());
+                tg.sendMessage(PREFIX + " §8× §6" + Beruf.getAbteilung(p, true).getName());
                 p.sendMessage(PREFIX + "Du hast " + Script.getName(tg) + " deine Marke gezeigt.");
                 break;
             case "Finanzen zeigen":

@@ -195,7 +195,7 @@ public class ScoreboardService implements IScoreboardService {
     @Override
     public Team getTeamNameForCurrentState(Player player) {
         final Beruf.Berufe faction = Beruf.getBeruf(player);
-        final Abteilung.Abteilungen abteilungen = Beruf.getAbteilung(player);
+        final Abteilung.Abteilungen abteilungen = Beruf.getAbteilung(player, true);
         String factionTeamName = getDefaultTeamName();
 
         if (faction == Beruf.Berufe.POLICE) factionTeamName = "0008cop";

@@ -25,7 +25,7 @@ public class CheckShop implements CommandExecutor {
             return true;
         }
 
-        if(Beruf.getBeruf(p) != Beruf.Berufe.GOVERNMENT || Beruf.getAbteilung(p) != Abteilung.Abteilungen.FINANZAMT) {
+        if(Beruf.getBeruf(p) != Beruf.Berufe.GOVERNMENT || Beruf.getAbteilung(p, true) != Abteilung.Abteilungen.FINANZAMT) {
             if(!Script.hasRank(p, Rank.ADMINISTRATOR, false) && !SDuty.isSDuty(p)) {
                 p.sendMessage(Messages.NO_PERMISSION);
                 return true;

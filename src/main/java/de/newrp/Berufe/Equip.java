@@ -207,7 +207,7 @@ public class Equip implements CommandExecutor, Listener {
 
         if (Beruf.hasBeruf(p)) {
             Beruf.Berufe beruf = Beruf.getBeruf(p);
-            Inventory inv = Bukkit.createInventory(null, (beruf == Beruf.Berufe.POLICE && (Beruf.getAbteilung(p) == Abteilung.Abteilungen.SEK || Beruf.getAbteilung(p) == Abteilung.Abteilungen.ABTEILUNGSLEITUNG || Beruf.isLeader(p, true)) ? 18 : 9), "§8» §7Equip");
+            Inventory inv = Bukkit.createInventory(null, (beruf == Beruf.Berufe.POLICE && (Beruf.getAbteilung(p, true) == Abteilung.Abteilungen.SEK || Beruf.getAbteilung(p, true) == Abteilung.Abteilungen.ABTEILUNGSLEITUNG || Beruf.isLeader(p, true)) ? 18 : 9), "§8» §7Equip");
 
             if (!beruf.hasEquip()) {
                 p.sendMessage(Messages.ERROR + "Dein Beruf hat kein Equip.");
@@ -231,7 +231,7 @@ public class Equip implements CommandExecutor, Listener {
                             if (stuff.getAbteilung() != null && !Beruf.isLeader(p, true)) {
                                 boolean hasAbteilung = false;
                                 for (Abteilung.Abteilungen abteilung : stuff.getAbteilung()) {
-                                    if (abteilung == Beruf.getAbteilung(p)) {
+                                    if (abteilung == Beruf.getAbteilung(p, true)) {
                                         hasAbteilung = true;
                                     }
                                 }
@@ -300,7 +300,7 @@ public class Equip implements CommandExecutor, Listener {
                 if (stuff.getAbteilung() != null && !Beruf.isLeader(p, true)) {
                     boolean hasAbteilung = false;
                     for (Abteilung.Abteilungen abteilung : stuff.getAbteilung()) {
-                        if (abteilung == Beruf.getAbteilung(p)) {
+                        if (abteilung == Beruf.getAbteilung(p, true)) {
                             hasAbteilung = true;
                         }
                     }

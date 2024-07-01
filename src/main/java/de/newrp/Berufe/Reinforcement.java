@@ -143,7 +143,7 @@ public class Reinforcement implements CommandExecutor {
                         berufe.sendMessage("§7➲ §a" + Beruf.getBeruf(p).getName() + " " + Script.getName(p) + " kommt zum Verstärkungsruf von " + Script.getName(tg) + "! §7" + "(ETA: " + calcETA(p.getLocation().distance(new_reinforcement.get(tg.getName()))) + " Sekunden & " + (int) p.getLocation().distance(new_reinforcement.get(tg.getName())) + "m)");
                     }
                 } else {
-                    beruf.sendMessage("§7➲ §a" + Beruf.getAbteilung(p).getName() + " " + Script.getName(p) + " kommt zum Verstärkungsruf von " + Script.getName(tg) + "! §7" + "(ETA: " + calcETA(p.getLocation().distance(new_reinforcement.get(tg.getName()))) + " Sekunden & " + (int) p.getLocation().distance(new_reinforcement.get(tg.getName())) + "m)");
+                    beruf.sendMessage("§7➲ §a" + Beruf.getAbteilung(p, true).getName() + " " + Script.getName(p) + " kommt zum Verstärkungsruf von " + Script.getName(tg) + "! §7" + "(ETA: " + calcETA(p.getLocation().distance(new_reinforcement.get(tg.getName()))) + " Sekunden & " + (int) p.getLocation().distance(new_reinforcement.get(tg.getName())) + "m)");
                 }
             }
             return true;
@@ -170,7 +170,7 @@ public class Reinforcement implements CommandExecutor {
                 }
             }
             for (UUID member : Objects.requireNonNull(beruf.getMember())) {
-                Objects.requireNonNull(Bukkit.getPlayer(member)).sendMessage("§c§l" + type.getName() + " §a" + Beruf.getAbteilung(p).getName() + " " + Script.getName(p) + " benötigt Unterstützung! §8➥ §7" + Navi.getNextNaviLocation(p.getLocation()).getName() + " §7(" + (int) Objects.requireNonNull(Bukkit.getPlayer(member)).getLocation().distance(p.getLocation()) + "m)");
+                Objects.requireNonNull(Bukkit.getPlayer(member)).sendMessage("§c§l" + type.getName() + " §a" + Beruf.getAbteilung(p, true).getName() + " " + Script.getName(p) + " benötigt Unterstützung! §8➥ §7" + Navi.getNextNaviLocation(p.getLocation()).getName() + " §7(" + (int) Objects.requireNonNull(Bukkit.getPlayer(member)).getLocation().distance(p.getLocation()) + "m)");
                 OnMyWayLink(Objects.requireNonNull(Bukkit.getPlayer(member)), p);
                 showRoute(Objects.requireNonNull(Bukkit.getPlayer(member)), p);
             }
@@ -217,7 +217,7 @@ public class Reinforcement implements CommandExecutor {
             }
         } else {
             for (UUID member : Objects.requireNonNull(beruf.getMember())) {
-                Objects.requireNonNull(Bukkit.getPlayer(member)).sendMessage("§c§l" + type.getName() + " §a" + Beruf.getAbteilung(p).getName() + " " + Script.getName(p) + " benötigt Unterstützung! §8➥ §7" + Navi.getNextNaviLocation(p.getLocation()).getName() + " §7(" + (int) Objects.requireNonNull(Bukkit.getPlayer(member)).getLocation().distance(p.getLocation()) + "m)");
+                Objects.requireNonNull(Bukkit.getPlayer(member)).sendMessage("§c§l" + type.getName() + " §a" + Beruf.getAbteilung(p, true).getName() + " " + Script.getName(p) + " benötigt Unterstützung! §8➥ §7" + Navi.getNextNaviLocation(p.getLocation()).getName() + " §7(" + (int) Objects.requireNonNull(Bukkit.getPlayer(member)).getLocation().distance(p.getLocation()) + "m)");
                 OnMyWayLink(Objects.requireNonNull(Bukkit.getPlayer(member)), p);
                 showRoute(Objects.requireNonNull(Bukkit.getPlayer(member)), p);
             }

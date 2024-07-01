@@ -35,7 +35,7 @@ public class CheckActivityCommand implements CommandExecutor {
                         return true;
                     }
                 } else if (Beruf.hasBeruf(player)) {
-                    if (Beruf.getAbteilung(player).isLeader()) {
+                    if (Beruf.getAbteilung(player, true).isLeader()) {
                         try {
                             target = Script.getOfflinePlayer(args[0]);
                         } catch (Exception e) {

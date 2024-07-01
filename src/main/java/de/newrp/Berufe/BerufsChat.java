@@ -40,7 +40,7 @@ public class BerufsChat implements CommandExecutor {
         }
 
         String nachricht = sb.toString();
-        String prefix = "§" + FrakChatColor.getNameColor(Beruf.getBeruf(p)) + Beruf.getAbteilung(p).getName().replace("-"," ") + " ";
+        String prefix = "§" + FrakChatColor.getNameColor(Beruf.getBeruf(p)) + Beruf.getAbteilung(p, true).getName().replace("-"," ") + " ";
         for (Player all : Beruf.getPlayersFromBeruf(Beruf.getBeruf(p))) {
             all.sendMessage(prefix + Script.getName(p) + "§8: §" + FrakChatColor.getTextColor(Beruf.getBeruf(p)) + nachricht);
         }

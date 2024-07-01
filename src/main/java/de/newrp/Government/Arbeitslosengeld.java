@@ -29,7 +29,7 @@ public class Arbeitslosengeld implements CommandExecutor {
         Player p = (Player) cs;
 
         if (Beruf.getBeruf(p) == Beruf.Berufe.GOVERNMENT) {
-            if (Beruf.getAbteilung(p) == Abteilung.Abteilungen.FINANZAMT || Beruf.isLeader(p, true)) {
+            if (Beruf.getAbteilung(p, true) == Abteilung.Abteilungen.FINANZAMT || Beruf.isLeader(p, true)) {
                 if (args.length == 0) {
                     p.sendMessage(PREFIX + "Es gibt " + getArbeitslosengeldApplicationAmount() + " Anträge.");
                     sendApplications(p);

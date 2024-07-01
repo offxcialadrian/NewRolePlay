@@ -41,7 +41,7 @@ public class SalaryCommand implements CommandExecutor {
             if(args.length == 0) {
                 p.sendMessage(PREFIX + "Alle Gehälter der " + Beruf.getBeruf(p).getName() + ":");
                 for(OfflinePlayer all : Beruf.getBeruf(p).getAllMembers()) {
-                    p.sendMessage("§8» §6" + all.getName() + " §8[§6" + Beruf.getAbteilung(all).getName() + "§8]: §6" + Beruf.getSalary(all) + "€");
+                    p.sendMessage("§8» §6" + all.getName() + " §8[§6" + Beruf.getAbteilung(all, true).getName() + "§8]: §6" + Beruf.getSalary(all) + "€");
                 }
                 return true;
             }
@@ -74,7 +74,7 @@ public class SalaryCommand implements CommandExecutor {
 
                     p.sendMessage(PREFIX + "Alle Gehälter der " + b.getName() + ":");
                     for(OfflinePlayer all : b.getAllMembers()) {
-                        p.sendMessage("§8» §6" + all.getName() + " §8[§6" + Beruf.getAbteilung(all).getName() + "§8]: §6" + Beruf.getSalary(all) + "€");
+                        p.sendMessage("§8» §6" + all.getName() + " §8[§6" + Beruf.getAbteilung(all, true).getName() + "§8]: §6" + Beruf.getSalary(all) + "€");
                     }
                     return true;
                 } else if(Beruf.isLeader(p, true)){

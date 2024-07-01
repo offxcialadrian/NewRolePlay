@@ -31,7 +31,7 @@ public class TakeHouseCommand implements CommandExecutor {
             }
 
             if (!Beruf.isLeader(player, true)) {
-                if (Beruf.getAbteilung(player) != Abteilung.Abteilungen.INNENMINISTERIUM && Beruf.getAbteilung(player) != Abteilung.Abteilungen.FINANZAMT) {
+                if (Beruf.getAbteilung(player, true) != Abteilung.Abteilungen.INNENMINISTERIUM && Beruf.getAbteilung(player, true) != Abteilung.Abteilungen.FINANZAMT) {
                     player.sendMessage(Messages.NO_PERMISSION);
                     return true;
                 }

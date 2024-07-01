@@ -35,7 +35,7 @@ public class Loan implements CommandExecutor {
             return true;
         }
 
-        if (!Beruf.isLeader(p, true) && !Beruf.getAbteilung(p).isLeader()) {
+        if (!Beruf.isLeader(p, true) && !Beruf.getAbteilung(p, true).isLeader()) {
             p.sendMessage(Messages.NO_PERMISSION);
             return true;
         }

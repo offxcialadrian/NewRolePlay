@@ -31,7 +31,7 @@ public class AbteilungsChat implements CommandExecutor {
 
             if (Beruf.hasBeruf(player)) {
                 Beruf.Berufe beruf = Beruf.getBeruf(player);
-                Abteilung.Abteilungen abteilung = Beruf.getAbteilung(player);
+                Abteilung.Abteilungen abteilung = Beruf.getAbteilung(player, true);
                 if (abteilung.getID() == 0) {
                     player.sendMessage(Messages.ERROR + "Du bist in keiner Abteilung.");
                     return true;
@@ -45,9 +45,9 @@ public class AbteilungsChat implements CommandExecutor {
                 for (UUID p : beruf.getMember()) {
                     if (Bukkit.getPlayer(p) != null) {
                         Player target = Bukkit.getPlayer(p);
-                        Abteilung.Abteilungen abteilungen = Beruf.getAbteilung(target);
+                        Abteilung.Abteilungen abteilungen = Beruf.getAbteilung(target, true);
                         if (abteilungen == abteilung || (abteilung.isLeader() && abteilungen.isLeader())) {
-                            Objects.requireNonNull(target).sendMessage("§" + FrakChatColor.getNameColor(beruf) + "§o" + Beruf.getAbteilung(player).getName() + " " + Script.getName(player) + "§8: §" + FrakChatColor.getTextColor(beruf) + message);
+                            Objects.requireNonNull(target).sendMessage("§" + FrakChatColor.getNameColor(beruf) + "§o" + Beruf.getAbteilung(player, true).getName() + " " + Script.getName(player) + "§8: §" + FrakChatColor.getTextColor(beruf) + message);
                         }
                     }
                 }

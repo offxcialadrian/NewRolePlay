@@ -34,7 +34,7 @@ public class KameraCommand implements CommandExecutor, Listener {
             return true;
         }
 
-        if(Beruf.getAbteilung(p) == Abteilung.Abteilungen.VOLONTAER) {
+        if(Beruf.getAbteilung(p, true) == Abteilung.Abteilungen.VOLONTAER) {
             p.sendMessage(Messages.NO_PERMISSION);
             return true;
         }

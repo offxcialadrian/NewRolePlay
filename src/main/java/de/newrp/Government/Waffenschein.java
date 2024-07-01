@@ -29,7 +29,7 @@ public class Waffenschein implements CommandExecutor {
 
         if (Beruf.getBeruf(p) == Beruf.Berufe.GOVERNMENT) {
             if (args.length == 0) {
-                if (Beruf.getAbteilung(p) == Abteilung.Abteilungen.JUSTIZMINISTERIUM || Beruf.isLeader(p, true)) {
+                if (Beruf.getAbteilung(p, true) == Abteilung.Abteilungen.JUSTIZMINISTERIUM || Beruf.isLeader(p, true)) {
                     if (getApplicationAmount() == 0) {
                         p.sendMessage(PREFIX + "Es gibt keine Anträge.");
                         return true;

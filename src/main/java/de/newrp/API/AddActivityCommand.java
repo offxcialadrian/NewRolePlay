@@ -28,7 +28,7 @@ public class AddActivityCommand implements CommandExecutor, TabCompleter {
             Player player = (Player) sender;
 
             if (Beruf.hasBeruf(player)) {
-                if (!Beruf.getAbteilung(player).isLeader()) {
+                if (!Beruf.getAbteilung(player, true).isLeader()) {
                     player.sendMessage(Messages.NO_PERMISSION);
                     return true;
                 }

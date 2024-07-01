@@ -43,7 +43,7 @@ public class Rezept implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        if(Beruf.getAbteilung(p) == Abteilung.Abteilungen.MEDIZINSTUDENT) {
+        if(Beruf.getAbteilung(p, true) == Abteilung.Abteilungen.MEDIZINSTUDENT) {
             p.sendMessage(Messages.ERROR + "Du kannst keine Rezepte ausstellen.");
             return true;
         }

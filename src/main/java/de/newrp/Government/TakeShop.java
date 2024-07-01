@@ -34,7 +34,7 @@ public class TakeShop implements CommandExecutor {
             return true;
         }
 
-        if(Beruf.getAbteilung(p) != Abteilung.Abteilungen.FINANZAMT) {
+        if(Beruf.getAbteilung(p, true) != Abteilung.Abteilungen.FINANZAMT) {
             p.sendMessage(Messages.NO_PERMISSION);
             return true;
         }

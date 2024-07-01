@@ -94,7 +94,7 @@ public class Erstattung implements CommandExecutor {
         }
 
         if (Beruf.getBeruf(p) == Beruf.Berufe.POLICE) {
-            if (Beruf.getAbteilung(p) != Abteilung.Abteilungen.POLIZEIPRÄSIDENT) {
+            if (Beruf.getAbteilung(p, true) != Abteilung.Abteilungen.POLIZEIPRÄSIDENT) {
                 p.sendMessage(Messages.ERROR + "Nur der Polizeipräsident kann Erstattungen aufnehmen.");
                 return true;
             }
@@ -157,7 +157,7 @@ public class Erstattung implements CommandExecutor {
         }
 
         if (Beruf.getBeruf(p) == Beruf.Berufe.GOVERNMENT) {
-            if (Beruf.getAbteilung(p) != Abteilung.Abteilungen.FINANZAMT && !Beruf.isLeader(p, true)) {
+            if (Beruf.getAbteilung(p, true) != Abteilung.Abteilungen.FINANZAMT && !Beruf.isLeader(p, true)) {
                 p.sendMessage(Messages.ERROR + "Nur das Finanzamt kann Erstattungen bearbeiten.");
                 return true;
             }

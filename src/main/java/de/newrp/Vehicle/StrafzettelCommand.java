@@ -35,7 +35,7 @@ public class StrafzettelCommand implements CommandExecutor {
                 if (!SDuty.isSDuty(player)) {
                     if (Beruf.hasBeruf(player)) {
                         if (Beruf.hasAbteilung(player) || Beruf.isLeader(player, true)) {
-                            if (!Beruf.getAbteilung(player).isLeader() && !Beruf.isLeader(player, true)) return true;
+                            if (!Beruf.getAbteilung(player, true).isLeader() && !Beruf.isLeader(player, true)) return true;
                         } else return true;
                     } else return true;
                 }
@@ -46,7 +46,7 @@ public class StrafzettelCommand implements CommandExecutor {
                 if (!SDuty.isSDuty(player)) {
                     if (Beruf.hasBeruf(player)) {
                         if (Beruf.hasAbteilung(player) || Beruf.isLeader(player, true)) {
-                            if (!Beruf.getAbteilung(player).isLeader() && !Beruf.isLeader(player, true)) return true;
+                            if (!Beruf.getAbteilung(player, true).isLeader() && !Beruf.isLeader(player, true)) return true;
                         } else return true;
                     } else return true;
                 }

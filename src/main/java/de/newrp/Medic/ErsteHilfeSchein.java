@@ -29,7 +29,7 @@ public class ErsteHilfeSchein implements CommandExecutor {
             return true;
         }
 
-        if(Beruf.getAbteilung(p) == Abteilung.Abteilungen.MEDIZINSTUDENT || Beruf.getAbteilung(p) == Abteilung.Abteilungen.ASSISTENZARZT) {
+        if(Beruf.getAbteilung(p, true) == Abteilung.Abteilungen.MEDIZINSTUDENT || Beruf.getAbteilung(p, true) == Abteilung.Abteilungen.ASSISTENZARZT) {
             p.sendMessage(Messages.ERROR + "Du kannst keine Erste-Hilfe-Scheine ausstellen.");
             return true;
         }

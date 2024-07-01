@@ -19,7 +19,7 @@ public class RegierungCommand implements CommandExecutor {
         p.sendMessage(PREFIX + "Die nächsten Wahlen finden am §6" + Wahlen.getNextElection() + " §7statt.");
         p.sendMessage(PREFIX + "Die Regierung besteht derzeit aus folgenden Mitgliedern:");
         for(OfflinePlayer player : Beruf.Berufe.GOVERNMENT.getAllMembers()) {
-            p.sendMessage("§8" + Messages.ARROW + " §6" + player.getName() + " §8(§6" + Beruf.getAbteilung(player).getName() + "§8)");
+            p.sendMessage("§8" + Messages.ARROW + " §6" + player.getName() + " §8(§6" + Beruf.getAbteilung(player, true).getName() + "§8)");
         }
         Achievement.WAHLEN.grant(p);
         return false;

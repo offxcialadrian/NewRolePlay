@@ -28,7 +28,7 @@ public class SteuerNotification implements CommandExecutor {
             return true;
         }
 
-        if (Beruf.getAbteilung(p) != Abteilung.Abteilungen.FINANZAMT && !Beruf.isLeader(p, true)) {
+        if (Beruf.getAbteilung(p, true) != Abteilung.Abteilungen.FINANZAMT && !Beruf.isLeader(p, true)) {
             p.sendMessage(Messages.NO_PERMISSION);
             return true;
         }
@@ -51,7 +51,7 @@ public class SteuerNotification implements CommandExecutor {
     public static void sendNotification(String msg) {
         for (Player player : Bukkit.getOnlinePlayers()) {
             if (!Beruf.hasBeruf(player)) continue;
-            if (activated(player) && Beruf.getBeruf(player).equals(Beruf.Berufe.GOVERNMENT) && (Beruf.getAbteilung(player) == Abteilung.Abteilungen.FINANZAMT || Beruf.isLeader(player, true))) {
+            if (activated(player) && Beruf.getBeruf(player).equals(Beruf.Berufe.GOVERNMENT) && (Beruf.getAbteilung(player, true) == Abteilung.Abteilungen.FINANZAMT || Beruf.isLeader(player, true))) {
                 player.sendMessage(PREFIX + msg);
             }
         }

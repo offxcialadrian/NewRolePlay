@@ -47,7 +47,7 @@ public class SpindCommand implements CommandExecutor, Listener {
 
             int id = 0;
             if (Beruf.hasBeruf(player)) {
-                if (!Beruf.getAbteilung(player).isLeader() && !Beruf.isLeader(player, true)) {
+                if (!Beruf.getAbteilung(player, true).isLeader() && !Beruf.isLeader(player, true)) {
                     player.sendMessage(Messages.NO_PERMISSION);
                     return true;
                 }
