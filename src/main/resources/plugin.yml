@@ -864,3 +864,5 @@ commands:
     description: automatic news sending system
   takehouse:
     description: takes a players house
+  wipe:
+    description: clear a organisation/beruf
