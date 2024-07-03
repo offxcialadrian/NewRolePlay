@@ -88,7 +88,7 @@ public class WipeCommand implements CommandExecutor, TabCompleter {
                 return true;
             }
             confirm = args[1];
-            player.sendMessage(prefix + "Nutze: §c/wipe confirm §7um §e" + args[1] + " §7wirklich zu löschen.");
+            player.sendMessage(prefix + "Nutze §c/wipe confirm §7um §e" + args[1] + " §7wirklich zu wipen.");
             return true;
         }
         if(args[0].equalsIgnoreCase("beruf")) {
@@ -98,7 +98,7 @@ public class WipeCommand implements CommandExecutor, TabCompleter {
                 return true;
             }
             confirm = args[1];
-            player.sendMessage(prefix + "Nutze: §c/wipe confirm §7um §e" + args[1] + " §7wirklich zu löschen.");
+            player.sendMessage(prefix + "Nutze §c/wipe confirm §7um §e" + args[1] + " §7wirklich zu wipen.");
             return true;
         }
         return false;
