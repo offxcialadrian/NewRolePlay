@@ -1,19 +1,23 @@
 package de.newrp.Organisationen;
 
-import com.comphenix.protocol.PacketType;
-import de.newrp.API.Navi;
 import de.newrp.API.Route;
 import de.newrp.API.Script;
 import de.newrp.Berufe.Beruf;
 import de.newrp.NewRoleplayMain;
-import de.newrp.Player.NaviCommand;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.TextColor;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Color;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Sound;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryPickupItemEvent;
@@ -23,7 +27,14 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Objects;
+import java.util.Random;
+import java.util.UUID;
 
 public class LockpickHandler implements Listener {
 
@@ -297,6 +308,12 @@ public class LockpickHandler implements Listener {
 
     @EventHandler
     public static void onDamage(EntityDamageEvent event) {
+        if(event instanceof EntityDamageByEntityEvent) {
+            EntityDamageByEntityEvent event1 = (EntityDamageByEntityEvent) event;
+            if (event1.getDamager().getType() == EntityType.FOX) {
+                return;
+            }
+        }
         if (event.getEntity() instanceof Player) {
             Player player = (Player) event.getEntity();
             if (player.getOpenInventory().title() instanceof TextComponent) {
