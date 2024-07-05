@@ -49,7 +49,6 @@ public class TakeGuns implements CommandExecutor {
         p.sendMessage(Messages.INFO + "Du hast " + tg.getName() + " entwaffnet.");
         tg.sendMessage(Messages.INFO + "Polizist " + p.getName() + " hat dich entwaffnet.");
         Beruf.Berufe.POLICE.sendMessage("§9Beamter " + Script.getName(p) + " hat " + Script.getName(tg) + " die Waffen abgenommen.");
-        Beruf.Berufe.BUNDESKRIMINALAMT.sendMessage("§9Beamter " + Script.getName(p) + " hat " + Script.getName(tg) + " die Waffen abgenommen.");
         return true;
 
     }

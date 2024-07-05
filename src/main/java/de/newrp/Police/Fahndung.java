@@ -42,7 +42,7 @@ public class Fahndung implements CommandExecutor, TabCompleter {
                     p.sendMessage(Messages.ERROR + "Du wirst nicht gesucht.");
                 }
             } else {
-                if (Beruf.hasBeruf(p) && (Beruf.getBeruf(p) == Beruf.Berufe.POLICE || Beruf.getBeruf(p) == Beruf.Berufe.BUNDESKRIMINALAMT)) {
+                if (Beruf.hasBeruf(p) && (Beruf.getBeruf(p) == Beruf.Berufe.POLICE)) {
                     Bukkit.getScheduler().runTaskAsynchronously(NewRoleplayMain.getInstance(), () -> {
                         List<WantedInformation> wantedInformations = new ArrayList<>();
                         for(Player all : Bukkit.getOnlinePlayers()) {
@@ -79,7 +79,7 @@ public class Fahndung implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        if(!Beruf.getBeruf(p).equals(Beruf.Berufe.POLICE) && !Beruf.getBeruf(p).equals(Beruf.Berufe.BUNDESKRIMINALAMT)) {
+        if(!Beruf.getBeruf(p).equals(Beruf.Berufe.POLICE)) {
             p.sendMessage(Messages.ERROR + "Du bist kein Polizist.");
             return true;
         }
@@ -162,8 +162,6 @@ public class Fahndung implements CommandExecutor, TabCompleter {
         Log.NORMAL.write(tg, "hat von " + Script.getName(p) + " eine Fahndung ausgeschrieben bekommen (" + substring + ")");
         Beruf.Berufe.POLICE.sendMessage(PREFIX + "Der Spieler §e" + Script.getName(tg) + " §7wird nun wegen §e" + substring + " §7gefahndet.");
         Beruf.Berufe.POLICE.sendMessage(PREFIX + "Beamter: §e" + Script.getName(p) + " §8(§7WantedPunkte: " + Fahndung.getWanteds(tg) + "§8)");
-        Beruf.Berufe.BUNDESKRIMINALAMT.sendMessage(PREFIX + "Der Spieler §e" + Script.getName(tg) + " §7wird nun wegen §e" + substring + " §7gefahndet.");
-        Beruf.Berufe.BUNDESKRIMINALAMT.sendMessage(PREFIX + "Beamter: §e" + Script.getName(p) + " §8(§7WantedPunkte: " + Fahndung.getWanteds(tg) + "§8)");
         tg.sendMessage(PREFIX + "Du wirst nun wegen §e" + substring + " §7gefahndet.");
         Script.updateFahndungSubtitle(tg);
 

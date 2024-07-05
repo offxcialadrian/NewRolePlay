@@ -586,15 +586,9 @@ public class Script {
             for (UUID cops : Beruf.Berufe.POLICE.getMember()) {
                 Script.setSubtitle(Objects.requireNonNull(Bukkit.getPlayer(cops)), p.getUniqueId(), "§cFahndung: " + Fahndung.getWanteds(p) + " Wanted(s)");
             }
-            for(UUID medics : Beruf.Berufe.BUNDESKRIMINALAMT.getMember()) {
-                Script.setSubtitle(Objects.requireNonNull(Bukkit.getPlayer(medics)), p.getUniqueId(), "§cFahndung: " + Fahndung.getWanteds(p) + " Wanted(s)");
-            }
         } else {
             for (UUID cops : Beruf.Berufe.POLICE.getMember()) {
                 Script.setSubtitle(Objects.requireNonNull(Bukkit.getPlayer(cops)), p.getUniqueId(), null);
-            }
-            for(UUID medics : Beruf.Berufe.BUNDESKRIMINALAMT.getMember()) {
-                Script.setSubtitle(Objects.requireNonNull(Bukkit.getPlayer(medics)), p.getUniqueId(), null);
             }
         }
     }

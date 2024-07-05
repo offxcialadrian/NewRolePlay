@@ -202,7 +202,6 @@ public class ScoreboardService implements IScoreboardService {
         if (faction == Beruf.Berufe.RETTUNGSDIENST) factionTeamName = "0009medic";
         if (faction == Beruf.Berufe.GOVERNMENT) factionTeamName = "0006government";
         if (faction == Beruf.Berufe.NEWS) factionTeamName = "0010news";
-        if (faction == Beruf.Berufe.BUNDESKRIMINALAMT) factionTeamName = "0007bka";
         if (abteilungen == Abteilung.Abteilungen.ZIVILPOLIZEI) factionTeamName = "1000default";
 
 

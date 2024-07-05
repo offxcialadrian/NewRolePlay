@@ -100,27 +100,6 @@ public class Duty implements CommandExecutor {
             return true;
         }
 
-        if(Beruf.getBeruf(p) == Beruf.Berufe.BUNDESKRIMINALAMT) {
-            if (p.getLocation().distance(new Location(Script.WORLD, 815.8, 55, 1016.2, 257.1f, 28.6f)) > 10) {
-                p.sendMessage(Messages.ERROR + "Du befindest dich nicht in der Nähe des Duty-Punkt");
-                return true;
-            }
-
-            if (isInDuty(p)) {
-                Bukkit.getScoreboardManager().getMainScoreboard().getTeam("fbka").removeEntry(p.getName());
-                Beruf.Berufe.BUNDESKRIMINALAMT.sendMessage(PREFIX + Script.getName(p) + " hat den Dienst verlassen.");
-                Beruf.getBeruf(p.getPlayer()).changeDuty(p, false);
-                Script.updateListname(p);
-                return true;
-            }
-
-            Bukkit.getScoreboardManager().getMainScoreboard().getTeam("fbka").addEntry(p.getName());
-            Beruf.getBeruf(p.getPlayer()).changeDuty(p, true);
-            Beruf.Berufe.BUNDESKRIMINALAMT.sendMessage(PREFIX + Script.getName(p) + " hat den Dienst betreten.");
-            Script.updateListname(p);
-            return true;
-        }
-
         if(Beruf.getBeruf(p) == Beruf.Berufe.GOVERNMENT) {
             if (p.getLocation().distance(new Location(Script.WORLD, 533, 88, 1010, -135.82129f, 4.5042744f)) > 10) {
                 p.sendMessage(Messages.ERROR + "Du befindest dich nicht in der Nähe des Duty-Punkt");

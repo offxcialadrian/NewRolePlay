@@ -106,9 +106,9 @@ public class Handschellen implements Listener {
 
         LAST_CLICK.put(p.getName(), time);
         LEVEL.put(p.getName(), level + 1);
-        progressBar(isTazed(rightClicked)?15:30,  p);
+        progressBar(isTazed(rightClicked)?25:40,  p);
 
-        if (level >= (isTazed(rightClicked)?15:30)) {
+        if (level >= (isTazed(rightClicked)?25:40)) {
             PlayerInventory inv = p.getInventory();
             ItemStack is = inv.getItemInMainHand();
             if (is.getAmount() > 1) {

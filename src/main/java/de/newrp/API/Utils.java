@@ -346,9 +346,6 @@ public class Utils implements Listener {
                 for (Player cops : Beruf.Berufe.POLICE.getMembers()) {
                     Script.setSubtitle(cops, p.getUniqueId(), "§cFahndung: " + Fahndung.getWanteds(p) + " Wanted(s)");
                 }
-                for (Player bka : Beruf.Berufe.BUNDESKRIMINALAMT.getMembers()) {
-                    Script.setSubtitle(bka, p.getUniqueId(), "§cFahndung: " + Fahndung.getWanteds(p) + " Wanted(s)");
-                }
             }
 
             if (Houseban.isHousebanned(p, Beruf.Berufe.RETTUNGSDIENST)) {
@@ -358,7 +355,7 @@ public class Utils implements Listener {
             }
 
             if (Beruf.hasBeruf(p)) {
-                if (Beruf.getBeruf(p) == Beruf.Berufe.POLICE || Beruf.getBeruf(p) == Beruf.Berufe.BUNDESKRIMINALAMT) {
+                if (Beruf.getBeruf(p) == Beruf.Berufe.POLICE) {
                     for (Player fahnded : Fahndung.getList()) {
                         if (fahnded == null) continue;
                         Script.setSubtitle(p, fahnded.getUniqueId(), "§cFahndung: " + Fahndung.getWanteds(fahnded) + " Wanted(s)");

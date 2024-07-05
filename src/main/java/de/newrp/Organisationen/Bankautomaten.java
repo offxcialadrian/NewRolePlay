@@ -77,8 +77,6 @@ public class Bankautomaten implements Listener {
         p.sendMessage(PREFIX + "Der Bankautomat wird in 90 Sekunden zerstört.");
         Beruf.Berufe.POLICE.sendMessage(PREFIX + "ACHTUNG! ES WURDE SPRENGSTOFF AN ATM " + atm.getID() + " GEFUNDEN!");
         Beruf.Berufe.POLICE.sendMessage(Messages.INFO + "In der Nähe von " + Navi.getNextNaviLocation(p.getLocation()).getName());
-        Beruf.Berufe.BUNDESKRIMINALAMT.sendMessage(PREFIX + "ACHTUNG! ES WURDE SPRENGSTOFF AN ATM " + atm.getID() + " GEFUNDEN!");
-        Beruf.Berufe.BUNDESKRIMINALAMT.sendMessage(Messages.INFO + "In der Nähe von " + Navi.getNextNaviLocation(p.getLocation()).getName());
         e.getClickedBlock().getLocation().getWorld().playSound(e.getClickedBlock().getLocation(), Sound.ENTITY_CREEPER_PRIMED, 1f, 0.5f);
         for (LivingEntity nearbyLivingEntity : e.getClickedBlock().getLocation().getNearbyLivingEntities(10)) {
             nearbyLivingEntity.sendMessage(PREFIX + "§r§lEine Bombe wurde an einem Bankautomaten in deiner Nähe platziert, verschwinde!");

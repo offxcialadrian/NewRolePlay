@@ -299,10 +299,6 @@ public class Bank implements CommandExecutor, TabCompleter {
 
             if(reason.length() == 0) reason = new StringBuilder("Kein Verwendungszweck angegeben.");
 
-            if(reason.toString().contains("drogen")) {
-                Beruf.Berufe.BUNDESKRIMINALAMT.sendMessage(PREFIX + "§c" + Script.getName(p) + " hat eine Überweisung mit dem Verwendungszweck 'Drogen' an " + Script.getName(tg) + " getätigt.");
-            }
-
             if(betrag > Banken.getBankByPlayer(p).getTransactionLimit()) {
                 p.sendMessage(Messages.ERROR + "Deine Bank lässt nur Transaktionen bis " + Banken.getBankByPlayer(p).getTransactionLimit() + "€ zu.");
                 return true;

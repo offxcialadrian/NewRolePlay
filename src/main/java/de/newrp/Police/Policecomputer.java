@@ -36,7 +36,7 @@ public static HashMap<String, Long> cooldown = new HashMap<>();
             return true;
         }
 
-        if(!Beruf.getBeruf(p).equals(Beruf.Berufe.POLICE) && !Beruf.getBeruf(p).equals(Beruf.Berufe.BUNDESKRIMINALAMT)) {
+        if(!Beruf.getBeruf(p).equals(Beruf.Berufe.POLICE)) {
             p.sendMessage(Messages.NO_PERMISSION);
             return true;
         }
@@ -61,13 +61,11 @@ public static HashMap<String, Long> cooldown = new HashMap<>();
         inv.setItem(0, new ItemBuilder(Material.PLAYER_HEAD).setName("§ePersonendaten").setLore("§8» §7Klicke um die Personendaten von " + Script.getName(tg) + " zu sehen.").build());
         inv.setItem(1, new ItemBuilder(Material.PAPER).setName("§eLizenzen").setLore("§8» §7Klicke um die Lizenzen von " + Script.getName(tg) + " zu sehen.").build());
         inv.setItem(2, new ItemBuilder(Material.NETHER_STAR).setName("§eGefährlichkeitsstufe").setLore("§8» §7Gefährlichkeitsstufe von " + Script.getName(tg) + "§8: §7" + getDangerLevel(tg)).build());
-        if (Beruf.getBeruf(p) == Beruf.Berufe.BUNDESKRIMINALAMT) inv.setItem(3, new ItemBuilder(Material.COMPASS).setName("§eOrten").setLore("§8» §7Klicke um " + Script.getName(tg) + " zu orten.").build());
-        inv.setItem(Beruf.getBeruf(p) == Beruf.Berufe.BUNDESKRIMINALAMT ? 4 : 3, new ItemBuilder(Material.OAK_SIGN).setName("§eGesucht?").setLore("§8» " + (Fahndung.isFahnded(tg) ? "§cGesucht" : "§aNicht gesucht")).build());
+        inv.setItem(3, new ItemBuilder(Material.COMPASS).setName("§eOrten").setLore("§8» §7Klicke um " + Script.getName(tg) + " zu orten.").build());
+        inv.setItem(4, new ItemBuilder(Material.OAK_SIGN).setName("§eGesucht?").setLore("§8» " + (Fahndung.isFahnded(tg) ? "§cGesucht" : "§aNicht gesucht")).build());
         p.openInventory(inv);
 
         Beruf.Berufe.POLICE.sendMessage(PREFIX + Script.getName(p) + " fragt die Daten von " + Script.getName(tg) + " ab.");
-        Beruf.Berufe.BUNDESKRIMINALAMT.sendMessage(PREFIX + Script.getName(p) + " fragt die Daten von " + Script.getName(tg) + " ab.");
-
         return false;
     }
 
@@ -167,11 +165,6 @@ public static HashMap<String, Long> cooldown = new HashMap<>();
 
                 if (cooldown.containsKey(tg.getName()) && cooldown.get(tg.getName()) > System.currentTimeMillis()) {
                     p.sendMessage(Messages.ERROR + "Du kannst " + Script.getName(tg) + " erst in " + Script.getRemainingTime(cooldown.get(tg.getName())) + " orten.");
-                    return;
-                }
-
-                if(Beruf.getBeruf(p) != Beruf.Berufe.BUNDESKRIMINALAMT) {
-                    p.sendMessage(Messages.NO_PERMISSION);
                     return;
                 }
 
