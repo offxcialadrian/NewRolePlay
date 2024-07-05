@@ -60,7 +60,8 @@ public class BlackListCommand implements CommandExecutor, Listener, TabCompleter
         ORGASCHÄDIGUNG("Organisationsschädigung", 800, 60, new Organisation[] {Organisation.CORLEONE, Organisation.TRIORLA}),
         BLUTRACHE("Blutrache", 300, 25, new Organisation[] {Organisation.CORLEONE}),
         VOGELFREI("Vogelfrei", 1, 0, new Organisation[] {Organisation.CORLEONE, Organisation.TRIORLA, Organisation.FALCONE, Organisation.MIAMI_VIPERS}),
-        LEICHENBEWACHUNG("Leichenbewachung", 600, 20, new Organisation[] {Organisation.CORLEONE, Organisation.TRIORLA}),
+        LEICHENBEWACHUNG("Leichenbewachung", 600, 20, new Organisation[] {Organisation.TRIORLA}),
+        RUFMORD("Rufmord", 700, 25, new Organisation[] {Organisation.CORLEONE}),
         LEADERMORD_KARTELL("Leadermord", 1000, 50, new Organisation[] {Organisation.CORLEONE, Organisation.TRIORLA}),
         PROVOKATION_KARTELL("Provokation", 250, 10, new Organisation[] {Organisation.TRIORLA}),
         Vendetta_FALCONE("Vendetta", 1000, 50, new Organisation[] {Organisation.FALCONE}),
@@ -71,11 +72,6 @@ public class BlackListCommand implements CommandExecutor, Listener, TabCompleter
         Inganno_FALCONE("Inganno", 250, 20, new Organisation[] {Organisation.FALCONE}),
         Sabotage("Sabotage", 800, 60, new Organisation[] {Organisation.MIAMI_VIPERS}),
         LEADER_ASSASSINATION("Leader Assassination", 1000, 50, new Organisation[] {Organisation.MIAMI_VIPERS});
-        /// ADM("Asesinato de Miembros", 200, 3, new Organisation[] {Organisation.SINALOA}),
-        // FDR("Falta de Respeto", 300, 1, new Organisation[] {Organisation.SINALOA}),
-        // FDRG("Falta de Respeto Grave", 500, 5, new Organisation[] {Organisation.SINALOA}),
-        // TRAICION("Traición", 800, 15, new Organisation[] {Organisation.SINALOA}),
-        // ESPIONAJE("Espionaje", 1000, 15, new Organisation[] {Organisation.SINALOA});
 
         private final String name;
         private final int price;
