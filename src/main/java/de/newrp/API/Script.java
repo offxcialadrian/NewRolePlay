@@ -224,7 +224,7 @@ public class Script {
     }
 
     public static ItemStack einsatzschild(int level) {
-        ItemStack schild = new ItemStack(Material.SHIELD, 1, (short) (level == 1 ? 240 : 160));
+        ItemStack schild = new ItemStack(Material.SHIELD, 1, (short) (level == 1 ? 260 : 180));
         ItemMeta meta = schild.getItemMeta();
         meta.setDisplayName("§7" + (level == 2 ? "Schweres " : "") + "Einsatzschild");
         schild.setItemMeta(meta);
