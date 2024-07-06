@@ -466,6 +466,8 @@ public class Beruf {
                         return Abteilung.Abteilungen.FINANZAMT;
                     case JUSTIZMINISTER:
                         return Abteilung.Abteilungen.JUSTIZMINISTERIUM;
+                    default:
+                        return abteilung;
                 }
             }
         }
@@ -481,6 +483,8 @@ public class Beruf {
                         return Abteilung.Abteilungen.FINANZAMT;
                     case JUSTIZMINISTER:
                         return Abteilung.Abteilungen.JUSTIZMINISTERIUM;
+                    default:
+                        return abteilung;
                 }
             }
         }
