@@ -87,6 +87,7 @@ public class NaviClick implements Listener {
                         inv.setItem(1, Script.setName(Material.WITHER_ROSE, "§6" + Navi.CORLEONE.getName()));
                         inv.setItem(2, Script.setName(Material.WITHER_SKELETON_SKULL, "§6" + Navi.FALCONE.getName()));
                         inv.setItem(3, Script.setName(Material.DIAMOND_HORSE_ARMOR, "§6" + Navi.TRIORLA.getName()));
+                        inv.setItem(4, Script.setName(Material.BUBBLE_CORAL_FAN, "§6" + Navi.MIAMI_VIPERS.getName()));
                         // inv.setItem(5, Script.setName(Material.DIAMOND_HORSE_ARMOR, "§6" + Navi.SINALOA.getName()));
                         inv.setItem(13, Script.setName(Material.REDSTONE, "§cZurück"));
                         Script.fillInv(inv);
