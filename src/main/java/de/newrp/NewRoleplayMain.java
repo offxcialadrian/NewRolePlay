@@ -259,7 +259,8 @@ public class NewRoleplayMain extends JavaPlugin {
 
         // To-Do: Use command map to register commands, big refactoring inc
         final CommandMap commandMap = ((CraftServer) this.getServer()).getCommandMap();
-        
+
+        getCommand("wipe").setTabCompleter(new WipeCommand());
         getCommand("goto").setTabCompleter(new GoTo());
         getCommand("debug").setTabCompleter(new DebugCommand());
         getCommand("punish").setTabCompleter(new Punish());
@@ -267,6 +268,7 @@ public class NewRoleplayMain extends JavaPlugin {
         getCommand("fahndung").setTabCompleter(new Fahndung());
         getCommand("addorgdoor").setTabCompleter(new AddOrgDoor());
         getCommand("anews").setTabCompleter(new ANewsCommand());
+        getCommand("wipe").setExecutor(new WipeCommand());
         getCommand("sduty").setExecutor(new SDuty());
         getCommand("debug").setExecutor(new DebugCommand());
         getCommand("nrp").setExecutor(new NRPChat());

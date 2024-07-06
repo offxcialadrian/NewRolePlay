@@ -96,15 +96,12 @@ public class BreakinCommand implements CommandExecutor {
                                         Beruf.Berufe.POLICE.sendMessage(PREFIX + "Der Raub bei " + rob.getName() + " konnte nicht verhindert werden.");
                                         if(MaskHandler.masks.containsKey(player.getUniqueId())) {
                                             Beruf.Berufe.POLICE.sendMessage(PREFIX + "Eine maskierte Person ist für den Raub verantwortlich.");
-                                            Beruf.Berufe.BUNDESKRIMINALAMT.sendMessage(PREFIX + "Eine maskierte Person ist für den Raub bei " + rob.getName() + " verantwortlich.");
                                         } else {
                                             Beruf.Berufe.POLICE.sendMessage(PREFIX + "Aufnahmen zeigen, dass " + player.getName() + " verantwortlich ist.");
-                                            Beruf.Berufe.BUNDESKRIMINALAMT.sendMessage(PREFIX + "Aufnahmen zeigen, dass " + player.getName() + " für den Raub bei " + rob.getName() + " verantwortlich ist.");
                                         }
                                     } else {
                                         orga.sendMessage(PREFIX + player.getName() + " hat es nicht geschafft Geld aus der Kasse zu stehlen.");
                                         Beruf.Berufe.POLICE.sendMessage(PREFIX + "Der Raub bei " + rob.getName() + " wurde verhindert.");
-                                        Beruf.Berufe.BUNDESKRIMINALAMT.sendMessage(PREFIX + "Der Raub bei " + rob.getName() + " wurde verhindert.");
                                     }
                                 } else if (Objects.equals(rob.getType(), "Lager")) {
                                     if (LockpickHandler.pulver.get(player) > 0 || LockpickHandler.kraeuter.get(player) > 0) {

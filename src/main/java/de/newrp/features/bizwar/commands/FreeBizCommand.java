@@ -30,7 +30,11 @@ public class FreeBizCommand implements CommandExecutor {
             return false;
         }
 
-        if(!Beruf.hasAbteilung(player, Abteilung.Abteilungen.SEK, Abteilung.Abteilungen.ABTEILUNGSLEITUNG)) {
+
+        player.sendMessage("§cAufgrund von unausgewogenen Balancings wurde der FreeBiz Command deaktiviert bis ein besseres Konzept dafür existiert.");
+        return false;
+
+        /*if(!Beruf.hasAbteilung(player, Abteilung.Abteilungen.SEK, Abteilung.Abteilungen.ABTEILUNGSLEITUNG)) {
             player.sendMessage(Messages.NO_PERMISSION);
             return false;
         }
@@ -72,6 +76,6 @@ public class FreeBizCommand implements CommandExecutor {
         }, (20 * 60) * 5);
 
 
-        return false;
+        return false;*/
     }
 }

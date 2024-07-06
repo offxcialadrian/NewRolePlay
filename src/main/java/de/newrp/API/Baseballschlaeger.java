@@ -66,16 +66,8 @@ public class Baseballschlaeger implements Listener {
                             double dmg = Script.getRandom(7, 12);
                             victim.damage(dmg);
                             victim.setLastDamageCause(new EntityDamageEvent(damager, EntityDamageEvent.DamageCause.ENTITY_ATTACK, dmg));
-                            if (new Random().nextInt(10) == 0) {
+                            if (new Random().nextInt(99) == 0) {
                                 Health.setBleeding(victim);
-                            }
-                            if (new Random().nextInt(7) == 0) {
-                                if (!Krankheit.GEBROCHENER_ARM.isInfected(Script.getNRPID(victim))) {
-                                    Me.sendMessage(victim, "hat sich " + (Script.getGender(victim) == Gender.MALE ? "sein" : "ihr") + "en Arm gebrochen.");
-                                    Krankheit.GEBROCHENER_ARM.add(Script.getNRPID(victim));
-                                    victim.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 160, 1, false, false));
-                                    victim.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 80, 1, false, false));
-                                }
                             }
                             damager.getInventory().setItemInMainHand(Waffen.setAmmo(is, ammo - 1, 800));
                         }

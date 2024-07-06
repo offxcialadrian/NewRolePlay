@@ -80,7 +80,6 @@ public class HackPoliceComputer implements CommandExecutor, Listener {
 
         List<Player> cops = new ArrayList<>();
         cops.addAll(Beruf.Berufe.POLICE.getMembers());
-        cops.addAll(Beruf.Berufe.BUNDESKRIMINALAMT.getMembers());
         cops.removeIf(player -> !Duty.isInDuty(player));
         cops.removeIf(AFK::isAFK);
 
@@ -117,7 +116,6 @@ public class HackPoliceComputer implements CommandExecutor, Listener {
         p.sendMessage(prefix + "Du hast einen Hackversuch gestartet. Geschätzte Dauer: " + lengthInSeconds + " Sekunden.");
         p.sendMessage(Messages.INFO + "Bewege dich nicht mehr als 10 Meter vom Computer weg.");
         Beruf.Berufe.POLICE.sendMessage(prefix + "Der Polizeicomputer wird gehackt! Überprüfe die Personen in der Nähe.");
-        Beruf.Berufe.BUNDESKRIMINALAMT.sendMessage(prefix + "Der Polizeicomputer wird gehackt! Überprüfe die Personen in der Nähe.");
         hacker = p;
 
         BukkitTask task = new BukkitRunnable() {
@@ -131,7 +129,6 @@ public class HackPoliceComputer implements CommandExecutor, Listener {
                     if (player.getLocation().distance(LOCATION) > 20) continue;
 
                     Beruf.Berufe.POLICE.sendMessage(prefix + "Der Polizeicomputer hat die Fahndung von " + Script.getName(player) + " gelöscht.");
-                    Beruf.Berufe.BUNDESKRIMINALAMT.sendMessage(prefix + "Der Polizeicomputer hat die Fahndung von " + Script.getName(player) + " gelöscht.");
                     Organisation.getOrganisation(player).sendMessage(prefix + "Der Polizeicomputer hat die Fahndung von " + Script.getName(player) + " gelöscht.");
                     Fahndung.removeFahndung(player);
                     player.sendMessage(prefix + "Der Polizeicomputer hat deine Akten gelöscht.");

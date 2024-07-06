@@ -27,10 +27,10 @@ import java.util.concurrent.TimeUnit;
 
 public enum Drogen {
 
-    /*KOKAIN*/PULVER(0, true, "Pulver", new String[]{"Koks", "Kokain", "Pulver"}, null, "g", true, Material.SUGAR, 80),
-    /*MARIHUANA*/KRÄUTER(1, true, "Kräuter", new String[]{"Kräuter", "Kraut", "Marihuana", "Gras", "Weed", "Hanf", "Ott"}, null, "g", true, Material.GREEN_DYE, 200),
+    /*KOKAIN*/PULVER(0, true, "Pulver", new String[]{"Koks", "Kokain", "Pulver"}, null, "g", true, Material.SUGAR, 400),
+    /*MARIHUANA*/KRÄUTER(1, true, "Kräuter", new String[]{"Kräuter", "Kraut", "Marihuana", "Gras", "Weed", "Hanf", "Ott"}, null, "g", true, Material.GREEN_DYE, 400),
     /*METHAMPHETAMIN*/KRISTALLE(2, true, "Kristalle", new String[]{"Kristalle", "Kristall", "Methamphetamin", "Meth", "Speed", "Chystal"}, null, "g", true, null, 100),
-    /*MDMA*/ECSTASY(3, true, "Exiyty", new String[]{"Ecstasy", "XTC", "Pille", "Tablette"}, null, " Pillen", true, Material.WARPED_BUTTON, 10),
+    /*MDMA*/ECSTASY(3, true, "Exiyty", new String[]{"Ecstasy", "XTC", "Pille", "Tablette"}, null, " Pillen", true, Material.WARPED_BUTTON, 100),
     ANTIBIOTIKA(6, false, "Antibiotika", null, DrugPurity.HIGH, " Päckchen", true, null, 0);
     //SCHWARZPULVER(8, false, "Schwarzpulver", null, DrugPurity.HIGH, " Kisten", false, null),
     //EISEN(9, false, "Eisen", null, DrugPurity.HIGH, " Stück", false, null);

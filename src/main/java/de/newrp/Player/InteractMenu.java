@@ -107,15 +107,15 @@ public class InteractMenu implements Listener {
             inv.setItem(40, new ItemBuilder(Material.STRING).setName("§6Zeige letzten Ausraub").setLore("§8× §7Zeige §6" + Script.getName(tg) + " §7wann du zuletzt ausgeraubt wurdest.").build());
         }
 
-        if ((Handschellen.isCuffed(tg) && Beruf.getBeruf(p) == Beruf.Berufe.POLICE && Duty.isInDuty(p)) || (Handschellen.isCuffed(tg) && Beruf.getBeruf(p) == Beruf.Berufe.BUNDESKRIMINALAMT && Duty.isInDuty(p)) || p.getInventory().contains(Script.brechstange())) {
+        if ((Handschellen.isCuffed(tg) && Beruf.getBeruf(p) == Beruf.Berufe.POLICE && Duty.isInDuty(p)) || (Handschellen.isCuffed(tg) && Duty.isInDuty(p)) || p.getInventory().contains(Script.brechstange())) {
             inv.setItem(40, new ItemBuilder(Material.IRON_DOOR).setName("§6Handschellen öffnen").setLore("§8× §7Öffne die Handschellen von §6" + Script.getName(tg) + "§7.").build());
         }
 
         if (Beruf.hasBeruf(p)) {
-            if ((Beruf.getBeruf(p).equals(Beruf.Berufe.POLICE) || Beruf.getBeruf(p).equals(Beruf.Berufe.BUNDESKRIMINALAMT)) || Beruf.getBeruf(p).equals(Beruf.Berufe.NEWS) && Duty.isInDuty(p)) {
+            if ((Beruf.getBeruf(p).equals(Beruf.Berufe.POLICE) || Beruf.getBeruf(p).equals(Beruf.Berufe.NEWS) && Duty.isInDuty(p))) {
                 inv.setItem(41, new ItemBuilder(Material.NETHER_STAR).setName("§6Marke zeigen").setLore("§8× §7Zeige deine Marke").build());
             }
-            if ((Beruf.getBeruf(p).equals(Beruf.Berufe.POLICE) || Beruf.getBeruf(p).equals(Beruf.Berufe.BUNDESKRIMINALAMT)) && Duty.isInDuty(p)) {
+            if ((Beruf.getBeruf(p).equals(Beruf.Berufe.POLICE)) && Duty.isInDuty(p)) {
                 inv.setItem(39, new ItemBuilder(Material.IRON_DOOR).setName("§6Durchsuchen").setLore("§8× §7Durchsuche §6" + Script.getName(tg) + "§7.").build());
             }
             if (Beruf.getBeruf(p).equals(Beruf.Berufe.RETTUNGSDIENST) && Duty.isInDuty(p)) {
@@ -279,7 +279,7 @@ public class InteractMenu implements Listener {
                 if (Handschellen.isCuffed(tg)) {
                     Handschellen.uncuff(tg);
                     Me.sendMessage(p, "nimmt " + Script.getName(tg) + " die Handschellen ab.");
-                    if (Beruf.hasBeruf(p) && (Beruf.getBeruf(p) == Beruf.Berufe.POLICE || Beruf.getBeruf(p) == Beruf.Berufe.BUNDESKRIMINALAMT) && Duty.isInDuty(p)) {
+                    if (Beruf.hasBeruf(p) && (Beruf.getBeruf(p) == Beruf.Berufe.POLICE) && Duty.isInDuty(p)) {
                         ItemStack is = Equip.Stuff.HANDSCHELLEN.getItem();
                         is.setAmount(1);
                         p.getInventory().addItem(is);
@@ -302,7 +302,7 @@ public class InteractMenu implements Listener {
                     return;
                 }
 
-                if (Beruf.getBeruf(p) != Beruf.Berufe.POLICE && Beruf.getBeruf(p) != Beruf.Berufe.BUNDESKRIMINALAMT) {
+                if (Beruf.getBeruf(p) != Beruf.Berufe.POLICE) {
                     p.sendMessage(Messages.NO_PERMISSION);
                     return;
                 }

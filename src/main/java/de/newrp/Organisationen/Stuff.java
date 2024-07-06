@@ -23,7 +23,7 @@ public enum Stuff {
     PISTOLE(4, Weapon.PISTOLE.getName(), Weapon.PISTOLE.getWeapon(), 3, 350),
     STRIKER(5, Weapon.MP7.getName(), Weapon.MP7.getWeapon(), 4, 700),
     BRECHI(6, "Brechstange", Script.brechstange(), 5, 250),
-    SCHUTZWESTE(7, "Schutzweste", Equip.Stuff.KEVLAR.getItem(), 6, 700),
+    SCHUTZWESTE(7, "Schutzweste", Equip.Stuff.KEVLAR.getItem(), 6, 1000),
     MACHETE(8, "Machete", Machete.getItem(), 7, 3100),
     MUNITION_MP7(9, Weapon.MP7.getAmmoType().getName(), Script.setName(Equip.Stuff.MUNITION_MP7.getItem(), Weapon.MP7.getAmmoType().getName()), 5, 55);
 

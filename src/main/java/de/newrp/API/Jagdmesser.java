@@ -62,10 +62,10 @@ public class Jagdmesser implements Listener {
                         cooldown.put(damager.getName(), time);
                         if (Spawnschutz.isInSpawnschutz(victim)) return;
                         if (Script.getLevel(victim) > 1 && !SDuty.isSDuty(victim) && !AFK.isAFK(victim)) {
-                            double dmg = Script.getRandom(11, 16);
+                            double dmg = Script.getRandom(6, 8);
                             victim.damage(dmg);
                             victim.setLastDamageCause(new EntityDamageEvent(damager, EntityDamageEvent.DamageCause.ENTITY_ATTACK, dmg));
-                            if (new Random().nextInt(3) == 0) {
+                            /*if (new Random().nextInt(3) == 0) {
                                 Health.setBleeding(victim);
                             }
                             if (new Random().nextInt(5) == 0) {
@@ -75,7 +75,7 @@ public class Jagdmesser implements Listener {
                                     victim.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 160, 1, false, false));
                                     victim.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 80, 1, false, false));
                                 }
-                            }
+                            }*/
                             damager.getInventory().setItemInMainHand(Waffen.setAmmo(is, ammo - 1, 500));
                         }
                     } else {

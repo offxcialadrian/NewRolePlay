@@ -14,7 +14,7 @@ public class DangerLevel implements CommandExecutor {
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
         Player p = (Player) cs;
 
-        if(!Beruf.getBeruf(p).equals(Beruf.Berufe.BUNDESKRIMINALAMT)) {
+        if(!Beruf.getBeruf(p).equals(Beruf.Berufe.POLICE)) {
             p.sendMessage(Messages.NO_PERMISSION);
             return true;
         }
@@ -58,8 +58,6 @@ public class DangerLevel implements CommandExecutor {
 
         Policecomputer.setDangerLevel(tg, level);
         Beruf.Berufe.POLICE.sendMessage(Policecomputer.PREFIX + Script.getName(p) + " hat die Gefährlichkeitsstufe von " + Script.getName(tg) + " auf " + level + " gesetzt.");
-        Beruf.Berufe.BUNDESKRIMINALAMT.sendMessage(Policecomputer.PREFIX + Script.getName(p) + " hat die Gefährlichkeitsstufe von " + Script.getName(tg) + " auf " + level + " gesetzt.");
-
 
         return false;
     }

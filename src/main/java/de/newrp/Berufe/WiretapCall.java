@@ -35,7 +35,8 @@ public class WiretapCall implements CommandExecutor {
             return false;
         }
         Player player = (Player) commandSender;
-        if(Beruf.getBeruf(player) != Beruf.Berufe.BUNDESKRIMINALAMT) {
+
+        if(Beruf.getBeruf(player) != Beruf.Berufe.GOVERNMENT) {
             player.sendMessage(PREFIX + "Du bist kein Mitglied des Bundeskriminalamts.");
             return true;
         }
@@ -97,12 +98,12 @@ public class WiretapCall implements CommandExecutor {
         if(!hasWanteds) {
             return;
         }
-        for (UUID memberUUID : Beruf.Berufe.BUNDESKRIMINALAMT.getMember()) {
+        /*for (UUID memberUUID : Beruf.Berufe.BUNDESKRIMINALAMT.getMember()) {
             final Player memberPlayer = Bukkit.getPlayer(memberUUID);
             if(memberPlayer != null) {
                 Script.sendClickableMessage(memberPlayer, PREFIX + players.get(0).getName() + " hat einen Anruf mit " + players.get(1).getName() + " gestartet.", "/abhören " + players.get(0).getName(), "§cAnruf Abhören");
             }
-        }
+        }*/
     }
 
     public static void sendCallMessage(int callId, String message) {
