@@ -50,7 +50,7 @@ public class Equip implements CommandExecutor, Listener {
         SPRITZE(16, "Spritze", Script.setName(new ItemStack(Material.END_ROD), "§7Spritze"), 10, 0, null, new Beruf.Berufe[]{Beruf.Berufe.RETTUNGSDIENST}, true),
         HUSTEN_IMPFUNG(17, "Husten Impfung", Script.setName(new ItemStack(Material.END_ROD), "§7Husten Impfung"), 50, 0, null, new Beruf.Berufe[]{Beruf.Berufe.RETTUNGSDIENST}, true),
         KAFFEE(18, "Kaffee", Script.setName(new ItemStack(Material.POTION), "§7Kaffee"), 2, 0, null, new Beruf.Berufe[]{Beruf.Berufe.NEWS}, false),
-        BROT(19, "Brot", new ItemBuilder(Material.BREAD).setAmount(16).setName("§7Brot").build(), 3, 0, null, new Beruf.Berufe[]{Beruf.Berufe.RETTUNGSDIENST}, false),
+        BROT(19, "Brot", new ItemBuilder(Material.BREAD).setAmount(16).setName("§7Brot").build(), 3, 0, null, new Beruf.Berufe[]{Beruf.Berufe.RETTUNGSDIENST, Beruf.Berufe.GOVERNMENT, Beruf.Berufe.POLICE, Beruf.Berufe.NEWS}, false),
         KEKSE(20, "Keks", new ItemBuilder(Material.COOKIE).setAmount(16).setName("§7Keks").build(), 1, 0, null, new Beruf.Berufe[]{Beruf.Berufe.NEWS}, false),
         SNIPER(21, Weapon.SNIPER.getName(), Weapon.SNIPER.getWeapon(), 2900, 30, new Abteilung.Abteilungen[]{Abteilung.Abteilungen.SEK, Abteilung.Abteilungen.ABTEILUNGSLEITUNG}, new Beruf.Berufe[]{Beruf.Berufe.POLICE}, true),
         DROHNE_COPS(22, "Drohne [Polizei]", new ItemBuilder(Material.WITHER_SKELETON_SKULL).setName("§7Drohne [Polizei]").build(), 1000, 0, new Abteilung.Abteilungen[]{Abteilung.Abteilungen.SEK, Abteilung.Abteilungen.ABTEILUNGSLEITUNG}, new Beruf.Berufe[]{Beruf.Berufe.POLICE}, true),
