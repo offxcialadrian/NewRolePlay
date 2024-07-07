@@ -119,6 +119,12 @@ public class Waffen implements Listener {
             return;
         }
 
+        if(p.isGliding() || p.isFlying()) {
+            Script.sendActionBar(p, Messages.ERROR + "Du kannst keine Waffen benutzen, während du fliegst.");
+            e.setCancelled(true);
+            return;
+        }
+
         if(Fesseln.isTiedUp(p)) {
             Script.sendActionBar(p, Messages.ERROR + "Du kannst keine Waffen benutzen, wenn du gefesselt bist.");
             e.setCancelled(true);
