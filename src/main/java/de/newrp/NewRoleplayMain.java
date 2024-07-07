@@ -598,12 +598,14 @@ public class NewRoleplayMain extends JavaPlugin {
         getCommand("getshopid").setExecutor(new GetShopIdCommand());
         getCommand("anews").setExecutor(new ANewsCommand());
         getCommand("takehouse").setExecutor(new TakeHouseCommand());
+        getCommand("changename").setExecutor(new ChangeNameCommand());
     }
 
     /**
      * Registers all listeners, soon to be fully automatic
      */
     private void registerAllListeners() {
+        Bukkit.getPluginManager().registerEvents(new ChangeNameCommand(), this);
         Bukkit.getPluginManager().registerEvents(new ANewsCommand(), this);
         Bukkit.getPluginManager().registerEvents(new SDuty(), this);
         Bukkit.getPluginManager().registerEvents(new Kartenspiel(), this);

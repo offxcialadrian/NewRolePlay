@@ -1,5 +1,6 @@
 package de.newrp.API;
 
+import de.newrp.Administrator.ChangeNameCommand;
 import de.newrp.Administrator.Checkpoints;
 import de.newrp.Administrator.SDuty;
 import de.newrp.Berufe.Beruf;
@@ -36,6 +37,7 @@ public class PayDay extends BukkitRunnable {
             if (AFK.isAFK(p)) continue;
             if (Checkpoints.hasCheckpoints(p)) continue;
             if (Passwort.isLocked(p)) continue;
+            if (ChangeNameCommand.isLocked(p)) continue;
             if (getPayDayTime(p) < 59) {
                 addPayDayTime(p);
                 continue;

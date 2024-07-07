@@ -4,6 +4,7 @@ import de.newrp.API.Log;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.Administrator.AntiCheatSystem;
+import de.newrp.Administrator.ChangeNameCommand;
 import de.newrp.Administrator.Notifications;
 import de.newrp.Administrator.Punish;
 import de.newrp.Player.Passwort;
@@ -35,6 +36,11 @@ public class Whisper implements CommandExecutor {
 
         if (Passwort.isLocked(p)) {
             p.sendMessage(Messages.ERROR + "Du musst dein Passwort eingeben!");
+            return true;
+        }
+
+        if(ChangeNameCommand.isLocked(p)) {
+            p.sendMessage(Messages.ERROR + "Du musst dein Name ändern, um den Chat wieder benutzen zu können!");
             return true;
         }
 
