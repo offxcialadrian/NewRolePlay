@@ -1783,7 +1783,7 @@ public class Script {
 
 
     public static int getLevelCost(Player p) {
-        return Math.toIntExact((long) (1.5 * Math.round(10 * Math.E * (Math.pow(getLevel(p) + 5, 2)))));
+        return Math.toIntExact(Math.round(10 * Math.E * (Math.pow(getLevel(p) + 5, 2))));
     }
 
     public static void increaseLevel(Player p) {
