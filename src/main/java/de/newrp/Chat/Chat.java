@@ -2,6 +2,7 @@ package de.newrp.Chat;
 
 import de.newrp.API.*;
 import de.newrp.Administrator.AntiCheatSystem;
+import de.newrp.Administrator.ChangeNameCommand;
 import de.newrp.Administrator.Notifications;
 import de.newrp.Administrator.Punish;
 import de.newrp.Call.Call;
@@ -153,7 +154,12 @@ public class Chat implements Listener {
             return;
         }
 
-        if(TV.tvs.containsKey(e.getPlayer())) {
+        if(ChangeNameCommand.isLocked(p)) {
+            p.sendMessage(Messages.ERROR + "Du musst dein Name ändern, um den Chat wieder benutzen zu können!");
+            return;
+        }
+
+        if(TV.tvs.containsKey(p)) {
             p.sendMessage(Messages.ERROR + "Du kannst nicht reden während du Fernsehen schaust!");
             return;
         }

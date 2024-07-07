@@ -866,3 +866,5 @@ commands:
     description: takes a players house
   wipe:
     description: clear a organisation/beruf
+  changename:
+    description: freeze a player with illegal name
