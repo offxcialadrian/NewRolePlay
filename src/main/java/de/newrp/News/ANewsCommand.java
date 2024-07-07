@@ -219,7 +219,7 @@ public class ANewsCommand implements CommandExecutor, TabCompleter, Listener {
            return;
        }
        event.setCancelled(true);
-       if(!Beruf.isLeader(player, false)) {
+       if(!Beruf.isLeader(player, true)) {
            return;
        }
        ItemStack item = event.getCurrentItem();
