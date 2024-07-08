@@ -6,6 +6,7 @@ public enum ForumGroup {
     GAST(2, "Gäste"),
     ZIVILIST(3, "Zivilist"),
     ADMINISTRATOR(37, "Administratoren"),
+    FRAKTIONSMANAGER(42, "Fraktionsmanager"),
     MODERATOR(5, "Moderator"),
     SUPPORTER(7, "Supporter"),
     DEVELOPER(36, "Developer"),

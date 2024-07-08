@@ -82,6 +82,8 @@ public class Forum {
             addUserToGroup(forumid, ForumGroup.ADMINISTRATOR);
         } else if(Script.hasRank(p, Rank.ADMINISTRATOR, false)) {
             addUserToGroup(forumid, ForumGroup.ADMINISTRATOR);
+        } else if(Script.hasRank(p, Rank.FRAKTIONSMANAGER, false)) {
+            addUserToGroup(forumid, ForumGroup.FRAKTIONSMANAGER);
         } else if(Script.hasRank(p, Rank.MODERATOR, false)) {
             addUserToGroup(forumid, ForumGroup.MODERATOR);
         } else if(Script.hasRank(p, Rank.SUPPORTER, false)) {
