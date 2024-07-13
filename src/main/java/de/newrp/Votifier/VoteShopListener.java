@@ -115,31 +115,31 @@ public class VoteShopListener implements Listener {
                             break;
                         case EXP_500:
                             p.sendMessage(VoteShop.PREFIX + "Du hast 500 Exp gewonnen!");
-                            Script.addEXP(p, 500, true);
+                            Script.addEXP(p, 500, false);
                             break;
                         case EXP_750:
                             p.sendMessage(VoteShop.PREFIX + "Du hast 750 Exp gewonnen!");
-                            Script.addEXP(p, 750, true);
+                            Script.addEXP(p, 750, false);
                             break;
                         case EXP_1000:
                             p.sendMessage(VoteShop.PREFIX + "Du hast 1000 Exp gewonnen!");
-                            Script.addEXP(p, 1000, true);
+                            Script.addEXP(p, 1000, false);
                             break;
                         case EXP_1250:
                             p.sendMessage(VoteShop.PREFIX + "Du hast 1250 Exp gewonnen!");
-                            Script.addEXP(p, 1250, true);
+                            Script.addEXP(p, 1250, false);
                             break;
                         case EXP_1500:
                             p.sendMessage(VoteShop.PREFIX + "Du hast 1500 Exp gewonnen!");
-                            Script.addEXP(p, 1500, true);
+                            Script.addEXP(p, 1500, false);
                             break;
                         case EXP_2000:
                             p.sendMessage(VoteShop.PREFIX + "Du hast 2000 Exp gewonnen!");
-                            Script.addEXP(p, 2000, true);
+                            Script.addEXP(p, 2000, false);
                             break;
                         case EXP_2500:
                             p.sendMessage(VoteShop.PREFIX + "Du hast 2500 Exp gewonnen!");
-                            Script.addEXP(p, 2500, true);
+                            Script.addEXP(p, 2500, false);
                             break;
                         case KEVLAR_LEICHT:
                             p.sendMessage(VoteShop.PREFIX + "Du hast eine leichte Kevlar gewonnen!");
