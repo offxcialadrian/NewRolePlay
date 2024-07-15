@@ -5,6 +5,7 @@ public enum TeamspeakServerGroup {
     GEBANNT(39),
     MODERATOR(11),
     SUPPORTER(40),
+    FRAKTIONSMANAGER(56),
     ADMINISTRATOR(9),
     NRP_SERVERTEAM(41),
     POLICE(25),

@@ -148,6 +148,9 @@ public class TeamSpeak {
                 case ADMINISTRATOR:
                     addToServerGroup(TeamspeakServerGroup.ADMINISTRATOR, dbID);
                     break;
+                case FRAKTIONSMANAGER:
+                    addToServerGroup(TeamspeakServerGroup.FRAKTIONSMANAGER, dbID);
+                    break;
                 case MODERATOR:
                     addToServerGroup(TeamspeakServerGroup.MODERATOR, dbID);
                     break;
