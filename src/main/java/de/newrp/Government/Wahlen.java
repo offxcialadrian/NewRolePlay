@@ -23,6 +23,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.UUID;
 
 public class Wahlen implements CommandExecutor, Listener {
 
@@ -30,6 +31,8 @@ public class Wahlen implements CommandExecutor, Listener {
     public static boolean extend = false;
     public static boolean alreadyExtended = false;
     public static boolean neuWahlen = false;
+
+    public static List<UUID> waehler = new ArrayList<>();
 
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
@@ -484,11 +487,12 @@ public class Wahlen implements CommandExecutor, Listener {
             if (e.getCurrentItem() != null && !e.getCurrentItem().getType().equals(Material.AIR) && e.getCurrentItem().hasItemMeta()) {
                 Player p = (Player) e.getWhoClicked();
                 OfflinePlayer president = Bukkit.getOfflinePlayer(e.getCurrentItem().getItemMeta().getDisplayName().replace("§6", ""));
-                if (hasVoted(p)) {
+                if (hasVoted(p) || waehler.contains(p.getUniqueId())) {
                     p.sendMessage(PREFIX + "Du hast bereits abgestimmt.");
                     return;
                 }
                 addVote(p, Script.getNRPID(president));
+                waehler.add(p.getUniqueId());
                 p.sendMessage(PREFIX + "Du hast erfolgreich für " + president.getName() + " abgestimmt.");
                 Achievement.WAEHLER.grant(p);
             }
