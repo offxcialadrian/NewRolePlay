@@ -28,11 +28,6 @@ public class DeathmatchArenaCommand implements CommandExecutor {
             return false;
         }
 
-        if(!Premium.hasPremium(player)) {
-            player.sendMessage(Messages.ERROR + "Die Deathmatch Arena ist nur für Premium Spieler!");
-            return false;
-        }
-
         switch (args[0].toLowerCase()) {
             case "join":
             case "j":

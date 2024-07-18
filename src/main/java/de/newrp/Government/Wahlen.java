@@ -150,7 +150,7 @@ public class Wahlen implements CommandExecutor, Listener {
         }
 
         if (!wahlenActive()) {
-            p.sendMessage(PREFIX + "Es sind derzeit keine Wahlen aktiv.");
+            p.sendMessage(PREFIX + "Es sind derzeit keine Wahlen aktiv.S");
             return true;
         }
 

@@ -20,7 +20,7 @@ public class HealCommand implements CommandExecutor {
     public boolean onCommand(CommandSender cs, Command cmd, String s, String[] args) {
         Player p = (Player) cs;
 
-        if (!Script.hasRank(p, Rank.SUPPORTER, true)) {
+        if (!Script.hasRank(p, Rank.DEVELOPER, false)) {
             p.sendMessage(Messages.NO_PERMISSION);
             return true;
         }
