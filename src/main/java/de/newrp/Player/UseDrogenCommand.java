@@ -9,6 +9,8 @@ import de.newrp.Medic.Medikamente;
 import de.newrp.Medic.UseMedikamente;
 import de.newrp.Organisationen.Drogen;
 import de.newrp.Police.Handschellen;
+import de.newrp.dependencies.DependencyContainer;
+import de.newrp.features.deathmatcharena.IDeathmatchArenaService;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.command.Command;
@@ -40,11 +42,13 @@ public class UseDrogenCommand implements CommandExecutor, TabCompleter {
             Medikamente m = Medikamente.getMedikament(args[0].replace("-", " "));
             if (m != null) {
                 if(!Script.isInTestMode()) {
-                    Long lastUsage = UseDrogen.DRUG_COOLDOWN.get(p.getName());
-                    if (lastUsage != null && lastUsage + TimeUnit.SECONDS.toMillis(15) > System.currentTimeMillis()) {
-                        long cooldown = TimeUnit.MILLISECONDS.toSeconds(lastUsage + TimeUnit.SECONDS.toMillis(15) - System.currentTimeMillis());
-                        Script.sendActionBar(p, Messages.ERROR + "Du bist gerade noch im Rausch. (" + cooldown + " Sekunden verbleibend)");
-                        return true;
+                    if(!DependencyContainer.getContainer().getDependency(IDeathmatchArenaService.class).isInDeathmatch(p, false)) {
+                        Long lastUsage = UseDrogen.DRUG_COOLDOWN.get(p.getName());
+                        if (lastUsage != null && lastUsage + TimeUnit.SECONDS.toMillis(15) > System.currentTimeMillis()) {
+                            long cooldown = TimeUnit.MILLISECONDS.toSeconds(lastUsage + TimeUnit.SECONDS.toMillis(15) - System.currentTimeMillis());
+                            Script.sendActionBar(p, Messages.ERROR + "Du bist gerade noch im Rausch. (" + cooldown + " Sekunden verbleibend)");
+                            return true;
+                        }
                     }
                 }
 
@@ -106,10 +110,12 @@ public class UseDrogenCommand implements CommandExecutor, TabCompleter {
 
         Long lastUsage = UseDrogen.DRUG_COOLDOWN.get(p.getName());
         if(!Script.isInTestMode()) {
-            if (lastUsage != null && lastUsage + TimeUnit.SECONDS.toMillis(15) > System.currentTimeMillis()) {
-                long cooldown = TimeUnit.MILLISECONDS.toSeconds(lastUsage + TimeUnit.SECONDS.toMillis(15) - System.currentTimeMillis());
-                Script.sendActionBar(p, Messages.ERROR + "Du bist gerade noch im Rausch. (" + cooldown + " Sekunden verbleibend)");
-                return true;
+            if(!DependencyContainer.getContainer().getDependency(IDeathmatchArenaService.class).isInDeathmatch(p, false)) {
+                if (lastUsage != null && lastUsage + TimeUnit.SECONDS.toMillis(15) > System.currentTimeMillis()) {
+                    long cooldown = TimeUnit.MILLISECONDS.toSeconds(lastUsage + TimeUnit.SECONDS.toMillis(15) - System.currentTimeMillis());
+                    Script.sendActionBar(p, Messages.ERROR + "Du bist gerade noch im Rausch. (" + cooldown + " Sekunden verbleibend)");
+                    return true;
+                }
             }
         }
 

@@ -6,6 +6,7 @@ import de.newrp.Entertainment.Pets.handler.Pets;
 import de.newrp.Organisationen.Drogen;
 import de.newrp.Organisationen.Organisation;
 import de.newrp.Player.AFK;
+import de.newrp.Shop.ShopItem;
 import de.newrp.Waffen.Waffen;
 import de.newrp.Waffen.Weapon;
 import org.bukkit.Bukkit;
@@ -348,7 +349,9 @@ public class GangwarCommand implements CommandExecutor, Listener {
             p.getInventory().addItem(new ItemBuilder(drug.getMaterial()).setNoDrop().setName(drug.getName()).setLore("§7Reinheitsgrad: " + Drogen.DrugPurity.HIGH.getText()).setAmount(10).build());
         }
         p.getInventory().addItem(new ItemBuilder(Material.BREAD).setNoDrop().setAmount(32).build());
-        //p.getInventory().addItem(new ItemBuilder(Material.POTION).setAmount(1).build());
+        for (int i = 0; i < 5; i++) {
+            p.getInventory().addItem(new ItemBuilder(ShopItem.TRINKWASSER.getItemStack().clone()).setNoDrop().build());
+        }
     }
 
     @EventHandler
