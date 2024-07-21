@@ -9,10 +9,13 @@ import de.newrp.Chat.Chat;
 import de.newrp.Chat.Me;
 import de.newrp.Entertainment.Pets.model.Pet;
 import de.newrp.Entertainment.Pets.types.PetType;
+import de.newrp.Gangwar.GangwarCommand;
 import de.newrp.Government.Stadtkasse;
 import de.newrp.NewRoleplayMain;
 import de.newrp.Shop.Shop;
 import de.newrp.Shop.Shops;
+import de.newrp.dependencies.DependencyContainer;
+import de.newrp.features.bizwar.IBizWarService;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
 import net.citizensnpcs.api.npc.NPC;
@@ -465,11 +468,25 @@ public class Pets implements Listener, CommandExecutor, TabCompleter {
             }
 
 
+
+
+
+
             if (enabled.get(player.getUniqueId())) {
                 despawn(player);
                 enabled.put(player.getUniqueId(), false);
             }
             else {
+                final IBizWarService bizWarService = DependencyContainer.getContainer().getDependency(IBizWarService.class);
+                if (bizWarService.isMemberOfBizWar(player)) {
+                    player.sendMessage(Messages.ERROR + "Du kannst dein Haustier während eines BizWars nicht nutzen.");
+                    return true;
+                }
+
+                if(GangwarCommand.isInGangwar(player)) {
+                    player.sendMessage(Messages.ERROR + "Du kannst dein Haustier während eines Gangwars nicht nutzen.");
+                    return true;
+                }
                 spawn(player);
                 enabled.put(player.getUniqueId(), true);
             }
