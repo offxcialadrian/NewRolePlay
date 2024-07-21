@@ -12,7 +12,6 @@ import de.newrp.features.emergencycall.IEmergencyCallService;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.block.data.type.Door;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -96,33 +95,25 @@ public class BreakIn implements Listener {
             @Override
             public void run() {
                 if (p.getLocation().distance(house.getSignLocation()) > 3) {
-                    p.sendMessage(PREFIX + "Du hast den Einbruch abgebrochen.");
-                    if (p.hasPotionEffect(PotionEffectType.SLOW)) p.removePotionEffect(PotionEffectType.SLOW);
-                    progress.remove(p.getName());
+                    resetBreakIn(p);
                     this.cancel();
                     return;
                 }
 
                 if (!p.getInventory().getItemInMainHand().equals(brechstange)) {
-                    p.sendMessage(PREFIX + "Du hast den Einbruch abgebrochen.");
-                    if (p.hasPotionEffect(PotionEffectType.SLOW)) p.removePotionEffect(PotionEffectType.SLOW);
-                    progress.remove(p.getName());
+                    resetBreakIn(p);
                     this.cancel();
                     return;
                 }
 
                 if (Handschellen.isCuffed(p)) {
-                    p.sendMessage(PREFIX + "Du hast den Einbruch abgebrochen.");
-                    if (p.hasPotionEffect(PotionEffectType.SLOW)) p.removePotionEffect(PotionEffectType.SLOW);
-                    progress.remove(p.getName());
+                    resetBreakIn(p);
                     this.cancel();
                     return;
                 }
 
                 if (!COOLDOWNS.containsKey(p.getName())) {
-                    p.sendMessage(PREFIX + "Du hast den Einbruch abgebrochen.");
-                    if (p.hasPotionEffect(PotionEffectType.SLOW)) p.removePotionEffect(PotionEffectType.SLOW);
-                    progress.remove(p.getName());
+                    resetBreakIn(p);
                     this.cancel();
                     return;
                 }
@@ -166,6 +157,16 @@ public class BreakIn implements Listener {
             }
         }.runTaskTimer(NewRoleplayMain.getInstance(), 20L, 20L);
 
+    }
+
+    private void resetBreakIn(Player player) {
+        player.sendMessage(PREFIX + "Du hast den Einbruch abgebrochen.");
+        if(player.hasPotionEffect(PotionEffectType.SLOW)) {
+            player.removePotionEffect(PotionEffectType.SLOW);
+        }
+        HOUSES.remove(player.getName());
+        COOLDOWNS.remove(player.getName());
+        progress.remove(player.getName());
     }
 
     private static void progressBar(double required_progress, Player p) {

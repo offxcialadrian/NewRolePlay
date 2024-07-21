@@ -29,7 +29,7 @@ public class BeziehungCommand implements CommandExecutor {
                 int days = (int) ((System.currentTimeMillis() - getSince(p)) / 86400000);
                 if(Premium.hasPremium(p)) p.sendMessage(PREFIX + "Du bist mit " + Script.getNameInDB(getPartner(p)) + " seit " + days + " Tagen " + (isMarried(p) ? "verheiratet" : "zusammen") + ".");
                 else {
-                    p.sendMessage(PREFIX + "Du bist mit " + Script.getNameInDB(getPartner(p)) + (isMarried(p) ? "verheiratet" : "zusammen") + ".");
+                    p.sendMessage(PREFIX + "Du bist mit " + Script.getNameInDB(getPartner(p)) + (isMarried(p) ? " verheiratet" : " zusammen") + ".");
                     p.sendMessage(Messages.INFO + "Kaufe dir Premium, um zu sehen, wie lange du schon zusammen bist.");
                 }
                 return true;
