@@ -24,6 +24,6 @@ public class CheckpointsScoreboardConfiguration implements BoardConfiguration {
 
     @Override
     public void update(Player player, Map<String, String> argumentMap) {
-        scoreboardService.updateLine(player, "", "§8» §a" + argumentMap.get("checkpoints"));
+        scoreboardService.updateLine(player, "checkpoints", "§8» §a" + argumentMap.get("checkpoints"));
     }
 }

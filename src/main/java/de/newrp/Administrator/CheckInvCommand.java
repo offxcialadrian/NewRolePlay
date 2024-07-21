@@ -49,8 +49,6 @@ public class CheckInvCommand implements CommandExecutor {
         p.sendMessage("§8[§cCheckInv§8] §c" + Messages.ARROW + " Du überprüfst das Inventar von " + Script.getName(tg));
         Script.sendTeamMessage(p, ChatColor.RED, "überprüft nun das Inventar von " + Script.getName(tg), true);
         Log.NORMAL.write(p, "überprüft das Inventar von " + Script.getName(tg));
-
-
         return false;
     }
 }

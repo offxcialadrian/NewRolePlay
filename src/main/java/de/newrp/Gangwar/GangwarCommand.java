@@ -2,9 +2,11 @@ package de.newrp.Gangwar;
 
 import de.newrp.API.*;
 import de.newrp.Administrator.SDuty;
+import de.newrp.Entertainment.Pets.handler.Pets;
 import de.newrp.Organisationen.Drogen;
 import de.newrp.Organisationen.Organisation;
 import de.newrp.Player.AFK;
+import de.newrp.Shop.ShopItem;
 import de.newrp.Waffen.Waffen;
 import de.newrp.Waffen.Weapon;
 import org.bukkit.Bukkit;
@@ -143,9 +145,13 @@ public class GangwarCommand implements CommandExecutor, Listener {
         enemy.sendMessage(PREFIX + "Deine Organisation wurde von " + org.getName() + " zum Gangwar in der Zone " + zone.getName() + " herausgefordert.");
         for(Player org1member: org.getMembers()) {
             Title.sendTitle(org1member, 2, 50, 2, "§cDer Gangwar hat begonnen!", "§6" + zone.getName());
+            Pets.despawn(org1member);
+            Pets.enabled.put(org1member.getUniqueId(), false);
         }
         for(Player org2member: enemy.getMembers()) {
             Title.sendTitle(org2member, 2, 50, 2, "§cDer Gangwar hat begonnen!", "§6" + zone.getName());
+            Pets.despawn(org2member);
+            Pets.enabled.put(org2member.getUniqueId(), false);
         }
 
         for(Player member : getMember(zone)) {
@@ -343,7 +349,9 @@ public class GangwarCommand implements CommandExecutor, Listener {
             p.getInventory().addItem(new ItemBuilder(drug.getMaterial()).setNoDrop().setName(drug.getName()).setLore("§7Reinheitsgrad: " + Drogen.DrugPurity.HIGH.getText()).setAmount(10).build());
         }
         p.getInventory().addItem(new ItemBuilder(Material.BREAD).setNoDrop().setAmount(32).build());
-        //p.getInventory().addItem(new ItemBuilder(Material.POTION).setAmount(1).build());
+        for (int i = 0; i < 5; i++) {
+            p.getInventory().addItem(new ItemBuilder(ShopItem.TRINKWASSER.getItemStack().clone()).setNoDrop().build());
+        }
     }
 
     @EventHandler

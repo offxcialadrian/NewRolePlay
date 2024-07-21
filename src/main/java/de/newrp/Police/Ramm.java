@@ -92,6 +92,8 @@ public class Ramm implements CommandExecutor {
                 }
             }
 
+            boolean hasBeenRemoved = false;
+
             Script.playLocalSound(h.getSignLocation(), Sound.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, 5);
             for (Location loc : h.getDoors()) {
                 if (loc.distance(p.getLocation()) < 4) {
@@ -107,18 +109,22 @@ public class Ramm implements CommandExecutor {
                             b.setBlockData(d);
                         }
 
-                        Log.NORMAL.write(p, "hat die Tür von Haus " + h.getID() + " aufgebrochen (Besitzer: " + Script.getOfflinePlayer(h.getOwner()).getName() + ")");
-                        cooldown.put(h, System.currentTimeMillis());
-                        p.sendMessage(PREFIX + "Du hast die Tür aufgebrochen.");
-                        OfflinePlayer owner = Script.getOfflinePlayer(h.getOwner());
-                        if(owner.isOnline()) {
-                            owner.getPlayer().sendMessage(PREFIX + "Deine Tür wurde von der Polizei aufgebrochen.");
-                            owner.getPlayer().sendMessage(Messages.INFO + "Die Reparatur der Haustür hat 50€ gekostet.");
-                        } else {
-                            Script.addOfflineMessage(owner, PREFIX + "Deine Tür wurde von der Polizei aufgebrochen.");
-                            Script.addOfflineMessage(owner, Messages.INFO + "Die Reparatur der Haustür hat 50€ gekostet.");
+                        if(!hasBeenRemoved) {
+                            Log.NORMAL.write(p, "hat die Tür von Haus " + h.getID() + " aufgebrochen (Besitzer: " + Script.getOfflinePlayer(h.getOwner()).getName() + ")");
+                            cooldown.put(h, System.currentTimeMillis());
+                            p.sendMessage(PREFIX + "Du hast die Tür aufgebrochen.");
+                            OfflinePlayer owner = Script.getOfflinePlayer(h.getOwner());
+
+                            if(owner.isOnline()) {
+                                owner.getPlayer().sendMessage(PREFIX + "Deine Tür wurde von der Polizei aufgebrochen.");
+                                owner.getPlayer().sendMessage(Messages.INFO + "Die Reparatur der Haustür hat 50€ gekostet.");
+                            } else {
+                                Script.addOfflineMessage(owner, PREFIX + "Deine Tür wurde von der Polizei aufgebrochen.");
+                                Script.addOfflineMessage(owner, Messages.INFO + "Die Reparatur der Haustür hat 50€ gekostet.");
+                            }
+                            Script.removeMoney(owner, PaymentType.BANK, 50);
+                            hasBeenRemoved = true;
                         }
-                        Script.removeMoney(owner, PaymentType.BANK, 50);
                     }
                 } else {
                     p.sendMessage(Messages.ERROR + "Du bist zu weit weg.");
