@@ -357,11 +357,6 @@ public class Mobile implements Listener {
             return;
         }
 
-        if(Jail.isInJail(p)) {
-            p.sendMessage(PREFIX + "Du kannst dein Handy nicht benutzen, wenn du im Gefängnis bist.");
-            return;
-        }
-
         if(!mobileIsOn(p)) {
             if(Elevator.progress.containsKey(p.getName())) {
                 p.sendMessage(PREFIX + "Du kannst dein Handy nicht während einer Fahrstuhl-Fahrt benutzen.");
