@@ -599,6 +599,7 @@ public class NewRoleplayMain extends JavaPlugin {
         getCommand("anews").setExecutor(new ANewsCommand());
         getCommand("takehouse").setExecutor(new TakeHouseCommand());
         getCommand("changename").setExecutor(new ChangeNameCommand());
+        getCommand("setafk").setExecutor(new SetAfkCommand());
     }
 
     /**
