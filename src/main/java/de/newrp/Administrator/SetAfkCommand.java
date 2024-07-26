@@ -33,7 +33,7 @@ public class SetAfkCommand implements CommandExecutor {
             return false;
         }
 
-        AFK.setAFK(player, !AFK.isAFK(target));
+        AFK.setAFK(target, !AFK.isAFK(target));
         if(AFK.isAFK(target)) {
             target.sendMessage(AFK.PREFIX + "Du bist nun im AFK-Modus.");
             Script.sendTeamMessage(player, ChatColor.RED, "hat " + target.getName() + " in den AFK-Modus versetzt!", false);

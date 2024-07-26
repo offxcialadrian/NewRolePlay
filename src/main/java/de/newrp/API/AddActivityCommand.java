@@ -1,6 +1,7 @@
 package de.newrp.API;
 
 import com.comphenix.protocol.PacketType;
+import de.newrp.Administrator.SDuty;
 import de.newrp.Berufe.Abteilung;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Organisationen.Drogen;
@@ -27,19 +28,21 @@ public class AddActivityCommand implements CommandExecutor, TabCompleter {
         if (sender instanceof Player) {
             Player player = (Player) sender;
 
-            if (Beruf.hasBeruf(player)) {
-                if (!Beruf.getAbteilung(player, true).isLeader()) {
+            if(!SDuty.isSDuty(player)) {
+                if (Beruf.hasBeruf(player)) {
+                    if (!Beruf.getAbteilung(player, true).isLeader()) {
+                        player.sendMessage(Messages.NO_PERMISSION);
+                        return true;
+                    }
+                } else if (Organisation.hasOrganisation(player)) {
+                    if (Organisation.getRank(player) < 4 && !Organisation.isLeader(player, true)) {
+                        player.sendMessage(Messages.NO_PERMISSION);
+                        return true;
+                    }
+                } else {
                     player.sendMessage(Messages.NO_PERMISSION);
                     return true;
                 }
-            } else if (Organisation.hasOrganisation(player)) {
-                if (Organisation.getRank(player) < 4 && !Organisation.isLeader(player, true)) {
-                    player.sendMessage(Messages.NO_PERMISSION);
-                    return true;
-                }
-            } else {
-                player.sendMessage(Messages.NO_PERMISSION);
-                return true;
             }
 
             if (args.length > 1) {
