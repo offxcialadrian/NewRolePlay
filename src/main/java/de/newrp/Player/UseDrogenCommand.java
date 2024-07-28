@@ -78,9 +78,7 @@ public class UseDrogenCommand implements CommandExecutor, TabCompleter {
                     if (!p.hasPotionEffect(PotionEffectType.ABSORPTION))
                         p.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 220 * 20, 2, false, false));
 
-                    if(!p.hasPotionEffect(PotionEffectType.REGENERATION)) {
-                        p.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 20 * 15, 2));
-                    }
+                    p.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 20 * 20, 2));
                     return true;
                 }
             }

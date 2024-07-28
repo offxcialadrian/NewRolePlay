@@ -56,7 +56,10 @@ public class ScoreboardService implements IScoreboardService {
 
     @Override
     public void updateGroup(Player player) {
+        if(player == null) return;
+
         final Team teamForCurrentState = getTeamNameForCurrentState(player);
+        if(teamForCurrentState == null) return;
         teamForCurrentState.addEntry(player.getName());
 
         for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {

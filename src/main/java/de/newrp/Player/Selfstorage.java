@@ -139,14 +139,11 @@ public class Selfstorage implements CommandExecutor, Listener {
             }
 
             if(hasSelfstorage(p)) {
-                p.sendMessage(PREFIX + "Du hast bereits einen Selfstorage-Room.");
-                p.sendMessage(PREFIX + "Dein Selfstorage-Room ist §6" + getSelfstorage(p).getName() + "§7.");
-                p.sendMessage(Messages.INFO + "Nutze §8/§6selfstorage remove §fum deinen Selfstorage-Room zu kündigen und alle Inhalte zu löschen.");
-                return true;
-            }
-
-            if(getFreeRoom() == null) {
-                p.sendMessage(PREFIX + "Es sind leider keine Selfstorage-Rooms mehr frei.");
+                Inventory inv = p.getServer().createInventory(null, 27, "§eSelfstorage §8» §7" + p.getName());
+                Inventory ender = p.getEnderChest();
+                ItemStack[] contents = ender.getContents();
+                inv.setContents(contents);
+                p.openInventory(inv);
                 return true;
             }
 
@@ -154,38 +151,14 @@ public class Selfstorage implements CommandExecutor, Listener {
                 p.sendMessage(Messages.ERROR + "Du musst mindestens Level 3 sein und 25 Stunden gespielt haben, um einen Selfstorage-Room zu mieten.");
                 return true;
             }
-
-            Rooms free = getFreeRoom();
-            setSelfstorage(p, free.getID());
-            p.sendMessage(PREFIX + "Du hast einen Selfstorage-Room gemietet. Dein Raum ist §6" + free.getName() + "§7.");
+            setSelfstorage(p, 1);
+            p.sendMessage(PREFIX + "Du hast einen Selfstorage-Room gemietet.");
             p.sendMessage(Messages.INFO + "Nutze §8/§6selfstorage remove §fum deinen Selfstorage-Room zu kündigen.");
             return true;
         } else if(args.length == 1 && args[0].equalsIgnoreCase("remove")) {
             p.sendMessage(Messages.ERROR + "Du kannst deinen Selfstorage Raum nur am Empfang kündigen.");
             return true;
         }
-
-        if(!hasSelfstorage(p)) {
-            p.sendMessage(Messages.ERROR + "Du befindest dich nicht am Selfstorage-Gebäude.");
-            return true;
-        }
-
-        Rooms r = getSelfstorage(p);
-        if(r == null) {
-            p.sendMessage(Messages.ERROR + "Dein Selfstorage-Room wurde nicht gefunden.");
-            return true;
-        }
-
-        if(p.getLocation().distance(r.getLocation()) > 5) {
-            p.sendMessage(Messages.ERROR + "Du bist nicht in deinem Selfstorage-Room.");
-            return true;
-        }
-
-        Inventory inv = p.getServer().createInventory(null, 27, "§eSelfstorage §8» §7" + r.getName());
-        Inventory ender = p.getEnderChest();
-        ItemStack[] contents = ender.getContents();
-        inv.setContents(contents);
-        p.openInventory(inv);
 
         return false;
     }
