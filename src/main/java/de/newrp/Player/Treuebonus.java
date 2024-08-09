@@ -258,9 +258,7 @@ public class Treuebonus implements CommandExecutor, Listener {
                             Treuebonus.remove(p, price);
                             p.sendMessage(Treuebonus.prefix + "Du hast +1 Level eingelöst.");
                             Script.setLevel(p, Script.getLevel(p) + 1, 0);
-                            if (!Premium.hasPremium(Script.getNRPID(p))) {
-                                Script.setEXP(Script.getNRPID(p), 0);
-                            }
+                            Script.setEXP(Script.getNRPID(p), 0);
                         } else {
                             p.sendMessage(Treuebonus.prefix + "Das kostet " + price + " Treuepunkte! (Dir fehlen §9" + (price - punkte) + " Punkte§7)");
                         }
