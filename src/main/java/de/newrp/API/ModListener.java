@@ -9,7 +9,6 @@ import com.google.gson.JsonParser;
 import de.newrp.NewRoleplayMain;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
-import net.eq2online.permissions.ReplicatedPermissionsContainer;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

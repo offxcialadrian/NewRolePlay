@@ -84,8 +84,8 @@ public class HackPoliceComputer implements CommandExecutor, Listener {
         cops.removeIf(AFK::isAFK);
 
 
-        if (cops.size() < 4) {
-            p.sendMessage(Messages.ERROR + "§cEs sind nicht 4 Personen der Staatsexekutive anwesend.");
+        if (cops.size() < 5) {
+            p.sendMessage(Messages.ERROR + "§cEs sind nicht 5 Personen der Staatsexekutive anwesend.");
             return true;
         }
 

@@ -63,7 +63,7 @@ public class Baseballschlaeger implements Listener {
                         cooldown.put(damager.getName(), time);
                         if (Spawnschutz.isInSpawnschutz(victim)) return;
                         if (Script.getLevel(victim) > 1 && !SDuty.isSDuty(victim) && !AFK.isAFK(victim)) {
-                            double dmg = Script.getRandom(7, 12);
+                            double dmg = Script.getRandom(8, 10);
                             victim.damage(dmg);
                             victim.setLastDamageCause(new EntityDamageEvent(damager, EntityDamageEvent.DamageCause.ENTITY_ATTACK, dmg));
                             if (new Random().nextInt(99) == 0) {

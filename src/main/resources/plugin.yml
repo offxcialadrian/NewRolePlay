@@ -868,3 +868,5 @@ commands:
     description: clear a organisation/beruf
   changename:
     description: freeze a player with illegal name
+  setafk:
+    description: sets a player afk

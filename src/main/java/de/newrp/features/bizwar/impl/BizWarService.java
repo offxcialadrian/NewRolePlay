@@ -1,6 +1,7 @@
 package de.newrp.features.bizwar.impl;
 
 import de.newrp.API.*;
+import de.newrp.Entertainment.Pets.handler.Pets;
 import de.newrp.NewRoleplayMain;
 import de.newrp.Organisationen.Drogen;
 import de.newrp.Organisationen.Organisation;
@@ -204,6 +205,9 @@ public class BizWarService implements IBizWarService {
             player.sendMessage(this.getPrefix() + "§cDu bist bereits im Biz War!");
             return;
         }
+
+        Pets.despawn(player);
+        Pets.enabled.put(player.getUniqueId(), false);
 
         if(bizWarInformation.getAttackerOrganisation() == organisation) {
             bizWarInformation.getJoinedMembersOfAttackers().add(player.getUniqueId());

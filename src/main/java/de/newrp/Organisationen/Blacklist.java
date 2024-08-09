@@ -76,10 +76,6 @@ public class Blacklist {
     public static void load() {
         Bukkit.getScheduler().runTaskAsynchronously(NewRoleplayMain.getInstance(), () -> {
             HashMap<Organisation, List<Blacklist>> blacklist = new HashMap<>();
-            for (Organisation f : Organisation.values()) {
-                if(!f.hasBlacklist()) continue;
-                blacklist.put(f, new ArrayList<>());
-            }
             try (Statement stmt = NewRoleplayMain.getConnection().createStatement();
                  ResultSet rs = stmt.executeQuery("SELECT blacklist.organisationID, blacklist.userID, nrp_id.name, blacklist.reason, blacklist.time, blacklist.kills, blacklist.price FROM blacklist LEFT JOIN nrp_id ON nrp_id.id = blacklist.userID")) {
                 while (rs.next()) {
@@ -91,6 +87,10 @@ public class Blacklist {
                     long time = rs.getLong("time");
                     int kills = rs.getInt("kills");
                     int price = rs.getInt("price");
+                    if(!blacklist.containsKey(f)) {
+                        Bukkit.getLogger().info("Added bl for " + f.getName());
+                        blacklist.put(f, new ArrayList<>());
+                    }
                     blacklist.get(f).add(new Blacklist(userID, name, f, reason, time, kills, price));
                 }
                 BLACKLIST = blacklist;

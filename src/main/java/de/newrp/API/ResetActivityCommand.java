@@ -1,5 +1,6 @@
 package de.newrp.API;
 
+import de.newrp.Administrator.SDuty;
 import de.newrp.Berufe.Abteilung;
 import de.newrp.Berufe.Beruf;
 import de.newrp.Organisationen.Organisation;
@@ -31,18 +32,22 @@ public class ResetActivityCommand implements CommandExecutor, TabCompleter {
             int id = 0;
 
             if (Beruf.hasBeruf(player)) {
-                if (!Beruf.isLeader(player, true)) {
-                    player.sendMessage(Messages.NO_PERMISSION);
-                    return true;
+                if(!SDuty.isSDuty(player)) {
+                    if (!Beruf.isLeader(player, true)) {
+                        player.sendMessage(Messages.NO_PERMISSION);
+                        return true;
+                    }
                 }
 
                 id = Beruf.getBeruf(player).getID();
             }
 
             if (Organisation.hasOrganisation(player)) {
-                if (!Organisation.isLeader(player, true)) {
-                    player.sendMessage(Messages.NO_PERMISSION);
-                    return true;
+                if(!SDuty.isSDuty(player)) {
+                    if (!Organisation.isLeader(player, true)) {
+                        player.sendMessage(Messages.NO_PERMISSION);
+                        return true;
+                    }
                 }
 
                 id = -Organisation.getOrganisation(player).getID();

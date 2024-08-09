@@ -3,6 +3,7 @@ package de.newrp.features.bizwar.commands;
 import de.newrp.API.Messages;
 import de.newrp.API.Script;
 import de.newrp.Organisationen.Organisation;
+import de.newrp.Police.Jail;
 import de.newrp.dependencies.DependencyContainer;
 import de.newrp.features.bizwar.IBizWarService;
 import de.newrp.features.bizwar.data.ActiveBizWarInformation;
@@ -23,6 +24,11 @@ public class JoinFightCommand implements CommandExecutor {
 
         if (organisation == null) {
             player.sendMessage(Messages.ERROR + "§cDu bist in keiner Organisation!");
+            return false;
+        }
+
+        if(Jail.isInJail(player)) {
+            player.sendMessage(Messages.ERROR + "§cIm Jail kannst du keinem Kampf beitreten!");
             return false;
         }
 

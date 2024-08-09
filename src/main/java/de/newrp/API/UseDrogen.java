@@ -4,6 +4,8 @@ import de.newrp.Administrator.BuildMode;
 import de.newrp.Organisationen.Drogen;
 import de.newrp.Player.Fesseln;
 import de.newrp.Police.Handschellen;
+import de.newrp.dependencies.DependencyContainer;
+import de.newrp.features.deathmatcharena.IDeathmatchArenaService;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -46,10 +48,12 @@ public class UseDrogen implements Listener {
 
         Long lastUsage = DRUG_COOLDOWN.get(p.getName());
         if(!Script.isInTestMode()) {
-            if (lastUsage != null && lastUsage + TimeUnit.SECONDS.toMillis(15) > time) {
-                long cooldown = TimeUnit.MILLISECONDS.toSeconds(lastUsage + TimeUnit.SECONDS.toMillis(15) - time);
-                Script.sendActionBar(p, Messages.ERROR + "Du bist gerade noch im Rausch. (" + cooldown + " Sekunden verbleibend)");
-                return;
+            if(!DependencyContainer.getContainer().getDependency(IDeathmatchArenaService.class).isInDeathmatch(p, false)) {
+                if (lastUsage != null && lastUsage + TimeUnit.SECONDS.toMillis(15) > time) {
+                    long cooldown = TimeUnit.MILLISECONDS.toSeconds(lastUsage + TimeUnit.SECONDS.toMillis(15) - time);
+                    Script.sendActionBar(p, Messages.ERROR + "Du bist gerade noch im Rausch. (" + cooldown + " Sekunden verbleibend)");
+                    return;
+                }
             }
         }
 

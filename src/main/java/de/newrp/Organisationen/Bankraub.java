@@ -129,7 +129,7 @@ public class Bankraub implements CommandExecutor, Listener {
         cops.removeIf(player -> !Duty.isInDuty(player));
         cops.removeIf(AFK::isAFK);
 
-        if (cops.size() < 5 && !Script.isInTestMode()) {
+        if (cops.size() < 4 && !Script.isInTestMode()) {
             p.sendMessage(Messages.ERROR + "Es sind zu wenig Polizisten online um einen Bankraub zu starten.");
             return true;
         }

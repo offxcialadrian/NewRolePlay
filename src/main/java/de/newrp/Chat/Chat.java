@@ -154,11 +154,6 @@ public class Chat implements Listener {
             return;
         }
 
-        if(ChangeNameCommand.isLocked(p)) {
-            p.sendMessage(Messages.ERROR + "Du musst dein Name ändern, um den Chat wieder benutzen zu können!");
-            return;
-        }
-
         if(TV.tvs.containsKey(p)) {
             p.sendMessage(Messages.ERROR + "Du kannst nicht reden während du Fernsehen schaust!");
             return;
@@ -171,6 +166,11 @@ public class Chat implements Listener {
                     return;
                 }
             }
+        }
+
+        if(ChangeNameCommand.isLocked(p)) {
+            p.sendMessage(Messages.ERROR + "Du musst dein Name ändern, um den Chat wieder benutzen zu können!");
+            return;
         }
 
         for(String arg : e.getMessage().split(" ")) {

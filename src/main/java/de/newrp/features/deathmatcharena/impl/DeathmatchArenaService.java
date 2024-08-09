@@ -3,6 +3,7 @@ package de.newrp.features.deathmatcharena.impl;
 import de.newrp.API.*;
 import de.newrp.Administrator.SDuty;
 import de.newrp.Organisationen.Drogen;
+import de.newrp.Shop.ShopItem;
 import de.newrp.Waffen.Waffen;
 import de.newrp.Waffen.Weapon;
 import de.newrp.config.data.LocationConfig;
@@ -16,6 +17,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -74,6 +76,9 @@ public class DeathmatchArenaService implements IDeathmatchArenaService {
 
     @Override
     public void equipWeaponsAndDrugs(Player player) {
+        for (PotionEffect activePotionEffect : player.getActivePotionEffects()) {
+            player.removePotionEffect(activePotionEffect.getType());
+        }
         player.getInventory().clear();
         player.getInventory().setArmorContents(null);
         for(final Weapon w : Weapon.values()) {
@@ -101,6 +106,11 @@ public class DeathmatchArenaService implements IDeathmatchArenaService {
             player.getInventory().addItem(new ItemBuilder(drug.getMaterial()).setName(drug.getName()).setLore("§7Reinheitsgrad: " + Drogen.DrugPurity.HIGH.getText()).setAmount(this.deathmatchArenaConfig.drugAmount()).build());
         }
 
+        player.getInventory().addItem(new ItemBuilder(Material.BREAD).setNoDrop().setAmount(32).build());
+        for (int i = 0; i < 5; i++) {
+            player.getInventory().addItem(new ItemBuilder(ShopItem.TRINKWASSER.getItemStack().clone()).setNoDrop().build());
+        }
+
         player.teleport(this.getRandomSpawnPoint());
     }
 
@@ -115,6 +125,9 @@ public class DeathmatchArenaService implements IDeathmatchArenaService {
 
         player.getInventory().setContents(joinData.contentsInventory());
         player.getInventory().setArmorContents(joinData.contentsArmor());
+        for (PotionEffect activePotionEffect : player.getActivePotionEffects()) {
+            player.removePotionEffect(activePotionEffect.getType());
+        }
         player.teleport(joinData.oldLocation());
         this.sendMessageToArenaMembers(getPrefix() + "Spieler " + Script.getName(player) + " hat die Deathmatch Arena verlassen!");
         player.sendMessage(Messages.INFO + "Verbrachte Zeit in der Deathmatch Arena: " + new SimpleDateFormat("mm:ss").format(System.currentTimeMillis() - joinData.joinTime()) + "m");

@@ -319,10 +319,10 @@ public class Shop implements CommandExecutor, Listener, TabCompleter {
         }
 
         if(args[0].equalsIgnoreCase("sortiment")) {
-            if(shop.getType() == ShopType.HOTEL) {
+            /*if(shop.getType() == ShopType.HOTEL) {
                 p.sendMessage(Messages.ERROR + "Hotels haben kein Sortiment.");
                 return true;
-            }
+            }*/
 
             Inventory inv = Bukkit.createInventory(null, 9*3, "§7Sortiment " + shop.getPublicName());
             for(ShopItem si : ShopItem.values()) {

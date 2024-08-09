@@ -263,7 +263,7 @@ public class PayDay extends BukkitRunnable {
             }
 
             if (Selfstorage.hasSelfstorage(p)) {
-                int price = 10;
+                int price = 75;
                 p.sendMessage("§8" + Messages.ARROW + " §7Selfstorage-Room: §c-" + price + "€");
                 payday -= price;
             }

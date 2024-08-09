@@ -65,8 +65,8 @@ public class Bankautomaten implements Listener {
                 .filter((nearbyPlayer) -> !SDuty.isSDuty(nearbyPlayer))
                 .filter(nearbyPlayer -> !AFK.isAFK(nearbyPlayer)).collect(Collectors.toList());
 
-        if (cops.size() < 3 && !Script.isInTestMode()) {
-            p.sendMessage(Messages.ERROR + "Es braucht mindestens 3 Beamte um einen Bankautomaten zu zerstören.");
+        if (cops.size() < 2 && !Script.isInTestMode()) {
+            p.sendMessage(Messages.ERROR + "Es braucht mindestens 2 Beamte um einen Bankautomaten zu zerstören.");
             return;
         }
 
